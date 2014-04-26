@@ -52,11 +52,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Binaries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Binaries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\NLog\NLog.dll</HintPath>
+      <HintPath>Binaries\NLog\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -128,7 +128,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BinkyRailways.snk" />
     <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.woff" />

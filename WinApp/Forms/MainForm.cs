@@ -8,7 +8,6 @@ using BinkyRailways.Core.Reporting;
 using BinkyRailways.Core.State;
 using BinkyRailways.Core.Storage;
 using BinkyRailways.Core.Util;
-using BinkyRailways.KeyGen;
 using BinkyRailways.WinApp.Preferences;
 using BinkyRailways.WinApp.Sound;
 using BinkyRailways.WinApp.Update;
@@ -110,26 +109,6 @@ namespace BinkyRailways.WinApp.Forms
 
             // Load preferences
             var prefs = UserPreferences.Preferences;
-
-            // Check license
-            var license = new License(prefs.License);
-            string name;
-            if (license.Verify(out name))
-            {
-                appState.UserName = name;
-            }
-            else
-            {
-                using (var dialog = new LicenseForm(appState))
-                {
-                    var valid = (dialog.ShowDialog(this) == DialogResult.OK);
-                    if (!valid || string.IsNullOrEmpty(appState.UserName))
-                    {
-                        Close();
-                        return;
-                    }
-                }
-            }
 
             // Open file from command line
             var activeFile = (args.Length > 0) && (args[0].EndsWith(Package.DefaultExt, StringComparison.OrdinalIgnoreCase))

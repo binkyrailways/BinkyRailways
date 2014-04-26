@@ -185,9 +185,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BinkyRailways.snk" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="BinkyRailways.Utility.csproj">
       <Project>{4299D52F-F138-BB34-B1E6-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Utility</Name>

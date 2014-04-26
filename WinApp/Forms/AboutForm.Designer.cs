@@ -37,7 +37,6 @@ namespace BinkyRailways.WinApp.Forms
             this.upgradeCheckWorker = new System.ComponentModel.BackgroundWorker();
             this.lbVersion = new System.Windows.Forms.Label();
             this.lbChecking = new System.Windows.Forms.LinkLabel();
-            this.lbLicense = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,18 +75,12 @@ namespace BinkyRailways.WinApp.Forms
             this.lbChecking.Name = "lbChecking";
             this.lbChecking.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbChecking_LinkClicked);
             // 
-            // lbLicense
-            // 
-            resources.ApplyResources(this.lbLicense, "lbLicense");
-            this.lbLicense.Name = "lbLicense";
-            // 
             // AboutForm
             // 
             this.AcceptButton = this.cmdOk;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdOk;
-            this.Controls.Add(this.lbLicense);
             this.Controls.Add(this.lbChecking);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.cmdOk);
@@ -111,6 +104,5 @@ namespace BinkyRailways.WinApp.Forms
         private System.ComponentModel.BackgroundWorker upgradeCheckWorker;
         private System.Windows.Forms.Label lbVersion;
         private LinkLabel lbChecking;
-        private Label lbLicense;
     }
 }

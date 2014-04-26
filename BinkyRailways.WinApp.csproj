@@ -55,11 +55,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gma.QrCodeNet.Encoding.Net35">
-      <HintPath>..\Binaries\Gma.QrCodeNet.Encoding.Net35\Gma.QrCodeNet.Encoding.Net35.dll</HintPath>
+      <HintPath>Binaries\Gma.QrCodeNet.Encoding.Net35\Gma.QrCodeNet.Encoding.Net35.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\NLog\NLog.dll</HintPath>
+      <HintPath>Binaries\NLog\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -92,8 +92,6 @@
     <Compile Include="Import\Rocrail\ModulePlanImporter.cs" />
     <Compile Include="Import\Rocrail\ModuleImporter.cs" />
     <Compile Include="Import\Rocrail\RocrailImportFilter.cs" />
-    <Compile Include="KeyGen\License.cs" />
-    <Compile Include="KeyGen\public.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -419,12 +417,6 @@
     </Compile>
     <Compile Include="WinApp\Forms\ImportPackageForm.Item.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinApp\Forms\LicenseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinApp\Forms\LicenseForm.Designer.cs">
-      <DependentUpon>LicenseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="WinApp\Forms\LogForm.cs">
       <SubType>Form</SubType>
@@ -842,9 +834,6 @@
       <DependentUpon>ImportPackageForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinApp\Forms\LicenseForm.resx">
-      <DependentUpon>LicenseForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WinApp\Forms\LogForm.nl-NL.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -941,7 +930,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="BinkyRailways.snk" />
     <None Include="Graphics\22x22\add_22.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1024,7 +1012,6 @@
     <None Include="Graphics\22x22\fileimport_22.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="KeyGen\public.xml" />
     <EmbeddedResource Include="WinApp\Forms\BlockSignalPatternEditorForm.resx">
       <DependentUpon>BlockSignalPatternEditorForm.cs</DependentUpon>
     </EmbeddedResource>

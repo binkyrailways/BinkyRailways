@@ -558,9 +558,6 @@ When set to 100, all locs (that are allowed) will wait.</value>
   <data name="NotAValidLicense" xml:space="preserve">
     <value>This is not a valid license.</value>
   </data>
-  <data name="LicensedToX" xml:space="preserve">
-    <value>Licensed to {0}</value>
-  </data>
   <data name="NewBlockSignalDescription" xml:space="preserve">
     <value>New block signal</value>
   </data>

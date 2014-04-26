@@ -30,7 +30,6 @@ namespace BinkyRailways.WinApp.Forms
                 Text = string.Format(Strings.AboutX, Strings.ProductName);
                 lbProductName.Text = Strings.ProductName;
                 lbVersion.Text = string.Format(Strings.VersionX, GetType().Assembly.GetName().Version);
-                lbLicense.Text = string.Format(Strings.LicensedToX, appState.UserName);
             }
         }
 
