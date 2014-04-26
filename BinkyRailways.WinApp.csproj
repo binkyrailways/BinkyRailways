@@ -1,0 +1,1065 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4299D52F-F138-34AA-B1BB-74001AEDDFA7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BinkyRailways</RootNamespace>
+    <AssemblyName>BinkyRailways</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>Graphics\Ico\Train.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gma.QrCodeNet.Encoding.Net35">
+      <HintPath>..\Binaries\Gma.QrCodeNet.Encoding.Net35\Gma.QrCodeNet.Encoding.Net35.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\NLog\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Import\Entities\EntityImportFilter.cs" />
+    <Compile Include="Import\ImportFilterPriority.cs" />
+    <Compile Include="Import\ImportFilters.cs" />
+    <Compile Include="Import\IImportFilter.cs" />
+    <Compile Include="Import\ImportMessage.cs" />
+    <Compile Include="Import\Rocrail\Importer.cs" />
+    <Compile Include="Import\Rocrail\LocsImporter.cs" />
+    <Compile Include="Import\Rocrail\ModulePlanImporter.cs" />
+    <Compile Include="Import\Rocrail\ModuleImporter.cs" />
+    <Compile Include="Import\Rocrail\RocrailImportFilter.cs" />
+    <Compile Include="KeyGen\License.cs" />
+    <Compile Include="KeyGen\public.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Version.cs" />
+    <Compile Include="WinApp\AppState.cs" />
+    <Compile Include="WinApp\Controls\BlockSideComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\ArchiveVisitor.cs" />
+    <Compile Include="WinApp\Controls\Edit\ActivateVisitor.cs" />
+    <Compile Include="WinApp\Controls\Edit\EntityTreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\FreeTextEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\FreeTextEditorControl.Designer.cs">
+      <DependentUpon>FreeTextEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\IEditContext.cs" />
+    <Compile Include="WinApp\Controls\Edit\ModuleTree.cs" />
+    <Compile Include="WinApp\Controls\Edit\QuickEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\QuickEditControl.Designer.cs">
+      <DependentUpon>QuickEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EntityRefNode.cs" />
+    <Compile Include="WinApp\Controls\Edit\SelectionManager.cs" />
+    <Compile Include="WinApp\Controls\Edit\ContextMenuBuilder.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\ActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\BlockSignalSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\BinaryOutputSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\Clock4StageOutputSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\DynamicPropertyDescriptor.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\EcosCommandStationSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\InitializeJunctionActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\PassiveJunctionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\EditableInRunningStateAttribute.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\ExPropertyDescriptorCollection.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\OutputSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\PlaySoundActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\DccOverRs232CommandStationSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\SignalSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\TurnTableSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\LocFunctionActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\LocActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\LocGroupSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\ModuleConnectionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\PersistentEntitySettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\RailwaySettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\ValidationResultsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\ValidationResultsControl.Designer.cs">
+      <DependentUpon>ValidationResultsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\RemoveFromPackageVisitor.cs" />
+    <Compile Include="WinApp\Controls\Extensions.cs" />
+    <Compile Include="WinApp\Controls\Run\RailwayStateControlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\RailwayStateControlPanel.Designer.cs">
+      <DependentUpon>RailwayStateControlPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocoIOInspectorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocoIOInspectorControl.Designer.cs">
+      <DependentUpon>LocoIOInspectorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LogsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LogsControl.Designer.cs">
+      <DependentUpon>LogsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\UnexpectedSensorControl.BlockItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\UnexpectedSensorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\UnexpectedSensorControl.Designer.cs">
+      <DependentUpon>UnexpectedSensorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\SwitchDirectionComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\AddressTypeCombo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\RailwayViewEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\RailwayViewEditorControl.Designer.cs">
+      <DependentUpon>RailwayViewEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EditModuleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EditModuleControl.Designer.cs">
+      <DependentUpon>EditModuleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EditRailwayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EditRailwayControl.Designer.cs">
+      <DependentUpon>EditRailwayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\EntityNode.cs" />
+    <Compile Include="WinApp\Controls\Edit\ModuleViewEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\ModuleViewEditorControl.Designer.cs">
+      <DependentUpon>ModuleViewEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\RemoveVisitor.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\BinarySensorSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\BlockSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\CommandStationSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\PositionedEntitySettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\ModuleRefSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\EdgeSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\EntitySettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\GridContext.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\JunctionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\LocoBufferCommandStationSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\LocSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\ModuleSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\RouteSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\SensorSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\SettingsBuilder.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\SettingsExtensions.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\SettingsPropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Edit\Settings\SwitchSettings.cs" />
+    <Compile Include="WinApp\Controls\EntityCanvasControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\EnumComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocControlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocControlPanel.Designer.cs">
+      <DependentUpon>LocControlPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocImage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocImage.Designer.cs">
+      <DependentUpon>LocImage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocsControl.Designer.cs">
+      <DependentUpon>LocsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LocsControl.LocItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LogViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LogViewControl.Designer.cs">
+      <DependentUpon>LogViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\LogViewItem.cs" />
+    <Compile Include="WinApp\Controls\Run\RailwayViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\RailwayViewControl.Designer.cs">
+      <DependentUpon>RailwayViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\RunRailwayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\Run\RunRailwayControl.Designer.cs">
+      <DependentUpon>RunRailwayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\TreeViewX.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\VirtualCanvas\ArgumentEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\ContainerEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\ContainerMessage.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\ISupportBeginUpdate.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\IZoomableVCItemContainer.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ContainerDragDropHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ContainerKeyboardHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ContainerMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\CursorController.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\DragDropHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\DropFileHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ItemDragEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ItemKeyEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ItemMouseEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\KeyboardHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\MouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\MoveMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\RectangleEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\RectangleMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ResizeMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\SelectMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\VisibleZoomMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Handlers\ZoomMouseHandler.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\IPositionableItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\ItemPaintEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Items\VCBaseItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Items\VCButtonItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Items\VCHyperLinkItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Items\VCImageItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Items\VCLabelItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\IVCItemContainer.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\FlowLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\IVCLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\LayoutConstraints.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\LeftRightLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\StackLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\TableLayoutConstraints.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\TableLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\Layout\TopDownLayoutManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\SelectedVCItemPlacementCollection.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\SelectionManager.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItem.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItemContainer.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItemPlacement.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItemPlacementCollection.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItemPlacementEventArgs.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VCItemUpdate.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VerticalAlignment.cs" />
+    <Compile Include="WinApp\Controls\VirtualCanvas\VirtualCanvasControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\VirtualCanvas\VirtualCanvasControl.Designer.cs">
+      <DependentUpon>VirtualCanvasControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\EntityStateContainer.cs" />
+    <Compile Include="WinApp\Filters.cs" />
+    <Compile Include="WinApp\Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\AddressEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\AddressEditorForm.Designer.cs">
+      <DependentUpon>AddressEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\AppForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\BlockSignalPatternEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\BlockSignalPatternEditorForm.Designer.cs">
+      <DependentUpon>BlockSignalPatternEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ChooseComPortForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ChooseComPortForm.Designer.cs">
+      <DependentUpon>ChooseComPortForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ActionsEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ActionsEditorForm.Designer.cs">
+      <DependentUpon>ActionsEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ActionsEditorForm.Items.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\Clock4StageOutputPatternEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\Clock4StageOutputPatternEditorForm.Designer.cs">
+      <DependentUpon>Clock4StageOutputPatternEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\EcosReaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\EcosReaderForm.Designer.cs">
+      <DependentUpon>EcosReaderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImageEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImageEditorForm.Designer.cs">
+      <DependentUpon>ImageEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\IPatternEditorForm.cs" />
+    <Compile Include="WinApp\Forms\IPredicateChangedListener.cs" />
+    <Compile Include="WinApp\Forms\RouteEventSetEditorForm.BehaviorNode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImportMessagesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImportMessagesForm.Designer.cs">
+      <DependentUpon>ImportMessagesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocFunctionsEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocFunctionsEditorForm.Designer.cs">
+      <DependentUpon>LocFunctionsEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImportPackageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImportPackageForm.Designer.cs">
+      <DependentUpon>ImportPackageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\ImportPackageForm.Item.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LicenseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LicenseForm.Designer.cs">
+      <DependentUpon>LicenseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocoIOInspectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocoIOInspectorForm.Designer.cs">
+      <DependentUpon>LocoIOInspectorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\PredicateEditorForm.Menus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocSetEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\LocSetEditorForm.Designer.cs">
+      <DependentUpon>LocSetEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\JunctionWithStateSetEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\JunctionWithStateSetEditorForm.Designer.cs">
+      <DependentUpon>JunctionWithStateSetEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\JunctionWithStateSetEditorForm.Items.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\PredicateEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\PredicateEditorForm.Designer.cs">
+      <DependentUpon>PredicateEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\PredicateEditorForm.Items.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\QuickEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\QuickEditForm.Designer.cs">
+      <DependentUpon>QuickEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\RenameEntitiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\RenameEntitiesForm.Designer.cs">
+      <DependentUpon>RenameEntitiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\RestoreBlockAssignmentsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\RestoreBlockAssignmentsForm.Designer.cs">
+      <DependentUpon>RestoreBlockAssignmentsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\RouteEventSetEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\RouteEventSetEditorForm.Designer.cs">
+      <DependentUpon>RouteEventSetEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\EditModuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\EditModuleForm.Designer.cs">
+      <DependentUpon>EditModuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\RouteEventSetEditorForm.EventNode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\StateInspectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\StateInspectionForm.Designer.cs">
+      <DependentUpon>StateInspectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\TimePeriodEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\TimePeriodEditorForm.Designer.cs">
+      <DependentUpon>TimePeriodEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\UnhandledExceptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\UnhandledExceptionForm.Designer.cs">
+      <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Forms\WebServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Forms\WebServerForm.Designer.cs">
+      <DependentUpon>WebServerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Items\Edit\BlockSignalItem.cs" />
+    <Compile Include="WinApp\Items\Edit\Clock4StageOutputItem.cs" />
+    <Compile Include="WinApp\Items\Edit\ItemSelectMouseHandler.cs" />
+    <Compile Include="WinApp\Items\Edit\PassiveJunctionItem.cs" />
+    <Compile Include="WinApp\Items\Edit\EdgeConnectMouseHandler.cs" />
+    <Compile Include="WinApp\Items\Edit\BinaryOutputItem.cs" />
+    <Compile Include="WinApp\Items\Edit\TurnTableItem.cs" />
+    <Compile Include="WinApp\Items\Edit\EdgeItem.cs" />
+    <Compile Include="WinApp\Items\Edit\SwitchItem.cs" />
+    <Compile Include="WinApp\Items\Edit\SensorItem.cs" />
+    <Compile Include="WinApp\Items\Handlers\SetLocTargetDragDropHandler.cs" />
+    <Compile Include="WinApp\Items\IEntitySelection.cs" />
+    <Compile Include="WinApp\Items\ItemContext.cs" />
+    <Compile Include="WinApp\Items\Menu\CloseBlockMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Menu\DisconnectModuleMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Menu\TurnTableGotoPreviousPositionMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Menu\TurnTableGotoNextPositionMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Menu\TurnTableGotoPositionMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Menu\OpenBlockMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApp\Items\Messages\ItemMessage.cs" />
+    <Compile Include="WinApp\Items\Messages\ItemMessageVisitor.cs" />
+    <Compile Include="WinApp\Items\Messages\ShowContextMenuMessage.cs" />
+    <Compile Include="WinApp\Items\Messages\ShowToolTipMessage.cs" />
+    <Compile Include="WinApp\Items\Edit\RailwayEditItem.cs" />
+    <Compile Include="WinApp\Items\RailwayItem.cs" />
+    <Compile Include="WinApp\Items\Edit\BlockItem.cs" />
+    <Compile Include="WinApp\Items\Edit\ItemResizeMouseHandler.cs" />
+    <Compile Include="WinApp\Items\Edit\ItemMoveMouseHandler.cs" />
+    <Compile Include="WinApp\Items\Edit\ModuleEditItem.cs" />
+    <Compile Include="WinApp\Items\IEntityItem.cs" />
+    <Compile Include="WinApp\Items\IPositionedEntityItem.cs" />
+    <Compile Include="WinApp\Items\Edit\ItemBuilder.cs" />
+    <Compile Include="WinApp\Items\ModuleItem.cs" />
+    <Compile Include="WinApp\Items\PositionedEntityLayoutManager.cs" />
+    <Compile Include="WinApp\Items\PositionedItem.cs" />
+    <Compile Include="WinApp\Items\PositionedItemContainer.cs" />
+    <Compile Include="WinApp\Items\Run\BlockItem.cs" />
+    <Compile Include="WinApp\Items\Run\BlockSignalItem.cs" />
+    <Compile Include="WinApp\Items\Run\Clock4StageOutputItem.cs" />
+    <Compile Include="WinApp\Items\Run\PassiveJunctionItem.cs" />
+    <Compile Include="WinApp\Items\Run\BinaryOutputItem.cs" />
+    <Compile Include="WinApp\Items\Run\TurnTableItem.cs" />
+    <Compile Include="WinApp\Items\Run\EntityClickHandler.cs" />
+    <Compile Include="WinApp\Items\Run\SwitchItem.cs" />
+    <Compile Include="WinApp\Items\Run\SensorItem.cs" />
+    <Compile Include="WinApp\Items\Run\RailwayRunItem.cs" />
+    <Compile Include="WinApp\Items\Run\ItemBuilder.cs" />
+    <Compile Include="WinApp\Items\Run\ModuleRunItem.cs" />
+    <Compile Include="WinApp\Items\Handlers\ToolTipMouseHandler.cs" />
+    <Compile Include="WinApp\Notifications.cs" />
+    <Compile Include="WinApp\Preferences\RegistrySettingsProvider.cs" />
+    <Compile Include="WinApp\Preferences\StatePersistence.cs" />
+    <Compile Include="WinApp\Preferences\UserPreferences.cs" />
+    <Compile Include="WinApp\Program.cs" />
+    <Compile Include="WinApp\Sound\Sound.cs" />
+    <Compile Include="WinApp\Sound\SoundPlayer.cs" />
+    <Compile Include="WinApp\Strings.Designer.cs">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="WinApp\TypeConverters\ComPortNameTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\BoolTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\BlockSideTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\ChangeDirectionTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\ActionTriggerSourceTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\BlockSignalTypeTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\BlockSignalPatternTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\Clock4StageOutputPatternTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\ClockSpeedFactorTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\LocIsElementOfGroupTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\ShapesTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\RouteSpeedBehaviorTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\RouteStateBehaviorTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\LocFunctionsTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\SoundTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\DurationInSecondsTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\LocSetTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\UsedByTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\PercentageTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\GlobalEntityTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\SpeedTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\SwitchDirectionTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\JunctionWithStateSetTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\EntityTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\RouteEventSetTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\EnumTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\ImageTypeConverter.cs" />
+    <Compile Include="WinApp\UIEditors\AddressEditor.cs" />
+    <Compile Include="WinApp\UIEditors\ActionTriggerSourceEditor.cs" />
+    <Compile Include="WinApp\UIEditors\BlockEditor.cs" />
+    <Compile Include="WinApp\UIEditors\BlockSignalPatternEditor.cs" />
+    <Compile Include="WinApp\UIEditors\CommandStationEditor.cs" />
+    <Compile Include="WinApp\UIEditors\Clock4StageOutputPatternEditor.cs" />
+    <Compile Include="WinApp\UIEditors\JunctionEditor.cs" />
+    <Compile Include="WinApp\UIEditors\FreeTextEditor.cs" />
+    <Compile Include="WinApp\UIEditors\Extensions.cs" />
+    <Compile Include="WinApp\UIEditors\LocFunctionsEditor.cs" />
+    <Compile Include="WinApp\UIEditors\SoundEditor.cs" />
+    <Compile Include="WinApp\UIEditors\PreferredCommandStationEditor.cs" />
+    <Compile Include="WinApp\UIEditors\LocEditor.cs" />
+    <Compile Include="WinApp\UIEditors\LocSetEditor.cs" />
+    <Compile Include="WinApp\UIEditors\LocPredicateEditor.cs" />
+    <Compile Include="WinApp\UIEditors\EdgeEditor.cs" />
+    <Compile Include="WinApp\UIEditors\ModuleEditor.cs" />
+    <Compile Include="WinApp\UIEditors\JunctionWithStateSetEditor.cs" />
+    <Compile Include="WinApp\UIEditors\RouteEventSetEditor.cs" />
+    <Compile Include="WinApp\UIEditors\EndPointEditor.cs" />
+    <Compile Include="WinApp\UIEditors\ImageEditor.cs" />
+    <Compile Include="WinApp\UIThread.cs" />
+    <Compile Include="WinApp\Update\UpdateChecker.cs" />
+    <Compile Include="WinApp\Update\UpdateCheckResult.cs" />
+    <Compile Include="WinApp\Update\VersionInfo.cs" />
+    <Compile Include="WinApp\Utils\ControlExtensions.cs" />
+    <Compile Include="WinApp\Utils\GraphicsUtil.cs" />
+    <Compile Include="WinApp\Utils\MathUtil.cs" />
+    <Compile Include="WinApp\Utils\MatrixUtils.cs" />
+    <Compile Include="WinApp\Utils\ScreenUtil.cs" />
+    <Compile Include="WinApp\Utils\ToolStripMerge.cs" />
+    <Compile Include="WinApp\Utils\Win32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BinkyRailways.Model.csproj">
+      <Project>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Protocols.csproj">
+      <Project>{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Protocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Server.csproj">
+      <Project>{4299D52F-23DE-4DA2-BB11-74001AEDDF43}</Project>
+      <Name>BinkyRailways.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.State.csproj">
+      <Project>{4299D52F-F138-48A2-BB11-74001AEDDF43}</Project>
+      <Name>BinkyRailways.State</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Utility.csproj">
+      <Project>{4299D52F-F138-BB34-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\EditModuleControl.nl-NL.resx">
+      <DependentUpon>EditModuleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\EditRailwayControl.nl-NL.resx">
+      <DependentUpon>EditRailwayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\EntityTreeView.resx">
+      <DependentUpon>EntityTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\FreeTextEditorControl.resx">
+      <DependentUpon>FreeTextEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\QuickEditControl.resx">
+      <DependentUpon>QuickEditControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\ValidationResultsControl.nl-NL.resx">
+      <DependentUpon>ValidationResultsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\ValidationResultsControl.resx">
+      <DependentUpon>ValidationResultsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\RailwayViewEditorControl.resx">
+      <DependentUpon>RailwayViewEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\EditModuleControl.resx">
+      <DependentUpon>EditModuleControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\EditRailwayControl.resx">
+      <DependentUpon>EditRailwayControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Edit\ModuleViewEditorControl.resx">
+      <DependentUpon>ModuleViewEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\EntityCanvasControl.resx">
+      <DependentUpon>EntityCanvasControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocoIOInspectorControl.nl-NL.resx">
+      <DependentUpon>LocoIOInspectorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\RailwayStateControlPanel.nl-NL.resx">
+      <DependentUpon>RailwayStateControlPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\RailwayStateControlPanel.resx">
+      <DependentUpon>RailwayStateControlPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocControlPanel.nl-NL.resx">
+      <DependentUpon>LocControlPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocControlPanel.resx">
+      <DependentUpon>LocControlPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocImage.resx">
+      <DependentUpon>LocImage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocoIOInspectorControl.resx">
+      <DependentUpon>LocoIOInspectorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocsControl.nl-NL.resx">
+      <DependentUpon>LocsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LocsControl.resx">
+      <DependentUpon>LocsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LogsControl.resx">
+      <DependentUpon>LogsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LogViewControl.nl-NL.resx">
+      <DependentUpon>LogViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\LogViewControl.resx">
+      <DependentUpon>LogViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\RailwayViewControl.resx">
+      <DependentUpon>RailwayViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\RunRailwayControl.nl-NL.resx">
+      <DependentUpon>RunRailwayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\RunRailwayControl.resx">
+      <DependentUpon>RunRailwayControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\UnexpectedSensorControl.nl-NL.resx">
+      <DependentUpon>UnexpectedSensorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\Run\UnexpectedSensorControl.resx">
+      <DependentUpon>UnexpectedSensorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\VirtualCanvas\VirtualCanvasControl.resx">
+      <DependentUpon>VirtualCanvasControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\AboutForm.nl-NL.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\AddressEditorForm.nl-NL.resx">
+      <DependentUpon>AddressEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\AddressEditorForm.resx">
+      <DependentUpon>AddressEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ChooseComPortForm.nl-NL.resx">
+      <DependentUpon>ChooseComPortForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ChooseComPortForm.resx">
+      <DependentUpon>ChooseComPortForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ActionsEditorForm.resx">
+      <DependentUpon>ActionsEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\Clock4StageOutputPatternEditorForm.resx">
+      <DependentUpon>Clock4StageOutputPatternEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\EcosReaderForm.resx">
+      <DependentUpon>EcosReaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ImageEditorForm.resx">
+      <DependentUpon>ImageEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ImportMessagesForm.resx">
+      <DependentUpon>ImportMessagesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LocFunctionsEditorForm.resx">
+      <DependentUpon>LocFunctionsEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\ImportPackageForm.resx">
+      <DependentUpon>ImportPackageForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LicenseForm.resx">
+      <DependentUpon>LicenseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LogForm.nl-NL.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\EditModuleForm.nl-NL.resx">
+      <DependentUpon>EditModuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\JunctionWithStateSetEditorForm.nl-NL.resx">
+      <DependentUpon>JunctionWithStateSetEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LocoIOInspectorForm.resx">
+      <DependentUpon>LocoIOInspectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LocSetEditorForm.nl-NL.resx">
+      <DependentUpon>LocSetEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\LocSetEditorForm.resx">
+      <DependentUpon>LocSetEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\JunctionWithStateSetEditorForm.resx">
+      <DependentUpon>JunctionWithStateSetEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\MainForm.nl-NL.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\PredicateEditorForm.nl-NL.resx">
+      <DependentUpon>PredicateEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\PredicateEditorForm.resx">
+      <DependentUpon>PredicateEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\QuickEditForm.nl-NL.resx">
+      <DependentUpon>QuickEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\QuickEditForm.resx">
+      <DependentUpon>QuickEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\RenameEntitiesForm.nl-NL.resx">
+      <DependentUpon>RenameEntitiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\RenameEntitiesForm.resx">
+      <DependentUpon>RenameEntitiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\RestoreBlockAssignmentsForm.resx">
+      <DependentUpon>RestoreBlockAssignmentsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\RouteEventSetEditorForm.nl-NL.resx">
+      <DependentUpon>RouteEventSetEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\RouteEventSetEditorForm.resx">
+      <DependentUpon>RouteEventSetEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\EditModuleForm.resx">
+      <DependentUpon>EditModuleForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\StateInspectionForm.nl-NL.resx">
+      <DependentUpon>StateInspectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\StateInspectionForm.resx">
+      <DependentUpon>StateInspectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\TimePeriodEditorForm.resx">
+      <DependentUpon>TimePeriodEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\UnhandledExceptionForm.nl-NL.resx">
+      <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\UnhandledExceptionForm.resx">
+      <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Forms\WebServerForm.resx">
+      <DependentUpon>WebServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Strings.nl-NL.resx" />
+    <EmbeddedResource Include="WinApp\Strings.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="BinkyRailways.snk" />
+    <None Include="Graphics\22x22\add_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\edit_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\remove_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\ark_addfile_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\filenew_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\fileopen_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\filesave_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\smiley_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\player_play_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\player_stop_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\stop_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\games_solve_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\joystick_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\battery_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\apply_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\back_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\forward_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\ico\train.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\system_search_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\16x16\document_properties_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\undo_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\system_log_out_22.png" />
+    <None Include="WinApp\App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\archive_extract_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\ico\train_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\ico\train_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\edit_rename_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\22x22\fileimport_22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="KeyGen\public.xml" />
+    <EmbeddedResource Include="WinApp\Forms\BlockSignalPatternEditorForm.resx">
+      <DependentUpon>BlockSignalPatternEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sounds\wehaveaprob.wav" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y $(TargetDir)*.* $(SolutionDir)\Build\application\
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

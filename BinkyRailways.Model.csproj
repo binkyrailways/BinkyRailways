@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BinkyRailways</RootNamespace>
+    <AssemblyName>BinkyRailways.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>MODEL;DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>MODEL;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Model\Address.cs" />
+    <Compile Include="Core\Model\AddressDirection.cs" />
+    <Compile Include="Core\Model\AddressType.cs" />
+    <Compile Include="Core\Model\AddressTypeConverter.cs" />
+    <Compile Include="Core\Model\AddressUsage.cs" />
+    <Compile Include="Core\Model\BlockSide.cs" />
+    <Compile Include="Core\Model\BlockSignalPatterns.cs" />
+    <Compile Include="Core\Model\ChangeDirection.cs" />
+    <Compile Include="Core\Model\BlockSignalType.cs" />
+    <Compile Include="Core\Model\IEcosCommandStation.cs" />
+    <Compile Include="Core\Model\ILocTimePredicate.cs" />
+    <Compile Include="Core\Model\Impl\EcosCommandStation.cs" />
+    <Compile Include="Core\Model\Impl\LocTimePredicate.cs" />
+    <Compile Include="Core\Model\Shapes.cs" />
+    <Compile Include="Core\Model\TimeTypeConverter.cs" />
+    <Compile Include="Core\Model\IClock4StageOutput.cs" />
+    <Compile Include="Core\Model\IModuleAction.cs" />
+    <Compile Include="Core\Model\IInitializeJunctionAction.cs" />
+    <Compile Include="Core\Model\Impl\Clock4StageOutput.cs" />
+    <Compile Include="Core\Model\Impl\ModuleAction.cs" />
+    <Compile Include="Core\Model\Impl\InitializeJunctionAction.cs" />
+    <Compile Include="Core\Model\Impl\Route.EventSet.cs" />
+    <Compile Include="Core\Model\Impl\RouteEventBehaviorList.cs" />
+    <Compile Include="Core\Model\Impl\RouteEvent.cs" />
+    <Compile Include="Core\Model\Impl\RouteEventBehavior.cs" />
+    <Compile Include="Core\Model\IRouteEventBehaviorList.cs" />
+    <Compile Include="Core\Model\IRouteEventBehavior.cs" />
+    <Compile Include="Core\Model\IRouteEventSet.cs" />
+    <Compile Include="Core\Model\IRouteEvent.cs" />
+    <Compile Include="Core\Model\Impl\PassiveJunctionWithState.cs" />
+    <Compile Include="Core\Model\Impl\PassiveJunction.cs" />
+    <Compile Include="Core\Model\IPassiveJunctionWithState.cs" />
+    <Compile Include="Core\Model\IPassiveJunction.cs" />
+    <Compile Include="Core\Model\ILocCanChangeDirectionPredicate.cs" />
+    <Compile Include="Core\Model\ILocFunctions.cs" />
+    <Compile Include="Core\Model\ILocFunction.cs" />
+    <Compile Include="Core\Model\Impl\BinaryOutput.cs" />
+    <Compile Include="Core\Model\Impl\LocCanChangeDirectionPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocFunctions.cs" />
+    <Compile Include="Core\Model\Impl\LocFunction.cs" />
+    <Compile Include="Core\Model\Impl\Module.OutputSet.cs" />
+    <Compile Include="Core\Model\Impl\Output.cs" />
+    <Compile Include="Core\Model\IOutputSet.cs" />
+    <Compile Include="Core\Model\IBinaryOutput.cs" />
+    <Compile Include="Core\Model\IOutput.cs" />
+    <Compile Include="Core\Model\Impl\PlaySoundAction.cs" />
+    <Compile Include="Core\Model\Impl\StreamProperty.cs" />
+    <Compile Include="Core\Model\IPlaySoundAction.cs" />
+    <Compile Include="Core\Model\IDccOverRs232CommandStation.cs" />
+    <Compile Include="Core\Model\IBlockSignal.cs" />
+    <Compile Include="Core\Model\Impl\BlockSignal.cs" />
+    <Compile Include="Core\Model\Impl\DccOverRs232CommandStation.cs" />
+    <Compile Include="Core\Model\Impl\TurnTableWithState.cs" />
+    <Compile Include="Core\Model\Impl\TurnTable.cs" />
+    <Compile Include="Core\Model\ITurnTableWithState.cs" />
+    <Compile Include="Core\Model\ITurnTable.cs" />
+    <Compile Include="Core\Model\LocFunctionCommand.cs" />
+    <Compile Include="Core\Model\ILocFunctionAction.cs" />
+    <Compile Include="Core\Model\ILocAction.cs" />
+    <Compile Include="Core\Model\IActionTriggerSource.cs" />
+    <Compile Include="Core\Model\IActionTrigger.cs" />
+    <Compile Include="Core\Model\IImportableEntity.cs" />
+    <Compile Include="Core\Model\ILocPredicateBuilder.cs" />
+    <Compile Include="Core\Model\ILocGroupEqualsPredicate.cs" />
+    <Compile Include="Core\Model\ILocGroup.cs" />
+    <Compile Include="Core\Model\ILocStandardPredicate.cs" />
+    <Compile Include="Core\Model\Impl\ActionTrigger.cs" />
+    <Compile Include="Core\Model\Impl\LocFunctionAction.cs" />
+    <Compile Include="Core\Model\Impl\IActionTriggerSourceInternals.cs" />
+    <Compile Include="Core\Model\Impl\LocAction.cs" />
+    <Compile Include="Core\Model\Impl\LocPredicateBuilder.cs" />
+    <Compile Include="Core\Model\Impl\LocGroupEqualsPredicate.cs" />
+    <Compile Include="Core\Model\Impl\Railway.LocGroupSet.cs" />
+    <Compile Include="Core\Model\Impl\LocRefSet.cs" />
+    <Compile Include="Core\Model\Impl\LocGroup.cs" />
+    <Compile Include="Core\Model\Impl\LocStandardPredicate.cs" />
+    <Compile Include="Core\Model\Impl\IEntityInternals.cs" />
+    <Compile Include="Core\Model\ImportComparison.cs" />
+    <Compile Include="Core\Model\IRouteSensorSet.cs" />
+    <Compile Include="Core\Model\LocFunction.cs" />
+    <Compile Include="Core\Model\LocSpeedBehavior.cs" />
+    <Compile Include="Core\Model\RouteSensorSetType.cs" />
+    <Compile Include="Core\Model\RouteStateBehavior.cs" />
+    <Compile Include="Core\Model\Time.cs" />
+    <Compile Include="Core\Model\UsedByInfos.cs" />
+    <Compile Include="Core\Model\UsedByInfo.cs" />
+    <Compile Include="Core\Model\ILocPredicatesPredicate.cs" />
+    <Compile Include="Core\Model\ILocEqualsPredicate.cs" />
+    <Compile Include="Core\Model\ILocOrPredicate.cs" />
+    <Compile Include="Core\Model\ILocPredicateSet.cs" />
+    <Compile Include="Core\Model\ILocAndPredicate.cs" />
+    <Compile Include="Core\Model\DefaultValues.cs" />
+    <Compile Include="Core\Model\ILocPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocPredicatesPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocEqualsPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocOrPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocAndPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocPredicate.cs" />
+    <Compile Include="Core\Model\Impl\LocPredicateSet.cs" />
+    <Compile Include="Core\Model\IPackageListener.cs" />
+    <Compile Include="Core\Model\ISerialPortCommandStation.cs" />
+    <Compile Include="Core\Model\IModuleEntity.cs" />
+    <Compile Include="Core\Model\IModuleConnection.cs" />
+    <Compile Include="Core\Model\Impl\RailwayEntitySet2.cs" />
+    <Compile Include="Core\Model\Impl\Railway.ModuleConnectionSet.cs" />
+    <Compile Include="Core\Model\Impl\ModuleConnection.cs" />
+    <Compile Include="Core\Model\IValidationSubject.cs" />
+    <Compile Include="Core\Model\Impl\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Model\IVirtualCommandStation.cs" />
+    <Compile Include="Core\Model\Impl\VirtualCommandStation.cs" />
+    <Compile Include="Core\Model\Impl\PositionedModuleEntity.cs" />
+    <Compile Include="Core\Model\IPositionedEntity.cs" />
+    <Compile Include="Core\Model\ILocoBufferCommandStation.cs" />
+    <Compile Include="Core\Model\Impl\Route.ReachedDestinationSensorSet.cs" />
+    <Compile Include="Core\Model\Impl\Route.EnteringDestinationSensorSet.cs" />
+    <Compile Include="Core\Model\Impl\SensorRefSet.cs" />
+    <Compile Include="Core\Model\Impl\PersistentEntityContainer.cs" />
+    <Compile Include="Core\Model\Impl\LocoBufferCommandStation.cs" />
+    <Compile Include="Core\Model\IPersistentEntityRefSet.cs" />
+    <Compile Include="Core\Model\IJunctionSet.cs" />
+    <Compile Include="Core\Model\IPackage.cs" />
+    <Compile Include="Core\Model\ISensorSet.cs" />
+    <Compile Include="Core\Model\ISignalSet.cs" />
+    <Compile Include="Core\Model\IJunctionWithStateSet.cs" />
+    <Compile Include="Core\Model\Impl\BlockRefSet.cs" />
+    <Compile Include="Core\Model\Impl\EntitySet2.cs" />
+    <Compile Include="Core\Model\Impl\EntityRef.cs" />
+    <Compile Include="Core\Model\Impl\EntityRefSet.cs" />
+    <Compile Include="Core\Model\Impl\Extensions.cs" />
+    <Compile Include="Core\Model\Impl\IModifiable.cs" />
+    <Compile Include="Core\Model\Impl\JunctionWithState.cs" />
+    <Compile Include="Core\Model\Impl\Route.JunctionWithStateSet.cs" />
+    <Compile Include="Core\Model\Impl\SwitchWithState.cs" />
+    <Compile Include="Core\Model\ISwitchWithState.cs" />
+    <Compile Include="Core\Model\IJunctionWithState.cs" />
+    <Compile Include="Core\Model\Extensions.cs" />
+    <Compile Include="Core\Model\IBinarySensor.cs" />
+    <Compile Include="Core\Model\Impl\BinarySensor.cs" />
+    <Compile Include="Core\Model\Impl\CommandStationRef.cs" />
+    <Compile Include="Core\Model\Impl\Railway.ModuleRefSet.cs" />
+    <Compile Include="Core\Model\Impl\Railway.CommandStationRefSet.cs" />
+    <Compile Include="Core\Model\Impl\ModuleRef.cs" />
+    <Compile Include="Core\Model\Impl\LocRef.cs" />
+    <Compile Include="Core\Model\Impl\Railway.LocRefSet.cs" />
+    <Compile Include="Core\Model\Impl\Module.SignalSet.cs" />
+    <Compile Include="Core\Model\Impl\Signal.cs" />
+    <Compile Include="Core\Model\ISignal.cs" />
+    <Compile Include="Core\Model\EntityVisitor.cs" />
+    <Compile Include="Core\Model\Impl\Module.SensorSet.cs" />
+    <Compile Include="Core\Model\NetworkTypeConverter.cs" />
+    <Compile Include="Core\Model\IAction.cs" />
+    <Compile Include="Core\Model\IAddressEntity.cs" />
+    <Compile Include="Core\Model\IBlock.cs" />
+    <Compile Include="Core\Model\ICommandStation.cs" />
+    <Compile Include="Core\Model\ICommandStationRef.cs" />
+    <Compile Include="Core\Model\IEdge.cs" />
+    <Compile Include="Core\Model\IEndPoint.cs" />
+    <Compile Include="Core\Model\IEntity.cs" />
+    <Compile Include="Core\Model\IEntityList.cs" />
+    <Compile Include="Core\Model\IEntitySet.cs" />
+    <Compile Include="Core\Model\IJunction.cs" />
+    <Compile Include="Core\Model\ILoc.cs" />
+    <Compile Include="Core\Model\ILocRef.cs" />
+    <Compile Include="Core\Model\IModule.cs" />
+    <Compile Include="Core\Model\IModuleRef.cs" />
+    <Compile Include="Core\Model\Impl\Action.cs" />
+    <Compile Include="Core\Model\Impl\Block.cs" />
+    <Compile Include="Core\Model\Impl\CommandStation.cs" />
+    <Compile Include="Core\Model\Impl\Edge.cs" />
+    <Compile Include="Core\Model\Impl\EndPoint.cs" />
+    <Compile Include="Core\Model\Impl\Entity.cs" />
+    <Compile Include="Core\Model\Impl\EntityList.cs" />
+    <Compile Include="Core\Model\Impl\EntitySet.cs" />
+    <Compile Include="Core\Model\Impl\Junction.cs" />
+    <Compile Include="Core\Model\Impl\Loc.cs" />
+    <Compile Include="Core\Model\Impl\Module.BlockSet.cs" />
+    <Compile Include="Core\Model\Impl\Module.cs" />
+    <Compile Include="Core\Model\Impl\Module.EdgeSet.cs" />
+    <Compile Include="Core\Model\Impl\Module.JunctionSet.cs" />
+    <Compile Include="Core\Model\Impl\Module.RouteSet.cs" />
+    <Compile Include="Core\Model\Impl\ModuleEntity.cs" />
+    <Compile Include="Core\Model\Impl\ModuleEntitySet.cs" />
+    <Compile Include="Core\Model\Impl\PackageFolders.cs" />
+    <Compile Include="Core\Model\Impl\PersistentEntity.cs" />
+    <Compile Include="Core\Model\Impl\PersistentEntityRef.cs" />
+    <Compile Include="Core\Model\Impl\Property.cs" />
+    <Compile Include="Core\Model\Impl\Railway.cs" />
+    <Compile Include="Core\Model\Impl\RailwayEntity.cs" />
+    <Compile Include="Core\Model\Impl\RailwayEntitySet.cs" />
+    <Compile Include="Core\Model\Impl\Route.cs" />
+    <Compile Include="Core\Model\Impl\Sensor.cs" />
+    <Compile Include="Core\Model\Impl\Switch.cs" />
+    <Compile Include="Core\Model\IPersistentEntity.cs" />
+    <Compile Include="Core\Model\IPersistentEntityRef.cs" />
+    <Compile Include="Core\Model\IRailway.cs" />
+    <Compile Include="Core\Model\IRoute.cs" />
+    <Compile Include="Core\Model\ISensor.cs" />
+    <Compile Include="Core\Model\ISwitch.cs" />
+    <Compile Include="Core\Model\Network.cs" />
+    <Compile Include="Core\Model\SwitchDirection.cs" />
+    <Compile Include="Core\Model\ValidationResult.cs" />
+    <Compile Include="Core\Model\ValidationResults.cs" />
+    <Compile Include="Core\Reporting\IReportBuilder.cs" />
+    <Compile Include="Core\Reporting\LocReportBuilder.cs" />
+    <Compile Include="Core\Reporting\MHtmlContainer.cs" />
+    <Compile Include="Core\Services\Expression.Tokens.cs" />
+    <Compile Include="Core\Services\Expression.cs" />
+    <Compile Include="Core\Storage\Package.Export.cs" />
+    <Compile Include="Core\Storage\Package.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BinkyRailways.Utility.csproj">
+      <Project>{4299D52F-F138-BB34-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Model\Impl\Strings.nl-NL.resx" />
+    <EmbeddedResource Include="Core\Model\Impl\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BinkyRailways.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

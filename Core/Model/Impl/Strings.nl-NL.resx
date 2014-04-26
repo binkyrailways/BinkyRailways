@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrIdMissing" xml:space="preserve">
+    <value>Id ontbreekt</value>
+  </data>
+  <data name="WarnDescriptionMissing" xml:space="preserve">
+    <value>Beschrijving ontbreekt</value>
+  </data>
+  <data name="ErrNoJunctionSpecified" xml:space="preserve">
+    <value>Geen kruispunt opgegeven</value>
+  </data>
+  <data name="ErrFailedToLookupRefWithIdX" xml:space="preserve">
+    <value>Entiteit met id '{0}' niet gevonden</value>
+  </data>
+  <data name="WarnNoAddressSpecified" xml:space="preserve">
+    <value>Geen adres opgegeven</value>
+  </data>
+  <data name="WarnSlowSpeedHigherThenMedium" xml:space="preserve">
+    <value>Minimum snelheid is hoger dan gemiddelde snelheid</value>
+  </data>
+  <data name="WarnMaxSpeedLowerThenMedium" xml:space="preserve">
+    <value>Maximale snelheid is lager dan gemiddelde snelheid</value>
+  </data>
+  <data name="WarnNoComPortNameSpecified" xml:space="preserve">
+    <value>Geen COM-poort opgegeven naam</value>
+  </data>
+  <data name="WarnNegativeXPosition" xml:space="preserve">
+    <value>Negatieve X-positie</value>
+  </data>
+  <data name="WarnNegativeYPosition" xml:space="preserve">
+    <value>Negatieve Y-positie</value>
+  </data>
+  <data name="WarnHeightToSmall" xml:space="preserve">
+    <value>Hoogte te klein</value>
+  </data>
+  <data name="WarnWidthToSmall" xml:space="preserve">
+    <value>Breedte te klein</value>
+  </data>
+  <data name="WarnSwitchDurationVeryHigh" xml:space="preserve">
+    <value>Inschakelduur zeer hoog</value>
+  </data>
+  <data name="WarnNoFromEndPointSpecified" xml:space="preserve">
+    <value>Geen van blok/rand opgegeven</value>
+  </data>
+  <data name="WarnNoToEndPointSpecified" xml:space="preserve">
+    <value>Geen naar blok/rand opgegeven</value>
+  </data>
+  <data name="WarnToEndPointEqualsFromEndPoint" xml:space="preserve">
+    <value>Naar blok/rand gelijk aan van blok/rand.</value>
+  </data>
+  <data name="WarnToBlockIsCrossingBlock" xml:space="preserve">
+    <value>Naar blok wordt vermeld als te kruisen blok.</value>
+  </data>
+  <data name="WarnFromBlockIsCrossing" xml:space="preserve">
+    <value>Van blok wordt vermeld als te kruisen blok.</value>
+  </data>
+  <data name="WarnNoReachedDestinationSensorsSpecified" xml:space="preserve">
+    <value>Geen bestemming bereikt sensoren opgegeven.</value>
+  </data>
+  <data name="WarnNoSensorsSpecified" xml:space="preserve">
+    <value>Geen sensoren opgegeven.</value>
+  </data>
+  <data name="WarnNoEnteringDestinationSensorsSpecified" xml:space="preserve">
+    <value>Geen toegang bestemming sensoren opgegeven.</value>
+  </data>
+  <data name="TypeNameBinarySensor" xml:space="preserve">
+    <value>Binaire sensor</value>
+  </data>
+  <data name="TypeNameBlock" xml:space="preserve">
+    <value>Blok</value>
+  </data>
+  <data name="TypeNameEdge" xml:space="preserve">
+    <value>Rand</value>
+  </data>
+  <data name="TypeNameLoc" xml:space="preserve">
+    <value>Locomotief</value>
+  </data>
+  <data name="TypeNameRailway" xml:space="preserve">
+    <value>Spoorweg</value>
+  </data>
+  <data name="WarnModuleANotSpecified" xml:space="preserve">
+    <value>Module A niet gespecificeerd</value>
+  </data>
+  <data name="WarnModuleBNotSpecified" xml:space="preserve">
+    <value>Module B niet gespecificeerd</value>
+  </data>
+  <data name="WarnEdgeANotSpecified" xml:space="preserve">
+    <value>Rand A niet gespecificeerd</value>
+  </data>
+  <data name="WarnEdgeBNotSpecified" xml:space="preserve">
+    <value>Rand B niet gespecificeerd</value>
+  </data>
+  <data name="WarnBlockMinWaitTimeGreatThenMaxWaitTime" xml:space="preserve">
+    <value>Minimum wachttijd groter is dan het maximum wachttijd</value>
+  </data>
+  <data name="WarnBlockNoRoutesToOrFromMe" xml:space="preserve">
+    <value>Geen routes naar of vanuit dit blok.</value>
+  </data>
+  <data name="WarnBlockNoRoutesFromMe" xml:space="preserve">
+    <value>Geen routes vanuit dit blok.</value>
+  </data>
+  <data name="WarnBlockNoRoutesToMe" xml:space="preserve">
+    <value>Geen routes die leiden naar dit blok.</value>
+  </data>
+  <data name="LocAndPredicateTypeName" xml:space="preserve">
+    <value>En predicaat</value>
+  </data>
+  <data name="LocOrPredicateTypeName" xml:space="preserve">
+    <value>Of predikaat</value>
+  </data>
+  <data name="LocEqualsPredicateTypeName" xml:space="preserve">
+    <value>Loc gelijk predikaat</value>
+  </data>
+  <data name="LocStandardPredicateTypeName" xml:space="preserve">
+    <value>Loc standaard predikaat</value>
+  </data>
+  <data name="OperatorOr" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="OperatorAnd" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="AllButX" xml:space="preserve">
+    <value>Alle, maar {0}</value>
+  </data>
+  <data name="OnlyX" xml:space="preserve">
+    <value>Alleen {0}</value>
+  </data>
+  <data name="XExcludingY" xml:space="preserve">
+    <value>{0} {1} exclusief</value>
+  </data>
+  <data name="UsedByMemberOfGroup" xml:space="preserve">
+    <value>Lid van de groep</value>
+  </data>
+  <data name="LocGroupEqualsPredicateTypeName" xml:space="preserve">
+    <value>Loc in groep predikaat</value>
+  </data>
+  <data name="TypeNameLocGroup" xml:space="preserve">
+    <value>Loc groep</value>
+  </data>
+  <data name="TypeNameLocoBufferCommandStation" xml:space="preserve">
+    <value>Locobuffer centrale</value>
+  </data>
+  <data name="TriggerNameActivate" xml:space="preserve">
+    <value>Activeer</value>
+  </data>
+  <data name="TriggerNameDeActivate" xml:space="preserve">
+    <value>De-activeer</value>
+  </data>
+  <data name="TypeNameDccOverRs232CommandStation" xml:space="preserve">
+    <value>DCC over RS232 centrale</value>
+  </data>
+  <data name="TypeNameTurnTable" xml:space="preserve">
+    <value>Draaischijf</value>
+  </data>
+  <data name="TypeNameBinaryOutput" xml:space="preserve">
+    <value>Binaire uitgang</value>
+  </data>
+  <data name="LocChangeChangeDirectionPredicateTypeName" xml:space="preserve">
+    <value>Loc kan van richting veranderen predicaat</value>
+  </data>
+  <data name="LocCanChangeDirectionPredicateDescription" xml:space="preserve">
+    <value>Locs die van richting kunnen veranderen</value>
+  </data>
+  <data name="UsedByJunction" xml:space="preserve">
+    <value>Blok van kruising</value>
+  </data>
+  <data name="UsedBySensor" xml:space="preserve">
+    <value>Blok van sensor</value>
+  </data>
+  <data name="UsedByPermission" xml:space="preserve">
+    <value>Permissie</value>
+  </data>
+  <data name="UsedByRouteAsFrom" xml:space="preserve">
+    <value>Van</value>
+  </data>
+  <data name="UsedByRouteAsTo" xml:space="preserve">
+    <value>Naar</value>
+  </data>
+  <data name="AddressXIsAlsoUsedInY" xml:space="preserve">
+    <value>Adres '{0}' is ook in gebruik in {1}.</value>
+  </data>
+  <data name="TypeNameSwitch" xml:space="preserve">
+    <value>Wissel</value>
+  </data>
+  <data name="TriggerNameDestinationReached" xml:space="preserve">
+    <value>Bestemming bereikt</value>
+  </data>
+  <data name="TriggerNameEnteringDestination" xml:space="preserve">
+    <value>Aankomst in bestemming</value>
+  </data>
+  <data name="TypeNameClock4StageOutput" xml:space="preserve">
+    <value>4 fase klok</value>
+  </data>
+  <data name="LocTimePredicateTypeName" xml:space="preserve">
+    <value>Toegestaan in een tijdsperiode</value>
+  </data>
+  <data name="LocTimePredicateDescriptionXY" xml:space="preserve">
+    <value>Tussen {0} en {1}</value>
+  </data>
+</root>

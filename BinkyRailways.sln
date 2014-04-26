@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.WinApp", "BinkyRailways.WinApp.csproj", "{4299D52F-F138-34AA-B1BB-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Utility", "BinkyRailways.Utility.csproj", "{4299D52F-F138-BB34-B1E6-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Model", "BinkyRailways.Model.csproj", "{4299D52F-F138-48A2-B1E6-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Test", "BinkyRailways.Test.csproj", "{4299D52F-F138-48A2-43BD-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.State", "BinkyRailways.State.csproj", "{4299D52F-F138-48A2-BB11-74001AEDDF43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Protocols", "BinkyRailways.Protocols.csproj", "{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Tools", "BinkyRailways.Tools.csproj", "{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Server", "BinkyRailways.Server.csproj", "{4299D52F-23DE-4DA2-BB11-74001AEDDF43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4299D52F-F138-34AA-B1BB-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-34AA-B1BB-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-34AA-B1BB-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-34AA-B1BB-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-F138-BB34-B1E6-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-BB34-B1E6-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-F138-48A2-B1E6-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-48A2-B1E6-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-48A2-B1E6-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-48A2-B1E6-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-F138-48A2-43BD-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-48A2-43BD-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-48A2-43BD-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-48A2-43BD-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-F138-48A2-BB11-74001AEDDF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-48A2-BB11-74001AEDDF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-48A2-BB11-74001AEDDF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-48A2-BB11-74001AEDDF43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-F138-34AA-CCDD-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-F138-34AA-CCDD-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-F138-34AA-CCDD-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-F138-34AA-CCDD-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-23DE-4DA2-BB11-74001AEDDF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-23DE-4DA2-BB11-74001AEDDF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-23DE-4DA2-BB11-74001AEDDF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-23DE-4DA2-BB11-74001AEDDF43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

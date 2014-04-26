@@ -1,0 +1,825 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NewPackageDialogTitle" xml:space="preserve">
+    <value>Create a new railway</value>
+  </data>
+  <data name="NewPackageFailedBecauseX" xml:space="preserve">
+    <value>Failed to create new railway because: {0}</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Binky Railways</value>
+  </data>
+  <data name="OpenPackageDialogTitle" xml:space="preserve">
+    <value>Open an existing railway</value>
+  </data>
+  <data name="OpenPackageFailedBecauseX" xml:space="preserve">
+    <value>Failed to open new railway because: {0}</value>
+  </data>
+  <data name="SavePackageFailedBecauseX" xml:space="preserve">
+    <value>Failed to save railway because: {0}</value>
+  </data>
+  <data name="PackageDirtySaveNow" xml:space="preserve">
+    <value>Your railway is not saved yet. Do you want to save now?</value>
+  </data>
+  <data name="NewLocDescription" xml:space="preserve">
+    <value>New locomotive</value>
+  </data>
+  <data name="NewModuleDescription" xml:space="preserve">
+    <value>New module</value>
+  </data>
+  <data name="NewBlockDescription" xml:space="preserve">
+    <value>New block</value>
+  </data>
+  <data name="NewEdgeDescription" xml:space="preserve">
+    <value>New edge</value>
+  </data>
+  <data name="NewRouteDescription" xml:space="preserve">
+    <value>New route</value>
+  </data>
+  <data name="NewSwitchDescription" xml:space="preserve">
+    <value>New standard switch</value>
+  </data>
+  <data name="NewBinarySensorDescription" xml:space="preserve">
+    <value>New binary sensor</value>
+  </data>
+  <data name="NewLocoBufferDescription" xml:space="preserve">
+    <value>New LocoBuffer</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Image files</value>
+  </data>
+  <data name="FailedToOpenImageBecauseX" xml:space="preserve">
+    <value>Failed to open image because: {0}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="train" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\ico\train.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TabGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="DescriptionName" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DescriptionHelp" xml:space="preserve">
+    <value>Human readable identification of this object.</value>
+  </data>
+  <data name="AddressName" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="AddressHelp" xml:space="preserve">
+    <value>Address of this entity on the actual railway.</value>
+  </data>
+  <data name="TabBehavior" xml:space="preserve">
+    <value>Behavior</value>
+  </data>
+  <data name="MinimumWaitTimeName" xml:space="preserve">
+    <value>Minimum wait time</value>
+  </data>
+  <data name="MinimumWaitTimeHelp" xml:space="preserve">
+    <value>Minimum number of seconds to wait in this block. The actual seconds to wait is a random value between the specified minimum and maximum.</value>
+  </data>
+  <data name="MaximumWaitTimeName" xml:space="preserve">
+    <value>Maximum wait time</value>
+  </data>
+  <data name="MaximumWaitTimeHelp" xml:space="preserve">
+    <value>Maximum number of seconds to wait in this block. The actual seconds to wait is a random value between the specified minimum and maximum.</value>
+  </data>
+  <data name="ReverseSidesName" xml:space="preserve">
+    <value>Reverse block sides</value>
+  </data>
+  <data name="ReverseSidesHelp" xml:space="preserve">
+    <value>By default the front of the block is on the right of the block. When this property is set, that is reversed to the left of the block. Setting this property will only alter the display behavior of the block.</value>
+  </data>
+  <data name="TabDesign" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="LocImageName" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="LocImageHelp" xml:space="preserve">
+    <value>Image of this locomotive which is shown in the locomotive list when this locomotive is selected.</value>
+  </data>
+  <data name="TabConnection" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="ComPortNameName" xml:space="preserve">
+    <value>COM port name</value>
+  </data>
+  <data name="ComPortNameHelp" xml:space="preserve">
+    <value>Name of the serial port used to communicate with the command station.</value>
+  </data>
+  <data name="ModuleBackgroundImageName" xml:space="preserve">
+    <value>Background image</value>
+  </data>
+  <data name="ModuleBackgroundImageHelp" xml:space="preserve">
+    <value>Image shown in the background of this module. You can choose an image exported from a railway editor, a photo, a scanned drawing etc.</value>
+  </data>
+  <data name="TabPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="XName" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="YName" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="WidthName" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="HeightName" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="XHelp" xml:space="preserve">
+    <value>Horizontal left position (in pixels) of this entity.</value>
+  </data>
+  <data name="YHelp" xml:space="preserve">
+    <value>Vertical top position (in pixels) of this entity.</value>
+  </data>
+  <data name="WidthHelp" xml:space="preserve">
+    <value>Horizontal size (in pixels) of this entity.</value>
+  </data>
+  <data name="HeightHelp" xml:space="preserve">
+    <value>Vertical size (in pixels) of this entity.</value>
+  </data>
+  <data name="SwitchHasFeedbackName" xml:space="preserve">
+    <value>Has feedback</value>
+  </data>
+  <data name="SwitchHasFeedbackHelp" xml:space="preserve">
+    <value>Does this switch send feedback when switched?</value>
+  </data>
+  <data name="SwitchDurationName" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="SwitchDurationHelp" xml:space="preserve">
+    <value>Time (in ms) it takes for the switch to move from one direction to the other?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="SwitchInvertedName" xml:space="preserve">
+    <value>Inverted</value>
+  </data>
+  <data name="SwitchInvertedHelp" xml:space="preserve">
+    <value>If set, the commands for straight / off are inverted.</value>
+  </data>
+  <data name="BlockSideFront" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="BlockSideBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="RouteFromName" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="RouteFromSideName" xml:space="preserve">
+    <value>From side</value>
+  </data>
+  <data name="RouteFromSideHelp" xml:space="preserve">
+    <value>Side of the originating block at which this route will leave that block.</value>
+  </data>
+  <data name="RouteFromHelp" xml:space="preserve">
+    <value>Originating block or edge.</value>
+  </data>
+  <data name="RouteToHelp" xml:space="preserve">
+    <value>Destination block or edge.</value>
+  </data>
+  <data name="RouteToName" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="RouteToSideName" xml:space="preserve">
+    <value>To side</value>
+  </data>
+  <data name="RouteToSideHelp" xml:space="preserve">
+    <value>Side of the destination block at which this route will leave that block.</value>
+  </data>
+  <data name="RotationHelp" xml:space="preserve">
+    <value>Rotation of the contents of this entity in degrees.</value>
+  </data>
+  <data name="RotationName" xml:space="preserve">
+    <value>Rotation</value>
+  </data>
+  <data name="VirtualModeTitlePostfix" xml:space="preserve">
+    <value> [Virtual]</value>
+  </data>
+  <data name="AreYouSureToRemoveX" xml:space="preserve">
+    <value>Are you sure you want to remove '{0}'?</value>
+  </data>
+  <data name="SwitchDirectionStraight" xml:space="preserve">
+    <value>Straight</value>
+  </data>
+  <data name="SwitchDirectionOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="UpdateCheckFailed" xml:space="preserve">
+    <value>Update check failed</value>
+  </data>
+  <data name="UpdateXAvailableDownloadNow" xml:space="preserve">
+    <value>An update is available (version {0}). Would you like to download it now?</value>
+  </data>
+  <data name="SuretoRemoveXFromPackage" xml:space="preserve">
+    <value>Are you sure you want to remove {0}? You won't be able to undo this!</value>
+  </data>
+  <data name="ExValidationFailed" xml:space="preserve">
+    <value>Validation failed</value>
+  </data>
+  <data name="PackageContainsIntegrityErrorsSureToSave" xml:space="preserve">
+    <value>The railways contains integrity errors. Are you sure you want to save this? You may not be able to load it again.</value>
+  </data>
+  <data name="LastModifiedName" xml:space="preserve">
+    <value>Last modified</value>
+  </data>
+  <data name="LastModifiedHelp" xml:space="preserve">
+    <value>Last time this object was modified.</value>
+  </data>
+  <data name="AboutX" xml:space="preserve">
+    <value>About {0}</value>
+  </data>
+  <data name="VersionX" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="UpdateLatestVersion" xml:space="preserve">
+    <value>You're using the latest version.</value>
+  </data>
+  <data name="UpdateVersionXAvailable" xml:space="preserve">
+    <value>An update (version {0}) is available.</value>
+  </data>
+  <data name="PowerIsOn" xml:space="preserve">
+    <value>Power is On</value>
+  </data>
+  <data name="PowerIsOff" xml:space="preserve">
+    <value>Power is Off</value>
+  </data>
+  <data name="PowerWillTurnOn" xml:space="preserve">
+    <value>Power will turn On</value>
+  </data>
+  <data name="PowerWillTurnOff" xml:space="preserve">
+    <value>Power will turn Off</value>
+  </data>
+  <data name="AutomaticControlIsOn" xml:space="preserve">
+    <value>Automatic control is ON</value>
+  </data>
+  <data name="AutomaticControlIsOff" xml:space="preserve">
+    <value>Automatic control is OFF</value>
+  </data>
+  <data name="AutomaticControlWillTurnOn" xml:space="preserve">
+    <value>Automatic control will turn ON</value>
+  </data>
+  <data name="AutomaticControlWillTurnOff" xml:space="preserve">
+    <value>Automatic control will turn OFF</value>
+  </data>
+  <data name="WaitProbabilityName" xml:space="preserve">
+    <value>Wait probability</value>
+  </data>
+  <data name="WaitProbabilityHelp" xml:space="preserve">
+    <value>Probability (in percentage) that a loc that is allowed to wait in this block will actually wait.
+When set to 0, no locs will wait (unless there is no route available).
+When set to 100, all locs (that are allowed) will wait.</value>
+  </data>
+  <data name="ChangeDirectionAllow" xml:space="preserve">
+    <value>Allow</value>
+  </data>
+  <data name="ChangeDirectionAvoid" xml:space="preserve">
+    <value>Avoid</value>
+  </data>
+  <data name="ChangeDirectionName" xml:space="preserve">
+    <value>Change direction</value>
+  </data>
+  <data name="ChangeDirectionHelp" xml:space="preserve">
+    <value>Is it allowed for locs to change direction is this block?</value>
+  </data>
+  <data name="LocChangeDirectionHelp" xml:space="preserve">
+    <value>Is this loc allowed to change direction?</value>
+  </data>
+  <data name="MaximumSpeedName" xml:space="preserve">
+    <value>Maximum speed</value>
+  </data>
+  <data name="LocMaximumSpeedHelp" xml:space="preserve">
+    <value>Maximum speed of this loc as percentage of the maximum #speed steps.</value>
+  </data>
+  <data name="MediumSpeedName" xml:space="preserve">
+    <value>Medium speed</value>
+  </data>
+  <data name="MinimumSpeedName" xml:space="preserve">
+    <value>Minimum speed</value>
+  </data>
+  <data name="TabUsage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="UsedByName" xml:space="preserve">
+    <value>Used by</value>
+  </data>
+  <data name="UsedByHelp" xml:space="preserve">
+    <value>Where is this object used?</value>
+  </data>
+  <data name="RoutePermissionsName" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="RoutePermissionsHelp" xml:space="preserve">
+    <value>Controls which locomotives are allowed to take this route.</value>
+  </data>
+  <data name="NewLocGroupDescription" xml:space="preserve">
+    <value>New locomotive group</value>
+  </data>
+  <data name="LocGroupLocsName" xml:space="preserve">
+    <value>Locomotives</value>
+  </data>
+  <data name="LocGroupLocsHelp" xml:space="preserve">
+    <value>All locomotives in this group.</value>
+  </data>
+  <data name="AreYouSureToRemoveAllXEntities" xml:space="preserve">
+    <value>Are you sure you want to remove all {0} entities?</value>
+  </data>
+  <data name="SuretoRemoveAllXEntitiesFromPackage" xml:space="preserve">
+    <value>Are you sure you want to remove all {0} entities? You won't be able to undo this!</value>
+  </data>
+  <data name="RestartToUseNewLanguage" xml:space="preserve">
+    <value>Please restart to use the new language.</value>
+  </data>
+  <data name="CannotReadLocoIOConfigBecauseX" xml:space="preserve">
+    <value>Cannot read LocoIO configuration because: {0}</value>
+  </data>
+  <data name="LocoIOConfiguration" xml:space="preserve">
+    <value>LocoIO configuration:</value>
+  </data>
+  <data name="LocoIOConfigurationOfX" xml:space="preserve">
+    <value>LocoIO configuration of {0}:</value>
+  </data>
+  <data name="SwitchInitialDirectionName" xml:space="preserve">
+    <value>Initial direction</value>
+  </data>
+  <data name="SwitchInitialDirectionHelp" xml:space="preserve">
+    <value>Direction to which the switch is set at power-up.</value>
+  </data>
+  <data name="SaveAsTitle" xml:space="preserve">
+    <value>Save railway as...</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Unexpected error</value>
+  </data>
+  <data name="EditModuleTitle" xml:space="preserve">
+    <value>Edit module</value>
+  </data>
+  <data name="LockedName" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="LockedHelp" xml:space="preserve">
+    <value>When set, the object cannot be resized or moved by the mouse.</value>
+  </data>
+  <data name="OpenBlockMenuItemText" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="CloseBlockMenuItemText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="RouteClosedName" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="RouteClosedHelp" xml:space="preserve">
+    <value>Is set, no locomotive is allowed to use this route. Typically used for maintanance.</value>
+  </data>
+  <data name="IsOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="IsOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="WillTurnOn" xml:space="preserve">
+    <value>-&gt; On</value>
+  </data>
+  <data name="WillTurnOff" xml:space="preserve">
+    <value>-&gt; Off</value>
+  </data>
+  <data name="IsAuto" xml:space="preserve">
+    <value>Automatic control</value>
+  </data>
+  <data name="IsManual" xml:space="preserve">
+    <value>Manual control</value>
+  </data>
+  <data name="WillTurnAuto" xml:space="preserve">
+    <value>-&gt; Auto</value>
+  </data>
+  <data name="WillTurnManual" xml:space="preserve">
+    <value>-&gt; Manual</value>
+  </data>
+  <data name="ChangeDirectionReversingLocsName" xml:space="preserve">
+    <value>Turn reversing locs</value>
+  </data>
+  <data name="ChangeDirectionReversingLocsHelp" xml:space="preserve">
+    <value>Must locs (that are not allowed to change direction) reversing out of a dead end change direction (back to normal) in this block?</value>
+  </data>
+  <data name="WaitPermissionsName" xml:space="preserve">
+    <value>Wait permissions</value>
+  </data>
+  <data name="WaitPermissionsHelp" xml:space="preserve">
+    <value>Decide which locs/loc groups are allowed to wait in this block. If there is no available next route, the loc will always stop, even if not permitted.</value>
+  </data>
+  <data name="ImportPackageFailedBecauseX" xml:space="preserve">
+    <value>Failed to import package because: {0}</value>
+  </data>
+  <data name="ActionsName" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ActionsHelp" xml:space="preserve">
+    <value>Actions triggered from changes in the state of this object.</value>
+  </data>
+  <data name="NewTurnTableDescription" xml:space="preserve">
+    <value>New turntable</value>
+  </data>
+  <data name="BlockSignalTypeEntry" xml:space="preserve">
+    <value>Entry</value>
+  </data>
+  <data name="BlockSignalTypeExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="NotAValidLicense" xml:space="preserve">
+    <value>This is not a valid license.</value>
+  </data>
+  <data name="LicensedToX" xml:space="preserve">
+    <value>Licensed to {0}</value>
+  </data>
+  <data name="NewBlockSignalDescription" xml:space="preserve">
+    <value>New block signal</value>
+  </data>
+  <data name="NewDccOverRs232CommandStationDescription" xml:space="preserve">
+    <value>New DCC over RS232 command station</value>
+  </data>
+  <data name="PreferredDccCommandStationName" xml:space="preserve">
+    <value>Preferred DCC command station</value>
+  </data>
+  <data name="PreferredDccCommandStationHelp" xml:space="preserve">
+    <value>Command station used for DCC addresses in case no specific address space is specified.</value>
+  </data>
+  <data name="PreferredLocoNetCommandStationName" xml:space="preserve">
+    <value>Preferred LocoNet command station</value>
+  </data>
+  <data name="PreferredLocoNetCommandStationHelp" xml:space="preserve">
+    <value>Command station used for LocoNet addresses in case no specific address space is specified.</value>
+  </data>
+  <data name="PreferredMotorolaCommandStationName" xml:space="preserve">
+    <value>Preferred Motorola command station</value>
+  </data>
+  <data name="PreferredMotorolaCommandStationHelp" xml:space="preserve">
+    <value>Command station used for Motorola addresses in case no specific address space is specified.</value>
+  </data>
+  <data name="TurnTableGotoNextPosition" xml:space="preserve">
+    <value>Goto next position</value>
+  </data>
+  <data name="TurnTableGotoPositionX" xml:space="preserve">
+    <value>Goto position {0}</value>
+  </data>
+  <data name="TurnTableGotoPreviousPosition" xml:space="preserve">
+    <value>Goto previous position</value>
+  </data>
+  <data name="RouteMaxDurationName" xml:space="preserve">
+    <value>Max. duration</value>
+  </data>
+  <data name="RouteMaxDurationHelp" xml:space="preserve">
+    <value>Maximum time in seconds that this route should take. If a loc takes this route and exceeds this duration, a warning is given.</value>
+  </data>
+  <data name="wehaveaprob" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\wehaveaprob.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FailedToOpenSoundBecauseX" xml:space="preserve">
+    <value>Failed to open sound because: {0}</value>
+  </data>
+  <data name="SoundFiles" xml:space="preserve">
+    <value>Sound files</value>
+  </data>
+  <data name="NewBinaryOutputDescription" xml:space="preserve">
+    <value>New binary output</value>
+  </data>
+  <data name="LocFunctionsHelp" xml:space="preserve">
+    <value>Give names to the functions supported by this loc</value>
+  </data>
+  <data name="LocFunctionsName" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="LocOwnerName" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="LocOwnerHelp" xml:space="preserve">
+    <value>Name of the person that owns this loc</value>
+  </data>
+  <data name="XFacingY" xml:space="preserve">
+    <value>{0} facing {1}</value>
+  </data>
+  <data name="FacingFrontOfBlock" xml:space="preserve">
+    <value>front of block</value>
+  </data>
+  <data name="FacingBackOfBlock" xml:space="preserve">
+    <value>back of block</value>
+  </data>
+  <data name="BlockClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="BlockFree" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="ChooseProbabilityName" xml:space="preserve">
+    <value>Choose probability</value>
+  </data>
+  <data name="ChooseProbabilityHelp" xml:space="preserve">
+    <value>What is the chance that this route will be taken when multiple routes are available.</value>
+  </data>
+  <data name="TabAdvBehavior" xml:space="preserve">
+    <value>Advanced behavior</value>
+  </data>
+  <data name="ImportOfXFailedBecauseY" xml:space="preserve">
+    <value>Import of {0} failed because {1}</value>
+  </data>
+  <data name="PackageFilterX" xml:space="preserve">
+    <value>Railway files|{0}</value>
+  </data>
+  <data name="AllFilesFilter" xml:space="preserve">
+    <value>All files|*.*</value>
+  </data>
+  <data name="NoMessages" xml:space="preserve">
+    <value>No messages</value>
+  </data>
+  <data name="SizeName" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="ModuleSizeHelp" xml:space="preserve">
+    <value>Size of the module (in pixels)</value>
+  </data>
+  <data name="NewPassiveJunctionDescription" xml:space="preserve">
+    <value>New passive junction</value>
+  </data>
+  <data name="DisconnectModuleMenuItemText" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="LikeToCopyToClipboard" xml:space="preserve">
+    <value>Would you like to copy the error to the clipboard?</value>
+  </data>
+  <data name="FailedToCopyToClipboardBecauseX" xml:space="preserve">
+    <value>Failed to copy text to clipboard because: {0}</value>
+  </data>
+  <data name="JunctionBlockName" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="JunctionBlockHelp" xml:space="preserve">
+    <value>Set a block, if this junction is placed in the stop-area of that block. If this block is locked, this junction will also be locked. This setting is not required.</value>
+  </data>
+  <data name="LocRemarksName" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="LocRemarksHelp" xml:space="preserve">
+    <value>Any remarks concerning this loc. This is not used by the program.</value>
+  </data>
+  <data name="RouteStateBehaviorNoChange" xml:space="preserve">
+    <value>No change</value>
+  </data>
+  <data name="RouteStateBehaviorEnter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="RouteStateBehaviorReached" xml:space="preserve">
+    <value>Reached</value>
+  </data>
+  <data name="LocSpeedBehaviorDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="LocSpeedBehaviorNoChange" xml:space="preserve">
+    <value>No change</value>
+  </data>
+  <data name="LocSpeedBehaviorMaximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="LocSpeedBehaviorMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="LocSpeedBehaviorMinimum" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="BehaviorNodeText" xml:space="preserve">
+    <value>Locs: {0}, State: {1}, Speed: {2}</value>
+  </data>
+  <data name="This_railway_is_already_open_in_another_instance" xml:space="preserve">
+    <value>This railway is already open in another instance.</value>
+  </data>
+  <data name="FeedbackAddressName" xml:space="preserve">
+    <value>Feedback address</value>
+  </data>
+  <data name="FeedbackAddressHelp" xml:space="preserve">
+    <value>Address of the feedback unit of the entity on the actual railway.</value>
+  </data>
+  <data name="CanChangeDirectionPredicateText" xml:space="preserve">
+    <value>Locs that can change direction</value>
+  </data>
+  <data name="AndPredicateText" xml:space="preserve">
+    <value>Locs that match all sub-predicates (AND)</value>
+  </data>
+  <data name="OrPredicateText" xml:space="preserve">
+    <value>Locs that match one of the sub-predicates (OR)</value>
+  </data>
+  <data name="FailedToSaveImageBecauseX" xml:space="preserve">
+    <value>Failed to save image because: {0}</value>
+  </data>
+  <data name="SwitchFeedbackInvertedName" xml:space="preserve">
+    <value>Feedback inverted</value>
+  </data>
+  <data name="SwitchFeedbackInvertedHelp" xml:space="preserve">
+    <value>If set, the feedback events for straight / off are inverted.</value>
+  </data>
+  <data name="LocsControlAssignedLocs" xml:space="preserve">
+    <value>Assigned locs</value>
+  </data>
+  <data name="LocsControlUnassignedLocs" xml:space="preserve">
+    <value>Unassigned locs</value>
+  </data>
+  <data name="NewClock4StageOutputDescription" xml:space="preserve">
+    <value>New 4-stage clock output</value>
+  </data>
+  <data name="ClockSpeedFactorHelp" xml:space="preserve">
+    <value>The factor by which human time is speed up to get to model time</value>
+  </data>
+  <data name="ClockSpeedFactorName" xml:space="preserve">
+    <value>Clock speed factor</value>
+  </data>
+  <data name="TimePeriodText" xml:space="preserve">
+    <value>Valid within a time period</value>
+  </data>
+  <data name="EnterValidStartTime" xml:space="preserve">
+    <value>Enter a valid start time</value>
+  </data>
+  <data name="EnterValidEndTime" xml:space="preserve">
+    <value>Enter a valid end time</value>
+  </data>
+  <data name="StartTimeMustBeBeforeEndTime" xml:space="preserve">
+    <value>Start time must be before end time</value>
+  </data>
+  <data name="HostNameName" xml:space="preserve">
+    <value>Hostname</value>
+  </data>
+  <data name="HostNameHelp" xml:space="preserve">
+    <value>The hostname or IP address of the ECoS</value>
+  </data>
+  <data name="NewEcosCommandStationDescription" xml:space="preserve">
+    <value>New ECoS command station</value>
+  </data>
+  <data name="PreferredMfxCommandStationHelp" xml:space="preserve">
+    <value>Command station used for MFX addresses in case no specific address space is specified.</value>
+  </data>
+  <data name="PreferredMfxCommandStationName" xml:space="preserve">
+    <value>Preferred MFX command station</value>
+  </data>
+  <data name="ShapesCircle" xml:space="preserve">
+    <value>Circle</value>
+  </data>
+  <data name="ShapesDiamond" xml:space="preserve">
+    <value>Diamond</value>
+  </data>
+  <data name="ShapesSquare" xml:space="preserve">
+    <value>Square</value>
+  </data>
+  <data name="ShapesTriangle" xml:space="preserve">
+    <value>Triangle</value>
+  </data>
+  <data name="SensorShapeName" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="SensorShapeHelp" xml:space="preserve">
+    <value>Shape used to visualize this sensor.</value>
+  </data>
+  <data name="SensorBlockName" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="SensorBlockHelp" xml:space="preserve">
+    <value>Block that locs can be assigned to when this sensor is active.</value>
+  </data>
+  <data name="TabLocs" xml:space="preserve">
+    <value>Locs</value>
+  </data>
+  <data name="LocIsElementOfGroup" xml:space="preserve">
+    <value>Included</value>
+  </data>
+  <data name="LocIsNotElementOfGroup" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="IsXElementOfGroupHelp" xml:space="preserve">
+    <value>Is {0} an element of this group</value>
+  </data>
+</root>

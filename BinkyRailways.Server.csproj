@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4299D52F-23DE-4DA2-BB11-74001AEDDF43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BinkyRailways</RootNamespace>
+    <AssemblyName>BinkyRailways.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Binaries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\NLog\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Server\HttpProcessor.cs" />
+    <Compile Include="Core\Server\Http\CacheControl.cs" />
+    <Compile Include="Core\Server\Http\HttpConnection.cs" />
+    <Compile Include="Core\Server\Http\HttpResource.cs" />
+    <Compile Include="Core\Server\Http\HttpServer.cs" />
+    <Compile Include="Core\Server\Http\HttpTemplateResource.cs" />
+    <Compile Include="Core\Server\IpUtils.cs" />
+    <Compile Include="Core\Server\IWebServerPersistence.cs" />
+    <Compile Include="Core\Server\Messages.cs" />
+    <Compile Include="Core\Server\Site\Resources.cs" />
+    <Compile Include="Core\Server\StateListener.cs" />
+    <Compile Include="Core\Server\WebServer.cs" />
+    <Compile Include="Core\Server\WebSocketProcessor.cs" />
+    <Compile Include="Core\Server\WebSockets\FleckLog.cs" />
+    <Compile Include="Core\Server\WebSockets\FrameType.cs" />
+    <Compile Include="Core\Server\WebSockets\HandlerFactory.cs" />
+    <Compile Include="Core\Server\WebSockets\Handlers\ComposableHandler.cs" />
+    <Compile Include="Core\Server\WebSockets\Handlers\Draft76Handler.cs" />
+    <Compile Include="Core\Server\WebSockets\Handlers\Hybi13Handler.cs" />
+    <Compile Include="Core\Server\WebSockets\HandshakeException.cs" />
+    <Compile Include="Core\Server\WebSockets\Interfaces\IHandler.cs" />
+    <Compile Include="Core\Server\WebSockets\Interfaces\ISocket.cs" />
+    <Compile Include="Core\Server\WebSockets\Interfaces\IWebSocketConnection.cs" />
+    <Compile Include="Core\Server\WebSockets\Interfaces\IWebSocketConnectionInfo.cs" />
+    <Compile Include="Core\Server\WebSockets\Interfaces\IWebSocketServer.cs" />
+    <Compile Include="Core\Server\WebSockets\IntExtensions.cs" />
+    <Compile Include="Core\Server\WebSockets\ReadState.cs" />
+    <Compile Include="Core\Server\WebSockets\RequestParser.cs" />
+    <Compile Include="Core\Server\WebSockets\SocketWrapper.cs" />
+    <Compile Include="Core\Server\WebSockets\SubProtocolNegotiationFailureException.cs" />
+    <Compile Include="Core\Server\WebSockets\SubProtocolNegotiator.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketConnection.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketConnectionInfo.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketException.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketHttpRequest.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketServer.cs" />
+    <Compile Include="Core\Server\WebSockets\WebSocketStatusCodes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BinkyRailways.Model.csproj">
+      <Project>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.State.csproj">
+      <Project>{4299D52F-F138-48A2-BB11-74001AEDDF43}</Project>
+      <Name>BinkyRailways.State</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Utility.csproj">
+      <Project>{4299D52F-F138-BB34-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BinkyRailways.snk" />
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Server\Site\Index.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\css\bootstrap.min.css" />
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <EmbeddedResource Include="Core\Server\Site\bootstrap\js\bootstrap.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Server\Site\jquery\jquery.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Server\Site\Style.css" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

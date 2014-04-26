@@ -1,0 +1,6 @@
+bin/
+obj/
+*.suo
+*.sln.cache
+*.user
+/Build

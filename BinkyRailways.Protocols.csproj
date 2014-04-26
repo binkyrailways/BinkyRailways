@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BinkyRailways</RootNamespace>
+    <AssemblyName>BinkyRailways.Protocols</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NOCONFIG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NOCONFIG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Version.cs" />
+    <Compile Include="Protocols\Dcc\BitStream.cs" />
+    <Compile Include="Protocols\Dcc\Packets.cs" />
+    <Compile Include="Protocols\Dcc\PacketSender.cs" />
+    <Compile Include="Protocols\Dcc\PacketTranslater.cs" />
+    <Compile Include="Protocols\Dcc\Rs232Byte.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\AddressList.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\Connector.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorConfig.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorMode.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorMode.Statics.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Bs1ForSignals.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv102.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv133.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv136.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv145J5.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv145J6.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv77.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv81v1.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\Mgv93.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\None.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ConnectorModes\NotUsed.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\LocoIOConfig.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\PinConfig.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\PinConfigList.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\PinMode.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\PinMode.Statics.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\ProgramException.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\Programmer.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\SVConfig.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\LocoIO\SVConfigEventArgs.cs" />
+    <Compile Include="LoconetToolbox\Source\Devices\MgvServo\ServoProgrammer.cs" />
+    <Compile Include="Protocols\Ecos\Command.cs" />
+    <Compile Include="Protocols\Ecos\Constants.cs" />
+    <Compile Include="Protocols\Ecos\Event.cs" />
+    <Compile Include="Protocols\Ecos\Message.cs" />
+    <Compile Include="Protocols\Ecos\Object.cs" />
+    <Compile Include="Protocols\Ecos\Objects\Switch.cs" />
+    <Compile Include="Protocols\Ecos\Objects\FeedbackModule.cs" />
+    <Compile Include="Protocols\Ecos\Objects\SwitchManager.cs" />
+    <Compile Include="Protocols\Ecos\Objects\FeedbackManager.cs" />
+    <Compile Include="Protocols\Ecos\Objects\Loc.cs" />
+    <Compile Include="Protocols\Ecos\Objects\Ecos.cs" />
+    <Compile Include="Protocols\Ecos\Objects\LocManager.cs" />
+    <Compile Include="Protocols\Ecos\Parser.cs" />
+    <Compile Include="Protocols\Ecos\Reply.cs" />
+    <Compile Include="Protocols\Ecos\Client.cs" />
+    <Compile Include="Protocols\Ecos\MessageRow.cs" />
+    <Compile Include="Protocols\Ecos\Option.cs" />
+    <Compile Include="Protocols\EventExtensions.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\BaudRate.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Busy.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Constants.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SlotStat1Request.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Extensions.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\InputSource.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\MessageVisitor.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SwitchStateRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\WriteSlotData.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SlotStatus2.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SlotStatus1.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Sound.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\DirFunc.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\TrackStatus.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SlotDataResponse.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoDirFuncRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoSpeedRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LongAck.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\UnlinkSlotsRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LinkSlotsRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\MoveSlotsRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SlotDataRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoAddressRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Idle.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\GlobalPowerOff.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\GlobalPowerOn.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\InputReport.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoBuffer.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoBuffer.ReceiveProcessor.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\LocoNetAddress.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Message.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\MessageHandler.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\PeerXferRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\PeerXferRequest1.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\PeerXferRequest2.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\PeerXferResponse.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\PeerXferResponse1.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Request.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\Response.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SerialPortLocoBuffer.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SwitchReport.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\SwitchRequest.cs" />
+    <Compile Include="LoconetToolbox\Source\Protocol\TcpLocoBuffer.cs" />
+    <Compile Include="Protocols\ProtocolException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LoconetToolbox\Source\Devices\LocoIO\LocoIO-SV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BinkyRailways.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BinkyRailways.Utility.csproj">
+      <Project>{4299D52F-F138-BB34-B1E6-74001AEDDFA7}</Project>
+      <Name>BinkyRailways.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,579 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NewPackageDialogTitle" xml:space="preserve">
+    <value>Maak een nieuwe spoorweg</value>
+  </data>
+  <data name="NewPackageFailedBecauseX" xml:space="preserve">
+    <value>Nagelaten de nieuwe spoorlijn te maken, omdat: {0}</value>
+  </data>
+  <data name="OpenPackageDialogTitle" xml:space="preserve">
+    <value>Open een bestaande spoorweg</value>
+  </data>
+  <data name="OpenPackageFailedBecauseX" xml:space="preserve">
+    <value>Openen van spoorweg is mislukt, omdat: {0}</value>
+  </data>
+  <data name="SavePackageFailedBecauseX" xml:space="preserve">
+    <value>Opslaan van spoorweg is mislukt, omdat: {0}</value>
+  </data>
+  <data name="PackageDirtySaveNow" xml:space="preserve">
+    <value>Uw spoorweg is nog niet opgeslagen. Wilt U deze nu opslaan?</value>
+  </data>
+  <data name="NewLocDescription" xml:space="preserve">
+    <value>Nieuwe locomotief</value>
+  </data>
+  <data name="NewModuleDescription" xml:space="preserve">
+    <value>Nieuwe module</value>
+  </data>
+  <data name="NewBlockDescription" xml:space="preserve">
+    <value>Nieuw blok</value>
+  </data>
+  <data name="NewEdgeDescription" xml:space="preserve">
+    <value>Nieuwe rand</value>
+  </data>
+  <data name="NewRouteDescription" xml:space="preserve">
+    <value>Nieuwe route</value>
+  </data>
+  <data name="NewSwitchDescription" xml:space="preserve">
+    <value>Nieuw standaard wissel</value>
+  </data>
+  <data name="NewBinarySensorDescription" xml:space="preserve">
+    <value>Nieuwe binaire sensor</value>
+  </data>
+  <data name="NewLocoBufferDescription" xml:space="preserve">
+    <value>Nieuwe LocoBuffer</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Geen</value>
+  </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Afbeeldingsbestanden</value>
+  </data>
+  <data name="FailedToOpenImageBecauseX" xml:space="preserve">
+    <value>Openen van afbeelding is mislukt, omdat: {0}</value>
+  </data>
+  <data name="TabGeneral" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="DescriptionName" xml:space="preserve">
+    <value>Beschrijving</value>
+  </data>
+  <data name="DescriptionHelp" xml:space="preserve">
+    <value>Leesbare identificatie van dit object.</value>
+  </data>
+  <data name="AddressName" xml:space="preserve">
+    <value>Adres</value>
+  </data>
+  <data name="AddressHelp" xml:space="preserve">
+    <value>Adres van dit object op de werkelijke spoorweg.</value>
+  </data>
+  <data name="TabBehavior" xml:space="preserve">
+    <value>Gedrag</value>
+  </data>
+  <data name="MinimumWaitTimeName" xml:space="preserve">
+    <value>Minimum wachttijd</value>
+  </data>
+  <data name="MinimumWaitTimeHelp" xml:space="preserve">
+    <value>Minimum aantal seconden dat locomotieven wachten in dit blok. De werkelijke wachttijd is een willekeurige waarde tussen de aangegeven minimale en maximale tijd.</value>
+  </data>
+  <data name="MaximumWaitTimeName" xml:space="preserve">
+    <value>Maximale wachttijd</value>
+  </data>
+  <data name="MaximumWaitTimeHelp" xml:space="preserve">
+    <value>Maximaal aantal seconden dat locomotieven wachten in dit blok. De werkelijke wachttijd is een willekeurige waarde tussen de aangegeven minimale en maximale tijd.</value>
+  </data>
+  <data name="ReverseSidesName" xml:space="preserve">
+    <value>Voor/achterkant omdraaien</value>
+  </data>
+  <data name="ReverseSidesHelp" xml:space="preserve">
+    <value>Standaard is rechts de voorkant van het blok. Wanneer deze eigenschap is ingeschakeld, is dat links. Het instellen van deze eigenschap zal alleen het tonen van het blok beinvloeden.</value>
+  </data>
+  <data name="TabDesign" xml:space="preserve">
+    <value>Ontwerp</value>
+  </data>
+  <data name="LocImageName" xml:space="preserve">
+    <value>Afbeelding</value>
+  </data>
+  <data name="LocImageHelp" xml:space="preserve">
+    <value>Afbeelding van deze locomotief die getoond wordt in de locomotief lijst wanneer deze locomotief is geselecteerd.</value>
+  </data>
+  <data name="TabConnection" xml:space="preserve">
+    <value>Aansluiting</value>
+  </data>
+  <data name="ComPortNameName" xml:space="preserve">
+    <value>COM-poort naam</value>
+  </data>
+  <data name="ComPortNameHelp" xml:space="preserve">
+    <value>Naam van de seriële poort welke gebruikt wordt om te communiceren met het commando station.</value>
+  </data>
+  <data name="ModuleBackgroundImageName" xml:space="preserve">
+    <value>Achtergrond afbeelding</value>
+  </data>
+  <data name="ModuleBackgroundImageHelp" xml:space="preserve">
+    <value>Afbeelding die wordt weergegeven op de achtergrond van deze module. U kunt een afbeelding gebruiken uit een spoorplan-editor, een foto, een gescande tekening etc.</value>
+  </data>
+  <data name="TabPosition" xml:space="preserve">
+    <value>Positie</value>
+  </data>
+  <data name="WidthName" xml:space="preserve">
+    <value>Breedte</value>
+  </data>
+  <data name="HeightName" xml:space="preserve">
+    <value>Hoogte</value>
+  </data>
+  <data name="XHelp" xml:space="preserve">
+    <value>Horizontale positie (in pixels) van linkerkant van dit object.</value>
+  </data>
+  <data name="YHelp" xml:space="preserve">
+    <value>Verticale positie (in pixels) van de bovenkant van dit object.</value>
+  </data>
+  <data name="WidthHelp" xml:space="preserve">
+    <value>Horizontale grootte (in pixels) van dit object.</value>
+  </data>
+  <data name="HeightHelp" xml:space="preserve">
+    <value>Verticale grootte (in pixels) van dit object.</value>
+  </data>
+  <data name="SwitchHasFeedbackName" xml:space="preserve">
+    <value>Stuurt feedback</value>
+  </data>
+  <data name="SwitchHasFeedbackHelp" xml:space="preserve">
+    <value>Stuurt dit wissel feedback zodra de juiste positie bereikt is?</value>
+  </data>
+  <data name="SwitchDurationName" xml:space="preserve">
+    <value>Duur</value>
+  </data>
+  <data name="SwitchDurationHelp" xml:space="preserve">
+    <value>Tijd (in ms) hoe lang het duurt voordat het wissel omgeschakeld is van rechtuit naar afgebogen of andersom.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nee</value>
+  </data>
+  <data name="SwitchInvertedName" xml:space="preserve">
+    <value>Omgekeerd</value>
+  </data>
+  <data name="SwitchInvertedHelp" xml:space="preserve">
+    <value>Indien ingeschakeld, worden de commando's voor rechtuit/afgebogen omgedraaid.</value>
+  </data>
+  <data name="BlockSideFront" xml:space="preserve">
+    <value>Voorkant</value>
+  </data>
+  <data name="BlockSideBack" xml:space="preserve">
+    <value>Achterkant</value>
+  </data>
+  <data name="RouteFromName" xml:space="preserve">
+    <value>Van</value>
+  </data>
+  <data name="RouteFromSideName" xml:space="preserve">
+    <value>Van kant</value>
+  </data>
+  <data name="RouteFromSideHelp" xml:space="preserve">
+    <value>Kant van het 'van' blok waarvan de loc het blok verlaat.</value>
+  </data>
+  <data name="RouteFromHelp" xml:space="preserve">
+    <value>Blok/rand waarvan de route vertrekt.</value>
+  </data>
+  <data name="RouteToHelp" xml:space="preserve">
+    <value>Blok/rand waarheen de route gaat.</value>
+  </data>
+  <data name="RouteToName" xml:space="preserve">
+    <value>Naar</value>
+  </data>
+  <data name="RouteToSideName" xml:space="preserve">
+    <value>Naar kant</value>
+  </data>
+  <data name="RouteToSideHelp" xml:space="preserve">
+    <value>Kant van het 'naar' blok waar de loc het blok binnen komt.</value>
+  </data>
+  <data name="RotationHelp" xml:space="preserve">
+    <value>Rotatie van de inhoud van dit object (in graden).</value>
+  </data>
+  <data name="RotationName" xml:space="preserve">
+    <value>Rotatie</value>
+  </data>
+  <data name="VirtualModeTitlePostfix" xml:space="preserve">
+    <value>[Virtueel]</value>
+  </data>
+  <data name="AreYouSureToRemoveX" xml:space="preserve">
+    <value>Weet u zeker dat u '{0}' wilt verwijderen?</value>
+  </data>
+  <data name="SwitchDirectionStraight" xml:space="preserve">
+    <value>Rechtuit</value>
+  </data>
+  <data name="SwitchDirectionOff" xml:space="preserve">
+    <value>Afgebogen</value>
+  </data>
+  <data name="UpdateCheckFailed" xml:space="preserve">
+    <value>Versie controle is gefaald</value>
+  </data>
+  <data name="UpdateXAvailableDownloadNow" xml:space="preserve">
+    <value>Er is een update beschikbaar (versie {0}). Wilt u deze nu downloaden?</value>
+  </data>
+  <data name="SuretoRemoveXFromPackage" xml:space="preserve">
+    <value>Weet u zeker dat u wilt verwijderen {0}? U zult niet in staat zijn om dit ongedaan te maken!</value>
+  </data>
+  <data name="ExValidationFailed" xml:space="preserve">
+    <value>Validatie mislukt</value>
+  </data>
+  <data name="PackageContainsIntegrityErrorsSureToSave" xml:space="preserve">
+    <value>De spoorwegen bevat integriteit fouten. Weet u zeker dat u dit wilt opslaan? Je mag niet in staat zijn om opnieuw te laden.</value>
+  </data>
+  <data name="LastModifiedName" xml:space="preserve">
+    <value>Laatst gewijzigd</value>
+  </data>
+  <data name="LastModifiedHelp" xml:space="preserve">
+    <value>Laatste keer dat dit object is gewijzigd.</value>
+  </data>
+  <data name="AboutX" xml:space="preserve">
+    <value>Over {0}</value>
+  </data>
+  <data name="VersionX" xml:space="preserve">
+    <value>Versie {0}</value>
+  </data>
+  <data name="UpdateLatestVersion" xml:space="preserve">
+    <value>U gebruikt de nieuwste versie.</value>
+  </data>
+  <data name="UpdateVersionXAvailable" xml:space="preserve">
+    <value>Een update (versie {0}) is beschikbaar.</value>
+  </data>
+  <data name="PowerIsOn" xml:space="preserve">
+    <value>Baanspanning Aan</value>
+  </data>
+  <data name="PowerIsOff" xml:space="preserve">
+    <value>Baanspanning Uit</value>
+  </data>
+  <data name="PowerWillTurnOn" xml:space="preserve">
+    <value>Baanspanning -&gt; Aan</value>
+  </data>
+  <data name="PowerWillTurnOff" xml:space="preserve">
+    <value>Baanspanning -&gt; Uit</value>
+  </data>
+  <data name="AutomaticControlIsOn" xml:space="preserve">
+    <value>Automatisch rijden is Aan</value>
+  </data>
+  <data name="AutomaticControlIsOff" xml:space="preserve">
+    <value>Automatisch rijden is Uit</value>
+  </data>
+  <data name="AutomaticControlWillTurnOn" xml:space="preserve">
+    <value>Automatisch rijden gaat Aan</value>
+  </data>
+  <data name="AutomaticControlWillTurnOff" xml:space="preserve">
+    <value>Automatisch gaat Uit</value>
+  </data>
+  <data name="WaitProbabilityName" xml:space="preserve">
+    <value>Wacht kans</value>
+  </data>
+  <data name="WaitProbabilityHelp" xml:space="preserve">
+    <value>Kans (in procenten) dat een loc die is toegestaan ​​om te wachten in dit blok daadwerkelijk zal wachten. Indien ingesteld op 0, zal er geen locomotieven wachten (tenzij er geen route beschikbaar is). Indien ingesteld op 100, zullen alle locomotieven (die zijn toegestaan) te wachten.</value>
+  </data>
+  <data name="ChangeDirectionAllow" xml:space="preserve">
+    <value>Toegestaan</value>
+  </data>
+  <data name="ChangeDirectionAvoid" xml:space="preserve">
+    <value>Voorkomen</value>
+  </data>
+  <data name="ChangeDirectionName" xml:space="preserve">
+    <value>Van richting te veranderen</value>
+  </data>
+  <data name="ChangeDirectionHelp" xml:space="preserve">
+    <value>Is het toegestaan ​​voor locs te veranderen richting is dit blok?</value>
+  </data>
+  <data name="LocChangeDirectionHelp" xml:space="preserve">
+    <value>Is dit loc toegestaan ​​om van richting te veranderen?</value>
+  </data>
+  <data name="MaximumSpeedName" xml:space="preserve">
+    <value>Maximale snelheid</value>
+  </data>
+  <data name="LocMaximumSpeedHelp" xml:space="preserve">
+    <value>Maximale snelheid van deze loc als percentage van de maximale snelheid # stappen.</value>
+  </data>
+  <data name="MediumSpeedName" xml:space="preserve">
+    <value>Gemiddelde snelheid</value>
+  </data>
+  <data name="MinimumSpeedName" xml:space="preserve">
+    <value>Minimum snelheid</value>
+  </data>
+  <data name="TabUsage" xml:space="preserve">
+    <value>Gebruik</value>
+  </data>
+  <data name="UsedByName" xml:space="preserve">
+    <value>Gebruikt door</value>
+  </data>
+  <data name="UsedByHelp" xml:space="preserve">
+    <value>Waar is dit object gebruikt?</value>
+  </data>
+  <data name="RoutePermissionsName" xml:space="preserve">
+    <value>Permissies</value>
+  </data>
+  <data name="RoutePermissionsHelp" xml:space="preserve">
+    <value>Controles die locomotieven zijn toegestaan ​​om deze route te nemen.</value>
+  </data>
+  <data name="NewLocGroupDescription" xml:space="preserve">
+    <value>Nieuwe locomotief groep</value>
+  </data>
+  <data name="LocGroupLocsName" xml:space="preserve">
+    <value>Locomotieven</value>
+  </data>
+  <data name="LocGroupLocsHelp" xml:space="preserve">
+    <value>Alle locomotieven in deze groep.</value>
+  </data>
+  <data name="AreYouSureToRemoveAllXEntities" xml:space="preserve">
+    <value>Weet je zeker dat je alle {0} entiteiten verwijderen?</value>
+  </data>
+  <data name="SuretoRemoveAllXEntitiesFromPackage" xml:space="preserve">
+    <value>Weet je zeker dat je alle {0} entiteiten verwijderen? U zult niet in staat zijn om dit ongedaan te maken!</value>
+  </data>
+  <data name="LocoIOConfiguration" xml:space="preserve">
+    <value>LocoIO configuratie:</value>
+  </data>
+  <data name="LocoIOConfigurationOfX" xml:space="preserve">
+    <value>LocoIO configuratie van {0}:</value>
+  </data>
+  <data name="SwitchInitialDirectionName" xml:space="preserve">
+    <value>Initiele richting</value>
+  </data>
+  <data name="SaveAsTitle" xml:space="preserve">
+    <value>Bewaar spoorweg als ...</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Onverwachte fout</value>
+  </data>
+  <data name="EditModuleTitle" xml:space="preserve">
+    <value>Module bewerken</value>
+  </data>
+  <data name="LockedName" xml:space="preserve">
+    <value>Vastzetten</value>
+  </data>
+  <data name="CloseBlockMenuItemText" xml:space="preserve">
+    <value>Sluiten</value>
+  </data>
+  <data name="RouteClosedName" xml:space="preserve">
+    <value>Gesloten</value>
+  </data>
+  <data name="IsOn" xml:space="preserve">
+    <value>Aan</value>
+  </data>
+  <data name="IsOff" xml:space="preserve">
+    <value>Uit</value>
+  </data>
+  <data name="WillTurnOn" xml:space="preserve">
+    <value>-&gt; Aan</value>
+  </data>
+  <data name="WillTurnOff" xml:space="preserve">
+    <value>-&gt; Uit</value>
+  </data>
+  <data name="IsAuto" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="IsManual" xml:space="preserve">
+    <value>Handmatig</value>
+  </data>
+  <data name="WillTurnAuto" xml:space="preserve">
+    <value>-&gt; Automatisch</value>
+  </data>
+  <data name="WillTurnManual" xml:space="preserve">
+    <value>-&gt; Handmatig</value>
+  </data>
+  <data name="ChangeDirectionReversingLocsName" xml:space="preserve">
+    <value>Keer terugrijdende locomotieven</value>
+  </data>
+  <data name="WaitPermissionsName" xml:space="preserve">
+    <value>Wacht permissies</value>
+  </data>
+  <data name="WaitPermissionsHelp" xml:space="preserve">
+    <value>Besluit welke locomotieven/groepen mogen wachten in dit blok. Indien er geen routes beschikbaar zijn zal er altijd gewacht worden.</value>
+  </data>
+  <data name="NewTurnTableDescription" xml:space="preserve">
+    <value>Nieuwe draaischijf</value>
+  </data>
+  <data name="BlockSignalTypeEntry" xml:space="preserve">
+    <value>Ingang</value>
+  </data>
+  <data name="BlockSignalTypeExit" xml:space="preserve">
+    <value>Uitgang</value>
+  </data>
+  <data name="TurnTableGotoNextPosition" xml:space="preserve">
+    <value>Ga naar volgende positie</value>
+  </data>
+  <data name="TurnTableGotoPositionX" xml:space="preserve">
+    <value>Ga naar positie {0}</value>
+  </data>
+  <data name="TurnTableGotoPreviousPosition" xml:space="preserve">
+    <value>Ga naar vorige positie</value>
+  </data>
+  <data name="LocFunctionsName" xml:space="preserve">
+    <value>Functies</value>
+  </data>
+  <data name="LocOwnerName" xml:space="preserve">
+    <value>Eigenaar</value>
+  </data>
+  <data name="FacingFrontOfBlock" xml:space="preserve">
+    <value>voorkant van het blok</value>
+  </data>
+  <data name="FacingBackOfBlock" xml:space="preserve">
+    <value>achterkant van het blok</value>
+  </data>
+  <data name="BlockClosed" xml:space="preserve">
+    <value>Gesloten</value>
+  </data>
+  <data name="BlockFree" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="TabAdvBehavior" xml:space="preserve">
+    <value>Geavanceerd gedrag</value>
+  </data>
+  <data name="AllFilesFilter" xml:space="preserve">
+    <value>Alle bestanden|*.*</value>
+  </data>
+  <data name="JunctionBlockName" xml:space="preserve">
+    <value>Blok</value>
+  </data>
+  <data name="LocRemarksName" xml:space="preserve">
+    <value>Opmerkingen</value>
+  </data>
+  <data name="RouteStateBehaviorNoChange" xml:space="preserve">
+    <value>Geen verandering</value>
+  </data>
+  <data name="LocStateManualInX" xml:space="preserve">
+    <value>Handmatig in {0}</value>
+  </data>
+  <data name="LocStateManual" xml:space="preserve">
+    <value>Handmatig</value>
+  </data>
+  <data name="LocStateWaitingXSeconds" xml:space="preserve">
+    <value>Wachten op {0} s</value>
+  </data>
+  <data name="LocStateAssignRoute" xml:space="preserve">
+    <value>Toewijzen route ...</value>
+  </data>
+  <data name="LocStatePreparingRoute" xml:space="preserve">
+    <value>Voorbereiden route ...</value>
+  </data>
+  <data name="LocForwardPostfix" xml:space="preserve">
+    <value>V</value>
+  </data>
+  <data name="LocReversePostfix" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="LocStateReversingWaitingForDirectionChange" xml:space="preserve">
+    <value>Terugrijden</value>
+  </data>
+</root>

@@ -1,0 +1,125 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Binky Railways</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" href="Style.css" />
+    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // Auto checkbox of a loc has changed.
+        function OnAutoChanged() {
+            if (!$(this).is(":disabled")) {
+                var locId = $(this).closest('.row').attr('id');
+                var value = $(this).is(":checked");
+                ws.send("{msg:'set-loc-auto', data: { id: '" + locId + "', value: " + value + "}}");
+            } else {
+                $(this).prop("checked", false);
+            }
+        }
+
+        // Rebuild the loc list.
+        function LocList(list) {
+            var ll = $("#loc-list");
+            ll.innerHTML = "";
+            var x;
+            for (x in list) {
+                ll.append("<div class='row loc' id='" + list[x].id + "'>" +
+                    "<div class='col-xs-4 name'><input type='checkbox'/> " + list[x].name + "</div>" +
+                    "<div class='col-xs-4 state'>" + list[x].state + "</div>" +
+                    "<div class='col-xs-2 speed'>" + list[x].speed + "</div>" +
+                    "<div class='col-xs-2 owner'>" + list[x].owner + "</div>");
+            }
+            $('.name input').change(OnAutoChanged);
+            for (x in list) {
+                LocStateChanged(list[x]);
+            }
+        }
+
+        // Update the row of a loc.
+        function LocStateChanged(loc) {
+            var row = $("#" + loc.id);
+            //row.css("background-color", "red");
+            var autoCb = $(".name input", row);
+            autoCb.prop({ disabled: !loc.canSetAuto });
+            autoCb.prop('checked', loc.auto);
+            $(".state", row).text(loc.state);
+            $(".speed", row).text(loc.speed);
+            row.toggleClass('disabled', !loc.canSetAuto);
+            row.toggleClass('routeDurationExceeded', loc.routeDurationExceeded);
+        }
+
+        // Call on reconnect click
+        function Reconnect(e) {
+            e.preventDefault();
+            var ll = $("#loc-list");
+            ll.remove();
+            location.reload();
+        }
+
+        function InitializeDocument() {
+            var log = $('#log');
+            var wsImpl = window.WebSocket || window.MozWebSocket;
+
+            log.prepend("connecting to server ..<br/>");
+
+            // create a new websocket and connect
+            window.ws = new wsImpl('@@WSURL@@', 'binky');
+
+            // when data is comming from the server, this metod is called
+            ws.onmessage = function (evt) {
+                log.prepend(evt.data + '<br/>');
+                var json = $.parseJSON(evt.data);
+                switch (json.msg) {
+                    case "loc-list":
+                        LocList(json.data);
+                        break;
+                    case "loc-state-changed":
+                        LocStateChanged(json.data);
+                        break;
+                }
+            };
+
+            // when the connection is established, this method is called
+            ws.onopen = function () {
+                log.prepend('.. connection open<br/>');
+                ws.send("{msg:'get-loc-list'}");
+                $('#reconnect').hide();
+            };
+
+            // when the connection is closed, this method is called
+            ws.onclose = function () {
+                log.prepend('.. connection closed<br/>');
+                $('#reconnect').show();
+            }
+
+            // Refresh page on reconnect
+            $('#reconnect a').click(Reconnect);
+        }
+
+        $(document).ready(InitializeDocument);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="loc-list-container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Locs
+                </div>
+                <div class="panel-body">
+                    <div id="loc-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <pre id="log"></pre>
+    <div id="reconnect">
+        <a class="btn btn-primary btn-lg">Reconnect</a>
+    </div>
+</body>
+</html>
