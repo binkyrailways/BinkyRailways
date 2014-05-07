@@ -411,8 +411,8 @@ namespace BinkyRailways.Core.State.Automatic
         private IRouteState ChooseRoute(ILocState loc, IBlockState fromBlock, BlockSide locDirection, bool avoidDirectionChanges)
         {
             // Gather possible routes.
-            var routeFromFromBlock = railwayState.RouteStates.Where(x => (x.From == fromBlock)).ToList();
-            var possibleRoutes = routeFromFromBlock.Where(x => x.IsAvailableFor(loc, locDirection, avoidDirectionChanges)).ToList();
+            var routeFromFromBlock = railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).ToList();
+            var possibleRoutes = routeFromFromBlock.Where(x => x.IsAvailableFor(railwayState, loc, locDirection, avoidDirectionChanges)).ToList();
 
             if (possibleRoutes.Any())
             {

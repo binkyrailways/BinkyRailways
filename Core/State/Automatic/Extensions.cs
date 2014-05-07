@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinkyRailways.Core.Model;
 
@@ -22,11 +23,12 @@ namespace BinkyRailways.Core.State.Automatic
         /// Can the given route be taken by the given loc?
         /// </summary>
         /// <param name="route">The route being investigated</param>
+        /// <param name="railwayState">State of the entire railway</param>
         /// <param name="loc">The loc a route should be choosen for</param>
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        internal static bool IsAvailableFor(this IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
+        internal static bool IsAvailableFor(this IRouteState route, IRailwayState railwayState,  ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
         {
             if (!route.CanLock(loc))
             {
@@ -45,6 +47,13 @@ namespace BinkyRailways.Core.State.Automatic
             if (route.To.Closed.Actual || route.To.Closed.Requested)
             {
                 // Destination closed.
+                return false;
+            }
+
+            // Check opposite traffic
+            if (railwayState.HasTrafficInOppositeDirection(route, loc))
+            {
+                // Traffic in opposite direction found
                 return false;
             }
 
@@ -98,6 +107,89 @@ namespace BinkyRailways.Core.State.Automatic
             // The loc has a current route.
             // There must not be any active sensor that is not listed in the current route.
             return !activeSensors.Any(x => !currentRoute.Route.Contains(x));
+        }
+
+        /// <summary>
+        /// Gets a selection of all possible routes from the given block.
+        /// </summary>
+        internal static IEnumerable<IRouteState> GetAllPossibleRoutesFromBlock(this IRailwayState railwayState, IBlockState fromBlock)
+        {
+            return railwayState.RouteStates.Where(x => (x.From == fromBlock));
+        }
+
+        /// <summary>
+        /// Gets a selection of all possible non-closed routes from the given block.
+        /// </summary>
+        internal static IEnumerable<IRouteState> GetAllPossibleNonClosedRoutesFromBlock(this IRailwayState railwayState, IBlockState fromBlock)
+        {
+            return railwayState.GetAllPossibleRoutesFromBlock(fromBlock).Where(x => !x.Closed);
+        }
+
+        /// <summary>
+        /// Are there more than 1 non-closed routes from the given block.
+        /// </summary>
+        internal static bool HasMultipleNonClosedRoutesFromBlock(this IRailwayState railwayState, IBlockState fromBlock)
+        {
+            return (railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).Count() > 1);
+        }
+
+        /// <summary>
+        /// Is there traffic in the opposite direction of the given route?
+        /// Ignore all locs equal to the given loc.
+        /// </summary>
+        internal static bool HasTrafficInOppositeDirection(this IRailwayState railwayState, IRouteState route, ILocState currentLoc)
+        {
+            var toBlock = route.To;
+            var loc = toBlock.LockedBy;
+            if ((loc != null) && (loc != currentLoc))
+            {
+                // Check current route
+                var locRoute = loc.CurrentRoute.Actual;
+                if ((locRoute != null) && (locRoute.Route.To == toBlock))
+                {
+                    // We found opposite traffic
+                    if (!loc.CanChangeDirectionIn(toBlock))
+                    {
+                        // The loc cannot change direction in to block, so there is absolutely opposite traffic.
+                        return true;
+                    }
+                }
+                // Check next route
+                var nextRoute = loc.NextRoute.Actual;
+                if ((nextRoute != null) && (nextRoute.To == toBlock))
+                {
+                    // We found opposite traffic
+                    if (!loc.CanChangeDirectionIn(toBlock))
+                    {
+                        // The loc cannot change direction in to block, so there is absolutely opposite traffic.
+                        return true;
+                    }
+                }
+            }
+
+            // So far not traffic found
+            // Check next routes, unless there are multiple next routes
+            var nextRoutes = railwayState.GetAllPossibleNonClosedRoutesFromBlock(toBlock).ToList();
+            if (nextRoutes.Count > 1)
+            {
+                // After the given route there are multiple alternatives.
+                return false;
+            } 
+            if (nextRoutes.Count == 0)
+            {
+                // No routes after this route
+                return false;
+            }
+            // Only 1 alternative, check that
+            return railwayState.HasTrafficInOppositeDirection(nextRoutes[0], currentLoc);
+        }
+
+        /// <summary>
+        /// Can the given loc change direction in the given block?
+        /// </summary>
+        internal static bool CanChangeDirectionIn(this ILocState loc, IBlockState block)
+        {
+            return (loc.ChangeDirection == ChangeDirection.Allow) && (block.ChangeDirection == ChangeDirection.Allow);
         }
 
         /// <summary>
