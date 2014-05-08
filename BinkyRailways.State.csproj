@@ -75,6 +75,9 @@
     <Compile Include="Core\Services\ModuleBuilder.cs" />
     <Compile Include="Core\State\AutoLocState.cs" />
     <Compile Include="Core\State\Automatic\AutomaticLocController.cs" />
+    <Compile Include="Core\State\Automatic\FutureRouteAvailabilityTester.cs" />
+    <Compile Include="Core\State\Automatic\LiveRouteAvailabilityTester.cs" />
+    <Compile Include="Core\State\Automatic\RouteAvailabilityTester.cs" />
     <Compile Include="Core\State\Automatic\DefaultRouteSelector.cs" />
     <Compile Include="Core\State\Automatic\Extensions.cs" />
     <Compile Include="Core\State\Automatic\HeartBeat.cs" />

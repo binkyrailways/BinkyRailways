@@ -25,6 +25,7 @@ namespace BinkyRailways.Core.State.Automatic
         private readonly List<ILocState> autoLocs = new List<ILocState>();
         private readonly List<ISignalState> signals = new List<ISignalState>();
         private readonly IRailwayState railwayState;
+        private readonly LiveRouteAvailabilityTester routeAvailabilityTester;
         private bool disposing;
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace BinkyRailways.Core.State.Automatic
         {
             this.railwayState = railwayState;
             var dispatcher = railwayState.Dispatcher;
+            routeAvailabilityTester = new LiveRouteAvailabilityTester(railwayState);
             enabled = new StateProperty<bool>(null, false, null, OnRequestedEnabledChanged, null);
             heartBeat = new HeartBeat(this, dispatcher);
 
@@ -412,7 +414,7 @@ namespace BinkyRailways.Core.State.Automatic
         {
             // Gather possible routes.
             var routeFromFromBlock = railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).ToList();
-            var possibleRoutes = routeFromFromBlock.Where(x => x.IsAvailableFor(railwayState, loc, locDirection, avoidDirectionChanges)).ToList();
+            var possibleRoutes = routeFromFromBlock.Where(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
 
             if (possibleRoutes.Any())
             {
