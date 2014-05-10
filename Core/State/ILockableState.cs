@@ -17,7 +17,7 @@ namespace BinkyRailways.Core.State
         /// Can this state be locked by the intended owner?
         /// Return true is this entity and all underlying entities are not locked.
         /// </summary>
-        bool CanLock(ILocState owner);
+        bool CanLock(ILocState owner, out ILocState lockedBy);
 
         /// <summary>
         /// Lock this state by the given owner.

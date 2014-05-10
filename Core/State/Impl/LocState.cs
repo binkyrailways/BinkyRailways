@@ -580,7 +580,8 @@ namespace BinkyRailways.Core.State.Impl
             // Try to lock new block
             if (block != null)
             {
-                if (!block.CanLock(this))
+                ILocState tmp;
+                if (!block.CanLock(this, out tmp))
                     return false;
             }
 

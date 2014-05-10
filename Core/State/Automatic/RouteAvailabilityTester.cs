@@ -29,10 +29,11 @@ namespace BinkyRailways.Core.State.Automatic
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
         public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
         {
-            if (!CanLock(route, loc))
+            ILocState lockedBy;
+            if (!CanLock(route, loc, out lockedBy))
             {
                 // Cannot lock
-                return new RouteOption(route, RouteImpossibleReason.Locked);
+                return new RouteOption(route, RouteImpossibleReason.Locked, (lockedBy != null) ? lockedBy.Description : "?");
             }
 
             // Route closed?
@@ -109,9 +110,9 @@ namespace BinkyRailways.Core.State.Automatic
         /// <summary>
         /// Can the given route be locked for the given loc?
         /// </summary>
-        protected virtual bool CanLock(IRouteState route, ILocState loc)
+        protected virtual bool CanLock(IRouteState route, ILocState loc, out ILocState lockedBy)
         {
-            return route.CanLock(loc);
+            return route.CanLock(loc, out lockedBy);
         }
 
         /// <summary>

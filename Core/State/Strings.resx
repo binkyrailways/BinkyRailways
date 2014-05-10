@@ -196,7 +196,7 @@
     <value>Locked by {0}</value>
   </data>
   <data name="RouteOpposingTrafficInX" xml:space="preserve">
-    <value>Opposing traffic in {1}</value>
+    <value>Opposing traffic in {0}</value>
   </data>
   <data name="RoutePossible" xml:space="preserve">
     <value>Possible</value>

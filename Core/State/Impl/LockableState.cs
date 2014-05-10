@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using BinkyRailways.Core.Model;
 
 namespace BinkyRailways.Core.State.Impl
@@ -33,19 +32,30 @@ namespace BinkyRailways.Core.State.Impl
         /// Can this state be locked by the intended owner?
         /// Return true is this entity and all underlying entities are not locked.
         /// </summary>
-        public bool CanLock(ILocState owner)
+        public bool CanLock(ILocState owner, out ILocState lockedBy)
         {
-            if ((!IsReadyForUse) || (lockedBy != null))
+            if ((!IsReadyForUse) || (this.lockedBy != null))
+            {
+                lockedBy = this.lockedBy;
                 return false;
-            return UnderlyingLockableEntities.All(item => CanLockUnderlyingEntity(item, owner));
+            }
+            foreach (var item in UnderlyingLockableEntities)
+            {
+                if (!CanLockUnderlyingEntity(item, owner, out lockedBy))
+                {
+                    return false;
+                }
+            }
+            lockedBy = null;
+            return true;
         }
 
         /// <summary>
         /// Can the given underlying entity be locked by the intended owner?
         /// </summary>
-        protected virtual bool CanLockUnderlyingEntity(ILockableState entity, ILocState owner)
+        protected virtual bool CanLockUnderlyingEntity(ILockableState entity, ILocState owner, out ILocState lockedBy)
         {
-            return entity.CanLock(owner);
+            return entity.CanLock(owner, out lockedBy);
         }
 
         /// <summary>

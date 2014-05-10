@@ -236,9 +236,9 @@ namespace BinkyRailways.Core.State.Impl
         /// <summary>
         /// Can the given underlying entity be locked by the intended owner?
         /// </summary>
-        protected override bool CanLockUnderlyingEntity(ILockableState entity, ILocState owner)
+        protected override bool CanLockUnderlyingEntity(ILockableState entity, ILocState owner, out ILocState lockedBy)
         {
-            if (base.CanLockUnderlyingEntity(entity, owner))
+            if (base.CanLockUnderlyingEntity(entity, owner, out lockedBy))
             {
                 return true;
             }

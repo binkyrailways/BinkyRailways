@@ -79,9 +79,9 @@ namespace BinkyRailways.Core.State.Automatic
         /// <summary>
         /// Can the given route be locked for the given loc?
         /// </summary>
-        protected override bool CanLock(IRouteState route, ILocState loc)
+        protected override bool CanLock(IRouteState route, ILocState loc, out ILocState lockedBy)
         {
-            var lockedBy = GetLockedBy(route.To);
+            lockedBy = GetLockedBy(route.To);
             return (lockedBy == null) || (lockedBy == loc);
         }
         

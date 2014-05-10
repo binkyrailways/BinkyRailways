@@ -304,7 +304,7 @@ namespace BinkyRailways.Core.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opposing traffic in {1}.
+        ///   Looks up a localized string similar to Opposing traffic in {0}.
         /// </summary>
         internal static string RouteOpposingTrafficInX {
             get {
