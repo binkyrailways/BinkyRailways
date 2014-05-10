@@ -68,5 +68,10 @@ namespace BinkyRailways.Core.State
         /// Can a loc only leave this block at the same side it got in?
         /// </summary>
         bool IsDeadEnd { get; }
+
+        /// <summary>
+        /// Is this block considered a station?
+        /// </summary>
+        bool IsStation { get; }
     }
 }

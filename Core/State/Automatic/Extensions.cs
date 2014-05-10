@@ -73,7 +73,7 @@ namespace BinkyRailways.Core.State.Automatic
         /// <remarks>It is considered a station if the loc is allowed to stop in the block and the wait possibility is greater then 50%</remarks>
         internal static bool IsStationFor(this IBlockState block, ILocState loc)
         {
-            return (block.WaitProbability >= 50) && block.WaitPermissions.Evaluate(loc);
+            return (block.IsStation) && block.WaitPermissions.Evaluate(loc);
         }
 
         /// <summary>

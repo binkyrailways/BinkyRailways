@@ -100,6 +100,19 @@ namespace BinkyRailways.Core.State.Impl
         public bool IsDeadEnd { get { return deadEnd; } }
 
         /// <summary>
+        /// Is this block considered a station?
+        /// </summary>
+        [DisplayName(@"Is station")]
+        public bool IsStation
+        {
+            get
+            {
+                if (Entity.ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
+                return (WaitProbability >= 75);
+            }
+        }
+
+        /// <summary>
         /// Gets the current state of this block
         /// </summary>
         [DisplayName(@"State")]
