@@ -70,6 +70,7 @@ namespace BinkyRailways.WinApp
             /// </summary>
             public void Invoke(object sender, T args)
             {
+                if (ui.IsDisposed) return;
                 if (ui.InvokeRequired)
                 {
                     ui.Invoke(handler, sender, args);
@@ -85,6 +86,7 @@ namespace BinkyRailways.WinApp
             /// </summary>
             public void BeginInvoke(object sender, T args)
             {
+                if (ui.IsDisposed) return;
                 ui.BeginInvoke(handler, sender, args);
             }
         }

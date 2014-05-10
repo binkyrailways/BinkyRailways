@@ -52,46 +52,54 @@ namespace BinkyRailways.Core.State.Impl
             get { return reason; }
         }
 
+        public string ReasonDescription
+        {
+            get
+            {
+                if (isPossible) return Strings.RoutePossible;
+                string txt;
+                switch (reason)
+                {
+                    case RouteImpossibleReason.Locked:
+                        txt = string.Format(Strings.RouteLockedX, extra);
+                        break;
+                    case RouteImpossibleReason.SensorActive:
+                        txt = Strings.RouteSensorActive;
+                        break;
+                    case RouteImpossibleReason.Closed:
+                        txt = Strings.RouteClosed;
+                        break;
+                    case RouteImpossibleReason.DestinationClosed:
+                        txt = Strings.RouteDestinationClosed;
+                        break;
+                    case RouteImpossibleReason.OpposingTraffic:
+                        txt = string.Format(Strings.RouteOpposingTrafficInX, extra);
+                        break;
+                    case RouteImpossibleReason.None:
+                        txt = Strings.RoutePossible;
+                        break;
+                    case RouteImpossibleReason.DirectionChangeNeeded:
+                        txt = Strings.RouteDirectionChangeNeeded;
+                        break;
+                    case RouteImpossibleReason.NoPermission:
+                        txt = Strings.RouteNoPermission;
+                        break;
+                    case RouteImpossibleReason.CriticalSectionOccupied:
+                        txt = Strings.RouteCriticalSectionOccupied;
+                        break;
+                    case RouteImpossibleReason.DeadLock:
+                        txt = Strings.RouteDeadLock;
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown reason " + (int)reason);
+                }
+                return txt;
+            }
+        }
+
         public override string ToString()
         {
-            if (isPossible) return string.Format("{0} - {1}", route.Description, Strings.RoutePossible);
-            string txt;
-            switch (reason)
-            {
-                case RouteImpossibleReason.Locked:
-                    txt = string.Format(Strings.RouteLockedX, extra);
-                    break;
-                case RouteImpossibleReason.SensorActive:
-                    txt = Strings.RouteSensorActive;
-                    break;
-                case RouteImpossibleReason.Closed:
-                    txt = Strings.RouteClosed;
-                    break;
-                case RouteImpossibleReason.DestinationClosed:
-                    txt = Strings.RouteDestinationClosed;
-                    break;
-                case RouteImpossibleReason.OpposingTraffic:
-                    txt = string.Format(Strings.RouteOpposingTrafficInX, extra);
-                    break;
-                case RouteImpossibleReason.None:
-                    txt = Strings.RoutePossible;
-                    break;
-                case RouteImpossibleReason.DirectionChangeNeeded:
-                    txt = Strings.RouteDirectionChangeNeeded;
-                    break;
-                case RouteImpossibleReason.NoPermission:
-                    txt = Strings.RouteNoPermission;
-                    break;
-                case RouteImpossibleReason.CriticalSectionOccupied:
-                    txt = Strings.RouteCriticalSectionOccupied;
-                    break;
-                case RouteImpossibleReason.DeadLock:
-                    txt = Strings.RouteDeadLock;
-                    break;
-                default:
-                    throw new ArgumentException("Unknown reason " + (int)reason);
-            }
-            return string.Format("{0} - {1}", route.Description, txt);
+            return string.Format("{0} - {1}", route.Description, ReasonDescription);
         }
     }
 }

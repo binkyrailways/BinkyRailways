@@ -56,6 +56,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.locsControl = new BinkyRailways.WinApp.Controls.Run.LocsControl();
             this.viewControl = new BinkyRailways.WinApp.Controls.Run.RailwayViewControl();
+            this.tbRouteInspector = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -147,6 +148,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.tbTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbShowLog,
             this.tbToolsSep,
+            this.tbRouteInspector,
             this.tbLocoIOInspector,
             this.tbQuickEditor,
             this.toolStripMenuItem1,
@@ -228,6 +230,12 @@ namespace BinkyRailways.WinApp.Controls.Run
             resources.ApplyResources(this.viewControl, "viewControl");
             this.viewControl.Name = "viewControl";
             // 
+            // tbRouteInspector
+            // 
+            this.tbRouteInspector.Name = "tbRouteInspector";
+            resources.ApplyResources(this.tbRouteInspector, "tbRouteInspector");
+            this.tbRouteInspector.Click += new System.EventHandler(this.tbRouteInspector_Click);
+            // 
             // RunRailwayControl
             // 
             resources.ApplyResources(this, "$this");
@@ -270,5 +278,6 @@ namespace BinkyRailways.WinApp.Controls.Run
         private ToolStripMenuItem tbVirtualModeAutoRun;
         private ToolStripSeparator toolStripMenuItem1;
         private ToolStripMenuItem tbWebBrowser;
+        private ToolStripMenuItem tbRouteInspector;
     }
 }

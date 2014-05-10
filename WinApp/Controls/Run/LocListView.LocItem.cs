@@ -1,18 +1,16 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using BinkyRailways.Core.State;
-using BinkyRailways.Core.State.Automatic;
 using BinkyRailways.WinApp.Utils;
 
 namespace BinkyRailways.WinApp.Controls.Run
 {
-    partial class LocsControl
+    partial class LocListView
     {
         /// <summary>
         /// List item for a loc.
         /// </summary>
-        private class LocItem : ListViewItem
+        public sealed class LocItem : ListViewItem
         {
             private readonly ILocState locState;
             private readonly ListViewGroupCollection groups;

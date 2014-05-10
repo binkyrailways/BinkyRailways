@@ -22,6 +22,7 @@ namespace BinkyRailways.WinApp.Controls.Run
         private ModuleBuilder moduleBuilder;
         private QuickEditForm quickEditForm;
         private LocoIOInspectorForm locoIOInspectorForm;
+        private RouteInspectionForm routeInspectorForm;
         private LogForm logForm;
         private WebServerForm webServerForm;
 
@@ -107,6 +108,9 @@ namespace BinkyRailways.WinApp.Controls.Run
                 case Keys.Control | Keys.Alt | Keys.E:
                     ShowQuickEditor(null);
                     break;
+                case Keys.Control | Keys.Alt | Keys.R:
+                    ShowRouteInspector();
+                    break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -126,6 +130,10 @@ namespace BinkyRailways.WinApp.Controls.Run
                 if (locoIOInspectorForm != null)
                 {
                     locoIOInspectorForm.Close();
+                }
+                if (routeInspectorForm != null)
+                {
+                    routeInspectorForm.Close();
                 }
             }
         }
@@ -157,6 +165,20 @@ namespace BinkyRailways.WinApp.Controls.Run
             }
             locoIOInspectorForm.Initialize(appState);
             locoIOInspectorForm.Show(this);
+        }
+
+        /// <summary>
+        /// Show the route inspector form
+        /// </summary>
+        public void ShowRouteInspector()
+        {
+            if (routeInspectorForm == null)
+            {
+                routeInspectorForm = new RouteInspectionForm();
+                routeInspectorForm.FormClosed += (s, x) => routeInspectorForm = null;
+            }
+            routeInspectorForm.Initialize(appState);
+            routeInspectorForm.Show(this);
         }
 
         /// <summary>
@@ -322,6 +344,14 @@ namespace BinkyRailways.WinApp.Controls.Run
         private void OnOpenWebBrowser(object sender, EventArgs e)
         {
             ShowWebServerForm();
+        }
+
+        /// <summary>
+        /// Show the route inspector form.
+        /// </summary>
+        private void tbRouteInspector_Click(object sender, EventArgs e)
+        {
+            ShowRouteInspector();
         }
     }
 }

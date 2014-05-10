@@ -210,6 +210,12 @@
   <data name="tbToolsSep.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 6</value>
   </data>
+  <data name="tbRouteInspector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="tbRouteInspector.Text" xml:space="preserve">
+    <value>Route inspector</value>
+  </data>
   <data name="tbLocoIOInspector.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 22</value>
   </data>
@@ -331,7 +337,7 @@
     <value>locsControl</value>
   </data>
   <data name="&gt;&gt;locsControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocsControl, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Run.LocsControl, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;locsControl.Parent" xml:space="preserve">
     <value>splitContainer.Panel1</value>
@@ -370,7 +376,7 @@
     <value>viewControl</value>
   </data>
   <data name="&gt;&gt;viewControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.RailwayViewControl, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Run.RailwayViewControl, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;viewControl.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -550,6 +556,12 @@
     <value>tbVirtualModeAutoRun</value>
   </data>
   <data name="&gt;&gt;tbVirtualModeAutoRun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRouteInspector.Name" xml:space="preserve">
+    <value>tbRouteInspector</value>
+  </data>
+  <data name="&gt;&gt;tbRouteInspector.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

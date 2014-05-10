@@ -121,184 +121,64 @@
   <data name="tlpMain.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <data name="chDescription.Text" xml:space="preserve">
+    <value>Auto/Name</value>
+  </data>
+  <data name="chDescription.Width" type="System.Int32, mscorlib">
+    <value>137</value>
+  </data>
+  <data name="chState.Text" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="chState.Width" type="System.Int32, mscorlib">
+    <value>112</value>
+  </data>
+  <data name="chSpeed.Text" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="chSpeed.Width" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="chOwner.Text" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="chOwner.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="chAdvanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="chAdvanced.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <metadata name="locContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>374, 17</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tbRemoveFromTrack.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tbRemoveFromTrack.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="miLocProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 22</value>
   </data>
-  <data name="tbRemoveFromTrack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 26</value>
+  <data name="miLocProperties.Text" xml:space="preserve">
+    <value>Properties</value>
   </data>
-  <data name="tbRemoveFromTrack.Text" xml:space="preserve">
-    <value>Take &amp;off track</value>
+  <data name="locContextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 26</value>
   </data>
-  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 64</value>
+  <data name="&gt;&gt;locContextMenu.Name" xml:space="preserve">
+    <value>locContextMenu</value>
   </data>
-  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>498, 29</value>
+  <data name="&gt;&gt;locContextMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="toolStrip1.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvLocs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="lvLocs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 96</value>
-  </data>
-  <data name="lvLocs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>492, 106</value>
-  </data>
-  <data name="lvLocs.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;lvLocs.Name" xml:space="preserve">
-    <value>lvLocs</value>
-  </data>
-  <data name="&gt;&gt;lvLocs.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocListView, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;lvLocs.Parent" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;lvLocs.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="locControlPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="locControlPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="locControlPanel.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="locControlPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 351</value>
-  </data>
-  <data name="locControlPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>492, 290</value>
-  </data>
-  <data name="locControlPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;locControlPanel.Name" xml:space="preserve">
-    <value>locControlPanel</value>
-  </data>
-  <data name="&gt;&gt;locControlPanel.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocControlPanel, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;locControlPanel.Parent" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;locControlPanel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="unexpectedSensorControl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="unexpectedSensorControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="unexpectedSensorControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 208</value>
-  </data>
-  <data name="unexpectedSensorControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>492, 137</value>
-  </data>
-  <data name="unexpectedSensorControl.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;unexpectedSensorControl.Name" xml:space="preserve">
-    <value>unexpectedSensorControl</value>
-  </data>
-  <data name="&gt;&gt;unexpectedSensorControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.UnexpectedSensorControl, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;unexpectedSensorControl.Parent" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;unexpectedSensorControl.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="railwayStateControlPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="railwayStateControlPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="railwayStateControlPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="railwayStateControlPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>492, 58</value>
-  </data>
-  <data name="railwayStateControlPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;railwayStateControlPanel.Name" xml:space="preserve">
-    <value>railwayStateControlPanel</value>
-  </data>
-  <data name="&gt;&gt;railwayStateControlPanel.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.RailwayStateControlPanel, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;railwayStateControlPanel.Parent" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;railwayStateControlPanel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tlpMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tlpMain.RowCount" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>498, 644</value>
-  </data>
-  <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;tlpMain.Name" xml:space="preserve">
-    <value>tlpMain</value>
-  </data>
-  <data name="&gt;&gt;tlpMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tlpMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tlpMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="toolStrip1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lvLocs" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="locControlPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="unexpectedSensorControl" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="railwayStateControlPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,200,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="lvLocs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>492, 232</value>
   </data>
   <metadata name="locItemImages.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>243, 17</value>
@@ -332,6 +212,51 @@
         AfABDwIAAfABDwHwAQ8B8AEPAgAB/AE/AfwBPwH8AT8CAAb/AgAG/wIABv8CAAs=
 </value>
   </data>
+  <data name="lvLocs.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lvLocs.Name" xml:space="preserve">
+    <value>lvLocs</value>
+  </data>
+  <data name="&gt;&gt;lvLocs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvLocs.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;lvLocs.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tlpMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tlpMain.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>498, 238</value>
+  </data>
+  <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Name" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lvLocs" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,200,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <metadata name="updateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>122, 17</value>
   </metadata>
@@ -342,13 +267,43 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>498, 644</value>
+    <value>498, 238</value>
   </data>
-  <data name="&gt;&gt;tbRemoveFromTrack.Name" xml:space="preserve">
-    <value>tbRemoveFromTrack</value>
+  <data name="&gt;&gt;chDescription.Name" xml:space="preserve">
+    <value>chDescription</value>
   </data>
-  <data name="&gt;&gt;tbRemoveFromTrack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;chDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chState.Name" xml:space="preserve">
+    <value>chState</value>
+  </data>
+  <data name="&gt;&gt;chState.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chSpeed.Name" xml:space="preserve">
+    <value>chSpeed</value>
+  </data>
+  <data name="&gt;&gt;chSpeed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chOwner.Name" xml:space="preserve">
+    <value>chOwner</value>
+  </data>
+  <data name="&gt;&gt;chOwner.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chAdvanced.Name" xml:space="preserve">
+    <value>chAdvanced</value>
+  </data>
+  <data name="&gt;&gt;chAdvanced.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;miLocProperties.Name" xml:space="preserve">
+    <value>miLocProperties</value>
+  </data>
+  <data name="&gt;&gt;miLocProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;locItemImages.Name" xml:space="preserve">
     <value>locItemImages</value>
@@ -363,7 +318,7 @@
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>LocsControl</value>
+    <value>LocListView</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

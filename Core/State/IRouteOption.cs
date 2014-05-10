@@ -19,5 +19,10 @@
         /// Reason why this route is not possible.
         /// </summary>
         RouteImpossibleReason Reason { get; }
+
+        /// <summary>
+        /// Gets a human readable description of the reason.
+        /// </summary>
+        string ReasonDescription { get; }
     }
 }
