@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using BinkyRailways.Core.Model;
+using BinkyRailways.Core.State.Impl;
 
 namespace BinkyRailways.Core.State.Automatic
 {
@@ -26,40 +27,41 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public virtual bool IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
+        public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
         {
             if (!CanLock(route, loc))
             {
                 // Cannot lock
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.Locked);
             }
 
             // Route closed?
             if (route.Closed)
             {
                 // Route closed
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.Closed);
             }
 
             // Target blocked closed?
             if (route.To.Closed.Actual || route.To.Closed.Requested)
             {
                 // Destination closed.
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.DestinationClosed);
             }
 
             // Check opposite traffic
-            if (HasTrafficInOppositeDirection(route, loc))
+            IBlockState blockContainingTraffic;
+            if (HasTrafficInOppositeDirection(route, loc, out blockContainingTraffic))
             {
                 // Traffic in opposite direction found
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.OpposingTraffic, blockContainingTraffic.Description);
             }
 
             // Check critical section of route
             if (!IsCriticalSectionFree(route, loc))
             {
                 // Some route in critical section not free
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.CriticalSectionOccupied);
             }
 
             // Check direction
@@ -68,21 +70,21 @@ namespace BinkyRailways.Core.State.Automatic
                 if (avoidDirectionChanges)
                 {
                     // Do not take this route because a direction change would be needed.
-                    return false;
+                    return new RouteOption(route, RouteImpossibleReason.DirectionChangeNeeded);
                 }
                 if (loc.ChangeDirection != ChangeDirection.Allow)
                 {
                     // Loc does not allow direction changes
                     if (!route.From.IsDeadEnd)
                     {
-                        return false;
+                        return new RouteOption(route, RouteImpossibleReason.DirectionChangeNeeded);
                     }
                     // Loc will reverse out of a dead end
                 }
                 if (route.From.ChangeDirection != ChangeDirection.Allow)
                 {
                     // From block does not allowed direction changes
-                    return false;
+                    return new RouteOption(route, RouteImpossibleReason.DirectionChangeNeeded);
                 }
             }
 
@@ -90,18 +92,18 @@ namespace BinkyRailways.Core.State.Automatic
             if (!route.Permissions.Evaluate(loc))
             {
                 // Loc not allowed by permissions
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.NoPermission);
             }
 
             // Check sensor states
             if (IsAnySensorActive(route, loc))
             {
                 // Route is not available
-                return false;
+                return new RouteOption(route, RouteImpossibleReason.SensorActive);
             }
 
             // Route is available
-            return true;
+            return new RouteOption(route, true, RouteImpossibleReason.None);
         }
 
         /// <summary>
@@ -115,31 +117,33 @@ namespace BinkyRailways.Core.State.Automatic
         /// <summary>
         /// Is there are traffic in the opposite direction of the given route (not including the given loc).
         /// </summary>
-        protected bool HasTrafficInOppositeDirection(IRouteState route, ILocState currentLoc)
+        protected bool HasTrafficInOppositeDirection(IRouteState route, ILocState currentLoc, out IBlockState blockContainingTraffic)
         {
             var toBlock = route.To;
             if (HasTrafficInOppositeDirection(toBlock, route.ToBlockSide, currentLoc))
             {
+                blockContainingTraffic = toBlock;
                 return true;
             }
 
             // Check next routes
-            var locDirection = route.ToBlockSide.Invert();
             var nextRoutes = railwayState.GetAllPossibleNonClosedRoutesFromBlock(toBlock).ToList();
             //var nextRoutes = railwayState.GetAllPossibleNonClosedRoutesFromBlock(toBlock, locDirection).ToList();
 
             if (nextRoutes.Count == 0)
             {
                 // No next routes at all, we do no longer care about opposing traffic
+                blockContainingTraffic = null;
                 return false;
             }
             if (nextRoutes.Count > 1)
             {
                 // Multiple next routes, we stop now
+                blockContainingTraffic = null;
                 return false;
             }
             // Only one route possible, check that for opposing traffic
-            return HasTrafficInOppositeDirection(nextRoutes[0], currentLoc);
+            return HasTrafficInOppositeDirection(nextRoutes[0], currentLoc, out blockContainingTraffic);
         }
 
         /// <summary>

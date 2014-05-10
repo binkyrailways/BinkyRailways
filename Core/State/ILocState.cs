@@ -128,6 +128,11 @@ namespace BinkyRailways.Core.State
         IActualStateProperty<DateTime> StartNextRouteTime { get; }
 
         /// <summary>
+        /// Route options as considered last by the automatic train controller.
+        /// </summary>
+        IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
+
+        /// <summary>
         /// Gets/sets a selector used to select the next route from a list of possible routes.
         /// If no route selector is set, a default will be created.
         /// </summary>

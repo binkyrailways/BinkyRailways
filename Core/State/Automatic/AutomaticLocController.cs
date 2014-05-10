@@ -414,7 +414,9 @@ namespace BinkyRailways.Core.State.Automatic
         {
             // Gather possible routes.
             var routeFromFromBlock = railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).ToList();
-            var possibleRoutes = routeFromFromBlock.Where(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+            var routeOptions = routeFromFromBlock.Select(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+            var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
+            loc.LastRouteOptions.Actual = routeOptions.ToArray();
 
             if (possibleRoutes.Any())
             {

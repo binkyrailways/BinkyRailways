@@ -54,6 +54,7 @@ namespace BinkyRailways.Core.State.Impl
         private readonly RecentlyVisitedBlocks recentlyVisitedBlocks = new RecentlyVisitedBlocks();
         private IRouteSelector routeSelector;
         private IRouteEventBehaviorState lastEventBehavior;
+        private readonly ActualStateProperty<IRouteOption[]> lastRouteOptions;
 
         /// <summary>
         /// Default ctor
@@ -87,6 +88,7 @@ namespace BinkyRailways.Core.State.Impl
             f6 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
             f7 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
             f8 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
+            lastRouteOptions = new ActualStateProperty<IRouteOption[]>(this, null, null, null);
         }
 
         /// <summary>
@@ -241,6 +243,26 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         [DisplayName(@"Start next route time")]
         public IActualStateProperty<DateTime> StartNextRouteTime { get { return startNextRouteTime; } }
+
+        /// <summary>
+        /// Route options as considered last by the automatic train controller.
+        /// </summary>
+        [Browsable(false)]
+        public IActualStateProperty<IRouteOption[]> LastRouteOptions { get { return lastRouteOptions; } }
+
+        /// <summary>
+        /// Route options as considered last by the automatic train controller.
+        /// </summary>
+        [DisplayName(@"Last route options")]
+        public string[] LastRouteOptionsText
+        {
+            get
+            {
+                var arr = LastRouteOptions.Actual;
+                if (arr == null) return null;
+                return arr.Select(x => x.ToString()).ToArray();
+            }
+        }
 
         /// <summary>
         /// Gets/sets a selector used to select the next route from a list of possible routes.

@@ -102,7 +102,9 @@
     <Compile Include="Core\State\Impl\Ecos\LocManager.cs" />
     <Compile Include="Core\State\Impl\IInitializationJunctionState.cs" />
     <Compile Include="Core\State\Impl\InitializeJunctionActionState.cs" />
+    <Compile Include="Core\State\Impl\RouteOption.cs" />
     <Compile Include="Core\State\Impl\RouteStateForLoc.cs" />
+    <Compile Include="Core\State\IRouteOption.cs" />
     <Compile Include="Core\State\IRouteStateForLoc.cs" />
     <Compile Include="Core\State\Impl\RouteEventState.cs" />
     <Compile Include="Core\State\Impl\RouteEventBehaviorState.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Core\State\LocoNet\Slot.cs" />
     <Compile Include="Core\State\LocoNet\SlotTable.cs" />
     <Compile Include="Core\State\LocoNet\SlotWithLoc.cs" />
+    <Compile Include="Core\State\RouteImpossibleReason.cs" />
     <Compile Include="Core\State\StateProperty.cs" />
     <Compile Include="Core\State\Strings.Designer.cs">
       <AutoGen>True</AutoGen>

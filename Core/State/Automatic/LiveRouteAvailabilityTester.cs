@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BinkyRailways.Core.Model;
+using BinkyRailways.Core.State.Impl;
 
 namespace BinkyRailways.Core.State.Automatic
 {
@@ -27,17 +28,23 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public override bool IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges)
+        public override IRouteOption IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges)
         {
             // Perform standard testing first
-            if (!base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges))
+            var result = base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges);
+            if (!result.IsPossible)
             {
-                return false;
+                return result;
             }
 
             // Now test future possibilities of the entire railway to detect possible deadlocks.
             var genSet = new FutureAlternativeSet(this, route, loc);
-            return genSet.Test();
+            if (!genSet.Test())
+            {
+                // Not Ok
+                return new RouteOption(route, RouteImpossibleReason.DeadLock);
+            }
+            return result;
         }
 
         /// <summary>
@@ -193,7 +200,8 @@ namespace BinkyRailways.Core.State.Automatic
                 var locDirection = currentBlockEnterSide.Invert();
                 var avoidDirectionChanges = (loc.ChangeDirection == ChangeDirection.Avoid);
                 var routeFromFromBlock = state.RailwayState.GetAllPossibleNonClosedRoutesFromBlock(currentBlock);
-                var possibleRoutes = routeFromFromBlock.Where(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+                var routeOptions = routeFromFromBlock.Select(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+                var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
 
                 // If no routes, then return
                 if (!possibleRoutes.Any()) return false;

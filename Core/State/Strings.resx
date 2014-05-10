@@ -186,4 +186,34 @@
   <data name="LocStateWaitingXSeconds" xml:space="preserve">
     <value>Waiting {0}s</value>
   </data>
+  <data name="RouteClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="RouteDeadLock" xml:space="preserve">
+    <value>Will cause deadlock</value>
+  </data>
+  <data name="RouteLockedX" xml:space="preserve">
+    <value>Locked by {0}</value>
+  </data>
+  <data name="RouteOpposingTrafficInX" xml:space="preserve">
+    <value>Opposing traffic in {1}</value>
+  </data>
+  <data name="RoutePossible" xml:space="preserve">
+    <value>Possible</value>
+  </data>
+  <data name="RouteSensorActive" xml:space="preserve">
+    <value>Sensor(s) active</value>
+  </data>
+  <data name="RouteDestinationClosed" xml:space="preserve">
+    <value>Destination block closed</value>
+  </data>
+  <data name="RouteDirectionChangeNeeded" xml:space="preserve">
+    <value>Change of direction not allowed</value>
+  </data>
+  <data name="RouteNoPermission" xml:space="preserve">
+    <value>No permission</value>
+  </data>
+  <data name="RouteCriticalSectionOccupied" xml:space="preserve">
+    <value>Critical section is occupied</value>
+  </data>
 </root>
