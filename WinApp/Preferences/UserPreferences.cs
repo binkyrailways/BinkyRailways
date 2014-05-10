@@ -157,6 +157,26 @@ namespace BinkyRailways.WinApp.Preferences
         }
 
         /// <summary>
+        /// Top-left location of module editor window
+        /// </summary>
+        [UserScopedSetting, DefaultSettingValue("50,50")]
+        public Point RouteInspectorWindowLocation
+        {
+            get { return (Point)this["RouteInspectorWindowLocation"]; }
+            set { this["RouteInspectorWindowLocation"] = value; }
+        }
+
+        /// <summary>
+        /// Size of module editor window
+        /// </summary>
+        [UserScopedSetting, DefaultSettingValue("863, 490")]
+        public Size RouteInspectorWindowSize
+        {
+            get { return (Size)this["RouteInspectorWindowSize"]; }
+            set { this["RouteInspectorWindowSize"] = value; }
+        }
+
+        /// <summary>
         /// Is application in run mode?
         /// </summary>
         [UserScopedSetting, DefaultSettingValue("false")]

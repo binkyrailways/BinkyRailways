@@ -50,8 +50,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.inspectionControl);
-            this.splitContainer1.Size = new System.Drawing.Size(735, 365);
-            this.splitContainer1.SplitterDistance = 245;
+            this.splitContainer1.Size = new System.Drawing.Size(847, 451);
+            this.splitContainer1.SplitterDistance = 282;
             this.splitContainer1.TabIndex = 2;
             // 
             // locListView
@@ -61,7 +61,7 @@
             this.locListView.Location = new System.Drawing.Point(0, 0);
             this.locListView.Name = "locListView";
             this.locListView.ShowCheckboxes = false;
-            this.locListView.Size = new System.Drawing.Size(245, 365);
+            this.locListView.Size = new System.Drawing.Size(282, 451);
             this.locListView.TabIndex = 0;
             this.locListView.UpdateTimerEnabled = false;
             this.locListView.SelectionChanged += new System.EventHandler(this.OnSelectionChanged);
@@ -72,14 +72,14 @@
             this.inspectionControl.Loc = null;
             this.inspectionControl.Location = new System.Drawing.Point(0, 0);
             this.inspectionControl.Name = "inspectionControl";
-            this.inspectionControl.Size = new System.Drawing.Size(486, 365);
+            this.inspectionControl.Size = new System.Drawing.Size(561, 451);
             this.inspectionControl.TabIndex = 2;
             // 
             // RouteInspectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 365);
+            this.ClientSize = new System.Drawing.Size(847, 451);
             this.Controls.Add(this.splitContainer1);
             this.Name = "RouteInspectionForm";
             this.Text = "Route Inspector";

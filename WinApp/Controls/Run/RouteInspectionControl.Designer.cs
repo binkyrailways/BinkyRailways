@@ -50,12 +50,12 @@
             // chRoute
             // 
             this.chRoute.Text = "Route";
-            this.chRoute.Width = 120;
+            this.chRoute.Width = 150;
             // 
             // chText
             // 
             this.chText.Text = "Information";
-            this.chText.Width = 300;
+            this.chText.Width = 400;
             // 
             // RouteInspectionControl
             // 
