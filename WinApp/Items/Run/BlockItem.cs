@@ -170,8 +170,8 @@ namespace BinkyRailways.WinApp.Items.Run
         {
             get
             {
-                var postfix = state.IsLocked() ? state.LockedBy.Description :
-                    state.Closed.Actual ? Strings.BlockClosed : Strings.BlockFree;
+                if (state.IsLocked()) return state.LockedBy.Description;
+                var postfix = state.Closed.Actual ? Strings.BlockClosed : Strings.BlockFree;
                 return base.Text + ": " + postfix;
             }
         }
