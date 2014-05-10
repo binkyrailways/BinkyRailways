@@ -50,7 +50,6 @@ namespace BinkyRailways.Core.State.Automatic
             private readonly int minGenerations;
             private readonly List<ILocState> autoLocs;
             private readonly ILocState testLoc;
-            private int generation;
 
             /// <summary>
             /// Default ctor
@@ -61,7 +60,7 @@ namespace BinkyRailways.Core.State.Automatic
                 minGenerations = live.railwayState.BlockStates.Count;
                 var tester = new FutureRouteAvailabilityTester(live.railwayState);
                 tester.TakeRoute(route, loc);
-                alternatives.Add(new FutureAlternative(tester));
+                alternatives.Add(new FutureAlternative(tester, 0));
                 autoLocs = live.railwayState.LocStates.Where(x => x.ControlledAutomatically.Actual && (x.CurrentBlock.Actual != null)).ToList();
             }
 
@@ -79,13 +78,17 @@ namespace BinkyRailways.Core.State.Automatic
             /// <returns>True if there is a dead-lock free future or the test loc has reached a station.</returns>
             public bool Test()
             {
-                generation = 0;
-                while (generation < minGenerations)
+                while (alternatives.Count > 0)
                 {
-                    var i = 0;
-                    while (i < alternatives.Count)
+                    var g = alternatives[0];
+                    if (g.Generation >= minGenerations)
                     {
-                        var g = alternatives[i];
+                        // We've found a dead-lock free alternative.
+                        return true;
+                    }
+                    var removed = false;
+                    while ((g.Generation < minGenerations) && (!removed))
+                    {
                         bool stationReached;
                         var anyLocMoved = g.Increment(this, autoLocs, testLoc, out stationReached);
                         if (stationReached)
@@ -96,28 +99,24 @@ namespace BinkyRailways.Core.State.Automatic
                         if (!anyLocMoved)
                         {
                             // This generation has a deadlock.
-                            alternatives.RemoveAt(i);
-                        }
-                        else
-                        {
-                            i++;
+                            alternatives.RemoveAt(0);
+                            removed = true;
                         }
                     }
-                    // Are there alternatives left?
-                    if (alternatives.Count == 0)
-                    {
-                        // Oops, deadlock
-                        return false;
-                    }
-                    generation++;
                 }
-                // No deadlocks found
+                // Are there alternatives left?
+                if (alternatives.Count == 0)
+                {
+                    // Oops, deadlock
+                    return false;
+                }
+                // There are deadlock free alternatives
                 return true;
             }
 
             public override string ToString()
             {
-                return string.Format("#{0}, {1} alternatives", generation, alternatives.Count);
+                return string.Format("{0} alternatives", alternatives.Count);
             }
         }
 
@@ -127,15 +126,22 @@ namespace BinkyRailways.Core.State.Automatic
         private class FutureAlternative
         {
             private readonly FutureRouteAvailabilityTester state;
+            private int generation;
 
             /// <summary>
             /// Default ctor
             /// </summary>
-            public FutureAlternative(FutureRouteAvailabilityTester state)
+            public FutureAlternative(FutureRouteAvailabilityTester state, int generation)
             {
                 if (state == null)
                     throw new ArgumentNullException("state");
                 this.state = state;
+                this.generation = generation;
+            }
+
+            public int Generation
+            {
+                get { return generation; }
             }
 
             /// <summary>
@@ -144,28 +150,35 @@ namespace BinkyRailways.Core.State.Automatic
             /// <returns>True if at least one loc has moved, false otherwise.</returns>
             public bool Increment(FutureAlternativeSet genSet, IEnumerable<ILocState> locs, ILocState testLoc, out bool stationReached)
             {
-                var movedCount = 0;
+                generation++;
                 stationReached = false;
-                foreach (var loc in locs)
+
+                // Try to move the test loc first
+                var moved = MoveLoc(genSet, testLoc);
+                // Are we in a block that is considered a station for the loc?
+                var block = state.GetCurrentBlock(testLoc);
+                if ((block != null) && (block.IsStationFor(testLoc)))
                 {
-                    var moved = MoveLoc(genSet, loc);
-                    if (loc == testLoc)
-                    {
-                        // Are we in a block that is considered a station for the loc?
-                        var block = state.GetCurrentBlock(loc);
-                        if ((block != null) && (block.IsStationFor(loc)))
-                        {
-                            // Yes, the loc may stop here
-                            stationReached = true;
-                            return true;
-                        }
-                    }
+                    // Yes, the loc may stop here
+                    stationReached = true;
+                    return true;
+                }
+                if (moved)
+                {
+                    // We've moved so still no deadlock
+                    return true;
+                }
+                // Try one of the other locs
+                foreach (var loc in locs.Where(x => x != testLoc))
+                {
+                    moved = MoveLoc(genSet, loc);
                     if (moved)
                     {
-                        movedCount++;
+                        // Something moved
+                        return true;
                     }
                 }
-                return (movedCount > 0);
+                return false;
             }
 
             /// <summary>
@@ -191,7 +204,7 @@ namespace BinkyRailways.Core.State.Automatic
                     {
                         var alternateState = new FutureRouteAvailabilityTester(state);
                         alternateState.TakeRoute(route, loc);
-                        genSet.Add(new FutureAlternative(alternateState));
+                        genSet.Add(new FutureAlternative(alternateState, generation));
                     }
                 }
                 // Take the first route
@@ -202,7 +215,7 @@ namespace BinkyRailways.Core.State.Automatic
 
             public override string ToString()
             {
-                return state.ToString();
+                return string.Format("#{0} -> {1}", generation, state.ToString());
             }
         }
     }

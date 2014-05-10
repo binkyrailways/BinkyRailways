@@ -49,7 +49,7 @@ namespace BinkyRailways.Core.State.Automatic
         /// </summary>
         public void TakeRoute(IRouteState route, ILocState loc)
         {
-            locStates[loc] = new LocState(route.To, route.ToBlockSide);
+            locStates[loc].ChangeTo(route.To, route.ToBlockSide);
         }
 
         /// <summary>
@@ -141,16 +141,16 @@ namespace BinkyRailways.Core.State.Automatic
         [DebuggerDisplay("{CurrentBlock} {CurrentBlockEnterSide}")]
         private class LocState
         {
-            public readonly IBlockState CurrentBlock;
-            public readonly Model.BlockSide CurrentBlockEnterSide;
+            private IBlockState currentBlock;
+            private BlockSide currentBlockEnterSide;
 
             /// <summary>
             /// Default ctor
             /// </summary>
-            public LocState(IBlockState currentBlock, Model.BlockSide currentBlockEnterSide)
+            public LocState(IBlockState currentBlock, BlockSide currentBlockEnterSide)
             {
-                this.CurrentBlock = currentBlock;
-                this.CurrentBlockEnterSide = currentBlockEnterSide;
+                this.currentBlock = currentBlock;
+                this.currentBlockEnterSide = currentBlockEnterSide;
             }
 
             /// <summary>
@@ -158,14 +158,23 @@ namespace BinkyRailways.Core.State.Automatic
             /// </summary>
             public LocState(LocState source)
             {
-                CurrentBlock = source.CurrentBlock;
-                CurrentBlockEnterSide = source.CurrentBlockEnterSide;
+                currentBlock = source.currentBlock;
+                currentBlockEnterSide = source.currentBlockEnterSide;
+            }
+
+            public IBlockState CurrentBlock { get { return currentBlock; } }
+            public BlockSide CurrentBlockEnterSide { get { return currentBlockEnterSide; } }
+
+            public void ChangeTo(IBlockState currentBlock, BlockSide currentBlockEnterSide)
+            {
+                this.currentBlock = currentBlock;
+                this.currentBlockEnterSide = currentBlockEnterSide;                
             }
 
             public override string ToString()
             {
-                if (CurrentBlock == null) return "-";
-                return string.Format("{0} {1}", CurrentBlock.Description, CurrentBlockEnterSide);
+                if (currentBlock == null) return "-";
+                return string.Format("{0} {1}", currentBlock.Description, currentBlockEnterSide);
             }
         }
     }

@@ -154,22 +154,30 @@ namespace BinkyRailways.Core.State.Automatic
                 var locRoute = loc.CurrentRoute.Actual;
                 if ((locRoute != null) && (locRoute.Route.To == toBlock))
                 {
-                    // We found opposite traffic
-                    if (!loc.CanChangeDirectionIn(toBlock))
+                    var locEnterSide = loc.CurrentBlockEnterSide.Actual;
+                    if (locEnterSide != toBlockSide)
                     {
-                        // The loc cannot change direction in to block, so there is absolutely opposite traffic.
-                        return true;
+                        // We found opposite traffic
+                        if (!loc.CanChangeDirectionIn(toBlock))
+                        {
+                            // The loc cannot change direction in to block, so there is absolutely opposite traffic.
+                            return true;
+                        }
                     }
                 }
                 // Check next route
                 var nextRoute = loc.NextRoute.Actual;
                 if ((nextRoute != null) && (nextRoute.To == toBlock))
                 {
-                    // We found opposite traffic
-                    if (!loc.CanChangeDirectionIn(toBlock))
+                    var locEnterSide = loc.CurrentBlockEnterSide.Actual;
+                    if (locEnterSide != toBlockSide)
                     {
-                        // The loc cannot change direction in to block, so there is absolutely opposite traffic.
-                        return true;
+                        // We found opposite traffic
+                        if (!loc.CanChangeDirectionIn(toBlock))
+                        {
+                            // The loc cannot change direction in to block, so there is absolutely opposite traffic.
+                            return true;
+                        }
                     }
                 }
             }
