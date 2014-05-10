@@ -69,7 +69,7 @@ namespace BinkyRailways.WinApp.Items.Run
                         {
                             c1 = c2 = Color.Red;
                         }
-                        else if (loc.CurrentRoute.Actual == null)
+                        else if ((loc.CurrentRoute.Actual == null) || ((loc.CurrentBlock.Actual == state) && (loc.CurrentRoute.Actual.Route.To == state)))
                         {
                             if (loc.CurrentBlockEnterSide.Actual == BlockSide.Back)
                             {
