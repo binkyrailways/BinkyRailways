@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
+using BinkyRailways.Core.State;
+using BinkyRailways.Core.Util;
 using BinkyRailways.WinApp.Items;
 using BinkyRailways.WinApp.Items.Run;
 using BinkyRailways.WinApp.Preferences;
@@ -10,6 +12,8 @@ namespace BinkyRailways.WinApp.Controls.Run
 {
     public partial class RailwayViewControl : UserControl
     {
+        public event EventHandler<PropertyEventArgs<ILocState>> SelectLoc;
+
         private readonly ItemContext context;
         private AppState appState;
         private bool saveZoomFactor;
@@ -19,7 +23,7 @@ namespace BinkyRailways.WinApp.Controls.Run
         /// </summary>
         public RailwayViewControl()
         {
-            context = new ItemContext(null, () => Railway, Enumerable.Empty<IEntity>, ReloadApp);
+            context = new ItemContext(null, () => Railway, Enumerable.Empty<IEntity>, ReloadApp, OnSelectLoc);
             InitializeComponent();
             context.ShowDescriptions = UserPreferences.Preferences.RunShowDescriptions;
             context.Changed += OnContextChanged;
@@ -76,6 +80,14 @@ namespace BinkyRailways.WinApp.Controls.Run
             }
             canvas.ZoomFactor = UserPreferences.Preferences.RunViewZoomFactor;
             saveZoomFactor = true;
+        }
+
+        /// <summary>
+        /// Select the given loc.
+        /// </summary>
+        private void OnSelectLoc(ILocState loc)
+        {
+            SelectLoc.Fire(this, new PropertyEventArgs<ILocState>(loc));
         }
 
         /// <summary>

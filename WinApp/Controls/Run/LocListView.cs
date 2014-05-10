@@ -287,6 +287,15 @@ namespace BinkyRailways.WinApp.Controls.Run
             }
         }
 
+        public void SelectLoc(ILocState value)
+        {
+            var item = lvLocs.Items.Cast<LocItem>().FirstOrDefault(x => x.LocState == value);
+            if (item != null)
+            {
+                item.Selected = true;
+            }
+        }
+
         /// <summary>
         /// Sort loc items
         /// </summary>

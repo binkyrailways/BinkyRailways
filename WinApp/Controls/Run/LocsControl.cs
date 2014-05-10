@@ -160,9 +160,9 @@ namespace BinkyRailways.WinApp.Controls.Run
             locProblemSound.Play();
         }
 
-        private void lvLocs_RouteDurationExceeded(object sender, EventArgs e)
+        public void SelectLoc(ILocState value)
         {
-
+            lvLocs.SelectLoc(value);
         }
     }
 }

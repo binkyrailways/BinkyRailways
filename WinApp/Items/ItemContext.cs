@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BinkyRailways.Core.Model;
+using BinkyRailways.Core.State;
 using BinkyRailways.Core.Util;
 
 namespace BinkyRailways.WinApp.Items
@@ -16,17 +17,19 @@ namespace BinkyRailways.WinApp.Items
         private readonly Func<IRailway> getRailway;
         private readonly Func<IEnumerable<IEntity>> getSelectedEntities;
         private readonly Action reload;
+        private readonly Action<ILocState> selectLoc;
         private bool showDescriptions = true;
 
         /// <summary>
         /// Default ctor
         /// </summary>
-        internal ItemContext(ItemContext parent, Func<IRailway> getRailway, Func<IEnumerable<IEntity>> getSelectedEntities, Action reload)
+        internal ItemContext(ItemContext parent, Func<IRailway> getRailway, Func<IEnumerable<IEntity>> getSelectedEntities, Action reload, Action<ILocState> selectLoc)
         {
             this.parent = parent;
             this.getRailway = getRailway;
             this.getSelectedEntities = getSelectedEntities;
             this.reload = reload;
+            this.selectLoc = selectLoc;
         }
 
         /// <summary>
@@ -83,6 +86,17 @@ namespace BinkyRailways.WinApp.Items
         public void Reload()
         {
             reload();
+        }
+
+        /// <summary>
+        /// Select the given loc.
+        /// </summary>
+        public void SelectLoc(ILocState loc)
+        {
+            if (selectLoc != null)
+            {
+                selectLoc(loc);
+            }
         }
     }
 }

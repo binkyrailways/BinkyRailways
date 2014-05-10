@@ -51,7 +51,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.appState = appState;
             this.module = module;
             ReloadModule();
-            var context = new ItemContext(railwayContext, null, () => selectionManager.SelectedEntities, ReloadModule);
+            var context = new ItemContext(railwayContext, null, () => selectionManager.SelectedEntities, ReloadModule, null);
             viewEditor.Initialize(appState, module, context, false);
         }
 

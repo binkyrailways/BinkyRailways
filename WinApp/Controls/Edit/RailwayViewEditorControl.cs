@@ -24,7 +24,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         /// </summary>
         public RailwayViewEditorControl()
         {
-            context = new ItemContext(null, () => Railway, () => SelectedEntities, () => Reload.Fire(this));
+            context = new ItemContext(null, () => Railway, () => SelectedEntities, () => Reload.Fire(this), null);
             InitializeComponent();
             context.Changed += OnContextChanged;
         }

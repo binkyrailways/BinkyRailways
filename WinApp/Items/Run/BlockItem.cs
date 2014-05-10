@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using BinkyRailways.WinApp.Controls.VirtualCanvas.Handlers;
 using BinkyRailways.WinApp.Items.Handlers;
 using BinkyRailways.WinApp.Items.Menu;
 
@@ -23,6 +24,7 @@ namespace BinkyRailways.WinApp.Items.Run
         {
             this.state = state;
             DragDropHandler = new SetLocTargetDragDropHandler(this, DragDropHandler);
+            MouseHandler = new SelectLocHandler(this, MouseHandler);
         }
 
         /// <summary>
@@ -173,6 +175,40 @@ namespace BinkyRailways.WinApp.Items.Run
                 if (state.IsLocked()) return state.LockedBy.Description;
                 var postfix = state.Closed.Actual ? Strings.BlockClosed : Strings.BlockFree;
                 return base.Text + ": " + postfix;
+            }
+        }
+
+        /// <summary>
+        /// Select the loc in the oc list upon double click.
+        /// </summary>
+        private class SelectLocHandler : MouseHandler
+        {
+            private readonly BlockItem item;
+
+            /// <summary>
+            /// Default ctor
+            /// </summary>
+            public SelectLocHandler(BlockItem item, MouseHandler next)
+                : base(next)
+            {
+                this.item = item;
+            }
+
+            /// <summary>
+            /// Mouse is double clicked on this item
+            /// </summary>
+            /// <param name="e"></param>
+            /// <returns>True if the event was handled, false otherwise.</returns>
+            public override bool OnMouseDoubleClick(Controls.VirtualCanvas.VCItem sender, ItemMouseEventArgs e)
+            {
+                var blockState = item.State;
+                var loc = blockState.LockedBy;
+                if (loc != null)
+                {
+                    item.Context.SelectLoc(loc);
+                    return true;
+                }
+                return base.OnMouseDoubleClick(sender, e);
             }
         }
     }

@@ -35,6 +35,9 @@ namespace BinkyRailways.WinApp.Controls.Run
             tbShowDescriptions.Checked = viewControl.ShowDescriptions;
             toolStripMerge = new ToolStripMerge(toolStrip1);
             toolStrip1.Hide();
+            viewControl.SelectLoc += (s, x) => {
+                locsControl.SelectLoc(x.Value);
+            };
         }
 
         /// <summary>
