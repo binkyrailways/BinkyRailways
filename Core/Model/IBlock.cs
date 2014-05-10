@@ -44,5 +44,10 @@
         /// Must reversing locs change direction (back to normal) in this block?
         /// </summary>
         bool ChangeDirectionReversingLocs { get; set; }
+
+        /// <summary>
+        /// Is this block considered a station?
+        /// </summary>
+        bool IsStation { get; }
     }
 }

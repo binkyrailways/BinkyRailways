@@ -105,11 +105,7 @@ namespace BinkyRailways.Core.State.Impl
         [DisplayName(@"Is station")]
         public bool IsStation
         {
-            get
-            {
-                if (Entity.ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
-                return (WaitProbability >= 75);
-            }
+            get { return Entity.IsStation; }
         }
 
         /// <summary>

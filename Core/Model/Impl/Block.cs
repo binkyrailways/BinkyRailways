@@ -127,6 +127,18 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Is this block considered a station?
+        /// </summary>
+        public bool IsStation
+        {
+            get
+            {
+                if (ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
+                return (WaitProbability >= 75);
+            }
+        }
+
+        /// <summary>
         /// Accept a visit by the given visitor
         /// </summary>
         public override TReturn Accept<TReturn, TData>(EntityVisitor<TReturn, TData> visitor, TData data)

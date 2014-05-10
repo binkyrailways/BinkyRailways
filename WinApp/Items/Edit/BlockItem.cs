@@ -46,7 +46,7 @@ namespace BinkyRailways.WinApp.Items.Edit
                 {
                     e.Graphics.FillPath(brush, path);
                 }
-                e.Graphics.DrawPath(Pens.Blue, path);
+                e.Graphics.DrawPath(Entity.IsStation ? Pens.DarkRed : Pens.Blue, path);                    
             }
             using (var brush = new SolidBrush(TextColor))
             {
