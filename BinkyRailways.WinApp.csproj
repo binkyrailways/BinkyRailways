@@ -620,6 +620,7 @@
     <Compile Include="WinApp\TypeConverters\BlockSignalPatternTypeConverter.cs" />
     <Compile Include="WinApp\TypeConverters\Clock4StageOutputPatternTypeConverter.cs" />
     <Compile Include="WinApp\TypeConverters\ClockSpeedFactorTypeConverter.cs" />
+    <Compile Include="WinApp\TypeConverters\StationModeTypeConverter.cs" />
     <Compile Include="WinApp\TypeConverters\LocIsElementOfGroupTypeConverter.cs" />
     <Compile Include="WinApp\TypeConverters\ShapesTypeConverter.cs" />
     <Compile Include="WinApp\TypeConverters\RouteSpeedBehaviorTypeConverter.cs" />

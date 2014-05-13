@@ -19,6 +19,7 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<bool> reverseSides;
         private readonly Property<ChangeDirection> changeDirection;
         private readonly Property<bool> changeDirectionReversingLocs;
+        private readonly Property<StationMode> stationMode;
 
         /// <summary>
         /// Default ctor
@@ -34,6 +35,7 @@ namespace BinkyRailways.Core.Model.Impl
             reverseSides = new Property<bool>(this, false);
             changeDirection = new Property<ChangeDirection>(this, DefaultValues.DefaultBlockChangeDirection);
             changeDirectionReversingLocs = new Property<bool>(this, DefaultValues.DefaultBlockChangeDirectionReversingLocs);
+            stationMode = new Property<StationMode>(this, DefaultValues.DefaultBlockStationMode);
         }
 
         /// <summary>
@@ -127,14 +129,32 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Determines how the system decides if this block is part of a station
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultBlockStationMode)]
+        public StationMode StationMode
+        {
+            get { return stationMode.Value; }
+            set { stationMode.Value = value; }
+        }
+
+        /// <summary>
         /// Is this block considered a station?
         /// </summary>
         public bool IsStation
         {
             get
             {
-                if (ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
-                return (WaitProbability >= 75);
+                switch (StationMode)
+                {
+                    case StationMode.Always:
+                        return true;
+                    case StationMode.Never:
+                        return false;
+                    default:
+                        if (ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
+                        return (WaitProbability >= 75);
+                }
             }
         }
 

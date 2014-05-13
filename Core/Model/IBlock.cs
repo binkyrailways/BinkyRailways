@@ -46,6 +46,11 @@
         bool ChangeDirectionReversingLocs { get; set; }
 
         /// <summary>
+        /// Determines how the system decides if this block is part of a station
+        /// </summary>
+        StationMode StationMode { get; set; }
+
+        /// <summary>
         /// Is this block considered a station?
         /// </summary>
         bool IsStation { get; }

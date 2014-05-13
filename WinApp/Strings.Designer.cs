@@ -1672,6 +1672,51 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is is a station.
+        /// </summary>
+        internal static string StationModeAlways {
+            get {
+                return ResourceManager.GetString("StationModeAlways", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decide automatically.
+        /// </summary>
+        internal static string StationModeAuto {
+            get {
+                return ResourceManager.GetString("StationModeAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Determines how the system decides if this block is part of a station. This influences the automatic selection of routes..
+        /// </summary>
+        internal static string StationModeHelp {
+            get {
+                return ResourceManager.GetString("StationModeHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is station.
+        /// </summary>
+        internal static string StationModeName {
+            get {
+                return ResourceManager.GetString("StationModeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not a station.
+        /// </summary>
+        internal static string StationModeNever {
+            get {
+                return ResourceManager.GetString("StationModeNever", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove all {0} entities? You won&apos;t be able to undo this!.
         /// </summary>
         internal static string SuretoRemoveAllXEntitiesFromPackage {

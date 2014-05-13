@@ -78,6 +78,7 @@
     <Compile Include="Core\Model\BlockSignalPatterns.cs" />
     <Compile Include="Core\Model\ChangeDirection.cs" />
     <Compile Include="Core\Model\BlockSignalType.cs" />
+    <Compile Include="Core\Model\StationMode.cs" />
     <Compile Include="Core\Model\IEcosCommandStation.cs" />
     <Compile Include="Core\Model\ILocTimePredicate.cs" />
     <Compile Include="Core\Model\Impl\EcosCommandStation.cs" />

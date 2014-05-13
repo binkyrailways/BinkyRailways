@@ -819,4 +819,19 @@ When set to 100, all locs (that are allowed) will wait.</value>
   <data name="IsXElementOfGroupHelp" xml:space="preserve">
     <value>Is {0} an element of this group</value>
   </data>
+  <data name="StationModeAlways" xml:space="preserve">
+    <value>Is is a station</value>
+  </data>
+  <data name="StationModeAuto" xml:space="preserve">
+    <value>Decide automatically</value>
+  </data>
+  <data name="StationModeNever" xml:space="preserve">
+    <value>It is not a station</value>
+  </data>
+  <data name="StationModeHelp" xml:space="preserve">
+    <value>Determines how the system decides if this block is part of a station. This influences the automatic selection of routes.</value>
+  </data>
+  <data name="StationModeName" xml:space="preserve">
+    <value>Is station</value>
+  </data>
 </root>
