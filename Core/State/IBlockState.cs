@@ -73,5 +73,11 @@ namespace BinkyRailways.Core.State
         /// Is this block considered a station?
         /// </summary>
         bool IsStation { get; }
+
+        /// <summary>
+        /// Gets the state of the group this block belongs to.
+        /// Can be null.
+        /// </summary>
+        IBlockGroupState BlockGroup { get; }
     }
 }

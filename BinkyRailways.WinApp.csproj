@@ -129,6 +129,7 @@
     <Compile Include="WinApp\Controls\Edit\Settings\BlockSignalSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\BinaryOutputSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\Clock4StageOutputSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\BlockGroupSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\DynamicPropertyDescriptor.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\EcosCommandStationSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\InitializeJunctionActionSettings.cs" />
@@ -645,6 +646,7 @@
     <Compile Include="WinApp\UIEditors\BlockSignalPatternEditor.cs" />
     <Compile Include="WinApp\UIEditors\CommandStationEditor.cs" />
     <Compile Include="WinApp\UIEditors\Clock4StageOutputPatternEditor.cs" />
+    <Compile Include="WinApp\UIEditors\BlockGroupEditor.cs" />
     <Compile Include="WinApp\UIEditors\JunctionEditor.cs" />
     <Compile Include="WinApp\UIEditors\FreeTextEditor.cs" />
     <Compile Include="WinApp\UIEditors\Extensions.cs" />

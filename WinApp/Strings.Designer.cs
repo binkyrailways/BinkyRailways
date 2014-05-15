@@ -205,6 +205,24 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group that this block belongs to. This influences automatic control of locs in this block..
+        /// </summary>
+        internal static string BlockGroupHelp {
+            get {
+                return ResourceManager.GetString("BlockGroupHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Block group.
+        /// </summary>
+        internal static string BlockGroupName {
+            get {
+                return ResourceManager.GetString("BlockGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string BlockSideBack {
@@ -1002,6 +1020,15 @@ namespace BinkyRailways.WinApp {
         internal static string NewBlockDescription {
             get {
                 return ResourceManager.GetString("NewBlockDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New block group.
+        /// </summary>
+        internal static string NewBlockGroupDescription {
+            get {
+                return ResourceManager.GetString("NewBlockGroupDescription", resourceCulture);
             }
         }
         

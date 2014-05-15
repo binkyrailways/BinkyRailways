@@ -151,7 +151,7 @@
     <value>tvItems</value>
   </data>
   <data name="&gt;&gt;tvItems.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.EntityTreeView, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.EntityTreeView, BinkyRailways, Version=1.1.0.59, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tvItems.Parent" xml:space="preserve">
     <value>innerSplitContainer.Panel1</value>
@@ -187,7 +187,7 @@
     <value>viewEditor</value>
   </data>
   <data name="&gt;&gt;viewEditor.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.ModuleViewEditorControl, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.ModuleViewEditorControl, BinkyRailways, Version=1.1.0.59, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;viewEditor.Parent" xml:space="preserve">
     <value>innerSplitContainer.Panel2</value>
@@ -256,7 +256,7 @@
     <value>propertyGrid</value>
   </data>
   <data name="&gt;&gt;propertyGrid.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.Settings.SettingsPropertyGrid, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.Settings.SettingsPropertyGrid, BinkyRailways, Version=1.1.0.59, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;propertyGrid.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -305,6 +305,12 @@
   </data>
   <data name="tbAddBlock.Text" xml:space="preserve">
     <value>&amp;Block</value>
+  </data>
+  <data name="tbAddBlockGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="tbAddBlockGroup.Text" xml:space="preserve">
+    <value>Block &amp;group</value>
   </data>
   <data name="tbAddEdge.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
@@ -460,7 +466,7 @@
     <value>validationResultsControl</value>
   </data>
   <data name="&gt;&gt;validationResultsControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl, BinkyRailways, Version=1.0.2.52, Culture=neutral, PublicKeyToken=76c27eb4830d4d42</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl, BinkyRailways, Version=1.1.0.59, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;validationResultsControl.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -549,6 +555,12 @@
   <data name="&gt;&gt;tbAddBlock.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tbAddBlockGroup.Name" xml:space="preserve">
+    <value>tbAddBlockGroup</value>
+  </data>
+  <data name="&gt;&gt;tbAddBlockGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tbAddEdge.Name" xml:space="preserve">
     <value>tbAddEdge</value>
   </data>
@@ -621,6 +633,12 @@
   <data name="&gt;&gt;tbAddBinaryOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tbAdd4stageClockOutput.Name" xml:space="preserve">
+    <value>tbAdd4stageClockOutput</value>
+  </data>
+  <data name="&gt;&gt;tbAdd4stageClockOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tbRemove.Name" xml:space="preserve">
     <value>tbRemove</value>
   </data>
@@ -649,12 +667,6 @@
     <value>miSortByToBlock</value>
   </data>
   <data name="&gt;&gt;miSortByToBlock.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbAdd4stageClockOutput.Name" xml:space="preserve">
-    <value>tbAdd4stageClockOutput</value>
-  </data>
-  <data name="&gt;&gt;tbAdd4stageClockOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

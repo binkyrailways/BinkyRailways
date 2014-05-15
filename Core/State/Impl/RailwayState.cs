@@ -26,6 +26,7 @@ namespace BinkyRailways.Core.State.Impl
         private readonly EventHandler onPropertyChanged;
         private readonly PowerProperty power;
         private readonly EntityStateSet<BlockState, IBlockState, IBlock> blockStates;
+        private readonly EntityStateSet<BlockGroupState, IBlockGroupState, IBlockGroup> blockGroupStates;
         private readonly EntityStateSet<CommandStationState, ICommandStationState, ICommandStation> commandStationStates;
         private readonly EntityStateSet<JunctionState, IJunctionState, IJunction> junctionStates;
         private readonly EntityStateSet<LocState, ILocState, ILoc> locStates;
@@ -56,6 +57,7 @@ namespace BinkyRailways.Core.State.Impl
             // Resolve modules
             var modules = ResolveModules(railway).ToList();
             blockStates = new EntityStateSet<BlockState, IBlockState, IBlock>(modules.SelectMany(x => x.Blocks), this);
+            blockGroupStates = new EntityStateSet<BlockGroupState, IBlockGroupState, IBlockGroup>(modules.SelectMany(x => x.BlockGroups), this);
             junctionStates = new EntityStateSet<JunctionState, IJunctionState, IJunction>(modules.SelectMany(x => x.Junctions), this);
             sensorStates = new EntityStateSet<SensorState, ISensorState, ISensor>(modules.SelectMany(x => x.Sensors), this);
             signalStates = new EntityStateSet<SignalState, ISignalState, ISignal>(modules.SelectMany(x => x.Signals), this);
@@ -122,6 +124,13 @@ namespace BinkyRailways.Core.State.Impl
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName(@"Blocks")]
         public IEntityStateSet<IBlockState, IBlock> BlockStates { get { return blockStates; } }
+
+        /// <summary>
+        /// Gets the states of all block groups in this railway
+        /// </summary>
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName(@"BlockGroups")]
+        public IEntityStateSet<IBlockGroupState, IBlockGroup> BlockGroupStates { get { return blockGroupStates; } }
 
         /// <summary>
         /// Gets the states of all command stations in this railway
@@ -195,6 +204,7 @@ namespace BinkyRailways.Core.State.Impl
             junctionStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
             signalStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
             blockStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
+            blockGroupStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
             routeStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
             sensorStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
             outputStates.Cast<EntityState>().Foreach(x => x.PrepareForUse(ui, statePersistence));
@@ -337,6 +347,7 @@ namespace BinkyRailways.Core.State.Impl
             sensorStates.Dispose();
             signalStates.Dispose();
             outputStates.Dispose();
+            blockGroupStates.Dispose();
             blockStates.Dispose();
             commandStationStates.Dispose();
 
@@ -351,6 +362,7 @@ namespace BinkyRailways.Core.State.Impl
         {
             base.OnModelChanged();
             blockStates.OnModelChanged();
+            blockGroupStates.OnModelChanged();
             commandStationStates.OnModelChanged();
             junctionStates.OnModelChanged();
             locStates.OnModelChanged();

@@ -834,4 +834,13 @@ When set to 100, all locs (that are allowed) will wait.</value>
   <data name="StationModeName" xml:space="preserve">
     <value>Is station</value>
   </data>
+  <data name="NewBlockGroupDescription" xml:space="preserve">
+    <value>New block group</value>
+  </data>
+  <data name="BlockGroupHelp" xml:space="preserve">
+    <value>Group that this block belongs to. This influences automatic control of locs in this block.</value>
+  </data>
+  <data name="BlockGroupName" xml:space="preserve">
+    <value>Block group</value>
+  </data>
 </root>

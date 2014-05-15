@@ -85,12 +85,14 @@
     <Compile Include="Core\State\BlockState.cs" />
     <Compile Include="Core\State\BlockSignalColor.cs" />
     <Compile Include="Core\State\Clock4Stage.cs" />
+    <Compile Include="Core\State\IBlockGroupState.cs" />
     <Compile Include="Core\State\IEcosCommandStationState.cs" />
     <Compile Include="Core\State\IAddressEntityState.cs" />
     <Compile Include="Core\State\IClock4StageOutputState.cs" />
     <Compile Include="Core\State\Impl\ActionContext.cs" />
     <Compile Include="Core\State\Impl\Clock.cs" />
     <Compile Include="Core\State\Impl\Clock4StageOutputState.cs" />
+    <Compile Include="Core\State\Impl\BlockGroupState.cs" />
     <Compile Include="Core\State\Impl\Ecos\EcosUtility.cs" />
     <Compile Include="Core\State\Impl\Ecos\Switch.cs" />
     <Compile Include="Core\State\Impl\Ecos\SwitchManager.cs" />

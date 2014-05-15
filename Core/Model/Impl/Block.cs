@@ -20,6 +20,7 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<ChangeDirection> changeDirection;
         private readonly Property<bool> changeDirectionReversingLocs;
         private readonly Property<StationMode> stationMode;
+        private readonly Property<EntityRef<BlockGroup>> blockGroup;
 
         /// <summary>
         /// Default ctor
@@ -36,6 +37,7 @@ namespace BinkyRailways.Core.Model.Impl
             changeDirection = new Property<ChangeDirection>(this, DefaultValues.DefaultBlockChangeDirection);
             changeDirectionReversingLocs = new Property<bool>(this, DefaultValues.DefaultBlockChangeDirectionReversingLocs);
             stationMode = new Property<StationMode>(this, DefaultValues.DefaultBlockStationMode);
+            blockGroup = new Property<EntityRef<BlockGroup>>(this, null);
         }
 
         /// <summary>
@@ -159,6 +161,39 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// The block group that this block belongs to (if any).
+        /// </summary>
+        [XmlIgnore]
+        public IBlockGroup BlockGroup
+        {
+            get
+            {
+                BlockGroup result;
+                if ((blockGroup.Value != null) && (blockGroup.Value.TryGetItem(out result)))
+                    return result;
+                return null;
+            }
+            set
+            {
+                if (BlockGroup != value)
+                {
+                    blockGroup.Value = (value != null) ? new EntityRef<BlockGroup>(this, (BlockGroup)value) : null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the id of the block group.
+        /// Used for serialization only.
+        /// </summary>
+        [XmlElement("BlockGroup"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public string BlockGroupId
+        {
+            get { return blockGroup.GetId(); }
+            set { blockGroup.Value = string.IsNullOrEmpty(value) ? null : new EntityRef<BlockGroup>(this, value, LookupBlockGroup); }
+        }
+
+        /// <summary>
         /// Accept a visit by the given visitor
         /// </summary>
         public override TReturn Accept<TReturn, TData>(EntityVisitor<TReturn, TData> visitor, TData data)
@@ -204,6 +239,27 @@ namespace BinkyRailways.Core.Model.Impl
         {
             base.RemovedFromPackage(entity);
             ((IPackageListener)waitPermissions).RemovedFromPackage(entity);
+        }
+
+        /// <summary>
+        /// If this entity uses the given subject, add a <see cref="UsedByInfo"/> entry to 
+        /// the given result.
+        /// </summary>
+        public override void CollectUsageInfo(IEntity subject, UsedByInfos results)
+        {
+            base.CollectUsageInfo(subject, results);
+            if (subject == BlockGroup)
+            {
+                results.UsedBy(this, Strings.UsedByBlockAsGroup);
+            }
+        }
+
+        /// <summary>
+        /// Lookup a block group by id. 
+        /// </summary>
+        private BlockGroup LookupBlockGroup(string id)
+        {
+            return Module.BlockGroups[id];
         }
 
         /// <summary>

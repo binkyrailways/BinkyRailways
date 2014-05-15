@@ -54,5 +54,10 @@
         /// Is this block considered a station?
         /// </summary>
         bool IsStation { get; }
+
+        /// <summary>
+        /// The block group that this block belongs to (if any).
+        /// </summary>
+        IBlockGroup BlockGroup { get; set; }
     }
 }

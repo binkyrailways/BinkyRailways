@@ -345,4 +345,10 @@
   <data name="TypeNameEcosCommandStation" xml:space="preserve">
     <value>ECoS command station</value>
   </data>
+  <data name="TypeNameBlockGroup" xml:space="preserve">
+    <value>Block group</value>
+  </data>
+  <data name="UsedByBlockAsGroup" xml:space="preserve">
+    <value>Used by block</value>
+  </data>
 </root>

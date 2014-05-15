@@ -41,6 +41,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tbAdd = new System.Windows.Forms.ToolStripDropDownButton();
             this.tbAddBlock = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbAddBlockGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddEdge = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddJunction = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddSwitch = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +54,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddBlockSignal = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddBinaryOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbAdd4stageClockOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.tbRemove = new System.Windows.Forms.ToolStripButton();
             this.tbRename = new System.Windows.Forms.ToolStripButton();
             this.validationResultsControl = new BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl();
@@ -60,7 +62,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.miAddReverseRoute = new System.Windows.Forms.ToolStripMenuItem();
             this.miSortByFromBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.miSortByToBlock = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbAdd4stageClockOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -140,6 +141,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             // 
             this.tbAdd.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbAddBlock,
+            this.tbAddBlockGroup,
             this.tbAddEdge,
             this.tbAddJunction,
             this.tbAddRoute,
@@ -155,6 +157,12 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddBlock.Name = "tbAddBlock";
             resources.ApplyResources(this.tbAddBlock, "tbAddBlock");
             this.tbAddBlock.Click += new System.EventHandler(this.tbAddBlock_Click);
+            // 
+            // tbAddBlockGroup
+            // 
+            this.tbAddBlockGroup.Name = "tbAddBlockGroup";
+            resources.ApplyResources(this.tbAddBlockGroup, "tbAddBlockGroup");
+            this.tbAddBlockGroup.Click += new System.EventHandler(this.tbAddBlockGroup_Click);
             // 
             // tbAddEdge
             // 
@@ -235,6 +243,12 @@ namespace BinkyRailways.WinApp.Controls.Edit
             resources.ApplyResources(this.tbAddBinaryOutput, "tbAddBinaryOutput");
             this.tbAddBinaryOutput.Click += new System.EventHandler(this.tbAddBinaryOutput_Click);
             // 
+            // tbAdd4stageClockOutput
+            // 
+            this.tbAdd4stageClockOutput.Name = "tbAdd4stageClockOutput";
+            resources.ApplyResources(this.tbAdd4stageClockOutput, "tbAdd4stageClockOutput");
+            this.tbAdd4stageClockOutput.Click += new System.EventHandler(this.tbAdd4stageClockOutput_Click);
+            // 
             // tbRemove
             // 
             this.tbRemove.Image = global::BinkyRailways.Properties.Resources.remove_22;
@@ -282,12 +296,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.miSortByToBlock.Name = "miSortByToBlock";
             resources.ApplyResources(this.miSortByToBlock, "miSortByToBlock");
             this.miSortByToBlock.Click += new System.EventHandler(this.miSortByToBlock_Click);
-            // 
-            // tbAdd4stageClockOutput
-            // 
-            this.tbAdd4stageClockOutput.Name = "tbAdd4stageClockOutput";
-            resources.ApplyResources(this.tbAdd4stageClockOutput, "tbAdd4stageClockOutput");
-            this.tbAdd4stageClockOutput.Click += new System.EventHandler(this.tbAdd4stageClockOutput_Click);
             // 
             // EditModuleControl
             // 
@@ -343,6 +351,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         private System.Windows.Forms.ToolStripMenuItem miSortByFromBlock;
         private System.Windows.Forms.ToolStripMenuItem miSortByToBlock;
         private System.Windows.Forms.ToolStripMenuItem tbAdd4stageClockOutput;
+        private System.Windows.Forms.ToolStripMenuItem tbAddBlockGroup;
 
     }
 }

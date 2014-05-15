@@ -18,6 +18,7 @@ namespace BinkyRailways.Core.Model.Impl
         private const string BackgroundImageId = "BackgroundImage";
 
         private readonly BlockSet blocks;
+        private readonly BlockGroupSet blockGroups;
         private readonly JunctionSet junctions;
         private readonly RouteSet routes;
         private readonly EdgeSet edges;
@@ -32,6 +33,7 @@ namespace BinkyRailways.Core.Model.Impl
         public Module()
         {
             blocks = new BlockSet(this);
+            blockGroups = new BlockGroupSet(this);
             junctions = new JunctionSet(this);
             routes = new RouteSet(this);
             edges = new EdgeSet(this);
@@ -50,6 +52,17 @@ namespace BinkyRailways.Core.Model.Impl
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeBlocks() { return (blocks.Count > 0); }
+
+        /// <summary>
+        /// Gets all block groups contained in this module.
+        /// </summary>
+        public BlockGroupSet BlockGroups { get { return blockGroups; } }
+
+        /// <summary>
+        /// Control serialization of <see cref="BlockGroups"/>.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool ShouldSerializeBlockGroups() { return (blockGroups.Count > 0); }
 
         /// <summary>
         /// Gets all edges of this module.
@@ -190,6 +203,11 @@ namespace BinkyRailways.Core.Model.Impl
         /// Gets all blocks contained in this module.
         /// </summary>
         IEntitySet2<IBlock> IModule.Blocks { get { return Blocks.Set; } }
+
+        /// <summary>
+        /// Gets all block groups contained in this module.
+        /// </summary>
+        IEntitySet2<IBlockGroup> IModule.BlockGroups { get { return BlockGroups.Set; } }
 
         /// <summary>
         /// Gets all edges of this module.
