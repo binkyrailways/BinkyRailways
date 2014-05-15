@@ -139,6 +139,7 @@ namespace BinkyRailways.Core.State.Impl
                 case AutoLocState.AssignRoute:
                 case AutoLocState.ReversingWaitingForDirectionChange:
                 case AutoLocState.WaitingForDestinationTimeout:
+                case AutoLocState.WaitingForDestinationGroupMinimum:
                     // Loc is waiting
                     return BlockSignalColor.Red;
                 case AutoLocState.EnteringDestination:

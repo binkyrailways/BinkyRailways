@@ -205,6 +205,15 @@ namespace BinkyRailways.Core.State {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Waiting for other locs to arrive.
+        /// </summary>
+        internal static string LocStateWaitingForGroupMinimum {
+            get {
+                return ResourceManager.GetString("LocStateWaitingForGroupMinimum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Waiting {0}s.
         /// </summary>
         internal static string LocStateWaitingXSeconds {

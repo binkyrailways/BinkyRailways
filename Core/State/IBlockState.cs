@@ -79,5 +79,10 @@ namespace BinkyRailways.Core.State
         /// Can be null.
         /// </summary>
         IBlockGroupState BlockGroup { get; }
+
+        /// <summary>
+        /// Is there a loc waiting in this block?
+        /// </summary>
+        bool HasWaitingLoc { get; }
     }
 }

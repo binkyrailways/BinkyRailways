@@ -117,6 +117,21 @@ namespace BinkyRailways.Core.State.Impl
         public IBlockGroupState BlockGroup { get { return blockGroup; } }
 
         /// <summary>
+        /// Is there a loc waiting in this block?
+        /// </summary>
+        [DisplayName(@"Has waiting loc")]
+        public bool HasWaitingLoc
+        {
+            get
+            {
+                var loc = LockedBy;
+                if ((loc == null) || (State != Core.State.BlockState.Occupied)) return false;
+                var automaticState = loc.AutomaticState.Actual;
+                return ((automaticState == AutoLocState.WaitingForDestinationTimeout) || (automaticState == AutoLocState.WaitingForDestinationGroupMinimum));
+            }
+        }
+
+        /// <summary>
         /// Gets the current state of this block
         /// </summary>
         [DisplayName(@"State")]

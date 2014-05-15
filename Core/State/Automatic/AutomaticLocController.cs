@@ -207,6 +207,9 @@ namespace BinkyRailways.Core.State.Automatic
                     case AutoLocState.WaitingForDestinationTimeout:
                         nextUpdate = OnWaitingForDestinationTimeout(loc);
                         break;
+                    case AutoLocState.WaitingForDestinationGroupMinimum:
+                        nextUpdate = OnWaitingForDestinationGroupMinimum(loc);
+                        break;
                     default:
                         log.Warn("Invalid state ({0}) in loc {1}.", state, loc);
                         break;
@@ -262,6 +265,7 @@ namespace BinkyRailways.Core.State.Automatic
                     case AutoLocState.WaitingForAssignedRouteReady:
                     case AutoLocState.ReachedDestination:
                     case AutoLocState.WaitingForDestinationTimeout:
+                    case AutoLocState.WaitingForDestinationGroupMinimum:
                         // We can remove now
                         RemoveLocFromAutomaticControl(loc);
                         break;
@@ -857,13 +861,64 @@ namespace BinkyRailways.Core.State.Automatic
             var now = DateTime.Now;
             if (now >= startNextRouteTime)
             {
+                // Check the block group, see if we can leave
+                var currentBlock = loc.CurrentBlock.Actual;
+                var currentBlockGroup = (currentBlock != null) ? currentBlock.BlockGroup : null;
+                if ((currentBlockGroup == null) || (currentBlockGroup.FirstLocCanLeave))
+                {
+                    // Yes, let's assign a new route
+                    loc.AutomaticState.Actual = AutoLocState.AssignRoute;
+                    return TimeSpan.Zero;
+                }
+                else
+                {
+                    // No we cannot leave yet
+                    loc.AutomaticState.Actual = AutoLocState.WaitingForDestinationGroupMinimum;
+                    return TimeSpan.MaxValue;
+                }
+            }
+
+            // Nothing changed
+            return startNextRouteTime.Subtract(now);
+        }
+
+        /// <summary>
+        /// The given loc has waited at it's destination.
+        /// Let's assign a new route.
+        /// </summary>
+        /// <returns>The timespan before this method wants to be called again.</returns>
+        private TimeSpan OnWaitingForDestinationGroupMinimum(ILocState loc)
+        {
+            // Check state
+            var state = loc.AutomaticState.Actual;
+            if (state != AutoLocState.WaitingForDestinationGroupMinimum)
+            {
+                log.Warn("Loc {0} in valid state ({1}) at destination timeout.", loc, loc.AutomaticState);
+                return TimeSpan.MaxValue;
+            }
+
+            // Log state
+            log.Trace("OnWaitingForDestinationGroupMinimum {0}", loc);
+
+            // Do we still control this loc?
+            if (!ShouldControlAutomatically(loc))
+            {
+                RemoveLocFromAutomaticControl(loc);
+                return TimeSpan.MaxValue;
+            }
+
+            // Timeout reached?
+            var currentBlock = loc.CurrentBlock.Actual;
+            var currentBlockGroup = (currentBlock != null) ? currentBlock.BlockGroup : null;
+            if ((currentBlockGroup == null) || (currentBlockGroup.FirstLocCanLeave))
+            {
                 // Yes, let's assign a new route
                 loc.AutomaticState.Actual = AutoLocState.AssignRoute;
                 return TimeSpan.Zero;
             }
 
             // Nothing changed
-            return startNextRouteTime.Subtract(now);
+            return TimeSpan.MaxValue;
         }
     }
 }
