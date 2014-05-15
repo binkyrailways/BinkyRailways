@@ -943,6 +943,43 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The minimum number of locs that must be present in this group.
+        ///Locs cannot leave if that results in a lower number of locs in this group..
+        /// </summary>
+        internal static string MinimumLocsInGroupHelp {
+            get {
+                return ResourceManager.GetString("MinimumLocsInGroupHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum locs.
+        /// </summary>
+        internal static string MinimumLocsInGroupName {
+            get {
+                return ResourceManager.GetString("MinimumLocsInGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The minimum number of locs that must be on the track before the &quot;Minimum locs&quot; becomes active..
+        /// </summary>
+        internal static string MinimumLocsOnTrackForMinimumLocsInGroupStartHelp {
+            get {
+                return ResourceManager.GetString("MinimumLocsOnTrackForMinimumLocsInGroupStartHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum locs on track.
+        /// </summary>
+        internal static string MinimumLocsOnTrackForMinimumLocsInGroupStartName {
+            get {
+                return ResourceManager.GetString("MinimumLocsOnTrackForMinimumLocsInGroupStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimum speed.
         /// </summary>
         internal static string MinimumSpeedName {

@@ -843,4 +843,17 @@ When set to 100, all locs (that are allowed) will wait.</value>
   <data name="BlockGroupName" xml:space="preserve">
     <value>Block group</value>
   </data>
+  <data name="MinimumLocsInGroupHelp" xml:space="preserve">
+    <value>The minimum number of locs that must be present in this group.
+Locs cannot leave if that results in a lower number of locs in this group.</value>
+  </data>
+  <data name="MinimumLocsInGroupName" xml:space="preserve">
+    <value>Minimum locs</value>
+  </data>
+  <data name="MinimumLocsOnTrackForMinimumLocsInGroupStartHelp" xml:space="preserve">
+    <value>The minimum number of locs that must be on the track before the "Minimum locs" becomes active.</value>
+  </data>
+  <data name="MinimumLocsOnTrackForMinimumLocsInGroupStartName" xml:space="preserve">
+    <value>Minimum locs on track</value>
+  </data>
 </root>
