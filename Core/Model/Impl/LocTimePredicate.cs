@@ -76,6 +76,14 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public override bool Evaluate(ILoc loc)
+        {
+            return true; // We can only seriously evaluate this at runtime.
+        }
+
+        /// <summary>
         /// Create a deep clone.
         /// </summary>
         protected internal override LocPredicate Clone()

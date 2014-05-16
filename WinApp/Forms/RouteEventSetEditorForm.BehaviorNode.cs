@@ -87,10 +87,13 @@ namespace BinkyRailways.WinApp.Forms
             /// </summary>
             internal void UpdateText()
             {
-                Text = string.Format(Strings.BehaviorNodeText, AppliesTo, StateBehavior, SpeedBehavior);
-                if (Text.Contains("?"))
+                if (StateBehavior == RouteStateBehavior.Reached)
                 {
-                    
+                    Text = string.Format(Strings.BehaviorNodeTextReached, AppliesTo, StateBehavior);
+                }
+                else
+                {
+                    Text = string.Format(Strings.BehaviorNodeText, AppliesTo, StateBehavior, SpeedBehavior);
                 }
             }
         }

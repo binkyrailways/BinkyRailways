@@ -42,6 +42,7 @@ namespace BinkyRailways.WinApp.Forms
             this.tlpButtons = new System.Windows.Forms.TableLayoutPanel();
             this.cmdOk = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
+            this.cbViewLocs = new System.Windows.Forms.ComboBox();
             this.lbSetSensors = new System.Windows.Forms.Label();
             this.lbAllSensors = new System.Windows.Forms.Label();
             this.cmdAdd = new System.Windows.Forms.Button();
@@ -121,8 +122,9 @@ namespace BinkyRailways.WinApp.Forms
             // 
             resources.ApplyResources(this.tlpButtons, "tlpButtons");
             this.tlpMain.SetColumnSpan(this.tlpButtons, 7);
-            this.tlpButtons.Controls.Add(this.cmdOk, 3, 0);
-            this.tlpButtons.Controls.Add(this.cmdCancel, 4, 0);
+            this.tlpButtons.Controls.Add(this.cmdOk, 4, 0);
+            this.tlpButtons.Controls.Add(this.cmdCancel, 5, 0);
+            this.tlpButtons.Controls.Add(this.cbViewLocs, 1, 0);
             this.tlpButtons.Name = "tlpButtons";
             // 
             // cmdOk
@@ -139,6 +141,14 @@ namespace BinkyRailways.WinApp.Forms
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.UseVisualStyleBackColor = true;
+            // 
+            // cbViewLocs
+            // 
+            this.cbViewLocs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbViewLocs.FormattingEnabled = true;
+            resources.ApplyResources(this.cbViewLocs, "cbViewLocs");
+            this.cbViewLocs.Name = "cbViewLocs";
+            this.cbViewLocs.SelectedIndexChanged += new System.EventHandler(this.cbViewLocs_SelectedIndexChanged);
             // 
             // lbSetSensors
             // 
@@ -213,5 +223,6 @@ namespace BinkyRailways.WinApp.Forms
         private Button cmdAddBehavior;
         private Button cmdDownBehavior;
         private Button cmdUpBehavior;
+        private ComboBox cbViewLocs;
     }
 }

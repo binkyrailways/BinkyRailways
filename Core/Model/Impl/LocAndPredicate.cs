@@ -38,5 +38,13 @@ namespace BinkyRailways.Core.Model.Impl
         {
             return "(" + string.Join(Strings.OperatorAnd, Predicates.Select(x => x.ToString()).ToArray()) + ")";
         }
+
+        /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public override bool Evaluate(ILoc loc)
+        {
+            return Predicates.All(x => x.Evaluate(loc));
+        }
     }
 }

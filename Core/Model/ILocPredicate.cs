@@ -14,5 +14,10 @@
         /// Create a deep clone.
         /// </summary>
         ILocPredicate Clone(bool setModule);
+
+        /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        bool Evaluate(ILoc loc);
     }
 }

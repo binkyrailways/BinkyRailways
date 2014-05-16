@@ -819,4 +819,10 @@ When set to 100, all locs (that are allowed) will wait.</value>
   <data name="IsXElementOfGroupHelp" xml:space="preserve">
     <value>Is {0} an element of this group</value>
   </data>
+  <data name="ViewAllLocs" xml:space="preserve">
+    <value>View for all locs</value>
+  </data>
+  <data name="BehaviorNodeTextReached" xml:space="preserve">
+    <value>Locs: {0}, State: {1}</value>
+  </data>
 </root>
