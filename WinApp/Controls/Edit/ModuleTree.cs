@@ -14,6 +14,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
     {
         private readonly TreeNodeCollection parent;
         private readonly TreeNode blocksRoot;
+        private readonly TreeNode blockGroupsRoot;
         private readonly TreeNode junctionsRoot;
         private readonly TreeNode sensorsRoot;
         private readonly TreeNode outputsRoot;
@@ -30,6 +31,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         {
             this.parent = parent;
             blocksRoot = new TreeNode("Blocks");
+            blockGroupsRoot = new TreeNode("Block groups");
             junctionsRoot = new TreeNode("Junctions");
             sensorsRoot = new TreeNode("Sensors");
             outputsRoot = new TreeNode("Outputs");
@@ -37,6 +39,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             signalsRoot = new TreeNode("Signals");
             edgesRoot = new TreeNode("Edges");
             parent.Add(blocksRoot);
+            parent.Add(blockGroupsRoot);
             parent.Add(junctionsRoot);
             parent.Add(sensorsRoot);
             parent.Add(signalsRoot);
@@ -54,6 +57,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             {
                 reloading = true;
                 blocksRoot.Nodes.Clear();
+                blockGroupsRoot.Nodes.Clear();
                 junctionsRoot.Nodes.Clear();
                 sensorsRoot.Nodes.Clear();
                 signalsRoot.Nodes.Clear();
@@ -76,6 +80,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
                         parent.Insert(0, moduleNode);
                     }
                     blocksRoot.Nodes.AddRange(module.Blocks.Select(x => new EntityNode(x, contextMenus)).OrderBy(x => x.Text, NameWithNumbersComparer.Instance).ToArray());
+                    blockGroupsRoot.Nodes.AddRange(module.BlockGroups.Select(x => new EntityNode(x, contextMenus)).OrderBy(x => x.Text, NameWithNumbersComparer.Instance).ToArray());
                     junctionsRoot.Nodes.AddRange(module.Junctions.Select(x => new EntityNode(x, contextMenus)).OrderBy(x => x.Text, NameWithNumbersComparer.Instance).ToArray());
                     sensorsRoot.Nodes.AddRange(module.Sensors.Select(x => new EntityNode(x, contextMenus)).OrderBy(x => x.Text, NameWithNumbersComparer.Instance).ToArray());
                     signalsRoot.Nodes.AddRange(module.Signals.Select(x => new EntityNode(x, contextMenus)).OrderBy(x => x.Text, NameWithNumbersComparer.Instance).ToArray());
@@ -87,6 +92,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
 
                     if (!prefs.EditBlocksOpen) blocksRoot.Collapse(); 
                     else blocksRoot.Expand();
+                    if (!prefs.EditBlockGroupsOpen) blockGroupsRoot.Collapse();
+                    else blockGroupsRoot.Expand();
                     if (!prefs.EditJunctionsOpen) junctionsRoot.Collapse();
                     else junctionsRoot.Expand();
                     if (!prefs.EditSensorsOpen) sensorsRoot.Collapse();
@@ -123,6 +130,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             if (reloading) return;
             var prefs = UserPreferences.Preferences;
             if (blocksRoot.Nodes.Count > 0) prefs.EditBlocksOpen = blocksRoot.IsExpanded;
+            if (blockGroupsRoot.Nodes.Count > 0) prefs.EditBlockGroupsOpen = blockGroupsRoot.IsExpanded;
             if (junctionsRoot.Nodes.Count > 0) prefs.EditJunctionsOpen = junctionsRoot.IsExpanded;
             if (sensorsRoot.Nodes.Count > 0) prefs.EditSensorsOpen = sensorsRoot.IsExpanded;
             if (signalsRoot.Nodes.Count > 0) prefs.EditSignalsOpen = signalsRoot.IsExpanded;
@@ -133,7 +141,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
         }
 
         public TreeNode BlocksRoot { get { return blocksRoot; }}
-        public TreeNode JunctionsRoot { get { return junctionsRoot; }}
+        public TreeNode BlockGroupsRoot { get { return blockGroupsRoot; } }
+        public TreeNode JunctionsRoot { get { return junctionsRoot; } }
         public TreeNode SensorsRoot { get { return sensorsRoot; } }
         public TreeNode OutputsRoot { get { return outputsRoot; } }
         public TreeNode RoutesRoot { get { return routesRoot; } }

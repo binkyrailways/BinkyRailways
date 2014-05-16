@@ -9,6 +9,7 @@
         public virtual TReturn Visit(IBinaryOutput entity, TData data) { return Visit((IOutput)entity, data); }
         public virtual TReturn Visit(IBinarySensor entity, TData data) { return Visit((ISensor)entity, data); }
         public virtual TReturn Visit(IBlock entity, TData data) { return Visit((IEndPoint)entity, data); }
+        public virtual TReturn Visit(IBlockGroup entity, TData data) { return default(TReturn); }
         public virtual TReturn Visit(IBlockSignal entity, TData data) { return Visit((ISignal)entity, data); }
         public virtual TReturn Visit(IClock4StageOutput entity, TData data) { return Visit((IOutput)entity, data); }
         public virtual TReturn Visit(ICommandStation entity, TData data) { return default(TReturn); }

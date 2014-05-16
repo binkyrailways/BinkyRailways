@@ -19,6 +19,8 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<bool> reverseSides;
         private readonly Property<ChangeDirection> changeDirection;
         private readonly Property<bool> changeDirectionReversingLocs;
+        private readonly Property<StationMode> stationMode;
+        private readonly Property<EntityRef<BlockGroup>> blockGroup;
 
         /// <summary>
         /// Default ctor
@@ -34,6 +36,8 @@ namespace BinkyRailways.Core.Model.Impl
             reverseSides = new Property<bool>(this, false);
             changeDirection = new Property<ChangeDirection>(this, DefaultValues.DefaultBlockChangeDirection);
             changeDirectionReversingLocs = new Property<bool>(this, DefaultValues.DefaultBlockChangeDirectionReversingLocs);
+            stationMode = new Property<StationMode>(this, DefaultValues.DefaultBlockStationMode);
+            blockGroup = new Property<EntityRef<BlockGroup>>(this, null);
         }
 
         /// <summary>
@@ -127,15 +131,66 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Determines how the system decides if this block is part of a station
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultBlockStationMode)]
+        public StationMode StationMode
+        {
+            get { return stationMode.Value; }
+            set { stationMode.Value = value; }
+        }
+
+        /// <summary>
         /// Is this block considered a station?
         /// </summary>
         public bool IsStation
         {
             get
             {
-                if (ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
-                return (WaitProbability >= 75);
+                switch (StationMode)
+                {
+                    case StationMode.Always:
+                        return true;
+                    case StationMode.Never:
+                        return false;
+                    default:
+                        if (ChangeDirection == ChangeDirection.Allow) return (WaitProbability >= 50);
+                        return (WaitProbability >= 75);
+                }
             }
+        }
+
+        /// <summary>
+        /// The block group that this block belongs to (if any).
+        /// </summary>
+        [XmlIgnore]
+        public IBlockGroup BlockGroup
+        {
+            get
+            {
+                BlockGroup result;
+                if ((blockGroup.Value != null) && (blockGroup.Value.TryGetItem(out result)))
+                    return result;
+                return null;
+            }
+            set
+            {
+                if (BlockGroup != value)
+                {
+                    blockGroup.Value = (value != null) ? new EntityRef<BlockGroup>(this, (BlockGroup)value) : null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the id of the block group.
+        /// Used for serialization only.
+        /// </summary>
+        [XmlElement("BlockGroup"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public string BlockGroupId
+        {
+            get { return blockGroup.GetId(); }
+            set { blockGroup.Value = string.IsNullOrEmpty(value) ? null : new EntityRef<BlockGroup>(this, value, LookupBlockGroup); }
         }
 
         /// <summary>
@@ -184,6 +239,27 @@ namespace BinkyRailways.Core.Model.Impl
         {
             base.RemovedFromPackage(entity);
             ((IPackageListener)waitPermissions).RemovedFromPackage(entity);
+        }
+
+        /// <summary>
+        /// If this entity uses the given subject, add a <see cref="UsedByInfo"/> entry to 
+        /// the given result.
+        /// </summary>
+        public override void CollectUsageInfo(IEntity subject, UsedByInfos results)
+        {
+            base.CollectUsageInfo(subject, results);
+            if (subject == BlockGroup)
+            {
+                results.UsedBy(this, Strings.UsedByBlockAsGroup);
+            }
+        }
+
+        /// <summary>
+        /// Lookup a block group by id. 
+        /// </summary>
+        private BlockGroup LookupBlockGroup(string id)
+        {
+            return Module.BlockGroups[id];
         }
 
         /// <summary>

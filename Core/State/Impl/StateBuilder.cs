@@ -27,6 +27,11 @@ namespace BinkyRailways.Core.State.Impl
             return new BlockState(entity, data);
         }
 
+        public override IEntityState Visit(IBlockGroup entity, RailwayState data)
+        {
+            return new BlockGroupState(entity, data);
+        }
+
         public override IEntityState Visit(IBlockSignal entity, RailwayState data)
         {
             return new BlockSignalState(entity, data);

@@ -22,6 +22,11 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             return new BlockSettings(entity, data);
         }
 
+        public override object Visit(IBlockGroup entity, GridContext data)
+        {
+            return new BlockGroupSettings(entity, data);
+        }
+
         public override object Visit(IBlockSignal entity, GridContext data)
         {
             return new BlockSignalSettings(entity, data);

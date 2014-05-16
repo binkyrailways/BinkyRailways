@@ -37,6 +37,8 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             properties.Add(() => ReverseSides, Strings.TabDesign, Strings.ReverseSidesName, Strings.ReverseSidesHelp);
             properties.Add(() => ChangeDirection, Strings.TabBehavior, Strings.ChangeDirectionName, Strings.ChangeDirectionHelp);
             properties.Add(() => ChangeDirectionReversingLocs, Strings.TabAdvBehavior, Strings.ChangeDirectionReversingLocsName, Strings.ChangeDirectionReversingLocsHelp);
+            properties.Add(() => StationMode, Strings.TabBehavior, Strings.StationModeName, Strings.StationModeHelp);
+            properties.Add(() => BlockGroup, Strings.TabBehavior, Strings.BlockGroupName, Strings.BlockGroupHelp);
         }
 
         /// <summary>
@@ -122,6 +124,31 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         {
             get { return Entity.ChangeDirectionReversingLocs; }
             set { Entity.ChangeDirectionReversingLocs = value; }
+        }
+
+        /// <summary>
+        /// Determines how the system decides if this block is part of a station
+        /// </summary>
+        [TypeConverter(typeof(StationModeTypeConverter))]
+        [DefaultValue(DefaultValues.DefaultBlockStationMode)]
+        [EditableInRunningState]
+        public StationMode StationMode
+        {
+            get { return Entity.StationMode; }
+            set { Entity.StationMode = value; }
+        }
+
+        /// <summary>
+        /// The block group this block belongs to.
+        /// </summary>
+        [TypeConverter(typeof(EntityTypeConverter))]
+        [Editor(typeof(OptionalBlockGroupEditor), typeof(UITypeEditor))]
+        [MergableProperty(true)]
+        [DefaultValue(null)]
+        public IBlockGroup BlockGroup
+        {
+            get { return Entity.BlockGroup; }
+            set { Entity.BlockGroup = value; }
         }
     }
 }

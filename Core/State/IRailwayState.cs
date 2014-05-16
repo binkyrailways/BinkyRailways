@@ -63,6 +63,11 @@ namespace BinkyRailways.Core.State
         IEntityStateSet<IBlockState, IBlock> BlockStates { get; }
 
         /// <summary>
+        /// Gets the states of all block groups in this railway
+        /// </summary>
+        IEntityStateSet<IBlockGroupState, IBlockGroup> BlockGroupStates { get; }
+
+        /// <summary>
         /// Gets the states of all command stations in this railway
         /// </summary>
         IEntityStateSet<ICommandStationState, ICommandStation> CommandStationStates { get; }

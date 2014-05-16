@@ -214,6 +214,24 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group that this block belongs to. This influences automatic control of locs in this block..
+        /// </summary>
+        internal static string BlockGroupHelp {
+            get {
+                return ResourceManager.GetString("BlockGroupHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Block group.
+        /// </summary>
+        internal static string BlockGroupName {
+            get {
+                return ResourceManager.GetString("BlockGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string BlockSideBack {
@@ -934,6 +952,43 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The minimum number of locs that must be present in this group.
+        ///Locs cannot leave if that results in a lower number of locs in this group..
+        /// </summary>
+        internal static string MinimumLocsInGroupHelp {
+            get {
+                return ResourceManager.GetString("MinimumLocsInGroupHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum locs.
+        /// </summary>
+        internal static string MinimumLocsInGroupName {
+            get {
+                return ResourceManager.GetString("MinimumLocsInGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The minimum number of locs that must be on the track before the &quot;Minimum locs&quot; becomes active..
+        /// </summary>
+        internal static string MinimumLocsOnTrackForMinimumLocsInGroupStartHelp {
+            get {
+                return ResourceManager.GetString("MinimumLocsOnTrackForMinimumLocsInGroupStartHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum locs on track.
+        /// </summary>
+        internal static string MinimumLocsOnTrackForMinimumLocsInGroupStartName {
+            get {
+                return ResourceManager.GetString("MinimumLocsOnTrackForMinimumLocsInGroupStartName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimum speed.
         /// </summary>
         internal static string MinimumSpeedName {
@@ -1011,6 +1066,15 @@ namespace BinkyRailways.WinApp {
         internal static string NewBlockDescription {
             get {
                 return ResourceManager.GetString("NewBlockDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New block group.
+        /// </summary>
+        internal static string NewBlockGroupDescription {
+            get {
+                return ResourceManager.GetString("NewBlockGroupDescription", resourceCulture);
             }
         }
         
@@ -1677,6 +1741,51 @@ namespace BinkyRailways.WinApp {
         internal static string StartTimeMustBeBeforeEndTime {
             get {
                 return ResourceManager.GetString("StartTimeMustBeBeforeEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is is a station.
+        /// </summary>
+        internal static string StationModeAlways {
+            get {
+                return ResourceManager.GetString("StationModeAlways", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decide automatically.
+        /// </summary>
+        internal static string StationModeAuto {
+            get {
+                return ResourceManager.GetString("StationModeAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Determines how the system decides if this block is part of a station. This influences the automatic selection of routes..
+        /// </summary>
+        internal static string StationModeHelp {
+            get {
+                return ResourceManager.GetString("StationModeHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is station.
+        /// </summary>
+        internal static string StationModeName {
+            get {
+                return ResourceManager.GetString("StationModeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is not a station.
+        /// </summary>
+        internal static string StationModeNever {
+            get {
+                return ResourceManager.GetString("StationModeNever", resourceCulture);
             }
         }
         

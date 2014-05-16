@@ -167,6 +167,16 @@ namespace BinkyRailways.WinApp.Controls.Edit
         }
 
         /// <summary>
+        /// Add a new block group.
+        /// </summary>
+        private void tbAddBlockGroup_Click(object sender, EventArgs e)
+        {
+            var entity = module.BlockGroups.AddNew();
+            entity.Description = Strings.NewBlockGroupDescription;
+            AddEntity(entity, moduleTree.BlockGroupsRoot);
+        }
+
+        /// <summary>
         /// Add a new edge
         /// </summary>
         private void tbAddEdge_Click(object sender, EventArgs e)

@@ -43,6 +43,21 @@
         public const bool DefaultBlockChangeDirectionReversingLocs = false;
 
         /// <summary>
+        /// Default value of <see cref="IBlock.StationMode"/>
+        /// </summary>
+        public const StationMode DefaultBlockStationMode = StationMode.Auto;
+
+        /// <summary>
+        /// Default value of <see cref="IBlockGroup.MinimumLocsInGroup"/>
+        /// </summary>
+        public const int DefaultBlockGroupMinimumLocsInGroup = 0;
+
+        /// <summary>
+        /// Default value of <see cref="IBlockGroup.MinimumLocsOnTrackForMinimumLocsInGroupStart"/>
+        /// </summary>
+        public const int DefaultBlockGroupMinimumLocsOnTrackForMinimumLocsInGroupStart = 0;
+
+        /// <summary>
         /// Default value of <see cref="ILoc.SpeedSteps"/>
         /// </summary>
         public const int DefaultLocSpeedSteps = 128;

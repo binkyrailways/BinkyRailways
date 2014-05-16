@@ -71,10 +71,16 @@ namespace BinkyRailways.Core.State
         ReachedDestination,
 
         /// <summary>
-        /// The loc has stopped at the destination and it waiting for a timeout until it can be assigned
+        /// The loc has stopped at the destination and is waiting for a timeout until it can be assigned
         /// a new route.
         /// </summary>
         [Obfuscation]
-        WaitingForDestinationTimeout
+        WaitingForDestinationTimeout,
+
+        /// <summary>
+        /// The loc has stopped at the destination and is waiting for a requirement on the group that contains the destination block.
+        /// </summary>
+        [Obfuscation]
+        WaitingForDestinationGroupMinimum
     }
 }

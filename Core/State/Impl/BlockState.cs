@@ -15,6 +15,7 @@ namespace BinkyRailways.Core.State.Impl
         private IStatePersistence statePersistence;
         private readonly List<IJunctionState> junctions = new List<IJunctionState>();
         private bool deadEnd;
+        private IBlockGroupState blockGroup;
 
         /// <summary>
         /// Default ctor
@@ -106,6 +107,28 @@ namespace BinkyRailways.Core.State.Impl
         public bool IsStation
         {
             get { return Entity.IsStation; }
+        }
+
+        /// <summary>
+        /// Gets the state of the group this block belongs to.
+        /// Can be null.
+        /// </summary>
+        [DisplayName(@"Group")]
+        public IBlockGroupState BlockGroup { get { return blockGroup; } }
+
+        /// <summary>
+        /// Is there a loc waiting in this block?
+        /// </summary>
+        [DisplayName(@"Has waiting loc")]
+        public bool HasWaitingLoc
+        {
+            get
+            {
+                var loc = LockedBy;
+                if ((loc == null) || (State != Core.State.BlockState.Occupied)) return false;
+                var automaticState = loc.AutomaticState.Actual;
+                return ((automaticState == AutoLocState.WaitingForDestinationTimeout) || (automaticState == AutoLocState.WaitingForDestinationGroupMinimum));
+            }
         }
 
         /// <summary>
@@ -202,6 +225,9 @@ namespace BinkyRailways.Core.State.Impl
             junctions.Clear();
             var myJunctionEntities = Entity.Module.Junctions.Where(x => x.Block == Entity);          
             junctions.AddRange(myJunctionEntities.Select(x => RailwayState.JunctionStates[x]));
+
+            var groupEntity = Entity.BlockGroup;
+            blockGroup = (groupEntity != null) ? RailwayState.BlockGroupStates[groupEntity] : null;
 
             return true;
         }

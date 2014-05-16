@@ -268,6 +268,16 @@ namespace BinkyRailways.WinApp.Preferences
         }
 
         /// <summary>
+        /// Block groups node state in module editor.
+        /// </summary>
+        [UserScopedSetting, DefaultSettingValue("true")]
+        public bool EditBlockGroupsOpen
+        {
+            get { return (bool)this["EditBlockGroupsOpen"]; }
+            set { this["EditBlockGroupsOpen"] = value; }
+        }
+
+        /// <summary>
         /// Junctions node state in module editor.
         /// </summary>
         [UserScopedSetting, DefaultSettingValue("true")]

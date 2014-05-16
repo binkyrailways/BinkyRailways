@@ -13,6 +13,11 @@ namespace BinkyRailways.Core.Model
         IEntitySet2<IBlock> Blocks { get; }
 
         /// <summary>
+        /// Gets all block groups contained in this module.
+        /// </summary>
+        IEntitySet2<IBlockGroup> BlockGroups { get; }
+
+        /// <summary>
         /// Gets all edges of this module.
         /// </summary>
         IEntitySet2<IEdge> Edges { get; }

@@ -216,4 +216,7 @@
   <data name="RouteCriticalSectionOccupied" xml:space="preserve">
     <value>Critical section is occupied</value>
   </data>
+  <data name="LocStateWaitingForGroupMinimum" xml:space="preserve">
+    <value>Waiting for other locs to arrive</value>
+  </data>
 </root>

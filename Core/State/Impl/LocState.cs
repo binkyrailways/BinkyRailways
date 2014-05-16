@@ -351,6 +351,8 @@ namespace BinkyRailways.Core.State.Impl
                     case AutoLocState.WaitingForDestinationTimeout:
                         var delay = Math.Max(0, StartNextRouteTime.Actual.Subtract(DateTime.Now).TotalSeconds);
                         return prefix + string.Format(Strings.LocStateWaitingXSeconds, (int)Math.Round(delay));
+                    case AutoLocState.WaitingForDestinationGroupMinimum:
+                        return prefix + Strings.LocStateWaitingForGroupMinimum;
                     default:
                         throw new ArgumentException("Unknown loc state: " + state);
                 }
