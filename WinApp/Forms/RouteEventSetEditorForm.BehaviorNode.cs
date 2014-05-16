@@ -73,6 +73,7 @@ namespace BinkyRailways.WinApp.Forms
             /// Change of state
             /// </summary>
             [TypeConverter(typeof(RouteStateBehaviorTypeConverter))]
+            [RefreshProperties(RefreshProperties.All)]
             public RouteStateBehavior StateBehavior { get; set; }
 
             /// <summary>
