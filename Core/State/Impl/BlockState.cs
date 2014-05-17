@@ -254,9 +254,9 @@ namespace BinkyRailways.Core.State.Impl
         /// <summary>
         /// Gets all entities that must be locked in order to lock me.
         /// </summary>
-        protected override IEnumerable<ILockableState> UnderlyingLockableEntities
+        protected override IEnumerable<ILockableStateImpl> UnderlyingLockableEntities
         {
-            get { return junctions; }
+            get { return junctions.Cast<ILockableStateImpl>(); }
         }
     }
 }

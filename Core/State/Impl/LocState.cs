@@ -650,7 +650,7 @@ namespace BinkyRailways.Core.State.Impl
                 {
                     NextRoute.Actual = null;
                     var block = CurrentBlock.Actual;
-                    route.Unlock(x => x == block);
+                    route.Unlock(block);
                 }
             }
         }

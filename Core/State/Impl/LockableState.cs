@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using BinkyRailways.Core.Model;
 
 namespace BinkyRailways.Core.State.Impl
@@ -8,7 +9,7 @@ namespace BinkyRailways.Core.State.Impl
     /// <summary>
     /// State of a single entity that can be locked by a locomotive.
     /// </summary>
-    public abstract class LockableState<T> : EntityState<T>, ILockableState
+    public abstract class LockableState<T> : EntityState<T>, ILockableStateImpl
         where T : class, IEntity
     {
         private LocState lockedBy;
@@ -34,7 +35,7 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         public bool CanLock(ILocState owner, out ILocState lockedBy)
         {
-            if ((!IsReadyForUse) || (this.lockedBy != null))
+            if ((!IsReadyForUse) || ((this.lockedBy != null) && (this.lockedBy != owner)))
             {
                 lockedBy = this.lockedBy;
                 return false;
@@ -105,7 +106,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Unlock this state from the given owner.
         /// Also unlock all underlying entities except those where the given predicate returns true.
         /// </summary>
-        public void Unlock(Predicate<ILockableState> exclusion)
+        public void Unlock(ILockableState exclusion)
         {
             if (lockedBy != null)
             {
@@ -115,7 +116,7 @@ namespace BinkyRailways.Core.State.Impl
                     item.Unlock(exclusion);        
                 }
                 // Unlock me
-                if ((exclusion == null) || !exclusion(this))
+                if (!ExcludeMe(exclusion))
                 {
                     lockedBy.RemoveLockedEntity(this);
                     lockedBy = null;
@@ -123,6 +124,17 @@ namespace BinkyRailways.Core.State.Impl
                 OnActualStateChanged();
                 AfterUnlock();
             }
+        }
+
+        /// <summary>
+        /// Should this state be excluded given the exclusion?
+        /// </summary>
+        private bool ExcludeMe(ILockableState exclusion)
+        {
+            if (exclusion == null) return false;
+            if (exclusion == this) return true;
+            var impl = exclusion as ILockableStateImpl;
+            return (impl != null) && impl.UnderlyingLockableEntities.Contains(this);
         }
 
         /// <summary>
@@ -136,6 +148,14 @@ namespace BinkyRailways.Core.State.Impl
         /// <summary>
         /// Gets all entities that must be locked in order to lock me.
         /// </summary>
-        protected abstract IEnumerable<ILockableState> UnderlyingLockableEntities { get; }
+        protected abstract IEnumerable<ILockableStateImpl> UnderlyingLockableEntities { get; }
+
+        /// <summary>
+        /// Gets all entities that must be locked in order to lock me.
+        /// </summary>
+        IEnumerable<ILockableStateImpl> ILockableStateImpl.UnderlyingLockableEntities
+        {
+            get { return this.UnderlyingLockableEntities; }
+        }        
     }
 }

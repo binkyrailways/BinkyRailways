@@ -27,8 +27,8 @@ namespace BinkyRailways.Core.State
 
         /// <summary>
         /// Unlock this state from the given owner.
-        /// Also unlock all underlying entities except those where the given predicate returns true.
+        /// Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
         /// </summary>
-        void Unlock(Predicate<ILockableState> exclusion);
+        void Unlock(ILockableState exclusion);
     }
 }

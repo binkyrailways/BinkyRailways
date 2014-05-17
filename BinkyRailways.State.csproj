@@ -103,6 +103,7 @@
     <Compile Include="Core\State\Impl\Ecos\EcosConnection.cs" />
     <Compile Include="Core\State\Impl\Ecos\LocManager.cs" />
     <Compile Include="Core\State\Impl\IInitializationJunctionState.cs" />
+    <Compile Include="Core\State\Impl\ILockableStateImpl.cs" />
     <Compile Include="Core\State\Impl\InitializeJunctionActionState.cs" />
     <Compile Include="Core\State\Impl\RouteOption.cs" />
     <Compile Include="Core\State\Impl\RouteStateForLoc.cs" />

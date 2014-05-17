@@ -776,7 +776,7 @@ namespace BinkyRailways.Core.State.Automatic
             // Release the current route, except for the current block.
             loc.CurrentBlock.Actual = currentBlock;
             loc.CurrentBlockEnterSide.Actual = route.Route.ToBlockSide;
-            route.Route.Unlock(x => (x == currentBlock));
+            route.Route.Unlock(currentBlock);
             // Make sure the current block is still locked
             currentBlock.AssertLockedBy(loc);
 
