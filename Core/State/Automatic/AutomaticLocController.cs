@@ -544,10 +544,9 @@ namespace BinkyRailways.Core.State.Automatic
                 return TimeSpan.FromMinutes(1);
             }
 
-            // Lock the route and assign it
+            // Lock the route 
             route.Lock(loc);
-            loc.CurrentRoute.Actual = route.CreateStateForLoc(loc);
-            // Setup waiting after block
+            // Setup waiting after block (do this before assigning the route)
             if (route.To.WaitPermissions.Evaluate(loc))
             {
                 // Waiting allowed, gamble for it.
@@ -559,6 +558,8 @@ namespace BinkyRailways.Core.State.Automatic
                 // Waiting not allowed.
                 loc.WaitAfterCurrentRoute.Actual = false;
             }
+            // Assign the route
+            loc.CurrentRoute.Actual = route.CreateStateForLoc(loc);
 
             // Clear next route
             loc.NextRoute.Actual = null;
