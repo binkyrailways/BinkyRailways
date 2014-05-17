@@ -73,6 +73,7 @@ namespace BinkyRailways.WinApp.Forms
             /// Change of state
             /// </summary>
             [TypeConverter(typeof(RouteStateBehaviorTypeConverter))]
+            [RefreshProperties(RefreshProperties.All)]
             public RouteStateBehavior StateBehavior { get; set; }
 
             /// <summary>
@@ -86,10 +87,13 @@ namespace BinkyRailways.WinApp.Forms
             /// </summary>
             internal void UpdateText()
             {
-                Text = string.Format(Strings.BehaviorNodeText, AppliesTo, StateBehavior, SpeedBehavior);
-                if (Text.Contains("?"))
+                if (StateBehavior == RouteStateBehavior.Reached)
                 {
-                    
+                    Text = string.Format(Strings.BehaviorNodeTextReached, AppliesTo, StateBehavior);
+                }
+                else
+                {
+                    Text = string.Format(Strings.BehaviorNodeText, AppliesTo, StateBehavior, SpeedBehavior);
                 }
             }
         }

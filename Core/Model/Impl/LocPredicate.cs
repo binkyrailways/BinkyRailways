@@ -38,6 +38,11 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public abstract bool Evaluate(ILoc loc);
+
+        /// <summary>
         /// Create a deep clone.
         /// </summary>
         protected internal abstract LocPredicate Clone();

@@ -39,6 +39,24 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public override bool Evaluate(ILoc loc)
+        {
+            var includes = Includes;
+            var excludes = Excludes;
+            if (includes.IsEmpty && excludes.IsEmpty)
+            {
+                return true;
+            }
+            if (includes.IsEmpty)
+            {
+                return !excludes.Evaluate(loc);
+            }
+            return includes.Evaluate(loc) && !excludes.Evaluate(loc);
+        }
+
+        /// <summary>
         /// Create a deep clone.
         /// </summary>
         protected internal override LocPredicate Clone()

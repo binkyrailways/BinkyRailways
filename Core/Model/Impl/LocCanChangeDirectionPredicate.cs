@@ -14,6 +14,14 @@
         }
 
         /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public override bool Evaluate(ILoc loc)
+        {
+            return (loc.ChangeDirection == ChangeDirection.Allow);
+        }
+
+        /// <summary>
         /// Create a deep clone.
         /// </summary>
         protected internal override LocPredicate Clone()

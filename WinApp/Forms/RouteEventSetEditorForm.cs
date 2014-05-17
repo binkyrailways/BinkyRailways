@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
@@ -71,6 +72,16 @@ namespace BinkyRailways.WinApp.Forms
                 }
                 lbSetSensors.Text = "Events";
             }
+            if (railway != null)
+            {
+                cbViewLocs.Items.Clear();
+                cbViewLocs.Items.Add(Strings.ViewAllLocs);
+                foreach (var loc in railway.GetLocs().OrderBy(x => x.Description, NameWithNumbersComparer.Instance))
+                {
+                    cbViewLocs.Items.Add(loc);
+                }
+                cbViewLocs.SelectedIndex = 0;
+            }
             UpdateComponents();
         }
 
@@ -121,6 +132,7 @@ namespace BinkyRailways.WinApp.Forms
                 eventNode.Nodes.Add(behaviorNode);
                 lbSet.Nodes.Add(eventNode);
                 lbSet.SelectedNode = behaviorNode;
+                UpdateNodeColors();
             }
         }
 
@@ -163,6 +175,7 @@ namespace BinkyRailways.WinApp.Forms
             node.Nodes.Add(newNode);
             lbSet.SelectedNode = newNode;
             lbSet.Select();
+            UpdateNodeColors();
         }
 
         /// <summary>
@@ -197,6 +210,7 @@ namespace BinkyRailways.WinApp.Forms
             {
                 lbSet.Select();
             }
+            UpdateNodeColors();
         }
 
         /// <summary>
@@ -218,6 +232,7 @@ namespace BinkyRailways.WinApp.Forms
             {
                 lbSet.Select();
             }
+            UpdateNodeColors();
         }
 
         /// <summary>
@@ -257,6 +272,41 @@ namespace BinkyRailways.WinApp.Forms
             var node = lbSet.SelectedNode as BehaviorNode;
             if (node != null)
                 node.UpdateText();
+            UpdateNodeColors();
+        }
+
+        /// <summary>
+        /// View loc selection has changed.
+        /// </summary>
+        private void cbViewLocs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateNodeColors();
+        }
+
+        /// <summary>
+        /// Update the color of each node depending on the selected view loc.
+        /// </summary>
+        private void UpdateNodeColors()
+        {
+            var loc = cbViewLocs.SelectedItem as ILoc;
+            foreach (var eventNode in lbSet.Nodes.Cast<EventNode>())
+            {
+                var behaviorFound = false;
+                foreach (var behaviorNode in eventNode.Nodes.Cast<BehaviorNode>())
+                {
+                    var predicate = behaviorNode.AppliesTo;
+                    if ((!behaviorFound) && ((loc == null) || predicate.Evaluate(loc)))
+                    {
+                        // Applies to the selected loc
+                        behaviorNode.ForeColor = SystemColors.ControlText;
+                        behaviorFound = true;
+                    }
+                    else
+                    {
+                        behaviorNode.ForeColor = SystemColors.GrayText;
+                    }
+                }
+            }            
         }
 
         /// <summary>

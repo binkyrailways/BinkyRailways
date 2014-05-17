@@ -71,6 +71,15 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Evaluate this predicate for the given loc.
+        /// </summary>
+        public override bool Evaluate(ILoc loc)
+        {
+            var @group = Group;
+            return (@group != null) && (loc != null) && @group.Locs.ContainsId(loc.Id);
+        }
+
+        /// <summary>
         /// Create a deep clone.
         /// </summary>
         protected internal override LocPredicate Clone()
