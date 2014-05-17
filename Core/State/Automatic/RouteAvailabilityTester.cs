@@ -52,7 +52,8 @@ namespace BinkyRailways.Core.State.Automatic
 
             // Check opposite traffic
             IBlockState blockContainingTraffic;
-            if (HasTrafficInOppositeDirection(route, loc, out blockContainingTraffic))
+            var maxSteps = railwayState.BlockStates.Count;
+            if (HasTrafficInOppositeDirection(route, loc, maxSteps, out blockContainingTraffic))
             {
                 // Traffic in opposite direction found
                 return new RouteOption(route, RouteImpossibleReason.OpposingTraffic, blockContainingTraffic.Description);
@@ -118,8 +119,14 @@ namespace BinkyRailways.Core.State.Automatic
         /// <summary>
         /// Is there are traffic in the opposite direction of the given route (not including the given loc).
         /// </summary>
-        protected bool HasTrafficInOppositeDirection(IRouteState route, ILocState currentLoc, out IBlockState blockContainingTraffic)
+        protected bool HasTrafficInOppositeDirection(IRouteState route, ILocState currentLoc, int stepsRemaining, out IBlockState blockContainingTraffic)
         {
+            if (stepsRemaining <= 0)
+            {
+                // We've taken to long to find opposing traffic
+                blockContainingTraffic = null;
+                return false;
+            }
             var toBlock = route.To;
             if (HasTrafficInOppositeDirection(toBlock, route.ToBlockSide, currentLoc))
             {
@@ -144,7 +151,7 @@ namespace BinkyRailways.Core.State.Automatic
                 return false;
             }
             // Only one route possible, check that for opposing traffic
-            return HasTrafficInOppositeDirection(nextRoutes[0], currentLoc, out blockContainingTraffic);
+            return HasTrafficInOppositeDirection(nextRoutes[0], currentLoc, stepsRemaining - 1, out blockContainingTraffic);
         }
 
         /// <summary>
