@@ -127,7 +127,9 @@ namespace BinkyRailways.Core.State.Impl
                 var loc = LockedBy;
                 if ((loc == null) || (State != Core.State.BlockState.Occupied)) return false;
                 var automaticState = loc.AutomaticState.Actual;
-                return ((automaticState == AutoLocState.WaitingForDestinationTimeout) || (automaticState == AutoLocState.WaitingForDestinationGroupMinimum));
+                return (((automaticState == AutoLocState.AssignRoute) && (loc.Speed.Requested == 0)) ||
+                        (automaticState == AutoLocState.WaitingForDestinationTimeout) || 
+                        (automaticState == AutoLocState.WaitingForDestinationGroupMinimum));
             }
         }
 

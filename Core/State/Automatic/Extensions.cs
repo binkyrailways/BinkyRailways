@@ -115,5 +115,15 @@ namespace BinkyRailways.Core.State.Automatic
             // We should never get here
             return options[options.Length - 1].Item1;
         }
+
+        /// <summary>
+        /// Is the given loc allowed to leave its current block?
+        /// </summary>
+        internal static bool CanLeaveCurrentBlock(this ILocState loc)
+        {
+            var currentBlock = loc.CurrentBlock.Actual;
+            var currentBlockGroup = (currentBlock != null) ? currentBlock.BlockGroup : null;
+            return ((currentBlockGroup == null) || (currentBlockGroup.FirstLocCanLeave));
+        }
     }
 }

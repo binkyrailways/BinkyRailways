@@ -523,8 +523,21 @@ namespace BinkyRailways.Core.State.Automatic
                 return TimeSpan.Zero;
             }
 
-            // Gather possible routes
-            var route = loc.NextRoute.Actual ?? ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false);
+            // Select next route
+            var route = loc.NextRoute.Actual;
+            if (route == null)
+            {
+                // No next route was set
+                if ((loc.Speed.Requested == 0) && (!loc.CanLeaveCurrentBlock()))
+                {
+                    // We're not running and we're not allowed to leave the current block
+                    loc.AutomaticState.Actual = AutoLocState.WaitingForDestinationGroupMinimum;
+                    return TimeSpan.FromMinutes(1);
+                }
+
+                // Choose a next route now
+                route = ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false);
+            }
             if (route == null)
             {
                 // No possible routes right now, try again
@@ -862,9 +875,7 @@ namespace BinkyRailways.Core.State.Automatic
             if (now >= startNextRouteTime)
             {
                 // Check the block group, see if we can leave
-                var currentBlock = loc.CurrentBlock.Actual;
-                var currentBlockGroup = (currentBlock != null) ? currentBlock.BlockGroup : null;
-                if ((currentBlockGroup == null) || (currentBlockGroup.FirstLocCanLeave))
+                if (loc.CanLeaveCurrentBlock())
                 {
                     // Yes, let's assign a new route
                     loc.AutomaticState.Actual = AutoLocState.AssignRoute;
@@ -908,9 +919,7 @@ namespace BinkyRailways.Core.State.Automatic
             }
 
             // Timeout reached?
-            var currentBlock = loc.CurrentBlock.Actual;
-            var currentBlockGroup = (currentBlock != null) ? currentBlock.BlockGroup : null;
-            if ((currentBlockGroup == null) || (currentBlockGroup.FirstLocCanLeave))
+            if (loc.CanLeaveCurrentBlock())
             {
                 // Yes, let's assign a new route
                 loc.AutomaticState.Actual = AutoLocState.AssignRoute;
