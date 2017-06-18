@@ -202,40 +202,31 @@
     <value>&amp;Options</value>
   </data>
   <data name="tbShowLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="tbShowLog.Text" xml:space="preserve">
     <value>Log</value>
   </data>
   <data name="tbToolsSep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
+    <value>161, 6</value>
   </data>
   <data name="tbRouteInspector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="tbRouteInspector.Text" xml:space="preserve">
     <value>Route inspector</value>
   </data>
   <data name="tbLocoIOInspector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="tbLocoIOInspector.Text" xml:space="preserve">
     <value>LocoIO inspector</value>
   </data>
   <data name="tbQuickEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>164, 22</value>
   </data>
   <data name="tbQuickEditor.Text" xml:space="preserve">
     <value>Quick editor</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
-  </data>
-  <data name="tbWebBrowser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="tbWebBrowser.Text" xml:space="preserve">
-    <value>&amp;Remote connection</value>
   </data>
   <data name="tbTools.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -256,7 +247,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 29</value>
+    <value>47, 29</value>
   </data>
   <data name="tbTools.Text" xml:space="preserve">
     <value>&amp;Tools</value>
@@ -337,7 +328,7 @@
     <value>locsControl</value>
   </data>
   <data name="&gt;&gt;locsControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocsControl, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Run.LocsControl, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;locsControl.Parent" xml:space="preserve">
     <value>splitContainer.Panel1</value>
@@ -376,7 +367,7 @@
     <value>viewControl</value>
   </data>
   <data name="&gt;&gt;viewControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.RailwayViewControl, BinkyRailways, Version=1.1.0.58, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Run.RailwayViewControl, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;viewControl.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -522,6 +513,12 @@
   <data name="&gt;&gt;tbToolsSep.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tbRouteInspector.Name" xml:space="preserve">
+    <value>tbRouteInspector</value>
+  </data>
+  <data name="&gt;&gt;tbRouteInspector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tbLocoIOInspector.Name" xml:space="preserve">
     <value>tbLocoIOInspector</value>
   </data>
@@ -534,18 +531,6 @@
   <data name="&gt;&gt;tbQuickEditor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbWebBrowser.Name" xml:space="preserve">
-    <value>tbWebBrowser</value>
-  </data>
-  <data name="&gt;&gt;tbWebBrowser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tbbVirtualMode.Name" xml:space="preserve">
     <value>tbbVirtualMode</value>
   </data>
@@ -556,12 +541,6 @@
     <value>tbVirtualModeAutoRun</value>
   </data>
   <data name="&gt;&gt;tbVirtualModeAutoRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbRouteInspector.Name" xml:space="preserve">
-    <value>tbRouteInspector</value>
-  </data>
-  <data name="&gt;&gt;tbRouteInspector.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

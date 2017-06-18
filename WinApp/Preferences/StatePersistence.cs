@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using BinkyRailways.Core.Model;
-using BinkyRailways.Core.Server;
 using BinkyRailways.Core.State;
 using Microsoft.Win32;
 
 namespace BinkyRailways.WinApp.Preferences
 {
-    internal class StatePersistence : IStatePersistence, IWebServerPersistence
+    internal class StatePersistence : IStatePersistence
     {
         private const string ClosedKey = "Closed";
         private const string CurrentBlock = "CurrentBlock";

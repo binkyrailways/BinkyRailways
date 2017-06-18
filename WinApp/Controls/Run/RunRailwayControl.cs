@@ -24,8 +24,7 @@ namespace BinkyRailways.WinApp.Controls.Run
         private LocoIOInspectorForm locoIOInspectorForm;
         private RouteInspectionForm routeInspectorForm;
         private LogForm logForm;
-        private WebServerForm webServerForm;
-
+ 
         /// <summary>
         /// Default ctor
         /// </summary>
@@ -198,21 +197,6 @@ namespace BinkyRailways.WinApp.Controls.Run
         }
 
         /// <summary>
-        /// Show the webserver form.
-        /// </summary>
-        private void ShowWebServerForm()
-        {
-            if (webServerForm == null)
-            {
-                var webServer = appState.WebServer;
-                if (webServer == null) return;
-                webServerForm = new WebServerForm(webServer);
-                webServerForm.FormClosed += (s, x) => webServerForm = null;
-            }
-            webServerForm.Show(this);
-        }
-
-        /// <summary>
         /// Close this view and return to edit mode
         /// </summary>
         private void OnCloseAndEditClick(object sender, EventArgs e)
@@ -339,14 +323,6 @@ namespace BinkyRailways.WinApp.Controls.Run
             {
                 railway.VirtualMode.AutoRun = tbVirtualModeAutoRun.Checked;
             }
-        }
-
-        /// <summary>
-        /// Open the Binky state in a webbrowser.
-        /// </summary>
-        private void OnOpenWebBrowser(object sender, EventArgs e)
-        {
-            ShowWebServerForm();
         }
 
         /// <summary>

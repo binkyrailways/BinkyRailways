@@ -533,12 +533,6 @@
     <Compile Include="WinApp\Forms\UnhandledExceptionForm.Designer.cs">
       <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinApp\Forms\WebServerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinApp\Forms\WebServerForm.Designer.cs">
-      <DependentUpon>WebServerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinApp\Items\Edit\BlockSignalItem.cs" />
     <Compile Include="WinApp\Items\Edit\Clock4StageOutputItem.cs" />
     <Compile Include="WinApp\Items\Edit\ItemSelectMouseHandler.cs" />
@@ -682,10 +676,6 @@
     <ProjectReference Include="BinkyRailways.Protocols.csproj">
       <Project>{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Protocols</Name>
-    </ProjectReference>
-    <ProjectReference Include="BinkyRailways.Server.csproj">
-      <Project>{4299D52F-23DE-4DA2-BB11-74001AEDDF43}</Project>
-      <Name>BinkyRailways.Server</Name>
     </ProjectReference>
     <ProjectReference Include="BinkyRailways.State.csproj">
       <Project>{4299D52F-F138-48A2-BB11-74001AEDDF43}</Project>
@@ -946,9 +936,6 @@
     <EmbeddedResource Include="WinApp\Forms\UnhandledExceptionForm.resx">
       <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinApp\Forms\WebServerForm.resx">
-      <DependentUpon>WebServerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinApp\Strings.nl-NL.resx" />
     <EmbeddedResource Include="WinApp\Strings.resx">

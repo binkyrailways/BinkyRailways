@@ -47,16 +47,14 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.tbTools = new System.Windows.Forms.ToolStripMenuItem();
             this.tbShowLog = new System.Windows.Forms.ToolStripMenuItem();
             this.tbToolsSep = new System.Windows.Forms.ToolStripSeparator();
+            this.tbRouteInspector = new System.Windows.Forms.ToolStripMenuItem();
             this.tbLocoIOInspector = new System.Windows.Forms.ToolStripMenuItem();
             this.tbQuickEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tbWebBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.tbbVirtualMode = new System.Windows.Forms.ToolStripDropDownButton();
             this.tbVirtualModeAutoRun = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.locsControl = new BinkyRailways.WinApp.Controls.Run.LocsControl();
             this.viewControl = new BinkyRailways.WinApp.Controls.Run.RailwayViewControl();
-            this.tbRouteInspector = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -150,9 +148,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.tbToolsSep,
             this.tbRouteInspector,
             this.tbLocoIOInspector,
-            this.tbQuickEditor,
-            this.toolStripMenuItem1,
-            this.tbWebBrowser});
+            this.tbQuickEditor});
             resources.ApplyResources(this.tbTools, "tbTools");
             this.tbTools.Name = "tbTools";
             // 
@@ -167,6 +163,12 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.tbToolsSep.Name = "tbToolsSep";
             resources.ApplyResources(this.tbToolsSep, "tbToolsSep");
             // 
+            // tbRouteInspector
+            // 
+            this.tbRouteInspector.Name = "tbRouteInspector";
+            resources.ApplyResources(this.tbRouteInspector, "tbRouteInspector");
+            this.tbRouteInspector.Click += new System.EventHandler(this.tbRouteInspector_Click);
+            // 
             // tbLocoIOInspector
             // 
             this.tbLocoIOInspector.Name = "tbLocoIOInspector";
@@ -178,17 +180,6 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.tbQuickEditor.Name = "tbQuickEditor";
             resources.ApplyResources(this.tbQuickEditor, "tbQuickEditor");
             this.tbQuickEditor.Click += new System.EventHandler(this.OnQuickEditorClick);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
-            // 
-            // tbWebBrowser
-            // 
-            this.tbWebBrowser.Name = "tbWebBrowser";
-            resources.ApplyResources(this.tbWebBrowser, "tbWebBrowser");
-            this.tbWebBrowser.Click += new System.EventHandler(this.OnOpenWebBrowser);
             // 
             // tbbVirtualMode
             // 
@@ -230,12 +221,6 @@ namespace BinkyRailways.WinApp.Controls.Run
             resources.ApplyResources(this.viewControl, "viewControl");
             this.viewControl.Name = "viewControl";
             // 
-            // tbRouteInspector
-            // 
-            this.tbRouteInspector.Name = "tbRouteInspector";
-            resources.ApplyResources(this.tbRouteInspector, "tbRouteInspector");
-            this.tbRouteInspector.Click += new System.EventHandler(this.tbRouteInspector_Click);
-            // 
             // RunRailwayControl
             // 
             resources.ApplyResources(this, "$this");
@@ -276,8 +261,6 @@ namespace BinkyRailways.WinApp.Controls.Run
         private ToolStripMenuItem tbQuickEditor;
         private ToolStripDropDownButton tbbVirtualMode;
         private ToolStripMenuItem tbVirtualModeAutoRun;
-        private ToolStripSeparator toolStripMenuItem1;
-        private ToolStripMenuItem tbWebBrowser;
         private ToolStripMenuItem tbRouteInspector;
     }
 }

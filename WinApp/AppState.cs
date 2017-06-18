@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
-using BinkyRailways.Core.Server;
 using BinkyRailways.Core.State;
 using BinkyRailways.Core.State.Impl;
 using BinkyRailways.Core.Util;
@@ -26,7 +25,6 @@ namespace BinkyRailways.WinApp
 
         private readonly IStateUserInterface ui;
         private readonly IStatePersistence statePersistence;
-        private readonly IWebServerPersistence webServerPersistence;
         private readonly MainForm mainForm;
         private IPackage package;
         private IRailwayState railwayState;
@@ -34,7 +32,6 @@ namespace BinkyRailways.WinApp
         private RestoreBlockAssignmentsForm restoreBlockAssignmentsForm;
         private bool updateRestoreBlockAssignmentsForm;
         private Mutex packageMutex;
-        private WebServer webServer;
 
         /// <summary>
         /// Default ctor
@@ -47,7 +44,6 @@ namespace BinkyRailways.WinApp
             this.mainForm = mainForm;
             var persistence = new StatePersistence();
             statePersistence = persistence;
-            webServerPersistence = persistence;
         }
 
         /// <summary>
@@ -229,11 +225,6 @@ namespace BinkyRailways.WinApp
             {
                 if (railwayState != value)
                 {
-                    if (webServer != null)
-                    {
-                        webServer.Dispose();
-                        webServer = null;
-                    }
                     if (railwayState != null)
                     {
                         railwayState.Dispose();
@@ -243,7 +234,6 @@ namespace BinkyRailways.WinApp
                     {
                         value.PrepareForUse(ui, statePersistence);
                         value.ModelTime.ActualChanged += OnModelTimeChanged;
-                        webServer = WebServer.StartNew(value, webServerPersistence);
                     }
                     RailwayStateChanged.Fire(this);
                     if (stateInspectionForm != null)
@@ -258,16 +248,7 @@ namespace BinkyRailways.WinApp
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the current webserver.
-        /// Can be null.
-        /// </summary>
-        public WebServer WebServer
-        {
-            get { return webServer; }
-        }
-
+        
         /// <summary>
         /// Time changed
         /// </summary>
