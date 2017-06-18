@@ -5,6 +5,7 @@
         Dcc,
         LocoNet,
         Motorola,
-        Mfx
+        Mfx,
+        Mqtt
     }
 }

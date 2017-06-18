@@ -34,6 +34,11 @@ namespace BinkyRailways.Core.Model
         IEcosCommandStation AddNewEcosCommandStation();
 
         /// <summary>
+        /// Add a new MQTT command station.
+        /// </summary>
+        IMqttCommandStation AddNewMqttCommandStation();
+
+        /// <summary>
         /// Load a command station by it's id.
         /// </summary>
         /// <returns>Null if not found</returns>

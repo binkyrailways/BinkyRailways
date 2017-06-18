@@ -291,6 +291,16 @@ namespace BinkyRailways.Core.Storage
         }
 
         /// <summary>
+        /// Add a new MQTT command station.
+        /// </summary>
+        IMqttCommandStation IPackage.AddNewMqttCommandStation()
+        {
+            var item = new MqttCommandStation();
+            Add(item);
+            return item;
+        }
+
+        /// <summary>
         /// Load a command station by it's id.
         /// </summary>
         /// <returns>Null if not found</returns>

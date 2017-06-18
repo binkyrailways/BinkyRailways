@@ -862,4 +862,7 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="MinimumLocsOnTrackForMinimumLocsInGroupStartName" xml:space="preserve">
     <value>Minimum locs on track</value>
   </data>
+  <data name="NewMqttCommandStationDescription" xml:space="preserve">
+    <value>New MQTT Command station</value>
+  </data>
 </root>
