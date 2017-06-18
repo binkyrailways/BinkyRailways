@@ -1,0 +1,52 @@
+﻿Configuration byte
+
+** INPUT **
+
+OPC_INPUT_REP
+1F [0001 1111] Block detection active low
+1B [0001 1011] Block detection active low + delay
+5F [0101 1111] Block detection active high
+5B [0101 1011] Block detection active high + delay
+
+OPC_SW_REQ
+0F [0000 1111] Single switch direct
+2F [0010 1111] Pushbutton direct active low
+6F [0110 1111] Pushbutton direct active high
+
+OPC_SW_REP
+07 [0000 0111] Single switch indirect
+17 [0001 0111] Switch feedback
+27 [0010 0111] Pushbutton indirect active low
+67 [0110 0111] Pushbutton indirect active high
+
+** OUTPUT **
+
+Configuration Byte
+
+0x80 Output
+0x01 LowAtStartup
+0x04 HardwareReset
+0x08 PulseContact
+0x10 Flash
+0x20 Muli
+0x40 Block detector
+
+0x03 Input
+0x40 SensorActiveLow
+0x04 SensorDelay NEGATIVE
+0x08 SensorMessage NEGATIVE
+0x10 Sensor type
+0x20 Button type
+
+Value1
+
+If output: (PortAddr - 1) & 0x7F
+If input:  ((PortAdr - 1) & 0xFF) >> 1
+
+Value2
+
+If output: ((PortAddr - 1) & 0x0780) >> 7
+If input:  (((PortAddr - 1) & 0x0F00) >> 8) |
+             ((PortAddr-1) & 0x0001) ? 0x20 : 0x00 |
+             (SensorTurnout ? 0x40 : 00)
+Both:      Value2 |= (SensorPulse ? 0x00 : 10)

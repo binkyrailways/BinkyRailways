@@ -1,0 +1,580 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D56CE7E3-4005-4D41-9022-B6FB9F66280A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LocoNetToolBox</RootNamespace>
+    <AssemblyName>LocoNetToolBox</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>WinApp\App.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\ConfigurationItemLoader.cs" />
+    <Compile Include="Configuration\ConfigurationItemLoader.Static.cs" />
+    <Compile Include="Configuration\LocoIOConfigMap.cs" />
+    <Compile Include="Configuration\IConfigurationItem.cs" />
+    <Compile Include="Configuration\LocoNetConfiguration.cs" />
+    <Compile Include="Configuration\XmlExtensions.cs" />
+    <Compile Include="Devices\LocoIO\AddressList.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Bs1ForSignals.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv133.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\NotUsed.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv145J6.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv145J5.cs" />
+    <Compile Include="Devices\LocoIO\LocoIOConfigLoader.cs" />
+    <Compile Include="Devices\LocoIO\Connector.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorConfig.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorMode.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorMode.Statics.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv102.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv77.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv136.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv81v1.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\None.cs" />
+    <Compile Include="Devices\LocoIO\ConnectorModes\Mgv93.cs" />
+    <Compile Include="Devices\LocoIO\PinConfigList.cs" />
+    <Compile Include="Devices\LocoIO\LocoIOConfig.cs" />
+    <Compile Include="Devices\LocoIO\PinConfig.cs" />
+    <Compile Include="Devices\LocoIO\PinMode.cs" />
+    <Compile Include="Devices\LocoIO\PinMode.Statics.cs" />
+    <Compile Include="Devices\LocoIO\ProgramException.cs" />
+    <Compile Include="Devices\LocoIO\Programmer.cs" />
+    <Compile Include="Devices\LocoIO\SVConfig.cs" />
+    <Compile Include="Devices\LocoIO\SVConfigEventArgs.cs" />
+    <Compile Include="Devices\MgvServo\ServoProgrammer.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\EventHandlerExtensions.cs" />
+    <Compile Include="Model\AddressState.cs" />
+    <Compile Include="Model\AddressStateMap.cs" />
+    <Compile Include="Model\LocoNet.cs" />
+    <Compile Include="Model\LocoNetState.IdleDetection.cs" />
+    <Compile Include="Model\ILocoNetState.cs" />
+    <Compile Include="Model\LocoIOEventArgs.cs" />
+    <Compile Include="Model\LocoIO.cs" />
+    <Compile Include="Model\LocoNetState.cs" />
+    <Compile Include="Model\StateMessage.cs" />
+    <Compile Include="Model\SwitchState.cs" />
+    <Compile Include="Protocol\BaudRate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\Busy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\Constants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\UdpLocoBuffer.cs" />
+    <Compile Include="Protocol\DirFunc.cs" />
+    <Compile Include="Protocol\GlobalPowerOff.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\GlobalPowerOn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\Idle.cs" />
+    <Compile Include="Protocol\InputReport.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\InputSource.cs" />
+    <Compile Include="Protocol\LinkSlotsRequest.cs" />
+    <Compile Include="Protocol\LocoAddressRequest.cs" />
+    <Compile Include="Protocol\LocoBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\LocoBuffer.ReceiveProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\LocoDirFuncRequest.cs" />
+    <Compile Include="Protocol\LocoNetAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\LocoSpeedRequest.cs" />
+    <Compile Include="Protocol\LongAck.cs" />
+    <Compile Include="Protocol\Message.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\MessageHandler.cs" />
+    <Compile Include="Protocol\MessageVisitor.cs" />
+    <Compile Include="Protocol\MoveSlotsRequest.cs" />
+    <Compile Include="Protocol\PeerXferRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\PeerXferRequest1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\PeerXferRequest2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\PeerXferResponse.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\PeerXferResponse1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\Request.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\Response.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\SerialPortLocoBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\SlotDataRequest.cs" />
+    <Compile Include="Protocol\SlotDataResponse.cs" />
+    <Compile Include="Protocol\SlotStat1Request.cs" />
+    <Compile Include="Protocol\SlotStatus1.cs" />
+    <Compile Include="Protocol\SlotStatus2.cs" />
+    <Compile Include="Protocol\Sound.cs" />
+    <Compile Include="Protocol\SwitchReport.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\SwitchRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\SwitchStateRequest.cs" />
+    <Compile Include="Protocol\TcpLocoBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Protocol\TrackStatus.cs" />
+    <Compile Include="Protocol\UnlinkSlotsRequest.cs" />
+    <Compile Include="Protocol\WriteSlotData.cs" />
+    <Compile Include="Services\UnknownLocoIODetector.cs" />
+    <Compile Include="Version.cs" />
+    <Compile Include="WinApp\AppState.cs" />
+    <Compile Include="WinApp\Communications\AsyncLocoBuffer.cs" />
+    <Compile Include="WinApp\Communications\AsyncRequestCompletedEventArgs.cs" />
+    <Compile Include="WinApp\Constants.cs" />
+    <Compile Include="WinApp\Controls\CommandControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\CommandControl.Designer.cs">
+      <DependentUpon>CommandControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\AdvancedCommandControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\AdvancedCommandControl.Designer.cs">
+      <DependentUpon>AdvancedCommandControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\SwitchLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\SwitchLogView.Designer.cs">
+      <DependentUpon>SwitchLogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\InputLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\InputLogView.Designer.cs">
+      <DependentUpon>InputLogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\UdpLocoBufferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\UdpLocoBufferSettings.Designer.cs">
+      <DependentUpon>UdpLocoBufferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOAdvancedConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOAdvancedConfigurationForm.Designer.cs">
+      <DependentUpon>LocoIOAdvancedConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOAdvancedConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOAdvancedConfigurationControl.Designer.cs">
+      <DependentUpon>LocoIOAdvancedConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOChangeAddressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOChangeAddressForm.Designer.cs">
+      <DependentUpon>LocoIOChangeAddressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\PowerCommandControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\PowerCommandControl.Designer.cs">
+      <DependentUpon>PowerCommandControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoNetMonitor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoNetMonitor.Designer.cs">
+      <DependentUpon>LocoNetMonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ReadNewLocoIOsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ReadNewLocoIOsForm.Designer.cs">
+      <DependentUpon>ReadNewLocoIOsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\TcpLocoBufferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\TcpLocoBufferSettings.Designer.cs">
+      <DependentUpon>TcpLocoBufferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\SerialPortLocoBufferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\SerialPortLocoBufferSettings.Designer.cs">
+      <DependentUpon>SerialPortLocoBufferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\DirectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\DirectionControl.Designer.cs">
+      <DependentUpon>DirectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOPinModeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOPinModeControl.Designer.cs">
+      <DependentUpon>LocoIOPinModeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConnectorConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConnectorConfigurationControl.Designer.cs">
+      <DependentUpon>LocoIOConnectorConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIODebugForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIODebugForm.Designer.cs">
+      <DependentUpon>LocoIODebugForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOPinConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOPinConfigurationControl.Designer.cs">
+      <DependentUpon>LocoIOPinConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep4.Designer.cs">
+      <DependentUpon>ServoProgrammerStep4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep3.Designer.cs">
+      <DependentUpon>ServoProgrammerStep3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep1.Designer.cs">
+      <DependentUpon>ServoProgrammerStep1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammerStep2.Designer.cs">
+      <DependentUpon>ServoProgrammerStep2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\InputStateView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\InputStateView.Designer.cs">
+      <DependentUpon>InputStateView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoBufferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoBufferSettings.Designer.cs">
+      <DependentUpon>LocoBufferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoBufferView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoBufferView.Designer.cs">
+      <DependentUpon>LocoBufferView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConfigurationControl.Designer.cs">
+      <DependentUpon>LocoIOConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOConfigurationForm.Designer.cs">
+      <DependentUpon>LocoIOConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\LocoIOList.Designer.cs">
+      <DependentUpon>LocoIOList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServeProgrammerAddressControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServeProgrammerAddressControl.Designer.cs">
+      <DependentUpon>ServeProgrammerAddressControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoProgrammer.Designer.cs">
+      <DependentUpon>ServoProgrammer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\ServoTester.Designer.cs">
+      <DependentUpon>ServoTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\Controls\TurnoutSelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinApp\Controls\TurnoutSelectionControl.Designer.cs">
+      <DependentUpon>TurnoutSelectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinApp\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApp\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinApp\VersionCheckResult.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\CommandControl.resx">
+      <DependentUpon>CommandControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\AdvancedCommandControl.resx">
+      <DependentUpon>AdvancedCommandControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\SwitchLogView.resx">
+      <DependentUpon>SwitchLogView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\InputLogView.resx">
+      <DependentUpon>InputLogView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\UdpLocoBufferSettings.resx">
+      <DependentUpon>UdpLocoBufferSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOAdvancedConfigurationForm.resx">
+      <DependentUpon>LocoIOAdvancedConfigurationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOAdvancedConfigurationControl.resx">
+      <DependentUpon>LocoIOAdvancedConfigurationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOChangeAddressForm.resx">
+      <DependentUpon>LocoIOChangeAddressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\PowerCommandControl.resx">
+      <DependentUpon>PowerCommandControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoNetMonitor.resx">
+      <DependentUpon>LocoNetMonitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ReadNewLocoIOsForm.resx">
+      <DependentUpon>ReadNewLocoIOsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\TcpLocoBufferSettings.resx">
+      <DependentUpon>TcpLocoBufferSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\SerialPortLocoBufferSettings.resx">
+      <DependentUpon>SerialPortLocoBufferSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\DirectionControl.resx">
+      <DependentUpon>DirectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOPinModeControl.resx">
+      <DependentUpon>LocoIOPinModeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOConnectorConfigurationControl.resx">
+      <DependentUpon>LocoIOConnectorConfigurationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIODebugForm.resx">
+      <DependentUpon>LocoIODebugForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOPinConfigurationControl.resx">
+      <DependentUpon>LocoIOPinConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoProgrammerStep4.resx">
+      <DependentUpon>ServoProgrammerStep4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoProgrammerStep3.resx">
+      <DependentUpon>ServoProgrammerStep3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoProgrammerStep1.resx">
+      <DependentUpon>ServoProgrammerStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoProgrammerStep2.resx">
+      <DependentUpon>ServoProgrammerStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\InputStateView.resx">
+      <DependentUpon>InputStateView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoBufferSettings.resx">
+      <DependentUpon>LocoBufferSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoBufferView.resx">
+      <DependentUpon>LocoBufferView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOConfigurationControl.resx">
+      <DependentUpon>LocoIOConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOConfigurationForm.resx">
+      <DependentUpon>LocoIOConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\LocoIOList.resx">
+      <DependentUpon>LocoIOList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServeProgrammerAddressControl.resx">
+      <DependentUpon>ServeProgrammerAddressControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoProgrammer.resx">
+      <DependentUpon>ServoProgrammer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\ServoTester.resx">
+      <DependentUpon>ServoTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Controls\TurnoutSelectionControl.resx">
+      <DependentUpon>TurnoutSelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinApp\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="WinApp\Preferences\RegistrySettingsProvider.cs" />
+    <Compile Include="WinApp\Preferences\UserPreferences.cs" />
+    <Compile Include="WinApp\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Devices\LocoIO\LocoIO-SV.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(TargetDir)*.*" "$(SolutionDir)\Build\Application\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
