@@ -150,7 +150,7 @@ namespace BinkyRailways.Core.State.Impl.LocoBuffer
         {
             Log.Trace("Send: SwitchRequest: address={0}, direction={1}", address.Value, direction);
             var msg = new SwitchRequest();
-            msg.Address = address.Value - 1;
+            msg.Address = address.ValueAsInt - 1;
             msg.Direction = (direction == SwitchDirection.Straight);
             if (invertDirection)
             {

@@ -64,9 +64,9 @@ namespace BinkyRailways.Core.State.Impl.DccOverRs232
         {
             Log.Trace("OnSendLocSpeedAndDirection: {0}", loc);
             var direction = (loc.Direction.Requested == LocDirection.Forward);
-            var packet = Packets.CreateSpeedAndDirection(loc.Address.Value, (byte)loc.SpeedInSteps.Requested, direction, loc.SpeedSteps);
+            var packet = Packets.CreateSpeedAndDirection(loc.Address.ValueAsInt, (byte)loc.SpeedInSteps.Requested, direction, loc.SpeedSteps);
             var data = PacketTranslater.Translate(packet);
-            sender.SendSpeedAndDirection(loc.Address.Value, data);
+            sender.SendSpeedAndDirection(loc.Address.ValueAsInt, data);
             loc.Direction.Actual = loc.Direction.Requested;
             loc.Speed.Actual = loc.Speed.Requested;
         }

@@ -399,6 +399,22 @@ namespace BinkyRailways.WinApp.Controls.Edit
         }
 
         /// <summary>
+        /// Add MQTT command station
+        /// </summary>
+        private void tbAddMqtt_Click(object sender, EventArgs e)
+        {
+            var cs = appState.Package.AddNewMqttCommandStation();
+            cs.Description = Strings.NewMqttCommandStationDescription;
+            var csRef = appState.Package.Railway.CommandStations.Add(cs);
+            var node = new EntityRefNode<ICommandStation>(csRef, cs);
+            activeCommandStationsRoot.Nodes.Add(node);
+            tvItems.SelectedNode = node;
+            UpdateAppTitle.Fire(this);
+            ValidateRailway();
+        }
+
+
+        /// <summary>
         /// Node selection has changed.
         /// </summary>
         private void tvItems_AfterSelect(object sender, TreeViewEventArgs e)

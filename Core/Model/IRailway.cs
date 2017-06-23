@@ -68,5 +68,10 @@ namespace BinkyRailways.Core.Model
         /// Preferred command station for MFX addresses.
         /// </summary>
         ICommandStation PreferredMfxCommandStation { get; set; }
+
+        /// <summary>
+        /// Preferred command station for Mqtt addresses.
+        /// </summary>
+        ICommandStation PreferredMqttCommandStation { get; set; }
     }
 }

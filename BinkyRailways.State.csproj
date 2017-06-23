@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailways.State</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,8 +50,16 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="M2Mqtt.Net">
+      <HintPath>Binaries\M2Mqtt\M2Mqtt.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\NLog\NLog.dll</HintPath>
@@ -105,8 +114,11 @@
     <Compile Include="Core\State\Impl\IInitializationJunctionState.cs" />
     <Compile Include="Core\State\Impl\ILockableStateImpl.cs" />
     <Compile Include="Core\State\Impl\InitializeJunctionActionState.cs" />
+    <Compile Include="Core\State\Impl\Mqtt\Messages.cs" />
+    <Compile Include="Core\State\Impl\Mqtt\MqttCommandStationState.cs" />
     <Compile Include="Core\State\Impl\RouteOption.cs" />
     <Compile Include="Core\State\Impl\RouteStateForLoc.cs" />
+    <Compile Include="Core\State\IMqttCommandStationState.cs" />
     <Compile Include="Core\State\IRouteOption.cs" />
     <Compile Include="Core\State\IRouteStateForLoc.cs" />
     <Compile Include="Core\State\Impl\RouteEventState.cs" />

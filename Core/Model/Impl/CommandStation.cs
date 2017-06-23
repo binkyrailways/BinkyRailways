@@ -11,6 +11,7 @@ namespace BinkyRailways.Core.Model.Impl
     [XmlInclude(typeof(DccOverRs232CommandStation))]
     [XmlInclude(typeof(EcosCommandStation))]
     [XmlInclude(typeof(LocoBufferCommandStation))]
+    [XmlInclude(typeof(MqttCommandStation))]
     public abstract class CommandStation : PersistentEntity, ICommandStation
     {
         /// <summary>

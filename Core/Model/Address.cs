@@ -10,12 +10,12 @@ namespace BinkyRailways.Core.Model
     public sealed class Address : IEquatable<Address>, IComparable<Address>
     {
         private readonly Network network;
-        private readonly int value;
+        private readonly string value;
 
         /// <summary>
         /// Default ctor
         /// </summary>
-        public Address(AddressType type, string addressSpace, int value) :
+        public Address(AddressType type, string addressSpace, string value) :
             this(new Network(type, addressSpace), value)
         {
         }
@@ -23,12 +23,37 @@ namespace BinkyRailways.Core.Model
         /// <summary>
         /// Default ctor
         /// </summary>
-        public Address(Network network, int value)
+        public Address(AddressType type, string addressSpace, int value) :
+            this(new Network(type, addressSpace), Convert.ToString(value))
+        {
+        }
+
+        /// <summary>
+        /// Default ctor
+        /// </summary>
+        public Address(Network network, int value) :
+            this(network, Convert.ToString(value))
+        {
+        }
+
+        /// <summary>
+        /// Default ctor
+        /// </summary>
+        public Address(Network network, string value)
         {
             if (network == null)
                 throw new ArgumentNullException("network");
             this.network = network;
-            this.value = Math.Min(Math.Max(value, network.Type.MinValue()), network.Type.MaxValue());
+            if (network.Type.RequiresNumericValue()) {
+                int nValue;
+                if (!int.TryParse(value, out nValue)) {
+                    throw new ArgumentNullException("value must be numeric");                    
+                }
+                nValue = Math.Min(Math.Max(nValue, network.Type.MinValue()), network.Type.MaxValue());
+                this.value = nValue.ToString();
+            } else {
+                this.value = value;
+            }
         }
 
         /// <summary>
@@ -60,9 +85,25 @@ namespace BinkyRailways.Core.Model
         /// Address value.
         /// This depends on the address type.
         /// </summary>
-        public int Value
+        public string Value
         {
             get { return value; }
+        }
+
+        /// <summary>
+        /// Address value as integer.
+        /// This depends on the address type.
+        /// Return -1 when the value is not an integer.
+        /// </summary>
+        public int ValueAsInt
+        {
+            get { 
+                int result;
+                if (int.TryParse(value, out result)) {
+                    return result;
+                }
+                return -1;
+            }
         }
 
         /// <summary>
@@ -108,9 +149,7 @@ namespace BinkyRailways.Core.Model
             var ovalue = other.value;
             var myvalue = value;
 
-            if (myvalue < ovalue) return -1;
-            if (myvalue > ovalue) return 1;
-            return 0;
+            return value.CompareTo(other.value);
         }
 
         /// <summary>
@@ -126,7 +165,7 @@ namespace BinkyRailways.Core.Model
         /// </summary>
         public override int GetHashCode()
         {
-            return (network.GetHashCode() << 8) ^ (value);
+            return (network.GetHashCode() << 8) ^ (value.GetHashCode());
         }
     }
 }

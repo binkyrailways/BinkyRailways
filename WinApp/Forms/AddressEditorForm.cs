@@ -22,12 +22,12 @@ namespace BinkyRailways.WinApp.Forms
         {
             get
             {
-                return new Address(cbType.SelectedItem, tbAddressSpace.Text.Trim(), (int)tbValue.Value);                
+                return new Address(cbType.SelectedItem, tbAddressSpace.Text.Trim(), tbValue.Text);                
             }
             set
             {
                 cbType.SelectedItem = (value != null) ? value.Type : AddressType.Dcc;
-                tbValue.Value = (value != null) ? value.Value : 1;
+                tbValue.Text = (value != null) ? value.Value : string.Empty;
                 tbAddressSpace.Text = (value != null) ? value.AddressSpace : string.Empty;
             }
         }
@@ -46,19 +46,26 @@ namespace BinkyRailways.WinApp.Forms
         private void UpdateMinMax()
         {
             var type = cbType.SelectedItem;
-            var value = tbValue.Value;
+            var value = tbValue.Text;
             var minValue = type.MinValue();
             var maxValue = type.MaxValue();
 
             // Limit value such that it fits within min/max value
-            if ((value < minValue) || (value > maxValue))
+            if (type.RequiresNumericValue()) 
             {
-                tbValue.Minimum = int.MinValue;
-                tbValue.Maximum = int.MaxValue;
-                tbValue.Value = Math.Min(Math.Max(minValue, value), maxValue);
+                int nValue;
+                if (int.TryParse(value, out nValue)) 
+                {
+                    if ((nValue < minValue) || (nValue > maxValue))
+                    {
+                        //tbValue.Minimum = int.MinValue;
+                        //tbValue.Maximum = int.MaxValue;
+                        tbValue.Text = Math.Min(Math.Max(minValue, nValue), maxValue).ToString();
+                    }
+                }
             }
-            tbValue.Minimum = minValue;
-            tbValue.Maximum = maxValue;            
+//            tbValue.Minimum = minValue;
+//            tbValue.Maximum = maxValue;            
         }
     }
 }

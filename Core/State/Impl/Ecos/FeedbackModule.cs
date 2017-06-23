@@ -30,7 +30,7 @@ namespace BinkyRailways.Core.State.Impl.Ecos
             for (var i = 0; i < portCount; i++)
             {
                 var portNumber = firstPortNumber + i;
-                sensorStates[i] = railwayState.SensorStates.FirstOrDefault(x => (x.Address.Value == portNumber) && (x.Address.Type == AddressType.LocoNet));
+                sensorStates[i] = railwayState.SensorStates.FirstOrDefault(x => (x.Address.ValueAsInt == portNumber) && (x.Address.Type == AddressType.LocoNet));
             }
         }
 

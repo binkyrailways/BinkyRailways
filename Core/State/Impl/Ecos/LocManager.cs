@@ -49,7 +49,7 @@ namespace BinkyRailways.Core.State.Impl.Ecos
 
                 var name = raw.GetName();
                 // Try get by address
-                var loc = railwayState.LocStates.FirstOrDefault(x => (x.Address.Value == addressNr) && (x.Address.Type == addressType));
+                var loc = railwayState.LocStates.FirstOrDefault(x => (x.Address.ValueAsInt == addressNr) && (x.Address.Type == addressType));
                 // Try get by name
                 loc = loc ?? railwayState.LocStates.FirstOrDefault(x => x.Description == name);
 

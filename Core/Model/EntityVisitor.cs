@@ -26,6 +26,7 @@
         public virtual TReturn Visit(IModule entity, TData data) { return default(TReturn); }
         public virtual TReturn Visit(IModuleConnection entity, TData data) { return default(TReturn); }
         public virtual TReturn Visit(IModuleRef entity, TData data) { return default(TReturn); }
+        public virtual TReturn Visit(IMqttCommandStation entity, TData data) { return Visit((ICommandStation)entity, data); }
         public virtual TReturn Visit(IOutput entity, TData data) { return default(TReturn); }
         public virtual TReturn Visit(IRailway entity, TData data) { return default(TReturn); }
         public virtual TReturn Visit(IRoute entity, TData data) { return default(TReturn); }

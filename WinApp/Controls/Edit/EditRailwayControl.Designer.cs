@@ -37,7 +37,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.innerSplitContainer = new System.Windows.Forms.SplitContainer();
             this.tvItems = new BinkyRailways.WinApp.Controls.TreeViewX();
-            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewEditor = new BinkyRailways.WinApp.Controls.Edit.RailwayViewEditorControl();
             this.propertyGrid = new BinkyRailways.WinApp.Controls.Edit.Settings.SettingsPropertyGrid();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -58,6 +57,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbRun = new System.Windows.Forms.ToolStripSplitButton();
             this.tbRunVirtual = new System.Windows.Forms.ToolStripMenuItem();
             this.validationResultsControl = new BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tbAddMqtt = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -116,12 +117,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tvItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvItems_KeyDown);
             this.tvItems.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tvItems_MouseDoubleClick);
             // 
-            // contextMenuStrip
-            // 
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            resources.ApplyResources(this.contextMenuStrip, "contextMenuStrip");
-            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.OnContextMenuStripOpening);
-            // 
             // viewEditor
             // 
             resources.ApplyResources(this.viewEditor, "viewEditor");
@@ -133,6 +128,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             // 
             resources.ApplyResources(this.propertyGrid, "propertyGrid");
             this.propertyGrid.InRunningState = false;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -190,7 +186,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddCommandStation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbAddLocoBuffer,
             this.tbAddDccOverRs232,
-            this.tbAddEcos});
+            this.tbAddEcos,
+            this.tbAddMqtt});
             this.tbAddCommandStation.Name = "tbAddCommandStation";
             resources.ApplyResources(this.tbAddCommandStation, "tbAddCommandStation");
             // 
@@ -269,6 +266,18 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.validationResultsControl.Name = "validationResultsControl";
             this.validationResultsControl.ResultActivated += new System.EventHandler<BinkyRailways.Core.Util.PropertyEventArgs<BinkyRailways.Core.Model.ValidationResult>>(this.OnValidationResultActivated);
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            resources.ApplyResources(this.contextMenuStrip, "contextMenuStrip");
+            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.OnContextMenuStripOpening);
+            // 
+            // tbAddMqtt
+            // 
+            this.tbAddMqtt.Name = "tbAddMqtt";
+            resources.ApplyResources(this.tbAddMqtt, "tbAddMqtt");
+            this.tbAddMqtt.Click += new System.EventHandler(this.tbAddMqtt_Click);
+            // 
             // EditRailwayControl
             // 
             resources.ApplyResources(this, "$this");
@@ -318,6 +327,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         private ToolStripMenuItem tbAddDccOverRs232;
         private ToolStripMenuItem tbAddEcos;
         private ContextMenuStrip contextMenuStrip;
+        private ToolStripMenuItem tbAddMqtt;
 
     }
 }

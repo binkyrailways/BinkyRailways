@@ -351,4 +351,7 @@
   <data name="UsedByBlockAsGroup" xml:space="preserve">
     <value>Used by block</value>
   </data>
+  <data name="TypeNameMqttCommandStation" xml:space="preserve">
+    <value>MQTT Command station</value>
+  </data>
 </root>

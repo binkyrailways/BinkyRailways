@@ -36,14 +36,13 @@ namespace BinkyRailways.WinApp.Forms
             this.lbAddressType = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tbValue = new System.Windows.Forms.NumericUpDown();
             this.tbAddressSpace = new System.Windows.Forms.TextBox();
             this.cbType = new BinkyRailways.WinApp.Controls.Edit.AddressTypeCombo();
             this.tlpButtons = new System.Windows.Forms.TableLayoutPanel();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdOk = new System.Windows.Forms.Button();
+            this.tbValue = new System.Windows.Forms.TextBox();
             this.tlpMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbValue)).BeginInit();
             this.tlpButtons.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,10 +52,10 @@ namespace BinkyRailways.WinApp.Forms
             this.tlpMain.Controls.Add(this.lbAddressType, 0, 0);
             this.tlpMain.Controls.Add(this.label1, 0, 1);
             this.tlpMain.Controls.Add(this.label2, 0, 2);
-            this.tlpMain.Controls.Add(this.tbValue, 1, 1);
             this.tlpMain.Controls.Add(this.tbAddressSpace, 1, 2);
             this.tlpMain.Controls.Add(this.cbType, 1, 0);
             this.tlpMain.Controls.Add(this.tlpButtons, 0, 3);
+            this.tlpMain.Controls.Add(this.tbValue, 1, 1);
             this.tlpMain.Name = "tlpMain";
             // 
             // lbAddressType
@@ -73,11 +72,6 @@ namespace BinkyRailways.WinApp.Forms
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
-            // tbValue
-            // 
-            resources.ApplyResources(this.tbValue, "tbValue");
-            this.tbValue.Name = "tbValue";
             // 
             // tbAddressSpace
             // 
@@ -115,6 +109,11 @@ namespace BinkyRailways.WinApp.Forms
             this.cmdOk.Name = "cmdOk";
             this.cmdOk.UseVisualStyleBackColor = true;
             // 
+            // tbValue
+            // 
+            resources.ApplyResources(this.tbValue, "tbValue");
+            this.tbValue.Name = "tbValue";
+            // 
             // AddressEditorForm
             // 
             this.AcceptButton = this.cmdOk;
@@ -128,7 +127,6 @@ namespace BinkyRailways.WinApp.Forms
             this.Name = "AddressEditorForm";
             this.tlpMain.ResumeLayout(false);
             this.tlpMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbValue)).EndInit();
             this.tlpButtons.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -141,11 +139,11 @@ namespace BinkyRailways.WinApp.Forms
         private System.Windows.Forms.Label lbAddressType;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown tbValue;
         private System.Windows.Forms.TextBox tbAddressSpace;
         private AddressTypeCombo cbType;
         private System.Windows.Forms.TableLayoutPanel tlpButtons;
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Button cmdOk;
+        private System.Windows.Forms.TextBox tbValue;
     }
 }

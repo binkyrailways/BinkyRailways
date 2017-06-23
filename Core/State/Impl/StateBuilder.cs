@@ -3,6 +3,7 @@ using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State.Impl.DccOverRs232;
 using BinkyRailways.Core.State.Impl.Ecos;
 using BinkyRailways.Core.State.Impl.LocoBuffer;
+using BinkyRailways.Core.State.Impl.Mqtt;
 using BinkyRailways.Core.Util;
 
 namespace BinkyRailways.Core.State.Impl
@@ -70,6 +71,11 @@ namespace BinkyRailways.Core.State.Impl
         public override IEntityState Visit(ILocoBufferCommandStation entity, RailwayState data)
         {
             return new LocoBufferCommandStationState(entity, data, Empty<string>.Array);
+        }
+
+        public override IEntityState Visit(IMqttCommandStation entity, RailwayState data)
+        {
+            return new MqttCommandStationState(entity, data, Empty<string>.Array);
         }
 
         public override IEntityState Visit(IPlaySoundAction entity, RailwayState data)

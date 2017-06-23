@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailways</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
@@ -44,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,6 +53,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gma.QrCodeNet.Encoding.Net35">
@@ -133,6 +135,7 @@
     <Compile Include="WinApp\Controls\Edit\Settings\DynamicPropertyDescriptor.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\EcosCommandStationSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\InitializeJunctionActionSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\MqttCommandStationSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\PassiveJunctionSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\EditableInRunningStateAttribute.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\ExPropertyDescriptorCollection.cs" />
@@ -155,6 +158,9 @@
     </Compile>
     <Compile Include="WinApp\Controls\Edit\RemoveFromPackageVisitor.cs" />
     <Compile Include="WinApp\Controls\Extensions.cs" />
+    <Compile Include="WinApp\Controls\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WinApp\Controls\Run\LocListView.LocItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
