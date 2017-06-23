@@ -8,6 +8,8 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace BinkyRailways.Core.State.Impl.Mqtt
 {
@@ -16,10 +18,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
     /// </summary>
     public sealed partial class MqttCommandStationState : CommandStationState, IMqttCommandStationState
     {
+        private delegate void CompletionCallback(MqttMsgPublishedEventArgs e);
+
         private bool networkIdle = false;
-        private readonly MqttClient client;
+        private MqttClient client;
         private readonly string clientID;
         private readonly string topicPrefix;
+        private readonly Dictionary<ushort, CompletionCallback> completionCallbacks;
 
         /// <summary>
         /// Default ctor
@@ -27,9 +32,7 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         public MqttCommandStationState(IMqttCommandStation entity, RailwayState railwayState, string[] addressSpaces)
             : base(entity, railwayState, addressSpaces)
         {
-            client = new MqttClient(entity.HostName);
-            client.MqttMsgPublishReceived += onMqttMsgPublishReceived;
-            client.MqttMsgPublished += onMqttMsgPublished;
+            completionCallbacks = new Dictionary<ushort, CompletionCallback>();
             clientID = entity.Id;
             topicPrefix = entity.TopicPrefix;
         }
@@ -47,43 +50,27 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         /// </summary>
         protected override void OnRequestedPowerChanged(bool value)
         {
-            if (!value && client.IsConnected)
+            // Send power off message
+            var msg = new PowerMessage()
             {
-                // Send power off message
-                var msg = new PowerMessage()
-                {
-                    Active = 0
-                };
-                publishMessage("/power", msg);
-            }
-
-            if (Power.Actual != value)
+                Active = value ? 1 : 0
+            };
+            publishMessage("/power", msg, (e) =>
             {
-                if (value)
+                if (e.IsPublished)
                 {
-                    // Power on
-                    client.Connect(clientID);
-
-                    // Subscribe to topics 
-                    client.Subscribe(new string[] { topicPrefix + "/binary-sensor" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                    Power.Actual = value;
                 }
-                else
-                {
-                    // Power off
-                    client.Disconnect();
-                }
-                Power.Actual = value;
-            }
+            });
+        }
 
-            if (value && client.IsConnected)
-            {
-                // Send power on message
-                var msg = new PowerMessage()
-                {
-                    Active = 1
-                };
-                publishMessage("/power", msg);
-            }
+        /// <summary>
+        /// Connection to MQTT server has been closed.
+        /// </summary>
+        void onMqttConnectionClosed(object sender, EventArgs e)
+        {
+            Log.Error("Connection to MQTT server closed");
+            Power.Actual = false;
         }
 
         /// <summary>
@@ -99,11 +86,14 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 Direction = loc.Direction.Requested.ToString().ToLower(),
                 Speed = loc.SpeedInSteps.Requested,
             };
-            if (publishMessage("/loc", msg))
+            publishMessage("/loc", msg, (e) =>
             {
-                loc.Direction.Actual = loc.Direction.Requested;
-                loc.Speed.Actual = loc.Speed.Requested;
-            }
+                if (e.IsPublished)
+                {
+                    loc.Direction.Actual = loc.Direction.Requested;
+                    loc.Speed.Actual = loc.Speed.Requested;
+                }
+            });
         }
 
         /// <summary>
@@ -118,10 +108,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 Address = output.Address.Value,
                 Value = output.Active.Requested ? 1 : 0
             };
-            if (publishMessage("/binary-output", msg))
+            publishMessage("/binary-output", msg, (e) =>
             {
-                output.Active.Actual = output.Active.Actual;
-            }
+                if (e.IsPublished)
+                {
+                    output.Active.Actual = output.Active.Actual;
+                }
+            });
         }
 
         /// <summary>
@@ -135,10 +128,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             {
                 Stage = output.Period.Requested.ToString().ToLower()
             };
-            if (publishMessage("/clock-4-stage", msg))
+            publishMessage("/clock-4-stage", msg, (e) =>
             {
-                output.Period.Actual = output.Period.Actual;
-            }
+                if (e.IsPublished)
+                {
+                    output.Period.Actual = output.Period.Actual;
+                }
+            });
         }
 
         /// <summary>
@@ -153,21 +149,50 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 Address = address.Value,
                 Value = value ? 1 : 0
             };
-            publishMessage("/binary-output", msg);
+            publishMessage("/binary-output", msg, null);
         }
+
+        /// <summary>
+        /// Send the direction of the given switch towards the railway.
+        /// This method is called on my worker thread.
+        /// </summary>
+        protected override void OnSendSwitchDirection(ISwitchState @switch)
+        {
+            Log.Trace("OnSendSwitchDirection: {0}", @switch);
+
+            var direction = @switch.Direction.Requested;
+            if (@switch.Invert)
+            {
+                direction = direction.Invert();
+            }
+            var msg = new SwitchMessage()
+            {
+                Address = @switch.Address.Value,
+                Direction = direction.ToString().ToLower()
+            };
+            publishMessage("/switch", msg, null);
+        }
+
 
         /// <summary>
         /// Convert the given message to json and publish it.
         /// </summary>
-        private bool publishMessage(string topic, object msg)
+        private bool publishMessage(string topic, object msg, CompletionCallback cb)
         {
-            if (client.IsConnected)
+            if ((client != null) && (client.IsConnected))
             {
                 try
                 {
-                    var payload = JsonConvert.SerializeObject(msg, Formatting.None);
-                    client.Publish(topicPrefix + topic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
-                    return true;
+                    lock (completionCallbacks)
+                    {
+                        var payload = JsonConvert.SerializeObject(msg, Formatting.None);
+                        var msgID = client.Publish(topicPrefix + topic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                        if (cb != null)
+                        {
+                            completionCallbacks[msgID] = cb;
+                        }
+                        return true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -187,6 +212,18 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         void onMqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)
         {
             Log.Debug("Mqtt message published: " + e.IsPublished);
+            CompletionCallback cb;
+            lock (completionCallbacks)
+            {
+                if (completionCallbacks.TryGetValue(e.MessageId, out cb))
+                {
+                    completionCallbacks.Remove(e.MessageId);
+                }
+            }
+            if (cb != null)
+            {
+                PostWorkerAction(() => cb(e));
+            }
         }
 
         /// <summary>
@@ -203,9 +240,18 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             switch (topic)
             {
                 case "/binary-sensor":
-                    Log.Debug("Binary sensor message received: " + payload);
-                    var msg = JsonConvert.DeserializeObject<BinarySensorMessage>(payload);
-                    onBinarySensorMessageReceived(msg);
+                    {
+                        Log.Debug("Binary sensor message received: " + payload);
+                        var msg = JsonConvert.DeserializeObject<BinarySensorMessage>(payload);
+                        onBinarySensorMessageReceived(msg);
+                    }
+                    break;
+                case "/power":
+                    {
+                        Log.Debug("Power message received: " + payload);
+                        var msg = JsonConvert.DeserializeObject<PowerMessage>(payload);
+                        onPowerMessageReceived(msg);
+                    }
                     break;
                 default:
                     Log.Info("Unhandled Mqtt message received: " + e.Topic);
@@ -221,8 +267,16 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             var sensor = RailwayState.SensorStates.FirstOrDefault(x => (x.Address.Value == msg.Address) && (x.Address.Network.Type == AddressType.Mqtt));
             if (sensor != null)
             {
-                sensor.Active.Actual = (msg.Value == 1);
+                sensor.Active.Actual = (msg.Value != 0);
             }
+        }
+
+        /// <summary>
+        /// Power message has been received.
+        /// </summary>
+        private void onPowerMessageReceived(PowerMessage msg)
+        {
+            Power.Requested = (msg.Active != 0);
         }
 
         /// <summary>
@@ -242,7 +296,38 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             if (!base.TryPrepareForUse(ui, statePersistence))
                 return false;
+            try
+            {
+                client = new MqttClient(Entity.HostName);
+                client.MqttMsgPublishReceived += onMqttMsgPublishReceived;
+                client.MqttMsgPublished += onMqttMsgPublished;
+                client.ConnectionClosed += onMqttConnectionClosed;
+
+                // Power on
+                client.Connect(clientID);
+
+                // Subscribe to topics 
+                client.Subscribe(new string[] { topicPrefix + "/binary-sensor" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to connect to MQTT server: " + ex);
+                return false;
+            }
             return true;
+        }
+
+        public override void Dispose()
+        {
+            if (client != null)
+            {
+                client.MqttMsgPublishReceived -= onMqttMsgPublishReceived;
+                client.MqttMsgPublished -= onMqttMsgPublished;
+                client.ConnectionClosed -= onMqttConnectionClosed;
+                client.Disconnect();
+                client = null;
+            }
+            base.Dispose();
         }
 
         /// <summary>

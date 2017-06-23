@@ -44,4 +44,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         public int Active { get; set; }
     }
 
+    [JsonObject]
+    internal class SwitchMessage
+    {
+        [JsonProperty("address")]
+        public string Address { get; set; }
+        [JsonProperty("direction")]
+        public string Direction { get; set; }
+    }
+
 }

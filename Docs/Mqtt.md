@@ -21,6 +21,19 @@ Data:
 
 TODO Functions 
 
+### Power
+
+Direction: Computer -> Track, Track -> Computer
+
+Topic: `<prefix>/power`
+
+Data:
+```
+{
+    "active": 0 | 1
+}
+```
+
 ### Binary Sensors 
 
 Direction: Track -> Computer 
@@ -35,3 +48,57 @@ Data:
 }
 ```
 
+### Binary Outputs 
+
+Direction: Computer -> Track
+
+Topic: `<prefix>/binary-output`
+
+Data:
+```
+{
+    "address": "module/number",
+    "value": 0 | 1
+}
+```
+
+### Switches
+
+Direction: Computer -> Track
+
+Topic: `<prefix>/switch`
+
+Data:
+```
+{
+    "address": "module/number",
+    "direction": "straight|off"
+}
+```
+
+### Switch feedbacks
+
+Direction: Track -> Computer 
+
+Topic: `<prefix>/switch-feedback`
+
+Data:
+```
+{
+    "address": "module/number",
+    "direction": "straight|off"
+}
+```
+
+### Clocks (4-stage)
+
+Direction: Computer -> Track
+
+Topic: `<prefix>/clock-4-stage`
+
+Data:
+```
+{
+    "period": "morning|afternoon|evening|night"
+}
+```
