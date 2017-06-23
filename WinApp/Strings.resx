@@ -865,4 +865,22 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="NewMqttCommandStationDescription" xml:space="preserve">
     <value>New MQTT Command station</value>
   </data>
+  <data name="PreferredMqttCommandStationHelp" xml:space="preserve">
+    <value>Command station used for Mqtt addresses in case no specific address space is specified.</value>
+  </data>
+  <data name="PreferredMqttCommandStationName" xml:space="preserve">
+    <value>Preferred Mqtt command station</value>
+  </data>
+  <data name="PortHelp" xml:space="preserve">
+    <value>TCP port</value>
+  </data>
+  <data name="PortName" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="TopicPrefixHelp" xml:space="preserve">
+    <value>MQTT topic prefix</value>
+  </data>
+  <data name="TopicPrefixName" xml:space="preserve">
+    <value>Topic prefix</value>
+  </data>
 </root>

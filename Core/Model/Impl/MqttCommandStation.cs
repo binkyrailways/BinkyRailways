@@ -10,6 +10,8 @@ namespace BinkyRailways.Core.Model.Impl
     public sealed class MqttCommandStation : CommandStation, IMqttCommandStation
     {
         private readonly Property<string> hostName;
+        private readonly Property<int> port;
+        private readonly Property<string> topicPrefix;
 
         /// <summary>
         /// Default ctor
@@ -17,6 +19,8 @@ namespace BinkyRailways.Core.Model.Impl
         public MqttCommandStation()
         {
             hostName = new Property<string>(this, "mqtt");
+            port = new Property<int>(this, 1883);
+            topicPrefix = new Property<string>(this, "");
         }
 
         /// <summary>
@@ -26,6 +30,8 @@ namespace BinkyRailways.Core.Model.Impl
         {
             if (entity is ILoc)
             {
+                yield return AddressType.Mqtt;
+                yield return AddressType.Dcc;
             }
             else
             {
@@ -48,6 +54,25 @@ namespace BinkyRailways.Core.Model.Impl
         {
             get { return hostName.Value; }
             set { hostName.Value = value ?? string.Empty; }
+        }
+
+
+        /// <summary>
+        /// Network port of the command station
+        /// </summary>
+        public int Port
+        {
+            get { return port.Value; }
+            set { port.Value = value; }
+        }
+
+        /// <summary>
+        /// Prefix inserted before topics.
+        /// </summary>
+        public string TopicPrefix
+        {
+            get { return topicPrefix.Value; }
+            set { topicPrefix.Value = value ?? string.Empty; }
         }
 
         /// <summary>

@@ -23,6 +23,8 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         {
             base.GatherProperties(properties);
             properties.Add(() => HostName, Strings.TabConnection, Strings.HostNameName, Strings.HostNameHelp);
+            properties.Add(() => Port, Strings.TabConnection, Strings.PortName, Strings.PortHelp);
+            properties.Add(() => TopicPrefix, Strings.TabConnection, Strings.TopicPrefixName, Strings.TopicPrefixHelp);
         }
 
         [MergableProperty(false)]
@@ -30,6 +32,20 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         {
             get { return Entity.HostName; }
             set { Entity.HostName = value; }
+        }
+
+        [MergableProperty(false)]
+        public int Port
+        {
+            get { return Entity.Port; }
+            set { Entity.Port = value; }
+        }
+
+        [MergableProperty(false)]
+        public string TopicPrefix
+        {
+            get { return Entity.TopicPrefix; }
+            set { Entity.TopicPrefix = value; }
         }
     }
 }

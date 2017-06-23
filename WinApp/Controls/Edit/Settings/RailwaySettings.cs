@@ -28,6 +28,7 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             properties.Add(() => PreferredLocoNetCommandStation, Strings.TabBehavior, Strings.PreferredLocoNetCommandStationName, Strings.PreferredLocoNetCommandStationHelp);
             properties.Add(() => PreferredMotorolaCommandStation, Strings.TabBehavior, Strings.PreferredMotorolaCommandStationName, Strings.PreferredMotorolaCommandStationHelp);
             properties.Add(() => PreferredMfxCommandStation, Strings.TabBehavior, Strings.PreferredMfxCommandStationName, Strings.PreferredMfxCommandStationHelp);
+            properties.Add(() => PreferredMqttCommandStation, Strings.TabBehavior, Strings.PreferredMqttCommandStationName, Strings.PreferredMqttCommandStationHelp);
             properties.Add(() => ClockSpeedFactor, Strings.TabBehavior, Strings.ClockSpeedFactorName, Strings.ClockSpeedFactorHelp);
         }
 
@@ -65,6 +66,15 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         {
             get { return Entity.PreferredMfxCommandStation; }
             set { Entity.PreferredMfxCommandStation = value; }
+        }
+
+        [DefaultValue(null)]
+        [Editor(typeof(PreferredMqttCommandStationEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(EntityTypeConverter))]
+        public ICommandStation PreferredMqttCommandStation
+        {
+            get { return Entity.PreferredMqttCommandStation; }
+            set { Entity.PreferredMqttCommandStation = value; }
         }
 
         /// <summary>

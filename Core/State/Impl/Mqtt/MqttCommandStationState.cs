@@ -3,6 +3,11 @@ using System.IO.Ports;
 using System.Linq;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Protocols.Dcc;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+using Newtonsoft.Json.Linq;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl.Mqtt
 {
@@ -11,8 +16,10 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
     /// </summary>
     public sealed partial class MqttCommandStationState : CommandStationState, IMqttCommandStationState
     {
-        private readonly PacketSender sender;
         private bool networkIdle = false;
+        private readonly MqttClient client;
+        private readonly string clientID;
+        private readonly string topicPrefix;
 
         /// <summary>
         /// Default ctor
@@ -20,6 +27,21 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         public MqttCommandStationState(IMqttCommandStation entity, RailwayState railwayState, string[] addressSpaces)
             : base(entity, railwayState, addressSpaces)
         {
+            client = new MqttClient(entity.HostName);
+            client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+            client.MqttMsgPublished += client_MqttMsgPublished;
+            clientID = entity.Id;
+            topicPrefix = entity.TopicPrefix;
+        }
+
+        void client_MqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)
+        {
+            Log.Info("Mqtt message published: " + e.IsPublished);
+        }
+
+        void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            Log.Info("Mqtt message received: " + e.Topic);
         }
 
         /// <summary>
@@ -40,12 +62,12 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 if (value)
                 {
                     // Power on
-                    sender.Start();
+                    client.Connect(clientID);
                 }
                 else
                 {
                     // Power off
-                    sender.Stop();
+                    client.Disconnect();
                 }
                 Power.Actual = value;
             }
@@ -57,10 +79,12 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         protected override void OnSendLocSpeedAndDirection(ILocState loc)
         {
             Log.Trace("OnSendLocSpeedAndDirection: {0}", loc);
-            var direction = (loc.Direction.Requested == LocDirection.Forward);
-            var packet = Packets.CreateSpeedAndDirection(loc.Address.ValueAsInt, (byte)loc.SpeedInSteps.Requested, direction, loc.SpeedSteps);
-            var data = PacketTranslater.Translate(packet);
-            sender.SendSpeedAndDirection(loc.Address.ValueAsInt, data);
+
+            var data = new JObject();
+            data["speed"] = loc.SpeedInSteps.Requested;
+            data["direction"] = loc.Direction.Requested.ToString();
+            var payload = data.ToString(Formatting.None);
+            client.Publish(topicPrefix + "/loc", Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
             loc.Direction.Actual = loc.Direction.Requested;
             loc.Speed.Actual = loc.Speed.Requested;
         }
@@ -83,15 +107,6 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             if (!base.TryPrepareForUse(ui, statePersistence))
                 return false;
             return true;
-        }
-
-        /// <summary>
-        /// Cleanup
-        /// </summary>
-        public override void Dispose()
-        {
-            ((IDisposable)sender).Dispose();
-            base.Dispose();
         }
 
         /// <summary>

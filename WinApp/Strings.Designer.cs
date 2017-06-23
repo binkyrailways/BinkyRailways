@@ -1322,6 +1322,24 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TCP port.
+        /// </summary>
+        internal static string PortHelp {
+            get {
+                return ResourceManager.GetString("PortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        internal static string PortName {
+            get {
+                return ResourceManager.GetString("PortName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Power is Off.
         /// </summary>
         internal static string PowerIsOff {
@@ -1426,6 +1444,24 @@ namespace BinkyRailways.WinApp {
         internal static string PreferredMotorolaCommandStationName {
             get {
                 return ResourceManager.GetString("PreferredMotorolaCommandStationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command station used for Mqtt addresses in case no specific address space is specified..
+        /// </summary>
+        internal static string PreferredMqttCommandStationHelp {
+            get {
+                return ResourceManager.GetString("PreferredMqttCommandStationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred Mqtt command station.
+        /// </summary>
+        internal static string PreferredMqttCommandStationName {
+            get {
+                return ResourceManager.GetString("PreferredMqttCommandStationName", resourceCulture);
             }
         }
         
@@ -2011,6 +2047,24 @@ namespace BinkyRailways.WinApp {
         internal static string TimePeriodText {
             get {
                 return ResourceManager.GetString("TimePeriodText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MQTT topic prefix.
+        /// </summary>
+        internal static string TopicPrefixHelp {
+            get {
+                return ResourceManager.GetString("TopicPrefixHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topic prefix.
+        /// </summary>
+        internal static string TopicPrefixName {
+            get {
+                return ResourceManager.GetString("TopicPrefixName", resourceCulture);
             }
         }
         
