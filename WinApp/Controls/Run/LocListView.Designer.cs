@@ -35,7 +35,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LocListView));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
-            this.lvLocs = new System.Windows.Forms.ListView();
+            this.lvLocs = new ListView();
             this.chDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chSpeed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -140,7 +140,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private System.Windows.Forms.ListView lvLocs;
+        private ListView lvLocs;
         private System.Windows.Forms.ColumnHeader chDescription;
         private System.Windows.Forms.ColumnHeader chSpeed;
         private System.Windows.Forms.ColumnHeader chState;
