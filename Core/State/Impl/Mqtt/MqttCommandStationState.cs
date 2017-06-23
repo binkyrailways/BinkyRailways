@@ -28,20 +28,10 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             : base(entity, railwayState, addressSpaces)
         {
             client = new MqttClient(entity.HostName);
-            client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
-            client.MqttMsgPublished += client_MqttMsgPublished;
+            client.MqttMsgPublishReceived += onMqttMsgPublishReceived;
+            client.MqttMsgPublished += onMqttMsgPublished;
             clientID = entity.Id;
             topicPrefix = entity.TopicPrefix;
-        }
-
-        void client_MqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)
-        {
-            Log.Info("Mqtt message published: " + e.IsPublished);
-        }
-
-        void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-        {
-            Log.Info("Mqtt message received: " + e.Topic);
         }
 
         /// <summary>
@@ -49,7 +39,7 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         /// </summary>
         internal new IMqttCommandStation Entity
         {
-            get { return (IMqttCommandStation) base.Entity;  }
+            get { return (IMqttCommandStation)base.Entity; }
         }
 
         /// <summary>
@@ -63,6 +53,9 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 {
                     // Power on
                     client.Connect(clientID);
+
+                    // Subscribe to topics 
+                    client.Subscribe(new string[] { topicPrefix + "/binary-sensor" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
                 }
                 else
                 {
@@ -87,6 +80,50 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             client.Publish(topicPrefix + "/loc", Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
             loc.Direction.Actual = loc.Direction.Requested;
             loc.Speed.Actual = loc.Speed.Requested;
+        }
+
+        /// <summary>
+        /// MQTT message has been published.
+        /// </summary>
+        void onMqttMsgPublished(object sender, MqttMsgPublishedEventArgs e)
+        {
+            Log.Debug("Mqtt message published: " + e.IsPublished);
+        }
+
+        /// <summary>
+        /// MQTT message has been received.
+        /// </summary>
+        void onMqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            if (!e.Topic.StartsWith(topicPrefix))
+            {
+                return;
+            }
+            var topic = e.Topic.Substring(topicPrefix.Length);
+            var payload = Encoding.UTF8.GetString(e.Message);
+            switch (topic)
+            {
+                case "/binary-sensor":
+                    Log.Debug("Binary sensor message received: " + payload);
+                    var msg = JsonConvert.DeserializeObject<BinarySensorMessage>(payload);
+                    onBinarySensorMessageReceived(msg);
+                    break;
+                default:
+                    Log.Info("Unhandled Mqtt message received: " + e.Topic);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Binary sensor message has been received.
+        /// </summary>
+        private void onBinarySensorMessageReceived(BinarySensorMessage msg)
+        {
+            var sensor = RailwayState.SensorStates.FirstOrDefault(x => (x.Address.Value == msg.Address) && (x.Address.Network.Type == AddressType.Mqtt));
+            if (sensor != null)
+            {
+                sensor.Active.Actual = (msg.Value == 1);
+            }
         }
 
         /// <summary>
