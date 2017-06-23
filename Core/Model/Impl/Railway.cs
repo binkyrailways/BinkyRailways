@@ -24,6 +24,7 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<EntityRef<CommandStation>> preferredLocoNetCommandStation;
         private readonly Property<EntityRef<CommandStation>> preferredMotorolaCommandStation;
         private readonly Property<EntityRef<CommandStation>> preferredMfxCommandStation;
+        private readonly Property<EntityRef<CommandStation>> preferredMqttCommandStation;
         private int clockSpeedFactor;
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace BinkyRailways.Core.Model.Impl
             preferredLocoNetCommandStation = new Property<EntityRef<CommandStation>>(this, null);
             preferredMotorolaCommandStation = new Property<EntityRef<CommandStation>>(this, null);
             preferredMfxCommandStation = new Property<EntityRef<CommandStation>>(this, null);
+            preferredMqttCommandStation = new Property<EntityRef<CommandStation>>(this, null);
         }
 
         /// <summary>
@@ -350,6 +352,40 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
+        /// Preferred command station for Mqtt addresses.
+        /// </summary>
+        [XmlIgnore]
+        public CommandStation PreferredMqttCommandStation
+        {
+            get
+            {
+                if (preferredMqttCommandStation.Value == null)
+                    return null;
+                CommandStation result;
+                return preferredMqttCommandStation.Value.TryGetItem(out result) ? result : null;
+            }
+            set
+            {
+                if (PreferredMqttCommandStation != value)
+                {
+                    preferredMqttCommandStation.Value = (value != null) ? new EntityRef<CommandStation>(this, value) : null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the id of the preferred Mqtt command station.
+        /// Used for serialization only.
+        /// </summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string PreferredMqttCommandStationId
+        {
+            get { return preferredMqttCommandStation.GetId(); }
+            set { preferredMqttCommandStation.Value = string.IsNullOrEmpty(value) ? null : new EntityRef<CommandStation>(this, value, LookupCommandStation); }
+        }
+
+        /// <summary>
         /// Gets package relative folder for this type of entity.
         /// </summary>
         internal override string PackageFolder
@@ -415,12 +451,21 @@ namespace BinkyRailways.Core.Model.Impl
         }
 
         /// <summary>
-        /// Preferred command station for Motorola addresses.
+        /// Preferred command station for MFX addresses.
         /// </summary>
         ICommandStation IRailway.PreferredMfxCommandStation
         {
             get { return PreferredMfxCommandStation; }
             set { PreferredMfxCommandStation = (CommandStation)value; }
+        }
+
+        /// <summary>
+        /// Preferred command station for Mqtt addresses.
+        /// </summary>
+        ICommandStation IRailway.PreferredMqttCommandStation
+        {
+            get { return PreferredMqttCommandStation; }
+            set { PreferredMqttCommandStation = (CommandStation)value; }
         }
 
         /// <summary>

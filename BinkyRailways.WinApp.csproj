@@ -158,6 +158,9 @@
     </Compile>
     <Compile Include="WinApp\Controls\Edit\RemoveFromPackageVisitor.cs" />
     <Compile Include="WinApp\Controls\Extensions.cs" />
+    <Compile Include="WinApp\Controls\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WinApp\Controls\Run\LocListView.LocItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
