@@ -47,6 +47,16 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         /// </summary>
         protected override void OnRequestedPowerChanged(bool value)
         {
+            if (!value && client.IsConnected)
+            {
+                // Send power off message
+                var msg = new PowerMessage()
+                {
+                    Active = 0
+                };
+                publishMessage("/power", msg);
+            }
+
             if (Power.Actual != value)
             {
                 if (value)
@@ -64,6 +74,16 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 }
                 Power.Actual = value;
             }
+
+            if (value && client.IsConnected)
+            {
+                // Send power on message
+                var msg = new PowerMessage()
+                {
+                    Active = 1
+                };
+                publishMessage("/power", msg);
+            }
         }
 
         /// <summary>
@@ -73,13 +93,92 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             Log.Trace("OnSendLocSpeedAndDirection: {0}", loc);
 
-            var data = new JObject();
-            data["speed"] = loc.SpeedInSteps.Requested;
-            data["direction"] = loc.Direction.Requested.ToString();
-            var payload = data.ToString(Formatting.None);
-            client.Publish(topicPrefix + "/loc", Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
-            loc.Direction.Actual = loc.Direction.Requested;
-            loc.Speed.Actual = loc.Speed.Requested;
+            var msg = new LocMessage()
+            {
+                Address = loc.Address.Value,
+                Direction = loc.Direction.Requested.ToString().ToLower(),
+                Speed = loc.SpeedInSteps.Requested,
+            };
+            if (publishMessage("/loc", msg))
+            {
+                loc.Direction.Actual = loc.Direction.Requested;
+                loc.Speed.Actual = loc.Speed.Requested;
+            }
+        }
+
+        /// <summary>
+        /// Send the on/off value of a binary output.
+        /// </summary>
+        protected override void OnSendBinaryOutput(IBinaryOutputState output)
+        {
+            Log.Trace("OnSendBinaryOutput: {0}", output);
+
+            var msg = new BinaryOutputMessage()
+            {
+                Address = output.Address.Value,
+                Value = output.Active.Requested ? 1 : 0
+            };
+            if (publishMessage("/binary-output", msg))
+            {
+                output.Active.Actual = output.Active.Actual;
+            }
+        }
+
+        /// <summary>
+        /// Send the pattern of a 4-stage clock output.
+        /// </summary>
+        protected override void OnSendClock4StageOutput(IClock4StageOutputState output)
+        {
+            Log.Trace("OnSendClock4StageOutput: {0}", output);
+
+            var msg = new Clock4StageMessage()
+            {
+                Stage = output.Period.Requested.ToString().ToLower()
+            };
+            if (publishMessage("/clock-4-stage", msg))
+            {
+                output.Period.Actual = output.Period.Actual;
+            }
+        }
+
+        /// <summary>
+        /// Send the on/off value of a binary output.
+        /// </summary>
+        protected override void OnSendBinaryOutput(Address address, bool value)
+        {
+            Log.Trace("OnSendBinaryOutput: {0}, {1}", address, value);
+
+            var msg = new BinaryOutputMessage()
+            {
+                Address = address.Value,
+                Value = value ? 1 : 0
+            };
+            publishMessage("/binary-output", msg);
+        }
+
+        /// <summary>
+        /// Convert the given message to json and publish it.
+        /// </summary>
+        private bool publishMessage(string topic, object msg)
+        {
+            if (client.IsConnected)
+            {
+                try
+                {
+                    var payload = JsonConvert.SerializeObject(msg, Formatting.None);
+                    client.Publish(topicPrefix + topic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("MQTT publish failed: " + ex);
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

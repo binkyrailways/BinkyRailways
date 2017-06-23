@@ -15,7 +15,7 @@ Data:
 {
     "address": "module/number",
     "speed": speedInSteps,
-    "direction: "forward|backward"
+    "direction: "forward|reverse"
 }
 ```
 
