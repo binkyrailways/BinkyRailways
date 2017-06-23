@@ -38,7 +38,7 @@ namespace BinkyRailways.Core.Model
                 var haveValue = false;
                 var haveAddressSpace = false;
                 var type = AddressType.Dcc;
-                var aValue = 1;
+                var aValue = "1";
                 string addressSpace = null;
                 var typeNames = Enum.GetNames(typeof (AddressType)).Select(x => x.ToUpper()).ToList();
 
@@ -61,12 +61,18 @@ namespace BinkyRailways.Core.Model
                     if (!haveValue)
                     {
                         int number;
-                        if (int.TryParse(part, out number))
+                        if (!type.RequiresNumericValue()) 
                         {
-                            aValue = number;
+                            aValue = part;
                             haveValue = true;
                             continue;
                         }
+                        if (int.TryParse(part, out number))
+                        {
+                            aValue = part;
+                            haveValue = true;
+                            continue;
+                        } 
                     }
                     if (!haveAddressSpace)
                     {

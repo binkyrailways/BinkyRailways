@@ -129,7 +129,7 @@ namespace BinkyRailways.Core.State.LocoNet
         /// </summary>
         protected Slot RequestSlot(ILocState loc)
         {
-            var address = loc.Address.Value;
+            var address = loc.Address.ValueAsInt;
             log.Trace("RequestSlot(addr={0})", address);
 
             lock (transactionLock)
@@ -392,7 +392,7 @@ namespace BinkyRailways.Core.State.LocoNet
             stateDispatcher.PostAction(() =>
             {
                 var foundInput = false;
-                foreach (var input in cs.Inputs.Where(x => x.Address.Value == address))
+                foreach (var input in cs.Inputs.Where(x => x.Address.ValueAsInt == address))
                 {
                     input.Active.Actual = actual;
                     foundInput = true;
@@ -401,7 +401,7 @@ namespace BinkyRailways.Core.State.LocoNet
                 if (!foundInput)
                 {
                     // The address does not match any of the sensors, perhaps it matches some of the switches?
-                    foreach (var @switch in cs.Junctions.OfType<ISwitchState>().Where(x => x.HasFeedback && (x.FeedbackAddress.Value == address)))
+                    foreach (var @switch in cs.Junctions.OfType<ISwitchState>().Where(x => x.HasFeedback && (x.FeedbackAddress.ValueAsInt == address)))
                     {
                         @switch.Direction.Actual = @switch.InvertFeedback ? invertedActualDir : actualDir;
                         foundSwitch = true;
@@ -430,7 +430,7 @@ namespace BinkyRailways.Core.State.LocoNet
             stateDispatcher.PostAction(() =>
             {
                 var foundSwitch = false;
-                foreach (var @switch in cs.Junctions.OfType<ISwitchState>().Where(x => x.HasFeedback && (x.FeedbackAddress.Value == address)))
+                foreach (var @switch in cs.Junctions.OfType<ISwitchState>().Where(x => x.HasFeedback && (x.FeedbackAddress.ValueAsInt == address)))
                 {
                     @switch.Direction.Actual = @switch.InvertFeedback ? invertedActual : actual;
                     foundSwitch = true;
@@ -499,7 +499,7 @@ namespace BinkyRailways.Core.State.LocoNet
         /// </summary>
         protected void UpdateSlotFromLoc(Slot slot, ILocState l)
         {
-            slot.Address = l.Address.Value;
+            slot.Address = l.Address.ValueAsInt;
             var spd = l.SpeedInSteps.Actual;
             slot.Speed = (spd == 1) ? 2 : spd;
             var dirf = DirFunc.None;

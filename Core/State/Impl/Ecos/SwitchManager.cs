@@ -64,7 +64,7 @@ namespace BinkyRailways.Core.State.Impl.Ecos
             if (@switchState != null)
             {
                 var addr = @switchState.Address;
-                return (addr.Type == addressType) && (addr.Value == addressNr);
+                return (addr.Type == addressType) && (addr.ValueAsInt == addressNr);
             }
             return false;
         }

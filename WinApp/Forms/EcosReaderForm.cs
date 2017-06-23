@@ -167,7 +167,7 @@ namespace BinkyRailways.WinApp.Forms
                     if (!int.TryParse(address, out addressNr))
                         continue;
 
-                    existingLoc = existingLocs.FirstOrDefault(x => x.Address.Value == addressNr);
+                    existingLoc = existingLocs.FirstOrDefault(x => x.Address.ValueAsInt == addressNr);
                     if (existingLoc != null)
                         continue;
 

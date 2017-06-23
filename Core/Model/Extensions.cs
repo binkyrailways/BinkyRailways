@@ -165,6 +165,25 @@ namespace BinkyRailways.Core.Model
         }
 
         /// <summary>
+        /// Does the given type require a numeric value.
+        /// </summary>
+        public static bool RequiresNumericValue(this AddressType addressType)
+        {
+            switch (addressType)
+            {
+                case AddressType.Dcc:
+                case AddressType.LocoNet:
+                case AddressType.Motorola:
+                case AddressType.Mfx:
+                    return true;
+                case AddressType.Mqtt:
+                    return false;
+                default:
+                    throw new ArgumentException("Unknown address type " + addressType);
+            }
+        }
+
+        /// <summary>
         /// Gets the maximum possible value for an address of the given type.
         /// </summary>
         public static int MaxValue(this AddressType addressType)
@@ -179,6 +198,8 @@ namespace BinkyRailways.Core.Model
                     return 80;
                 case AddressType.Mfx:
                     return 16000;
+                case AddressType.Mqtt:
+                    return 0;
                 default:
                     throw new ArgumentException("Unknown address type " + addressType);
             }
@@ -199,6 +220,8 @@ namespace BinkyRailways.Core.Model
                     return 1;
                 case AddressType.Mfx:
                     return 1;
+                case AddressType.Mqtt:
+                    return 0;
                 default:
                     throw new ArgumentException("Unknown address type " + addressType);
             }

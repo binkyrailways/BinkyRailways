@@ -18,6 +18,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             AddItem("Loconet", AddressType.LocoNet);
             AddItem("MFX", AddressType.Mfx);
             AddItem("Motorola", AddressType.Motorola);
+            AddItem("Mqtt", AddressType.Mqtt);
         }
     }
 }
