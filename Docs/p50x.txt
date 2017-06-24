@@ -1,0 +1,3167 @@
+Introduction to the P50X protocol
+(document version 0.96 - 09/00) - by St.Ch-B.
+Uhlenbrock Elektronik GmbH
+=============================================
+
+
+Note:
+Maerklin, Maerklin Digital, Maerklin Digital=, Lenz, Lenz Digital Plus, Roco,
+Digital is Cool, LokMaus, NMRA, Trix, Selectrix, Selectrix 2000, Fleischmann,
+Fleischmann FMZ, ZIMO, Wangrow, North Coast Engineering, Digitrax, LocoNet,
+Motorola, Modeltreno Digital Line, Uhlenbrock Digital etc. are copyrighted
+and registered trade marks.
+
+
+First of all, let us define some terms we regulary use:
+
+P50	  standard Maerklin Interface protocol : "P" for Protocol and "50"
+	  from 6050, the catalogue number of the original Maerklin Interface
+P50X	  the eXtended P50 protocol
+P50Xa	  the ASCII 'part' of the P50X (ASCII mode commands)
+P50Xb	  the binary 'part' of the P50X (binary mode commands)
+XDEV	  eXtended serial DEVice (a device which supports the P50X)
+Xk83	  eXtended k83 with 256 addresses capability
+PT	  Programming Track
+I2C	  The communication bus used by Maerklin between the different
+	  "white boxes" (also known as IIC)
+ISA-bus	  The most common communication bus on a PC
+X-Bus	  The communication bus used by Lenz devices (LZ100, LH100, ...)
+X-B lite  Communication bus used for the Lokmaus
+Lok	  Locomotive
+FL	  Function Light ("0"=Off, "1"=On. Default="0") - also known as "F0"
+F1,F2,..  Extended functions ("0"=Off, "1"=On. Default = "0")
+Dir	  Locomotive direction ("1"=forward, "0"=reverse. Default = "1")
+Speed	  Locomotive speed
+ICUM	  ISA-bus Central Unit Modeltreno, first existing device featuring
+	  the P50X protocol
+SO	  Special Option
+LSO	  Lok Special Option
+BABI	  Break and Automatic Baud-rate Identification
+Turnout	  the word 'turnout' is used instead of 'accessory' (therefore a
+	  'turnout' can also be a signal, etc...)
+Trnt	  turnout
+Turnout address
+	  the address of a **single** device (accessory, turnout, signal,
+	  etc...) controlled through an accessory decoder. To convert from
+	  decoder address to turnout address (assuming that each decoder
+	  controls 4 devices), the following formula applies:
+	  Decoder address = ((Turnout address - 1) / 4) + 1
+	  ["/" = integer divide]
+Color	  Switching direction of a turnout ("1" or "G" or "g" = green or
+	  closed, "0" or "R" or "r" = red or thrown)
+Status	  on (1) or off (0) status of the output of a decoder controlling
+	  a turnout
+TC	  Fleischmann TWIN-CENTER
+IB	  Uhlenbrock/Modeltreno Intellibox
+
+
+
+As far as the RS-232 serial interface is concerned, in general the "eXtended
+serial Device" (XDEV) supports communication speeds of 300, 600, 1200, 2400
+(default), 4800, 7200, 9600, 14400, 19200, 28800, 38400, 57600 and 115200 bps.
+However, as is the case of the Intellibox, not every communication speed in
+this list must be supported. The minimum is: support just 2400 bps.
+Probably, bit rates higher than approx 9600/14400 bps hardly make any
+sense - apart from a super fast (but "dumb": see events method for a better
+solution) reading of s88 status info.
+
+The Intellibox supports (check also the P50Xa 'B' cmd described in
+P50XAGEN.TXT): 2400, 4800, 9600, 19200 and ("unofficially") 38400 bps.
+
+The P50X protocol supports also a different "serial" device, i.e. the ISA-bus
+interface. This would be the case of, e.g., the Modeltreno ICUM.
+
+Let us start with the description of the communication protocol between the
+XDEV and an external device (possibly, a PC).
+
+As already said, the XDEV supports the official Maerklin Interface protocol
+(what we call P50). The support must be rather "high-fidelity", since it
+should also implement the non-documented command codes: it seems that the
+CPU in the Interface does not check for each and every bit.
+For example, the standard 20h command ("cmd", for short) - which turns off
+a turnout is also understood by sending 24h or 28h, etc...
+In a word: a lot of commands have "mirrors".
+
+In order to extend the P50, it is decided to use a single "lead-in"
+character: 58h (ASCII "X") or 78h (ASCII "x").
+These values are not currently defined in the Maerklin Interface protocol
+(the P50). However, one can change this lead-in character to any other value
+(within a limited range) using the ASCII command PX.
+
+After this first byte, subsequent byte(s) specify the actual P50X cmd.
+The first byte of these (i.e., the first byte after the initial "x" or "X")
+also tells whether this is a P50X binary (P50Xb) or P50X ASCII (P50Xa) cmd.
+While the former is more useful when controlling the XDEV through a program,
+the latter is more useful for a user who wants to type commands at the
+keyboard.
+The idea is: if the value of this byte is greater or equal $80 then the cmd
+is assumed to be in P50X binary format (P50Xb). If, on the contrary, it is
+less or equal than $7F, then it is in ASCII format.
+Not every P50Xb cmd has a correspondent P50Xa cmd and vice-versa.
+
+As an added convenience to the user, the "P50X only" mode can be forced by a
+special P50X cmd. This cmd is:
+"xZzA1"	"P50X only" mode On (turns off the P50 - check also P50X_GEN.TXT)
+"ZzA0"	"P50X only" mode Off (turns on the P50)
+
+After issuing "xZzA1" the leading "x" MUST be dropped.
+In particular, the "ZzA0" ("Off") cmd does NOT have to be leaded by an "x".
+This is so, since when the "P50X only" mode is On, no P50 cmds are (directly)
+executable.
+Therefore, the "x" is not needed (and therefore not allowed).
+It is convenient to take advantage of the "xZzA1" command  (if the
+"P50X only" mode is off) if you use a standard terminal program to talk
+to the XDEV through the serial line: thereafter you wont have to remember
+to type an "x" or "X" at the beginning of each ASCII P50X command.
+
+Dropping the leading "x" would also be convenient for a program which mostly
+uses P50X commands. (Note: P50 commands are still executable even if in
+"P50X only" mode. Please check P50X_GEN.TXT).
+
+
+
+General Syntax of P50Xa cmds
+----------------------------
+
+As a rule, P50Xa cmds are NOT case sensitive: upper and lower case don't
+matter. The "xZzA1" and "ZzA0" cmds are the only exceptions to this rule.
+
+The CR (Carriage Return) character must be sent as the last character of
+each P50Xa cmd. A trailing Line Feed ($0A) is prohibited.
+
+Most P50Xa cmds accept parameters. Some of them are optional (and indicated
+between square brackets in the following).
+Spaces **before** parameters are skipped.
+
+You can directly preceed a parameter with the character "$", should you want
+to specify it in hexadecimal notation (e.g. $F3), or "%" in the case of a
+binary value (e.g. %11000110), starting from the most significant bit.
+Leading 0s are skipped in every format (dec, hex or bin).
+Internally, parameters are evaluated (converted from ASCII to binary) as
+16 bit unsigned quantities. However, many commands only allow for a limited
+range of legal values (e.g. 0..255).
+
+Some commands accept a variable number of parameters.
+P50X commands are usually composed of 2 characters (plus leading "x"
+or "X"), however, there are a few exceptions.
+You can use one or more spaces or a comma as separator between parameters.
+Using a comma, you can add spaces only **after** the comma.
+
+Example: let's immagine that the maximum number of parameters of an
+hypothetical command "XX" is 3. You can type the command as "XX", "xX",
+"Xx" o "xx" and, with its parameters, as:
+
+xx parameter1, parameter2, parameter3
+xx parameter1,     parameter2,parameter3
+xx parameter1,parameter2,parameter3
+xxparameter1, parameter2, parameter3
+xxparameter1,parameter2,parameter3
+xx parameter1 parameter2 parameter3
+xxparameter1     parameter2 parameter3
+
+
+Also, some cmds "understand" that you actually want to get some info, not
+to send a "real" cmd. This happens if you limit your input to no parameters
+or to the very first (mandatory) parameter.
+For example, in order to turn on the lights, without changing the speed,
+of Lok #1, you would issue command: "L 1,,1" (or also, for example,
+"L1, ,  1": spaces before parameters are skipped).
+If, on the contrary, you only wanted to check the status of that Lok, you
+would issue the command: "L 1" (or "L1", etc...).
+
+The maximum length of P50Xa commands is 62 characters (excluding the
+final CR). Only one command per line is allowed. In other words, each and
+every ASCII command must be followed by CR (Carriage Return), or hex 0Dh
+(decimal 13).
+N.B. No LF (Line Feed, hex 0Ah) character should be added after CR!!
+
+Optional parameters are indicated in square brackets. For example:
+YY	Parameter1[, Parameter2]
+
+The reply of the XDEV to a P50Xa command is always terminated by the
+character "]" (prompt of the P50Xa cmds in normal mode (the ICUM also
+features a "PT mode": here the prompt would be "*")).
+A program can use this feature in order to understand when the last
+character of the XDEV reply to the P50Xa cmd has been received.  Moreover
+it is guaranteed that only one "]" character shall be sent by the XDEV as
+part of the reply: the very last character!
+
+If at least one character of a P50X ASCII cmd has been sent through the
+RS-232 channel to the XDEV, then it is possible to use the standard BS
+(backspace, 08h) character in order to "erase" the previous character of
+this cmd. This does NOT hold true for P50X binary commands!
+Note: the XDEV does NOT send the usual "space + BS" in reply to this
+BS character (this sequence is usually sent to erase from the terminal
+screen the "backspaced-over" character). If desired, this "erasure" must
+be performed locally (most terminal programs are configured that way by
+default).
+
+
+
+A note on P50 Lok cmds
+----------------------
+
+P50 Lok commands (i.e. "Speed and FL" and "Functions" commands) are expanded
+by the XDEV as far as the allowed address range is concerned.
+In fact, the second byte of these commands is not restricted to the range
+1..80 (as would be the case for a 6050/1 connected to a Motorola format
+Central Unit).
+
+The XDEV address range for P50 Lok commands is: 0..255.
+
+Of course, depending on the particular protocol the Lok has been configured
+for, not every address is a legal address.
+For example, Selectrix "only" supports addresses: 0..111.
+If the address is not "legal", then the XDEV shall discard that P50 cmd.
+
+
+
+Baud rate & protocol identification
+-----------------------------------
+
+The XDev, through the 'break' feature and the XNOP P50Xb cmd (0C4h),
+supports automatic baud rate identification by the PC ("BABI" = Break and
+Automatic Baud-rate Identification). Please read the next section for
+more details on how a Break is handled by the Intellibox.
+The BABI procedure is also esemplified in the demonstration programs.
+Automatic identification of the active protocol (P50, P50X or both) is also
+possible. Please check the IBE.BAS demonstration program for details.
+
+
+
+RS-232 'break'
+--------------
+
+Devices supporting the P50X protocol should also support the 'break' state
+of the RS-232 protocol - as we are about to explain.
+
+A PC can send a 'break' to the XDev when it would like the XDev to completely
+clear it's RS-232 input buffer, thus making sure that the next character -
+the one sent by the PC after the break - shall be interpreted as the very
+first byte of a new command.
+In the Intellibox case, a simple (short) break, as defined by the RS-232
+standard, is not enough. A longer sequence must be used:
+
+- 'no transmission' pause (about 200 ms or more);
+- actual RS-232 break lasting about 1 second or more (i.e. the PC tx line is
+  held at +12V for about 1 second or more);
+- a second 'no transmission' pause (about 600 ms or more).
+
+It is **very** important that NOTHING is transmitted to the Intellibox
+during these 'no transmission' pauses. Particulary in the case of the 1st
+pause, an eventual transmit buffer used by the PC program should be taken
+into account!
+(That is: wait for the specified amount of time **after** this tx buffer has
+become empty - or has been explicitly emptied by the PC program.)
+
+Please consider also the fact that, quite "correctly", some programming
+environments do not "send a break" if the corresponding serial port hasn't
+been opened first.
+
+
+Conversely, upon being resetted by the user or by a PC command (check P50Xa
+'@' and '@@' cmds), the XDev shall send an RS-232 break to the PC.
+(No break is sent in case of an Intellibox power-on reset.)
+It is guaranteed that the break shall last about 30 ms - what is more than
+enough, even at 2400 bps, for correct break identification on the PC side.
+
+
+Depending on Special Option #26, a break (from the XDev) may also 'reset'
+the Intellibox baud rate to 2400 bps. This happens if SO #26 is set (this
+would be the default factory setting).
+However, even after a Break, the 'original' baud rate (i.e. the default
+baud rate selected by the user through the Intellibox menus) can be
+restored by reading the Special Option (SO) #1 and then using the
+P50Xa 'B' cmd.
+SO #1 would have a value from 0 (2400 bps) to 4 (38400 bps).
+The Intellibox default factory setting is 2400 bps (SO #1 = 0).
+
+A PC break also re-enables both the P50 and the P50X protocols (should
+they have been disabled) and sets 'X' (or 'x') as the P50X leading
+character.
+
+(The P50 protocol can be disabled by the 'ZzA1' cmd, while the P50X
+protocol can be disabled through the 'PX0' cmd.
+While the P50 cmd can be re-enabled by cmd ('ZzA0'), there is no way, other
+then a PC break or a manual reset (should the Intellibox not have been
+configured for "6050 only"), to re-enable the P50X protocol by the PC.)
+
+
+
+CTS handling
+------------
+
+The Intellibox shall deactivate the CTS line as soon as the amount of
+available space in its input buffer has dropped below 5 characters.
+Therefore, in the case of a PC program reacting very slowly to CTS being
+set "off", the Intellibox can still correctly receive (without an 'overrun'
+error), up to 4 more characters.
+Only when more than 4 characters shall once again be free in the input
+buffer shall the Intellibox activate the CTS line once more.
+
+(Please notice: our tests show that not every programming environment
+correctly supports the CTS line!)
+
+The Intellibox input buffer size is 16 bytes plus one P50 or P50X command.
+Of these 16 bytes, 8 are 'fast' (immediately available), while 8 more are
+'slow'. For CTS handling the amount of 'fast' bytes still free is the
+quantity which is taken into account.
+
+It may happen, if using 'older' software (e.g. software written for a 6050),
+that this input buffer may produce unexpected side effects.
+For example: you can queue relatively fast up to 13 P50 locomotive commands
+in the Intellibox input buffers (or even more turnout commands). However,
+a P50 s88 read cmd sent after these would be processed only after the Lok
+commands have been processed: depending on several circumstances, this can
+take quite some time (seconds like).
+It may just happen that the 'older' software won't stand this 'delay'.
+
+This is one more reason, along with proper CTS handling on the PC side,
+why most P50X commands send a reply. In fact, speaking about P50Xb commands,
+since no such command is longer than a few bytes and since almost every
+P50Xb command sends a reply to the PC, then, if the PC decides to wait
+for this reply before sending a further command, then, even if the PC does
+not correctly react to CTS being set 'off', no problem (overrun) is possible.
+
+Please consider that P50Xb commands, including Lok and Turnout commands,
+usually reply within a few milliseconds - possibly with a "buffer full"
+error.
+While the exact reaction time is command-dependent, a maximum reply
+time of about 50 ms can be estimated (about 100 ms for an XPwrOn cmd),
+with 20-30 ms being a 'typical' figure.
+Of course, the selected baud rate has an effect on total command 'cycle'
+time!
+
+
+
+Command processing order
+------------------------
+
+While there is no cmd-to-reply identification system (i.e., it is not
+possible, by looking only at the reply to a cmd to find out exactly to
+what cmd that reply refers to), it is however guaranteed that the XDEV
+shall send to the PC replies in the same order as the received commands.
+Therefore, if you send n commands and only later on check the n replies to
+those commands, you shall still be able to find out exactly which command
+was successfully executed and which one may not have been.
+
+
+
+Fleischmann TWIN-CENTER
+-----------------------
+
+The TC supports, besides P50 and P50X also an emulation (with extensions
+and restrictions) of the protocol used by a 6800 FMZ command station - what
+we call 'PTC' (Protocol TC).
+This protocol is described in a separate document: PTC.TXT.
+
+Intellibox: general purpose P50Xa commands
+(document version 0.851 - 09/2003) - by St.Ch-B.
+Uhlenbrock Elektronik GmbH
+================================================
+
+
+*** H
+Help. May also be sent in a short form: '?'.
+
+
+
+*** HL
+Help about the syntax of the 'L' Lok cmd.
+
+
+
+*** HT
+Help about the syntax of the 'T' Turnout cmd.
+
+
+
+*** HF
+Help about the syntax of the 'F' Function cmd.
+
+
+
+*** Stop
+Power Off. May also be sent in a short form: '.'
+
+
+
+*** Go
+Power On. May also be sent in a short form: '!'
+(All power on cmds, including the manual ones, clear an eventually
+active Halt mode.)
+Should there still be an error condition (e.g. 'overheating'),
+then the Intellibox shall reply with:
+'Pwr On not possible!'
+In this case, the result of the 'Y' cmd should tell you more.
+
+
+
+*** Halt
+Activates Halt mode: all Loks are forced in Stop (or Em. Stop).
+No Speed commands are executed, however other Lok commands *are*
+executed (e.g. direction change, light or function status change).
+Turnouts can be controlled.
+
+
+
+*** Y
+Shows the current IB status: Power On/Off, Halt mode On/Off, presence
+of an external I2C Control Unit, Voltage Regulation status, etc...
+This corresponds to the XStatus P50Xb cmd.
+
+
+
+*** V
+Report Intellibox/TWIN-CENTER software version number and serial number.
+(Also check the XVer P50Xb cmd in P50X_GEN.TXT for more details.)
+
+
+
+*** MT {[TMin], [TMax]}
+TMin	minimum turnout activation time (0..255)
+TMax	maximum turnout activation time (0..255)
+Specifying 0 as a value disables the corresponding timer.
+Both TMin and TMax are specified in 50 ms units.
+The IB default is:
+TMin	2 = 100 ms (Special Option #13)
+TMin	100 = 5 seconds (Special Option #14)
+accuracy is about +/-25 ms.
+This command allows to override, up to the next IB reset, the values
+specified by SO #13 and #14.
+
+
+
+*** SR {[Flag]}
+Flag	0 or 1
+This allows reading or setting the s88 'auto-reset' feature.
+The command 'SR0' corresponds to the P50 command 080h.
+The command 'SR1' corresponds to the P50 command 0C0h.
+
+
+
+*** SS {s88}
+s88	s88 module number to be read (1..31)
+
+
+
+*** SE {s88h}
+s88h	sets the highest s88 module 'half number' to be
+	automatically read by the IB
+	*OR*
+	disable automatic reading (s88h = 0)
+Allowed range is: 0..62
+
+For example, in order to have the IB automatically read only
+the very first s88 module, the following command should be
+used: 'SE 2'.
+The IB default (per Special Option #8) is: s88h = 16, which implies
+reading automatically the first 8 s88 modules (16 'half modules').
+If a P50 cmd for reading the s88 modules requires more than what
+is currently automatically read by the IB, then the IB automatically
+raises this number. This does NOT apply to event-style reading!
+You can also specify 0 as a value for s88h. In this case, the IB
+shall cease reading s88 modules automatically and only read them
+when an explicit P50 or P50Xa cmd shall be sent.
+
+This command allows to override, up to the next IB reset, the value
+specified by SO #8.
+
+N.B. No sensor event can be generated for s88 modules which are not
+being read automatically by the IB. Therefore, it is quite important
+to let the IB know, either manually through the IB menus or through
+this 'SE' cmd (or X88PSet), how many s88 modules are actually connected.
+LocoNet sensors, on the contrary, would be active even if s88 automatic
+reading has been disabled.
+
+
+
+*** SX {[Ts88h], [Cs88h]}
+Ts88h	source for s88 timers (0..62)
+Cs88h	source for s88 counters (0..62)
+Both parameters are specified in terms of 's88 half modules'.
+The IB default is Ts88h = 1 (Special Option #23) and Cs88h = 1
+(Special Option #24).
+This would imply that s88 Timer #1 keeps track of the total time
+the input #1 of the 1st s88 module has been 'active' (s88 input
+'closed' or 'on').
+s88 Timer #2 would be associated with the 2nd input of the same
+s88 module.
+
+For example, specifying 2 for Cs88h would make the 1st s88 Counter
+count the number of off/on cycles (contact open/closed) of input
+#9 of the first s88 module.
+
+Provided the corresponding s88 input is 'on' (closed), each s88 Timer
+is incremented approximately every 200 ms.
+The (time) resolution of the Counters depends on the number of s88
+modules which are being automatically read by the IB: the lower this
+number, the higher the resolution of s88 counters (i.e. they would be
+able to keep track also of very fast on/off cycles).
+A reasonable estimate, while automatically reading the first 8 s88
+modules, would be about 50 ms resolution for the Counters - or better.
+
+N.B. s88 Timers and Counters are NOT updated if automatic s88
+     reading is disabled (check 'SE' cmd).
+
+This command allows to override, up to the next IB reset, the values
+specified by SO #23 and #24.
+
+Specifying 0 for Ts88h disables s88 timer updates. The corresponding
+is true for s88 counters if setting Cs88h to 0.
+
+
+
+*** ST {s88Tim, [Reset]}
+s88Tim	s88 Timer (1..8)
+Reset	tells whether to reset (1) or not (0) the s88 Timer which
+	is being read.
+N.B. if Reset is not specified, then a reset is performed!
+Each Timer is 16 bit. If the maximum Timer value is reached, there
+is no wrap around: the Timer is no more incremented.
+
+
+
+*** SC {s88Cnt, [Reset]}
+s88Cnt	s88 Counter (1..8)
+Reset	tells whether to reset (1) or not (0) the s88 Counter which
+	is being read.
+N.B. if Reset is not specified, then a reset is performed!
+Each Counter is 16 bit. If the maximum Counter value is reached, there
+is no wrap around: the Counter is no more incremented.
+
+
+
+*** RT [Ctime]
+Ctime	CTS 'off' time in case of non-PC requested Power Off
+	(e.g. manual Power Off, shorts, etc...)
+	This value is to be interpreted in units of 50 ms.
+	The IB default is: Ctime = 254 (i.e. about 13 seconds).
+
+In practice: when a non-PC Power Off occurs, the IB, in order to
+find out what to do with the CTS line, checks the 'Ctime' value:
+
+if CTime = 0, then the CTS line is permanently disabled: only a
+	manual Power On (e.g. pressing the 'Go' key on the IB)
+	would reactivate the CTS line. This is what would happen
+	in case of a 6050 (actually: after a Power Off, a 6050
+	accepts at least one more cmd. If the 6050 is connected
+	to a 6021, then only a turnout cmd 'blocks' the 6050).
+
+if CTime = 255, then the CTS line is not disabled at all (excluding,
+	of course, IB RS-232 input buffer status).
+
+For other values, the CTS line is disabled for the specified amount
+of 50 ms units. The idea is to let the PC implicitly find out, through
+a timeout detected by the PC RS-232 driver on the CTS line, that a Power
+Off has occurred. Then, after a short while, the CTS line would be
+automatically re-enabled by the IB, thus allowing further cmds from the PC.
+
+If you are using events, then it would be probably wise to either set
+CTime = 255, or to set it to a very low value (e.g. 10).
+
+This command allows to override, up to the next IB reset, the value
+specified by SO #6.
+
+
+
+*** ZzA {parm}
+Enables (parm = 0) or disables (parm = 1) the P50 protocol.
+When the P50 protocol is disabled, the leading character of the P50X
+commands MUST NOT be sent (this is, by default, the "X" or "x" character).
+
+
+
+*** PX [char]
+char	the ASCII code of the P50X char to be used starting from the
+	next P50X cmd. Allowed range: 0 or 50h..5Fh
+As usual, not specifying any 'char' allows you to read the current value.
+If 0 is specified (as 'char' value), then the P50X protocol shall be
+disabled. Re-enable is possible only by PC break or Intellibox reset.
+The latter would only work provided that the Intellibox has been configured
+that way using its menus (i.e. configured for 'P50X enabled').
+
+
+
+*** @
+Have the IB perform a reset (warmstart).
+Turnout and Lok status is preserved (Lok Speed is set to 0 - however, this
+depends on the way the IB has been configured).
+N.B. starting from SPU version 1.500, this command must be enabled through
+     SO #663: that SO must have the value 1.
+
+
+
+*** @@
+Have the IB perform a reset (coldstart).
+Turnout and Lok status is NOT preserved: it is reset according to the last
+saved status for Loks and to the last saved turnout status for turnouts.
+All eventual turnout 'color' changes which may have occurred since the last
+power on shall be lost.
+N.B. starting from SPU version 1.500, this command must be enabled through
+     SO #663: that SO must have the value 1.
+
+
+
+*** B [baud_rate]
+The officially supported IB baud rates are: 2400, 4800, 9600 and 19200 bps.
+38400 bps should also work - even if we DO NOT officially support this
+RS-232 speed.
+The XNOP P50Xb cmd can be used in order to automatically detect both
+the current baud rate and the currently active protocol(s): either P50 only,
+P50X only, or "mixed" (P50 and P50X).
+
+
+
+*** CT [flag]
+In case of some "terminal" programs, in order not to have the Intellibox
+reply to a P50Xa cmd overwrite the P50Xa cmd itself, a leading CR (Carriage
+Return) must be sent by the Intellibox, before sending the answer to a P50Xa
+cmd. This would be enabled by specifying "1" as the value of the flag
+parameter of the CT cmd.
+The startup default is "0", which would imply NOT adding any leading CR.
+
+
+
+*** ID [flags]
+Allows overriding up to the next IB reset the value of SO #907.
+Only bit #0 (for Motorola idle) and bit #2 (for DCC idle) are to be
+used. NO OTHER BIT SHOULD BE SET!
+The IB shall send, provided that no other signal must be sent, the
+idle signal specified by the flag parameter.
+The IB default is to send both idle signals: flags = 5.
+(For Germany, the dafault is: flags = 1, i.e. send only Motorola idle).
+
+
+
+*** NR [flag]
+Allows disabling the refresh cycle (if flag = 1).
+If the refresh cycle is disabled, only new commands shall cause non-idle
+signals to be sent to the tracks.
+If the refresh signal is disabled, if the Special Option #25 is not set
+and if the 'flags' parameter of the 'ID' cmd was specified as 0, then
+NO SIGNAL shall be generated (DC output!).
+
+(If SO #25 is set, this forces sending a DCC idle signal even if no DCC Lok
+is in the refresh cycle.)
+
+
+
+*** SO [number]
+Allows reading the value of a Special Option.
+Legal range for 'number' is 0..999.
+
+
+Intellibox: general purpose and events related P50Xb commands
+(document version 0.994 - 09/03) - by St.Ch-B.
+Uhlenbrock Elektronik GmbH
+=============================================================
+
+N.B.
+P50Xb commands which are not defined (in this or in a related
+document) do NOT reply with anything!
+In fact, such an undefined P50Xb cmd would simply be discarded
+by the Intellibox.
+
+
+N.B.
+The most common mistake, when starting to use P50X commands,
+is to forget about the reply which almost all commands, even very
+simple ones like XPwrOn, do send.
+If you forget to explicitly receive this reply, it shall nevertheless
+"be there" (in the receive buffer of the PC - whatever this may be:
+hardware or software). Quite obviously, this shall have unexpected
+consequences later on, while processing replies from other commands.
+Therefore: as a rule please assume that all P50X commands DO send
+some kind of reply. Only a few commands do not send any reply at all.
+
+
+
+######### P50 commands issued through P50Xb commands
+
+These two commands have been introduced in order to allow you
+to drop the typical leading "x" char of P50X commands (through
+the 'ZzA1' P50Xa cmd), while still being able to issue P50 commands.
+In fact, once the 'ZzA1' cmd has been issued, no P50 command is
+*directly* executable, as the 1st received byte would always be
+interpreted as the 1st byte of a P50X cmd.
+
+
+*** XP50Len1 (0C6h) - length = 1+1 bytes
+Parameters (byte):
+1st	same as a one byte long P50 cmd (e.g. s88, Pwr On/Off,
+	and also turnout 'off')
+N.B. there is NO reply!
+
+
+*** XP50Len2 (0C7h) - length = 1+2 bytes
+Parameters (byte):
+1st & 2nd  same as a two byte long P50 cmd (e.g. Lok control,
+	   Fnc control and Turnout control (red on/green on))
+N.B. there is NO reply!
+
+
+
+######### P50Xb general usage commands
+
+
+*** XPwrOff (0A6h) - length = 1 byte
+Reply:
+1st	00h (cmd Ok)
+
+
+*** XPwrOn (0A7h) - length = 1 byte
+Reply:
+1st	00h (cmd Ok) or error code XPWOFF (06h): the Power is Off!
+XPWOFF is reported if an error condition (e.g. 'overheating')
+prevents the Intellibox from turning on the power to the layout.
+
+
+*** XHalt (0A5h) - length = 1 byte
+Reply:
+1st	00h (cmd Ok) or error code
+While in halt mode, all Loks are stopped.
+The light and the driving direction are still controllable.
+Turnouts can be controlled.
+Halt mode is terminated by a Power On command (manual or PC).
+
+N.B. The IB itself does not currently give any visual cue about the
+fact that Halt mode is active. To this avail, in a future software
+release, probably the red and the green LED's shall blink 'together'.
+It shall be possible to activate the Halt mode by *briefly* pressing
+the IB Stop and the Go keys togheter (a longer, about 2-3 seconds,
+closure of these two keys causes an IB reset - the latter is true also
+in the current software release).
+[Note: the above paragraph is to be moved to a different chapter, since
+it has nothing to do with the P50X!]
+
+
+*** XSOSet (0A3h) - length = 1+3 bytes
+N.B. NOT IMPLEMENTED IN THE INTELLIBOX!!
+(Always replies with: XSYERR - that is: starting from SPU v1.002)
+Parameters (byte):
+1st	low byte of SO (Special Option) number
+2nd	high byte of SO number
+3rd	new SO value
+legal SO number is 0..999
+depending on the specific SO, the 3rd byte must lay inside a given
+range (i.e., for each SO there is a minimum and a maximum value).
+Special Options are user-only configurable parameters which control
+many aspects of the Intellibox. Please check SO_DOC.TXT for a list of
+the main SO's and their 'meaning'.
+Reply:
+Either 00h (cmd Ok) or error code:
+XSYERR	(01h)	cmd not implemented
+XBADPRM	(02h)	bad SO # (bad parameter value)
+XBADSOV	(0Fh)	bad SO value
+N.B. By design choice there is NO command for writing (changing) the
+value of an SO in the Intellibox. This can only be done manually, using
+the IB menus. The XSOSet cmd has only been defined in view of possible
+future devices (e.g. CompuBox) and/or software implementations.
+
+
+*** XSOGet (0A4h) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of SO (Special Option) number
+2nd	high byte of SO number
+legal SO number is 0..999
+Special Options are user-only configurable parameters which control
+many aspects of the Intellibox. Please check SO_DOC.TXT for a list of
+the main SO's and their 'meaning'.
+Reply:
+Either 00h (cmd Ok, one more byte shall follow) or error code (XBADPRM).
+The eventual 2nd byte holds the SO value.
+
+
+*** XVer (0A0h) - length = 1 byte
+Reply: iterated format consisting of one 1st byte telling
+the amount of bytes which shall follow. If this 1st byte
+is zero, then this is the last byte of the XVer reply.
+For example, the IB replies with:
+02h, <SPU version low>, <SPU version high>,
+02h, <KPU version low>, <KPU version high>,
+01h, <PPU version>,
+01h, <LIPU version>,
+01h, <DNG version>,
+05h, <IB serial number: 5 bytes (digits 98, 76, 54, 32, 10)>,
+00h
+
+A single byte version # is to be interpreted as: H.L
+For example: 10h -> version 1.0
+A two byte version # (low/high) is to be interpreted as: H.HLL
+For example: 23h, 10h -> version 1.023
+(the version numbers and the serial number are sent in BCD
+notation - Binary Coded Decimal).
+
+The serial number is to be interpreted as: '9876543210' - i.e.
+digit '9' is the most significant digit, etc...
+
+SPU = System Processing Unit (the IB 'heart')
+KPU = Keypad Processing Unit (user interface)
+PPU = Peripheral Processing Unit (digital signal generator)
+LIPU = Lokmaus/I2C Processing Unit
+DNG = Dispositivo di Nostra Gestione (sorry this is italian language!)
+
+
+*** XP50XCh (0A1h) - length = 1+1 bytes
+Parameters (byte):
+1st	new P50X lead-in char (range: 0 or 50h..5Fh)
+If 00h is specified (as parameter value), then the P50X protocol
+shall be disabled. Re-enable is possible only by PC break or Intellibox
+reset. The latter would only work provided that the Intellibox has been
+configured that way using its menus (i.e. configured for 'P50X enabled').
+
+Reply:
+1st	00h (cmd Ok) or error code
+
+
+*** XStatus (0A2h) - length = 1 byte
+Reply:
+1st	current system status:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    |Sts2 |VReg |ExtCU|Halt | Pwr | Hot | Go  |Stop |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Sts2	currently always reported as 0. If set, then
+			one more byte is to be expected as part of
+			the XStatus reply (this would be an eventual
+			expansion for a future software release)
+			This would be similar to what happens with
+			the XEvent cmd.
+		VReg	set if voltage regulation (N scale) is enabled
+		ExtCU	set if an external I2C Central Unit is present
+		Halt	set if in Halt mode (Lok's stopped, Pwr On)
+		Pwr	set if we are in Power On
+		Hot	Overheating condition detected
+		Go	set if a [Go] key on an external I2C device
+			is currently pressed
+		Stop	set if a [Stop] key on an external I2C device
+			is currently pressed
+
+
+*** XNOP (0C4h) - length = 1 byte
+This cmd can be used in order to automatically identify the
+currently selected IB baud rate and protocol.
+In fact, this cmd only replies with the typical P50Xb 'Ok' (00h)
+answer. This, along with the fact that the 0C4h P50 cmd replies
+with two bytes (s88 data from the 4th s88 module), enables
+automatic baud rate and protocol identification.
+A second possible usage would be: checking that the communication
+channel with the IB still works.
+
+N.B. The IB discards any byte which has been received with 'wrong'
+     stop bits. This fact is 'used' as part of the automatic baud
+     rate identification algorithm.
+
+
+*** XSensor (098h) - length = 1+1 bytes
+Parameters (byte):
+1st	s88 module number (1..128)
+s88 module numbers 1..31 may correspond to real s88 modules
+connected to the IB. Module numbers starting from 32 only
+correspond to LocoNet sensors.
+Reply:
+1st	00h (cmd Ok, 2 bytes shall follow) or error code (XBADPRM)
+	As usual, only in case of no error, more bytes are sent:
+2nd	contacts #1..8 (bits #7..0)
+3rd	contacts #9..16 (bits #7..0)
+
+N.B. If less than 31 'real' s88 modules are used, then the
+corresponding addresses can be used for LocoNet sensors.
+(Check also XEvtSen cmd.)
+This would be the mapping of LocoNet sensors to s88 modules:
+LocoNet sensor #0	s88 module #1, contact #1
+LocoNet sensor #1	s88 module #1, contact #2
+...
+LocoNet sensor #15	s88 module #1, contact #16
+LocoNet sensor #16	s88 module #2, contact #1
+...
+...
+LocoNet sensor #2047	s88 module #128, contact #16
+
+The current version of the IB software "only" supports up to 2048
+LocoNet sensors (0..2047). Eventual LocoNet messages related to higher
+sensor addresses are currently discarded (ignored).
+
+N.B. In agreement with the Digitrax LocoNet documentation,
+bit 'I' of byte 'IN2' of the OPC_INPUT_REP LocoNet message
+is regarded as the least significant bit of the LocoNet
+sensor address.
+
+N.B. The data read by the XSensor cmd shows the *current* status,
+not the accumulated OR status (as would be the case for P50
+s88 commands), for the s88 module or LocoNet sensor being read.
+
+Reading an s88 module with the XSensor cmd removes any
+eventually pending sensor event for that module.
+
+
+
+*** XSensOff (099h) - length = 1 byte
+Reply:
+1st	always 00h
+This cmd tells the IB to report as new 'sensor events' the status of
+all sensors which aren't 'off'.
+It can be useful, e.g., at the start of a PC program, in oder to read,
+using events, what the current status of all sensors ist.
+Sensors for which no events shall be reported (after an XSensOff cmd)
+can be assumed to be in the 'off' condition.
+[Note: is there a way to improve this description?]
+
+
+*** X88PGet (09Ch) - length = 1+1 bytes
+Parameter (byte):
+1st	s88 parameter number
+Allows reading the current value of an s88 related parameter.
+Currently, these are the accessible parameters:
+00h	# of automatically read s88 'half modules'
+	(check also P50Xa 'SE' cmd)
+01h	s88 module 'half number' which is source for the s88 timers
+02h	s88 module 'half number' which is source for the s88 counters
+
+Reply: either 00h (cmd Ok, one byte shall follow) or error code.
+Eventual 2nd byte holds the s88 parameter value
+
+
+*** X88PSet (09Dh) - length = 1+2 bytes
+Parameters (byte):
+1st	s88 parameter number (check X88PGet for details)
+2nd	s88 parameter value
+Allows setting current value of an s88 related parameter.
+
+N.B. s88 parameter shall only be modified up to the next IB reset.
+     In fact, upon an IB reset all s88 parameters are reset to the
+     values specified by the user (per IB menus) and stored in the
+     corresponding Special Option.
+
+Reply: either 00h (cmd Ok) or error code.
+
+
+*** Xs88Tim (09Eh) - length = 1+1 bytes
+Parameters (byte):
+1st	Bit #0..3: s88 Timer number (1..8)
+	Bit #7 = set if Timer to be reset after reading (i.e. after this cmd)
+	(Bit #4..6 are reserved: must always be 0)
+Reply:
+1st	00h (cmd Ok, 2 bytes shall follow) or error code
+	As usual, only in case of no error, more bytes are sent:
+2nd	s88 Timer value (low byte)
+3rd	s88 Timer value (high byte)
+The timer value is to be interpreted in 200 ms units.
+
+Provided the corresponding s88 input is 'on' (closed), each s88 Timer
+is incremented (i.e., Timer = Timer + 1) approximately every 200 ms.
+Upon eventually reaching the maximum value (0FFFFh), there is no
+'wrap around': the timer stays at this maximum value.
+
+
+*** Xs88Cnt (09Fh) - length = 1+1 bytes
+Parameters (byte):
+1st	Bit #0..3: s88 Counter number (1..8)
+	Bit #7 = set if Counter to be reset after reading (i.e. after this cmd)
+	(Bit #4..6 are reserved: must always be 0)
+Reply:
+1st	00h (cmd Ok, 2 bytes shall follow) or error code
+	As usual, only in case of no error, more bytes are sent:
+2nd	s88 Counter value (low byte)
+3rd	s88 Counter value (high byte)
+
+The (time) resolution of the Counters depends on the number of s88
+modules which are being automatically read by the IB: the lower this
+number, the higher the resolution of s88 counters (i.e. they would be
+able to keep track also of very fast on/off cycles).
+A reasonable estimate, while automatically reading the first 8 s88
+modules, would be about 50 ms resolution for the Counters - or better.
+Upon eventually reaching the maximum value (0FFFFh), there is no
+'wrap around': the counter stays at this maximum value.
+
+
+
+
+######### P50Xb events related commands
+
+Please check also the IBE.BAS events demonstration program.
+
+
+*** XEvent (0C8h) - length = 1 byte
+Reply:
+the length of the reply varies from one to three bytes.
+The length is determined from bit #7 of bytes #1 and 2.
+If bit #7 is set, then one more byte shall be sent as part
+of the reply.
+Bit #7 of the 3rd byte is currently always reported as 0.
+It could be used in the future for further extensions
+to the XEvent cmd reply.
+In case of 'no event to report', the reply consists of a
+single byte: 00h.
+
+A pseudo-code algorithm should make things clear:
+
+if (bit #7 of 1st byte of reply to XEvent cmd is 1) then
+	receive also 2nd byte
+	if (bit #7 of 2nd byte... is 1) then
+		receive also 3rd byte
+	else
+		consider 3rd byte as if it were 00h
+	endif
+else
+	consider 2nd and 3rd bytes as if both were 00h
+endif
+
+N.B. only **after** having eventually received also the 2nd and
+the 3rd byte one should proceed and process the 'normal' (i.e.,
+not bit #7) event flags of the XEvent reply.
+This is to prevent 'forgetting' about the 2nd and 3rd byte and/or
+mixing up a reply to a further cmd with this 2nd and 3rd byte.
+
+1st	event flags to be interpreted as:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    | Ev2 |  x  |Trnt |TRes |PwOff| Sen | IR  | Lok |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Ev2	set if also the 2nd byte of the XEvent
+			reply shall be sent (i.e.: there is at least
+			one event also in the 2nd or in the 3rd byte)
+		x	(reserved for future use)
+		Trnt	there has been at least one non-PC Turnout cmd
+		TRes	there has been at least one non-PC attempt at
+			changing the status of a 'reserved' Turnout
+		PwOff	there **has been** (not: is!) a Power Off
+		Sen	there has been at least one sensor event
+			(s88 or LocoNet)
+		IR	there has been at least one infra-red event
+		Lok	there has been at least one non-PC Lok cmd
+
+
+2nd	event flags to be interpreted as:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    | Ev3 | Sts | Hot |PTSh |RSSh |IntSh|LMSh |ExtSh|
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Ev3	set if also the 3rd byte of the XEvent reply
+			shall be sent (i.e.: there is at least an
+			event also in the 3rd byte)
+		Sts	an XStatus cmd should be issued
+		Hot	Overheating condition detected
+		PTSh	while the PT relay was on (e.g., PT in 'PT only'
+			mode), a non-allowed electrical connection btw
+			the Programming Track and the rest of the layout
+			has been detected
+		RSSh	overload (short) on the DCC Booster C/D lines
+			or on the LocoNet (B connector) Rail Sync +/-
+			lines (or on the PT, if the PT relay was on)
+		IntSh	short reported by the internal Booster
+		LMSh	overload (short) on the Lokmaus bus
+		ExtSh	short reported by an external Booster
+
+
+3rd	event flags to be interpreted as:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    | Ev4 |  x  |  x  |ExVlt|TkRel| Mem |RSOF |  PT |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Ev4	not currently used, reported as 0
+		x	not currently used
+		ExVlt	an external voltage source is present
+			(prior to turning on the layout). E.g.
+			an external transformer is in contact
+			with the rails.
+		TkRel	report Lok 'take' and 'release' events
+			from non-PC Lok controllers
+			(to be documented)
+		Mem	set if there has been at least one
+			'memory' event (to be documented - related
+			to the future IB 'memory' software expansion)
+		RSOF	set if an RS-232 rx overflow has been
+			detected (the PC probably does not
+			correctly handle the CTS line)
+		PT	a PT event is available.
+			N.B. This bit must be 'cleared' by sending
+			     the XPT_Event cmd!
+
+Possible future events (and eventual associated commands):
+- events from s88 Counters and/or Timers.
+- events from 6043 (Mrk Memory).
+
+
+Note:
+though it is possible to only issue XEvtSen, XEvtLok, etc... cmds
+while not issueing any XEvent cmd, please be advised that, particularly
+in the case of XEvtSen, in most cases no speed advantage would result
+from doing this.
+Besides, since XEvent also reports error events (e.g. Power off or Short),
+it would be best to use XEvent and, depending on its reply, eventually
+issue XEvtSen, XEvtLok, etc...
+
+
+
+*** XEvtSen (0CBh) - length = 1 byte
+Report eventual sensor events (s88 modules and/or LocoNet sensors)
+Reply: iterated format consisting of one 1st which tells:
+- 1st byte = 00h -> 'no further sensor event to report'
+- 1st byte > 00h -> s88 module number whose status is reported
+		    with the next 2 bytes
+The 1st byte holds the current status of this s88 module
+inputs #1..8 (bit #7..0).
+The 2nd byte holds the current status of this s88 module
+inputs #9..16 (bit #7..0).
+
+The s88 module number is 'real' for modules 1..31 (31 is
+the maximum number of physical s88 modules which can be
+connected to the IB). For s88 module numbers greater or equal
+32, a 'virtual' module is assumed: the reported data really
+relates to LocoNet sensors starting from sensor #497.
+If only 'Events stile' reading of sensor data is performed (i.e.
+if only the XEvtSen cmd is used for reading sensor status),
+then physical s88 modules and LocoNet sensors can coexist in the
+same address range.
+Of course, this would be a relatively strange arrangement!
+
+Please note: the current version of the IB software does not
+process nor store any OPC_SW_REP LocoNet messages (turnout feedbacks).
+On the countrary, OPC_INPUT_REP messages are internally stored and
+processed (these would be the sensor messages of LocoNet).
+
+N.B. It is possible that the XEvent cmd reports a sensor event,
+but that a subsequent XEvtSen does not report any sensor event!
+This happens if the sensor status has changed back to its previous
+('on') status in the time elapsed btw the XEvent and the XEvtSen cmds.
+In other words: it is possible to miss a super-fast 'off' status for
+a sensor which is normally 'on.
+On the countrary a no matter how brief 'on' status would always be
+reported at least once.
+
+It is guaranteed that an answer to a XEvtSen event does NOT include
+the SAME s88 module twice.
+The status of up to 128 s88 modules may be reported by the XEvtSen cmd.
+
+N.B.
+NO SENSOR EVENT IS REPORTED, as far as physical s88 modules are concerned,
+if the automatic reading (check P50Xa 'SE' cmd in the P50XAGEN.TXT file)
+has been either disabled ('SE 0') or set too low.
+In the latter case, no event would be reported for s88 modules laying
+"outside" the automatic read range.
+Therefore, while the user can set per IB menu's the amount of s88 modules
+connected to the IB, it would be best to check this setting by PC and/or
+let the user configure this also per PC - thus eventually sending an
+appropriate 'SE xx' cmd.
+The 'SE' cmd obviously does not affect LocoNet sensors.
+
+
+
+*** XEvtLok (0C9h) - length = 1 byte
+Report locomotives whose status may have changed due to non-PC
+commands. Up to 119 locomotives may be reported by XEvtLok.
+Reply: iterated format consisting of one 1st byte which tells:
+- 1st byte = 80h -> 'no further Lok event to report'
+- 1st byte < 80h -> Lok status in this (Speed) and next 4 bytes.
+- 1st byte > 80h -> reserved for future use!
+
+Complete Lok status is given by:
+1st	Speed: 0..127 (0 = Stop, 1 = Stop/Em.Stop)
+2nd	F1..F8 (bit #0..7)
+3rd	low byte of Lok# (A7..A0)
+4th	high byte of Lok#, plus Dir and Light status as in:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    | Dir |  FL | A13 | A12 | A11 | A10 | A9  | A8  |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Dir	Lok direction (1 = forward)
+		FL	Light status
+		A13..8	high bits of Lok#
+
+5th	'real' Lok speed (in terms of the Lok type/configuration)
+	(please check XLokSts in P50X_LT.TXT for doc on 'real' speed)
+
+The maximum number of events which can be reported by one XEvtLok
+cmd is 119: the amount of LocoNet 'normal' slots supported by the IB.
+('Special' slots being those used for the Programming Track and
+for the FAST clock feature (the latter is not supported in the
+current IB software version).)
+[### Note: add documentation with regard to the 1st byte (reply): Speed
+is reported in a "funny" way for non-128 speed steps Loks.]
+[### Note: add enphasys on the fact that the current _status_ is reported,
+not the status at the time of the event]
+
+
+
+*** XEvtTrn (0CAh) - length = 1 byte
+Report eventual turnout events (turnout commands **not** from the PC).
+Reply: a first byte which tells:
+- 1st byte = 00h -> 'no turnout event to report'
+- 1st byte > 00h -> this many turnout events are going to be reported
+For each reported turnout event, two bytes are sent. The format is the
+same used with the XTrnt P50Xb cmd for **sending** a turnout cmd to
+the IB, with the exception that bit #5..3 are always reported as 0.
+These bits are reserved for future use.
+Up to 64 turnout events may be reported by one XEvtTrn cmd. This would
+be the size of the turnout events buffer in the IB. Should more such
+events occurr before an XEvtTrn cmd is issued, then newer events shall
+overwrite older ones.
+
+
+
+*** XEvtIR (0CCh) - length = 1 byte
+Report eventual events due to Infra-Red (remote controller) commands.
+Reply: a first byte which tells:
+- 1st byte = 00h -> 'no IR event to report'
+- 1st byte > 00h -> this many IR events (not bytes!) are going to be
+reported. For each reported IR event, two bytes are sent.
+The format of these two bytes is:
+1st
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    |  1  |  0  |  T  | Ch4 | Ch3 | Ch2 | Ch1 | Ch0 |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Ch0..4	channel number (IRIS: 24, 25, 26, 27)
+		T	this bit toggles at each new keypress,
+			therefore, it can used to tell btw
+			a new cmd and the repetition of a
+			previous cmd
+		0	this bit always has the value 0
+		1	this bit always has the value 1
+
+2nd
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    |  0  | PC  | K5  | K4  | K3  | K2  |  K1 | K0  |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		K5..0	Cmd (key) code
+		PC	This bit is set for IR events resulting
+			from the usage of IR_PCx or IR_PCLNx IRIS tokens
+		0	this bit always has the value 0
+
+In this context, a 'token' is a command/action which has been assigned
+to a particular IRIS key. Tokens include: digits (e.g., during loco,
+turnout, route selection), loco/trnt/route selection start, speed control,
+direction control, function control, turnout control, route activation,
+send an IR event to the PC, send a LocoNet msg.
+Tokens can also be assigned to (generated by) specific IRIS keys depending
+on the status of an IRIS channel. For example, pressing a digit key on the
+IRIS can generate two different tokens depending on if we are in a
+selection mode or not.
+Tokens are assigned using IB SO's. This is documented in a separate file.
+
+With regard to the IRIS (Infra-Red Intellibox System) - and thus with
+regard to the IR events, the IB can be setup in different ways.
+With regard to IR events, SO #768 is used to tell:
+- bit #0: set if the IB is to report to the PC any received infra-red
+          command _not_ coming from an IRIS channel
+- bit #1: set if the IB is to report to the PC any received infra-red
+          command which translated to an IR_PCx or IR_PCLNx token
+- bit #2: set if the IB is to report to the PC any received infra-red
+          command coming from an IRIS channel
+- bit #3: set if the IB is to report on LocoNet any received infra-red
+          command which translated to an IR_LNx or IR_PCLNx token
+
+If both bits #1 and #2 are set and if an infra-red command is received with
+translates to an IR_PCx or IR_PCLNx token, then 2 IR events shall be reported
+by the IB.
+
+LocoNet messages resulting from IR_LNx or IR_PCLNx tokens have this format
+(hex):
+E5 07 00 00 00 5x Cks  (for new keypresses)
+E5 07 00 00 00 6x Cks  (for repetitions)
+(where x equals the x in the IR_LNx or IR_PCLNx token).
+This msgs are only sent if SO #768.3 has the value 1.
+
+
+
+*** XEvtPT (0CEh) - length = 1 byte
+Report Programming Track events - please check the P50X_PT.TXT document.
+
+
+
+*** XEvtTkR (0CFh) - length = 1 byte
+Report Lok 'take' and 'release' events.
+(To be defined and documented).
+
+
+
+*** XEvtMem (0D0h) - length = 1 byte
+Report 'Memory' events.
+(To be defined and documented).
+
+
+Intellibox: locomotive and turnout P50X cmds
+(document version 0.982 - 09/01) - by St.Ch-B.
+Uhlenbrock Elektronik GmbH
+==============================================
+
+(This document uses the word 'turnout' instead of 'accessory'.
+Therefore, a 'turnout' can also be a signal, etc... not only a 'real
+turnout'!)
+
+
+*** Introductory note: locomotive direction in the P50 and in the P50X
+
+This note is not required reading.
+In a nutshell it only says: the IB tries to keep track internally of
+the driving direction even of decoders (e.g. Old Motorola format ones)
+which do not support such a feature. The idea is to make the different
+digital formats as 'transparent' as possible to a computer application.
+Please skip to the next section ('address conflict') if you are not
+interested in knowing the details of how the driving direction is
+handled in the IB.
+
+
+
+Most Motorola-format locomotive decoders produced up to now do NOT
+support the notion of a "driving direction". In other words, the decoder
+does NOT "know" what the front side of the locomotive is. There is no way
+to tell it "go forward" or "go backwards". You can only tell the decoder
+to invert its driving direction.
+This fact is reflected in the P50, the protocol of a 6050 Interface:
+you can only tell a locomotive to change (invert) its driving direction,
+you CANNOT tell "her" to go in a specific direction.
+(A 6051 interface uses **the same protocol** as a 6050!)
+
+This holds true even if using a 6050 along with a 6021, i.e. even if
+the Central Unit used is capable (with dip-sw #2 of the 6021 placed in
+the "on" position) of *generating* the so-called "new motorola format"
+digital signal - a signal which, countrary to the original motorola
+format (known as the "old motorola format"), DOES include information
+specifying what the locomotive driving direction (usually referred to
+as the "absolute driving direction") should be.
+
+There is a (small) helping factor: if you do a power off which lasts
+only a few seconds (up to a day or so for newer decoders), then it is
+guaranteed that the previous driving direction has not been "forgotten"
+by the decoder.
+Conversely, after a longer lasting Power Off, the decoder, having
+forgotten its previous driving direction, defaults to a specific driving
+direction (determined by the way it has been connected to the locomotive
+engine: the green and the blue wire).
+
+One more factor to consider: some motorola format decoders (those based
+on the 70113 and 70117 chips) only accept a direction change command,
+provided that the speed they currently are at is NOT higher than speed 6
+(expressed in terms of the P50).
+(However: the 70117 chip, being able to understand the new motorola
+format, obviously always evaluates the "absolute driving direction"
+information of that protocol).
+
+N.B. By design choice, the IB does NOT take into account this "speed 6"
+issue. Therefore: a P50 "direction change" command (Speed = 15) is
+regarded as effective if the current speed of the locomotive was not
+already "speed" 15.
+(Please consider that older and newer decoders, along with Uhlenbrock
+decoders, react to a direction change command even if at speeds higher
+that P50 speed 6).
+
+
+Therefore, we have the following situation:
+
+- P50: no notion of an absolute driving direction.
+  Only a "direction change" can be commanded.
+
+- P50X: a bit in the command for locomotives is reserved for specifying
+  the driving direction. There is NO command for telling a Lok to
+  "change" (invert) its driving direction (but this can be easily done
+  by toggling the Dir bit of a locomotive, as shown from its status or
+  as has been specified by the previous command issued to this locomotive).
+  Though it cannot be 100% reliable, this direction bit is also effective
+  with decoders which do not support an absolute driving direction.
+
+Furthermore, there is a compatibility issue: since P50 commands can be
+used in order to drive even non-Motorola format decoders (for locomotive
+addresses in range 0..255), then a peculiar (but perfectly normal)
+behaviour of Motorola format decoders must be symulated also for decoders
+whose digital format does support an absolute driving direction.
+The "problem" is: if you issue the P50 command for changing locomotive
+direction (this would be: Speed = 15), then the locomotive shall indeed
+change its driving direction ONLY IF the "speed" at which it currently is
+is NOT already "speed" 15 (and, check above note, for some decoders the
+current speed must be less or equal P50 speed 6).
+In other words: in order to positively change the speed of a locomotive,
+the following sequence of P50 commands should be sent:
+
+<speed = 0, i.e. Stop>
+<"speed" 15>
+
+In particular, in order to change twice the driving direction of a
+locomotive, it is MANDATORY to send at least the following sequence:
+
+<"speed" 15>
+<non-"speed" 15 (e.g.: speed 0 = Stop)>
+<"speed" 15>
+
+where it is assumed that, before sending this sequence, the locomotive
+speed was NOT already "speed" 15 (and was not greater than speed 6) - or
+else a non-"speed" 15 command (e.g. Stop) would have had to be sent before
+the above sequence, in order for the very first direction change command
+to be effective.
+
+
+Let's consider what the possible P50 cases are, but first let us define
+some terms:
+
+P50-CD	  P50 command for direction change ("speed" = 15)
+	  N.B. The Speed of a Lok commanded at P50-CD would be shown
+	       as 1 by locomotive status query P50X commands.
+Mot-CD	  direction change digital signal in the motorola format
+          (this would be "speed" 1 - in the digital signal)
+Stop	  speed = 0 = inertial stop
+Em. Stop  non-inertial (fast) stop
+Dir	  absolute driving direction
+CrS	  current locomotive speed in terms of the P50 protocol
+.NE.	  Not Equal
+.LE.	  Less or Equal
+Slot	  LocoNet slot (please check Digitrax LocoNet documentation)
+SO	  Special Option
+LSO	  Lok Special Option
+
+
+
+###### P50
+
+a) DCC
+a P50-CD shall always result in an Em. Stop being sent to the locomotive.
+Furthermore, if CrS .NE. P50-CD, then the direction of the locomotive
+shall be inverted. Otherwise, it shall NOT be inverted.
+N.B. Mixing of P50 and P50X commands: a P50-CD is internally stored as
+a P50X Speed = 1 (Em. Stop). Therefore, issueing a P50-CD after
+having commanded the Lok, through a P50X cmd, in Em. Stop, shall NOT
+result in a direction change.
+
+
+b) FMZ
+a P50-CD shall always result in an Em. Stop being sent to the locomotive,
+along with Speed = Stop (Em. Stop is sent through a separate bit in the
+FMZ protocol).
+Furthermore, if CrS .NE. P50-CD, then the direction of the locomotive
+shall be inverted. Otherwise, it shall NOT be inverted.
+(Also check the "Mixing of P50/P50X commands" note at point "a" above).
+
+
+c) SX
+a P50-CD shall always result in a Stop being sent to the locomotive.
+Furthermore, if CrS .NE. P50-CD, then the direction of the locomotive
+shall be inverted. Otherwise, it shall NOT be inverted.
+(Also check the "Mixing of P50/P50X commands" note at point "a" above).
+
+
+d) Motorola Old
+all P50 commands are directly sent to the tracks.
+If CrS .NE. P50-CD, then the direction of the locomotive, as memorized
+in the IB, shall be inverted. Otherwise, it shall NOT be inverted.
+Furthermore, in this case a Stop is automatically sent before the Mot-CD.
+(Also check the "Mixing of P50/P50X commands" note at point "a" above).
+
+
+e) Motorola New
+all P50 commands are directly sent to the tracks.
+If CrS .NE. P50-CD, then the direction of the locomotive shall be inverted.
+Otherwise, it shall NOT be inverted.
+(Also check the "Mixing of P50/P50X commands" note at point "a" above).
+In case of a direction change, the following shall be sent:
+- if this particular Lok has been configured this way (using the Special
+  Options for this very locomotive (LSO)), then an old format Mot-CD shall
+  be sent. This would be the default configuration;
+- Mot-CD shall be sent (in the new Motorola format);
+
+
+
+###### P50X (or LocoNet)
+
+Xa) DCC
+P50X commands directly map to DCC commands. There is no special case
+to consider.
+
+
+Xb) FMZ
+P50X commands directly map to FMZ commands. There is no special case
+to consider.
+
+
+Xc) SX
+P50X commands (almost) directly map to SX commands. The only case to
+consider is Em. Stop. In fact, since the SX protocol does not have
+this feature, an eventual Speed = 1 command (Em. Stop) shall be
+translated to a normal Stop (Speed = 0).
+
+
+Xd) Motorola Old
+Speed = 1 is converted, only as far as the digital signal is concerned,
+to Speed = 0 (Stop). This is done in order to avoid having a Speed = 1
+P50X cmd 'implicitly' change the driving direction: since we are in
+the P50X, the Dir bit should be used for this purpose!
+The P50X Speed would still be shown as 1 by a Lok status query P50X cmd.
+
+If a P50X command specifies a new (different from the current) Dir,
+then the following shall be automatically sent to the locomotive:
+- Stop;
+- Mot-CD;
+- current Speed.
+
+
+Xe) Motorola New
+Depending on each Mot New Lok configuration (Lok Special Option #6 for each
+Mot New Lok), a Speed = 1 P50X cmd may or may not be changed to Speed = 0.
+The default is to convert it - as usual: only as far as the digital
+signal is concerned - to Speed = 0 (LSO #6 = 0): this solves a problem with
+some programmable decoders (e.g. Uhlenbrock and XR1). In fact, these decoders
+enter programming mode if the Mot-CD signal is sent to them for more than
+X seconds (usually: X = 8..10 seconds).
+If a particular Lok is not equipped with such a decoder, then it may
+be configured so that the mentioned Lok Special Option #6 = 1. This implies
+that, since the decoder understands the new Motorola protocol, it shall
+NOT change direction when receiving the Mot-CD signal resulting from the
+Em. Stop P50X cmd. This results in an Em. Stop like behaviour.
+
+If a P50X command specifies a new (different from the current) Dir,
+then the following shall be automatically sent to the locomotive:
+- Stop;
+- if this particular Lok has been configured this way (using the Special
+  Options for this very locomotive), then an old format Mot-CD shall be
+  sent. This would be the default configuration;
+- finally, the IB shall send the Speed specified by the P50X command, along
+  with the specified direction - obviously using the new Motorola format.
+
+
+The strategy for case "Xd" above has one side effect: using the P50X (or,
+equivalently, LocoNet) it is not possible to send to the tracks the
+Mot-CD command for Lok addresses configured for the Motorola Old protocol.
+Therefore, in the case of some programmable decoders (e.g. Uhlenbrock, XR1,
+etc...), it would not be possible to have the decoder enter programming mode.
+This can be easily solved from the PC side by using a P50 cmd.
+
+
+There is at least one more issue to consider: what happens if a locomotive
+equipped with a Motorola format decoder of the old type is operated
+through the IB using a locomotive address which has been configured
+for the new Motorola format (or vice versa)?
+Given the default IB configuration for Motorola New, decoders **should**
+behave "correctly", i.e. change direction as expected. In fact, the
+default configuration asks for old protocol Mot-CD commands to be sent
+to the tracks before the new protocol ones.
+The exception is: if a P50X Speed = 1 command is sent to an Old Motorola
+format decoder being operated through an IB locomotive address configured
+for the New Motorola format (with LSO #6 = 1), then the locomotive would
+change driving direction, without the IB LCD (and the Lok status) showing
+it. This "mismatch" would not happen in case of P50 commands.
+
+
+
+Address conflicts involving the PC (RS-232 interface)
+-----------------------------------------------------
+
+This would mean: the PC is trying to send a command to a Lok already
+controlled by a non-PC device.
+The vice versa does not 'exist': since the P50X protocol defines Lok
+events, when the PC issues a cmd to a Lok, that Lok is NOT declared
+'taken', i.e. a non-PC device would still have free access to that Lok.
+Through Lok events the PC would be informed about eventual usage of
+that Lok by other devices.
+Therefore, let's consider only the case of the PC trying to get control
+of a Lok already controlled by a different device.
+
+P50)
+In this case, Special Option #20 tells whether to discard a Lok Speed+FL
+command (SO #20 = 0) or to execute it even if the Lok is already
+controlled by a non-PC device (SO #20 = 1). The IB default for SO #20
+is 1, therefore the PC can always send commands to any Lok.
+Differently from P50 Speed+FL commands, P50 Functions commands are
+always executed (there is no SO to consider).
+A 6050 would behave this way for function cmds, but would discard any
+Lok (Speed + FL) cmds sent to a Lok which is already 'taken'.
+
+P50X)
+While functions commands are always executed (just like in the P50 case),
+Lok commands are executed only if the involved Lok is not already
+controlled by a non-PC device.
+However, the P50Xb XLok cmd provides a bit which allows the PC to
+override this default behaviour: if this 'Force' bit is set, then the cmd
+would be effective even in case of Loks already controlled by a
+non-PC device. There is no such 'Force' bit for the P50Xa 'L' cmd.
+
+
+
+
+P50Xa (P50X ASCII) locomotive and turnout control commands.
+-----------------------------------------------------------
+
+As usual, the syntax of P50Xa cmds is shown using these 'meta-symbols':
+[]	tell an optional parameter or parameter plus separators, etc
+{}	tell a non optional part of the command, which may contain
+	optional parts
+|	tells that two or more possibilities exists: those shown before
+	and after this symbol
+
+
+*** L {Lok#, [Speed], [FL], [Dir], [F1], [F2], [F3], [F4]}
+Lok#	0..9999 (depending on protocol, not every address is legal!)
+Speed	0..127 (0 = Stop, 1 = Stop/Em.Stop (protocol dependent))
+FL	Light status (1 = on, 0 = off)
+Dir	Direction (1 = forward, 0 = reverse). Direction may also be
+	specified as 'f' = forward or 'r' = reverse
+F1	F1 status (1 = on, 0 = off)
+etc...
+
+depending on the Lok protocol, not all parameters are internally used
+or have the same range.
+For example, the (real) address range of each protocol is:
+Mrk	1..80 (1..255 for Uhlenbrock decoders)
+SX	0..111
+DCC	1..9999 (not every DCC decoder supports addr. > 99 or 127)
+FMZ	1..119
+however, virtual addresses can go from 0 to 9999.
+
+Depending on Lok protocol, Speed = 1 means (check also initial
+introductory note):
+Mrk Old		same as Stop
+Mrk New		Emergency Stop
+Selectrix	same as Stop
+DCC		Emergency Stop
+FMZ		Emergency Stop
+
+Another variable is the number of additional functions (apart from FL,
+i.e. usually the Lok lights - also known as F0):
+Mrk		4
+Selectrix	1
+DCC		4+ (F5.. to be specified using the P50Xa 'F' cmd)
+FMZ		1
+
+If only the first (mandatory) cmd parameter is specified (i.e. Lok#),
+then the current status of this Lok shall be displayed, provided, of
+course, that this Lok has ever been commanded before! (Or else the
+message 'No Lok data!' would be displayed.)
+
+The Speed parameter is *internally* scaled down in compliance with
+the Lok protocol. Min speed is always set by Speed = 2.
+Max Speed is always set by Speed = 127. The actual number of non-Stop
+speed steps varies depending on the Lok protocol:
+Mrk		14
+Selectrix	31
+DCC		14/27/28/126
+FMZ		15
+
+All parameters excluding the Lok# are optional. If at least one is
+specified, then Lok status is updated only as far as the specified
+parameter is concerned. Should no previous status be available, then
+the default is:
+Speed = 0
+Dir = 1 = forward
+FL (light) = Off
+F1..F4 = Off
+This only applies to the case in which at least one status parameter
+has been specified!
+In fact, as already written above, if no previous status is known and
+if the P50Xa 'L' cmd only specifies the Lok# parameter, then an error
+message is sent ('No Lok data').
+
+Address conflict with other devices:
+if the Lok specified by the 'L' cmd is already controlled by a non-PC
+device, then the error message 'Lok busy!' shall be displayed.
+
+Halt mode:
+If the Intellibox is in Halt mode, then Lok status (as specified by the
+'L' cmd) is updated, but any Speed changes involving a non-Stop speed
+shall NOT be effective.
+In this case, the reply shall be: "Halted!".
+
+Power Off:
+If the Intellibox is in Power Off, then Lok status (as specified by the
+'L' cmd) is updated. In this case, the reply shall be: "Pwr Off".
+
+
+
+*** LC {Lok#}
+Lok#	0..9999 (depending on protocol, not every address is legal!)
+Reports Lok protocol configuration (e.g. 'Mot Old', etc...) and
+number of non-Stop speed steps.
+N.B. There is NO cmd for setting the Lok configuration from the PC!
+     Loks **must** be configured using the IB menus.
+
+
+
+*** F {Lok#, [F1], [F2], [F3], [F4], [F5], [F6], [F7], [F8]}
+Lok#	0..9999 (depending on protocol, not every address is legal!)
+F1	F1 status (1 = on, 0 = off)
+etc...
+
+If only the first (mandatory) cmd parameter is specified (i.e. Lok#),
+then the current status of this Lok shall be displayed - as far as
+functions are concerned.
+
+The 'F' command is effective even if the specified Lok is already
+controlled by a non-PC device (there is no address conflict).
+
+
+
+*** T {Trnt#, [Color], [Status]}
+Trnt#	1..2040 (depending on protocol, not every address is legal!)
+	Please note: turnout address, NOT turnout *decoder* address!
+	Legal Motorola format turnout address range: 1..320
+	Legal DCC format turnout address range: 1..2040
+Color	'r' (red = thrown) or 'g' (green = closed)
+	('r' may also be spec'd as '0', 'g' also as '1')
+Status	1 = on, 0 = off (if not specified -> off)
+
+If only the first (mandatory) cmd parameter is specified (i.e. Turnout#),
+then the current status of this Turnout shall be displayed.
+
+In addition to the usual 'Syntax Error' reply, this cmd can also
+reply with:
+'Turnout fifo is full!'
+'Power is Off!'
+'Illegal Turnout address for this protocol!'
+
+
+
+*** TR {Trnt#, [Res]}
+Trnt#	1..2040 (depending on protocol, not every address is legal!)
+	Please note: turnout address, NOT turnout *decoder* address!
+Res	A flag specifying whether this turnout should be reserved (1)
+	or not (0) for exclusive PC control. If Res = 1, then non-PC
+	turnout commands shall not be executed by the IB - and a
+	corresponding event shall be generated (check XEvent cmd).
+If only the first (mandatory) cmd parameter is specified (i.e. Turnout#),
+then the current 'reserved' status of this Turnout shall be displayed.
+
+
+
+######## Possible future cmd
+
+*** LM  {...}
+Setup, delete and report multi-tractions (consists).
+
+
+*** FX {Lok#, [F9], [F10], [F11], [F12], ...?}
+Lok#	0..9999 (depending on protocol, not every address is legal!)
+F9	F9 status (1 = on, 0 = off)
+etc...
+
+
+
+
+P50Xb (P50X binary) locomotive & turnout control commands.
+----------------------------------------------------------
+
+(please read also introduction to P50Xa Lok/turnout cmds!)
+
+
+*** XLok (080h) - length = 1+4 bytes
+Parameters (byte) - please check also P50Xa 'L' cmd:
+1st	low byte of Lok address
+2nd	high byte of Lok address
+3rd	speed (0..127: 0 = Stop, 1 = Stop/Em.Stop)
+	N.B. bit #7 is reserved for future use!
+4th	this byte has the following format:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    |ChgF |Force| Dir | FL  | F4  | F3  | F2  | F1  |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		ChgF	set if F1..F4 to be used for setting F1..F4 of
+			Lok (otherwise F1..F4 are ignored)
+		Force	if set (1), then the XLok command is 'forced'
+			even in case of a Lok already controlled by a
+			non-PC device
+		Dir	Lok direction: 1 = forward, 0 = reverse
+		FL	Lok light status: 1 = on, 0 = off
+		F4..F1	Lok F4..F1 status (if ChgF is set)
+
+N.B.	Address must be in range 0..9999
+	(depending on protocol, not every address is legal!)
+
+Reply:
+1st	either 00h (cmd Ok) or error code.
+
+Error/warning codes:
+XBADPRM (02h)	illegal parameter value
+XNOLSPC (08h)	there is no space in the Lok cmd buffer, please try later!
+XNOSLOT (0Bh)	there is no slot available
+XBADLNP (0Ch)	Lok# is illegal for this protocol
+XLKBUSY (0Dh)	Lok already controlled by another device
+XLKHALT (41h)	Command accepted (Lok status updated), but IB in 'Halt' mode!
+XLkPOFF (42h)	Command accepted (Lok status updated), but IB in Power Off!
+
+
+
+*** XLokSts (084h) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+
+Reply:
+1st	either 00h (cmd Ok, 3 bytes shall follow) or error code
+2nd	Speed (0..127: 0 = Stop, 1 = Stop/Em.Stop)
+3rd	same format as 4th parameter of XLok cmd (bit #6 & 7 = 0)
+4th	'real' Lok speed (in terms of the Lok type/configuration)
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+XNODATA (0Ah)	no Lok status available (Lok is not in a slot)
+XBADLNP (0Ch)	Lok# is illegal for this protocol
+
+N.B.
+The 'real' speed is NOT expressed in the P50 format!
+According to each protocol, the 'real' speed value tells:
+Motorola:
+ 0 (Stop), 1 (Change Dir), 2 (min Speed), .., 15 (max Speed)
+Selectrix:
+ 0 (Stop), 1 (min Speed), .., 31 (max Speed)
+DCC:
+ 0 (Stop), 1 (Em.Stop), 2 (min Speed), .., 15/28/29/127 (max Speed)
+FMZ:
+ 0 (Stop), 1 (min Speed), .., 15 (max Speed)
+ (no information is returned about an eventual FMZ Em. Stop status,
+ however this can be inferred from the Speed status of the Lok,
+ i.e. from the 2nd byte of the XLokSts reply)
+
+If you need to compute the P50 speed starting from the P50X Speed,
+the following BASIC routine shows how to proceed (this very algorithm
+is internally used by the IB):
+
+DEFINT A-Z
+FUNCTION P50_Speed% (P50X_Speed AS INTEGER)
+SELECT CASE P50X_Speed
+CASE 0, 1
+   P50_Speed = 0
+CASE ELSE
+   P50_Speed = INT((P50X_Speed * 2) / 19) + 1
+END SELECT
+END FUNCTION
+
+(Obvioulsy, it cannot ever happen that P50_Speed() = 15.)
+
+The opposite conversion is performed using a table, indexed by the
+P50 speed:
+   0,  2, 10, 19, 29, 38, 48, 57, 67, 76, 86, 95, 105, 114, 127, 1
+
+The speed conversion routines for the other protocols/speed steps are:
+
+Speed_15:
+(FMZ protocol: 0 = Stop, 1..15 = non-stop speed steps)
+   IF (P50X_Speed = 0) OR (P50X_Speed = 1) THEN
+      Speed_15 = 0
+   ELSE
+      Speed_15 = INT((P50X_Speed + 1) / 9) + 1
+   ENDIF
+
+
+Speed_27:
+(DCC 27 protocol: 0 = Stop, 1 = Em. Stop, 2..28 = non-stop speed steps)
+   IF (P50X_Speed = 0) OR (P50X_Speed = 1) THEN
+      Speed_27 = P50X_Speed
+   ELSE
+      IF (P50X_Speed < 8) THEN
+         Speed_27 = 2
+      ELSE
+         nTemp = P50X_Speed * 2
+         nTemp1= INT(nTemp / 9)
+         nTemp2= nTemp - (nTemp1 * 9)
+         IF (nTemp2 >= 7) THEN
+            nTemp1 = nTemp1 + 2
+         ELSE
+            nTemp1 = nTemp1 + 1
+         ENDIF
+         IF nTemp1 > 28 THEN
+            Speed_27 = 28
+         ELSE
+            Speed_27 = nTemp1
+         ENDIF
+      ENDIF
+   ENDIF
+
+
+Speed_28:
+(DCC 28 protocol: 0 = Stop, 1 = Em. Stop, 2..29 = non-stop speed steps)
+   IF (P50X_Speed = 0) OR (P50X_Speed = 1) THEN
+      Speed_28 = P50X_Speed
+   ELSE
+      Speed_28 = INT(((P50X_Speed - 2) * 2) / 9) + 2
+   ENDIF
+
+
+Speed_31:
+(Selectrix protocol: 0 = Stop, 1..31 = non-stop speed steps)
+   IF (P50X_Speed = 0) OR (P50X_Speed = 1) THEN
+      Speed_31 = 0
+   ELSE
+      IF (P50X_Speed < 4) THEN
+         Speed_31 = 1
+      ELSE
+         Speed_31 = INT(P50X_Speed / 4)
+      ENDIF
+   ENDIF
+
+
+
+*** XLokCfg (085h) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+
+Reply:
+1st	either 00h (cmd Ok, 4 bytes shall follow) or error code
+2nd	Lok protocol: 0..3 = Mrk, SX, DCC, FMZ
+3rd	# of (non-Stop) speed steps supported by this Lok type.
+	Currently this would be: 14, 15, 27, 28, 31 or 126
+The rest of the reply depends on whether this Lok is a virtual one
+or a real one:
+
+- Virtual
+4th	Real Lok# (low) corresponding to this virtual one
+5th	Real Lok# (high) (Bit #6 is 0, this tells a virtual Lok from
+	a real one)
+
+- Real
+4th	0FFh
+5th	0FFh  (bit #6 is 1, this tells a real Lok from a virtual one)
+
+N.B.
+Bit #7 in the 5th byte of the reply is reserved for future use.
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+
+
+
+*** XLkDisp (083h) - length = 1+2 bytes
+1st	low byte of Lok address
+2nd	high byte of Lok address (or 0FFh if asking for dispatch status)
+
+Reply (if Lok address high byte not equal 0FFh, i.e. 'dispatch put'):
+1st	either 00h (cmd Ok) or error code (e.g. XBADLNP, XNODATA)
+or (if Lok address high byte equal 0FFh, i.e. 'dispatch get'):
+1st     either 00h (there is no dispatched slot to 'get') or slot #
+        (1..119) of slot waiting to be 'got'
+
+
+
+*** XFunc (088h) - length = 1+3 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+3rd	status of F1 (bit #0) .. F8 (bit #7)
+
+Reply:
+1st	either 00h (cmd Ok) or error code.
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+XNOSLOT (0Bh)	there is no slot available
+XBADLNP (0Ch)	Lok# is illegal for this protocol
+
+
+
+*** XFuncSts (08Ch) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+
+Reply:
+1st	either 00h (cmd Ok, 1 byte shall follow) or error code
+2nd	status of F1 (bit #0) .. F8 (bit #7)
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+XNODATA (0Ah)	no Lok status available (Lok is not in a slot)
+XBADLNP (0Ch)	Lok# is illegal for this protocol
+
+
+
+*** XTrnt (090h) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Turnout address (A7..A0). Please note: turnout
+	address, NOT turnout *decoder* address!
+2nd	high byte of Turnout address plus 'color' and status bits:
+
+	bit#   7     6     5     4     3     2     1     0
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+	    |Color| Sts | Res |NoCmd| n.u.| A10 |  A9 |  A8 |
+	    +-----+-----+-----+-----+-----+-----+-----+-----+
+
+	where:
+		Color	1 = closed (green), 0 = thrown (red)
+		Sts	turnout status (1 = on, 0 = off)
+		Res	set if this turnout is to be reserved
+			for exclusive PC control: this would imply
+			that non-PC commands to this turnout would
+			be discarded by the IB. An event would also
+			be generated (please check the XEvent cmd)
+		NoCmd	if set then no turnout cmd is actually sent
+			to the tracks. Setting this bit allows, e.g.,
+			to only set/reset the 'Res' bit of a turnout.
+			Besides, if NoCmd is set, not even the internal
+			IB status of this turnout is modified.
+		n.u.	not currently used (0)
+		A10..A8	top address bits of turnout address
+Reply:
+1st	either 00h (cmd Ok) or error/warning code
+
+Error/warning codes:
+XBADPRM (02h)	illegal parameter value
+XPWOFF (06h)	Error: the Power is Off!
+XNOTSPC (09h)	Error: the fifo for turnout cmds is full, please try later
+		Plase note: XNOTSPC was erroneosly described as being
+		equal to 07h in P50X_LT.TXT versions up to the 0.93 one.
+		Please also note the new XNOISPC reply.
+XBADTNP (0Eh)	Error: illegal Turnout address for this protocol
+XNOISPC (10h)	Error: the I2C fifo is full, please try later
+XLOWTSP (40h)	Warning: the fifo for turnout cmds is 75% full
+
+The IB fifo for turnout cmds can hold up to 16 turnout cmds.
+This allows 'parallel' turnout and Lok commands execution.
+This fifo also plays a role in avoiding blocking the RS-232 channel in
+case of a Power Off.
+
+== A side note ==
+If a P50 turnout cmd is sent to the IB while in Power Off, then such a
+command would be inserted in the turnout cmd buffer as usual, provided
+that the Special Option (SO) #21 is 0 (this would be the IB default).
+However, since while in Power Off the turnout buffer is not processed
+'from the other side' (no turnout cmds are sent to the tracks),
+sooner or later this buffer shall get full - thus eventually blocking
+any further PC command to the IB.
+If SO #21 is 1, then P50 turnout cmds which are sent by the PC while
+the IB is in Power Off are automatically discarded, therefore no
+blocking the RS-232 channel can occur.
+The default SO #21 value (0) corresponds to what a 6050+Mrk CU would do.
+
+
+
+*** XTrntFree (093h) - length = 1 byte
+Allows resetting the 'Res' (reserved) bit of all turntouts with only
+one command.
+Reply:	always 00h
+N.B. Use the XTrnt cmd, with the 'NoCmd' = 1, for individually setting
+     the 'reserved' status of each turnout.
+
+N.B. It would be best to issue an XTrntFree cmd before exiting your
+     PC program! (Or else some turnouts may be left in the 'reserved'
+     status, not allowing a user to issue manual commands to these.)
+
+
+
+*** XTrntSts (094h) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Turnout address
+2nd	high byte of Turnout address
+
+Reply:
+1st	either 00h (cmd Ok, 1 byte shall follow) or error code
+2nd	turnout configuration in bit #0: (check Bit #3 below)
+	turnout 'reserved' status in bit #1: 1 = reserved, 0 = free
+	turnout color in bit #2: 1 = green (closed), 0 = red (thrown)
+	turnout extended configuration in bit #3:
+		Bit #0/3	turnout type
+		  00		  Motorola
+		  10		  DCC
+		  01		  SX
+		  11		  FMZ
+	Other bits are reserved for future use.
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+XBADTNP (0Eh)	Error: illegal Turnout address for this protocol
+
+
+
+*** XTrntGrp (095h) - length = 1+1 byte
+Parameters (byte):
+1st	Turnout 'group' address (legal value: 1..255)
+The turnout 'group' address would be 1 for turnouts #1..8,
+2 for turnouts #9..16, etc... With a formula:
+turnout 'group' address = ((turnout address - 1) \ 8) + 1
+Reply:
+1st	either 00h (cmd Ok, 2 bytes shall follow) or error code
+2nd	Turnout 'group' color: each bit tells the 'green' (1) or
+	'red' (0) status of the corresponding turnout.
+	The 1st turnout of this group is in bit #0, etc...
+3rd	Turnout 'reserved' status: each bit...
+
+Error codes:
+XBADPRM (02h)	illegal parameter value
+
+
+
+
+######## Possible future cmds
+
+*** XFuncX (089h) - length = 1+3 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+3rd	status of F9 (bit #0) .. F16 (bit #7)
+
+Reply:
+1st	either 00h (cmd Ok) or error code.
+
+
+
+*** XFuncXSts (08Dh) - length = 1+2 bytes
+Parameters (byte):
+1st	low byte of Lok address
+2nd	high byte of Lok address
+
+Reply:
+1st	either 00h (cmd Ok, 1 byte shall follow) or error code
+2nd	status of F9 (bit #0) .. F16 (bit #7)
+
+
+Intellibox: Programming Track P50X commands
+(document version 0.98 - 05/04) - by St.Ch-B.
+Uhlenbrock Elektronik GmbH
+=============================================
+
+*** N.B.
+The Intellibox does not support the FMZ protocol and all related commands.
+The TWIN-CENTER does not support the Motorola protocol and all related
+commands.
+Apart from these cases, the term "TWIN-CENTER" can be substituted for
+"Intellibox" in all this document.
+
+
+The Intellibox can operate the Programming Track (PT) simultaneously with the
+normal tracks. There is no need to turn off the power to the layout in order
+to perform a PT operation.
+The Intellibox (IB) also features an integrated relay. This relay - depending
+on IB configuration - can automatically connect the PT output of the IB either
+to the normal power output of the IB or to the 'real' PT circuitry of the IB.
+
+It must be guaranteed that NO electrical connection exists between the PT and
+the normal tracks. Double gaps MUST be used - it is NOT enough to isolate only
+one rail.
+
+
+*** *** *** WARNING *** *** ***
+
+Please keep in mind that some older Lenz decoders (e.g. LE075 and the c82
+from Maerklin/Lenz) are PERMANENTLY DAMAGED by being programmed on an address
+greater then 99 (or, depending on decoder model, 127). Therefore, extreme
+caution should be exercised when programming **any** register of these
+decoders.
+As a safety measure, do NOT write values greater than 99 into any register!
+Since it is not possible, from the IB point of view, to find out exactly what
+kind of DCC decoder is on the PT, it is not possible to automatically detect
+these older decoders and block any such "illegal" programming attempts.
+Therefore, since other decoders do not have this limitation, the IB does NOT
+impose a reduced range for the writeable values: it is up to the user to be
+aware of this potential "dangerous" case.
+
+Since these older decoders only support 'register mode' read/write, no damage
+can occurr if using one of the other DCC write modes - particulary 'direct'
+mode.
+
+
+
+
+P50Xa (P50X ASCII) Programming Track commands.
+----------------------------------------------
+
+Upon issueing a P50Xa PT cmd, the IB shall reply only at the end of the
+corresponding action (e.g., when the decoder issues an acknowledge, when
+an error condition is detected, etc...).
+No other P50(X) cmd shall be processed until then.
+Most commands execute within 5..20 seconds.
+Motorola search is the slowest (about 1 minute).
+
+N.B. This behaviour (reply only at the end of PT processing) is quite
+different from what happens in case of (most) P50Xb commands: these would
+always immediately reply (meaning: cmd accepted or not), while only later
+would they provide the "real" reply (through a "PT event").
+
+Should the PT already be used by, e.g., a LocoNet device
+(KPU, etc...), then the P50Xa cmd shall immediately return
+with a 'Busy!' message: the cmd could not be executed.
+
+Non error results (messages) are:
+'Ok'		the PT cmd has been successfully completed
+'Yes'		the DCC decoder (probably) supports direct bit read cmds
+'No'		the DCC decoder (probably) does not support direct bit
+		read cmds
+
+Error messages are:
+'Busy!'		the PT is in use by a different device (e.g. LocoNet)
+'Short!'	short detected (on the PT)
+'No decoder'	no decoder could be detected (bad contact?)
+'No ack'	no acknowledge from decoder (but maybe a Write was ok!)
+'No page'	no acknowledge from decoder to the 'page' operation
+'Bit read err'	error in a DCC direct bit command
+'SX read err'	error while reading a Selectrix decoder
+'Timeout'	cmd not successfully completed
+'Error'		generic error
+
+
+######## General usage
+
+*** PT
+show PT & PT relay status
+
+
+*** PT1/0
+PT relay On/Off
+
+
+
+######## Selectrix
+
+*** PTSR
+SX Read
+
+
+*** PTSW
+SX Write {addr (0..111), vmax (0..7), accel (0..7), pwm (1..4), stops (1..2)}
+(N.B. this cmd currently does NOT perform a verify (read+compare)).
+ALL parameters are MANDATORY!
+
+
+
+######## FMZ
+
+*** PTFS
+This command is only available in the Twin-Center.
+PTFS = FMZ Search (address read)
+
+
+*** PTFW
+This command is only available in the Twin-Center. The syntax is:
+FMZ Write {addr(1..119)}
+(N.B. this cmd DOES verify, after programming, that the decoder address equals
+the addr parameter)
+
+
+*** PTFE
+This command is only available in the Twin-Center. The syntax is:
+FMZ Write {addr(1..119), SMin(1..99), SMax(2..100), SKL(1..3)}
+(N.B. this cmd DOES verify, after programming, that the decoder address equals
+the addr parameter)
+All parameters are mandatory.
+N.B. SMin must be less than SMax.
+
+
+
+######## Motorola
+
+*** PTMS
+Motorola Search (address read) {1st addr}
+The optional '1st addr' parameter (starting with v1.002) allows specifying
+the 1st address to be searched. If no '1st addr' is specified, then the
+search starts from address 1.
+This parameter allows searching for multiple addresses: Uhlenbrock decoders,
+for example, provide this feature.
+
+
+
+######## Uhlenbrock
+
+N.B.
+All Uhlenbrock decoders programming commands allow skipping one or more
+parameters. In this case, these parameters must be specified as zero -
+or, equivalently, they can be skipped with commas.
+The only non-skippable parameter is (quite obviously!) 'Old Address'.
+For example: 'ptua 3,4,,60' would program decoder #3 on the new address
+4, set its max speed to 60 and leave other decoder parameters unchanged.
+
+Furthermore, the Min and Max Speed and the 'Special Options' parameter
+of the 755/6 and the 'Assign 1' and 'Assig 2' parameters of the 760 are
+to be specified as +1 (with respect to what spec'd in the decoder manual).
+This does NOT apply to values input using the Intellibox menus (i.e.,
+'by hand').
+In case of Min and Max Speed (of 755/6), this implies that it is not
+possible to set these two decoder variables to the value 255. The maximum
+value is 254 (i.e., 255-1). This (254) would also be the maximum value
+when using the IB menus. (Specifying these two values as '1' would set
+them in the decoder to the value 0, which would imply that the Lok would
+not move!)
+
+N.B. It is NOT possible to read values programmed into Uhlenbrock
+decoders (e.g. max Speed, etc...). Only addresses can be read using the
+'Motorola Search' (PTMS) command.
+
+
+
+*** PTUA
+Uhlenbrock 750/751/770 {
+Old Address (1..255),  - cannot be 0!
+New Address (0..255),
+Min Speed (0..63),
+Max Speed (0..63),
+Deceleration (0..79),
+Acceleration (0..79),
+2nd Address (0..255),
+Analog(1)/Digital(2) (0..2)
+}
+N.B. Max Speed >= (Min Speed + 13) - this is NOT checked by the Intellibox!
+
+
+*** PTUB
+Uhlenbrock 755/756 {
+Old Address (1..255),  - cannot be 0!
+New Address (0..255),
+Speed Table (0..4),
+Min Speed (0..255),
+Max Speed (0..255),
+Deceleration (0..79),
+Acceleration (0..79),
+2nd Address (0..255),
+3rd Address (0..255),
+Analog(1)/Digital(2) (0..2),
+Special Options (0..64)
+}
+N.B. Max Speed >= (Min Speed + 13) - this is NOT checked by the Intellibox!
+
+
+*** PTUC
+Uhlenbrock 760 {
+Old Address (1..255),  - cannot be 0!
+New Address (0..255),
+Mode (0..4),
+PWM Freq (0..2),
+Volt A1,A2 (0..8),
+Volt A3-A5 (0..8),
+Flash rate 1 (0..79),
+Flash rate 2 (0..79),
+Assignement 1 (0..32),
+Assignement 2 (0..32)
+}
+
+
+*** PTUR
+Uhlenbrock (all decoder types) {
+Old Address (1..255),  - cannot be 0!
+}
+This command resets the decoder, thus restoring factory defaults (e.g.
+acceleration, deceleration, etc...).
+
+
+
+######## DCC
+
+*** PTDS
+DCC Search: address search (read)
+(to be used with 'non-readable' decoders)
+
+
+*** PTQA
+DCC Query Address: address read for very old decoders
+(e.g. c82, old Lenz models)
+
+
+*** PTRR {Register# (1..8)}
+DCC Read using register mode
+
+
+*** PTWR  {Register# (1..8), Value (0..255)}
+DCC Write using register mode
+
+
+*** PTRP {CV# (1..1024)}
+DCC Read using paged mode
+
+
+*** PTWP  {CV# (1..1024), Value (0..255)}
+DCC Write using paged mode
+
+
+*** PTRD {CV# (1..1024)}
+DCC Read using direct (byte) mode
+
+
+*** PTWD  {CV# (1..1024), Value (0..255)}
+DCC Write using direct (byte) mode
+
+
+*** PTRB {CV# (1..1024)}
+DCC Read using direct (bit) mode
+(N.B. a **whole** CV (8 bits) is read, not just one bit!)
+
+
+*** PTWB  {CV#, Bit# (0..7), Value (0..1)}
+DCC Write using direct (bit) mode
+(N.B. a **single** bit of a CV is written, not the whole CV!)
+
+
+*** PTQD
+DCC Query Direct
+(Does the decoder support direct (bit) read commands?)
+
+
+*** PTRL
+DCC Read long address from CV17/18
+(N.B. this cmd also **automatically** sets Bit #5 of CV29)
+Only compatible with decoders supporting direct bit read and write mode!
+
+
+*** PTWL {long address (128..9999)}
+DCC Write long address into CV17/18
+(N.B. this cmd also **automatically** sets Bit #5 of CV29)
+Only compatible with decoders supporting direct bit read and write mode!
+N.B. Long addresses in range 0..127 are legal 14-bit addresses,
+however, since the Intellibox uses 7-bit packets in this
+address range, we do not allow these values with the PTWL cmd.
+(Long addresses in range 10000..10239 are legal but not supported.)
+
+
+
+######## Possible future cmds
+
+*** PTRA
+DCC Read Address (auto 7/14-Bit identification and test)
+
+
+*** PTWA {address (1..9999)}
+DCC Write Address (auto 7/14-Bit identification and test)
+
+
+*** PTID
+Automatic decoder identification and address search
+
+
+
+######## Related P50Xa cmds (DCC)
+
+*** CV {CV17 (192..231), CV18 (0..255))
+Convert CV17, CV18 values into corresponding long address
+(N.B. the Intellibox only supports long addresses in range 128..9999)
+
+
+*** CA {long address (0..10239)}
+Convert long address into corresponding CV17, CV18 values
+(N.B. the Intellibox only supports long addresses in range 128..9999)
+
+
+*** PD {addr (1..9999), CV# (1..1024), value (0..255)}
+Program (write) a Lok decoder using operations mode (main line)
+programming.
+(The Intellibox uses the specified address value in order to
+tell whether to use a 7-bit (1..127) or a 14-Bit (128..9999)
+packet).
+N.B. Long addresses 0..127 are legal 14-bit addresses,
+however the Intellibox uses 7-bit packets for address range 1..127 - and
+address 0 (a legal 14-bit address) is not supported by the Intellibox
+for DCC decoders.
+(Long addresses in range 10000..10239 are legal but not supported.)
+If the IB buffer for operations mode commands is not free, this cmd
+replies with 'Busy!'.
+N.B. the **real** address of a Lok must be specified, not the virtual one!
+
+
+*** PA {addr (0..510), CV# (1..1024), value (0..255)}
+Program (write) an Accessory decoder using operations mode (main line)
+programming.
+N.B. The ***decoder*** address is to be specified, NOT the turnout
+     address! (Decoder address = (Turnout address - 1) / 4 + 1)
+If the IB buffer for operations mode commands is not free, this cmd
+replies with 'Busy!'.
+
+
+
+
+
+P50Xb (P50X binary) Programming Track commands.
+-----------------------------------------------
+
+Upon issuing a (valid) P50Xb PT cmd which asks for a PT task,
+the IB shall immediately reply. The reply consists of a single byte:
+
+00h	cmd accepted, task in progress
+80h	PT is busy (e.g. in use by a LocoNet device or previous task
+	not yet completed)
+02h	bad parameter value in cmd, cmd rejected
+
+The 'busy' reply does NOT apply to commands which do not ask
+for a read or write task to be performed on the PT.
+
+
+######## Reply to XEvtPT (0CEh) cmd
+
+Upon task completion, the Intellibox shall set the PT event flag
+(as read by the "are there events?" cmd (XEvent = 0C0h)).
+The PC can now issue the XEvtPT cmd (0CEh) and get the result
+of the PT task. The result is transmitted to the PC using
+the following format:
+
+
+*** 1st byte
+either 0F5h (no PT event to report (e.g. task not yet completed))
+or # of bytes to follow. Currently, only these values are possible
+for the # of bytes to follow: 1, 2, 3, 4 or 6.
+
+
+*** 2nd byte (sent only if 1st byte wasn't 0F5h)
+status of PT task:
+000h	Command completed, no errors
+0FFh	Timeout
+0FEh	No acknowledge from decoder (but a write maybe was successful)
+0FDh	Short! (on the PT)
+0FCh	No decoder detected
+0FBh	Generic Error
+0FAh	Error during DCC direct bit mode operation
+0F9h	No acknowledge to paged operation (paged r/w not supported?)
+0F8h	Error during Selectrix read
+0F7h	XPT_DCCQD: Ok (direct bit read mode is (probably) supported)
+0F6h	XPT_DCCQD: Not Ok (direct bit read mode is (probably) not supported)
+0F4h	Task terminated (see XPT_Term cmd)
+0F3h	No task to terminate (see XPT_Term cmd)
+0F2h	Cannot terminate task (see XPT_Term cmd)
+
+
+*** 3rd byte (sent only if 1st byte = 2, 3, 4, 6)
+1st byte resulting from a PT read task:
+- the content of a Register or CV (DCC Read cmds);
+- 1st decoder address ('search' cmds);
+- low byte of long addr read by DCC long addr read cmd;
+- address (Selectrix read): value = 0..111
+
+
+*** 4th byte (sent only if 1st byte = 3, 4, 6)
+2nd byte resulting from a PT read task:
+- eventual 2nd decoder address ('search' cmds);
+- high byte of long addr read by DCC long addr read cmd;
+- max speed (Selectrix read): value = 0..7
+
+
+*** 5th byte (sent only if 1st byte = 4, 6)
+3rd byte resulting from a PT read task:
+- eventual 3rd decoder address ('search' cmds);
+- acceleration (Selectrix read): value = 0..7
+
+
+*** 6th byte (sent only if 1st byte = 6)
+4th byte resulting from a PT read task:
+- PWM (Selectrix read): value = 1..4
+
+
+*** 7th byte (sent only if 1st byte = 6)
+5th byte resulting from a PT read task:
+- # of stop zones (Selectrix read): value = 1 or 2
+
+
+While a PT task is executing due to a P50Xb cmd, the Intellibox
+can process other P50X cmds. This is NOT true for P50Xa PT cmds!
+
+N.B. It is not mandatory to read the result of a PT task with the
+XEvtPT cmd. If the PC starts a new task (after completion of a
+previous task), this shall erase any 'unread' result.
+
+
+
+######## Reply to other P50Xb PT commands
+
+With the exception of XEvtPT and XPT_Sts, other PT commands
+reply with the usual P50Xb reply: 00h to tell 'Ok, cmd accepted'
+or a value different from zero to tell 'some error occurred'
+(e.g. illegal cmd parameter value, etc...).
+A reply of 00h to a command involving a read or write operation on
+the PT implies that the corresponding task has been started - and
+that, in due time, a PT event shall be generated.
+Depending on the task involved, its execution may take from a
+fraction of a second up to about 1 minute or more.
+
+
+P50Xb PT commands are in range 0E0h..0FEh.
+
+
+######## General usage
+
+*** XPT_Sts (0E0h) - length = 1 byte
+Report PT status:
+1st	bit #0:
+		0 = PT in 'PT only' mode
+		1 = PT in 'auto' mode
+	bit #1:
+		0 = PT relay is off
+		1 = PT relay is on
+	bit #7: (check also XEvent cmd)
+		0 = no PT event is pending
+		1 = a PT event is pending
+	(other bits are not currently defined and reported as zero)
+
+2nd	zero if no PT task is executing (PT is 'idle')
+	otherwise a non-zero value is returned
+
+
+*** XPT_On (0E1h) - length = 1 byte
+Turn on the PT relay
+
+
+*** XPT_Off (0E2h) - length = 1 byte
+Turn off the PT relay
+May report:
+000h	Ok, PT relay has been turned off
+080h	PT is busy!
+0F1h	Cannot turn off the PT relay: PT in 'PT only' mode!
+
+
+*** XEvtPT (0CEh) - length = 1 byte
+Report PT task event: see above for description of cmd reply.
+
+
+*** XPT_Term (0FEh) - length = 1 byte
+Terminate (abort) current PT task
+Reply (one byte):
+000h	task terminated
+	(an XEvtPT cmd would now report: 01h, 0F4h)
+0F3h	no task is active!
+0F2h	could not terminate task!
+
+
+
+######## Selectrix
+
+*** XPT_SXRd (0E4h) - length = 1 byte
+Read Selectrix decoder
+
+
+*** XPT_SXWr (0E5h) - length = 1+5 bytes
+Write Selectrix decoder
+Parameters (bytes):
+1st	Decoder address (0..111)
+2nd	Max speed (0..7)
+3rd	Acceleration (0..7)
+4th	PWM (1..4)
+5th	# of stop zones (1..2)
+
+
+*** XPT_SXSr (0E6h) - length = 1 byte
+Search for address of a Selectrix decoder
+(to be implemented)
+
+
+
+######## FMZ
+
+*** XPT_FMZSr (0E7h) - length = 1 byte
+Search for address of an FMZ decoder
+
+
+*** XPT_FMZWr (0E8h) - length = 1+1 bytes
+Write FMZ decoder address.
+Parameters (byte):
+1st	Decoder address (1..119)
+
+
+*** XPT_FMZEWr (0DDh) - length = 1+4 bytes
+Write FMZ decoder: address, SMin, SMax, SKL.
+Parameters (byte):
+1st	Decoder address (1..119)
+2nd	SMin (1..99) minimum speed
+3rd	SMax (2..100) maximum speed
+4th	SKL (1..3) Steuerkennlinie (speed curve)
+N.B. SMin must be less than SMax.
+
+
+
+######## Motorola
+
+*** XPT_MrkSr (0E9h) - length = 1+1 bytes
+N.B. up to v1.001 this cmd did NOT have any parameters!
+Search for address of a Motorola decoder
+Parameter (byte):
+1st	1st address to search for (0..255)
+A value of 0 for this parameter is interpreted as 1.
+N.B. this command has been changed with respect to the version
+1.000 of the SPU. In that case, cmd length was 1 byte only:
+there was no provision for specifying a '1st address', therefore
+it was not possible to search for multiple addresses (this is a
+feature of Uhlenbrock decoders).
+Please check also the 'PTMS' P50Xa cmd.
+
+
+
+######## DCC
+
+*** XPT_DCCSr (0EAh) - length = 1 byte
+Search for address of a DCC decoder
+(decoders which are not 'readable', e.g. Roco/Lenz digital crane)
+
+
+*** XPT_DCCQA (0EBh) - length = 1 byte
+Read address using obsolete "Address Query" packet
+(can only report 7-bit addresses in range 1..111)
+
+
+*** XPT_DCCRR (0ECh) - length = 1+2 bytes
+Read using register mode
+Parameters (byte):
+1st	Register# (1..8)
+2nd	00h
+
+
+*** XPT_DCCWR (0EDh) - length = 1+3 bytes
+Write using register mode
+Parameters (byte):
+1st	Register# (1..8)
+2nd	00h
+3rd	write value (0..255)
+
+
+*** XPT_DCCRP (0EEh) - length = 1+2 bytes
+Read using paged mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+N.B. CV# must be in range 1..1024
+
+
+*** XPT_DCCWP (0EFh) - length = 1+3 bytes
+Write using paged mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+3rd	write value (0..255)
+N.B. CV# must be in range 1..1024
+
+
+*** XPT_DCCRD (0F0h) - length = 1+2 bytes
+Read using direct (byte) mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+N.B. CV# must be in range 1..1024
+
+
+*** XPT_DCCWD (0F1h) - length = 1+3 bytes
+Write using direct (byte) mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+3rd	write value (0..255)
+N.B. CV# must be in range 1..1024
+
+
+*** XPT_DCCRB (0F2h) - length = 1+2 byte
+Read using direct (bit) mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+N.B. CV# must be in range 1..1024
+(N.B. a whole CV (8 bits) are read, not only 1 bit!)
+
+
+*** XPT_DCCWB (0F3h) - length = 1+4 bytes
+Write a single bit using direct (bit) mode
+Parameters (byte):
+1st	CV# low byte
+2nd	CV# high byte
+3rd	Bit# (0..7)
+4th	write value (0..1)
+N.B. CV# must be in range 1..1024
+(N.B. a single bit is written, not the whole CV!)
+
+
+*** XPT_DCCQD (0F4h) - length = 1 byte
+Does the decoder support bit read mode?
+(A 'yes' answer does NOT imply that also bit write cmds are accepted by
+the decoder!)
+
+
+*** XPT_DCCRL (0F5h) - length = 1 byte
+Read long (loco) address from CV17/18 and automatically set bit #5 of CV29
+Only compatible with decoders supporting direct bit read and write mode!
+
+
+*** XPT_DCCWL (0F6h) - length = 1+2 bytes
+Write long (loco) address into CV17/18 and automatically set bit #5 of CV29
+Parameters (byte):
+1st	low byte of long address
+2nd	high byte of long address
+N.B. address must be in range 128..16383
+Only compatible with decoders supporting direct bit read and write mode!
+N.B. the address high limit is set to 16383 (instead of 9999), in order
+     to be able to program the full range of addresses supported by
+     LISSY IR senders. The IB is _NOT_ capable of controlling DCC
+     addresses higher than 9999 and the DCC legal locomotive address
+     range ends at 10239.
+
+
+*** XPT_DCCRA (0F7h) - length = 1 byte
+Read long (accessory decoder) address from CV513/521.
+
+
+*** XPT_DCCWA (0F8h) - length = 1+2 bytes
+Write long (accessory decoder) address into CV513/521.
+Parameters (byte):
+1st	low byte of address
+2nd	high byte of address
+N.B. address must be in range 0..511
+
+
+*** XPT_DCCEWr (0DCh) - length = 1+4 bytes
+Generate and program the 'speed table' (CV's #67 through 94) of a
+DCC 28 speed steps decoder. Three curve types can be specified:
+1 = linear (constant speed increase: speed proportional to speed step)
+2 = 'exponential' (finer speed control at low speed steps)
+3 = 'logarithmic' (finer speed control at high speed steps)
+
+Furthermore, the minimum and maximum speed must be specified (in range
+1 through 101). The max speed can be adjusted so as to eventually
+take into account a non 'full' (0 through 255) format of CV's 67
+through 94 - or, of course, to reduce the maximum speed.
+SMax = 101 gives a max speed of 254 (value programmed into CV #94).
+SMax =  40 gives CV #94 = 100
+SMax =  13 gives CV #94 = 32
+
+SMin = 1 gives a minum speed of 2 (value programmed into CV #67).
+
+Parameters (byte):
+1st	(not currently used)
+2nd	SMin (1..123) minimum speed
+3rd	SMax (2..124) maximum speed
+4th	SKL (1..3) Steuerkennlinie (speed curve)
+
+N.B. SMin must be less than SMax.
+
+
+
+######## Uhlenbrock
+
+*** XPT_U750 (0F9h) - length = 1+8 bytes
+Parameters (byte):
+1st	Old Address (0..255) - N.B. 0 = special case: check note below
+2nd	New Address (0..255)
+3rd	Min Speed (0..63)
+4th	Max Speed (0..63)
+5th	Deceleration (0..79)
+6th	Acceleration (0..79)
+7th	2nd Address (0..255)
+8th	Analog(1)/Digital(2) (0..2)
+N.B. Max Speed >= (Min Speed + 13) - this is NOT checked by the Intellibox!
+N.B. all parameters, with the exception of 'Old Address' (check note below),
+can be specified as zero value. This implies: do not program the corresponding
+register in the decoder (i.e. preserve the current value). However, zero value
+parameters MUST still be sent as part of the command. In other words: the cmd
+length is constant.
+
+Note: Old Address = 0 case
+In this case, the decoder reset procedure is performed. This applies to all
+kinds of Uhlenbrock decoders (750, 751, 770, 755, 756 and 760).
+The New Address parameter holds the 'Old' (i.e. current) address of the
+decoder. This feature has been introduced starting with v1.001.
+
+
+*** XPT_U755 (0FAh) - length = 1+11 bytes
+Parameters (byte):
+1st	Old Address (1..255) - cannot be 0!
+2nd	New Address (0..255)
+3rd	Speed Table (0..4)
+4th	Min Speed (0..255)
+5th	Max Speed (0..255)
+6th	Deceleration (0..79)
+7th	Acceleration (0..79)
+8th	2nd Address (0..255)
+9th	3rd Address (0..255)
+10th	Analog(1)/Digital(2) (0..2)
+11th	Special Options (0..64)
+N.B. Max Speed >= (Min Speed + 13) - this is NOT checked by the Intellibox!
+N.B. all parameters, with the exception of 'Old Address', can be specified
+as zero value. This implies: do not program the corresponding register in
+the decoder (i.e. preserve the current value). However, zero value parameters
+MUST still be sent as part of the command. In other words: the cmd length
+is constant.
+N.B. Min Speed, Max Speed and Special Options value is internally decremented
+by one (by the Intellibox). Therefore, its value must be specified as '+1'
+with respect to what documented in the decoder manual.
+
+
+*** XPT_U760 (0FBh) - length = 1+10 bytes
+Parameters (byte):
+1st	Old Address (1..255) - cannot be 0!
+2nd	New Address (0..255)
+3rd	Mode (0..4)
+4th	PWM Freq (0..2)
+5th	Volt A1,A2 (0..8)
+6th	Volt A3-A5 (0..8)
+7th	Flash rate 1 (0..79)
+8th	Flash rate 2 (0..79)
+9th	Assignement 1 (0..32)
+10th	Assignement 2 (0..32)
+N.B. all parameters, with the exception of 'Old Address', can be specified
+as zero value. This implies: do not program the corresponding register in
+the decoder (i.e. preserve the current value). However, zero value parameters
+MUST still be sent as part of the command. In other words: the cmd length
+is constant.
+N.B. Assignement 1 & 2 value is internally decremented by one (by the
+Intellibox). Therefore, these values must be specified as '+1' with respect
+to what documented in the decoder manual.
+
+
+
+######## Possible future commands
+
+*** XPT_Src (0FCh) - length = 1 byte
+Fully automatic decoder identification and address read
+
+
+*** XPT_Ctrl (0FDh) - length = 1+(to be defined)
+PT control by external device
+
+
+
+######## Related P50Xb cmds (DCC)
+
+*** XDCC_PD (0DEh) - length = 1+5 bytes
+DCC operations mode programming for Loks
+Parameters (byte):
+1st	low byte of address
+2nd	high byte of address
+3rd	CV# low byte
+4th	CV# high byte
+5th	write value (0..255)
+N.B. address must be in range 1..9999
+(The Intellibox uses the specified address value in order to
+tell whether to use a 7-bit (1..127) or a 14-Bit (128..9999)
+packet).
+N.B. Long addresses 0..127 are legal 14-bit addresses, however the
+Intellibox uses 7-bit packets in this address range.
+Address 0 is not supported by the Intellibox for DCC decoders.
+(Long addresses in range 10000..10239 are legal but not supported.)
+N.B. the **real** address of a Lok should be specified, not the virtual one!
+Reply:
+00h	cmd Ok
+80h	the IB buffer for operations mode programming is not (yet) free
+	(e.g. it is used by a LocoNet device or previous operation not yet
+	completed)
+
+
+*** XDCC_PA (0DFh) - length = 1+5 bytes
+DCC operations mode programming for Accessory Decoders
+Parameters (byte):
+1st	low byte of address
+2nd	high byte of address
+3rd	CV# low byte
+4th	CV# high byte
+5th	write value (0..255)
+N.B. address must be in range 0..510
+N.B. The ***decoder*** address is to be specified, NOT the turnout
+     address! (Decoder address = (Turnout address - 1) / 4)
+Reply:
+00h	cmd Ok
+80h	the IB buffer for operations mode programming is not (yet) free
+	(e.g. it is used by a LocoNet device or previous operation not yet
+	completed)
+
+
+Intellibox: Special Options (SO)
+(document version 0.41 - 07/99) - by St.Ch-B.
+=============================================
+
+The Intellibox uses up to 1000 Special Options (SO), numbered from 0 to 999.
+These are modifiable by the user only through the Intellibox menus, not by PC
+(see also XSOSet command) - however, the PC can read the value of all SO's.
+Each SO controls a particular aspect of the Intellibox configuration.
+This document lists some of these 1000 SO's, along with their 'meaning'.
+
+Only some SO's are documented. These would be the 'main' SO's, i.e. those
+which would or could make sense being able to modify. Please do NOT change
+the value of other SO's as this could interfere or even impede correct
+Intellibox operation.
+
+A maximum and a minimum value are internally associated with each SO.
+The Intellibox does not allow selecting a value outside that range.
+
+
+*** SO #1 (factory default = 0) - min = 0, max = 4
+Intellibox default power-on Baudrate.
+0 = 2400 bps
+1 = 4800 bps
+2 = 9600 bps
+3 = 19200 bps
+4 = 38400 bps
+
+
+*** SO #2 (factory default = 0) - min = 0, max = 2
+Intellibox default power-on RS-232 protocol.
+0 = P50 only
+1 = P50X only
+2 = both P50 and P50X
+
+
+*** SO #4 (factory default = 0) - min = 0, max = 1
+CTS line polarity (computer type)
+0 = PC (CTS active when at +12V)
+1 = Mac (CTS active when at -12V)
+
+
+*** SO #6 (factory default = 254) - min = 0, max = 255
+P5Xa 'RT' cmd default value.
+254 would mean: upon a non-PC power off, the CTS line is disabled
+for about 13 seconds (254 * 50 ms = 12.7 seconds).
+Please check also P50Xa 'RT' cmd documentation.
+
+
+*** SO #7 (factory default = 88 = ASCII 'X') - min = 80, max = 95
+Default P50X cmds leading character (when in mixed P50/P50X mode).
+
+
+*** SO #8 (factory default = 16) - min = 0, max = 62
+Number of s88 'half-modules' to be automatically read by the Intellibox.
+
+
+*** SO #10 (factory default = 1) - min = 0, max = 8
+Default Lok protocol
+0 = Motorola Old
+1 = Motorola New
+2 = DCC: 14
+3 = DCC: 27
+4 = DCC: 28
+5 = DCC: 28 DAC
+6 = DCC: 128
+7 = DCC: 128 DAC
+8 = Selectrix
+9 = ZZZ
+
+
+*** SO #11 (factory default = 50) - min = 30, max = 100
+How long, in 50 ms units, the Stop and Go keys must be held pressed
+before an Intellibox reset (warmstart) is performed.
+The default corresponds to 2.5 seconds.
+
+
+*** SO #12 (factory default = 0) - min = 0, max = 1
+Default Turnout protocol
+0 = Motorola
+1 = DCC
+
+
+*** SO #13 (factory default = 2) - min = 0, max = 255
+Minimum Turnout 'on' time in 50 ms units.
+A value of 0 turns minimum 'on' time checking off.
+
+
+*** SO #14 (factory default = 100) - min = 0, max = 255
+Maximum Turnout 'on' time in 50 ms units.
+A value of 0 turns maximum 'on' time checking off.
+
+
+*** SO #15 (factory default = 1) - min = 0, max = 1
+Whether (0) or not (1) to limit the Intellibox maximum voltage
+output. Shown as "N scale" (0) or "H0 scale" (1) by the Intellibox.
+
+
+*** SO #16 (factory default = 1) - min = 0, max = 1
+Programming Track mode (i.e. relay control)
+0 = PT only (relay always 'on')
+1 = automatic (relay 'on' only during PT mode or if explicitly
+    commanded 'on' by PC)
+When the PT relay is 'on' the Intellibox PT output is internally
+disconnected from the normal power output and internally connected to
+the Intellibox PT circuitry.
+
+
+*** SO #19 (factory default = 0) - min = 0, max = 2
+Whether to restore Lok status upon turning on the Intellibox and what
+eventually to restore:
+0 = no restore
+1 = restore Function, Dir, F1..F4, but set Speed = 0
+2 = restore Function, Dir, F1..F4 and Speed
+In case 1 and 2, also eventual consists (multi-tractions) are restored.
+
+
+*** SO #20 (factory default = 1) - min = 0, max = 1
+Whether (1) or not (0) P50 commands to an already 'busy' Lok are
+allowed ('busy' = already controlled by another (non-PC) device).
+
+
+*** SO #21 (factory default = 0) - min = 0, max = 1
+Whether (1) or not (0) to discard P50 turnout commands issued while
+the Intellibox is in Power Off.
+
+
+*** SO #23 (factory default = 1) - min = 0, max = 62
+s88 'half-module' number which is the source for the s88 Timers.
+(0 = s88 Timers are disabled).
+
+
+*** SO #24 (factory default = 1) - min = 0, max = 62
+s88 'half-module' number which is the source for the s88 Counters.
+(0 = s88 Counters are disabled).
+
+
+*** SO #25 (factory default = 1) - min = 0, max = 1
+Whether (1) or not (0) to always send a DCC signal - eventually a DCC
+idle signal (if there is no DCC Lok in the refresh cycle).
+
+
+*** SO #26 (factory default = 1) - min = 0, max = 1
+Whether (1) or not (0) a PC Break (RS-232) forces 2400 bps.
+
+
+*** SO #800 (factory default = 13) - min = 0, max = 13
+LCD backlight level.
+
+
+*** SO #801 (factory default = 0) - min = 0, max = 100
+LCD contrast voltage level (0 = about 0V, 100 = about 5V).
+
+
+*** SO #802 (factory default = 4) - min = 0, max = 6
+Intellibox panel LED's dimming factor (excluding Stop and Go LED's).
+A higher value reduces LED's brightness.
+
+
+*** SO #803 (factory default = 0) - min = 0, max = 7
+Currently selected language for Intellibox LCD messages.
+0 = de, 1 = uk, 2 = fr, 3 = it, 4 = nl, 5 = se, 6 = es, 7 = pt
+
+
+*** SO #808 (factory default = 0) - min = 0, max = 1
+AC (0) or DC (1) style speed knobs.
+
+
+*** SO #809 (factory default = 0) - min = 0, max = 1
+Absolute (0) or Percentage (1) speed display.
+
+
+*** SO #810 (factory default = 1) - min = 0, max = 255
+Default turnout address (after turning on the Intellibox) to be controlled
+through the first Intellibox key-pair devoted to turnout control while in
+Keyboard mode (keys [1] (red) and [4] (green)).
+The allowed range is 0..255, with 0 having a special meaning: it activates
+a special Keyboard mode - known as "table Keyboard mode".
+During this mode, each turnout control key-pair is associated with a
+user-defineable turnout address.
+The first turnout address is taken from the value of SO #871 incremented by 1.
+The second from SO #872 +1, 3rd SO #873 +1, 4th SO #874 +1, 5th SO #875 +1,
+6th SO #876 +1, 7th SO #877 +1 and the eigth turnout address is taken from
+SO #878 +1.
+For example: setting SO #871 to the value 10 would allow you to control the
+turnout address 11 through the [1] and [4] key-pair (of course: only if this
+"table Keyboard mode" has been activated!).
+The activation of this special mode can also be done 'on the fly', by
+choosing 0 as keyboard (base) address in the keyboard menu.
+The factory default for SO #871..878 allows controlling turnouts:
+11, 21, 31, 41, 51, 61, 71 and 81.
+
+
+*** SO #812 (factory default = 1) - min = 1, max = 128
+Default s88 module number to be shown when activating the s88 mode after
+turning on the Intellibox.
+(s88 module numbers 32..128 only correspond to LocoNet sensors).
+
+
+*** SO #815 (factory default = 0) - min = 0, max = 2
+Default mode to be selected after turning on the Intellibox:
+0 = Keyboard, 1 = s88, 2 = programming.
+
+
+*** SO #901 (factory default = 1) - min = 1, max = 100
+This SO has to be changed to a value **slightly** higher than the factory
+default one (e.g. 3) in order make it possible to control DCC Loks on layout
+sections supplied through a Maerklin Booster 6015 or 6017.
+
