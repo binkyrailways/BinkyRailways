@@ -66,12 +66,15 @@ namespace BinkyRailways.Core.State.Impl.P50x
         protected override void OnSendLocSpeedAndDirection(ILocState loc)
         {
             Log.Trace("OnSendLocSpeedAndDirection: {0}", loc);
-            /*var direction = (loc.Direction.Requested == LocDirection.Forward);
-            var packet = Packets.CreateSpeedAndDirection(loc.Address.ValueAsInt, (byte)loc.SpeedInSteps.Requested, direction, loc.SpeedSteps);
-            var data = PacketTranslater.Translate(packet);
-            sender.SendSpeedAndDirection(loc.Address.ValueAsInt, data);
+            var forward = (loc.Direction.Requested == LocDirection.Forward);
+            client.LocCommand(loc.Address.ValueAsInt, loc.SpeedInSteps.Requested, forward, loc.F0.Requested, loc.F1.Requested, loc.F2.Requested, loc.F3.Requested, loc.F4.Requested);
             loc.Direction.Actual = loc.Direction.Requested;
-            loc.Speed.Actual = loc.Speed.Requested;*/
+            loc.Speed.Actual = loc.Speed.Requested;
+            loc.F0.Actual = loc.F0.Requested;
+            loc.F1.Actual = loc.F1.Requested;
+            loc.F2.Actual = loc.F2.Requested;
+            loc.F3.Actual = loc.F3.Requested;
+            loc.F4.Actual = loc.F4.Requested;
         }
 
         /// <summary>

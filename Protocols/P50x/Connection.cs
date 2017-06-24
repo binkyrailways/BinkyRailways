@@ -29,7 +29,7 @@ namespace BinkyRailways.Protocols.P50x
         public Connection()
         {
             this.PortName = "COM1";
-            this.BaudRate = BaudRate.Rate9K6;
+            this.BaudRate = BaudRate.Rate19K;
         }
 
         /// <summary>
@@ -61,6 +61,8 @@ namespace BinkyRailways.Protocols.P50x
                         port.DataBits = 8;
                         port.StopBits = StopBits.One;
                         port.Parity = Parity.None;
+                        port.WriteTimeout = 1000;
+                        port.ReadTimeout = 1000;
                         port.Open();
                         port.DiscardInBuffer();
                         port.DiscardOutBuffer();
@@ -99,17 +101,37 @@ namespace BinkyRailways.Protocols.P50x
             }
         }
 
+        protected byte[] Transaction(byte[] msg, int responseLength)
+        {
+            var port = Open();
+            try
+            {
+                flushAvailableData(port);
+                Send(port, msg, msg.Length);
+                return ReadMessage(port, responseLength);
+            }
+            catch
+            {
+                Close();
+                throw;
+            }
+        }
+
         /// <summary>
         /// Send the given message
         /// </summary>
-        protected void Send(byte[] msg, int length)
+        private static void Send(SerialPort port, byte[] msg, int length)
         {
-            var port = Open();
             for (int i = 0; i < length; i++)
             {
                 WaitForCTS(port);
                 port.Write(msg, i, 1);
             }
+        }
+
+        private static void flushAvailableData(SerialPort port)
+        {
+            port.DiscardInBuffer();
         }
 
         /// <summary>
@@ -132,12 +154,8 @@ namespace BinkyRailways.Protocols.P50x
         /// <summary>
         /// Read a single message
         /// </summary>
-        protected byte[] ReadMessage(int len)
+        private static byte[] ReadMessage(SerialPort port, int len)
         {
-            // Check for an open connection
-            var port = this.port;
-            if (port == null) { return null; }
-
             // Try to read the message
             var data = new byte[len];
             Read(port, data, 0, len);
