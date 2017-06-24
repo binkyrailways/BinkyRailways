@@ -5,6 +5,7 @@ using BinkyRailways.Core.State.Impl.Ecos;
 using BinkyRailways.Core.State.Impl.LocoBuffer;
 using BinkyRailways.Core.State.Impl.Mqtt;
 using BinkyRailways.Core.Util;
+using BinkyRailways.Core.State.Impl.P50x;
 
 namespace BinkyRailways.Core.State.Impl
 {
@@ -76,6 +77,11 @@ namespace BinkyRailways.Core.State.Impl
         public override IEntityState Visit(IMqttCommandStation entity, RailwayState data)
         {
             return new MqttCommandStationState(entity, data, Empty<string>.Array);
+        }
+
+        public override IEntityState Visit(IP50xCommandStation entity, RailwayState data)
+        {
+            return new P50xCommandStationState(entity, data, Empty<string>.Array);
         }
 
         public override IEntityState Visit(IPlaySoundAction entity, RailwayState data)

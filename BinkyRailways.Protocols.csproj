@@ -164,6 +164,9 @@
     <Compile Include="LoconetToolbox\Source\Protocol\SwitchReport.cs" />
     <Compile Include="LoconetToolbox\Source\Protocol\SwitchRequest.cs" />
     <Compile Include="LoconetToolbox\Source\Protocol\TcpLocoBuffer.cs" />
+    <Compile Include="Protocols\P50x\BaudRate.cs" />
+    <Compile Include="Protocols\P50x\Client.cs" />
+    <Compile Include="Protocols\P50x\Connection.cs" />
     <Compile Include="Protocols\ProtocolException.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1169,6 +1169,15 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New P50x Command station.
+        /// </summary>
+        internal static string NewP50xCommandStationDescription {
+            get {
+                return ResourceManager.GetString("NewP50xCommandStationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new railway.
         /// </summary>
         internal static string NewPackageDialogTitle {

@@ -385,6 +385,15 @@ namespace BinkyRailways.Core.Model.Impl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to P50X command station.
+        /// </summary>
+        internal static string TypeNameP50xCommandStation {
+            get {
+                return ResourceManager.GetString("TypeNameP50xCommandStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Railway.
         /// </summary>
         internal static string TypeNameRailway {

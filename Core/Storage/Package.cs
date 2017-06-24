@@ -301,6 +301,16 @@ namespace BinkyRailways.Core.Storage
         }
 
         /// <summary>
+        /// Add a new P50x type command station.
+        /// </summary>
+        IP50xCommandStation IPackage.AddNewP50xCommandStation()
+        {
+            var item = new P50xCommandStation();
+            Add(item);
+            return item;
+        }
+
+        /// <summary>
         /// Load a command station by it's id.
         /// </summary>
         /// <returns>Null if not found</returns>

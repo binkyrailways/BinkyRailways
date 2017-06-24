@@ -49,6 +49,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddLocoBuffer = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddDccOverRs232 = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddEcos = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbAddMqtt = new System.Windows.Forms.ToolStripMenuItem();
             this.tbEdit = new System.Windows.Forms.ToolStripButton();
             this.tbImport = new System.Windows.Forms.ToolStripButton();
             this.tbArchive = new System.Windows.Forms.ToolStripButton();
@@ -58,7 +59,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbRunVirtual = new System.Windows.Forms.ToolStripMenuItem();
             this.validationResultsControl = new BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tbAddMqtt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbbAddP50x = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -187,7 +188,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddLocoBuffer,
             this.tbAddDccOverRs232,
             this.tbAddEcos,
-            this.tbAddMqtt});
+            this.tbAddMqtt,
+            this.tbbAddP50x});
             this.tbAddCommandStation.Name = "tbAddCommandStation";
             resources.ApplyResources(this.tbAddCommandStation, "tbAddCommandStation");
             // 
@@ -208,6 +210,12 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddEcos.Name = "tbAddEcos";
             resources.ApplyResources(this.tbAddEcos, "tbAddEcos");
             this.tbAddEcos.Click += new System.EventHandler(this.tbAddEcos_Click);
+            // 
+            // tbAddMqtt
+            // 
+            this.tbAddMqtt.Name = "tbAddMqtt";
+            resources.ApplyResources(this.tbAddMqtt, "tbAddMqtt");
+            this.tbAddMqtt.Click += new System.EventHandler(this.tbAddMqtt_Click);
             // 
             // tbEdit
             // 
@@ -272,11 +280,11 @@ namespace BinkyRailways.WinApp.Controls.Edit
             resources.ApplyResources(this.contextMenuStrip, "contextMenuStrip");
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.OnContextMenuStripOpening);
             // 
-            // tbAddMqtt
+            // tbbAddP50x
             // 
-            this.tbAddMqtt.Name = "tbAddMqtt";
-            resources.ApplyResources(this.tbAddMqtt, "tbAddMqtt");
-            this.tbAddMqtt.Click += new System.EventHandler(this.tbAddMqtt_Click);
+            this.tbbAddP50x.Name = "tbbAddP50x";
+            resources.ApplyResources(this.tbbAddP50x, "tbbAddP50x");
+            this.tbbAddP50x.Click += new System.EventHandler(this.tbbAddP50x_Click);
             // 
             // EditRailwayControl
             // 
@@ -328,6 +336,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         private ToolStripMenuItem tbAddEcos;
         private ContextMenuStrip contextMenuStrip;
         private ToolStripMenuItem tbAddMqtt;
+        private ToolStripMenuItem tbbAddP50x;
 
     }
 }

@@ -136,6 +136,7 @@
     <Compile Include="WinApp\Controls\Edit\Settings\EcosCommandStationSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\InitializeJunctionActionSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\MqttCommandStationSettings.cs" />
+    <Compile Include="WinApp\Controls\Edit\Settings\P50xCommandStationSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\PassiveJunctionSettings.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\EditableInRunningStateAttribute.cs" />
     <Compile Include="WinApp\Controls\Edit\Settings\ExPropertyDescriptorCollection.cs" />

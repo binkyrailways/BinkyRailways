@@ -883,4 +883,7 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="TopicPrefixName" xml:space="preserve">
     <value>Topic prefix</value>
   </data>
+  <data name="NewP50xCommandStationDescription" xml:space="preserve">
+    <value>New P50x Command station</value>
+  </data>
 </root>
