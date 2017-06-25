@@ -43,6 +43,14 @@ namespace BinkyRailways.Core.State.Impl
             power = new StateProperty<bool>(this, false, null, 
                 x => PostWorkerAction(() => OnRequestedPowerChanged(x)), 
                 OnActualPowerChanged, false);
+            myWorker.Wait += OnWorkerWait;
+        }
+
+        /// <summary>
+        /// Called when the worker will wait.
+        /// </summary>
+        protected virtual void OnWorkerWait(object sender, AsynchronousWorker.WaitEventArgs e)
+        {
         }
 
         /// <summary>

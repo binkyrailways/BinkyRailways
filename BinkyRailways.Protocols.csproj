@@ -167,6 +167,7 @@
     <Compile Include="Protocols\P50x\BaudRate.cs" />
     <Compile Include="Protocols\P50x\Client.cs" />
     <Compile Include="Protocols\P50x\Connection.cs" />
+    <Compile Include="Protocols\P50x\XStatus.cs" />
     <Compile Include="Protocols\ProtocolException.cs" />
   </ItemGroup>
   <ItemGroup>

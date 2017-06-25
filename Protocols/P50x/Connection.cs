@@ -13,12 +13,27 @@ namespace BinkyRailways.Protocols.P50x
     /// </summary>
     public class Connection : IDisposable
     {
+        /// <summary>
+        /// Idle is set to true by this class, you must set it to false.
+        /// </summary>
+        public bool Idle { get; set; }
+
         public delegate void Callback();
 
         public event Callback Opened;
         public event Callback Closed;
 
-        private const int CTS_ATTEMPTS = 20;
+        protected enum ReplyLength
+        {
+            // Reply has fixed length
+            Fixed,
+            // High bit of byte set if another byte follows
+            Bit7,
+            // First byte contains length of response
+            FirstByte
+        }
+
+        private const int CTS_ATTEMPTS = 50;
 
         private readonly object portLock = new object();
         private SerialPort port;
@@ -101,14 +116,25 @@ namespace BinkyRailways.Protocols.P50x
             }
         }
 
-        protected byte[] Transaction(byte[] msg, int responseLength)
+        protected byte[] FixedTransaction(byte[] msg, int fixedReplyLength)
         {
+            return Transaction(msg, ReplyLength.Fixed, fixedReplyLength);
+        }
+
+        protected byte[] Bit7Transaction(byte[] msg)
+        {
+            return Transaction(msg, ReplyLength.Bit7, 0);
+        }
+
+        protected byte[] Transaction(byte[] msg, ReplyLength replyLength, int fixedReplyLength)
+        {
+            Idle = false;
             var port = Open();
             try
             {
                 flushAvailableData(port);
                 Send(port, msg, msg.Length);
-                return ReadMessage(port, responseLength);
+                return ReadMessage(port, replyLength, fixedReplyLength);
             }
             catch
             {
@@ -154,13 +180,39 @@ namespace BinkyRailways.Protocols.P50x
         /// <summary>
         /// Read a single message
         /// </summary>
-        private static byte[] ReadMessage(SerialPort port, int len)
+        private static byte[] ReadMessage(SerialPort port, ReplyLength replyLength, int fixedReplyLength)
         {
             // Try to read the message
-            var data = new byte[len];
-            Read(port, data, 0, len);
-
-            return data;
+            switch (replyLength)
+            {
+                case ReplyLength.Fixed:
+                    {
+                        var data = new byte[fixedReplyLength];
+                        Read(port, data, 0, fixedReplyLength);
+                        return data;
+                    }
+                case ReplyLength.Bit7:
+                    {
+                        var data = new byte[1];
+                        var offset = 0;
+                        while (true)
+                        {
+                            Read(port, data, offset, 1);
+                            if ((data[offset] & 0x80) == 0)
+                            {
+                                return data;
+                            }
+                            var oldData = data;
+                            data = new byte[data.Length + 1];
+                            Array.Copy(oldData, data, oldData.Length);
+                            offset++;
+                        }
+                    }
+                case ReplyLength.FirstByte:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentException("unknown ReplyLength");
+            }
         }
 
         private static void Read(SerialPort port, byte[] data, int offset, int count)
@@ -179,6 +231,8 @@ namespace BinkyRailways.Protocols.P50x
         public void Dispose()
         {
             Close();
+            Closed = null;
+            Opened = null;
         }
     }
 }

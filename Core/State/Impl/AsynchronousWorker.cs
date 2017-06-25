@@ -12,7 +12,13 @@ namespace BinkyRailways.Core.State.Impl
     /// </summary>
     public class AsynchronousWorker : IDisposable
     {
+        public class WaitEventArgs : EventArgs
+        {
+            public int DelayedActionCount { get; internal set; }
+        }
+
         private event EventHandler Stop;
+        public event EventHandler<WaitEventArgs> Wait;
 
         private readonly string threadName;
         private readonly List<Action> actions = new List<Action>();
@@ -106,10 +112,12 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         private void Run()
         {
+            var fireWait = true;
             while (!stop)
             {
                 var now = DateTime.Now;
                 Action action = null;
+                WaitEventArgs waitEventArgs = null;
                 lock (actionsLock)
                 {
                     // Any delayed actions that should be run?
@@ -118,13 +126,21 @@ namespace BinkyRailways.Core.State.Impl
                     {
                         action = delayedActions[0].Action;
                         delayedActions.RemoveAt(0);
+                        fireWait = true;
                     }
                     else if (actions.Count > 0)
                     {
                         action = actions[0];
                         actions.RemoveAt(0);
+                        fireWait = true;
                     }
-                    else
+                    else if (fireWait)
+                    {
+                        // Prepare to fire Wait event handler.
+                        waitEventArgs = new WaitEventArgs() { DelayedActionCount = delayedActions.Count };
+                        fireWait = false;
+                    } 
+                    else 
                     {
                         // Wait a while.
                         var timeout = (firstDelayedAction != null)
@@ -145,6 +161,11 @@ namespace BinkyRailways.Core.State.Impl
                         log.LogException(LogLevel.Error, Strings.FailedToPerformAction, ex);
                     }
                 }
+                if (waitEventArgs != null)
+                {
+                    Wait.Fire(this, waitEventArgs);
+                    waitEventArgs = null;
+                }
             }
             thread = null;
         }
@@ -154,6 +175,7 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         public void Dispose()
         {
+            Wait = null;
             lock (actionsLock)
             {
                 stop = true;

@@ -33,9 +33,9 @@ namespace BinkyRailways.WinApp.Controls.Run
         internal void Initialize(AppState appState, IRailwayState railway)
         {
             locProblemSound = appState.SoundPlayer.Create(Strings.wehaveaprob);
+            locControlPanel.Loc = null;
             lvLocs.Initialize(appState, railway);
             railwayStateControlPanel.Initialize(railway);
-            locControlPanel.Loc = null;
             unexpectedSensorControl.Initialize(appState);
             unexpectedSensorControl.Clear();
 
@@ -107,7 +107,7 @@ namespace BinkyRailways.WinApp.Controls.Run
         private void OnLocsSelectedIndexChanged(object sender, EventArgs e)
         {
             var selection = SelectedItem;
-            if ((selection != null) || (sender == null))
+            if ((selection != null) || (sender == null) || !IsHandleCreated)
             {
                 UpdateSelection();
             }

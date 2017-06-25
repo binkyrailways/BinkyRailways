@@ -14,8 +14,9 @@ namespace BinkyRailways.Core.State.Impl.P50x
     /// </summary>
     public sealed partial class P50xCommandStationState : CommandStationState, IP50xCommandStationState
     {
-        private bool networkIdle = false;
         private readonly Client client = new Client();
+        private DateTime lastStatusTime;
+        private bool clientIdle = false;
 
         /// <summary>
         /// Default ctor
@@ -24,11 +25,8 @@ namespace BinkyRailways.Core.State.Impl.P50x
             : base(entity, railwayState, addressSpaces)
         {
             client.PortName = entity.ComPortName;
-/*            sender.PriorityPacketsEmpty += (s, x) =>
-            {
-                networkIdle = true;
-                RefreshIdle();
-            };*/
+            client.Opened += onClientOpened;
+            client.Closed += onClientClosed;
         }
 
         /// <summary>
@@ -78,11 +76,56 @@ namespace BinkyRailways.Core.State.Impl.P50x
         }
 
         /// <summary>
+        /// Async worker will wait.
+        /// </summary>
+        protected override void OnWorkerWait(object sender, AsynchronousWorker.WaitEventArgs e)
+        {
+            base.OnWorkerWait(sender, e);
+            Console.WriteLine("WorkerWait " + e.DelayedActionCount);
+            if (lastStatusTime.AddSeconds(1) < DateTime.Now)
+            {
+                PostWorkerAction(() => UpdateStatus());
+            }
+            else
+            {
+                client.Idle = true;
+                if (e.DelayedActionCount == 0)
+                {
+                    PostWorkerDelayedAction(TimeSpan.FromSeconds(1), () => UpdateStatus());
+                }
+                RefreshIdle();
+            }
+        }
+
+        /// <summary>
+        /// Request command station status
+        /// </summary>
+        private void UpdateStatus()
+        {
+            lastStatusTime = DateTime.Now;
+            var st = client.Status();
+            if (st.Pwr)
+            {
+                RailwayState.Power.Requested = true;
+            }
+            Power.Actual = st.Pwr;
+        }
+
+        void onClientClosed()
+        {
+        }
+
+        void onClientOpened()
+        {
+            PostWorkerAction(() => client.SetCTime(255)); // Disable CTS on non-PC power off.
+        }
+
+        /// <summary>
         /// Determine if this command station is idle.
         /// </summary>
         protected override bool IsIdle()
         {
-            return base.IsIdle() && networkIdle;
+            return base.IsIdle() && client.Idle;
         }
 
         /// <summary>
@@ -109,6 +152,8 @@ namespace BinkyRailways.Core.State.Impl.P50x
                     return false;
                 }
             }
+            // Request for status, this triggers the open process.
+            PostWorkerAction(() => client.Status());
             return true;
         }
 
