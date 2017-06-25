@@ -29,7 +29,7 @@ namespace BinkyRailways.Protocols.P50x
             Fixed,
             // High bit of byte set if another byte follows
             Bit7,
-            // First byte contains length of response
+            // First byte contains number of bytes that follow.
             FirstByte
         }
 
@@ -126,6 +126,11 @@ namespace BinkyRailways.Protocols.P50x
             return Transaction(msg, ReplyLength.Bit7, 0);
         }
 
+        protected byte[] FirstByteTransaction(byte[] msg)
+        {
+            return Transaction(msg, ReplyLength.FirstByte, 0);
+        }
+
         protected byte[] Transaction(byte[] msg, ReplyLength replyLength, int fixedReplyLength)
         {
             Idle = false;
@@ -180,6 +185,18 @@ namespace BinkyRailways.Protocols.P50x
         /// <summary>
         /// Read a single message
         /// </summary>
+        protected byte[] ReadMessage(ReplyLength replyLength, int fixedReplyLength)
+        {
+            if (port == null)
+            {
+                return new byte[0];
+            }
+            return ReadMessage(port, replyLength, fixedReplyLength);
+        }
+
+        /// <summary>
+        /// Read a single message
+        /// </summary>
         private static byte[] ReadMessage(SerialPort port, ReplyLength replyLength, int fixedReplyLength)
         {
             // Try to read the message
@@ -209,7 +226,18 @@ namespace BinkyRailways.Protocols.P50x
                         }
                     }
                 case ReplyLength.FirstByte:
-                    throw new NotImplementedException();
+                    {
+                        var data = new byte[1];
+                        // Read first byte
+                        Read(port, data, 0, 1);
+                        // Read bytes that follow
+                        data = new byte[data[0]];
+                        if (data.Length > 0)
+                        {
+                            Read(port, data, 0, data.Length);
+                        }
+                        return data;
+                    }
                 default:
                     throw new ArgumentException("unknown ReplyLength");
             }

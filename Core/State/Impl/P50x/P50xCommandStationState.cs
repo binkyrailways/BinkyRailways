@@ -84,6 +84,16 @@ namespace BinkyRailways.Core.State.Impl.P50x
                 loc.F2.Actual = loc.F2.Requested;
                 loc.F3.Actual = loc.F3.Requested;
                 loc.F4.Actual = loc.F4.Requested;
+
+                client.LocFunctions(loc.Address.ValueAsInt, loc.F1.Requested, loc.F2.Requested, loc.F3.Requested, loc.F4.Requested, loc.F5.Requested, loc.F6.Requested, loc.F7.Requested, loc.F8.Requested);
+                loc.F1.Actual = loc.F1.Requested;
+                loc.F2.Actual = loc.F2.Requested;
+                loc.F3.Actual = loc.F3.Requested;
+                loc.F4.Actual = loc.F4.Requested;
+                loc.F5.Actual = loc.F5.Requested;
+                loc.F6.Actual = loc.F6.Requested;
+                loc.F7.Actual = loc.F7.Requested;
+                loc.F8.Actual = loc.F8.Requested;
             }
             catch (Exception ex)
             {
@@ -139,7 +149,14 @@ namespace BinkyRailways.Core.State.Impl.P50x
         void onClientOpened()
         {
             Log.Info("Connection opened");
-            PostWorkerAction(() => client.SetCTime(255)); // Disable CTS on non-PC power off.
+            PostWorkerAction(sendInitCommands);
+        }
+
+        void sendInitCommands()
+        {
+            client.SetCTime(255); // Disable CTS on non-PC power off.
+            var version = client.Version();
+            Log.Info("Found version: " + version.ToString());
         }
 
         /// <summary>

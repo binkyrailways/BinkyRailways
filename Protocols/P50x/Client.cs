@@ -50,6 +50,9 @@ namespace BinkyRailways.Protocols.P50x
             checkResultOK(resp);
         }
 
+        /// <summary>
+        /// Send loc speed, direction, lights & F1-4.
+        /// </summary>
         public void LocCommand(int address, int speed, bool forward, bool lights, bool f1, bool f2, bool f3, bool f4)
         {
             const byte ChgF = 0x80;
@@ -73,6 +76,34 @@ namespace BinkyRailways.Protocols.P50x
             checkResultOK(resp);
         }
 
+        /// <summary>
+        /// Send loc function F1-8.
+        /// </summary>
+        public void LocFunctions(int address, bool f1, bool f2, bool f3, bool f4, bool f5, bool f6, bool f7, bool f8)
+        {
+            const byte F8 = 0x80;
+            const byte F7 = 0x40;
+            const byte F6 = 0x20;
+            const byte F5 = 0x10;
+            const byte F4 = 0x08;
+            const byte F3 = 0x04;
+            const byte F2 = 0x02;
+            const byte F1 = 0x01;
+            var cmd = new byte[] { 
+            (byte)'x',
+            0x88,
+            (byte)(address & 0xFF),
+            (byte)((address >> 8) & 0xFF),
+            (byte)((f8 ? F8 : 0) | (f7 ? F7 : 0) | (f6 ? F6 : 0) | (f5 ? F5 : 0) |
+                (f4 ? F4 : 0) | (f3 ? F3 : 0) | (f2 ? F2 : 0)| (f1 ? F1 : 0)),
+            };
+            var resp = FixedTransaction(cmd, 1);
+            checkResultOK(resp);
+        }
+
+        /// <summary>
+        /// Get command station status.
+        /// </summary>
         public XStatus Status() {
             var resp = Bit7Transaction(new byte[]{(byte)'x', 0xA2 });
             return new XStatus(){
@@ -84,6 +115,18 @@ namespace BinkyRailways.Protocols.P50x
                 Go = (resp[0] & 0x02) != 0,
                 Stop = (resp[0] & 0x01) != 0
             };
+        }
+
+        public XVersion Version()
+        {
+            var result = new XVersion();
+            var resp = FirstByteTransaction(new byte[] { (byte)'x', 0xA0 });
+            while (resp.Length > 0)
+            {
+                result.addRow(resp);
+                resp = ReadMessage(ReplyLength.FirstByte, 0);
+            }
+            return result;
         }
 
         private void checkResultOK(byte[] response)
