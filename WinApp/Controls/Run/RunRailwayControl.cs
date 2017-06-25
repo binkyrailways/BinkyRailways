@@ -193,6 +193,7 @@ namespace BinkyRailways.WinApp.Controls.Run
                 logForm = new LogForm();
                 logForm.FormClosed += (s, x) => logForm = null;
             }
+            logForm.Initialize(appState.RailwayState);
             logForm.Show(this);
         }
 

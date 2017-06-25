@@ -44,17 +44,26 @@ namespace BinkyRailways.Core.State.Impl.P50x
         {
             if (Power.Actual != value)
             {
-                if (value)
+                try
                 {
-                    // Power on
-                    client.PowerOn();
+                    if (value)
+                    {
+                        // Power on
+                        Log.Info("Powering on");
+                        client.PowerOn();
+                    }
+                    else
+                    {
+                        // Power off
+                        Log.Info("Powering off");
+                        client.PowerOff();
+                    }
+                    Power.Actual = value;
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Power off
-                    client.PowerOff();
+                    Log.Warn("Power command failed: " + ex);
                 }
-                Power.Actual = value;
             }
         }
 
@@ -64,15 +73,22 @@ namespace BinkyRailways.Core.State.Impl.P50x
         protected override void OnSendLocSpeedAndDirection(ILocState loc)
         {
             Log.Trace("OnSendLocSpeedAndDirection: {0}", loc);
-            var forward = (loc.Direction.Requested == LocDirection.Forward);
-            client.LocCommand(loc.Address.ValueAsInt, loc.SpeedInSteps.Requested, forward, loc.F0.Requested, loc.F1.Requested, loc.F2.Requested, loc.F3.Requested, loc.F4.Requested);
-            loc.Direction.Actual = loc.Direction.Requested;
-            loc.Speed.Actual = loc.Speed.Requested;
-            loc.F0.Actual = loc.F0.Requested;
-            loc.F1.Actual = loc.F1.Requested;
-            loc.F2.Actual = loc.F2.Requested;
-            loc.F3.Actual = loc.F3.Requested;
-            loc.F4.Actual = loc.F4.Requested;
+            try
+            {
+                var forward = (loc.Direction.Requested == LocDirection.Forward);
+                client.LocCommand(loc.Address.ValueAsInt, loc.SpeedInSteps.Requested, forward, loc.F0.Requested, loc.F1.Requested, loc.F2.Requested, loc.F3.Requested, loc.F4.Requested);
+                loc.Direction.Actual = loc.Direction.Requested;
+                loc.Speed.Actual = loc.Speed.Requested;
+                loc.F0.Actual = loc.F0.Requested;
+                loc.F1.Actual = loc.F1.Requested;
+                loc.F2.Actual = loc.F2.Requested;
+                loc.F3.Actual = loc.F3.Requested;
+                loc.F4.Actual = loc.F4.Requested;
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Loc command failed: " + ex);
+            }
         }
 
         /// <summary>
@@ -104,19 +120,25 @@ namespace BinkyRailways.Core.State.Impl.P50x
         {
             lastStatusTime = DateTime.Now;
             var st = client.Status();
-            if (st.Pwr)
+            if (Power.Actual != st.Pwr)
             {
-                RailwayState.Power.Requested = true;
+                Log.Info("Power status changed -> " + (st.Pwr ? "on" : "off"));
+                if (st.Pwr)
+                {
+                    RailwayState.Power.Requested = true;
+                }
+                Power.Actual = st.Pwr;
             }
-            Power.Actual = st.Pwr;
         }
 
         void onClientClosed()
         {
+            Log.Info("Connection closed");
         }
 
         void onClientOpened()
         {
+            Log.Info("Connection opened");
             PostWorkerAction(() => client.SetCTime(255)); // Disable CTS on non-PC power off.
         }
 
