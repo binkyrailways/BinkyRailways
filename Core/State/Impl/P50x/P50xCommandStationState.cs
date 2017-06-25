@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BinkyRailways.Core.State.Impl.P50x
@@ -155,6 +156,8 @@ namespace BinkyRailways.Core.State.Impl.P50x
         void sendInitCommands()
         {
             client.SetCTime(255); // Disable CTS on non-PC power off.
+            Thread.Sleep(500);
+            Log.Info("Checking version");
             var version = client.Version();
             Log.Info("Found version: " + version.ToString());
         }
