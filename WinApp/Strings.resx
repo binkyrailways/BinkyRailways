@@ -883,4 +883,16 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="TopicPrefixName" xml:space="preserve">
     <value>Topic prefix</value>
   </data>
+  <data name="NewP50xCommandStationDescription" xml:space="preserve">
+    <value>New P50x Command station</value>
+  </data>
+  <data name="loc_state_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\16x16\loc-state-error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loc_state_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\16x16\loc-state-ok.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loc_state_unassigned" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\16x16\loc-state-unassigned.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

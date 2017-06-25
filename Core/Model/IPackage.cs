@@ -39,6 +39,11 @@ namespace BinkyRailways.Core.Model
         IMqttCommandStation AddNewMqttCommandStation();
 
         /// <summary>
+        /// Add a new P50x command station.
+        /// </summary>
+        IP50xCommandStation AddNewP50xCommandStation();
+
+        /// <summary>
         /// Load a command station by it's id.
         /// </summary>
         /// <returns>Null if not found</returns>

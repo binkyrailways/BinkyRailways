@@ -27,9 +27,24 @@ namespace BinkyRailways.WinApp.Controls.Run
             if (railway != null)
             {
                 railway.Power.ActualChanged += this.Synchronize((s, x) => UpdateToolbar());
+                railway.Power.RequestedChanged += this.Synchronize((s, x) => UpdateToolbar());
                 railway.AutomaticLocController.Enabled.ActualChanged += this.Synchronize((s, x) => UpdateToolbar());
             }
             UpdateToolbar();
+        }
+
+        private Color powerButtonColor(bool on)
+        {
+            var power = (railway != null) ? railway.Power : null;
+            if (power == null)
+            {
+                return SystemColors.GrayText;
+            }
+            if (!power.IsConsistent)
+            {
+                return (on == power.Requested) ? Color.Red : SystemColors.ControlText;
+            }
+            return (on == power.Actual) ? SystemColors.GrayText : SystemColors.ControlText;
         }
 
         /// <summary>
@@ -39,8 +54,8 @@ namespace BinkyRailways.WinApp.Controls.Run
         {
             lbPower.Text = GetPowerInfo(railway);
             var power = (railway != null) ? railway.Power : null;
-            cmdPowerOn.ForeColor = ((railway != null) && ((!power.IsConsistent) || (!power.Actual))) ? SystemColors.ControlText : SystemColors.GrayText;
-            cmdPowerOff.ForeColor = ((railway != null) && ((!power.IsConsistent) || power.Actual)) ? SystemColors.ControlText : SystemColors.GrayText;
+            cmdPowerOn.ForeColor = powerButtonColor(true);
+            cmdPowerOff.ForeColor = powerButtonColor(false);
             pbPower.Image = (power != null) && power.Actual ? Resources.apply_22 : Resources.system_log_out_22;
 
             lbAutoControl.Text = GetAutoLocControllerInfo(railway);

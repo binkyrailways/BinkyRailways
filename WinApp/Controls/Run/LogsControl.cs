@@ -1,11 +1,13 @@
 ﻿using System.Windows.Forms;
 using BinkyRailways.Core.Logging;
+using BinkyRailways.Core.State;
+using System.Collections.Generic;
 
 namespace BinkyRailways.WinApp.Controls.Run
 {
     public partial class LogsControl : UserControl
     {
-        private readonly Control[] logControls;
+        private readonly List<Control> logControls;
 
         /// <summary>
         /// Default ctor
@@ -15,20 +17,37 @@ namespace BinkyRailways.WinApp.Controls.Run
             InitializeComponent();
             if (!DesignMode)
             {
-                try
+                logControls = new List<Control>();
+            }
+        }
+
+        /// <summary>
+        /// Initialize all logs.
+        /// </summary>
+        public void Initialize(IRailwayState state)
+        {
+            logsPane.Controls.Clear();
+            logControls.Clear();
+            try
+            {
+                logControls.Add(CreateLog("Common", "*", NLog.LogLevel.Warn));
+                logControls.Add(CreateLog("Automatic", LogNames.AutoLocController, NLog.LogLevel.Trace));
+                logControls.Add(CreateLog("Sensors", LogNames.Sensors, NLog.LogLevel.Trace));
+                logControls.Add(CreateLog("LocoNet", LogNames.LocoNet, NLog.LogLevel.Trace));
+
+                if (state != null)
                 {
-                    logControls = new[]
-                                      {
-                                          CreateLog("Common", "*", NLog.LogLevel.Warn),
-                                          CreateLog("Automatic", LogNames.AutoLocController, NLog.LogLevel.Trace),
-                                          CreateLog("Sensors", LogNames.Sensors, NLog.LogLevel.Trace),
-                                          CreateLog("LocoNet", LogNames.LocoNet, NLog.LogLevel.Trace),
-                                      };
-                    ShowLog(logControls[0], (ToolStripButton) toolStrip1.Items[0]);
-                } catch
-                {
-                    
+                    foreach (var cs in state.CommandStationStates)
+                    {
+                        logControls.Add(CreateLog(cs.Model.Description, LogNames.CommandStationPrefix + cs.Model.Description, NLog.LogLevel.Trace));
+                    }
                 }
+
+                ShowLog(logControls[0], (ToolStripButton)toolStrip1.Items[0]);
+            }
+            catch
+            {
+
             }
         }
 

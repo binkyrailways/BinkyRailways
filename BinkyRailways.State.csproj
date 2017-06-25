@@ -116,9 +116,11 @@
     <Compile Include="Core\State\Impl\InitializeJunctionActionState.cs" />
     <Compile Include="Core\State\Impl\Mqtt\Messages.cs" />
     <Compile Include="Core\State\Impl\Mqtt\MqttCommandStationState.cs" />
+    <Compile Include="Core\State\Impl\P50x\P50xCommandStationState.cs" />
     <Compile Include="Core\State\Impl\RouteOption.cs" />
     <Compile Include="Core\State\Impl\RouteStateForLoc.cs" />
     <Compile Include="Core\State\IMqttCommandStationState.cs" />
+    <Compile Include="Core\State\IP50xCommandStationState.cs" />
     <Compile Include="Core\State\IRouteOption.cs" />
     <Compile Include="Core\State\IRouteStateForLoc.cs" />
     <Compile Include="Core\State\Impl\RouteEventState.cs" />

@@ -354,4 +354,7 @@
   <data name="TypeNameMqttCommandStation" xml:space="preserve">
     <value>MQTT Command station</value>
   </data>
+  <data name="TypeNameP50xCommandStation" xml:space="preserve">
+    <value>P50X command station</value>
+  </data>
 </root>

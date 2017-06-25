@@ -413,6 +413,20 @@ namespace BinkyRailways.WinApp.Controls.Edit
             ValidateRailway();
         }
 
+        /// <summary>
+        /// Add P50x command station
+        /// </summary>
+        private void tbbAddP50x_Click(object sender, EventArgs e)
+        {
+            var cs = appState.Package.AddNewP50xCommandStation();
+            cs.Description = Strings.NewP50xCommandStationDescription;
+            var csRef = appState.Package.Railway.CommandStations.Add(cs);
+            var node = new EntityRefNode<ICommandStation>(csRef, cs);
+            activeCommandStationsRoot.Nodes.Add(node);
+            tvItems.SelectedNode = node;
+            UpdateAppTitle.Fire(this);
+            ValidateRailway();
+        }
 
         /// <summary>
         /// Node selection has changed.

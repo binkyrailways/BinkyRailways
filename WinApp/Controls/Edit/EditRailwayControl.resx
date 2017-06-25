@@ -127,10 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="splitContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 33</value>
-  </data>
-  <data name="splitContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 32</value>
   </data>
   <data name="innerSplitContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -138,20 +135,14 @@
   <data name="innerSplitContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="innerSplitContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="tvItems.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="tvItems.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tvItems.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="tvItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 390</value>
+    <value>125, 312</value>
   </data>
   <data name="tvItems.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -187,10 +178,10 @@
     <value>0, 0</value>
   </data>
   <data name="viewEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="viewEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 390</value>
+    <value>250, 312</value>
   </data>
   <data name="viewEditor.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -220,13 +211,10 @@
     <value>1</value>
   </data>
   <data name="innerSplitContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>609, 390</value>
+    <value>379, 312</value>
   </data>
   <data name="innerSplitContainer.SplitterDistance" type="System.Int32, mscorlib">
-    <value>201</value>
-  </data>
-  <data name="innerSplitContainer.SplitterWidth" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>125</value>
   </data>
   <data name="innerSplitContainer.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -261,11 +249,8 @@
   <data name="propertyGrid.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="propertyGrid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="propertyGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>307, 390</value>
+    <value>308, 312</value>
   </data>
   <data name="propertyGrid.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -295,13 +280,10 @@
     <value>1</value>
   </data>
   <data name="splitContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>921, 390</value>
+    <value>691, 312</value>
   </data>
   <data name="splitContainer.SplitterDistance" type="System.Int32, mscorlib">
-    <value>609</value>
-  </data>
-  <data name="splitContainer.SplitterWidth" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>379</value>
   </data>
   <data name="splitContainer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -322,55 +304,61 @@
     <value>0, 0</value>
   </metadata>
   <data name="tbAddLoc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 24</value>
+    <value>178, 22</value>
   </data>
   <data name="tbAddLoc.Text" xml:space="preserve">
     <value>&amp;Locomotive</value>
   </data>
   <data name="tbAddLocGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 24</value>
+    <value>178, 22</value>
   </data>
   <data name="tbAddLocGroup.Text" xml:space="preserve">
     <value>Locomotive &amp;group</value>
   </data>
   <data name="tbAddModule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 24</value>
+    <value>178, 22</value>
   </data>
   <data name="tbAddModule.Text" xml:space="preserve">
     <value>&amp;Module</value>
   </data>
   <data name="tbAddModuleConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 24</value>
+    <value>178, 22</value>
   </data>
   <data name="tbAddModuleConnection.Text" xml:space="preserve">
     <value>Module connection</value>
   </data>
   <data name="tbAddLocoBuffer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 24</value>
+    <value>158, 22</value>
   </data>
   <data name="tbAddLocoBuffer.Text" xml:space="preserve">
     <value>LocoBuffer</value>
   </data>
   <data name="tbAddDccOverRs232.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 24</value>
+    <value>158, 22</value>
   </data>
   <data name="tbAddDccOverRs232.Text" xml:space="preserve">
     <value>DCC over RS232</value>
   </data>
   <data name="tbAddEcos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 24</value>
+    <value>158, 22</value>
   </data>
   <data name="tbAddEcos.Text" xml:space="preserve">
     <value>ECoS</value>
   </data>
   <data name="tbAddMqtt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 24</value>
+    <value>158, 22</value>
   </data>
   <data name="tbAddMqtt.Text" xml:space="preserve">
     <value>MQTT</value>
   </data>
+  <data name="tbbAddP50x.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 22</value>
+  </data>
+  <data name="tbbAddP50x.Text" xml:space="preserve">
+    <value>P50x</value>
+  </data>
   <data name="tbAddCommandStation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 24</value>
+    <value>178, 22</value>
   </data>
   <data name="tbAddCommandStation.Text" xml:space="preserve">
     <value>&amp;Command station</value>
@@ -382,7 +370,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 29</value>
+    <value>63, 29</value>
   </data>
   <data name="tbAdd.Text" xml:space="preserve">
     <value>&amp;Add</value>
@@ -394,7 +382,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbEdit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 26</value>
+    <value>53, 26</value>
   </data>
   <data name="tbEdit.Text" xml:space="preserve">
     <value>&amp;Edit</value>
@@ -406,7 +394,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 26</value>
+    <value>69, 26</value>
   </data>
   <data name="tbImport.Text" xml:space="preserve">
     <value>&amp;Import</value>
@@ -418,7 +406,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbArchive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 26</value>
+    <value>73, 26</value>
   </data>
   <data name="tbArchive.Text" xml:space="preserve">
     <value>A&amp;rchive</value>
@@ -430,7 +418,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbActivate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 26</value>
+    <value>76, 26</value>
   </data>
   <data name="tbActivate.Text" xml:space="preserve">
     <value>Acti&amp;vate</value>
@@ -442,13 +430,13 @@
     <value>Magenta</value>
   </data>
   <data name="tbRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 26</value>
+    <value>76, 26</value>
   </data>
   <data name="tbRemove.Text" xml:space="preserve">
     <value>&amp;Remove</value>
   </data>
   <data name="tbRunVirtual.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 24</value>
+    <value>225, 22</value>
   </data>
   <data name="tbRunVirtual.Text" xml:space="preserve">
     <value>Run in virtual mode (Ctrl-F5)</value>
@@ -460,7 +448,7 @@
     <value>Magenta</value>
   </data>
   <data name="tbRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 26</value>
+    <value>126, 26</value>
   </data>
   <data name="tbRun.Text" xml:space="preserve">
     <value>Let's run it! (F5)</value>
@@ -469,7 +457,7 @@
     <value>0, 0</value>
   </data>
   <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>929, 29</value>
+    <value>697, 29</value>
   </data>
   <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -493,13 +481,13 @@
     <value>Top</value>
   </data>
   <data name="validationResultsControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 432</value>
+    <value>4, 351</value>
   </data>
   <data name="validationResultsControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="validationResultsControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>919, 138</value>
+    <value>689, 112</value>
   </data>
   <data name="validationResultsControl.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -522,14 +510,11 @@
   <data name="tlpMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tlpMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="tlpMain.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>929, 575</value>
+    <value>697, 467</value>
   </data>
   <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -565,13 +550,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>929, 575</value>
+    <value>697, 467</value>
   </data>
   <data name="&gt;&gt;tbAdd.Name" xml:space="preserve">
     <value>tbAdd</value>
@@ -627,6 +609,12 @@
   <data name="&gt;&gt;tbAddEcos.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tbAddMqtt.Name" xml:space="preserve">
+    <value>tbAddMqtt</value>
+  </data>
+  <data name="&gt;&gt;tbAddMqtt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tbEdit.Name" xml:space="preserve">
     <value>tbEdit</value>
   </data>
@@ -669,10 +657,10 @@
   <data name="&gt;&gt;tbRunVirtual.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbAddMqtt.Name" xml:space="preserve">
-    <value>tbAddMqtt</value>
+  <data name="&gt;&gt;tbbAddP50x.Name" xml:space="preserve">
+    <value>tbbAddP50x</value>
   </data>
-  <data name="&gt;&gt;tbAddMqtt.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbbAddP50x.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

@@ -96,6 +96,11 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             return new ModuleConnectionSettings(entity, data);
         }
 
+        public override object Visit(IP50xCommandStation entity, GridContext data)
+        {
+            return new P50xCommandStationSettings(entity, data);
+        }
+
         public override object Visit(IPlaySoundAction entity, GridContext data)
         {
             return new PlaySoundActionSettings(entity, data);

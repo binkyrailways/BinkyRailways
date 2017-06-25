@@ -84,6 +84,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             lvLocs.EndUpdate();
             ResizeColumns();
             updateTimer.Enabled = (railway != null);
+            UpdateSelection();
         }
 
         /// <summary>

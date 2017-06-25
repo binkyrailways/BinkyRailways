@@ -1,4 +1,5 @@
-﻿namespace BinkyRailways.WinApp.Forms
+﻿using BinkyRailways.Core.State;
+namespace BinkyRailways.WinApp.Forms
 {
     public partial class LogForm : AppForm
     {
@@ -8,6 +9,11 @@
         public LogForm()
         {
             InitializeComponent();
+        }
+
+        public void Initialize(IRailwayState state)
+        {
+            logsControl.Initialize(state);
         }
     }
 }
