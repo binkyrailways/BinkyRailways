@@ -691,6 +691,36 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loc_state_error {
+            get {
+                object obj = ResourceManager.GetObject("loc_state_error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loc_state_ok {
+            get {
+                object obj = ResourceManager.GetObject("loc_state_ok", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loc_state_unassigned {
+            get {
+                object obj = ResourceManager.GetObject("loc_state_unassigned", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is this loc allowed to change direction?.
         /// </summary>
         internal static string LocChangeDirectionHelp {

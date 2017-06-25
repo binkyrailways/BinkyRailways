@@ -55,6 +55,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.locsControl = new BinkyRailways.WinApp.Controls.Run.LocsControl();
             this.viewControl = new BinkyRailways.WinApp.Controls.Run.RailwayViewControl();
+            this.statusStrip = new RailwayStatusStrip();
             this.tlpMain.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -68,6 +69,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             resources.ApplyResources(this.tlpMain, "tlpMain");
             this.tlpMain.Controls.Add(this.toolStrip1, 0, 0);
             this.tlpMain.Controls.Add(this.splitContainer, 0, 1);
+            this.tlpMain.Controls.Add(this.statusStrip, 0, 2);
             this.tlpMain.Name = "tlpMain";
             // 
             // toolStrip1
@@ -221,6 +223,11 @@ namespace BinkyRailways.WinApp.Controls.Run
             resources.ApplyResources(this.viewControl, "viewControl");
             this.viewControl.Name = "viewControl";
             // 
+            // statusStrip
+            // 
+            resources.ApplyResources(this.statusStrip, "statusStrip");
+            this.statusStrip.Name = "statusStrip";
+            // 
             // RunRailwayControl
             // 
             resources.ApplyResources(this, "$this");
@@ -262,5 +269,6 @@ namespace BinkyRailways.WinApp.Controls.Run
         private ToolStripDropDownButton tbbVirtualMode;
         private ToolStripMenuItem tbVirtualModeAutoRun;
         private ToolStripMenuItem tbRouteInspector;
+        private RailwayStatusStrip statusStrip;
     }
 }

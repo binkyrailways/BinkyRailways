@@ -189,6 +189,9 @@
     <Compile Include="WinApp\Controls\Run\LogsControl.Designer.cs">
       <DependentUpon>LogsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinApp\Controls\Run\RailwayStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WinApp\Controls\Run\RouteInspectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1061,7 +1064,15 @@
   <ItemGroup>
     <None Include="Sounds\wehaveaprob.wav" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Graphics\16x16\loc-state-ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\16x16\loc-state-error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\16x16\loc-state-unassigned.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

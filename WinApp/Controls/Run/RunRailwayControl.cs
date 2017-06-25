@@ -69,6 +69,7 @@ namespace BinkyRailways.WinApp.Controls.Run
             var railway = appState.RailwayState;
             locsControl.Initialize(appState, railway);
             viewControl.Initialize(appState);
+            statusStrip.Initialize(railway);
             if (railway != null)
             {
                 railway.AutomaticLocController.UnexpectedSensorActivated += this.ASynchronize<UnexpectedSensorActivatedEventArgs>((s, x) => OnUnexpectedSensorActivated(x));

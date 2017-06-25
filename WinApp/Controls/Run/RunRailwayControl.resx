@@ -319,7 +319,7 @@
     <value>0, 0</value>
   </data>
   <data name="locsControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 581</value>
+    <value>300, 559</value>
   </data>
   <data name="locsControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -358,7 +358,7 @@
     <value>0, 0</value>
   </data>
   <data name="viewControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 581</value>
+    <value>734, 559</value>
   </data>
   <data name="viewControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -388,7 +388,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1038, 581</value>
+    <value>1038, 559</value>
   </data>
   <data name="splitContainer.SplitterDistance" type="System.Int32, mscorlib">
     <value>300</value>
@@ -408,6 +408,33 @@
   <data name="&gt;&gt;splitContainer.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>105, 0</value>
+  </metadata>
+  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 594</value>
+  </data>
+  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 22</value>
+  </data>
+  <data name="statusStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="statusStrip.Text" xml:space="preserve">
+    <value>statusStrip1</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Name" xml:space="preserve">
+    <value>statusStrip</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -415,7 +442,7 @@
     <value>0, 0</value>
   </data>
   <data name="tlpMain.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>1044, 616</value>
@@ -436,7 +463,7 @@
     <value>0</value>
   </data>
   <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="toolStrip1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="splitContainer" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="toolStrip1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="splitContainer" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="statusStrip" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
