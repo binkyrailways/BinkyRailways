@@ -102,6 +102,31 @@ namespace BinkyRailways.Protocols.P50x
         }
 
         /// <summary>
+        /// Send loc function F9-15.
+        /// </summary>
+        public void LocFunctions2(int address, bool f9, bool f10, bool f11, bool f12, bool f13, bool f14, bool f15, bool f16)
+        {
+            const byte F16 = 0x80;
+            const byte F15 = 0x40;
+            const byte F14 = 0x20;
+            const byte F13 = 0x10;
+            const byte F12 = 0x08;
+            const byte F11 = 0x04;
+            const byte F10 = 0x02;
+            const byte F9 = 0x01;
+            var cmd = new byte[] { 
+            (byte)'x',
+            0x89,
+            (byte)(address & 0xFF),
+            (byte)((address >> 8) & 0xFF),
+            (byte)((f16 ? F16 : 0) | (f15 ? F15 : 0) | (f14 ? F14 : 0) | (f13 ? F13 : 0) |
+                (f12 ? F12 : 0) | (f11 ? F11 : 0) | (f10 ? F10 : 0)| (f9 ? F9 : 0)),
+            };
+            var resp = FixedTransaction(cmd, 1);
+            checkResultOK(resp);
+        }
+
+        /// <summary>
         /// Get command station status.
         /// </summary>
         public XStatus Status() {

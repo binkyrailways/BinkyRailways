@@ -181,52 +181,15 @@ namespace BinkyRailways.Core.State
         IStateProperty<bool> F0 { get; }
 
         /// <summary>
-        /// Generic function 1 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
+        /// Return the state of a function.
         /// </summary>
-        IStateProperty<bool> F1 { get; }
+        /// <returns>True if such a state exists, false otherwise</returns>
+        bool TryGetFunctionState(LocFunction function, out IStateProperty<bool> state);
 
         /// <summary>
-        /// Generic function 2 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
+        /// Return all functions that have state.
         /// </summary>
-        IStateProperty<bool> F2 { get; }
-
-        /// <summary>
-        /// Generic function 3 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F3 { get; }
-
-        /// <summary>
-        /// Generic function 4 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F4 { get; }
-
-        /// <summary>
-        /// Generic function 5 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F5 { get; }
-
-        /// <summary>
-        /// Generic function 6 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F6 { get; }
-
-        /// <summary>
-        /// Generic function 7 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F7 { get; }
-
-        /// <summary>
-        /// Generic function 8 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        IStateProperty<bool> F8 { get; }
+        IEnumerable<LocFunction> Functions { get; }
 
         /// <summary>
         /// Try to assign the given loc to the given block.

@@ -46,6 +46,14 @@
             this.cbF1 = new System.Windows.Forms.CheckBox();
             this.tlpTop = new System.Windows.Forms.TableLayoutPanel();
             this.locImage = new BinkyRailways.WinApp.Controls.Run.LocImage();
+            this.cbF9 = new System.Windows.Forms.CheckBox();
+            this.cbF10 = new System.Windows.Forms.CheckBox();
+            this.cbF11 = new System.Windows.Forms.CheckBox();
+            this.cbF12 = new System.Windows.Forms.CheckBox();
+            this.cbF13 = new System.Windows.Forms.CheckBox();
+            this.cbF14 = new System.Windows.Forms.CheckBox();
+            this.cbF15 = new System.Windows.Forms.CheckBox();
+            this.cbF16 = new System.Windows.Forms.CheckBox();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpeed)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -102,6 +110,7 @@
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tlpMain.SetColumnSpan(this.tableLayoutPanel1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbF13, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.cbF8, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbF7, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbF6, 1, 2);
@@ -111,6 +120,13 @@
             this.tableLayoutPanel1.Controls.Add(this.cbF2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbF0, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbF1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbF9, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbF10, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbF11, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbF12, 3, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbF14, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.cbF15, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.cbF16, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // cbF8
@@ -118,49 +134,49 @@
             resources.ApplyResources(this.cbF8, "cbF8");
             this.cbF8.Name = "cbF8";
             this.cbF8.UseVisualStyleBackColor = true;
-            this.cbF8.CheckedChanged += new System.EventHandler(this.cbF8_CheckedChanged);
+            this.cbF8.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF7
             // 
             resources.ApplyResources(this.cbF7, "cbF7");
             this.cbF7.Name = "cbF7";
             this.cbF7.UseVisualStyleBackColor = true;
-            this.cbF7.CheckedChanged += new System.EventHandler(this.cbF7_CheckedChanged);
+            this.cbF7.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF6
             // 
             resources.ApplyResources(this.cbF6, "cbF6");
             this.cbF6.Name = "cbF6";
             this.cbF6.UseVisualStyleBackColor = true;
-            this.cbF6.CheckedChanged += new System.EventHandler(this.cbF6_CheckedChanged);
+            this.cbF6.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF5
             // 
             resources.ApplyResources(this.cbF5, "cbF5");
             this.cbF5.Name = "cbF5";
             this.cbF5.UseVisualStyleBackColor = true;
-            this.cbF5.CheckedChanged += new System.EventHandler(this.cbF5_CheckedChanged);
+            this.cbF5.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF4
             // 
             resources.ApplyResources(this.cbF4, "cbF4");
             this.cbF4.Name = "cbF4";
             this.cbF4.UseVisualStyleBackColor = true;
-            this.cbF4.CheckedChanged += new System.EventHandler(this.cbF4_CheckedChanged);
+            this.cbF4.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF3
             // 
             resources.ApplyResources(this.cbF3, "cbF3");
             this.cbF3.Name = "cbF3";
             this.cbF3.UseVisualStyleBackColor = true;
-            this.cbF3.CheckedChanged += new System.EventHandler(this.cbF3_CheckedChanged);
+            this.cbF3.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF2
             // 
             resources.ApplyResources(this.cbF2, "cbF2");
             this.cbF2.Name = "cbF2";
             this.cbF2.UseVisualStyleBackColor = true;
-            this.cbF2.CheckedChanged += new System.EventHandler(this.cbF2_CheckedChanged);
+            this.cbF2.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF0
             // 
@@ -175,7 +191,7 @@
             resources.ApplyResources(this.cbF1, "cbF1");
             this.cbF1.Name = "cbF1";
             this.cbF1.UseVisualStyleBackColor = true;
-            this.cbF1.CheckedChanged += new System.EventHandler(this.cbF1_CheckedChanged);
+            this.cbF1.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // tlpTop
             // 
@@ -189,6 +205,62 @@
             resources.ApplyResources(this.locImage, "locImage");
             this.locImage.Name = "locImage";
             this.tlpTop.SetRowSpan(this.locImage, 3);
+            // 
+            // cbF9
+            // 
+            resources.ApplyResources(this.cbF9, "cbF9");
+            this.cbF9.Name = "cbF9";
+            this.cbF9.UseVisualStyleBackColor = true;
+            this.cbF9.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF10
+            // 
+            resources.ApplyResources(this.cbF10, "cbF10");
+            this.cbF10.Name = "cbF10";
+            this.cbF10.UseVisualStyleBackColor = true;
+            this.cbF10.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF11
+            // 
+            resources.ApplyResources(this.cbF11, "cbF11");
+            this.cbF11.Name = "cbF11";
+            this.cbF11.UseVisualStyleBackColor = true;
+            this.cbF11.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF12
+            // 
+            resources.ApplyResources(this.cbF12, "cbF12");
+            this.cbF12.Name = "cbF12";
+            this.cbF12.UseVisualStyleBackColor = true;
+            this.cbF12.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF13
+            // 
+            resources.ApplyResources(this.cbF13, "cbF13");
+            this.cbF13.Name = "cbF13";
+            this.cbF13.UseVisualStyleBackColor = true;
+            this.cbF13.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF14
+            // 
+            resources.ApplyResources(this.cbF14, "cbF14");
+            this.cbF14.Name = "cbF14";
+            this.cbF14.UseVisualStyleBackColor = true;
+            this.cbF14.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF15
+            // 
+            resources.ApplyResources(this.cbF15, "cbF15");
+            this.cbF15.Name = "cbF15";
+            this.cbF15.UseVisualStyleBackColor = true;
+            this.cbF15.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // cbF16
+            // 
+            resources.ApplyResources(this.cbF16, "cbF16");
+            this.cbF16.Name = "cbF16";
+            this.cbF16.UseVisualStyleBackColor = true;
+            this.cbF16.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // LocControlPanel
             // 
@@ -226,6 +298,14 @@
         private System.Windows.Forms.CheckBox cbF1;
         private System.Windows.Forms.TableLayoutPanel tlpTop;
         private LocImage locImage;
+        private System.Windows.Forms.CheckBox cbF9;
+        private System.Windows.Forms.CheckBox cbF10;
+        private System.Windows.Forms.CheckBox cbF13;
+        private System.Windows.Forms.CheckBox cbF11;
+        private System.Windows.Forms.CheckBox cbF12;
+        private System.Windows.Forms.CheckBox cbF14;
+        private System.Windows.Forms.CheckBox cbF15;
+        private System.Windows.Forms.CheckBox cbF16;
 
     }
 }

@@ -40,14 +40,7 @@ namespace BinkyRailways.Core.State.Impl
         private readonly StateProperty<LocDirection> direction;
         private readonly ActualStateProperty<bool> reversing;
         private readonly StateProperty<bool> f0;
-        private readonly StateProperty<bool> f1;
-        private readonly StateProperty<bool> f2;
-        private readonly StateProperty<bool> f3;
-        private readonly StateProperty<bool> f4;
-        private readonly StateProperty<bool> f5;
-        private readonly StateProperty<bool> f6;
-        private readonly StateProperty<bool> f7;
-        private readonly StateProperty<bool> f8;
+        private readonly Dictionary<LocFunction, IStateProperty<bool>> functionStates;
         private readonly List<ILockableState> lockedEntities = new List<ILockableState>();
         private IStatePersistence statePersistence;
         private readonly Address address;
@@ -80,14 +73,12 @@ namespace BinkyRailways.Core.State.Impl
             direction = new StateProperty<LocDirection>(this, LocDirection.Forward, null, OnRequestedDirectionChanged, x => SaveCurrentBlock());
             reversing = new ActualStateProperty<bool>(this, false, ValidateReversing, null);
             f0 = new StateProperty<bool>(this, true, null, OnRequestedFunctionChanged, null);
-            f1 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f2 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f3 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f4 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f5 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f6 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f7 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
-            f8 = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
+            functionStates = new Dictionary<LocFunction, IStateProperty<bool>>();
+            foreach (var lf in entity.Functions)
+            {
+                var f = new StateProperty<bool>(this, false, null, OnRequestedFunctionChanged, null);
+                functionStates[lf.Function] = f;
+            }
             lastRouteOptions = new ActualStateProperty<IRouteOption[]>(this, null, null, null);
         }
 
@@ -380,61 +371,23 @@ namespace BinkyRailways.Core.State.Impl
         [DisplayName(@"F0")]
         public IStateProperty<bool> F0 { get { return f0; } }
 
-        /// <summary>
-        /// Generic function 1 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F1")]
-        public IStateProperty<bool> F1 { get { return f1; } }
 
         /// <summary>
-        /// Generic function 2 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
+        /// Return the state of a function.
         /// </summary>
-        [DisplayName(@"F2")]
-        public IStateProperty<bool> F2 { get { return f2; } }
+        /// <returns>True if such a state exists, false otherwise</returns>
+        public bool TryGetFunctionState(LocFunction function, out IStateProperty<bool> state)
+        {
+            return functionStates.TryGetValue(function, out state);
+        }
 
         /// <summary>
-        /// Generic function 3 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
+        /// Return all functions that have state.
         /// </summary>
-        [DisplayName(@"F3")]
-        public IStateProperty<bool> F3 { get { return f3; } }
-
-        /// <summary>
-        /// Generic function 4 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F4")]
-        public IStateProperty<bool> F4 { get { return f4; } }
-
-        /// <summary>
-        /// Generic function 5 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F5")]
-        public IStateProperty<bool> F5 { get { return f5; } }
-
-        /// <summary>
-        /// Generic function 6 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F6")]
-        public IStateProperty<bool> F6 { get { return f6; } }
-
-        /// <summary>
-        /// Generic function 7 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F7")]
-        public IStateProperty<bool> F7 { get { return f7; } }
-
-        /// <summary>
-        /// Generic function 8 of this loc.
-        /// Setting this value will result in a request to its command station to alter the value.
-        /// </summary>
-        [DisplayName(@"F8")]
-        public IStateProperty<bool> F8 { get { return f8; } }
+        public IEnumerable<LocFunction> Functions
+        {
+            get { return functionStates.Keys; }
+        }
 
         /// <summary>
         /// Requested speedsteps value has changed.
@@ -629,11 +582,11 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         private void OnRequestedFunctionChanged(bool value)
         {
-            if ((commandStation != null) && !(f0.IsConsistent && f1.IsConsistent && f2.IsConsistent && 
-                f3.IsConsistent && f4.IsConsistent && f5.IsConsistent && f6.IsConsistent && 
-                f7.IsConsistent && f8.IsConsistent))
+            if (commandStation != null)
             {
-                commandStation.SendLocSpeedAndDirection(this);
+                if (!f0.IsConsistent || functionStates.Values.Any(x => !x.IsConsistent)) {
+                    commandStation.SendLocSpeedAndDirection(this);
+                }
             }
         }
 

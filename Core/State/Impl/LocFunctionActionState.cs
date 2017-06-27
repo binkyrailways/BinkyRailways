@@ -27,32 +27,12 @@ namespace BinkyRailways.Core.State.Impl
                 case LocFunction.Light:
                     property = loc.F0;
                     break;
-                case LocFunction.F1:
-                    property = loc.F1;
-                    break;
-                case LocFunction.F2:
-                    property = loc.F2;
-                    break;
-                case LocFunction.F3:
-                    property = loc.F3;
-                    break;
-                case LocFunction.F4:
-                    property = loc.F4;
-                    break;
-                case LocFunction.F5:
-                    property = loc.F5;
-                    break;
-                case LocFunction.F6:
-                    property = loc.F6;
-                    break;
-                case LocFunction.F7:
-                    property = loc.F7;
-                    break;
-                case LocFunction.F8:
-                    property = loc.F8;
-                    break;
                 default:
-                    return;
+                    if (!loc.TryGetFunctionState(Entity.Function, out property))
+                    {
+                        return;
+                    }
+                    break;
             }
 
             switch (Entity.Command)

@@ -211,5 +211,57 @@ namespace BinkyRailways.Core.State
             // Not found
             return null;
         }
+
+        /// <summary>
+        /// GetFunctionRequestedState returns the requested state of a function in the given loc.
+        /// If no such function exists, false is returned.
+        /// </summary>
+        public static bool GetFunctionRequestedState(this ILocState loc, LocFunction function)
+        {
+            IStateProperty<bool> state;
+            if (loc.TryGetFunctionState(function, out state))
+            {
+                return state.Requested;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// GetFunctionActualState returns the actual state of a function in the given loc.
+        /// If no such function exists, false is returned.
+        /// </summary>
+        public static bool GetFunctionActualState(this ILocState loc, LocFunction function)
+        {
+            IStateProperty<bool> state;
+            if (loc.TryGetFunctionState(function, out state))
+            {
+                return state.Actual;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// SetFunctionActualState set the requested state of a function in the given loc.
+        /// </summary>
+        public static void SetFunctionRequestedState(this ILocState loc, LocFunction function, bool value)
+        {
+            IStateProperty<bool> state;
+            if (loc.TryGetFunctionState(function, out state))
+            {
+                state.Requested = value;
+            }
+        }
+
+        /// <summary>
+        /// SetFunctionActualState set the actual state of a function in the given loc.
+        /// </summary>
+        public static void SetFunctionActualState(this ILocState loc, LocFunction function, bool value)
+        {
+            IStateProperty<bool> state;
+            if (loc.TryGetFunctionState(function, out state))
+            {
+                state.Actual = value;
+            }
+        }
     }
 }
