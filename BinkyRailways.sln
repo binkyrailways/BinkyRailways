@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.WinApp", "BinkyRailways.WinApp.csproj", "{4299D52F-F138-34AA-B1BB-74001AEDDFA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7} = {4299D52F-BB33-BB34-B1E6-74001AEDDFA7}
+		{4299D52F-F138-48A2-43BD-74001AEDDFA7} = {4299D52F-F138-48A2-43BD-74001AEDDFA7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Utility", "BinkyRailways.Utility.csproj", "{4299D52F-F138-BB34-B1E6-74001AEDDFA7}"
 EndProject

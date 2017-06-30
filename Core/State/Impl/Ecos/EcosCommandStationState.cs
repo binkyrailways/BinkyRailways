@@ -85,26 +85,26 @@ namespace BinkyRailways.Core.State.Impl.Ecos
             l.SetDirection(direction);
             loc.Direction.Actual = loc.Direction.Requested;
             if (!loc.F0.IsConsistent) l.SetFunction(0, loc.F0.Requested);
-            if (!loc.F1.IsConsistent) l.SetFunction(1, loc.F1.Requested);
-            if (!loc.F2.IsConsistent) l.SetFunction(2, loc.F2.Requested);
-            if (!loc.F3.IsConsistent) l.SetFunction(3, loc.F3.Requested);
-            if (!loc.F4.IsConsistent) l.SetFunction(4, loc.F4.Requested);
-            if (!loc.F5.IsConsistent) l.SetFunction(5, loc.F5.Requested);
-            if (!loc.F6.IsConsistent) l.SetFunction(6, loc.F6.Requested);
-            if (!loc.F7.IsConsistent) l.SetFunction(7, loc.F7.Requested);
-            if (!loc.F8.IsConsistent) l.SetFunction(8, loc.F8.Requested);
+            foreach (var lf in loc.Functions)
+            {
+                IStateProperty<bool> state;
+                if (loc.TryGetFunctionState(lf, out state))
+                {
+                    if (!state.IsConsistent) l.SetFunction((int)lf, state.Requested);
+                }
+            }
 
             l.SetSpeed((int)((127.0 / 100.0) * loc.Speed.Requested));
             loc.Speed.Actual = loc.Speed.Requested;
             loc.F0.Actual = loc.F0.Requested;
-            loc.F1.Actual = loc.F1.Requested;
-            loc.F2.Actual = loc.F2.Requested;
-            loc.F3.Actual = loc.F3.Requested;
-            loc.F4.Actual = loc.F4.Requested;
-            loc.F5.Actual = loc.F5.Requested;
-            loc.F6.Actual = loc.F6.Requested;
-            loc.F7.Actual = loc.F7.Requested;
-            loc.F8.Actual = loc.F8.Requested;
+            foreach (var lf in loc.Functions)
+            {
+                IStateProperty<bool> state;
+                if (loc.TryGetFunctionState(lf, out state))
+                {
+                    state.Actual = state.Requested;
+                }
+            }
         }
 
         /// <summary>

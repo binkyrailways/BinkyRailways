@@ -112,23 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tlpMain.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="tlpMain.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cmdForward.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="cmdForward.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -154,7 +154,7 @@
     <value>cmdForward</value>
   </data>
   <data name="&gt;&gt;cmdForward.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdForward.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -181,7 +181,7 @@
     <value>tbSpeed</value>
   </data>
   <data name="&gt;&gt;tbSpeed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbSpeed.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -214,7 +214,7 @@
     <value>cmdReverse</value>
   </data>
   <data name="&gt;&gt;cmdReverse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdReverse.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -250,7 +250,7 @@
     <value>cmdStop</value>
   </data>
   <data name="&gt;&gt;cmdStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cmdStop.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -263,6 +263,36 @@
   </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
+  </data>
+  <data name="cbF13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 95</value>
+  </data>
+  <data name="cbF13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF13.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="cbF13.Text" xml:space="preserve">
+    <value>F13</value>
+  </data>
+  <data name="&gt;&gt;cbF13.Name" xml:space="preserve">
+    <value>cbF13</value>
+  </data>
+  <data name="&gt;&gt;cbF13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF13.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF13.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="cbF8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,13 +316,13 @@
     <value>cbF8</value>
   </data>
   <data name="&gt;&gt;cbF8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF8.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF8.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="cbF7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,13 +346,13 @@
     <value>cbF7</value>
   </data>
   <data name="&gt;&gt;cbF7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF7.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF7.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="cbF6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -346,13 +376,13 @@
     <value>cbF6</value>
   </data>
   <data name="&gt;&gt;cbF6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF6.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF6.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbF5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -376,13 +406,13 @@
     <value>cbF5</value>
   </data>
   <data name="&gt;&gt;cbF5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF5.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF5.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cbF4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -406,13 +436,13 @@
     <value>cbF4</value>
   </data>
   <data name="&gt;&gt;cbF4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF4.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="cbF3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -436,13 +466,13 @@
     <value>cbF3</value>
   </data>
   <data name="&gt;&gt;cbF3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF3.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF3.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbF2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -466,13 +496,13 @@
     <value>cbF2</value>
   </data>
   <data name="&gt;&gt;cbF2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF2.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF2.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="cbF0.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -496,13 +526,13 @@
     <value>cbF0</value>
   </data>
   <data name="&gt;&gt;cbF0.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF0.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF0.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="cbF1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -526,13 +556,223 @@
     <value>cbF1</value>
   </data>
   <data name="&gt;&gt;cbF1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbF1.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
+  </data>
+  <data name="cbF9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 72</value>
+  </data>
+  <data name="cbF9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 17</value>
+  </data>
+  <data name="cbF9.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="cbF9.Text" xml:space="preserve">
+    <value>F&amp;9</value>
+  </data>
+  <data name="&gt;&gt;cbF9.Name" xml:space="preserve">
+    <value>cbF9</value>
+  </data>
+  <data name="&gt;&gt;cbF9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF9.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF9.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="cbF10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>91, 72</value>
+  </data>
+  <data name="cbF10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF10.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="cbF10.Text" xml:space="preserve">
+    <value>F10</value>
+  </data>
+  <data name="&gt;&gt;cbF10.Name" xml:space="preserve">
+    <value>cbF10</value>
+  </data>
+  <data name="&gt;&gt;cbF10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF10.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF10.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="cbF11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 72</value>
+  </data>
+  <data name="cbF11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF11.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="cbF11.Text" xml:space="preserve">
+    <value>F11</value>
+  </data>
+  <data name="&gt;&gt;cbF11.Name" xml:space="preserve">
+    <value>cbF11</value>
+  </data>
+  <data name="&gt;&gt;cbF11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF11.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF11.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="cbF12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 72</value>
+  </data>
+  <data name="cbF12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF12.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="cbF12.Text" xml:space="preserve">
+    <value>F12</value>
+  </data>
+  <data name="&gt;&gt;cbF12.Name" xml:space="preserve">
+    <value>cbF12</value>
+  </data>
+  <data name="&gt;&gt;cbF12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF12.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF12.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="cbF14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>91, 95</value>
+  </data>
+  <data name="cbF14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF14.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="cbF14.Text" xml:space="preserve">
+    <value>F14</value>
+  </data>
+  <data name="&gt;&gt;cbF14.Name" xml:space="preserve">
+    <value>cbF14</value>
+  </data>
+  <data name="&gt;&gt;cbF14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF14.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF14.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="cbF15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 95</value>
+  </data>
+  <data name="cbF15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF15.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="cbF15.Text" xml:space="preserve">
+    <value>F15</value>
+  </data>
+  <data name="&gt;&gt;cbF15.Name" xml:space="preserve">
+    <value>cbF15</value>
+  </data>
+  <data name="&gt;&gt;cbF15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF15.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF15.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="cbF16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbF16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbF16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 95</value>
+  </data>
+  <data name="cbF16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="cbF16.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="cbF16.Text" xml:space="preserve">
+    <value>F16</value>
+  </data>
+  <data name="&gt;&gt;cbF16.Name" xml:space="preserve">
+    <value>cbF16</value>
+  </data>
+  <data name="&gt;&gt;cbF16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbF16.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbF16.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -541,10 +781,10 @@
     <value>3, 216</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 69</value>
+    <value>352, 115</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -553,7 +793,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -562,7 +802,7 @@
     <value>4</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbF8" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF7" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF6" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF4" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF3" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF0" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="cbF1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbF13" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF8" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF7" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF6" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF4" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF3" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF0" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="cbF1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF9" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF10" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF11" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF12" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF14" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF15" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF16" Row="4" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,20,AutoSize,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tlpTop.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -586,7 +826,7 @@
     <value>locImage</value>
   </data>
   <data name="&gt;&gt;locImage.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocImage, BinkyRailways, Version=1.0.1.22, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Run.LocImage, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;locImage.Parent" xml:space="preserve">
     <value>tlpTop</value>
@@ -613,7 +853,7 @@
     <value>tlpTop</value>
   </data>
   <data name="&gt;&gt;tlpTop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tlpTop.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -634,7 +874,7 @@
     <value>6</value>
   </data>
   <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 288</value>
+    <value>358, 334</value>
   </data>
   <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -643,7 +883,7 @@
     <value>tlpMain</value>
   </data>
   <data name="&gt;&gt;tlpMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tlpMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -652,9 +892,9 @@
     <value>0</value>
   </data>
   <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cmdForward" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbSpeed" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="cmdReverse" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmdStop" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel1" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="tlpTop" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33334,Percent,33,33333,Percent,33,33333" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cmdForward" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbSpeed" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="cmdReverse" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmdStop" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel1" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="tlpTop" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33334,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -667,6 +907,6 @@
     <value>LocControlPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

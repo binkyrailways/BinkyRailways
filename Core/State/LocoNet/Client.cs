@@ -117,8 +117,12 @@ namespace BinkyRailways.Core.State.LocoNet
             // Send loc direction
             log.Trace("Send: LocoDirFuncRequest: slot={0}, direction={1}", slot.SlotNumber, loc.Direction.Requested);
             var forward = (loc.Direction.Requested == LocDirection.Forward);
+            var f1 = loc.GetFunctionRequestedState(LocFunction.F1);
+            var f2 = loc.GetFunctionRequestedState(LocFunction.F2);
+            var f3 = loc.GetFunctionRequestedState(LocFunction.F3);
+            var f4 = loc.GetFunctionRequestedState(LocFunction.F4);
             var dirMsg = new LocoDirFuncRequest(slot.SlotNumber,
-                forward, loc.F0.Requested, loc.F1.Requested, loc.F2.Requested, loc.F3.Requested, loc.F4.Requested);
+            forward, loc.F0.Requested, f1, f2, f3, f4);
             dirMsg.Execute(lb);
             slot.Touch();
             return true;
@@ -483,15 +487,15 @@ namespace BinkyRailways.Core.State.LocoNet
             var dirf = slot.DirF;
             l.Direction.Actual = dirf.IsSet(DirFunc.Direction) ? LocDirection.Reverse : LocDirection.Forward;
             l.F0.Actual = dirf.IsSet(DirFunc.F0);
-            l.F1.Actual = dirf.IsSet(DirFunc.F1);
-            l.F2.Actual = dirf.IsSet(DirFunc.F2);
-            l.F3.Actual = dirf.IsSet(DirFunc.F3);
-            l.F4.Actual = dirf.IsSet(DirFunc.F4);
+            l.SetFunctionActualState(LocFunction.F1, dirf.IsSet(DirFunc.F1));
+            l.SetFunctionActualState(LocFunction.F2, dirf.IsSet(DirFunc.F2));
+            l.SetFunctionActualState(LocFunction.F3, dirf.IsSet(DirFunc.F3));
+            l.SetFunctionActualState(LocFunction.F4, dirf.IsSet(DirFunc.F4));
             var snd = slot.Sound;
-            l.F5.Actual = snd.IsSet(Sound.Snd1);
-            l.F6.Actual = snd.IsSet(Sound.Snd2);
-            l.F7.Actual = snd.IsSet(Sound.Snd3);
-            l.F8.Actual = snd.IsSet(Sound.Snd4);
+            l.SetFunctionActualState(LocFunction.F5, snd.IsSet(Sound.Snd1));
+            l.SetFunctionActualState(LocFunction.F6, snd.IsSet(Sound.Snd2));
+            l.SetFunctionActualState(LocFunction.F7, snd.IsSet(Sound.Snd3));
+            l.SetFunctionActualState(LocFunction.F8, snd.IsSet(Sound.Snd4));
         }
 
         /// <summary>
@@ -505,16 +509,16 @@ namespace BinkyRailways.Core.State.LocoNet
             var dirf = DirFunc.None;
             if (l.Direction.Actual == LocDirection.Reverse) dirf |= DirFunc.Direction;
             if (l.F0.Actual) dirf |= DirFunc.F0;
-            if (l.F1.Actual) dirf |= DirFunc.F1;
-            if (l.F2.Actual) dirf |= DirFunc.F2;
-            if (l.F3.Actual) dirf |= DirFunc.F3;
-            if (l.F4.Actual) dirf |= DirFunc.F4;
+            if (l.GetFunctionActualState(LocFunction.F1)) dirf |= DirFunc.F1;
+            if (l.GetFunctionActualState(LocFunction.F2)) dirf |= DirFunc.F2;
+            if (l.GetFunctionActualState(LocFunction.F3)) dirf |= DirFunc.F3;
+            if (l.GetFunctionActualState(LocFunction.F4)) dirf |= DirFunc.F4;
             slot.DirF = dirf;
             var snd = Sound.None;
-            if (l.F5.Actual) snd |= Sound.Snd1;
-            if (l.F6.Actual) snd |= Sound.Snd2;
-            if (l.F7.Actual) snd |= Sound.Snd3;
-            if (l.F8.Actual) snd |= Sound.Snd4;
+            if (l.GetFunctionActualState(LocFunction.F5)) snd |= Sound.Snd1;
+            if (l.GetFunctionActualState(LocFunction.F6)) snd |= Sound.Snd2;
+            if (l.GetFunctionActualState(LocFunction.F7)) snd |= Sound.Snd3;
+            if (l.GetFunctionActualState(LocFunction.F8)) snd |= Sound.Snd4;
             slot.Sound = snd;
         }
 
