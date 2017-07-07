@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailways</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>BinkyRailways.WinApp.Program</StartupObject>
     <ApplicationIcon>Graphics\Ico\Train.ico</ApplicationIcon>
@@ -685,6 +685,10 @@
     <ProjectReference Include="BinkyRailways.Protocols.csproj">
       <Project>{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Protocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Server.csproj">
+      <Project>{3f7c2200-f9d0-4608-850e-221705b45ce0}</Project>
+      <Name>BinkyRailways.Server</Name>
     </ProjectReference>
     <ProjectReference Include="BinkyRailways.State.csproj">
       <Project>{4299D52F-F138-48A2-BB11-74001AEDDF43}</Project>

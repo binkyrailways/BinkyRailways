@@ -10,6 +10,7 @@ using BinkyRailways.Core.State.Impl;
 using BinkyRailways.Core.Util;
 using BinkyRailways.WinApp.Forms;
 using BinkyRailways.WinApp.Preferences;
+using BinkyRailways.Server;
 
 namespace BinkyRailways.WinApp
 {
@@ -32,6 +33,7 @@ namespace BinkyRailways.WinApp
         private RestoreBlockAssignmentsForm restoreBlockAssignmentsForm;
         private bool updateRestoreBlockAssignmentsForm;
         private Mutex packageMutex;
+        private Host serverHost;
 
         /// <summary>
         /// Default ctor
@@ -44,6 +46,8 @@ namespace BinkyRailways.WinApp
             this.mainForm = mainForm;
             var persistence = new StatePersistence();
             statePersistence = persistence;
+            serverHost = new Host();
+            serverHost.Start();
         }
 
         /// <summary>
@@ -211,6 +215,7 @@ namespace BinkyRailways.WinApp
             }
             package = value;
             packageMutex = valueMutex;
+            serverHost.SetPackage(value);
             PackageChanged.Fire(this);
             PackagePath = (value == null) ? null : packagePath;
         }
@@ -235,6 +240,7 @@ namespace BinkyRailways.WinApp
                         value.PrepareForUse(ui, statePersistence);
                         value.ModelTime.ActualChanged += OnModelTimeChanged;
                     }
+                    serverHost.SetState(value);
                     RailwayStateChanged.Fire(this);
                     if (stateInspectionForm != null)
                     {
