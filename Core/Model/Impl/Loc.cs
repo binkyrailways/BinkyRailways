@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using BinkyRailways.Core.Storage;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.Model.Impl
 {
@@ -46,6 +47,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Address of the locomotive
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public Address Address
         {
@@ -56,6 +58,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Gets all (non-null) addresses configured in this entity.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public virtual IEnumerable<AddressUsage> AddressUsages
         {
@@ -114,6 +117,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// </summary>
         /// <value>Null if there is no image.</value>
         /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+        [JsonIgnore]
         [XmlIgnore]
         public Stream Image
         {
@@ -190,6 +194,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// Address of the locomotive.
         /// Used for serialization.
         /// </summary>
+        [JsonProperty("Address")]
         [XmlElement("Address")]
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]

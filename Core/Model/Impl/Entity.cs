@@ -1,5 +1,6 @@
 ﻿using System;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.Model.Impl
 {
@@ -46,11 +47,13 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Does this entity generate it's own description?
         /// </summary>
-        public virtual bool HasAutomaticDescription { get { return false; }}
+        [JsonIgnore]
+        public virtual bool HasAutomaticDescription { get { return false; } }
 
         /// <summary>
         /// Human readable name of this type of entity.
         /// </summary>
+        [JsonIgnore]
         public virtual string TypeName { get { return "_" + GetType().Name; } }
 
         /// <summary>

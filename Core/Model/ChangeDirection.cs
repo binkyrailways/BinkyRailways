@@ -1,9 +1,12 @@
-﻿namespace BinkyRailways.Core.Model
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+namespace BinkyRailways.Core.Model
 {
     /// <summary>
     /// Is it allowed / should it be avoided to change direction in a block,
     /// or is it allowed / should is be avoided that a loc changes direction?
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ChangeDirection
     {
         /// <summary>

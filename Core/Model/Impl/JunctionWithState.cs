@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.Model.Impl
 {
@@ -202,6 +203,14 @@ namespace BinkyRailways.Core.Model.Impl
         public virtual void RemovedFromPackage(IPersistentEntity entity)
         {
             // Never needed
+        }
+
+        /// <summary>
+        /// Convert this entity to JSON.
+        /// </summary>
+        public virtual void ToJSON(JsonSerializer serializer, JsonWriter writer)
+        {
+            serializer.Serialize(writer, this);
         }
     }
 }

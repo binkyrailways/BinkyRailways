@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.Model.Impl
 {
@@ -189,6 +190,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// </summary>
         /// <value>Null if there is no image.</value>
         /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+        [JsonIgnore]
         [XmlIgnore]
         public Stream BackgroundImage
         {
@@ -218,6 +220,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for DCC addresses.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public CommandStation PreferredDccCommandStation
         {
@@ -252,6 +255,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for LocoNet addresses.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public CommandStation PreferredLocoNetCommandStation
         {
@@ -286,6 +290,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for Motorola addresses.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public CommandStation PreferredMotorolaCommandStation
         {
@@ -320,6 +325,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for MFX addresses.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public CommandStation PreferredMfxCommandStation
         {
@@ -354,6 +360,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for Mqtt addresses.
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public CommandStation PreferredMqttCommandStation
         {

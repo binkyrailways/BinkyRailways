@@ -12,8 +12,6 @@ namespace BinkyRailways.Server
     public class Host : IDisposable
     {
         private readonly NancyHost host;
-        private IPackage package;
-        private IRailwayState state;
 
         public Host()
         {
@@ -28,12 +26,12 @@ namespace BinkyRailways.Server
 
         public void SetPackage(IPackage p)
         {
-            package = p;
+            Context.context.Package = p;
         }
 
         public void SetState(IRailwayState s)
         {
-            state = s;
+            Context.context.State = s;
         }
 
         public void Dispose()

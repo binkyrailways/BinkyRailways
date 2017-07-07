@@ -54,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Context.cs" />
+    <Compile Include="Server\Error.cs" />
     <Compile Include="Server\Host.cs" />
+    <Compile Include="Server\IContext.cs" />
+    <Compile Include="Server\Modules\ModelModule.cs" />
     <Compile Include="Server\Modules\RootModule.cs" />
   </ItemGroup>
   <ItemGroup>
