@@ -254,6 +254,14 @@ namespace BinkyRailways.Core.State.Impl
             /// <summary>
             /// Unique ID of the underlying entity (if any)
             /// </summary>
+            IEntity IEntityState.Entity
+            {
+                get { return null; }
+            }
+
+            /// <summary>
+            /// Unique ID of the underlying entity (if any)
+            /// </summary>
             string IEntityState.EntityId
             {
                 get { return string.Empty; }

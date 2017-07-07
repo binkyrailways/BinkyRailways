@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 
 namespace BinkyRailways.Core.State
@@ -8,6 +9,7 @@ namespace BinkyRailways.Core.State
     /// The value contains an actual value.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
+    [JsonObject]
     public interface IActualStateProperty<T>
     {
         /// <summary>
@@ -19,6 +21,7 @@ namespace BinkyRailways.Core.State
         /// Gets / sets the actual value
         /// </summary>
         [ReadOnly(true)]
+        [JsonProperty]
         T Actual { get; set; }
     }
 }

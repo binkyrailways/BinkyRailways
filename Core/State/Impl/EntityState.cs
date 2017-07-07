@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl
 {
@@ -9,6 +10,7 @@ namespace BinkyRailways.Core.State.Impl
     /// State of a single entity.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
+    [JsonObject]
     public abstract class EntityState 
     {
         /// <summary>
@@ -122,10 +124,17 @@ namespace BinkyRailways.Core.State.Impl
         /// Gets the entity model object
         /// </summary>
         [Browsable(false)]
+        [JsonProperty()]
         public T Entity
         {
             get { return entity; }
         }
+
+        /// <summary>
+        /// Gets the entity model object
+        /// </summary>
+        [Browsable(false)]
+        IEntity IEntityState.Entity { get { return Entity; } }
 
         /// <summary>
         /// Called when an entity in the railway model has changed.
@@ -139,6 +148,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Unique ID of the underlying entity (if any)
         /// </summary>
         [DisplayName(@"ID")]
+        [JsonProperty("Id")]
         public string EntityId { get { return (entity != null) ? entity.Id : "-"; } }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl
 {
@@ -8,7 +9,8 @@ namespace BinkyRailways.Core.State.Impl
     /// Value of an actual property in a state object.
     /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    internal class ActualStateProperty<T> : IActualStateProperty<T>, IDisposable
+    [JsonObject]
+    public class ActualStateProperty<T> : IActualStateProperty<T>, IDisposable
     {
         /// <summary>
         /// Fired when the actual value has changed.

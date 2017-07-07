@@ -21,6 +21,11 @@ namespace BinkyRailways.Core.State
         event EventHandler ActualStateChanged;
 
         /// <summary>
+        /// Underlying entity (if any)
+        /// </summary>
+        IEntity Entity { get; }
+
+        /// <summary>
         /// Unique ID of the underlying entity (if any)
         /// </summary>
         string EntityId { get; }

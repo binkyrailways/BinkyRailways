@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using BinkyRailways.Core.Model;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl
 {
@@ -27,6 +28,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Returns null if this state is not locked.
         /// </summary>
         [DisplayName(@"Locked by")]
+        [JsonIgnore]
         public ILocState LockedBy { get { return lockedBy; } }
 
         /// <summary>

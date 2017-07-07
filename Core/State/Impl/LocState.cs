@@ -7,12 +7,14 @@ using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State.Automatic;
 using BinkyRailways.Core.Util;
 using LocFunction = BinkyRailways.Core.Model.LocFunction;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl
 {
     /// <summary>
     /// State of a single locomotive.
     /// </summary>
+    [JsonObject]
     public sealed class LocState : EntityState<ILoc>, ILocState, IInitializeAtPowerOn
     {
         /// <summary>
@@ -121,6 +123,7 @@ namespace BinkyRailways.Core.State.Impl
         /// <value>Null if there is no image.</value>
         /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
         [DisplayName(@"Image")]
+        [JsonIgnore]
         public Stream Image { get { return Entity.Image; } }
 
         /// <summary>
@@ -180,6 +183,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Gets the route that this loc is currently taking.
         /// </summary>
         [DisplayName(@"Current route")]
+        [JsonIgnore]
         public IActualStateProperty<IRouteStateForLoc> CurrentRoute { get { return currentRoute; } }
 
         /// <summary>
@@ -221,6 +225,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Gets the block that the loc is currently in.
         /// </summary>
         [DisplayName(@"Current block")]
+        [JsonIgnore]
         public IActualStateProperty<IBlockState> CurrentBlock { get { return currentBlock; } }
 
         /// <summary>
@@ -259,6 +264,7 @@ namespace BinkyRailways.Core.State.Impl
         /// Gets/sets a selector used to select the next route from a list of possible routes.
         /// If no route selector is set, a default will be created.
         /// </summary>
+        [JsonIgnore]
         public IRouteSelector RouteSelector
         {
             get
@@ -784,7 +790,8 @@ namespace BinkyRailways.Core.State.Impl
         /// <summary>
         /// Implementation of Speed property
         /// </summary>
-        private sealed class SpeedProperty : IStateProperty<int>
+        [JsonObject]
+        public sealed class SpeedProperty : IStateProperty<int>
         {
             /// <summary>
             /// Fired when the requested value has changed.

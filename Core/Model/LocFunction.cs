@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Reflection;
 namespace BinkyRailways.Core.Model
 {
     /// <summary>
     /// Function numbers.
     /// </summary>
     [Obfuscation]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum LocFunction
     {
         Light = 0,

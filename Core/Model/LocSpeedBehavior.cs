@@ -1,8 +1,11 @@
-﻿namespace BinkyRailways.Core.Model
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+namespace BinkyRailways.Core.Model
 {
     /// <summary>
     /// How does a route event change the speed of the occupying loc.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum LocSpeedBehavior
     {
         /// <summary>

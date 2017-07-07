@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Reflection;
 
 namespace BinkyRailways.Core.State
 {
     /// <summary>
     /// State of a loc in the automatic control mode.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum AutoLocState
     {
         /// <summary>

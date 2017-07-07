@@ -60,6 +60,7 @@
     <Compile Include="Server\IContext.cs" />
     <Compile Include="Server\Modules\ModelModule.cs" />
     <Compile Include="Server\Modules\RootModule.cs" />
+    <Compile Include="Server\Modules\StateModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="BinkyRailways.Model.csproj">

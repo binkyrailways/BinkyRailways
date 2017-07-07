@@ -6,6 +6,7 @@ using System.Linq;
 using BinkyRailways.Core.ComponentModel;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.Util;
+using Newtonsoft.Json;
 
 namespace BinkyRailways.Core.State.Impl
 {
@@ -14,6 +15,7 @@ namespace BinkyRailways.Core.State.Impl
     /// Each element may only occur once (if it occurs)
     /// </summary>
     [TypeDescriptionProvider(typeof(CollectionTypeDescriptionProvider))]
+    [JsonArray]
     internal class EntityStateSet<TInternalState, TState, TEntity> : IEntityStateSet<TState, TEntity>
         where TInternalState : TState, IInternalEntityState<TEntity>
         where TState : IEntityState<TEntity>
