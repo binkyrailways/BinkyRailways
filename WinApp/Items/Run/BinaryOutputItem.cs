@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using BinkyRailways.WinApp.Controls.VirtualCanvas;
+using BinkyRailways.WinApp.Controls.VirtualCanvas.Handlers;
 
 namespace BinkyRailways.WinApp.Items.Run
 {
@@ -19,7 +21,7 @@ namespace BinkyRailways.WinApp.Items.Run
         {
             this.state = state;
             if (interactive)
-                MouseHandler = new EntityClickHandler(null, state);
+                MouseHandler = new ClickHandler(null, state);
         }
 
         /// <summary>
@@ -28,6 +30,33 @@ namespace BinkyRailways.WinApp.Items.Run
         protected override Color BackgroundColor
         {
             get { return state.Active.Actual ? Color.Red : Color.Green; }
+        }
+
+        /// <summary>
+        /// Handler for clicking on a signal
+        /// </summary>
+        private class ClickHandler : MouseHandler
+        {
+            private readonly IBinaryOutputState state;
+
+            /// <summary>
+            /// Default ctor
+            /// </summary>
+            public ClickHandler(MouseHandler next, IBinaryOutputState state)
+                : base(next)
+            {
+                this.state = state;
+            }
+
+            /// <summary>
+            /// Mouse is clicked on this item
+            /// </summary>
+            /// <returns>True if the event was handled, false otherwise.</returns>
+            public override bool OnMouseClick(VCItem sender, ItemMouseEventArgs e)
+            {
+                state.Active.Requested = !state.Active.Requested;
+                return true;
+            }
         }
     }
 }
