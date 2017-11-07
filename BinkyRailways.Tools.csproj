@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailwaysTools</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -96,13 +96,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="BinkyRailways.Model.csproj">
-      <Project>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</Project>
-      <Name>BinkyRailways.Model</Name>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="BinkyRailways.Model.csproj">
+      <Project>{4299d52f-f138-48a2-b1e6-74001aeddfa7}</Project>
+      <Name>BinkyRailways.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
