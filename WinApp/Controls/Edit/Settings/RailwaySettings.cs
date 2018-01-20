@@ -82,6 +82,7 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         /// </summary>
         [DefaultValue(DefaultValues.DefaultRailwayClockSpeedFactor)]
         [TypeConverter(typeof(ClockSpeedFactorTypeConverter))]
+        [EditableInRunningState]
         public int ClockSpeedFactor
         {
             get { return Entity.ClockSpeedFactor; }
