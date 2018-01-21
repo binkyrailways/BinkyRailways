@@ -74,6 +74,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
                 var modulesNodes = new TreeNode("Modules");
                 var locsNodes = new TreeNode("Locs");
                 var locGroupsNodes = new TreeNode("Loc groups");
+                tvItems.Nodes.Add(new EntityNode(railway, null));
                 tvItems.Nodes.Add(locsNodes);
                 tvItems.Nodes.Add(locGroupsNodes);
                 tvItems.Nodes.Add(modulesNodes);
