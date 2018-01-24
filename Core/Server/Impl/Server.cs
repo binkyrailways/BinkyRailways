@@ -227,7 +227,10 @@ namespace BinkyRailways.Core.Server.Impl
                 client.MqttMsgPublishReceived -= onMqttMsgPublishReceived;
                 client.MqttMsgPublished -= onMqttMsgPublished;
                 client.ConnectionClosed -= onMqttConnectionClosed;
-                client.Disconnect();
+                if (client.IsConnected)
+                {
+                    client.Disconnect();
+                }
                 client = null;
             }
         }
