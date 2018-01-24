@@ -19,7 +19,7 @@ namespace BinkyRailways.WinApp {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -1073,6 +1073,60 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hostname of MQTT server.
+        /// </summary>
+        internal static string MqttHostNameHelp {
+            get {
+                return ResourceManager.GetString("MqttHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MQTT hostname.
+        /// </summary>
+        internal static string MqttHostNameName {
+            get {
+                return ResourceManager.GetString("MqttHostNameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port number of MQTT server.
+        /// </summary>
+        internal static string MqttPortHelp {
+            get {
+                return ResourceManager.GetString("MqttPortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MQTT port.
+        /// </summary>
+        internal static string MqttPortName {
+            get {
+                return ResourceManager.GetString("MqttPortName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topic on MQTT server.
+        /// </summary>
+        internal static string MqttTopicHelp {
+            get {
+                return ResourceManager.GetString("MqttTopicHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MQTT topic.
+        /// </summary>
+        internal static string MqttTopicName {
+            get {
+                return ResourceManager.GetString("MqttTopicName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New binary output.
         /// </summary>
         internal static string NewBinaryOutputDescription {
@@ -2059,6 +2113,15 @@ namespace BinkyRailways.WinApp {
         internal static string TabPosition {
             get {
                 return ResourceManager.GetString("TabPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server.
+        /// </summary>
+        internal static string TabServer {
+            get {
+                return ResourceManager.GetString("TabServer", resourceCulture);
             }
         }
         

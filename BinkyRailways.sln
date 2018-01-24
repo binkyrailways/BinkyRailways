@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Protocols", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Tools", "BinkyRailways.Tools.csproj", "{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinkyRailways.Server", "BinkyRailways.Server.csproj", "{4299D52F-BB45-48A2-44EA-7400274DDFA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4299D52F-BB33-BB34-B1E6-74001AEDDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4299D52F-BB45-48A2-44EA-7400274DDFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D52F-BB45-48A2-44EA-7400274DDFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D52F-BB45-48A2-44EA-7400274DDFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D52F-BB45-48A2-44EA-7400274DDFA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

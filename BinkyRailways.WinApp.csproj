@@ -686,6 +686,10 @@
       <Project>{4299D52F-BD41-48A2-B1B8-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Protocols</Name>
     </ProjectReference>
+    <ProjectReference Include="BinkyRailways.Server.csproj">
+      <Project>{4299d52f-bb45-48a2-44ea-7400274ddfa7}</Project>
+      <Name>BinkyRailways.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="BinkyRailways.State.csproj">
       <Project>{4299D52F-F138-48A2-BB11-74001AEDDF43}</Project>
       <Name>BinkyRailways.State</Name>

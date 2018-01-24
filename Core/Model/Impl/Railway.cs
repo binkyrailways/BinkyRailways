@@ -25,14 +25,17 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<EntityRef<CommandStation>> preferredMotorolaCommandStation;
         private readonly Property<EntityRef<CommandStation>> preferredMfxCommandStation;
         private readonly Property<EntityRef<CommandStation>> preferredMqttCommandStation;
-        private int clockSpeedFactor;
+        private readonly Property<int> clockSpeedFactor;
+        private readonly Property<string> mqttHostName;
+        private readonly Property<int> mqttPort;
+        private readonly Property<string> mqttTopic;
 
         /// <summary>
         /// Default ctor
         /// </summary>
         public Railway()
         {
-            clockSpeedFactor = DefaultValues.DefaultRailwayClockSpeedFactor;
+            clockSpeedFactor = new Property<int>(this, DefaultValues.DefaultRailwayClockSpeedFactor);
             commandStationRefs = new CommandStationRefSet(this);
             locRefs = new LocRefSet(this);
             moduleRefs = new ModuleRefSet(this);
@@ -43,6 +46,9 @@ namespace BinkyRailways.Core.Model.Impl
             preferredMotorolaCommandStation = new Property<EntityRef<CommandStation>>(this, null);
             preferredMfxCommandStation = new Property<EntityRef<CommandStation>>(this, null);
             preferredMqttCommandStation = new Property<EntityRef<CommandStation>>(this, null);
+            mqttHostName = new Property<string>(this, DefaultValues.DefaultRailwayMqttHostName);
+            mqttPort = new Property<int>(this, DefaultValues.DefaultRailwayMqttPort);
+            mqttTopic = new Property<string>(this, DefaultValues.DefaultRailwayMqttTopic);
         }
 
         /// <summary>
@@ -51,12 +57,12 @@ namespace BinkyRailways.Core.Model.Impl
         [DefaultValue(DefaultValues.DefaultRailwayClockSpeedFactor)]
         public int ClockSpeedFactor
         {
-            get { return clockSpeedFactor; }
+            get { return clockSpeedFactor.Value; }
             set
             {
                 if (value < 1)
                     throw new ArgumentException("Must > 0");
-                clockSpeedFactor = value;
+                clockSpeedFactor.Value = value;
             }
         }
 
@@ -467,6 +473,45 @@ namespace BinkyRailways.Core.Model.Impl
             get { return PreferredMqttCommandStation; }
             set { PreferredMqttCommandStation = (CommandStation)value; }
         }
+
+
+        /// <summary>
+        /// Network hostname of the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttHostName)]
+        string IRailway.MqttHostName
+        {
+            get { return mqttHostName.Value; }
+            set { mqttHostName.Value = value; }
+        }
+
+        /// <summary>
+        /// Network port of the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttPort)]
+        int IRailway.MqttPort
+        {
+            get { return mqttPort.Value; }
+            set
+            {
+                if (value < 1)
+                {
+                    throw new ArgumentException("Value must be larger than 0");
+                }
+                mqttPort.Value = value;
+            }
+        }
+
+        /// <summary>
+        /// Topic on the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttTopic)]
+        string IRailway.MqttTopic
+        {
+            get { return mqttTopic.Value; }
+            set { mqttTopic.Value = value; }
+        }
+
 
         /// <summary>
         /// Try to resolve a loc by the given id.

@@ -30,6 +30,9 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             properties.Add(() => PreferredMfxCommandStation, Strings.TabBehavior, Strings.PreferredMfxCommandStationName, Strings.PreferredMfxCommandStationHelp);
             properties.Add(() => PreferredMqttCommandStation, Strings.TabBehavior, Strings.PreferredMqttCommandStationName, Strings.PreferredMqttCommandStationHelp);
             properties.Add(() => ClockSpeedFactor, Strings.TabBehavior, Strings.ClockSpeedFactorName, Strings.ClockSpeedFactorHelp);
+            properties.Add(() => MqttHostName, Strings.TabServer, Strings.MqttHostNameName, Strings.MqttHostNameHelp);
+            properties.Add(() => MqttPort, Strings.TabServer, Strings.MqttPortName, Strings.MqttPortHelp);
+            properties.Add(() => MqttTopic, Strings.TabServer, Strings.MqttTopicName, Strings.MqttTopicHelp);
         }
 
         [DefaultValue(null)]
@@ -80,13 +83,46 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
         /// <summary>
         /// The number of times human time is speed up to reach model time.
         /// </summary>
-        [DefaultValue(DefaultValues.DefaultRailwayClockSpeedFactor)]
+     
         [TypeConverter(typeof(ClockSpeedFactorTypeConverter))]
         [EditableInRunningState]
         public int ClockSpeedFactor
         {
             get { return Entity.ClockSpeedFactor; }
             set { Entity.ClockSpeedFactor = value; }
+        }
+
+        /// <summary>
+        /// Network hostname of the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttHostName)]
+        [MergableProperty(false)]
+        public string MqttHostName
+        {
+            get { return Entity.MqttHostName; }
+            set { Entity.MqttHostName = value; }
+        }
+
+        /// <summary>
+        /// Network port of the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttPort)]
+        [MergableProperty(false)]
+        public int MqttPort
+        {
+            get { return Entity.MqttPort; }
+            set { Entity.MqttPort = value; }
+        }
+
+        /// <summary>
+        /// Topic on the MQTT server to post server messages to.
+        /// </summary>
+        [DefaultValue(DefaultValues.DefaultRailwayMqttTopic)]
+        [MergableProperty(false)]
+        public string MqttTopic
+        {
+            get { return Entity.MqttTopic; }
+            set { Entity.MqttTopic = value; }
         }
     }
 }

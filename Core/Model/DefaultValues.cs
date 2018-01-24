@@ -211,5 +211,20 @@
         /// Default value of <see cref="ISensor.Shape"/>
         /// </summary>
         public const Shapes DefaultSensorShape = Shapes.Circle;
+
+        /// <summary>
+        /// Network hostname of the MQTT server to post server messages to.
+        /// </summary>
+        public const string DefaultRailwayMqttHostName = "";
+
+        /// <summary>
+        /// Network port of the MQTT server to post server messages to.
+        /// </summary>
+        public const int DefaultRailwayMqttPort = 1883;
+
+        /// <summary>
+        /// Topic on the MQTT server to post server messages to.
+        /// </summary>
+        public const string DefaultRailwayMqttTopic = "/binkyrailways";
     }
 }
