@@ -479,7 +479,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// Network hostname of the MQTT server to post server messages to.
         /// </summary>
         [DefaultValue(DefaultValues.DefaultRailwayMqttHostName)]
-        string IRailway.MqttHostName
+        public string MqttHostName
         {
             get { return mqttHostName.Value; }
             set { mqttHostName.Value = value; }
@@ -489,7 +489,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// Network port of the MQTT server to post server messages to.
         /// </summary>
         [DefaultValue(DefaultValues.DefaultRailwayMqttPort)]
-        int IRailway.MqttPort
+        public int MqttPort
         {
             get { return mqttPort.Value; }
             set
@@ -506,7 +506,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// Topic on the MQTT server to post server messages to.
         /// </summary>
         [DefaultValue(DefaultValues.DefaultRailwayMqttTopic)]
-        string IRailway.MqttTopic
+        public string MqttTopic
         {
             get { return mqttTopic.Value; }
             set { mqttTopic.Value = value; }

@@ -93,6 +93,7 @@ namespace BinkyRailways.WinApp.Forms
             else
             {
                 appState.RailwayState = null;
+                appState.Dispose();
                 base.OnFormClosing(e);
             }
         }

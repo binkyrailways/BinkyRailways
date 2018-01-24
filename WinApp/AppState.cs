@@ -14,7 +14,7 @@ using BinkyRailways.WinApp.Preferences;
 
 namespace BinkyRailways.WinApp
 {
-    internal class AppState
+    internal class AppState : IDisposable
     {
         private const string PackageMutexPrefix = "3FC9EE3A-5D01-40F4-A116-6876E78BDB6F-";
 
@@ -354,6 +354,14 @@ namespace BinkyRailways.WinApp
             catch (Exception ex)
             {
             }
+        }
+
+        /// <summary>
+        /// Cleanup
+        /// </summary>
+        public void Dispose()
+        {
+            server.Dispose();
         }
 
         /// <summary>

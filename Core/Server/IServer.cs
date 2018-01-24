@@ -1,9 +1,10 @@
 ﻿using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using System;
 
 namespace BinkyRailways.Core.Server
 {
-    public interface IServer
+    public interface IServer : IDisposable
     {
         /// <summary>
         /// Set the currently active railway.
