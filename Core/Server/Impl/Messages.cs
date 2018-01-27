@@ -4,12 +4,18 @@ namespace BinkyRailways.Core.Server.Impl
 {
     internal class Messages
     {
-     
+        // Data message types
         public const string TypeRunning = "running";
         public const string TypeEditing = "editing";
 
         public const string TypePowerChanged = "power-changed";
         public const string TypAutomaticLocControllerEnabledChanged = "automatic-loccontroller-changed";
+
+        // Control message types
+        public const string TypePowerOn = "power-on";
+        public const string TypePowerOff = "power-off";
+        public const string TypAutomaticLocControllerOn= "automatic-loccontroller-on";
+        public const string TypAutomaticLocControllerOff = "automatic-loccontroller-off";
 
         [JsonObject]
         internal class BaseServerMessage

@@ -15,10 +15,13 @@ namespace BinkyRailways.Core.Server.Impl
 {
     public class Server : IServer, IDisposable
     {
+        private const string controlTopicPostfix = "/control";
+        private const string dataTopicPostfix = "/data";
         IRailway railway;
         IRailwayState railwayState;
         private MqttClient client;
-        private string topic;
+        private string controlTopic;
+        private string dataTopic;
         private readonly Logger Log;
         private readonly string clientID;
 
@@ -131,7 +134,7 @@ namespace BinkyRailways.Core.Server.Impl
                 try
                 {
                     var payload = JsonConvert.SerializeObject(msg, Formatting.None);
-                    var msgID = client.Publish(topic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                    var msgID = client.Publish(dataTopic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
        
                     return true;
 
@@ -173,7 +176,54 @@ namespace BinkyRailways.Core.Server.Impl
         /// </summary>
         void onMqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-         
+            if (e.Topic != controlTopic)
+            {
+                return;
+            }          
+            var payload = Encoding.UTF8.GetString(e.Message);
+            var baseMsg = JsonConvert.DeserializeObject<Messages.BaseServerMessage>(payload);
+            switch (baseMsg.Type)
+            {
+                case Messages.TypePowerOn:
+                    {
+                        Log.Debug("Power on message received");
+                        if (railwayState != null)
+                        {
+                            railwayState.Power.Requested = true;
+                        }
+                    }
+                    break;
+                case Messages.TypePowerOff:
+                    {
+                        Log.Debug("Power off message received");
+                        if (railwayState != null)
+                        {
+                            railwayState.Power.Requested = false;
+                        }
+                    }
+                    break;
+                case Messages.TypAutomaticLocControllerOn:
+                    {
+                        Log.Debug("Automatic loc control on message received");
+                        if (railwayState != null)
+                        {
+                            railwayState.AutomaticLocController.Enabled.Requested = true;
+                        }
+                    }
+                    break;
+                case Messages.TypAutomaticLocControllerOff:
+                    {
+                        Log.Debug("Automatic loc control off message received");
+                        if (railwayState != null)
+                        {
+                            railwayState.AutomaticLocController.Enabled.Requested = false;
+                        }
+                    }
+                    break;
+                default:
+                    Log.Info("Unhandled Mqtt message received: " + baseMsg.Type);
+                    break;
+            }
         }
 
 
@@ -196,7 +246,8 @@ namespace BinkyRailways.Core.Server.Impl
                 }
                 var hostName = railway.MqttHostName;
                 var brokerPort = railway.MqttPort;
-                topic = railway.MqttTopic;
+                controlTopic = railway.MqttTopic.TrimEnd('/') + controlTopicPostfix;
+                dataTopic = railway.MqttTopic.TrimEnd('/') + dataTopicPostfix;
                 if (hostName == "")
                 {
                     return false;
@@ -210,7 +261,7 @@ namespace BinkyRailways.Core.Server.Impl
                 client.Connect(clientID);
 
                 // Subscribe to topics 
-                client.Subscribe(new string[] { topic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                client.Subscribe(new string[] { controlTopic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
             }
             catch (Exception ex)
             {
