@@ -88,10 +88,22 @@ namespace BinkyRailways.Core.Server.Impl
                         value.AutomaticLocController.Enabled.ActualChanged += onAutomaticLocControllerEnabledChanged;
                         value.AutomaticLocController.Enabled.RequestedChanged += onAutomaticLocControllerEnabledChanged;
                     }
-                    var msgType = (value != null) ? Messages.TypeRunning : Messages.TypeEditing;
-                    publishMessage(new Messages.BaseServerMessage { Type = msgType });
+                    onModeChanged();
                 }
             }
+        }
+
+        private void onRefresh()
+        {
+            onModeChanged();
+            onPowerChanged(this, EventArgs.Empty);
+            onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
+        }
+
+        private void onModeChanged()
+        {
+            var msgType = (railwayState != null) ? Messages.TypeRunning : Messages.TypeEditing;
+            publishMessage(new Messages.BaseServerMessage { Type = msgType });
         }
 
         /// <summary>
@@ -184,6 +196,12 @@ namespace BinkyRailways.Core.Server.Impl
             var baseMsg = JsonConvert.DeserializeObject<Messages.BaseServerMessage>(payload);
             switch (baseMsg.Type)
             {
+                case Messages.TypeRefresh:
+                    {
+                        Log.Debug("Refresh message received");
+                        onRefresh();
+                    }
+                    break;
                 case Messages.TypePowerOn:
                     {
                         Log.Debug("Power on message received");

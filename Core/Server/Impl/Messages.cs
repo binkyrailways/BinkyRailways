@@ -12,6 +12,7 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypAutomaticLocControllerEnabledChanged = "automatic-loccontroller-changed";
 
         // Control message types
+        public const string TypeRefresh = "refresh";
         public const string TypePowerOn = "power-on";
         public const string TypePowerOff = "power-off";
         public const string TypAutomaticLocControllerOn= "automatic-loccontroller-on";
