@@ -51,6 +51,7 @@ namespace BinkyRailways.Core.Server.Impl
                     {
                         value.PropertyChanged += onRailwayPropertyChanged;
                     }
+                    onRailwayChanged();
                 }
             }
         }
@@ -79,6 +80,10 @@ namespace BinkyRailways.Core.Server.Impl
                         railwayState.Power.RequestedChanged -= onPowerChanged;
                         railwayState.AutomaticLocController.Enabled.ActualChanged -= onAutomaticLocControllerEnabledChanged;
                         railwayState.AutomaticLocController.Enabled.RequestedChanged -= onAutomaticLocControllerEnabledChanged;
+                        foreach (var locState in railwayState.LocStates)
+                        {
+                            locState.ActualStateChanged -= onActualLocStateChanged;
+                        }
                     }
                     railwayState = value;
                     if (value != null)
@@ -87,17 +92,31 @@ namespace BinkyRailways.Core.Server.Impl
                         value.Power.RequestedChanged += onPowerChanged;
                         value.AutomaticLocController.Enabled.ActualChanged += onAutomaticLocControllerEnabledChanged;
                         value.AutomaticLocController.Enabled.RequestedChanged += onAutomaticLocControllerEnabledChanged;
+                        foreach (var locState in railwayState.LocStates)
+                        {
+                            locState.ActualStateChanged += onActualLocStateChanged;
+                        }
                     }
                     onModeChanged();
                 }
             }
         }
 
+ 
         private void onRefresh()
         {
+            onRailwayChanged();
             onModeChanged();
             onPowerChanged(this, EventArgs.Empty);
             onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
+        }
+
+        private void onRailwayChanged()
+        {
+            if (railway != null)
+            {
+                publishMessage(new Messages.RailwayMessage(railway, railwayState));
+            }
         }
 
         private void onModeChanged()
@@ -136,6 +155,30 @@ namespace BinkyRailways.Core.Server.Impl
             }
         }
 
+        private void onActualLocStateChanged(object sender, EventArgs e)
+        {
+            if (railwayState != null)
+            {
+                var locState = sender as ILocState;
+                if (locState != null)
+                {
+                    ILoc locEntity = null;
+                    foreach (var loc in railway.Locs)
+                    {
+                        if (loc.Id == locState.EntityId)
+                        {
+                            loc.TryResolve(out locEntity);
+                            break;
+                        }
+                    }
+                    if (locEntity != null)
+                    {
+                        publishMessage(new Messages.LocChangedMessage(locEntity, locState));
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Convert the given message to json and publish it.
         /// </summary>
@@ -146,7 +189,7 @@ namespace BinkyRailways.Core.Server.Impl
                 try
                 {
                     var payload = JsonConvert.SerializeObject(msg, Formatting.None);
-                    var msgID = client.Publish(dataTopic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                    var msgID = client.Publish(dataTopic, Encoding.UTF8.GetBytes(payload), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
        
                     return true;
 
@@ -208,6 +251,7 @@ namespace BinkyRailways.Core.Server.Impl
                         if (railwayState != null)
                         {
                             railwayState.Power.Requested = true;
+                            onPowerChanged(this, EventArgs.Empty);
                         }
                     }
                     break;
@@ -217,6 +261,7 @@ namespace BinkyRailways.Core.Server.Impl
                         if (railwayState != null)
                         {
                             railwayState.Power.Requested = false;
+                            onPowerChanged(this, EventArgs.Empty);
                         }
                     }
                     break;
@@ -226,6 +271,7 @@ namespace BinkyRailways.Core.Server.Impl
                         if (railwayState != null)
                         {
                             railwayState.AutomaticLocController.Enabled.Requested = true;
+                            onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
                         }
                     }
                     break;
@@ -235,6 +281,7 @@ namespace BinkyRailways.Core.Server.Impl
                         if (railwayState != null)
                         {
                             railwayState.AutomaticLocController.Enabled.Requested = false;
+                            onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
                         }
                     }
                     break;
