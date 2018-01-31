@@ -265,7 +265,7 @@ namespace BinkyRailways.Core.Server.Impl
                         }
                     }
                     break;
-                case Messages.TypAutomaticLocControllerOn:
+                case Messages.TypeAutomaticLocControllerOn:
                     {
                         Log.Debug("Automatic loc control on message received");
                         if (railwayState != null)
@@ -275,13 +275,39 @@ namespace BinkyRailways.Core.Server.Impl
                         }
                     }
                     break;
-                case Messages.TypAutomaticLocControllerOff:
+                case Messages.TypeAutomaticLocControllerOff:
                     {
                         Log.Debug("Automatic loc control off message received");
                         if (railwayState != null)
                         {
                             railwayState.AutomaticLocController.Enabled.Requested = false;
                             onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
+                        }
+                    }
+                    break;
+                case Messages.TypeControlAutomatically:
+                    {
+                        Log.Debug("Control loc automatically message received");
+                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        {
+                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
+                            if (locState != null)
+                            {
+                                locState.ControlledAutomatically.Requested = true;
+                            }
+                        }
+                    }
+                    break;
+                case Messages.TypeControlManually:
+                    {
+                        Log.Debug("Control loc manually message received");
+                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        {
+                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
+                            if (locState != null)
+                            {
+                                locState.ControlledAutomatically.Requested = false;
+                            }
                         }
                     }
                     break;

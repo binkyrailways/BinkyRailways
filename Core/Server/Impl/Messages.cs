@@ -20,14 +20,19 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypeRefresh = "refresh";
         public const string TypePowerOn = "power-on";
         public const string TypePowerOff = "power-off";
-        public const string TypAutomaticLocControllerOn = "automatic-loccontroller-on";
-        public const string TypAutomaticLocControllerOff = "automatic-loccontroller-off";
+        public const string TypeAutomaticLocControllerOn = "automatic-loccontroller-on";
+        public const string TypeAutomaticLocControllerOff = "automatic-loccontroller-off";
+        public const string TypeControlAutomatically = "control-automatically";
+        public const string TypeControlManually = "control-manually";
 
         [JsonObject]
         internal class BaseServerMessage
         {
             [JsonProperty("type")]
             public string Type { get; set; }
+
+            [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+            public string Id { get; set; }
         }
 
         [JsonObject]
@@ -75,6 +80,7 @@ namespace BinkyRailways.Core.Server.Impl
                     StateText = state.GetStateText();
                     IsAssigned = state.CurrentBlock.Actual != null;
                     IsCurrentRouteDurationExceeded = state.IsCurrentRouteDurationExceeded;
+                    IsControlledAutomatically = state.ControlledAutomatically.Actual;
                 }
             }
 
@@ -98,6 +104,9 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("is-current-route-duration-exceeded", NullValueHandling = NullValueHandling.Ignore)]
             public bool IsCurrentRouteDurationExceeded { get; set; }
+
+            [JsonProperty("is-controlled-automatically", NullValueHandling = NullValueHandling.Ignore)]
+            public bool IsControlledAutomatically { get; set; }
         }
 
 
