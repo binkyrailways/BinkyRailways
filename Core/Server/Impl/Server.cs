@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BinkyRailways.Core.Logging;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using BinkyRailways.Core.State.Impl;
 using Newtonsoft.Json;
 using NLog;
 using uPLibrary.Networking.M2Mqtt;
@@ -24,11 +25,13 @@ namespace BinkyRailways.Core.Server.Impl
         private string dataTopic;
         private readonly Logger Log;
         private readonly string clientID;
+        private readonly AsynchronousWorker worker;
 
         public Server()
         {
             Log = LogManager.GetLogger(LogNames.WebServer);
             clientID = Guid.NewGuid().ToString();
+            worker = new AsynchronousWorker("server");
         }
 
         /// <summary>
@@ -43,13 +46,13 @@ namespace BinkyRailways.Core.Server.Impl
                 {
                     if (railway != null)
                     {
-                        railway.PropertyChanged -= onRailwayPropertyChanged;
+                        railway.PropertyChanged -= syncOnRailwayPropertyChanged;
                     }
                     railway = value;
                     reconnectClient();
                     if (value != null)
                     {
-                        value.PropertyChanged += onRailwayPropertyChanged;
+                        value.PropertyChanged += syncOnRailwayPropertyChanged;
                     }
                     onRailwayChanged();
                 }
@@ -59,9 +62,9 @@ namespace BinkyRailways.Core.Server.Impl
         /// <summary>
         /// A property of the railway has changed. Reconnect to MQTT broker.
         /// </summary>
-        private void onRailwayPropertyChanged(object sender, EventArgs e)
+        private void syncOnRailwayPropertyChanged(object sender, EventArgs e)
         {
-            reconnectClient();
+            worker.PostAction(() => reconnectClient());
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace BinkyRailways.Core.Server.Impl
             }
         }
 
- 
+
         private void onRefresh()
         {
             onRailwayChanged();
@@ -115,14 +118,14 @@ namespace BinkyRailways.Core.Server.Impl
         {
             if (railway != null)
             {
-                publishMessage(new Messages.RailwayMessage(railway, railwayState));
+                publishAsyncMessage(new Messages.RailwayMessage(railway, railwayState));
             }
         }
 
         private void onModeChanged()
         {
             var msgType = (railwayState != null) ? Messages.TypeRunning : Messages.TypeEditing;
-            publishMessage(new Messages.BaseServerMessage { Type = msgType });
+            publishAsyncMessage(new Messages.BaseServerMessage { Type = msgType });
         }
 
         /// <summary>
@@ -132,7 +135,7 @@ namespace BinkyRailways.Core.Server.Impl
         {
             if (railwayState != null)
             {
-                publishMessage(new Messages.AutomaticLocControllerEnabledChangedMessage
+                publishAsyncMessage(new Messages.AutomaticLocControllerEnabledChangedMessage
                 {
                     Actual = railwayState.AutomaticLocController.Enabled.Actual,
                     Requested = railwayState.AutomaticLocController.Enabled.Requested,
@@ -147,7 +150,7 @@ namespace BinkyRailways.Core.Server.Impl
         {
             if (railwayState != null)
             {
-                publishMessage(new Messages.PowerChangedMessage
+                publishAsyncMessage(new Messages.PowerChangedMessage
                 {
                     Actual = railwayState.Power.Actual,
                     Requested = railwayState.Power.Requested,
@@ -173,16 +176,23 @@ namespace BinkyRailways.Core.Server.Impl
                     }
                     if (locEntity != null)
                     {
-                        publishMessage(new Messages.LocChangedMessage(locEntity, locState));
+                        publishAsyncMessage(new Messages.LocChangedMessage(locEntity, locState));
                     }
                 }
             }
         }
+        /// <summary>
+        /// Convert the given message to json and publish it on the worker thread.
+        /// </summary>
+        private void publishAsyncMessage(object msg)
+        {
+            worker.PostAction(() => publishSyncMessage(msg));
+        }
 
         /// <summary>
-        /// Convert the given message to json and publish it.
+        /// Convert the given message to json and publish it on the current thread.
         /// </summary>
-        private bool publishMessage(object msg)
+        private bool publishSyncMessage(object msg)
         {
             if ((client != null) && (client.IsConnected))
             {
@@ -234,9 +244,14 @@ namespace BinkyRailways.Core.Server.Impl
             if (e.Topic != controlTopic)
             {
                 return;
-            }          
+            }
             var payload = Encoding.UTF8.GetString(e.Message);
             var baseMsg = JsonConvert.DeserializeObject<Messages.BaseServerMessage>(payload);
+            worker.PostAction(() => onProcessMqttMessage(baseMsg, payload, e));
+        }
+
+        void onProcessMqttMessage(Messages.BaseServerMessage baseMsg, string payload, MqttMsgPublishEventArgs e)
+        { 
             switch (baseMsg.Type)
             {
                 case Messages.TypeRefresh:
@@ -356,7 +371,7 @@ namespace BinkyRailways.Core.Server.Impl
         {
             try
             {
-                Dispose();
+                closeMqttClient();
                 if (railway == null)
                 {
                     return false;
@@ -388,7 +403,7 @@ namespace BinkyRailways.Core.Server.Impl
             return true;
         }
 
-        public void Dispose()
+        private void closeMqttClient()
         {
             if (client != null)
             {
@@ -401,6 +416,12 @@ namespace BinkyRailways.Core.Server.Impl
                 }
                 client = null;
             }
+        }
+
+        public void Dispose()
+        {
+            closeMqttClient();
+            worker.Dispose();
         }
     }
 }
