@@ -26,8 +26,9 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="loc">The loc a route should be choosen for</param>
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
+        /// <param name="lastResort">If true, consider taking this route with less future constraints.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges)
+        public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges, bool lastResort)
         {
             ILocState lockedBy;
             if (!CanLock(route, loc, out lockedBy))

@@ -28,13 +28,22 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public override IRouteOption IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges)
+        public override IRouteOption IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges, bool lastResort)
         {
             // Perform standard testing first
-            var result = base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges);
+            var result = base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges, lastResort);
             if (!result.IsPossible)
             {
                 return result;
+            }
+
+            // If last resort, we're ok when critical section is empty.
+            if (lastResort)
+            {
+                if (route.CriticalSection.IsEmpty || route.CriticalSection.AllFree(loc))
+                {
+                    return result;
+                }
             }
 
             // Now test future possibilities of the entire railway to detect possible deadlocks.
@@ -200,7 +209,7 @@ namespace BinkyRailways.Core.State.Automatic
                 var locDirection = currentBlockEnterSide.Invert();
                 var avoidDirectionChanges = (loc.ChangeDirection == ChangeDirection.Avoid);
                 var routeFromFromBlock = state.RailwayState.GetAllPossibleNonClosedRoutesFromBlock(currentBlock);
-                var routeOptions = routeFromFromBlock.Select(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+                var routeOptions = routeFromFromBlock.Select(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges, false)).ToList();
                 var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
 
                 // If no routes, then return

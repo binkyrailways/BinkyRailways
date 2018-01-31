@@ -26,6 +26,7 @@ namespace BinkyRailways.Core.State.Automatic
         private readonly List<ISignalState> signals = new List<ISignalState>();
         private readonly IRailwayState railwayState;
         private readonly LiveRouteAvailabilityTester routeAvailabilityTester;
+        private readonly Dictionary<ILocState, DateTime> locHasNoRouteSince;
         private bool disposing;
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace BinkyRailways.Core.State.Automatic
         {
             this.railwayState = railwayState;
             var dispatcher = railwayState.Dispatcher;
+            locHasNoRouteSince = new Dictionary<ILocState, DateTime>();
             routeAvailabilityTester = new LiveRouteAvailabilityTester(railwayState);
             enabled = new StateProperty<bool>(null, false, null, OnRequestedEnabledChanged, null);
             heartBeat = new HeartBeat(this, dispatcher);
@@ -414,11 +416,11 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
         /// <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
         /// <returns>Null if not route is available.</returns>
-        private IRouteState ChooseRoute(ILocState loc, IBlockState fromBlock, BlockSide locDirection, bool avoidDirectionChanges)
+        private IRouteState ChooseRoute(ILocState loc, IBlockState fromBlock, BlockSide locDirection, bool avoidDirectionChanges, bool lastResort)
         {
             // Gather possible routes.
             var routeFromFromBlock = railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).ToList();
-            var routeOptions = routeFromFromBlock.Select(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+            var routeOptions = routeFromFromBlock.Select(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges, lastResort)).ToList();
             var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
             loc.LastRouteOptions.Actual = routeOptions.ToArray();
 
@@ -463,7 +465,7 @@ namespace BinkyRailways.Core.State.Automatic
             }
 
             // The loc can continue (if a free route is found)
-            var nextRoute = ChooseRoute(loc, route.Route.To, route.Route.ToBlockSide.Invert(), true);
+            var nextRoute = ChooseRoute(loc, route.Route.To, route.Route.ToBlockSide.Invert(), true, false);
             if (nextRoute == null)
             {
                 // No route available
@@ -536,12 +538,28 @@ namespace BinkyRailways.Core.State.Automatic
                 }
 
                 // Choose a next route now
-                route = ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false);
+                var lastResort = false;
+                DateTime since;
+                if (locHasNoRouteSince.TryGetValue(loc, out since))
+                {
+                    if (DateTime.Now.Subtract(since).TotalSeconds > 30)
+                    {
+                        lastResort = true;
+                    }
+                }
+                route = ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false, lastResort);
             }
             if (route == null)
             {
                 // No possible routes right now, try again
+                if (!locHasNoRouteSince.ContainsKey(loc))
+                {
+                    locHasNoRouteSince[loc] = DateTime.Now;
+                }
                 return TimeSpan.FromMinutes(1);
+            }else
+            {
+                locHasNoRouteSince.Remove(loc);
             }
 
             // Lock the route 
