@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using BinkyRailways.WinApp.Controls.VirtualCanvas;
 using BinkyRailways.WinApp.Controls.VirtualCanvas.Handlers;
 using BinkyRailways.WinApp.Items.Handlers;
 using BinkyRailways.WinApp.Items.Menu;
@@ -46,6 +48,34 @@ namespace BinkyRailways.WinApp.Items.Run
         /// Gets the blockstate represented by this item.
         /// </summary>
         internal IBlockState State { get { return state; } }
+
+        /// <summary>
+        /// Draw this block
+        /// </summary>
+        protected override void DrawItem(ItemPaintEventArgs e, Size sz)
+        {
+            base.DrawItem(e, sz);
+
+            var blockState = state.State;
+            var loc = state.LockedBy;
+            if ((loc != null) && (loc.CurrentBlock.Actual == state))
+            {
+                var reverse = Entity.ReverseSides;
+                if (loc.CurrentBlockEnterSide.Actual == BlockSide.Front)
+                {
+                    // If loc entered block at front, we go towards back.
+                    reverse = !reverse;
+                }
+                // Draw "loc direction" marker
+                using (var path = new GraphicsPath())
+                {
+                    var radius = (Math.Min(sz.Width, sz.Height) * 1.0f);
+                    var xOffset = radius * 0.5f;
+                    var pt = new PointF(reverse ? -xOffset : sz.Width + xOffset, sz.Height / 2.0f);
+                    e.Graphics.FillEllipse(Brushes.Black, new RectangleF(new PointF(pt.X - (radius / 4.0f), pt.Y - (radius / 4.0f)), new SizeF(radius / 2.0f, radius / 2.0f)));
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the colors of the background (front, back of block).
