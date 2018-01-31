@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State.Impl;
 
@@ -26,9 +27,9 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="loc">The loc a route should be choosen for</param>
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
-        /// <param name="lastResort">If true, consider taking this route with less future constraints.</param>
+        /// <param name="generationDelta">If larger than 0, look this number of generation less far in the future.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges, bool lastResort)
+        public virtual IRouteOption IsAvailableFor(IRouteState route, ILocState loc, BlockSide locDirection, bool avoidDirectionChanges, int generationDelta)
         {
             ILocState lockedBy;
             if (!CanLock(route, loc, out lockedBy))
@@ -53,7 +54,7 @@ namespace BinkyRailways.Core.State.Automatic
 
             // Check opposite traffic
             IBlockState blockContainingTraffic;
-            var maxSteps = railwayState.BlockStates.Count;
+            var maxSteps = Math.Max(1, railwayState.BlockStates.Count - generationDelta);
             if (HasTrafficInOppositeDirection(route, loc, maxSteps, out blockContainingTraffic))
             {
                 // Traffic in opposite direction found

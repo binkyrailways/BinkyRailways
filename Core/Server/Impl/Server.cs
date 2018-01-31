@@ -412,7 +412,13 @@ namespace BinkyRailways.Core.Server.Impl
                 client.ConnectionClosed -= onMqttConnectionClosed;
                 if (client.IsConnected)
                 {
-                    client.Disconnect();
+                    try
+                    {
+                        client.Disconnect();
+                    } catch
+                    {
+                        // Ignore
+                    }
                 }
                 client = null;
             }

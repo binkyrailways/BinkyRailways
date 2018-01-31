@@ -72,9 +72,8 @@ namespace BinkyRailways.WinApp.Items.Run
                     var radius = (Math.Min(sz.Width, sz.Height) * 1.0f);
                     var xOffset = 0.0f;// radius * 0.5f;
                     var p1 = new PointF(reverse ? -xOffset : sz.Width + xOffset, sz.Height / 2.0f);
-                    var p2 = new PointF(!reverse ? -xOffset : sz.Width + xOffset, sz.Height / 2.0f);
-                    e.Graphics.FillEllipse(Brushes.White, new RectangleF(new PointF(p1.X - (radius / 4.0f), p1.Y - (radius / 4.0f)), new SizeF(radius / 2.0f, radius / 2.0f)));
-                   // e.Graphics.FillEllipse(Brushes.Red, new RectangleF(new PointF(p2.X - (radius / 4.0f), p2.Y - (radius / 4.0f)), new SizeF(radius / 2.0f, radius / 2.0f)));
+                    var brush = loc.PossibleDeadlock.Actual ? Brushes.Orange : Brushes.White;
+                    e.Graphics.FillEllipse(brush, new RectangleF(new PointF(p1.X - (radius / 4.0f), p1.Y - (radius / 4.0f)), new SizeF(radius / 2.0f, radius / 2.0f)));
                 }
             }
         }
