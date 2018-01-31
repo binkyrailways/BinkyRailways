@@ -48,10 +48,18 @@ namespace BinkyRailways.WinApp.Items.Edit
                 {
                     e.Graphics.FillPath(brush, path);
                 }
+                {
+                    // Draw front marker
+                    var curClip = e.Graphics.Clip;
+                    var w = (Math.Min(sz.Width, sz.Height) * 0.5f);
+                    e.Graphics.Clip = new Region(new RectangleF(reverse ? 0 : sz.Width - w, 0, w, sz.Height));
+                    e.Graphics.FillPath(Brushes.Aqua, path);
+                    e.Graphics.Clip = curClip;
+                }
                 e.Graphics.DrawPath(Entity.IsStation ? Pens.DarkRed : Pens.Blue, path);                    
             }
             // Draw "front" marker
-            using (var path = new GraphicsPath())
+            /*using (var path = new GraphicsPath())
             {
                 var radius = (Math.Min(sz.Width, sz.Height) * 0.5f);
                 var xOffset = radius * 1.3f;
@@ -62,7 +70,7 @@ namespace BinkyRailways.WinApp.Items.Edit
                 path.CloseFigure();
                 e.Graphics.FillPath(Brushes.Green, path);
                 e.Graphics.DrawPath(Pens.Yellow, path);
-            }
+            }*/
             using (var brush = new SolidBrush(TextColor))
             {
                 var format = new StringFormat();
