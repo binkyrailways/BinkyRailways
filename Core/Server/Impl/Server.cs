@@ -311,6 +311,32 @@ namespace BinkyRailways.Core.Server.Impl
                         }
                     }
                     break;
+                case Messages.TypeDirectionForward:
+                    {
+                        Log.Debug("Control loc manually message received");
+                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        {
+                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
+                            if (locState != null)
+                            {
+                                locState.Direction.Requested = LocDirection.Forward;
+                            }
+                        }
+                    }
+                    break;
+                case Messages.TypeDirectionReverse:
+                    {
+                        Log.Debug("Control loc manually message received");
+                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        {
+                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
+                            if (locState != null)
+                            {
+                                locState.Direction.Requested = LocDirection.Reverse;
+                            }
+                        }
+                    }
+                    break;
                 default:
                     Log.Info("Unhandled Mqtt message received: " + baseMsg.Type);
                     break;

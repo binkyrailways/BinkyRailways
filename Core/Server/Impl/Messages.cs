@@ -24,6 +24,8 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypeAutomaticLocControllerOff = "automatic-loccontroller-off";
         public const string TypeControlAutomatically = "control-automatically";
         public const string TypeControlManually = "control-manually";
+        public const string TypeDirectionForward = "direction-forward";
+        public const string TypeDirectionReverse = "direction-reverse";
 
         [JsonObject]
         internal class BaseServerMessage
@@ -81,6 +83,7 @@ namespace BinkyRailways.Core.Server.Impl
                     IsAssigned = state.CurrentBlock.Actual != null;
                     IsCurrentRouteDurationExceeded = state.IsCurrentRouteDurationExceeded;
                     IsControlledAutomatically = state.ControlledAutomatically.Actual;
+                    Direction = state.Direction.Actual.ToString().ToLower();
                 }
             }
 
@@ -107,6 +110,9 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("is-controlled-automatically", NullValueHandling = NullValueHandling.Ignore)]
             public bool IsControlledAutomatically { get; set; }
+
+            [JsonProperty("direction", NullValueHandling = NullValueHandling.Ignore)]
+            public string Direction { get; set; }
         }
 
 
