@@ -35,6 +35,12 @@ namespace BinkyRailways.WinApp.Controls.VirtualCanvas
         #endregion
 
         /// <summary>
+        /// Priority is used to order items.
+        /// Low priority is drawn first, high is drawn on top.
+        /// </summary>
+        public virtual int Priority { get { return 0; } }
+
+        /// <summary>
         /// Gets the preferred size of this item, expressed in units chosen for the virtual canvas.
         /// </summary>
         public abstract Size PreferredSize { get; }

@@ -21,6 +21,8 @@ namespace BinkyRailways.WinApp.Items.Edit
         {
         }
 
+        public override int Priority => 3;
+
         /// <summary>
         /// Draw this item on the given graphics.
         /// The graphics is transformed such that this item can draw starting at (0, 0).

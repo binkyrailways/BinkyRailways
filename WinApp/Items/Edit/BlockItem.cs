@@ -22,6 +22,8 @@ namespace BinkyRailways.WinApp.Items.Edit
         {
         }
 
+        public override int Priority => 5;
+
         /// <summary>
         /// Draw this item on the given graphics.
         /// The graphics is transformed such that this item can draw starting at (0, 0).
@@ -48,15 +50,6 @@ namespace BinkyRailways.WinApp.Items.Edit
                 }
                 e.Graphics.DrawPath(Entity.IsStation ? Pens.DarkRed : Pens.Blue, path);                    
             }
-            using (var brush = new SolidBrush(TextColor))
-            {
-                var format = new StringFormat();
-                format.LineAlignment = StringAlignment.Center;
-                format.Alignment = StringAlignment.Center;
-                format.FormatFlags = StringFormatFlags.NoWrap;
-                e.Graphics.DrawString(Text, SystemFonts.DefaultFont, brush,
-                    new RectangleF(0, 0, sz.Width, sz.Height), format);
-            }
             // Draw "front" marker
             using (var path = new GraphicsPath())
             {
@@ -69,6 +62,15 @@ namespace BinkyRailways.WinApp.Items.Edit
                 path.CloseFigure();
                 e.Graphics.FillPath(Brushes.Green, path);
                 e.Graphics.DrawPath(Pens.Yellow, path);
+            }
+            using (var brush = new SolidBrush(TextColor))
+            {
+                var format = new StringFormat();
+                format.LineAlignment = StringAlignment.Center;
+                format.Alignment = StringAlignment.Center;
+                format.FormatFlags = StringFormatFlags.NoWrap;
+                e.Graphics.DrawString(Text, SystemFonts.DefaultFont, brush,
+                    new RectangleF(0, 0, sz.Width, sz.Height), format);
             }
         }
 
