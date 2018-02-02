@@ -26,6 +26,7 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypeControlManually = "control-manually";
         public const string TypeDirectionForward = "direction-forward";
         public const string TypeDirectionReverse = "direction-reverse";
+        public const string TypeRemoveFromTrack = "remove-from-track";
 
         [JsonObject]
         internal class BaseServerMessage
@@ -84,6 +85,7 @@ namespace BinkyRailways.Core.Server.Impl
                     IsCurrentRouteDurationExceeded = state.IsCurrentRouteDurationExceeded;
                     IsControlledAutomatically = state.ControlledAutomatically.Actual;
                     Direction = state.Direction.Actual.ToString().ToLower();
+                    HasPossibleDeadlock = state.PossibleDeadlock.Actual;
                 }
             }
 
@@ -113,6 +115,9 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("direction", NullValueHandling = NullValueHandling.Ignore)]
             public string Direction { get; set; }
+
+            [JsonProperty("has-possible-deadlock", NullValueHandling = NullValueHandling.Ignore)]
+            public bool HasPossibleDeadlock { get; set; }
         }
 
 

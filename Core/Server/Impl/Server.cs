@@ -352,6 +352,19 @@ namespace BinkyRailways.Core.Server.Impl
                         }
                     }
                     break;
+                case Messages.TypeRemoveFromTrack:
+                    {
+                        Log.Debug("Remove loc from track message received");
+                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        {
+                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
+                            if (locState != null)
+                            {
+                                locState.Reset();
+                            }
+                        }
+                    }
+                    break;
                 default:
                     Log.Info("Unhandled Mqtt message received: " + baseMsg.Type);
                     break;
