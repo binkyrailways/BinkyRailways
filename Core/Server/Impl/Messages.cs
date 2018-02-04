@@ -15,6 +15,7 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypePowerChanged = "power-changed";
         public const string TypeAutomaticLocControllerEnabledChanged = "automatic-loccontroller-changed";
         public const string TypLocChanged = "loc-changed";
+        public const string TypeBlockChanged = "block-changed";
         public const string TypeTimeChanged = "time-changed";
 
         // Control message types
@@ -29,6 +30,8 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypeDirectionReverse = "direction-reverse";
         public const string TypeRemoveFromTrack = "remove-from-track";
         public const string TypeSpeed = "speed";
+        public const string TypeOpenBlock = "open-block";
+        public const string TypeCloseBlock = "close-block";
 
         [JsonObject]
         internal class BaseServerMessage
@@ -123,31 +126,31 @@ namespace BinkyRailways.Core.Server.Impl
             [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
             public string Description { get; set; }
 
-            [JsonProperty("owner", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("owner", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public string Owner { get; set; }
 
-            [JsonProperty("speed", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("speed", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public int Speed { get; set; }
 
-            [JsonProperty("speedText", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("speedText", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public string SpeedText { get; set; }
 
-            [JsonProperty("stateText", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("stateText", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public string StateText { get; set; }
 
-            [JsonProperty("is-assigned", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("is-assigned", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public bool IsAssigned { get; set; }
 
-            [JsonProperty("is-current-route-duration-exceeded", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("is-current-route-duration-exceeded", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public bool IsCurrentRouteDurationExceeded { get; set; }
 
-            [JsonProperty("is-controlled-automatically", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("is-controlled-automatically", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public bool IsControlledAutomatically { get; set; }
 
             [JsonProperty("direction", NullValueHandling = NullValueHandling.Ignore)]
             public string Direction { get; set; }
 
-            [JsonProperty("has-possible-deadlock", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("has-possible-deadlock", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
             public bool HasPossibleDeadlock { get; set; }
         }
 
@@ -160,6 +163,9 @@ namespace BinkyRailways.Core.Server.Impl
                 Description = block.Description;
                 if (state != null)
                 {
+                    State = state.State.ToString().ToLower();
+                    LockedBy = state.LockedBy != null ? state.LockedBy.EntityId : "";
+                    IsClosed = state.Closed.Actual;
                 }
             }
 
@@ -168,6 +174,15 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
             public string Description { get; set; }
+
+            [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+            public string State { get; set; }
+
+            [JsonProperty("locked-by", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+            public string LockedBy { get; set; }
+
+            [JsonProperty("is-closed", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+            public bool IsClosed { get; set; }
         }
 
         [JsonObject]
@@ -228,6 +243,19 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("loc")]
             public Loc Loc{ get; set; }
+        }
+
+        [JsonObject]
+        internal class BlockChangedMessage : BaseServerMessage
+        {
+            public BlockChangedMessage(IBlock block, IBlockState blockState)
+            {
+                Type = TypeBlockChanged;
+                Block = new Block(block, blockState);
+            }
+
+            [JsonProperty("block")]
+            public Block Block { get; set; }
         }
     }
 }

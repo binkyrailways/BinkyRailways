@@ -7,6 +7,7 @@ using BinkyRailways.Core.Logging;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
 using BinkyRailways.Core.State.Impl;
+using BinkyRailways.Core.Util;
 using Newtonsoft.Json;
 using NLog;
 using uPLibrary.Networking.M2Mqtt;
@@ -83,10 +84,8 @@ namespace BinkyRailways.Core.Server.Impl
                         railwayState.Power.RequestedChanged -= onPowerChanged;
                         railwayState.AutomaticLocController.Enabled.ActualChanged -= onAutomaticLocControllerEnabledChanged;
                         railwayState.AutomaticLocController.Enabled.RequestedChanged -= onAutomaticLocControllerEnabledChanged;
-                        foreach (var locState in railwayState.LocStates)
-                        {
-                            locState.ActualStateChanged -= onActualLocStateChanged;
-                        }
+                        railwayState.BlockStates.Foreach(x => x.ActualStateChanged -= onActualBlockStateChanged);
+                        railwayState.LocStates.Foreach(x => x.ActualStateChanged -= onActualLocStateChanged);
                     }
                     railwayState = value;
                     if (value != null)
@@ -95,10 +94,8 @@ namespace BinkyRailways.Core.Server.Impl
                         value.Power.RequestedChanged += onPowerChanged;
                         value.AutomaticLocController.Enabled.ActualChanged += onAutomaticLocControllerEnabledChanged;
                         value.AutomaticLocController.Enabled.RequestedChanged += onAutomaticLocControllerEnabledChanged;
-                        foreach (var locState in railwayState.LocStates)
-                        {
-                            locState.ActualStateChanged += onActualLocStateChanged;
-                        }
+                        railwayState.BlockStates.Foreach(x => x.ActualStateChanged += onActualBlockStateChanged);
+                        railwayState.LocStates.Foreach(x => x.ActualStateChanged += onActualLocStateChanged);
                     }
                     onModeChanged();
                 }
@@ -190,6 +187,24 @@ namespace BinkyRailways.Core.Server.Impl
                 }
             }
         }
+
+        private void onActualBlockStateChanged(object sender, EventArgs e)
+        {
+            if (railwayState != null)
+            {
+                var blockState = sender as IBlockState;
+                if (blockState != null)
+                {
+                    IBlock block;
+                    IBlockState tmp;
+                    if (tryGetBlock(blockState.EntityId, out block, out tmp))
+                    {
+                        publishAsyncMessage(new Messages.BlockChangedMessage(block, blockState));
+                    }
+                }
+            }
+        }
+        
         /// <summary>
         /// Convert the given message to json and publish it on the worker thread.
         /// </summary>
@@ -369,10 +384,59 @@ namespace BinkyRailways.Core.Server.Impl
                         }
                     }
                     break;
+                case Messages.TypeOpenBlock:
+                    {
+                        Log.Debug("Open-block message received");
+                        IBlock block;
+                        IBlockState blockState;
+                        if (tryGetBlock(baseMsg.Id, out block, out blockState) && (blockState != null))
+                        {
+                            blockState.Closed.Requested = false;
+                        }
+                    }
+                    break;
+                case Messages.TypeCloseBlock:
+                    {
+                        Log.Debug("Close-block message received");
+                        IBlock block;
+                        IBlockState blockState;
+                        if (tryGetBlock(baseMsg.Id, out block, out blockState) && (blockState != null))
+                        {
+                            blockState.Closed.Requested = true;
+                        }
+                    }
+                    break;
                 default:
                     Log.Info("Unhandled Mqtt message received: " + baseMsg.Type);
                     break;
             }
+        }
+
+        private bool tryGetBlock(string id, out IBlock block, out IBlockState blockState)
+        {
+            block = null;
+            blockState = null;
+            if (railwayState != null)
+            {
+                blockState = railwayState.BlockStates.FirstOrDefault(x => x.EntityId == id);
+                if (blockState == null)
+                {
+                    return false;
+                }
+            }
+            foreach (var module in railway.Modules)
+            {
+                IModule moduleEntity;
+                if (module.TryResolve(out moduleEntity))
+                {
+                    block = moduleEntity.Blocks.FirstOrDefault(b => b.Id == id);
+                }
+                if (block != null)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool tryGetLocState(string id, out ILocState locState)
