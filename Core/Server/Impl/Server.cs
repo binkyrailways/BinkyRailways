@@ -419,7 +419,35 @@ namespace BinkyRailways.Core.Server.Impl
                 Log.Error("Failed to connect to MQTT server: " + ex);
                 return false;
             }
+            locChangeTimer();
             return true;
+        }
+
+        private void locChangeTimer()
+        {
+            var client = this.client;
+            if (client == null)
+            {
+                return;
+            }
+            var railwayState = this.railwayState;
+            if (railwayState != null)
+            {
+                foreach (var loc in railwayState.LocStates)
+                {
+                    if (loc.ControlledAutomatically.Actual)
+                    {
+                        onActualLocStateChanged(loc, EventArgs.Empty);
+                    }
+                }
+            }
+            worker.PostDelayedAction(TimeSpan.FromSeconds(2), () => {
+                if (this.client != client)
+                {
+                    return;
+                }
+                locChangeTimer();
+            });
         }
 
         private void closeMqttClient()
