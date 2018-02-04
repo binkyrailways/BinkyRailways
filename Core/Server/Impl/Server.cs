@@ -303,65 +303,60 @@ namespace BinkyRailways.Core.Server.Impl
                 case Messages.TypeControlAutomatically:
                     {
                         Log.Debug("Control loc automatically message received");
-                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
                         {
-                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
-                            if (locState != null)
-                            {
-                                locState.ControlledAutomatically.Requested = true;
-                            }
+                            locState.ControlledAutomatically.Requested = true;
                         }
                     }
                     break;
                 case Messages.TypeControlManually:
                     {
                         Log.Debug("Control loc manually message received");
-                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
                         {
-                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
-                            if (locState != null)
-                            {
-                                locState.ControlledAutomatically.Requested = false;
-                            }
+                            locState.ControlledAutomatically.Requested = false;
                         }
                     }
                     break;
                 case Messages.TypeDirectionForward:
                     {
                         Log.Debug("Control loc manually message received");
-                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
                         {
-                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
-                            if (locState != null)
-                            {
-                                locState.Direction.Requested = LocDirection.Forward;
-                            }
+                            locState.Direction.Requested = LocDirection.Forward;
                         }
                     }
                     break;
                 case Messages.TypeDirectionReverse:
                     {
                         Log.Debug("Control loc manually message received");
-                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
                         {
-                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
-                            if (locState != null)
-                            {
-                                locState.Direction.Requested = LocDirection.Reverse;
-                            }
+                            locState.Direction.Requested = LocDirection.Reverse;
                         }
                     }
                     break;
                 case Messages.TypeRemoveFromTrack:
                     {
                         Log.Debug("Remove loc from track message received");
-                        if ((railwayState != null) && !string.IsNullOrEmpty(baseMsg.Id))
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
                         {
-                            var locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == baseMsg.Id);
-                            if (locState != null)
-                            {
-                                locState.Reset();
-                            }
+                            locState.Reset();
+                        }
+                    }
+                    break;
+                case Messages.TypeSpeed:
+                    {
+                        Log.Debug("Speed message received");
+                        ILocState locState;
+                        if (tryGetLocState(baseMsg.Id, out locState))
+                        {
+                            locState.Speed.Requested = baseMsg.Speed;
                         }
                     }
                     break;
@@ -371,11 +366,22 @@ namespace BinkyRailways.Core.Server.Impl
             }
         }
 
+        private bool tryGetLocState(string id, out ILocState locState)
+        {
+            var railwayState = this.railwayState;
+            if ((railwayState != null) && !string.IsNullOrEmpty(id))
+            {
+                locState = railwayState.LocStates.FirstOrDefault(x => x.EntityId == id);
+                return (locState != null);
+            }
+            locState = null;
+            return false;
+        }
 
-        /// <summary>
-        /// Connection to MQTT server has been closed.
-        /// </summary>
-        void onMqttConnectionClosed(object sender, EventArgs e)
+            /// <summary>
+            /// Connection to MQTT server has been closed.
+            /// </summary>
+            void onMqttConnectionClosed(object sender, EventArgs e)
         {
             Log.Error("Connection to MQTT server closed");
         }

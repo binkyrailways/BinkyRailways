@@ -27,6 +27,7 @@ namespace BinkyRailways.Core.Server.Impl
         public const string TypeDirectionForward = "direction-forward";
         public const string TypeDirectionReverse = "direction-reverse";
         public const string TypeRemoveFromTrack = "remove-from-track";
+        public const string TypeSpeed = "speed";
 
         [JsonObject]
         internal class BaseServerMessage
@@ -36,6 +37,9 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
             public string Id { get; set; }
+
+            [JsonProperty("speed", NullValueHandling = NullValueHandling.Ignore)]
+            public int Speed { get; set; }
         }
 
         [JsonObject]
@@ -79,6 +83,7 @@ namespace BinkyRailways.Core.Server.Impl
                 Owner = loc.Owner;
                 if (state != null)
                 {
+                    Speed = state.Speed.Actual;
                     SpeedText = state.GetSpeedText();
                     StateText = state.GetStateText();
                     IsAssigned = state.CurrentBlock.Actual != null;
@@ -97,6 +102,9 @@ namespace BinkyRailways.Core.Server.Impl
 
             [JsonProperty("owner", NullValueHandling = NullValueHandling.Ignore)]
             public string Owner { get; set; }
+
+            [JsonProperty("speed", NullValueHandling = NullValueHandling.Ignore)]
+            public int Speed { get; set; }
 
             [JsonProperty("speedText", NullValueHandling = NullValueHandling.Ignore)]
             public string SpeedText { get; set; }
