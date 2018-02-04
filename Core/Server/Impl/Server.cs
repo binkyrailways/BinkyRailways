@@ -112,6 +112,7 @@ namespace BinkyRailways.Core.Server.Impl
             onModeChanged();
             onPowerChanged(this, EventArgs.Empty);
             onAutomaticLocControllerEnabledChanged(this, EventArgs.Empty);
+            onTimeChanged();
         }
 
         private void onRailwayChanged()
@@ -119,6 +120,14 @@ namespace BinkyRailways.Core.Server.Impl
             if (railway != null)
             {
                 publishAsyncMessage(new Messages.RailwayMessage(railway, railwayState));
+            }
+        }
+
+        private void onTimeChanged()
+        {
+            if (railwayState != null)
+            {
+                publishAsyncMessage(new Messages.TimeChangedMessage(railwayState.ModelTime.Actual));
             }
         }
 
@@ -419,11 +428,14 @@ namespace BinkyRailways.Core.Server.Impl
                 Log.Error("Failed to connect to MQTT server: " + ex);
                 return false;
             }
-            locChangeTimer();
+            onTimer();
             return true;
         }
 
-        private void locChangeTimer()
+        /// <summary>
+        /// Called on a timer to send interval based updates.
+        /// </summary>
+        private void onTimer()
         {
             var client = this.client;
             if (client == null)
@@ -441,12 +453,13 @@ namespace BinkyRailways.Core.Server.Impl
                     }
                 }
             }
+            onTimeChanged();
             worker.PostDelayedAction(TimeSpan.FromSeconds(2), () => {
                 if (this.client != client)
                 {
                     return;
                 }
-                locChangeTimer();
+                onTimer();
             });
         }
 
