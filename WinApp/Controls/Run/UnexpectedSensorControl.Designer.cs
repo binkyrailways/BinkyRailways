@@ -32,7 +32,7 @@
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.cmdAssignBack = new System.Windows.Forms.Button();
             this.lvOptions = new System.Windows.Forms.ListView();
-            this.chBlock = new System.Windows.Forms.ColumnHeader();
+            this.chBlock = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmdAssignFront = new System.Windows.Forms.Button();
             this.lbInfo = new System.Windows.Forms.Label();
             this.tlpMain.SuspendLayout();
@@ -81,7 +81,6 @@
             // lbInfo
             // 
             resources.ApplyResources(this.lbInfo, "lbInfo");
-            this.tlpMain.SetColumnSpan(this.lbInfo, 2);
             this.lbInfo.Name = "lbInfo";
             // 
             // UnexpectedSensorControl
@@ -105,6 +104,5 @@
         private System.Windows.Forms.Button cmdAssignFront;
         private System.Windows.Forms.Label lbInfo;
         private System.Windows.Forms.Button cmdAssignBack;
-
     }
 }
