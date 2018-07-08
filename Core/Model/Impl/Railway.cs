@@ -468,7 +468,7 @@ namespace BinkyRailways.Core.Model.Impl
         /// <summary>
         /// Preferred command station for Mqtt addresses.
         /// </summary>
-        ICommandStation IRailway.PreferredMqttCommandStation
+        ICommandStation IRailway.PreferredBinkyNetCommandStation
         {
             get { return PreferredMqttCommandStation; }
             set { PreferredMqttCommandStation = (CommandStation)value; }

@@ -176,7 +176,7 @@ namespace BinkyRailways.Core.Model
                 case AddressType.Motorola:
                 case AddressType.Mfx:
                     return true;
-                case AddressType.Mqtt:
+                case AddressType.BinkyNet:
                     return false;
                 default:
                     throw new ArgumentException("Unknown address type " + addressType);
@@ -198,7 +198,7 @@ namespace BinkyRailways.Core.Model
                     return 80;
                 case AddressType.Mfx:
                     return 16000;
-                case AddressType.Mqtt:
+                case AddressType.BinkyNet:
                     return 0;
                 default:
                     throw new ArgumentException("Unknown address type " + addressType);
@@ -220,7 +220,7 @@ namespace BinkyRailways.Core.Model
                     return 1;
                 case AddressType.Mfx:
                     return 1;
-                case AddressType.Mqtt:
+                case AddressType.BinkyNet:
                     return 0;
                 default:
                     throw new ArgumentException("Unknown address type " + addressType);

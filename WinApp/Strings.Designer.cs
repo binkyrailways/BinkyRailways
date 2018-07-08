@@ -1145,6 +1145,15 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New BinkyNet Command station.
+        /// </summary>
+        internal static string NewBinkyNetCommandStationDescription {
+            get {
+                return ResourceManager.GetString("NewBinkyNetCommandStationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New block.
         /// </summary>
         internal static string NewBlockDescription {
@@ -1240,15 +1249,6 @@ namespace BinkyRailways.WinApp {
         internal static string NewModuleDescription {
             get {
                 return ResourceManager.GetString("NewModuleDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New MQTT Command station.
-        /// </summary>
-        internal static string NewMqttCommandStationDescription {
-            get {
-                return ResourceManager.GetString("NewMqttCommandStationDescription", resourceCulture);
             }
         }
         
@@ -1469,6 +1469,24 @@ namespace BinkyRailways.WinApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command station used for BinkyNet addresses in case no specific address space is specified..
+        /// </summary>
+        internal static string PreferredBinkyNetCommandStationHelp {
+            get {
+                return ResourceManager.GetString("PreferredBinkyNetCommandStationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred BinkyNet command station.
+        /// </summary>
+        internal static string PreferredBinkyNetCommandStationName {
+            get {
+                return ResourceManager.GetString("PreferredBinkyNetCommandStationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command station used for DCC addresses in case no specific address space is specified..
         /// </summary>
         internal static string PreferredDccCommandStationHelp {
@@ -1537,24 +1555,6 @@ namespace BinkyRailways.WinApp {
         internal static string PreferredMotorolaCommandStationName {
             get {
                 return ResourceManager.GetString("PreferredMotorolaCommandStationName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command station used for Mqtt addresses in case no specific address space is specified..
-        /// </summary>
-        internal static string PreferredMqttCommandStationHelp {
-            get {
-                return ResourceManager.GetString("PreferredMqttCommandStationHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preferred Mqtt command station.
-        /// </summary>
-        internal static string PreferredMqttCommandStationName {
-            get {
-                return ResourceManager.GetString("PreferredMqttCommandStationName", resourceCulture);
             }
         }
         

@@ -293,9 +293,9 @@ namespace BinkyRailways.Core.Storage
         /// <summary>
         /// Add a new MQTT command station.
         /// </summary>
-        IMqttCommandStation IPackage.AddNewMqttCommandStation()
+        IBinkyNetCommandStation IPackage.AddNewBinkyNetCommandStation()
         {
-            var item = new MqttCommandStation();
+            var item = new BinkyNetCommandStation();
             Add(item);
             return item;
         }

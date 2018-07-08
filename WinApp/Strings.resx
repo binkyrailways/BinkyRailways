@@ -862,14 +862,14 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="MinimumLocsOnTrackForMinimumLocsInGroupStartName" xml:space="preserve">
     <value>Minimum locs on track</value>
   </data>
-  <data name="NewMqttCommandStationDescription" xml:space="preserve">
-    <value>New MQTT Command station</value>
+  <data name="NewBinkyNetCommandStationDescription" xml:space="preserve">
+    <value>New BinkyNet Command station</value>
   </data>
-  <data name="PreferredMqttCommandStationHelp" xml:space="preserve">
-    <value>Command station used for Mqtt addresses in case no specific address space is specified.</value>
+  <data name="PreferredBinkyNetCommandStationHelp" xml:space="preserve">
+    <value>Command station used for BinkyNet addresses in case no specific address space is specified.</value>
   </data>
-  <data name="PreferredMqttCommandStationName" xml:space="preserve">
-    <value>Preferred Mqtt command station</value>
+  <data name="PreferredBinkyNetCommandStationName" xml:space="preserve">
+    <value>Preferred BinkyNet command station</value>
   </data>
   <data name="PortHelp" xml:space="preserve">
     <value>TCP port</value>

@@ -72,7 +72,7 @@ namespace BinkyRailways.Core.Model
         /// <summary>
         /// Preferred command station for Mqtt addresses.
         /// </summary>
-        ICommandStation PreferredMqttCommandStation { get; set; }
+        ICommandStation PreferredBinkyNetCommandStation { get; set; }
 
         /// <summary>
         /// Network hostname of the MQTT server to post server messages to.

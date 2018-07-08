@@ -3,7 +3,7 @@ using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State.Impl.DccOverRs232;
 using BinkyRailways.Core.State.Impl.Ecos;
 using BinkyRailways.Core.State.Impl.LocoBuffer;
-using BinkyRailways.Core.State.Impl.Mqtt;
+using BinkyRailways.Core.State.Impl.BinkyNet;
 using BinkyRailways.Core.Util;
 using BinkyRailways.Core.State.Impl.P50x;
 
@@ -74,9 +74,9 @@ namespace BinkyRailways.Core.State.Impl
             return new LocoBufferCommandStationState(entity, data, Empty<string>.Array);
         }
 
-        public override IEntityState Visit(IMqttCommandStation entity, RailwayState data)
+        public override IEntityState Visit(IBinkyNetCommandStation entity, RailwayState data)
         {
-            return new MqttCommandStationState(entity, data, Empty<string>.Array);
+            return new BinkyNetCommandStationState(entity, data, Empty<string>.Array);
         }
 
         public override IEntityState Visit(IP50xCommandStation entity, RailwayState data)

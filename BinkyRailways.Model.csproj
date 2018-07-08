@@ -83,9 +83,9 @@
     <Compile Include="Core\Model\IBlockGroup.cs" />
     <Compile Include="Core\Model\Impl\BlockGroup.cs" />
     <Compile Include="Core\Model\Impl\Module.BlockGroupSet.cs" />
-    <Compile Include="Core\Model\Impl\MqttCommandStation.cs" />
+    <Compile Include="Core\Model\Impl\BinkyNetCommandStation.cs" />
     <Compile Include="Core\Model\Impl\P50xCommandStation.cs" />
-    <Compile Include="Core\Model\IMqttCommandStation.cs" />
+    <Compile Include="Core\Model\IBinkyNetCommandStation.cs" />
     <Compile Include="Core\Model\IP50xCommandStation.cs" />
     <Compile Include="Core\Model\StationMode.cs" />
     <Compile Include="Core\Model\IEcosCommandStation.cs" />

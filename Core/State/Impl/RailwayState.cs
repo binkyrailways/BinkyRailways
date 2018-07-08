@@ -282,8 +282,8 @@ namespace BinkyRailways.Core.State.Impl
                 case AddressType.Mfx:
                     entity = Entity.PreferredMfxCommandStation;
                     break;
-                case AddressType.Mqtt:
-                    entity = Entity.PreferredMqttCommandStation;
+                case AddressType.BinkyNet:
+                    entity = Entity.PreferredBinkyNetCommandStation;
                     break;
                 default:
                     throw new ArgumentException("Unknown address type: " + addressType);
