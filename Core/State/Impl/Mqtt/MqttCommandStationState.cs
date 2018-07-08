@@ -23,6 +23,7 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         private bool networkIdle = false;
         private MqttClient client;
         private readonly string clientID;
+        private readonly string sender;
         private readonly string topicPrefix;
         private readonly Dictionary<ushort, CompletionCallback> completionCallbacks;
 
@@ -34,6 +35,7 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             completionCallbacks = new Dictionary<ushort, CompletionCallback>();
             clientID = entity.Id;
+            sender = "binkyrailways";
             topicPrefix = entity.TopicPrefix;
         }
 
@@ -53,9 +55,11 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             // Send power off message
             var msg = new PowerMessage()
             {
-                Active = value ? 1 : 0
+                Sender = sender,
+                Mode = MessageBase.ModeRequest,
+                Active = value
             };
-            publishMessage("/power", msg, (e) =>
+            publishMessage(msg.Topic, msg, (e) =>
             {
                 if (e.IsPublished)
                 {
@@ -82,11 +86,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
 
             var msg = new LocMessage()
             {
+                Sender = sender,
+                Mode = MessageBase.ModeRequest,
                 Address = loc.Address.Value,
                 Direction = loc.Direction.Requested.ToString().ToLower(),
                 Speed = loc.SpeedInSteps.Requested,
             };
-            publishMessage("/loc", msg, (e) =>
+            publishMessage(msg.Topic, msg, (e) =>
             {
                 if (e.IsPublished)
                 {
@@ -103,12 +109,14 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             Log.Trace("OnSendBinaryOutput: {0}", output);
 
-            var msg = new BinaryOutputMessage()
+            var msg = new BinaryMessage()
             {
+                Sender = sender,
+                Mode = MessageBase.ModeRequest,
                 Address = output.Address.Value,
-                Value = output.Active.Requested ? 1 : 0
+                Value = output.Active.Requested
             };
-            publishMessage("/binary-output", msg, (e) =>
+            publishMessage(msg.Topic, msg, (e) =>
             {
                 if (e.IsPublished)
                 {
@@ -124,11 +132,13 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             Log.Trace("OnSendClock4StageOutput: {0}", output);
 
-            var msg = new Clock4StageMessage()
+            var msg = new ClockMessage()
             {
-                Stage = output.Period.Requested.ToString().ToLower()
+                Sender = sender,
+                Mode = MessageBase.ModeActual,
+                Period = output.Period.Requested.ToString().ToLower()
             };
-            publishMessage("/clock-4-stage", msg, (e) =>
+            publishMessage(msg.Topic, msg, (e) =>
             {
                 if (e.IsPublished)
                 {
@@ -144,12 +154,14 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         {
             Log.Trace("OnSendBinaryOutput: {0}, {1}", address, value);
 
-            var msg = new BinaryOutputMessage()
+            var msg = new BinaryMessage()
             {
+                Sender = sender,
+                Mode = MessageBase.ModeRequest,
                 Address = address.Value,
-                Value = value ? 1 : 0
+                Value = value
             };
-            publishMessage("/binary-output", msg, null);
+            publishMessage(msg.Topic, msg, null);
         }
 
         /// <summary>
@@ -167,10 +179,12 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
             }
             var msg = new SwitchMessage()
             {
+                Sender = sender,
+                Mode = MessageBase.ModeRequest,
                 Address = @switch.Address.Value,
                 Direction = direction.ToString().ToLower()
             };
-            publishMessage("/switch", msg, null);
+            publishMessage(msg.Topic, msg, null);
         }
 
 
@@ -236,21 +250,29 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 return;
             }
             var topic = e.Topic.Substring(topicPrefix.Length);
+            var topicParts = topic.Split('/');
             var payload = Encoding.UTF8.GetString(e.Message);
-            switch (topic)
+            switch (topicParts.Last())
             {
-                case "/binary-sensor":
+                case "binary":
                     {
                         Log.Debug("Binary sensor message received: " + payload);
-                        var msg = JsonConvert.DeserializeObject<BinarySensorMessage>(payload);
-                        onBinarySensorMessageReceived(msg);
+                        var msg = JsonConvert.DeserializeObject<BinaryMessage>(payload);
+                        onBinaryMessageReceived(msg);
                     }
                     break;
-                case "/power":
+                case "power":
                     {
                         Log.Debug("Power message received: " + payload);
                         var msg = JsonConvert.DeserializeObject<PowerMessage>(payload);
                         onPowerMessageReceived(msg);
+                    }
+                    break;
+                case "switch":
+                    {
+                        Log.Debug("Switch message received: " + payload);
+                        var msg = JsonConvert.DeserializeObject<SwitchMessage>(payload);
+                        onSwitchMessageReceived(msg);
                     }
                     break;
                 default:
@@ -260,14 +282,17 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         }
 
         /// <summary>
-        /// Binary sensor message has been received.
+        /// Binary message has been received.
         /// </summary>
-        private void onBinarySensorMessageReceived(BinarySensorMessage msg)
+        private void onBinaryMessageReceived(BinaryMessage msg)
         {
-            var sensor = RailwayState.SensorStates.FirstOrDefault(x => (x.Address.Value == msg.Address) && (x.Address.Network.Type == AddressType.Mqtt));
-            if (sensor != null)
+            if (msg.IsActual && msg.Sender != sender)
             {
-                sensor.Active.Actual = (msg.Value != 0);
+                var sensor = RailwayState.SensorStates.FirstOrDefault(x => (x.Address.Value == msg.Address) && (x.Address.Network.Type == AddressType.Mqtt));
+                if (sensor != null)
+                {
+                    sensor.Active.Actual = msg.Value;
+                }
             }
         }
 
@@ -276,7 +301,30 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
         /// </summary>
         private void onPowerMessageReceived(PowerMessage msg)
         {
-            Power.Requested = (msg.Active != 0);
+            if (msg.IsRequest && msg.Sender != sender)
+            {
+                Power.Requested = msg.Active;
+            }
+        }
+
+        /// <summary>
+        /// Switch message has been received.
+        /// </summary>
+        private void onSwitchMessageReceived(SwitchMessage msg)
+        {
+            if (msg.IsActual && msg.Sender != sender)
+            {
+                var @switch = RailwayState.JunctionStates.OfType<ISwitchState>().FirstOrDefault(x => (x.Address.Value == msg.Address) && (x.Address.Network.Type == AddressType.Mqtt));
+                if (@switch != null)
+                {
+                    var direction = (msg.Direction == "off") ? SwitchDirection.Off : SwitchDirection.Straight;
+                    if (@switch.Invert)
+                    {
+                        direction = direction.Invert();
+                    }
+                    @switch.Direction.Actual = direction;
+                }
+            }
         }
 
         /// <summary>
@@ -307,7 +355,9 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 client.Connect(clientID);
 
                 // Subscribe to topics 
-                client.Subscribe(new string[] { topicPrefix + "/binary-sensor" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                var topics = getSubscribeTopics();
+                var qos = topics.Select(x => MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE).ToArray();
+                client.Subscribe(topics, qos);
             }
             catch (Exception ex)
             {
@@ -315,6 +365,22 @@ namespace BinkyRailways.Core.State.Impl.Mqtt
                 return false;
             }
             return true;
+        }
+
+        private string[] getSubscribeTopics()
+        {
+            var topics = new List<string>();
+            var topicPrefix = this.topicPrefix;
+            if (topicPrefix.Length > 0)
+            {
+                topicPrefix = topicPrefix + "/";
+            }
+            topics.Add(topicPrefix + "global/power");
+            topics.AddRange(RailwayState.OutputStates.OfType<IBinaryOutputState>().Where(x => x.Address.Type == AddressType.Mqtt).Select(x => topicPrefix + x.Address.Value.Split('/').First() + "/binary"));
+            topics.AddRange(RailwayState.SensorStates.OfType<IBinarySensorState>().Where(x => x.Address.Type == AddressType.Mqtt).Select(x => topicPrefix + x.Address.Value.Split('/').First() + "/binary"));
+            topics.AddRange(RailwayState.JunctionStates.OfType<ISwitchState>().Where(x => x.Address.Type == AddressType.Mqtt).Select(x => topicPrefix + x.Address.Value.Split('/').First() + "/switch"));
+            topics.Sort();
+            return topics.Distinct().ToArray();
         }
 
         public override void Dispose()

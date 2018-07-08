@@ -1,56 +1,91 @@
 ﻿using Newtonsoft.Json;
+using System.Linq;
+
 namespace BinkyRailways.Core.State.Impl.Mqtt
 {
     [JsonObject]
-    internal class BinaryOutputMessage
+    internal abstract class MessageBase
+    {
+        public const string ModeRequest = "request";
+        public const string ModeActual = "actual";
+
+        [JsonProperty("sender")]
+        public string Sender { get; set; }
+        [JsonProperty("mode")]
+        public string Mode { get; set; }
+
+        public bool IsRequest => (Mode == ModeRequest);
+        public bool IsActual => (Mode == ModeActual);
+
+        public abstract string Topic { get; }
+    }
+
+    [JsonObject]
+    internal abstract class ObjectMessageBase : MessageBase
     {
         [JsonProperty("address")]
         public string Address { get; set; }
+
+        public abstract string TopicSuffix { get; }
+
+        public string ModuleID => Address.Split('/').First();
+
+        public override string Topic => ModuleID + "/" + TopicSuffix;
+    }
+
+    [JsonObject]
+    internal abstract class GlobalMessageBase : MessageBase
+    {
+        public abstract string TopicSuffix { get; }
+
+        public override string Topic => "global/" + TopicSuffix;
+    }
+
+    [JsonObject]
+    internal class BinaryMessage : ObjectMessageBase
+    {
         [JsonProperty("value")]
-        public int Value { get; set; }
+        public bool Value { get; set; }
+
+        public override string TopicSuffix => "binary";
     }
 
     [JsonObject]
-    internal class BinarySensorMessage
+    internal class ClockMessage : GlobalMessageBase
     {
-        [JsonProperty("address")]
-        public string Address { get; set; }
-        [JsonProperty("value")]
-        public int Value { get; set; }
+        [JsonProperty("period")]
+        public string Period { get; set; }
+
+        public override string TopicSuffix => "clock";
     }
 
     [JsonObject]
-    internal class Clock4StageMessage
+    internal class LocMessage : ObjectMessageBase
     {
-        [JsonProperty("stage")]
-        public string Stage { get; set; }
-    }
-
-    [JsonObject]
-    internal class LocMessage
-    {
-        [JsonProperty("address")]
-        public string Address { get; set; }
         [JsonProperty("speed")]
         public int Speed { get; set; }
         [JsonProperty("direction")]
         public string Direction { get; set; }
+
+        public override string TopicSuffix => "loc";
     }
 
     [JsonObject]
-    internal class PowerMessage
+    internal class PowerMessage : GlobalMessageBase
     {
         [JsonProperty("active")]
-        public int Active { get; set; }
+        public bool Active { get; set; }
+
+        public override string TopicSuffix => "power";
     }
 
     [JsonObject]
-    internal class SwitchMessage
+    internal class SwitchMessage : ObjectMessageBase
     {
-        [JsonProperty("address")]
-        public string Address { get; set; }
         [JsonProperty("direction")]
         public string Direction { get; set; }
+
+        public override string TopicSuffix => "switch";
     }
 
 }
