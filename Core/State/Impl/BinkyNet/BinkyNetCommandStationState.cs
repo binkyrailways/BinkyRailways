@@ -12,6 +12,7 @@ using System.Threading;
 using System.Collections.Generic;
 using BinkyNet.Discovery;
 using BinkyNet.Apis.V1;
+using Grpc.Core;
 
 namespace BinkyRailways.Core.State.Impl.BinkyNet
 {
@@ -29,6 +30,8 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
         private readonly string topicPrefix;
         private readonly Dictionary<ushort, CompletionCallback> completionCallbacks;
         private readonly DiscoveryBroadcaster discoveryBroadcaster;
+        private Server grpcServer;
+        private LocalWorkerServiceImpl localWorkerService;
 
         /// <summary>
         /// Default ctor
@@ -63,20 +66,11 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
         /// </summary>
         protected override void OnRequestedPowerChanged(bool value)
         {
-            // Send power off message
-            var msg = new PowerMessage()
+            // Send power to GRPC 
+            if (localWorkerService != null)
             {
-                Sender = sender,
-                Mode = MessageBase.ModeRequest,
-                Active = value
-            };
-            publishMessage(msg.Topic, msg, (e) =>
-            {
-                if (e.IsPublished)
-                {
-                    Power.Actual = value;
-                }
-            });
+                localWorkerService.SendPower(value);
+            }
         }
 
         /// <summary>
@@ -369,6 +363,22 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
             }
             try
             {
+                localWorkerService = new LocalWorkerServiceImpl(this, Log);
+                grpcServer = new Server
+                {
+                    Services = { LocalWorkerService.BindService(localWorkerService) },
+                    Ports = { new ServerPort("0.0.0.0", Entity.APIPort, ServerCredentials.Insecure) }
+                };
+                grpcServer.Start();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to start GRPC server: " + ex);
+                return false;
+            }
+
+            try
+            {
                 client = new MqttClient(Entity.HostName);
                 client.MqttMsgPublishReceived += onMqttMsgPublishReceived;
                 client.MqttMsgPublished += onMqttMsgPublished;
@@ -417,6 +427,16 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
                 client = null;
             }
             discoveryBroadcaster.Stop();
+            if (localWorkerService != null)
+            {
+                localWorkerService.Stop = true;
+                localWorkerService = null;
+            }
+            if (grpcServer != null)
+            {
+                grpcServer.ShutdownAsync().Wait();
+                grpcServer = null;
+            }
             base.Dispose();
         }
 
