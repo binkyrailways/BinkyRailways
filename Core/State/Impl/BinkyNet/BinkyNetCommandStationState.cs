@@ -10,6 +10,8 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.Generic;
+using BinkyNet.Discovery;
+using BinkyNet.Apis.V1;
 
 namespace BinkyRailways.Core.State.Impl.BinkyNet
 {
@@ -26,6 +28,7 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
         private readonly string sender;
         private readonly string topicPrefix;
         private readonly Dictionary<ushort, CompletionCallback> completionCallbacks;
+        private readonly DiscoveryBroadcaster discoveryBroadcaster;
 
         /// <summary>
         /// Default ctor
@@ -37,6 +40,14 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
             clientID = entity.Id;
             sender = "binkyrailways";
             topicPrefix = entity.TopicPrefix;
+            var networkMasterInfo = new NetworkMasterInfo()
+            {
+                ApiVersion = "v1",
+                Version = "v0.0.0",
+                ApiPort = entity.APIPort,
+                Secure = false,
+            };
+            discoveryBroadcaster = new DiscoveryBroadcaster(networkMasterInfo);
         }
 
         /// <summary>
@@ -305,6 +316,9 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
             {
                 Power.Requested = msg.Active;
             }
+            if (msg.IsActual && msg.Sender != sender) {
+                Power.Actual = msg.Active;
+            }
         }
 
         /// <summary>
@@ -344,6 +358,15 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
         {
             if (!base.TryPrepareForUse(ui, statePersistence))
                 return false;
+            try
+            {
+                discoveryBroadcaster.Start();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to start discovery broadcaster: " + ex);
+                return false;
+            }
             try
             {
                 client = new MqttClient(Entity.HostName);
@@ -393,6 +416,7 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
                 client.Disconnect();
                 client = null;
             }
+            discoveryBroadcaster.Stop();
             base.Dispose();
         }
 

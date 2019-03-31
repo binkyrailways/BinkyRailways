@@ -60,8 +60,10 @@ namespace BinkyRailways.Core.State.Impl.BinkyNet
     }
 
     [JsonObject]
-    internal class LocMessage : ObjectMessageBase
+    internal class LocMessage : GlobalMessageBase
     {
+        [JsonProperty("address")]
+        public string Address { get; set; }
         [JsonProperty("speed")]
         public int Speed { get; set; }
         [JsonProperty("direction")]

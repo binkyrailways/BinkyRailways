@@ -31,7 +31,7 @@ namespace BinkyRailways.Core.Server.Impl
         public Server()
         {
             Log = LogManager.GetLogger(LogNames.WebServer);
-            clientID = Guid.NewGuid().ToString();
+            clientID = "binky-"+ Guid.NewGuid().ToString();
             worker = new AsynchronousWorker("server");
         }
 
@@ -457,6 +457,8 @@ namespace BinkyRailways.Core.Server.Impl
             void onMqttConnectionClosed(object sender, EventArgs e)
         {
             Log.Error("Connection to MQTT server closed");
+            worker.PostAction(() => reconnectClient());
+
         }
 
         bool reconnectClient()
@@ -486,6 +488,7 @@ namespace BinkyRailways.Core.Server.Impl
 
                 // Subscribe to topics 
                 client.Subscribe(new string[] { controlTopic }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+                Log.Info("Connected to MQTT broker");
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BinkyNet.Apis.V1;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace BinkyRailways.Core.Model.Impl
@@ -12,6 +13,8 @@ namespace BinkyRailways.Core.Model.Impl
         private readonly Property<string> hostName;
         private readonly Property<int> port;
         private readonly Property<string> topicPrefix;
+        private readonly Property<int> apiPort;
+        private readonly Property<int> discoveryPort;
 
         /// <summary>
         /// Default ctor
@@ -21,6 +24,8 @@ namespace BinkyRailways.Core.Model.Impl
             hostName = new Property<string>(this, "mqtt");
             port = new Property<int>(this, 1883);
             topicPrefix = new Property<string>(this, "");
+            apiPort = new Property<int>(this, 9478);
+            discoveryPort = new Property<int>(this, (int)Ports.Discovery);
         }
 
         /// <summary>
@@ -73,6 +78,24 @@ namespace BinkyRailways.Core.Model.Impl
         {
             get { return topicPrefix.Value; }
             set { topicPrefix.Value = value ?? string.Empty; }
+        }
+
+        /// <summary>
+        /// TCP Port to run GRPC API on
+        /// </summary>
+        public int APIPort
+        {
+            get { return apiPort.Value; }
+            set { apiPort.Value = value; }
+        }
+
+        /// <summary>
+        /// UDP Port to run Discovery broadcasts on
+        /// </summary>
+        public int DiscoveryPort
+        {
+            get { return discoveryPort.Value; }
+            set { discoveryPort.Value = value; }
         }
 
         /// <summary>

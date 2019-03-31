@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailways.State</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -99,6 +99,7 @@
     <Compile Include="Core\State\IAddressEntityState.cs" />
     <Compile Include="Core\State\IClock4StageOutputState.cs" />
     <Compile Include="Core\State\Impl\ActionContext.cs" />
+    <Compile Include="Core\State\Impl\BinkyNet\LocalWorkerService.cs" />
     <Compile Include="Core\State\Impl\Clock.cs" />
     <Compile Include="Core\State\Impl\Clock4StageOutputState.cs" />
     <Compile Include="Core\State\Impl\BlockGroupState.cs" />
@@ -240,6 +241,10 @@
     <Compile Include="Properties\Version.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinkyNet\BinkyNet.csproj">
+      <Project>{e9bb7f6f-123a-4723-832c-9c74ee62bbc1}</Project>
+      <Name>BinkyNet</Name>
+    </ProjectReference>
     <ProjectReference Include="BinkyRailways.Model.csproj">
       <Project>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Model</Name>
