@@ -862,14 +862,14 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   <data name="MinimumLocsOnTrackForMinimumLocsInGroupStartName" xml:space="preserve">
     <value>Minimum locs on track</value>
   </data>
-  <data name="NewMqttCommandStationDescription" xml:space="preserve">
-    <value>New MQTT Command station</value>
+  <data name="NewBinkyNetCommandStationDescription" xml:space="preserve">
+    <value>New BinkyNet Command station</value>
   </data>
-  <data name="PreferredMqttCommandStationHelp" xml:space="preserve">
-    <value>Command station used for Mqtt addresses in case no specific address space is specified.</value>
+  <data name="PreferredBinkyNetCommandStationHelp" xml:space="preserve">
+    <value>Command station used for BinkyNet addresses in case no specific address space is specified.</value>
   </data>
-  <data name="PreferredMqttCommandStationName" xml:space="preserve">
-    <value>Preferred Mqtt command station</value>
+  <data name="PreferredBinkyNetCommandStationName" xml:space="preserve">
+    <value>Preferred BinkyNet command station</value>
   </data>
   <data name="PortHelp" xml:space="preserve">
     <value>TCP port</value>
@@ -894,5 +894,26 @@ Locs cannot leave if that results in a lower number of locs in this group.</valu
   </data>
   <data name="loc_state_unassigned" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\16x16\loc-state-unassigned.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MqttHostNameHelp" xml:space="preserve">
+    <value>Hostname of MQTT server</value>
+  </data>
+  <data name="MqttHostNameName" xml:space="preserve">
+    <value>MQTT hostname</value>
+  </data>
+  <data name="MqttPortHelp" xml:space="preserve">
+    <value>Port number of MQTT server</value>
+  </data>
+  <data name="MqttPortName" xml:space="preserve">
+    <value>MQTT port</value>
+  </data>
+  <data name="MqttTopicHelp" xml:space="preserve">
+    <value>Topic on MQTT server</value>
+  </data>
+  <data name="MqttTopicName" xml:space="preserve">
+    <value>MQTT topic</value>
+  </data>
+  <data name="TabServer" xml:space="preserve">
+    <value>Server</value>
   </data>
 </root>

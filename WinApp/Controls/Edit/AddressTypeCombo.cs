@@ -14,11 +14,11 @@ namespace BinkyRailways.WinApp.Controls.Edit
         public AddressTypeCombo()
             : base(ComboBoxStyle.DropDownList)
         {
+            AddItem("BinkyNet", AddressType.BinkyNet);
             AddItem("DCC", AddressType.Dcc);
             AddItem("Loconet", AddressType.LocoNet);
             AddItem("MFX", AddressType.Mfx);
             AddItem("Motorola", AddressType.Motorola);
-            AddItem("Mqtt", AddressType.Mqtt);
         }
     }
 }

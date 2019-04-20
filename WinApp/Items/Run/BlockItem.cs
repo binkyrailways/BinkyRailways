@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
 using BinkyRailways.Core.State;
+using BinkyRailways.WinApp.Controls.VirtualCanvas;
 using BinkyRailways.WinApp.Controls.VirtualCanvas.Handlers;
 using BinkyRailways.WinApp.Items.Handlers;
 using BinkyRailways.WinApp.Items.Menu;
@@ -46,6 +48,58 @@ namespace BinkyRailways.WinApp.Items.Run
         /// Gets the blockstate represented by this item.
         /// </summary>
         internal IBlockState State { get { return state; } }
+
+        /// <summary>
+        /// Draw this block
+        /// </summary>
+        protected override void DrawItem(ItemPaintEventArgs e, Size sz)
+        {
+            base.DrawItem(e, sz);
+
+            var blockState = state.State;
+            var loc = state.LockedBy;
+            var reverse = Entity.ReverseSides;
+            switch (blockState)
+            {
+                case BlockState.Occupied:
+                    if ((loc != null) && (loc.CurrentBlock.Actual == state))
+                    {
+                        if (loc.CurrentBlockEnterSide.Actual == BlockSide.Front)
+                        {
+                            // If loc entered block at front, we go towards back.
+                            reverse = !reverse;
+                        }
+                        // Draw "loc direction" marker
+                        drawLocDirectionMarker(e, sz, reverse, loc);
+                    }
+                    break;
+                case BlockState.Entering:
+                case BlockState.Destination:
+                    if ((loc != null) && (loc.CurrentRoute.Actual != null))
+                    {
+                        if (loc.CurrentRoute.Actual.Route.ToBlockSide == BlockSide.Front)
+                        {
+                            // If loc will block at front, we go towards back.
+                            reverse = !reverse;
+                        }
+                        // Draw "loc direction" marker
+                        drawLocDirectionMarker(e, sz, reverse, loc);
+                    }
+                    break;
+            }
+        }
+
+        private void drawLocDirectionMarker(ItemPaintEventArgs e, Size sz, bool reverse, ILocState loc)
+        {
+            using (var path = new GraphicsPath())
+            {
+                var radius = (Math.Min(sz.Width, sz.Height) * 1.0f);
+                var xOffset = 0.0f;// radius * 0.5f;
+                var p1 = new PointF(reverse ? -xOffset : sz.Width + xOffset, sz.Height / 2.0f);
+                var brush = loc.PossibleDeadlock.Actual ? Brushes.Orange : Brushes.White;
+                e.Graphics.FillEllipse(brush, new RectangleF(new PointF(p1.X - (radius / 4.0f), p1.Y - (radius / 4.0f)), new SizeF(radius / 2.0f, radius / 2.0f)));
+            }
+        }
 
         /// <summary>
         /// Gets the colors of the background (front, back of block).

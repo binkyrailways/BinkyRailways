@@ -26,7 +26,10 @@ namespace BinkyRailways.Core.State.Automatic
         private readonly List<ISignalState> signals = new List<ISignalState>();
         private readonly IRailwayState railwayState;
         private readonly LiveRouteAvailabilityTester routeAvailabilityTester;
+        private readonly Dictionary<ILocState, DateTime> locHasNoRouteSince;
         private bool disposing;
+        private int locsWithNoRoute;
+        private int generationDelta;
 
         /// <summary>
         /// Default ctor
@@ -35,6 +38,7 @@ namespace BinkyRailways.Core.State.Automatic
         {
             this.railwayState = railwayState;
             var dispatcher = railwayState.Dispatcher;
+            locHasNoRouteSince = new Dictionary<ILocState, DateTime>();
             routeAvailabilityTester = new LiveRouteAvailabilityTester(railwayState);
             enabled = new StateProperty<bool>(null, false, null, OnRequestedEnabledChanged, null);
             heartBeat = new HeartBeat(this, dispatcher);
@@ -126,6 +130,8 @@ namespace BinkyRailways.Core.State.Automatic
         private void Startup()
         {
             var dispatcher = railwayState.Dispatcher;
+            locsWithNoRoute = 0;
+            generationDelta = 0;
 
             // Handle "activation" for all activated sensors
             foreach (var iterator in railwayState.SensorStates.Where(x => x.Active.Actual))
@@ -174,6 +180,7 @@ namespace BinkyRailways.Core.State.Automatic
             // Go over each loc and act according to its state.
             var result = TimeSpan.FromSeconds(10);
             var locSelection = new List<ILocState>(autoLocs);
+            var locsWithNoRoute = 0;
             foreach (var loc in locSelection)
             {
                 var state = loc.AutomaticState.Actual;
@@ -181,7 +188,7 @@ namespace BinkyRailways.Core.State.Automatic
                 switch (state)
                 {
                     case AutoLocState.AssignRoute:
-                        nextUpdate = OnAssignRoute(loc);
+                        nextUpdate = OnAssignRoute(loc, generationDelta, ref locsWithNoRoute);
                         break;
                     case AutoLocState.ReversingWaitingForDirectionChange:
                         nextUpdate = OnReversingWaitingForDirectionChange(loc);
@@ -208,7 +215,7 @@ namespace BinkyRailways.Core.State.Automatic
                         nextUpdate = OnWaitingForDestinationTimeout(loc);
                         break;
                     case AutoLocState.WaitingForDestinationGroupMinimum:
-                        nextUpdate = OnWaitingForDestinationGroupMinimum(loc);
+                        nextUpdate = OnWaitingForDestinationGroupMinimum(loc, generationDelta);
                         break;
                     default:
                         log.Warn("Invalid state ({0}) in loc {1}.", state, loc);
@@ -219,6 +226,24 @@ namespace BinkyRailways.Core.State.Automatic
                     result = nextUpdate;
                 }
             }
+
+            // Update generation delta wrt deadlock prevention 
+            if (locsWithNoRoute == 0)
+            {
+                // All locs that need a route got one
+                generationDelta = 0;
+            }
+            else if (locsWithNoRoute >= this.locsWithNoRoute)
+            {
+                // Number of locs without route is the same or increased 
+                generationDelta++;
+            }
+            else if (generationDelta > 0)
+            {
+                // Number of locs without a route has decreased
+                generationDelta--;
+            }
+            this.locsWithNoRoute = locsWithNoRoute;
 
             // Update the output signals
             foreach (var signal in signals)
@@ -246,6 +271,10 @@ namespace BinkyRailways.Core.State.Automatic
                 {
                     // Add to list of automatically controlled locs
                     autoLocs.Add(loc);
+                }
+                if (!loc.ControlledAutomatically.IsConsistent)
+                {
+                    locHasNoRouteSince.Remove(loc);
                 }
                 loc.AutomaticState.Actual = AutoLocState.AssignRoute;
                 loc.ControlledAutomatically.Actual = true;
@@ -295,6 +324,7 @@ namespace BinkyRailways.Core.State.Automatic
             autoLocs.Remove(loc);
             loc.AutomaticState.Actual = AutoLocState.AssignRoute;
             loc.ControlledAutomatically.Actual = false;
+            loc.PossibleDeadlock.Actual = false;
         }
 
         /// <summary>
@@ -414,11 +444,11 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
         /// <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
         /// <returns>Null if not route is available.</returns>
-        private IRouteState ChooseRoute(ILocState loc, IBlockState fromBlock, BlockSide locDirection, bool avoidDirectionChanges)
+        private IRouteState ChooseRoute(ILocState loc, IBlockState fromBlock, BlockSide locDirection, bool avoidDirectionChanges, int generationDelta)
         {
             // Gather possible routes.
             var routeFromFromBlock = railwayState.GetAllPossibleNonClosedRoutesFromBlock(fromBlock).ToList();
-            var routeOptions = routeFromFromBlock.Select(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+            var routeOptions = routeFromFromBlock.Select(x => routeAvailabilityTester.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges, generationDelta)).ToList();
             var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
             loc.LastRouteOptions.Actual = routeOptions.ToArray();
 
@@ -463,7 +493,7 @@ namespace BinkyRailways.Core.State.Automatic
             }
 
             // The loc can continue (if a free route is found)
-            var nextRoute = ChooseRoute(loc, route.Route.To, route.Route.ToBlockSide.Invert(), true);
+            var nextRoute = ChooseRoute(loc, route.Route.To, route.Route.ToBlockSide.Invert(), true, 0);
             if (nextRoute == null)
             {
                 // No route available
@@ -483,7 +513,7 @@ namespace BinkyRailways.Core.State.Automatic
         /// Try to assign a route to the given loc.
         /// </summary>
         /// <returns>The timespan before this method wants to be called again.</returns>
-        private TimeSpan OnAssignRoute(ILocState loc)
+        private TimeSpan OnAssignRoute(ILocState loc, int generationDelta, ref int locsWithNoRoute)
         {
             // Check state
             var state = loc.AutomaticState.Actual;
@@ -520,6 +550,7 @@ namespace BinkyRailways.Core.State.Automatic
                 loc.Reversing.Actual = false;
                 loc.Direction.Requested = loc.Direction.Actual.Invert();
                 loc.AutomaticState.Actual = AutoLocState.ReversingWaitingForDirectionChange;
+                loc.PossibleDeadlock.Actual = false;
                 return TimeSpan.Zero;
             }
 
@@ -528,20 +559,36 @@ namespace BinkyRailways.Core.State.Automatic
             if (route == null)
             {
                 // No next route was set
-                if ((loc.Speed.Requested == 0) && (!loc.CanLeaveCurrentBlock()))
+                if ((loc.Speed.Requested == 0) && (!loc.CanLeaveCurrentBlock()) && (!overrideLeaveCurrentBlock(generationDelta)))
                 {
                     // We're not running and we're not allowed to leave the current block
                     loc.AutomaticState.Actual = AutoLocState.WaitingForDestinationGroupMinimum;
+                    loc.PossibleDeadlock.Actual = false;
                     return TimeSpan.FromMinutes(1);
                 }
 
                 // Choose a next route now
-                route = ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false);
+                route = ChooseRoute(loc, block, loc.CurrentBlockEnterSide.Actual.Invert(), false, generationDelta);
             }
             if (route == null)
             {
                 // No possible routes right now, try again
-                return TimeSpan.FromMinutes(1);
+                locsWithNoRoute++;
+                DateTime since;
+                if (!locHasNoRouteSince.TryGetValue(loc, out since))
+                {
+                    locHasNoRouteSince[loc] = DateTime.Now;
+                }
+                else
+                {
+                    loc.PossibleDeadlock.Actual = (DateTime.Now.Subtract(since).TotalSeconds > 30);
+
+                }
+                return TimeSpan.FromSeconds(5);
+            }else
+            {
+                locHasNoRouteSince.Remove(loc);
+                loc.PossibleDeadlock.Actual = false;
             }
 
             // Lock the route 
@@ -899,7 +946,7 @@ namespace BinkyRailways.Core.State.Automatic
         /// Let's assign a new route.
         /// </summary>
         /// <returns>The timespan before this method wants to be called again.</returns>
-        private TimeSpan OnWaitingForDestinationGroupMinimum(ILocState loc)
+        private TimeSpan OnWaitingForDestinationGroupMinimum(ILocState loc, int generationDelta)
         {
             // Check state
             var state = loc.AutomaticState.Actual;
@@ -920,7 +967,7 @@ namespace BinkyRailways.Core.State.Automatic
             }
 
             // Timeout reached?
-            if (loc.CanLeaveCurrentBlock())
+            if (loc.CanLeaveCurrentBlock() || overrideLeaveCurrentBlock(generationDelta))
             {
                 // Yes, let's assign a new route
                 loc.AutomaticState.Actual = AutoLocState.AssignRoute;
@@ -929,6 +976,11 @@ namespace BinkyRailways.Core.State.Automatic
 
             // Nothing changed
             return TimeSpan.MaxValue;
+        }
+
+        private bool overrideLeaveCurrentBlock(int generationDelta)
+        {
+            return generationDelta > 15;
         }
     }
 }

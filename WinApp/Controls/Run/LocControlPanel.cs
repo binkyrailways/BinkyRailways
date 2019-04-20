@@ -36,6 +36,13 @@ namespace BinkyRailways.WinApp.Controls.Run
             functionCheckboxes[LocFunction.F15] = cbF15;
             functionCheckboxes[LocFunction.F16] = cbF16;
             Enabled = false;
+            showFunctionCheckboxes(false);
+        }
+
+        internal bool ShowAllFunctions
+        {
+            get { return cbShowAll.Checked; }
+            set { cbShowAll.Checked = value; }
         }
 
         /// <summary>
@@ -190,6 +197,24 @@ namespace BinkyRailways.WinApp.Controls.Run
                     }
                 }
             }
+        }
+
+        private void cbShowAll_CheckedChanged(object sender, EventArgs e)
+        {
+            showFunctionCheckboxes(cbShowAll.Checked);
+        }
+
+        private void showFunctionCheckboxes(bool visible)
+        {
+            SuspendLayout();
+            tlpMain.SuspendLayout();
+            foreach (var pair in functionCheckboxes)
+            {
+                pair.Value.Visible = visible;
+            }
+            cbShowAll.Checked = visible;
+            tlpMain.ResumeLayout();
+            ResumeLayout();
         }
     }
 }

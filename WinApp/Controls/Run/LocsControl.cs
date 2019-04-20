@@ -79,6 +79,10 @@ namespace BinkyRailways.WinApp.Controls.Run
         private void UpdateControls()
         {
             unexpectedSensorControl.Visible = unexpectedSensorControl.Show;
+            if (unexpectedSensorControl.Show)
+            {
+                locControlPanel.ShowAllFunctions = false;
+            }
         }
 
         /// <summary>

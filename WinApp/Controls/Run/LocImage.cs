@@ -17,6 +17,16 @@ namespace BinkyRailways.WinApp.Controls.Run
         public LocImage()
         {
             InitializeComponent();
+            pictureBox1.Paint += PictureBox1_Paint;
+        }
+
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (loc != null)
+            {
+                var text = loc.Description + " (" + loc.Owner + ")";
+                e.Graphics.DrawString(text, SystemFonts.DefaultFont, SystemBrushes.ControlText, 0, 0);
+            }
         }
 
         /// <summary>

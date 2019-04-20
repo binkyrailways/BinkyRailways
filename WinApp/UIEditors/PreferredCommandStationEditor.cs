@@ -48,8 +48,8 @@ namespace BinkyRailways.WinApp.UIEditors
         public PreferredMfxCommandStationEditor() : base(AddressType.Mfx) { }
     }
 
-    internal sealed class PreferredMqttCommandStationEditor : PreferredCommandStationEditor
+    internal sealed class PreferredBinkyNetCommandStationEditor : PreferredCommandStationEditor
     {
-        public PreferredMqttCommandStationEditor() : base(AddressType.Mqtt) { }
+        public PreferredBinkyNetCommandStationEditor() : base(AddressType.BinkyNet) { }
     }
 }

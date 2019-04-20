@@ -28,6 +28,7 @@ namespace BinkyRailways.Core.State.Impl
         private ICommandStationState commandStation;
         private readonly StateProperty<bool> controlledAutomatically;
         private readonly ActualStateProperty<AutoLocState> automaticState;
+        private readonly ActualStateProperty<bool> possibleDeadlock;
         private readonly ActualStateProperty<IRouteStateForLoc> currentRoute;
         private readonly ActualStateProperty<bool> waitAfterCurrentRoute;
         private readonly ActualStateProperty<IRouteState> nextRoute;
@@ -58,6 +59,7 @@ namespace BinkyRailways.Core.State.Impl
             address = entity.Address;
             controlledAutomatically = new StateProperty<bool>(this, false, ValidateControlledAutomatically, null, OnControlledAutomaticallyChanged);
             automaticState = new ActualStateProperty<AutoLocState>(this, AutoLocState.AssignRoute, null, OnAutomaticStateChanged);
+            possibleDeadlock = new ActualStateProperty<bool>(this, false, null, null);
             currentRoute = new ActualStateProperty<IRouteStateForLoc>(this, null, null, null);
             waitAfterCurrentRoute = new ActualStateProperty<bool>(this, false, null, null);
             nextRoute = new ActualStateProperty<IRouteState>(this, null, null, null);
@@ -175,6 +177,12 @@ namespace BinkyRailways.Core.State.Impl
         /// </summary>
         [DisplayName(@"Automatic state")]
         public IActualStateProperty<AutoLocState> AutomaticState { get { return automaticState; } }
+
+        /// <summary>
+        /// Deadlock possibility set by the automatic loc controller.
+        /// </summary>
+        [DisplayName(@"Possible deadlock detected")]
+        public IActualStateProperty<bool> PossibleDeadlock { get { return possibleDeadlock; } }
 
         /// <summary>
         /// Gets the route that this loc is currently taking.
@@ -324,7 +332,12 @@ namespace BinkyRailways.Core.State.Impl
                 switch (state)
                 {
                     case AutoLocState.AssignRoute:
-                        return prefix + Strings.LocStateAssignRoute;
+                        var result = prefix + Strings.LocStateAssignRoute;
+                        if (PossibleDeadlock.Actual)
+                        {
+                            result = "!" + result;
+                        }
+                        return result;
                     case AutoLocState.ReversingWaitingForDirectionChange:
                         return prefix + Strings.LocStateReversingWaitingForDirectionChange;
                     case AutoLocState.WaitingForAssignedRouteReady:

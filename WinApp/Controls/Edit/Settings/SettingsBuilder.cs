@@ -47,9 +47,9 @@ namespace BinkyRailways.WinApp.Controls.Edit.Settings
             return new EcosCommandStationSettings(entity, data);
         }
 
-        public override object Visit(IMqttCommandStation entity, GridContext data)
+        public override object Visit(IBinkyNetCommandStation entity, GridContext data)
         {
-            return new MqttCommandStationSettings(entity, data);
+            return new BinkyNetCommandStationSettings(entity, data);
         }
 
         public override object Visit(IEdge entity, GridContext data)

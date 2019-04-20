@@ -35,6 +35,7 @@
             this.cmdReverse = new System.Windows.Forms.Button();
             this.cmdStop = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbF13 = new System.Windows.Forms.CheckBox();
             this.cbF8 = new System.Windows.Forms.CheckBox();
             this.cbF7 = new System.Windows.Forms.CheckBox();
             this.cbF6 = new System.Windows.Forms.CheckBox();
@@ -44,16 +45,16 @@
             this.cbF2 = new System.Windows.Forms.CheckBox();
             this.cbF0 = new System.Windows.Forms.CheckBox();
             this.cbF1 = new System.Windows.Forms.CheckBox();
-            this.tlpTop = new System.Windows.Forms.TableLayoutPanel();
-            this.locImage = new BinkyRailways.WinApp.Controls.Run.LocImage();
             this.cbF9 = new System.Windows.Forms.CheckBox();
             this.cbF10 = new System.Windows.Forms.CheckBox();
             this.cbF11 = new System.Windows.Forms.CheckBox();
             this.cbF12 = new System.Windows.Forms.CheckBox();
-            this.cbF13 = new System.Windows.Forms.CheckBox();
             this.cbF14 = new System.Windows.Forms.CheckBox();
             this.cbF15 = new System.Windows.Forms.CheckBox();
             this.cbF16 = new System.Windows.Forms.CheckBox();
+            this.tlpTop = new System.Windows.Forms.TableLayoutPanel();
+            this.locImage = new BinkyRailways.WinApp.Controls.Run.LocImage();
+            this.cbShowAll = new System.Windows.Forms.CheckBox();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpeed)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -110,6 +111,7 @@
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tlpMain.SetColumnSpan(this.tableLayoutPanel1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbShowAll, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbF13, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.cbF8, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbF7, 2, 2);
@@ -128,6 +130,13 @@
             this.tableLayoutPanel1.Controls.Add(this.cbF15, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.cbF16, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // cbF13
+            // 
+            resources.ApplyResources(this.cbF13, "cbF13");
+            this.cbF13.Name = "cbF13";
+            this.cbF13.UseVisualStyleBackColor = true;
+            this.cbF13.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
             // cbF8
             // 
@@ -181,7 +190,7 @@
             // cbF0
             // 
             resources.ApplyResources(this.cbF0, "cbF0");
-            this.tableLayoutPanel1.SetColumnSpan(this.cbF0, 4);
+            this.tableLayoutPanel1.SetColumnSpan(this.cbF0, 3);
             this.cbF0.Name = "cbF0";
             this.cbF0.UseVisualStyleBackColor = true;
             this.cbF0.CheckedChanged += new System.EventHandler(this.cbF0_CheckedChanged);
@@ -192,19 +201,6 @@
             this.cbF1.Name = "cbF1";
             this.cbF1.UseVisualStyleBackColor = true;
             this.cbF1.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
-            // 
-            // tlpTop
-            // 
-            resources.ApplyResources(this.tlpTop, "tlpTop");
-            this.tlpMain.SetColumnSpan(this.tlpTop, 3);
-            this.tlpTop.Controls.Add(this.locImage, 0, 0);
-            this.tlpTop.Name = "tlpTop";
-            // 
-            // locImage
-            // 
-            resources.ApplyResources(this.locImage, "locImage");
-            this.locImage.Name = "locImage";
-            this.tlpTop.SetRowSpan(this.locImage, 3);
             // 
             // cbF9
             // 
@@ -234,13 +230,6 @@
             this.cbF12.UseVisualStyleBackColor = true;
             this.cbF12.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
             // 
-            // cbF13
-            // 
-            resources.ApplyResources(this.cbF13, "cbF13");
-            this.cbF13.Name = "cbF13";
-            this.cbF13.UseVisualStyleBackColor = true;
-            this.cbF13.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
-            // 
             // cbF14
             // 
             resources.ApplyResources(this.cbF14, "cbF14");
@@ -261,6 +250,26 @@
             this.cbF16.Name = "cbF16";
             this.cbF16.UseVisualStyleBackColor = true;
             this.cbF16.CheckedChanged += new System.EventHandler(this.cbFX_CheckedChanged);
+            // 
+            // tlpTop
+            // 
+            resources.ApplyResources(this.tlpTop, "tlpTop");
+            this.tlpMain.SetColumnSpan(this.tlpTop, 3);
+            this.tlpTop.Controls.Add(this.locImage, 0, 0);
+            this.tlpTop.Name = "tlpTop";
+            // 
+            // locImage
+            // 
+            resources.ApplyResources(this.locImage, "locImage");
+            this.locImage.Name = "locImage";
+            this.tlpTop.SetRowSpan(this.locImage, 3);
+            // 
+            // cbShowAll
+            // 
+            resources.ApplyResources(this.cbShowAll, "cbShowAll");
+            this.cbShowAll.Name = "cbShowAll";
+            this.cbShowAll.UseVisualStyleBackColor = true;
+            this.cbShowAll.CheckedChanged += new System.EventHandler(this.cbShowAll_CheckedChanged);
             // 
             // LocControlPanel
             // 
@@ -306,6 +315,6 @@
         private System.Windows.Forms.CheckBox cbF14;
         private System.Windows.Forms.CheckBox cbF15;
         private System.Windows.Forms.CheckBox cbF16;
-
+        private System.Windows.Forms.CheckBox cbShowAll;
     }
 }

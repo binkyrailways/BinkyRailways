@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinkyRailways</RootNamespace>
     <AssemblyName>BinkyRailways.State</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -32,6 +32,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,9 +55,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Grpc.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
+      <HintPath>packages\Grpc.Core.1.19.0\lib\net45\Grpc.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Grpc.Core.Api, Version=0.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
+      <HintPath>packages\Grpc.Core.Api.1.19.0\lib\net45\Grpc.Core.Api.dll</HintPath>
+    </Reference>
     <Reference Include="M2Mqtt.Net">
       <HintPath>Binaries\M2Mqtt\M2Mqtt.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
@@ -67,6 +76,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>packages\System.Interactive.Async.3.2.0\lib\net45\System.Interactive.Async.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -99,6 +111,7 @@
     <Compile Include="Core\State\IAddressEntityState.cs" />
     <Compile Include="Core\State\IClock4StageOutputState.cs" />
     <Compile Include="Core\State\Impl\ActionContext.cs" />
+    <Compile Include="Core\State\Impl\BinkyNet\LocalWorkerService.cs" />
     <Compile Include="Core\State\Impl\Clock.cs" />
     <Compile Include="Core\State\Impl\Clock4StageOutputState.cs" />
     <Compile Include="Core\State\Impl\BlockGroupState.cs" />
@@ -114,8 +127,8 @@
     <Compile Include="Core\State\Impl\IInitializationJunctionState.cs" />
     <Compile Include="Core\State\Impl\ILockableStateImpl.cs" />
     <Compile Include="Core\State\Impl\InitializeJunctionActionState.cs" />
-    <Compile Include="Core\State\Impl\Mqtt\Messages.cs" />
-    <Compile Include="Core\State\Impl\Mqtt\MqttCommandStationState.cs" />
+    <Compile Include="Core\State\Impl\BinkyNet\Messages.cs" />
+    <Compile Include="Core\State\Impl\BinkyNet\BinkyNetCommandStationState.cs" />
     <Compile Include="Core\State\Impl\P50x\P50xCommandStationState.cs" />
     <Compile Include="Core\State\Impl\RouteOption.cs" />
     <Compile Include="Core\State\Impl\RouteStateForLoc.cs" />
@@ -240,6 +253,10 @@
     <Compile Include="Properties\Version.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinkyNet\BinkyNet.csproj">
+      <Project>{e9bb7f6f-123a-4723-832c-9c74ee62bbc1}</Project>
+      <Name>BinkyNet</Name>
+    </ProjectReference>
     <ProjectReference Include="BinkyRailways.Model.csproj">
       <Project>{4299D52F-F138-48A2-B1E6-74001AEDDFA7}</Project>
       <Name>BinkyRailways.Model</Name>
@@ -278,7 +295,17 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Grpc.Core.1.19.0\build\net45\Grpc.Core.targets" Condition="Exists('packages\Grpc.Core.1.19.0\build\net45\Grpc.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Grpc.Core.1.19.0\build\net45\Grpc.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Grpc.Core.1.19.0\build\net45\Grpc.Core.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

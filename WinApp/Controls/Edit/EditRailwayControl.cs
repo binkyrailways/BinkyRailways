@@ -399,12 +399,12 @@ namespace BinkyRailways.WinApp.Controls.Edit
         }
 
         /// <summary>
-        /// Add MQTT command station
+        /// Add BinkyNet command station
         /// </summary>
-        private void tbAddMqtt_Click(object sender, EventArgs e)
+        private void tbAddBinkyNet_Click(object sender, EventArgs e)
         {
-            var cs = appState.Package.AddNewMqttCommandStation();
-            cs.Description = Strings.NewMqttCommandStationDescription;
+            var cs = appState.Package.AddNewBinkyNetCommandStation();
+            cs.Description = Strings.NewBinkyNetCommandStationDescription;
             var csRef = appState.Package.Railway.CommandStations.Add(cs);
             var node = new EntityRefNode<ICommandStation>(csRef, cs);
             activeCommandStationsRoot.Nodes.Add(node);

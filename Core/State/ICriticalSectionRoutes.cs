@@ -11,5 +11,10 @@ namespace BinkyRailways.Core.State
         /// Are all routes not being used by any other loc than the given loc?
         /// </summary>
         bool AllFree(ILocState loc);
+
+        /// <summary>
+        /// Is the critical section empty?
+        /// </summary>
+        bool IsEmpty { get; }
     }
 }
