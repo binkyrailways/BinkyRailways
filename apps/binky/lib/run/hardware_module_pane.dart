@@ -17,6 +17,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models.dart';
 import '../api.dart';
@@ -28,33 +29,65 @@ class HardwareModulePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastUpdatedAt = DateTime.tryParse(hardwareModule.lastUpdatedAt);
-    final lastUpdatedSince = (lastUpdatedAt != null)
-        ? DateTime.now().difference(lastUpdatedAt)
-        : const Duration(days: 1);
+    final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
         ? Colors.redAccent
-        : (lastUpdatedSince.inSeconds < 30)
+        : (secondsSinceLastUpdate < 30)
             ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.purple)
             : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.purple);
+    final popupItems = [
+      PopupMenuItem<String>(
+          child: const Text('Reset'),
+          onTap: () async {
+            final stateModel = Provider.of<StateModel>(context, listen: false);
+            await stateModel.resetHardwareModule(hardwareModule.id);
+          }),
+      PopupMenuItem<String>(
+          child: const Text('Discover hardware'),
+          onTap: () async {
+            final stateModel = Provider.of<StateModel>(context, listen: false);
+            await stateModel.discoverHardware(hardwareModule.id);
+          }),
+    ];
+    if (hardwareModule.metricsUrl.isNotEmpty) {
+      popupItems.add(PopupMenuItem<String>(
+          child: const Text('Show metrics'),
+          onTap: () async {
+            await launchUrl(Uri.parse(hardwareModule.metricsUrl),
+                webOnlyWindowName: "_blank");
+          }));
+    }
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Tooltip(
-          message: hasErrors
-              ? hardwareModule.errorMessages.join(".\n")
-              : "No errors",
-          preferBelow: false,
-          child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
+        child: GestureDetector(
+          child: Tooltip(
+            message: hasErrors
+                ? hardwareModule.errorMessages.join(".\n")
+                : "No errors",
+            preferBelow: false,
+            child: Text(
+                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate\nip:${hardwareModule.address}"),
+          ),
+          onTapDown: (TapDownDetails details) {
+            showMenu(
+              context: context,
+              useRootNavigator: true,
+              position: RelativeRect.fromLTRB(
+                  details.globalPosition.dx,
+                  details.globalPosition.dy,
+                  details.globalPosition.dx,
+                  details.globalPosition.dy),
+              items: popupItems,
+              elevation: 8.0,
+            );
+          },
         ),
-        onPressed: () async {
-          final stateModel = Provider.of<StateModel>(context, listen: false);
-          await stateModel.discoverHardware(hardwareModule.id);
-        },
+        onPressed: () {},
       ),
     );
   }

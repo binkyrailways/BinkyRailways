@@ -19,17 +19,17 @@ package cmd
 
 import (
 	"context"
+	"io"
 	"os"
 	"time"
 
+	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkynet/BinkyNet/loki"
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 
-	api "github.com/binkynet/BinkyNet/apis/v1"
-	"github.com/binkynet/BinkyNet/loki"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
-	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
 	"github.com/binkyrailways/BinkyRailways/pkg/server"
 	"github.com/binkyrailways/BinkyRailways/pkg/service"
 )
@@ -42,14 +42,14 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app            service.Config
-		server         server.Config
-		logFile        string
-		promConfigPath string
-		promURL        string
-		// Host name of the host running this process as seen from prometheus
-		hostNameFromPrometheus string
+		app     service.Config
+		server  server.Config
+		logFile string
 	}
+)
+
+const (
+	jobName = "brw"
 )
 
 func newConsoleWriter() zerolog.ConsoleWriter {
@@ -63,18 +63,14 @@ func init() {
 	f := RootCmd.Flags()
 	// Log arguments
 	f.StringVar(&rootArgs.logFile, "logfile", "./binkyrailways.log", "Path of log file")
-	// Prometheus config builder arguments
-	f.StringVar(&rootArgs.promConfigPath, "prom-config-path", "./scripts/prometheus.yml", "Path of prometheus config file")
-	f.StringVar(&rootArgs.promURL, "prom-url", "http://localhost:9090", "URL towards prometheus")
-	f.StringVar(&rootArgs.hostNameFromPrometheus, "hostname-from-prom", "host.docker.internal", "Host name of the host running this process as seen from prometheus")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
-	f.StringVar(&rootArgs.server.PublishedHost, "published-host", "", "Address of the current host that we publish on")
+	f.StringVar(&rootArgs.server.PublishedHostIP, "published-host", "", "IP Address of the current host that we publish on")
+	f.StringVar(&rootArgs.server.PublishedHostDNSName, "published-hostname", "localhost", "Full DNS name of the current host that we publish on")
 	f.StringVar(&rootArgs.server.CertificatePath, "certificate-path", "cert.json", "Certificate file path")
-	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
+	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18032, "Port number to serve HTTP on")
+	f.IntVar(&rootArgs.server.HTTPSPort, "https-port", 18033, "Port number to serve HTTPS on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
-	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")
-	f.IntVar(&rootArgs.server.LokiPort, "loki-port", 13100, "Port to serve Loki requests on")
 	f.BoolVar(&rootArgs.server.WebDevelopment, "web-development", false, "If set, web application is served from live filesystem")
 	// Service arguments
 	f.StringVar(&rootArgs.app.RailwayStoragePath, "storage-path", "./Fixtures", "Path of railway files")
@@ -98,39 +94,33 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		cliLog.Fatal().Err(err).Msg("Failed to open log file")
 	}
 	defer logFile.Close()
-	var logWriter zerolog.LevelWriter
-	lokiWriter, err := loki.NewLokiLogger(rootArgs.server.LokiURL, "brw", 0)
+	logWriters := []io.Writer{
+		newConsoleWriter(),
+	}
+	// Prepare Loki logger
+	lokiWriter, err := loki.NewLokiLogger("", jobName, 0)
 	if err != nil {
 		cliLog.Fatal().Err(err).Msg("Failed to create Loki writer")
 	}
-	logWriter = zerolog.MultiLevelWriter(
-		newConsoleWriter(),
-		lokiWriter,
-	)
+	logWriters = append(logWriters, lokiWriter)
+	// Prepare CLI log
+	logWriter := zerolog.MultiLevelWriter(logWriters...)
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
 	// Find our external host address
-	if rootArgs.server.PublishedHost == "" {
-		publishedHost, err := util.FindServerHostAddress(rootArgs.server.Host)
+	if rootArgs.server.PublishedHostIP == "" {
+		publishedHostIP, err := util.FindServerHostAddress(rootArgs.server.Host)
 		if err != nil {
 			cliLog.Fatal().Err(err).Msg("Failed to find server host")
 		}
-		rootArgs.server.PublishedHost = publishedHost
+		rootArgs.server.PublishedHostIP = publishedHostIP
 	}
-
-	// Construct the prometheus config builder
-	pcb, err := promconfig.NewPrometheusConfigBuilder(cliLog, rootArgs.promConfigPath, rootArgs.promURL)
-	if err != nil {
-		cliLog.Fatal().Err(err).Msg("Prometheus config builder construction failed")
-	}
-	pcb.RegisterTarget("binkyrailways", rootArgs.hostNameFromPrometheus, rootArgs.server.HTTPPort, false)
 
 	// Construct the service
-	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
+	rootArgs.app.HTTPPort = rootArgs.server.HTTPSPort
 	rootArgs.app.HTTPSecure = true
 	svc, err := service.New(rootArgs.app, service.Dependencies{
-		Logger:                  cliLog,
-		PrometheusConfigBuilder: pcb,
+		Logger: cliLog,
 	})
 	if err != nil {
 		cliLog.Fatal().Err(err).Msg("Service construction failed")
@@ -159,17 +149,30 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		return nil
 	})
 	g.Go(func() error {
-		host := rootArgs.server.PublishedHost
-		cliLog.Info().Str("host", host).Msg("Registering loki service")
-		ctx := api.WithServiceInfoHost(ctx, host)
-		return api.RegisterServiceEntry(ctx, api.ServiceTypeLokiProvider, api.ServiceInfo{
-			ApiVersion: "v1",
-			ApiPort:    int32(rootArgs.server.LokiPort),
-			Secure:     false,
-		})
+		if err := lokiWriter.DiscoverLokiServer(ctx, cliLog); err != nil {
+			cliLog.Error().Err(err).Msg("DiscoverLokiServer failed")
+			return err
+		}
+		return nil
 	})
-	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHost, rootArgs.server.HTTPPort, rootArgs.server.PublishedHost, rootArgs.server.GRPCPort)
+	g.Go(func() error {
+		// Broadcast service info
+		sb := api.NewServiceBroadcaster(cliLog, rootArgs.server.Host,
+			api.ServiceTypePrometheusProvider, api.ServiceInfo{
+				ApiVersion:   "v1",
+				ApiPort:      int32(rootArgs.server.HTTPPort),
+				Secure:       false,
+				ProviderName: jobName,
+			})
+		return sb.Run(ctx)
+	})
+	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHostDNSName, rootArgs.server.HTTPSPort, rootArgs.server.PublishedHostDNSName, rootArgs.server.GRPCPort)
 	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}
+}
+
+// Show usage for the given command
+func runUsage(cmd *cobra.Command, args []string) {
+	cmd.Usage()
 }

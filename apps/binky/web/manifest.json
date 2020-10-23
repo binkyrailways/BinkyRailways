@@ -1,35 +1,38 @@
 {
-    "name": "binky",
-    "short_name": "binky",
+    "name": "Binky Railways",
+    "short_name": "Binky",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Smart Automatic Railroad Control",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-192.png",
-            "sizes": "192x192",
+            "src": "icons/train_16.png",
+            "sizes": "16x16",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-512.png",
-            "sizes": "512x512",
+            "src": "icons/train_32.png",
+            "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
+            "src": "icons/train_64.png",
+            "sizes": "64x64",
+            "type": "image/png"
         },
         {
-            "src": "icons/Icon-maskable-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
+            "src": "icons/train_128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/train_256.png",
+            "sizes": "256x256",
+            "type": "image/png"
         }
     ]
 }

@@ -29,7 +29,9 @@ import (
 func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStation, srcRef model.CommandStationRef) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
-	dst.AddressSpaces = srcRef.GetAddressSpaces()
+	if srcRef != nil {
+		dst.AddressSpaces = srcRef.GetAddressSpaces()
+	}
 	if bncs, ok := src.(model.BinkyNetCommandStation); ok {
 		dst.BinkynetCommandStation = &BinkyNetCommandStation{}
 		if err := dst.BinkynetCommandStation.FromModel(ctx, bncs); err != nil {

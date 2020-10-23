@@ -58,7 +58,6 @@ final $typed_data.Uint8List blockStateStateDescriptor = $convert.base64Decode('C
 const RailwayState$json = const {
   '1': 'RailwayState',
   '2': const [
-    const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.Railway', '10': 'model'},
     const {'1': 'is_run_mode_enabled', '3': 2, '4': 1, '5': 8, '10': 'isRunModeEnabled'},
     const {'1': 'is_virtual_mode_enabled', '3': 3, '4': 1, '5': 8, '10': 'isVirtualModeEnabled'},
     const {'1': 'is_virtual_autorun_enabled', '3': 4, '4': 1, '5': 8, '10': 'isVirtualAutorunEnabled'},
@@ -79,7 +78,7 @@ const RailwayState$json = const {
 };
 
 /// Descriptor for `RailwayState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railwayStateDescriptor = $convert.base64Decode('CgxSYWlsd2F5U3RhdGUSLwoFbW9kZWwYASABKAsyGS5iaW5reXJhaWx3YXlzLnYxLlJhaWx3YXlSBW1vZGVsEi0KE2lzX3J1bl9tb2RlX2VuYWJsZWQYAiABKAhSEGlzUnVuTW9kZUVuYWJsZWQSNQoXaXNfdmlydHVhbF9tb2RlX2VuYWJsZWQYAyABKAhSFGlzVmlydHVhbE1vZGVFbmFibGVkEjsKGmlzX3ZpcnR1YWxfYXV0b3J1bl9lbmFibGVkGAQgASgIUhdpc1ZpcnR1YWxBdXRvcnVuRW5hYmxlZBIhCgxwb3dlcl9hY3R1YWwYCiABKAhSC3Bvd2VyQWN0dWFsEicKD3Bvd2VyX3JlcXVlc3RlZBgLIAEoCFIOcG93ZXJSZXF1ZXN0ZWQSOAoYYXV0b21hdGljX2NvbnRyb2xfYWN0dWFsGAwgASgIUhZhdXRvbWF0aWNDb250cm9sQWN0dWFsEj4KG2F1dG9tYXRpY19jb250cm9sX3JlcXVlc3RlZBgNIAEoCFIZYXV0b21hdGljQ29udHJvbFJlcXVlc3RlZBIyCgZibG9ja3MYMiADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSQgoMYmxvY2tfZ3JvdXBzGDMgAygLMh8uYmlua3lyYWlsd2F5cy52MS5CbG9ja0dyb3VwUmVmUgtibG9ja0dyb3VwcxJOChBjb21tYW5kX3N0YXRpb25zGDQgAygLMiMuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblJlZlIPY29tbWFuZFN0YXRpb25zEjsKCWp1bmN0aW9ucxg1IAMoCzIdLmJpbmt5cmFpbHdheXMudjEuSnVuY3Rpb25SZWZSCWp1bmN0aW9ucxIsCgRsb2NzGDYgAygLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSBGxvY3MSNQoHb3V0cHV0cxg3IAMoCzIbLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UmVmUgdvdXRwdXRzEjIKBnJvdXRlcxg4IAMoCzIaLmJpbmt5cmFpbHdheXMudjEuUm91dGVSZWZSBnJvdXRlcxI1CgdzZW5zb3JzGDkgAygLMhsuYmlua3lyYWlsd2F5cy52MS5TZW5zb3JSZWZSB3NlbnNvcnMSNQoHc2lnbmFscxg6IAMoCzIbLmJpbmt5cmFpbHdheXMudjEuU2lnbmFsUmVmUgdzaWduYWxz');
+final $typed_data.Uint8List railwayStateDescriptor = $convert.base64Decode('CgxSYWlsd2F5U3RhdGUSLQoTaXNfcnVuX21vZGVfZW5hYmxlZBgCIAEoCFIQaXNSdW5Nb2RlRW5hYmxlZBI1Chdpc192aXJ0dWFsX21vZGVfZW5hYmxlZBgDIAEoCFIUaXNWaXJ0dWFsTW9kZUVuYWJsZWQSOwoaaXNfdmlydHVhbF9hdXRvcnVuX2VuYWJsZWQYBCABKAhSF2lzVmlydHVhbEF1dG9ydW5FbmFibGVkEiEKDHBvd2VyX2FjdHVhbBgKIAEoCFILcG93ZXJBY3R1YWwSJwoPcG93ZXJfcmVxdWVzdGVkGAsgASgIUg5wb3dlclJlcXVlc3RlZBI4ChhhdXRvbWF0aWNfY29udHJvbF9hY3R1YWwYDCABKAhSFmF1dG9tYXRpY0NvbnRyb2xBY3R1YWwSPgobYXV0b21hdGljX2NvbnRyb2xfcmVxdWVzdGVkGA0gASgIUhlhdXRvbWF0aWNDb250cm9sUmVxdWVzdGVkEjIKBmJsb2NrcxgyIAMoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBmJsb2NrcxJCCgxibG9ja19ncm91cHMYMyADKAsyHy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrR3JvdXBSZWZSC2Jsb2NrR3JvdXBzEk4KEGNvbW1hbmRfc3RhdGlvbnMYNCADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkNvbW1hbmRTdGF0aW9uUmVmUg9jb21tYW5kU3RhdGlvbnMSOwoJanVuY3Rpb25zGDUgAygLMh0uYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblJlZlIJanVuY3Rpb25zEiwKBGxvY3MYNiADKAsyGC5iaW5reXJhaWx3YXlzLnYxLkxvY1JlZlIEbG9jcxI1CgdvdXRwdXRzGDcgAygLMhsuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRSZWZSB291dHB1dHMSMgoGcm91dGVzGDggAygLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIGcm91dGVzEjUKB3NlbnNvcnMYOSADKAsyGy5iaW5reXJhaWx3YXlzLnYxLlNlbnNvclJlZlIHc2Vuc29ycxI1CgdzaWduYWxzGDogAygLMhsuYmlua3lyYWlsd2F5cy52MS5TaWduYWxSZWZSB3NpZ25hbHM=');
 @$core.Deprecated('Use locStateDescriptor instead')
 const LocState$json = const {
   '1': 'LocState',
@@ -106,11 +105,12 @@ const LocState$json = const {
     const {'1': 'is_reversing', '3': 60, '4': 1, '5': 8, '10': 'isReversing'},
     const {'1': 'f0_actual', '3': 70, '4': 1, '5': 8, '10': 'f0Actual'},
     const {'1': 'f0_requested', '3': 71, '4': 1, '5': 8, '10': 'f0Requested'},
+    const {'1': 'is_enabled', '3': 80, '4': 1, '5': 8, '10': 'isEnabled'},
   ],
 };
 
 /// Descriptor for `LocState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List locStateDescriptor = $convert.base64Decode('CghMb2NTdGF0ZRIrCgVtb2RlbBgBIAEoCzIVLmJpbmt5cmFpbHdheXMudjEuTG9jUgVtb2RlbBJGCh9jb250cm9sbGVkX2F1dG9tYXRpY2FsbHlfYWN0dWFsGAogASgIUh1jb250cm9sbGVkQXV0b21hdGljYWxseUFjdHVhbBJMCiJjb250cm9sbGVkX2F1dG9tYXRpY2FsbHlfcmVxdWVzdGVkGAsgASgIUiBjb250cm9sbGVkQXV0b21hdGljYWxseVJlcXVlc3RlZBJFCh9jYW5fYmVfY29udHJvbGxlZF9hdXRvbWF0aWNhbGx5GAwgASgIUhxjYW5CZUNvbnRyb2xsZWRBdXRvbWF0aWNhbGx5EkcKD2F1dG9tYXRpY19zdGF0ZRgNIAEoDjIeLmJpbmt5cmFpbHdheXMudjEuQXV0b0xvY1N0YXRlUg5hdXRvbWF0aWNTdGF0ZRI/Cg1jdXJyZW50X3JvdXRlGBIgASgLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIMY3VycmVudFJvdXRlEjcKGHdhaXRfYWZ0ZXJfY3VycmVudF9yb3V0ZRgUIAEoCFIVd2FpdEFmdGVyQ3VycmVudFJvdXRlEkoKImlzX2N1cnJlbnRfcm91dGVfZHVyYXRpb25fZXhjZWVkZWQYFiABKAhSHmlzQ3VycmVudFJvdXRlRHVyYXRpb25FeGNlZWRlZBI5CgpuZXh0X3JvdXRlGBcgASgLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIJbmV4dFJvdXRlEj8KDWN1cnJlbnRfYmxvY2sYGCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgxjdXJyZW50QmxvY2sSVAoYY3VycmVudF9ibG9ja19lbnRlcl9zaWRlGBkgASgOMhsuYmlua3lyYWlsd2F5cy52MS5CbG9ja1NpZGVSFWN1cnJlbnRCbG9ja0VudGVyU2lkZRIhCgxzcGVlZF9hY3R1YWwYMiABKAVSC3NwZWVkQWN0dWFsEicKD3NwZWVkX3JlcXVlc3RlZBgzIAEoBVIOc3BlZWRSZXF1ZXN0ZWQSHQoKc3BlZWRfdGV4dBg0IAEoCVIJc3BlZWRUZXh0Eh0KCnN0YXRlX3RleHQYNSABKAlSCXN0YXRlVGV4dBIxChVzcGVlZF9pbl9zdGVwc19hY3R1YWwYNiABKAVSEnNwZWVkSW5TdGVwc0FjdHVhbBI3ChhzcGVlZF9pbl9zdGVwc19yZXF1ZXN0ZWQYNyABKAVSFXNwZWVkSW5TdGVwc1JlcXVlc3RlZBJJChBkaXJlY3Rpb25fYWN0dWFsGDggASgOMh4uYmlua3lyYWlsd2F5cy52MS5Mb2NEaXJlY3Rpb25SD2RpcmVjdGlvbkFjdHVhbBJPChNkaXJlY3Rpb25fcmVxdWVzdGVkGDkgASgOMh4uYmlua3lyYWlsd2F5cy52MS5Mb2NEaXJlY3Rpb25SEmRpcmVjdGlvblJlcXVlc3RlZBIhCgxpc19yZXZlcnNpbmcYPCABKAhSC2lzUmV2ZXJzaW5nEhsKCWYwX2FjdHVhbBhGIAEoCFIIZjBBY3R1YWwSIQoMZjBfcmVxdWVzdGVkGEcgASgIUgtmMFJlcXVlc3RlZA==');
+final $typed_data.Uint8List locStateDescriptor = $convert.base64Decode('CghMb2NTdGF0ZRIrCgVtb2RlbBgBIAEoCzIVLmJpbmt5cmFpbHdheXMudjEuTG9jUgVtb2RlbBJGCh9jb250cm9sbGVkX2F1dG9tYXRpY2FsbHlfYWN0dWFsGAogASgIUh1jb250cm9sbGVkQXV0b21hdGljYWxseUFjdHVhbBJMCiJjb250cm9sbGVkX2F1dG9tYXRpY2FsbHlfcmVxdWVzdGVkGAsgASgIUiBjb250cm9sbGVkQXV0b21hdGljYWxseVJlcXVlc3RlZBJFCh9jYW5fYmVfY29udHJvbGxlZF9hdXRvbWF0aWNhbGx5GAwgASgIUhxjYW5CZUNvbnRyb2xsZWRBdXRvbWF0aWNhbGx5EkcKD2F1dG9tYXRpY19zdGF0ZRgNIAEoDjIeLmJpbmt5cmFpbHdheXMudjEuQXV0b0xvY1N0YXRlUg5hdXRvbWF0aWNTdGF0ZRI/Cg1jdXJyZW50X3JvdXRlGBIgASgLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIMY3VycmVudFJvdXRlEjcKGHdhaXRfYWZ0ZXJfY3VycmVudF9yb3V0ZRgUIAEoCFIVd2FpdEFmdGVyQ3VycmVudFJvdXRlEkoKImlzX2N1cnJlbnRfcm91dGVfZHVyYXRpb25fZXhjZWVkZWQYFiABKAhSHmlzQ3VycmVudFJvdXRlRHVyYXRpb25FeGNlZWRlZBI5CgpuZXh0X3JvdXRlGBcgASgLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIJbmV4dFJvdXRlEj8KDWN1cnJlbnRfYmxvY2sYGCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgxjdXJyZW50QmxvY2sSVAoYY3VycmVudF9ibG9ja19lbnRlcl9zaWRlGBkgASgOMhsuYmlua3lyYWlsd2F5cy52MS5CbG9ja1NpZGVSFWN1cnJlbnRCbG9ja0VudGVyU2lkZRIhCgxzcGVlZF9hY3R1YWwYMiABKAVSC3NwZWVkQWN0dWFsEicKD3NwZWVkX3JlcXVlc3RlZBgzIAEoBVIOc3BlZWRSZXF1ZXN0ZWQSHQoKc3BlZWRfdGV4dBg0IAEoCVIJc3BlZWRUZXh0Eh0KCnN0YXRlX3RleHQYNSABKAlSCXN0YXRlVGV4dBIxChVzcGVlZF9pbl9zdGVwc19hY3R1YWwYNiABKAVSEnNwZWVkSW5TdGVwc0FjdHVhbBI3ChhzcGVlZF9pbl9zdGVwc19yZXF1ZXN0ZWQYNyABKAVSFXNwZWVkSW5TdGVwc1JlcXVlc3RlZBJJChBkaXJlY3Rpb25fYWN0dWFsGDggASgOMh4uYmlua3lyYWlsd2F5cy52MS5Mb2NEaXJlY3Rpb25SD2RpcmVjdGlvbkFjdHVhbBJPChNkaXJlY3Rpb25fcmVxdWVzdGVkGDkgASgOMh4uYmlua3lyYWlsd2F5cy52MS5Mb2NEaXJlY3Rpb25SEmRpcmVjdGlvblJlcXVlc3RlZBIhCgxpc19yZXZlcnNpbmcYPCABKAhSC2lzUmV2ZXJzaW5nEhsKCWYwX2FjdHVhbBhGIAEoCFIIZjBBY3R1YWwSIQoMZjBfcmVxdWVzdGVkGEcgASgIUgtmMFJlcXVlc3RlZBIdCgppc19lbmFibGVkGFAgASgIUglpc0VuYWJsZWQ=');
 @$core.Deprecated('Use commandStationStateDescriptor instead')
 const CommandStationState$json = const {
   '1': 'CommandStationState',
@@ -131,11 +131,13 @@ const HardwareModule$json = const {
     const {'1': 'last_updated_at', '3': 3, '4': 1, '5': 9, '10': 'lastUpdatedAt'},
     const {'1': 'error_messages', '3': 4, '4': 3, '5': 9, '10': 'errorMessages'},
     const {'1': 'address', '3': 5, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'seconds_since_last_updated', '3': 6, '4': 1, '5': 3, '10': 'secondsSinceLastUpdated'},
+    const {'1': 'metrics_url', '3': 7, '4': 1, '5': 9, '10': 'metricsUrl'},
   ],
 };
 
 /// Descriptor for `HardwareModule`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0EiUKDmVycm9yX21lc3NhZ2VzGAQgAygJUg1lcnJvck1lc3NhZ2VzEhgKB2FkZHJlc3MYBSABKAlSB2FkZHJlc3M=');
+final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0EiUKDmVycm9yX21lc3NhZ2VzGAQgAygJUg1lcnJvck1lc3NhZ2VzEhgKB2FkZHJlc3MYBSABKAlSB2FkZHJlc3MSOwoac2Vjb25kc19zaW5jZV9sYXN0X3VwZGF0ZWQYBiABKANSF3NlY29uZHNTaW5jZUxhc3RVcGRhdGVkEh8KC21ldHJpY3NfdXJsGAcgASgJUgptZXRyaWNzVXJs');
 @$core.Deprecated('Use blockStateDescriptor instead')
 const BlockState$json = const {
   '1': 'BlockState',

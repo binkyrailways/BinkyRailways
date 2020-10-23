@@ -5,7 +5,13 @@ After=dnsmasq.service
 Requires=dnsmasq.service
 
 [Service]
-ExecStart=/home/pi/binky-server --prom-config-path=/home/pi/prometheus.yml --storage-path=/home/pi/binky-storage --certificate-path=/home/pi/binky-cert.json --published-host=192.168.77.1
+ExecStart=/home/pi/binky-server \
+  --storage-path=/home/pi/binky-storage \
+  --certificate-path=/home/pi/binky-cert.json \
+  --published-host=${PUBLISHED_HOST_IP} \
+  --published-hostname=${PUBLISHED_HOST_DNS} \
+  --http-port=80
+EnvironmentFile=/home/pi/binky-server.env
 Restart=on-failure
 
 [Install]

@@ -285,6 +285,9 @@ enum BinkyNetDeviceType {
   PCF8574 = 3;
   // DeviceTypeADS1115 is the device type of a A/D conversion
   ADS1115 = 4;
+  // DeviceTypeBinkyCarSensor is the device type of a Binky Car Sensor.
+  // See https://easyeda.com/editor?from=oshwlab#id=4b79ca953a7e4ea8971153b438ae1339|5964111c75b2459481dac75f8581f77e
+  BINKYCARSENSOR = 5;
 }
 
 message BinkyNetObject {
@@ -299,6 +302,9 @@ message BinkyNetObject {
   // Connections to devices used by this object
   // The keys used in this map are specific to the type of object.
   repeated BinkyNetConnection connections = 4;
+
+  // Gets optional configuration for this object.
+  map<string, string> configuration = 5;
 }
 
 enum BinkyNetObjectType {
@@ -315,6 +321,9 @@ enum BinkyNetObjectType {
   // ObjectTypeTrackInverter is the object type of a four relay based track
   // power inverter.
   TRACKINVERTER = 4;
+	// ObjectTypeMagneticSwitch is the object type of switch that a single magnetic coil per direction.
+	// The coil has to stay activated.
+	MAGNETICSWITCH = 5;
 }
 
 // BinkyNetConnection represents a connection from a BinkyNetObject to a

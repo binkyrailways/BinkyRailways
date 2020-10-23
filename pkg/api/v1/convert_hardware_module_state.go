@@ -26,10 +26,17 @@ import (
 
 // FromState converts a state hardware module to an API hardware module
 func (dst *HardwareModule) FromState(ctx context.Context, src state.HardwareModule) error {
+	lastUpdatedAt := src.GetLastUpdatedAt()
 	dst.Id = src.GetID()
 	dst.Uptime = int64(src.GetUptime().Seconds())
-	dst.LastUpdatedAt = src.GetLastUpdatedAt().Format(time.RFC3339)
+	dst.LastUpdatedAt = lastUpdatedAt.Format(time.RFC3339)
 	dst.ErrorMessages = src.GetErrorMessages()
 	dst.Address = src.GetAddress()
+	if lastUpdatedAt.IsZero() {
+		dst.SecondsSinceLastUpdated = 0
+	} else {
+		dst.SecondsSinceLastUpdated = int64(time.Since(lastUpdatedAt).Seconds())
+	}
+	dst.MetricsUrl = src.GetMetricsURL()
 	return nil
 }

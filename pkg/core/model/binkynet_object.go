@@ -41,4 +41,7 @@ type BinkyNetObject interface {
 	// Connections to devices used by this object
 	// The keys used in this map are specific to the type of object.
 	GetConnections() BinkyNetConnectionSet
+
+	// Gets optional configuration for this connection.
+	GetConfiguration() BinkyNetObjectConfiguration
 }

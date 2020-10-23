@@ -66,6 +66,7 @@ type loc struct {
 	beforeReset                     util.SliceWithIdEntries[func(context.Context)]
 	afterReset                      util.SliceWithIdEntries[func(context.Context)]
 	recentlyVisitedBlocks           *recentlyVisitedBlocks
+	enabled                         bool
 }
 
 const (
@@ -115,6 +116,9 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.speed.loc = l
 	l.speedInSteps.Configure("speedInSteps", l, railway, railway)
 	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
+		if value > 0 {
+			l.enabled = true
+		}
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
@@ -234,6 +238,13 @@ func (l *loc) GetMediumSpeed(context.Context) int {
 // Value between 1 and 100.
 func (l *loc) GetMaximumSpeed(context.Context) int {
 	return l.getLoc().GetMaximumSpeed()
+}
+
+// Gets the enabled state of this loc.
+// If not enabled, the loc state will not be sent to
+// command stations.
+func (l *loc) GetEnabled() bool {
+	return l.enabled
 }
 
 // Is this loc controlled by the automatic loc controller?
@@ -512,6 +523,10 @@ func (l *loc) Reset(ctx context.Context) {
 			for _, cb := range l.afterReset {
 				cb.Value(ctx)
 			}
+
+			// Disable loc
+			l.enabled = false
+
 			return nil
 		})
 	}

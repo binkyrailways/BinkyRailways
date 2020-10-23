@@ -36,6 +36,10 @@ func (dst *BinkyNetObject) FromModel(ctx context.Context, src model.BinkyNetObje
 		conn.FromModel(ctx, bnc)
 		dst.Connections = append(dst.Connections, conn)
 	})
+	dst.Configuration = make(map[string]string)
+	src.GetConfiguration().ForEach(func(key, value string) {
+		dst.Configuration[key] = value
+	})
 	return nil
 }
 
@@ -62,5 +66,14 @@ func (src *BinkyNetObject) ToModel(ctx context.Context, dst model.BinkyNetObject
 	} else {
 		multierr.AppendInto(&err, dst.SetObjectType(ctx, ot))
 	}
+	for k, v := range src.GetConfiguration() {
+		dst.GetConfiguration().Set(k, v)
+	}
+	// Remove other keys
+	dst.GetConfiguration().ForEach(func(key, value string) {
+		if _, ok := src.GetConfiguration()[key]; !ok {
+			dst.GetConfiguration().Remove(key)
+		}
+	})
 	return err
 }

@@ -42,7 +42,7 @@ type virtualHardwareModule struct {
 // Create a new entity
 func newVirtualCommandStation(railway Railway) CommandStation {
 	cs := &virtualCommandStation{
-		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
+		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway, true),
 		createdAt:      time.Now(),
 	}
 	cs.power.Configure("power", cs, railway, railway)
@@ -124,6 +124,12 @@ func (cs *virtualCommandStation) ForEachHardwareModule(cb func(state.HardwareMod
 	})
 }
 
+// Request a reset of hardware module with given ID
+func (cs *virtualCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
+}
+
 // Gets the ID of the module
 func (hm *virtualHardwareModule) GetID() string {
 	return "virtual"
@@ -167,6 +173,16 @@ func (hm *virtualHardwareModule) GetErrorMessages() []string {
 // Does this module support address data?
 func (hm *virtualHardwareModule) HasAddress() bool {
 	return false
+}
+
+// URL to get metrics of this module (if any)
+func (lw *virtualHardwareModule) GetMetricsURL() string {
+	return ""
+}
+
+// Does this module support metrics url?
+func (lw *virtualHardwareModule) HasMetricsURL() bool {
+	return true
 }
 
 // Gets the address of the module (if any)

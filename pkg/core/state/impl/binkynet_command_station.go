@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"time"
 
+	apiutil "github.com/binkynet/BinkyNet/apis/util"
 	bn "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/NetManager/service"
 	"github.com/binkynet/NetManager/service/manager"
@@ -50,14 +51,16 @@ type binkyNetCommandStation struct {
 const (
 	onActualTimeout       = time.Millisecond
 	netManagerChanTimeout = time.Second
+	dccModuleID           = "dcc"
 )
 
 // Create a new entity
 func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
 	cs := &binkyNetCommandStation{
-		commandStation:      newCommandStation(en, railway),
+		commandStation:      newCommandStation(en, railway, false),
 		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
+	cs.log = cs.log.With().Str("component", "bncs").Logger()
 	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
@@ -72,6 +75,7 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+	log := cs.log
 	var err error
 	serverHost, err := util.FindServerHostAddress(cs.getCommandStation().GetServerHost())
 	if err != nil {
@@ -81,7 +85,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(),
 		cs.onUnknownLocalWorker, cs.isObjectUsed)
 	cs.manager, err = manager.New(manager.Dependencies{
-		Log:              cs.log,
+		Log:              log,
 		ReconfigureQueue: cs.reconfigureQueue,
 	})
 	if err != nil {
@@ -89,14 +93,14 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	}
 	registry.ForEach(ctx, func(ctx context.Context, lw bn.LocalWorker) error {
 		lw.Request.Hash = lw.GetRequest().Sha1()
-		cs.log.Info().Str("hash", lw.GetRequest().GetHash()).Msg("Setting local worker request")
+		log.Info().Str("hash", lw.GetRequest().GetHash()).Msg("Setting local worker request")
 		return cs.manager.SetLocalWorkerRequest(ctx, lw)
 	})
 	//registry
 	cs.service, err = service.NewService(service.Config{
 		RequiredWorkerVersion: cs.getCommandStation().GetRequiredWorkerVersion(),
 	}, service.Dependencies{
-		Log:     cs.log,
+		Log:     log,
 		Manager: cs.manager,
 	})
 	if err != nil {
@@ -105,7 +109,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	cs.server, err = server.NewServer(server.Config{
 		Host:     serverHost,
 		GRPCPort: cs.getCommandStation().GetGRPCPort(),
-	}, cs.service, cs.log)
+	}, cs.service, log)
 	if err != nil {
 		return err
 	}
@@ -113,8 +117,22 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	cs.cancel = cancel
 	g, ctx := errgroup.WithContext(ctx)
 	ctx = bn.WithServiceInfoHost(ctx, serverHost)
-	g.Go(func() error { return cs.manager.Run(ctx) })
-	g.Go(func() error { return cs.server.Run(ctx) })
+	g.Go(func() (result error) {
+		defer func() {
+			log.Info().Err(result).Msg("Binky NetManager ended")
+		}()
+		err := cs.manager.Run(ctx)
+		result = apiutil.ContextCanceledOrUnexpected(ctx, err, "Binky NetManager")
+		return
+	})
+	g.Go(func() (result error) {
+		defer func() {
+			log.Info().Err(result).Msg("Binky NetManager.Server ended")
+		}()
+		err := cs.server.Run(ctx)
+		result = apiutil.ContextCanceledOrUnexpected(ctx, err, "Binky NetManager.Server")
+		return
+	})
 	g.Go(func() error { cs.runSendLocSpeedAndDirection(ctx); return nil })
 	g.Go(func() error { cs.runSendOutputActive(ctx); return nil })
 	g.Go(func() error { cs.runSendSwitchDirection(ctx); return nil })
@@ -123,12 +141,13 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		defer cancel()
 		for {
 			select {
-			case lw := <-updates:
+			case <-updates:
 				cs.railway.Exclusive(ctx, onActualTimeout, "onLocalWorkerActualChange", func(ctx context.Context) error {
-					_, remoteAddr, _, _ := cs.manager.GetLocalWorkerInfo(lw.GetId())
+					/*_, remoteAddr, _, _ := cs.manager.GetLocalWorkerInfo(lw.GetId())
 					actual := lw.GetActual()
 					name := actual.GetId()
 					cs.railway.RegisterScrapeTarget(name, remoteAddr, int(actual.GetMetricsPort()), actual.GetMetricsSecure())
+					*/
 					cs.railway.Send(state.ActualStateChangedEvent{
 						Subject: cs,
 					})
@@ -176,7 +195,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 			select {
 			case actual := <-actuals:
 				cs.railway.Exclusive(ctx, onActualTimeout, "onOutputActualChange", func(ctx context.Context) error {
-					cs.log.Debug().
+					log.Debug().
 						Str("address", string(actual.Address)).
 						Msg("output actual update")
 					cs.onOutputActual(ctx, actual)
@@ -252,6 +271,10 @@ func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.P
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
+	if !loc.GetEnabled() {
+		return
+	}
+
 	addr := cs.createObjectAddress(loc.GetAddress(ctx))
 	direction := bn.LocDirection_FORWARD
 	if loc.GetDirection().GetRequested(ctx) == state.LocDirectionReverse {
@@ -286,7 +309,7 @@ func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc
 			if c, _ := loc.GetDirection().SetActual(ctx, direction); c {
 				changed = true
 			}
-			if c, _ := loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps())); c {
+			if c, _ := loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeed())); c {
 				changed = true
 			}
 			if c, _ := loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0]); c {
@@ -444,25 +467,44 @@ func (cs *binkyNetCommandStation) onSwitchActual(ctx context.Context, actual bn.
 
 // Send the direction of the given switch towards the railway.
 func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
+	cs.sendSwitchDirection(ctx, sw, false)
+}
+
+// Send the direction of the given switch towards the railway.
+func (cs *binkyNetCommandStation) sendSwitchDirection(ctx context.Context, sw state.Switch, isRepeat bool) {
 	addr := cs.createObjectAddress(sw.GetAddress())
+	log := cs.log.With().Str("address", string(addr)).Logger()
 	var direction bn.SwitchDirection
-	switch sw.GetDirection().GetRequested(ctx) {
+	switch dir := sw.GetDirection().GetRequested(ctx); dir {
 	case model.SwitchDirectionStraight:
 		direction = bn.SwitchDirection_STRAIGHT
 	case model.SwitchDirectionOff:
 		direction = bn.SwitchDirection_OFF
 	default:
 		// Unknown direction
+		log.Error().
+			Str("direction", string(dir)).
+			Msg("Invalid switch direction: %w")
 		return
 	}
+	isLocked := sw.GetLockedBy(ctx) != nil
 	requestedSwitchDirectionGauge.WithLabelValues(string(addr)).Set(float64(direction))
 	sendSwitchDirectionCounter.WithLabelValues(string(addr)).Inc()
+	start := time.Now()
 	cs.manager.SetSwitchRequest(bn.Switch{
 		Address: addr,
 		Request: &bn.SwitchState{
 			Direction: direction,
+			IsUsed:    isLocked,
 		},
 	})
+	if !isRepeat {
+		log.Debug().
+			Int32("direction", int32(direction)).
+			Bool("isUsed", isLocked).
+			Dur("duration", time.Since(start)).
+			Msg("Sent switch direction")
+	}
 }
 
 // Send the position of the given turntable towards the railway.
@@ -544,6 +586,8 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			if unconfigured > 0 {
 				lwm.ErrorMessages = append(lwm.ErrorMessages, fmt.Sprintf("%d unconfigured objects", unconfigured))
 			}
+		} else if info.GetId() == dccModuleID {
+			// DCC module is well known
 		} else {
 			lwm.ErrorMessages = []string{"Undefined local worker"}
 		}
@@ -565,6 +609,12 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 	}
 }
 
+// Request a reset of hardware module with given ID
+func (cs *binkyNetCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	cs.manager.RequestResetLocalWorker(ctx, id)
+	return nil
+}
+
 // createObjectAddress converts a model address into a BinkyNet object address.
 func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.ObjectAddress {
 	return bn.ObjectAddress(addr.Value)
@@ -582,7 +632,9 @@ func (cs *binkyNetCommandStation) runSendLocSpeedAndDirection(ctx context.Contex
 			// Send again
 		}
 		for _, loc := range cs.locs {
-			cs.SendLocSpeedAndDirection(ctx, loc)
+			if loc.GetEnabled() {
+				cs.SendLocSpeedAndDirection(ctx, loc)
+			}
 		}
 	}
 }
@@ -619,10 +671,19 @@ func (cs *binkyNetCommandStation) runSendSwitchDirection(ctx context.Context) {
 		case <-time.After(time.Second * 2):
 			// Send again
 		}
+		maxDuration := (time.Millisecond * 25) * time.Duration(len(cs.junctions))
+		start := time.Now()
 		for _, junction := range cs.junctions {
 			if sw, ok := junction.(state.Switch); ok {
-				cs.SendSwitchDirection(ctx, sw)
+				cs.sendSwitchDirection(ctx, sw, true)
 			}
+		}
+		if duration := time.Since(start); duration > maxDuration {
+			cs.log.Warn().
+				Dur("duration", duration).
+				Dur("max", maxDuration).
+				Int("count", len(cs.junctions)).
+				Msg("refresh of switch direction took too long")
 		}
 	}
 }

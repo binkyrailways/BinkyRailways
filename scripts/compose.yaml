@@ -1,0 +1,39 @@
+services:
+  loki:
+    image: grafana/loki:2.9.2
+    ports:
+      - "3100:3100"
+    volumes:
+      - ".:/mnt/config"
+      - loki_data:/tmp/loki
+    command: -config.file=/mnt/config/loki-config.yaml
+    user: root
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml 
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --web.enable-lifecycle
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/etc/grafana:ro"
+    command: --config=/etc/grafana/grafana.ini
+    links:
+      - loki
+      - prometheus
+
+volumes:
+  loki_data:
+  prom_data:

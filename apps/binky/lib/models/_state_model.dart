@@ -68,6 +68,13 @@ class StateModel extends ChangeNotifier {
     ));
   }
 
+  Future<Empty> resetHardwareModule(String hardwareModuleID) async {
+    var stateClient = APIClient().stateClient();
+    return await stateClient.resetHardwareModule(IDRequest(
+      id: hardwareModuleID,
+    ));
+  }
+
   // Enable run mode
   Future<RailwayState> enableRunMode(
       {bool virtual = false, bool autoRun = false}) async {

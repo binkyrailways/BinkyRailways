@@ -25,8 +25,6 @@ import "br_model_types.proto";
 
 // Railway contrains a description of a single model railway.
 message RailwayState {
-  // Model of the railway
-  Railway model = 1;
   // Set when the server is in run mode (otherwise editing mode)
   bool is_run_mode_enabled = 2;
   // Set when the server is in run mode with virtual mode enabled
@@ -138,6 +136,11 @@ message LocState {
   // the value.
   bool f0_actual = 70;
   bool f0_requested = 71;
+
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+  bool is_enabled = 80;
 }
 
 // Direction of a loc
@@ -224,6 +227,10 @@ message HardwareModule {
   repeated string error_messages = 4;
   // IP address of this module (if any)
   string address = 5;
+  // Seconds since the module sent it's last ping update
+  int64 seconds_since_last_updated = 6;
+  // URL to fetch metrics from this module
+  string metrics_url = 7;
 }
 
 // State of a single block
