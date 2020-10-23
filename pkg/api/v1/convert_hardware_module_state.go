@@ -38,5 +38,7 @@ func (dst *HardwareModule) FromState(ctx context.Context, src state.HardwareModu
 		dst.SecondsSinceLastUpdated = int64(time.Since(lastUpdatedAt).Seconds())
 	}
 	dst.MetricsUrl = src.GetMetricsURL()
+	dst.DccGeneratorUrl = src.GetDCCGeneratorURL()
+	dst.SshUrl = src.GetSSHURL()
 	return nil
 }

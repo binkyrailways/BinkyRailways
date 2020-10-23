@@ -45,7 +45,7 @@ func newVirtualCommandStation(railway Railway) CommandStation {
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway, true),
 		createdAt:      time.Now(),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		cs.power.SetActual(ctx, value)
 	})
@@ -86,6 +86,10 @@ func (cs *virtualCommandStation) GetIdle(context.Context) bool {
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l state.Loc) {
+	if !l.GetEnabled() {
+		return
+	}
+
 	l.GetSpeedInSteps().SetActual(ctx, l.GetSpeedInSteps().GetRequested(ctx))
 	l.GetDirection().SetActual(ctx, l.GetDirection().GetRequested(ctx))
 	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))
@@ -183,6 +187,26 @@ func (lw *virtualHardwareModule) GetMetricsURL() string {
 // Does this module support metrics url?
 func (lw *virtualHardwareModule) HasMetricsURL() bool {
 	return true
+}
+
+// URL to get DCC generator info of this module (if any)
+func (lw *virtualHardwareModule) GetDCCGeneratorURL() string {
+	return ""
+}
+
+// Does this module support DCC generator url?
+func (lw *virtualHardwareModule) HasDCCGeneratorURL() bool {
+	return false
+}
+
+// URL to open SSH connection to this module (if any)
+func (lw *virtualHardwareModule) GetSSHURL() string {
+	return ""
+}
+
+// Does this module support SSH url?
+func (lw *virtualHardwareModule) HasSSHURL() bool {
+	return false
 }
 
 // Gets the address of the module (if any)

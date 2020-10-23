@@ -43,7 +43,7 @@ func newBidibCommandStation(en model.BidibCommandStation, railway Railway) Comma
 	cs := &bidibCommandStation{
 		commandStation: newCommandStation(en, railway, false),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	cs.log.Debug().Msg("Created bidib commandstation state")
 	return cs
@@ -147,6 +147,10 @@ func (cs *bidibCommandStation) sendDriveToNode(node *host.Node, opts host.DriveO
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, locState state.Loc) {
+	if !locState.GetEnabled() {
+		return
+	}
+
 	log := cs.log
 	// Prepare drive options
 	var opts host.DriveOptions

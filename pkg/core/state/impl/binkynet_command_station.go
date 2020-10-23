@@ -61,7 +61,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
 	cs.log = cs.log.With().Str("component", "bncs").Logger()
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
 }
@@ -266,7 +266,13 @@ func (cs *binkyNetCommandStation) sendPower(ctx context.Context, enabled bool) {
 
 // Send the state of the binary output towards the railway.
 func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.Power) {
-	cs.power.SetActual(ctx, actual.GetActual().GetEnabled())
+	// Update (internal) actual status
+	enabled := actual.GetActual().GetEnabled()
+	cs.power.SetActual(ctx, enabled)
+	// If actual power turned off, also turn off the requested power.
+	if !enabled {
+		//cs.power.SetRequested(ctx, enabled)
+	}
 }
 
 // Send the speed and direction of the given loc towards the railway.

@@ -42,7 +42,7 @@ type binaryOutput struct {
 func newBinaryOutput(en model.BinaryOutput, railway Railway) BinaryOutput {
 	bo := &binaryOutput{}
 	bo.output = newOutput(en, bo, railway)
-	bo.active.Configure("active", bo, railway, railway)
+	bo.active.Configure("active", bo, nil, railway, railway)
 	bo.active.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		if bo.commandStation != nil {
 			bo.commandStation.SendOutputActive(ctx, bo)

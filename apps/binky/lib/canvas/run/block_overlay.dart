@@ -47,7 +47,8 @@ class _BlockOverlayState extends State<BlockOverlay> {
           if (!snapshot.hasData) {
             return const Text("Loading...");
           }
-          final locs = snapshot.data!;
+          final allLocs = snapshot.data!;
+          final locs = allLocs.where((l) => l.last.isEnabled).toList();
           locs.sort((a, b) =>
               a.last.model.description.compareTo(b.last.model.description));
           final List<Widget> children = [

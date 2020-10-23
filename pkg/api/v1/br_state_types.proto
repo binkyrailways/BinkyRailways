@@ -229,8 +229,12 @@ message HardwareModule {
   string address = 5;
   // Seconds since the module sent it's last ping update
   int64 seconds_since_last_updated = 6;
-  // URL to fetch metrics from this module
+   // URL to fetch metrics from this module
   string metrics_url = 7;
+   // URL to fetch DCC generator info from this module
+   string dcc_generator_url = 8;
+   // URL to open an SSH session towards this module
+   string ssh_url = 9;
 }
 
 // State of a single block

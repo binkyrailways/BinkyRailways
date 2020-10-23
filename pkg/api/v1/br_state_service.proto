@@ -68,8 +68,11 @@ service StateService {
   // Assign a loc to a block
   rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
 
-  // Remove a loc from the track
-  rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
+  // Put a loc onto the track
+  rpc PutLocOnTrack(PutLocOnTrackRequest) returns (RailwayState);
+
+    // Remove a loc from the track
+    rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
 
   // Set the closed status of a block
   rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
@@ -180,6 +183,11 @@ message AssignLocToBlockRequest {
   string block_id = 2;
   // Side of the block that the loc is facing
   BlockSide block_side = 3;
+}
+
+message PutLocOnTrackRequest {
+  // ID of loc to put on the track
+  string loc_id = 1;
 }
 
 message TakeLocOfTrackRequest {

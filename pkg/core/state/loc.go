@@ -72,11 +72,6 @@ type Loc interface {
 	// Gets the name of the person that owns this loc.
 	GetOwner(context.Context) string
 
-	// Gets the enabled state of this loc.
-	// If not enabled, the loc state will not be sent to
-	// command stations.
-	GetEnabled() bool
-
 	// Is it allowed to set the ControlledAutomatically property to true?
 	GetCanSetAutomaticControl(context.Context) bool
 
@@ -166,8 +161,19 @@ type Loc interface {
 	GetCommandStationInfo(context.Context) string
 
 	// Forcefully reset of settings of this loc.
+	// This disables the loc and no signals will be sent to it.
 	// This should be used when a loc is taken of the track.
 	Reset(context.Context)
+
+	// Enable the loc.
+	// This should be used when a loc is put on the track.
+	// Signals will now be sent to the loc.
+	Enable(context.Context) error
+
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+	GetEnabled() bool
 
 	// Save the current state to the state persistence.
 	PersistState(context.Context)

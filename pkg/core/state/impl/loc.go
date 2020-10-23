@@ -79,9 +79,9 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
 		entity: newEntity(railway.Logger().With().Str("loc", en.GetDescription()).Logger(), en, railway),
 	}
-	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, "waitAfterCurrentRoute", l, railway, railway)
-	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, "durationExceedsCurrentRouteTime", l, railway, railway)
-	l.autoLocState.Configure(&l.autoLocState, "autoLocState", l, railway, railway)
+	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, "waitAfterCurrentRoute", l, nil, railway, railway)
+	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, "durationExceedsCurrentRouteTime", l, nil, railway, railway)
+	l.autoLocState.Configure(&l.autoLocState, "autoLocState", l, nil, railway, railway)
 	l.autoLocState.SubscribeActualChanges(func(ctx context.Context, newState state.AutoLocState) {
 		route := l.GetCurrentRoute().GetActual(ctx)
 		switch newState {
@@ -110,27 +110,24 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	})
 	l.nextRoute.Configure(&l.nextRoute, "nextRoute", l, railway, railway)
 	l.currentBlock.Configure(&l.currentBlock, "currentBlock", l, railway, railway)
-	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, "currentBlockEnterSide", l, railway, railway)
-	l.startNextRouteTime.Configure(&l.startNextRouteTime, "startNextRouteTime", l, railway, railway)
+	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, "currentBlockEnterSide", l, nil, railway, railway)
+	l.startNextRouteTime.Configure(&l.startNextRouteTime, "startNextRouteTime", l, nil, railway, railway)
 	l.lastRouteOptions.Configure(&l.lastRouteOptions, "lastRouteOptions", l, railway, railway)
 	l.speed.loc = l
-	l.speedInSteps.Configure("speedInSteps", l, railway, railway)
+	l.speedInSteps.Configure("speedInSteps", l, l.limitSpeedInSteps, railway, railway)
 	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
-		if value > 0 {
-			l.enabled = true
-		}
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.direction.Configure("direction", l, railway, railway)
+	l.direction.Configure("direction", l, nil, railway, railway)
 	l.direction.SubscribeRequestChanges(func(ctx context.Context, value state.LocDirection) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.reversing.Configure(&l.reversing, "reversing", l, railway, railway)
-	l.f0.Configure("f0", l, railway, railway)
+	l.reversing.Configure(&l.reversing, "reversing", l, nil, railway, railway)
+	l.f0.Configure("f0", l, nil, railway, railway)
 	l.f0.SetActual(context.Background(), true)
 	l.f0.SetRequested(context.Background(), true)
 	l.f0.SubscribeRequestChanges(func(ctx context.Context, value bool) {
@@ -138,7 +135,7 @@ func newLoc(en model.Loc, railway Railway) Loc {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.controlledAutomatically.Configure("controlledAutomatically", l, railway, railway)
+	l.controlledAutomatically.Configure("controlledAutomatically", l, nil, railway, railway)
 	l.controlledAutomatically.SubscribeActualChanges(func(ctx context.Context, newValue bool) {
 		if !newValue {
 			// Unlock next route (if needed)
@@ -507,6 +504,7 @@ func (l *loc) Reset(ctx context.Context) {
 		return l.railway.Exclusive(ctx, locResetTimeout, "locReset", func(ctx context.Context) error {
 			// Stop
 			l.GetSpeed().SetRequested(ctx, 0)
+			l.GetF0().SetRequested(ctx, false)
 			l.GetControlledAutomatically().SetRequested(ctx, false)
 
 			// Call before reset handlers
@@ -535,6 +533,24 @@ func (l *loc) Reset(ctx context.Context) {
 		defer cancel()
 		backoff.Retry(attempt, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(time.Second/10), 25), ctx))
 	}()
+}
+
+// Enable the loc.
+// This should be used when a loc is put on the track.
+// Signals will now be sent to the loc.
+func (l *loc) Enable(ctx context.Context) error {
+	return l.railway.Exclusive(ctx, locResetTimeout, "locReset", func(ctx context.Context) error {
+		// Eisable loc
+		l.enabled = true
+
+		// Start with reset state
+		l.GetSpeed().SetRequested(ctx, 0)
+		l.GetDirection().SetRequested(ctx, state.LocDirectionForward)
+		l.GetF0().SetRequested(ctx, true)
+		l.GetControlledAutomatically().SetRequested(ctx, false)
+
+		return nil
+	})
 }
 
 // Save the current state to the state persistence.
@@ -594,5 +610,20 @@ func (l *loc) RemoveLockedEntity(ctx context.Context, x Lockable) {
 func (l *loc) UnlockAll(ctx context.Context) {
 	for len(l.lockedEntities) > 0 {
 		l.lockedEntities[0].Unlock(ctx, nil)
+	}
+}
+
+// Limit the speed in steps to acceptable values
+func (l *loc) limitSpeedInSteps(speedInSteps int) int {
+	speedSteps := l.GetSpeedSteps(context.Background())
+	switch speedSteps {
+	case 14:
+		return max(0, min(speedInSteps, 14))
+	case 28:
+		return max(0, min(speedInSteps, 28))
+	case 128:
+		return max(0, min(speedInSteps, 126))
+	default:
+		return max(0, min(speedInSteps, speedSteps-1))
 	}
 }
