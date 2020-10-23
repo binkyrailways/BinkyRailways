@@ -78,8 +78,8 @@ class HardwareModulePane extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(color),
-            foregroundColor: MaterialStateProperty.all(Colors.black)),
+            backgroundColor: WidgetStateProperty.all(color),
+            foregroundColor: WidgetStateProperty.all(Colors.black)),
         child: GestureDetector(
           child: Tooltip(
             message: hasErrors

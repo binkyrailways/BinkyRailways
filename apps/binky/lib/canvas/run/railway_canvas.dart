@@ -96,7 +96,5 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
         ),
       ],
     );
-
-    ;
   }
 }

@@ -15,7 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/services.dart';
 import 'package:binky/colors.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Draggable;

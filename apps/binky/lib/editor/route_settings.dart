@@ -358,9 +358,44 @@ class _RouteSettingsState extends State<_RouteSettings> {
               );
             }
             final description = snapshot.data!;
+            final menuItems = [
+              PopupMenuItem<String>(
+                  child: const Text('Remove'),
+                  onTap: () async {
+                    await widget.model
+                        .removeRouteEvent(widget.route.id, evt.sensor.id);
+                  }),
+            ];
+            if (index < widget.route.events.length - 1) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move down"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteEventDown(widget.route.id, evt.sensor.id);
+                    },
+                  ));
+            }
+            if (index > 0) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move up"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteEventUp(widget.route.id, evt.sensor.id);
+                    },
+                  ));
+            }
+            final behaviorsSummary =
+                evt.behaviors.map((e) => _describeRouteEventBehavior(e));
+            final subtitle = (behaviorsSummary.isEmpty)
+                ? "No behaviors"
+                : behaviorsSummary.join(",\n");
             return ListTile(
               title: Text(description),
-              subtitle: Text("${evt.behaviors.length} behaviors"),
+              subtitle: Text(subtitle),
               trailing: GestureDetector(
                 child: const Icon(Icons.more_vert),
                 onTapDown: (TapDownDetails details) {
@@ -368,14 +403,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
                     context: context,
                     position: RelativeRect.fromLTRB(details.globalPosition.dx,
                         details.globalPosition.dy, 0, 0),
-                    items: [
-                      PopupMenuItem<String>(
-                          child: const Text('Remove'),
-                          onTap: () async {
-                            await widget.model.removeRouteEvent(
-                                widget.route.id, evt.sensor.id);
-                          }),
-                    ],
+                    items: menuItems,
                     elevation: 8.0,
                   );
                 },
@@ -484,6 +512,33 @@ class _RouteSettingsState extends State<_RouteSettings> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     ));
+  }
+
+  String _describeRouteEventBehavior(RouteEventBehavior b) {
+    final result = [b.appliesTo];
+    switch (b.stateBehavior) {
+      case RouteStateBehavior.RSB_ENTER:
+        result.add("enter");
+        break;
+      case RouteStateBehavior.RSB_REACHED:
+        result.add("reached");
+        break;
+    }
+    switch (b.speedBehavior) {
+      case LocSpeedBehavior.LSB_MAXIMUM:
+        result.add("max-speed");
+        break;
+      case LocSpeedBehavior.LSB_MEDIUM:
+        result.add("med-speed");
+        break;
+      case LocSpeedBehavior.LSB_MINIMUM:
+        result.add("min-speed");
+        break;
+      case LocSpeedBehavior.LSB_NOCHANGE:
+        result.add("same-speed");
+        break;
+    }
+    return result.join("/");
   }
 
   Future<void> _update(void Function(Route) editor) async {
