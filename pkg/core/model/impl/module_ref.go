@@ -1,0 +1,48 @@
+// Copyright 2020 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+package impl
+
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
+
+type moduleRef struct {
+	id           string
+	onTryResolve func(id string) model.Module
+}
+
+var _ model.ModuleRef = moduleRef{}
+
+// newModuleRef creates a new module ref
+func newModuleRef(id string, onTryResolve func(id string) model.Module) model.ModuleRef {
+	return moduleRef{
+		id:           id,
+		onTryResolve: onTryResolve,
+	}
+}
+
+// Get the Identification value.
+func (lr moduleRef) GetID() string {
+	return lr.id
+}
+
+// Try to resolve the module reference.
+// Returns non-nil Module or nil if not found.
+func (lr moduleRef) TryResolve() model.Module {
+	return lr.onTryResolve(lr.id)
+}
