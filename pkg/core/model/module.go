@@ -36,10 +36,8 @@ type Module interface {
 	// Gets all junctions contained in this module.
 	GetJunctions() JunctionSet
 
-	/// <summary>
-	/// Gets all sensors contained in this module.
-	/// </summary>
-	//ISensorSet Sensors { get; }
+	// Gets all sensors contained in this module.
+	GetSensors() SensorSet
 
 	/// <summary>
 	/// Gets all signals contained in this module.

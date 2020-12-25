@@ -119,4 +119,12 @@ func TestLoad(t *testing.T) {
 	m.GetJunctions().ForEach(func(j model.Junction) {
 		assert.Equal(t, m, j.GetModule(), j.GetID())
 	})
+
+	// Test Sensor
+	// TODO
+
+	// Foreach sensor
+	m.GetSensors().ForEach(func(j model.Sensor) {
+		assert.Equal(t, m, j.GetModule(), j.GetID())
+	})
 }

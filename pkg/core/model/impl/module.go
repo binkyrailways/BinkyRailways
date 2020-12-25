@@ -34,6 +34,7 @@ type module struct {
 	Blocks      blockSet      `xml:"Blocks"`
 	BlockGroups blockGroupSet `xml:"BlockGroups"`
 	Junctions   junctionSet   `xml:"Junctions"`
+	Sensors     sensorSet     `xml:"Sensors"`
 }
 
 var (
@@ -48,6 +49,7 @@ func NewModule() Module {
 	m.Blocks.Initialize(m, m.entity.OnModified)
 	m.BlockGroups.Initialize(m, m.entity.OnModified)
 	m.Junctions.Initialize(m, m.OnModified)
+	m.Sensors.Initialize(m, m.entity.OnModified)
 	return m
 }
 
@@ -74,7 +76,9 @@ func (m *module) GetJunctions() model.JunctionSet {
 /// <summary>
 /// Gets all sensors contained in this module.
 /// </summary>
-//ISensorSet Sensors { get; }
+func (m *module) GetSensors() model.SensorSet {
+	return &m.Sensors
+}
 
 /// <summary>
 /// Gets all signals contained in this module.
