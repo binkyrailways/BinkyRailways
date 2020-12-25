@@ -54,7 +54,7 @@ func TestLoad(t *testing.T) {
 		list = append(list, l.GetDescription())
 	})
 	sort.Strings(list)
-	assert.EqualValues(t, []string{"ABe 4/4 34", "ABe 4/46", "ABe 54", "Borgward Sattel Triebwagen", "GE 46", "Ge 4/4", "Ge 4/4 622", "Ge 4/4 III", "Ge 6/6", "Ge 6/6 II", "Ge 6/6 Krokodil", "RhB 605", "TM2/2 (N)", "TM2/2 (S)", "Te 2/2 #72"}, list)
+	assert.EqualValues(t, []string{"ABe 4/4 34", "ABe 4/46", "ABe 54", "Borgward Sattel Triebwagen", "Car LinksOm", "Car RechtsOm", "GE 46", "Ge 4/4", "Ge 4/4 622", "Ge 4/4 III", "Ge 6/6", "Ge 6/6 II", "Ge 6/6 Krokodil", "RhB 605", "TM2/2 (N)", "TM2/2 (S)", "Te 2/2 #72"}, list)
 
 	// Load module
 	m := p.GetModule("cfd620a5-a5e8-40f1-baa4-fd6efb2b8907")
@@ -93,5 +93,30 @@ func TestLoad(t *testing.T) {
 	// Foreach block group
 	m.GetBlockGroups().ForEach(func(bg model.BlockGroup) {
 		assert.Equal(t, m, bg.GetModule(), bg.GetID())
+	})
+
+	// Test Switch
+	j, ok := m.GetJunctions().Get("f99677ca-7861-451c-a279-39115dd793af")
+	assert.True(t, ok)
+	require.NotNil(t, j)
+	sw, ok := j.(model.Switch)
+	assert.True(t, ok)
+	require.NotNil(t, sw)
+	assert.Equal(t, "w-322", sw.GetDescription())
+	assert.Equal(t, 111, sw.GetX())
+	assert.Equal(t, 8, sw.GetY())
+	assert.Equal(t, 32, sw.GetWidth())
+	assert.Equal(t, 12, sw.GetHeight())
+	assert.True(t, sw.GetLocked())
+	assert.True(t, sw.GetHasFeedback())
+	assert.Equal(t, 1000, sw.GetSwitchDuration())
+	assert.True(t, sw.GetInvert())
+	assert.False(t, sw.GetInvertFeedback())
+	assert.Equal(t, "LocoNet 322", sw.GetAddress().String())
+	assert.True(t, sw.GetFeedbackAddress().IsEmpty())
+
+	// Foreach junction
+	m.GetJunctions().ForEach(func(j model.Junction) {
+		assert.Equal(t, m, j.GetModule(), j.GetID())
 	})
 }

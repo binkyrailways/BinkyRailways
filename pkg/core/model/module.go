@@ -33,10 +33,8 @@ type Module interface {
 	/// </summary>
 	//IEntitySet2<IEdge> Edges { get; }
 
-	/// <summary>
-	/// Gets all junctions contained in this module.
-	/// </summary>
-	//IJunctionSet Junctions { get; }
+	// Gets all junctions contained in this module.
+	GetJunctions() JunctionSet
 
 	/// <summary>
 	/// Gets all sensors contained in this module.

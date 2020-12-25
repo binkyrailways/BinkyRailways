@@ -31,6 +31,9 @@ type Address struct {
 
 // NewAddressFromString parses an address in the given string
 func NewAddressFromString(value string) (Address, error) {
+	if value == "" {
+		return Address{}, nil
+	}
 	haveType := false
 	haveValue := false
 	haveAddressSpace := false

@@ -33,6 +33,7 @@ type module struct {
 
 	Blocks      blockSet      `xml:"Blocks"`
 	BlockGroups blockGroupSet `xml:"BlockGroups"`
+	Junctions   junctionSet   `xml:"Junctions"`
 }
 
 var (
@@ -46,6 +47,7 @@ func NewModule() Module {
 	m.persistentEntity.Initialize(m.entity.OnModified)
 	m.Blocks.Initialize(m, m.entity.OnModified)
 	m.BlockGroups.Initialize(m, m.entity.OnModified)
+	m.Junctions.Initialize(m, m.OnModified)
 	return m
 }
 
@@ -64,10 +66,10 @@ func (m *module) GetBlockGroups() model.BlockGroupSet {
 /// </summary>
 //IEntitySet2<IEdge> Edges { get; }
 
-/// <summary>
-/// Gets all junctions contained in this module.
-/// </summary>
-//IJunctionSet Junctions { get; }
+// Gets all junctions contained in this module.
+func (m *module) GetJunctions() model.JunctionSet {
+	return &m.Junctions
+}
 
 /// <summary>
 /// Gets all sensors contained in this module.

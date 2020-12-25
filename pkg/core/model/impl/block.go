@@ -26,7 +26,6 @@ import (
 type block struct {
 	moduleEntity
 	positionedEntity
-	persistentEntity
 
 	WaitProbability              int
 	MinimumWaitTime              int
@@ -53,7 +52,6 @@ func newBlock() *block {
 		StationMode:                  model.DefaultBlockStationMode,
 	}
 	b.positionedEntity.Initialize(b.entity.OnModified, 32, 16)
-	b.persistentEntity.Initialize(b.entity.OnModified)
 	return b
 }
 
