@@ -30,7 +30,6 @@ type Junction interface {
 }
 
 type junction struct {
-	moduleEntity
 	positionedEntity
 
 	BlockID string `xml:"Block,omitempty"`
@@ -39,9 +38,8 @@ type junction struct {
 var _ model.Junction = &junction{}
 
 // Initialize the junction after construction
-func (j *junction) Initialize(m Module, w, h int) {
-	j.SetModule(m)
-	j.positionedEntity.Initialize(j.moduleEntity.OnModified, w, h)
+func (j *junction) Initialize(w, h int) {
+	j.positionedEntity.Initialize(w, h)
 }
 
 // The block that this junction belongs to.

@@ -41,7 +41,7 @@ type stdSwitch struct {
 
 var _ Switch = &stdSwitch{}
 
-func newSwitch(m Module) *stdSwitch {
+func newSwitch() *stdSwitch {
 	sw := &stdSwitch{
 		HasFeedback:      false,
 		SwitchDuration:   1000,
@@ -49,7 +49,7 @@ func newSwitch(m Module) *stdSwitch {
 		InvertFeedback:   false,
 		InitialDirection: model.SwitchDirectionStraight,
 	}
-	sw.junction.Initialize(m, 16, 12)
+	sw.junction.Initialize(16, 12)
 	return sw
 }
 

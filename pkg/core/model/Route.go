@@ -41,10 +41,8 @@ type Route interface {
 	// Set of junctions with their states that are crossed when taking this route.
 	GetCrossingJunctions() JunctionWithStateSet
 
-	/// <summary>
-	/// Set of events that change the state of the route and it's running loc.
-	/// </summary>
-	//IRouteEventSet Events { get; }
+	// Set of events that change the state of the route and it's running loc.
+	GetEvents() RouteEventSet
 
 	// Speed of locs when going this route.
 	// This value is a percentage of the maximum / medium speed of the loc.

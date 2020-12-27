@@ -40,7 +40,7 @@ func (jc *JunctionContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement
 	var junction Junction
 	switch a.Value {
 	case "Switch":
-		junction = newSwitch(nil)
+		junction = newSwitch()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

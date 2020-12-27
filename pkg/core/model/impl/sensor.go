@@ -30,7 +30,6 @@ type Sensor interface {
 }
 
 type sensor struct {
-	moduleEntity
 	positionedEntity
 
 	Address model.Address `xml:"Address"`
@@ -41,9 +40,8 @@ type sensor struct {
 var _ Sensor = &sensor{}
 
 // Initialize the sensor after construction
-func (s *sensor) Initialize(m Module, w, h int) {
-	s.SetModule(m)
-	s.positionedEntity.Initialize(s.moduleEntity.OnModified, w, h)
+func (s *sensor) Initialize(w, h int) {
+	s.positionedEntity.Initialize(w, h)
 }
 
 // Get the Address of the entity

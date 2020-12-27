@@ -15,20 +15,16 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// RouteEvent specifies a sensor event in a route.
+type RouteEvent interface {
+	ModuleEntity
 
-type binarySensor struct {
-	sensor
-}
+	// Sensor that triggers this event
+	GetSensor() Sensor
 
-var _ model.BinarySensor = &binarySensor{}
-
-func newBinarySensor() *binarySensor {
-	sw := &binarySensor{}
-	sw.sensor.Initialize(12, 12)
-	return sw
+	// Gets the list of behaviors to choose from.
+	// The first matching behavior is used.
+	GetBehaviors() RouteEventBehaviorList
 }

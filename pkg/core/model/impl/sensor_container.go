@@ -40,7 +40,7 @@ func (sc *SensorContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	var item Sensor
 	switch a.Value {
 	case "BinarySensor":
-		item = newBinarySensor(nil)
+		item = newBinarySensor()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

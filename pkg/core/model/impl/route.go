@@ -38,11 +38,13 @@ type routeFields struct {
 	ChooseProbability *int                 `xml:"ChooseProbability"`
 	MaxDuration       *int                 `xml:"MaxDuration"`
 	Closed            *bool                `xml:"Closed"`
+	Events            routeEventSet        `xml:"Events"`
 	CrossingJunctions junctionWithStateSet `xml:"CrossingJunctions"`
 }
 
-func (rf *routeFields) Initialize(r *route) {
-	rf.CrossingJunctions.Initialize(r, r.OnModified)
+func (rf *routeFields) SetRoute(r *route) {
+	rf.Events.SetContainer(r)
+	rf.CrossingJunctions.SetContainer(r)
 }
 
 var _ model.Route = &route{}
@@ -50,7 +52,6 @@ var _ model.Route = &route{}
 // newRoute initialize a new route
 func newRoute() *route {
 	r := &route{}
-	r.routeFields.Initialize(r)
 	return r
 }
 
@@ -59,13 +60,13 @@ func (r *route) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if err := d.DecodeElement(&r.routeFields, &start); err != nil {
 		return err
 	}
-	r.routeFields.Initialize(r)
+	r.routeFields.SetRoute(r)
 	return nil
 }
 
 // Starting point of the route
 func (r *route) GetFrom() model.EndPoint {
-	if result, ok := r.FromBlock.Get(r.module); ok {
+	if result, ok := r.FromBlock.Get(r.GetModule()); ok {
 		return result
 	}
 	// TODO Edge
@@ -73,9 +74,9 @@ func (r *route) GetFrom() model.EndPoint {
 }
 func (r *route) SetFrom(value model.EndPoint) error {
 	if value == nil {
-		r.FromBlock.Set(nil, r.module, r.OnModified)
+		r.FromBlock.Set(nil, r.GetModule(), r.OnModified)
 	} else if b, ok := value.(model.Block); ok {
-		return r.FromBlock.Set(b, r.module, r.OnModified)
+		return r.FromBlock.Set(b, r.GetModule(), r.OnModified)
 	}
 	return nil
 }
@@ -94,7 +95,7 @@ func (r *route) SetFromBlockSide(value model.BlockSide) error {
 
 // End point of the route
 func (r *route) GetTo() model.EndPoint {
-	if result, ok := r.ToBlock.Get(r.module); ok {
+	if result, ok := r.ToBlock.Get(r.GetModule()); ok {
 		return result
 	}
 	// TODO Edge
@@ -102,9 +103,9 @@ func (r *route) GetTo() model.EndPoint {
 }
 func (r *route) SetTo(value model.EndPoint) error {
 	if value == nil {
-		r.ToBlock.Set(nil, r.module, r.OnModified)
+		r.ToBlock.Set(nil, r.GetModule(), r.OnModified)
 	} else if b, ok := value.(model.Block); ok {
-		return r.ToBlock.Set(b, r.module, r.OnModified)
+		return r.ToBlock.Set(b, r.GetModule(), r.OnModified)
 	}
 	return nil
 }
@@ -126,10 +127,10 @@ func (r *route) GetCrossingJunctions() model.JunctionWithStateSet {
 	return &r.CrossingJunctions
 }
 
-/// <summary>
-/// Set of events that change the state of the route and it's running loc.
-/// </summary>
-//IRouteEventSet Events { get; }
+// Set of events that change the state of the route and it's running loc.
+func (r *route) GetEvents() model.RouteEventSet {
+	return &r.Events
+}
 
 // Speed of locs when going this route.
 // This value is a percentage of the maximum / medium speed of the loc.

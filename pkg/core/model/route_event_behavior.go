@@ -15,20 +15,22 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// RouteEventBehavior specifies possible behavior of a route event.
+type RouteEventBehavior interface {
+	ModuleEntity
 
-type binarySensor struct {
-	sensor
-}
+	/// <summary>
+	/// Predicate used to select the locs to which this event applies.
+	/// </summary>
+	//ILocPredicate AppliesTo { get; }
 
-var _ model.BinarySensor = &binarySensor{}
+	// How is the state of the route changed.
+	GetStateBehavior() RouteStateBehavior
+	SetStateBehavior(value RouteStateBehavior) error
 
-func newBinarySensor() *binarySensor {
-	sw := &binarySensor{}
-	sw.sensor.Initialize(12, 12)
-	return sw
+	// How is the speed of the occupying loc changed.
+	GetSpeedBehavior() LocSpeedBehavior
+	SetSpeedBehavior(value LocSpeedBehavior) error
 }

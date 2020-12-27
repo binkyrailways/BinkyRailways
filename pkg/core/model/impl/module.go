@@ -49,11 +49,16 @@ func NewModule() Module {
 	m := &module{}
 	m.EnsureID()
 	m.persistentEntity.Initialize(m.entity.OnModified)
-	m.Blocks.Initialize(m, m.entity.OnModified)
-	m.BlockGroups.Initialize(m, m.entity.OnModified)
-	m.Junctions.Initialize(m, m.OnModified)
-	m.Sensors.Initialize(m, m.entity.OnModified)
-	m.Routes.Initialize(m, m.entity.OnModified)
+	m.Blocks.SetContainer(m)
+	m.BlockGroups.SetContainer(m)
+	m.Junctions.SetContainer(m)
+	m.Sensors.SetContainer(m)
+	m.Routes.SetContainer(m)
+	return m
+}
+
+// Return the containing module
+func (m *module) GetModule() model.Module {
 	return m
 }
 

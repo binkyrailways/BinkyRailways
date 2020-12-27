@@ -15,20 +15,24 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// RouteEventSet is a set of route events.
+type RouteEventSet interface {
+	// Get number of entries
+	GetCount() int
 
-type binarySensor struct {
-	sensor
-}
+	// Invoke the callback for each item
+	ForEach(cb func(RouteEvent))
 
-var _ model.BinarySensor = &binarySensor{}
+	// Remove the given item from this set.
+	// Returns true if it was removed, false otherwise
+	Remove(item RouteEvent) bool
 
-func newBinarySensor() *binarySensor {
-	sw := &binarySensor{}
-	sw.sensor.Initialize(12, 12)
-	return sw
+	// Remove all items.
+	// Returns true if one or more items were removed, false otherwise
+	Clear() bool
+
+	// Add the given item to this set.
+	Add(sensor Sensor) RouteEvent
 }

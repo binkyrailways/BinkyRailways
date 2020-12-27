@@ -25,14 +25,13 @@ import (
 type ModuleEntity interface {
 	model.ModuleEntity
 
-	// SetModule initialize the entity
-	SetModule(Module)
+	// SetContainer links this entity to its parent
+	SetContainer(ModuleEntityContainer)
 }
 
 type moduleEntity struct {
 	entity
-
-	module Module
+	moduleEntityContainer
 }
 
 var (
@@ -41,10 +40,16 @@ var (
 
 // Gets the containing module
 func (me *moduleEntity) GetModule() model.Module {
-	return me.module
+	return me.moduleEntityContainer.GetModule()
 }
 
-// SetModule initialize the entity
-func (me *moduleEntity) SetModule(value Module) {
-	me.module = value
+// SetContainer links this entity to its parent
+func (me *moduleEntity) SetContainer(value ModuleEntityContainer) {
+	me.moduleEntityContainer.SetContainer(value)
+}
+
+// Invoke when anything has changed
+func (me *moduleEntity) OnModified() {
+	me.entity.OnModified()
+	me.moduleEntityContainer.OnModified()
 }

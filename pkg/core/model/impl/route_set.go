@@ -26,8 +26,7 @@ import (
 
 type routeSet struct {
 	routeSetItems
-	module     Module
-	onModified func()
+	moduleEntityContainer
 }
 
 type routeSetItems struct {
@@ -42,14 +41,9 @@ func (rs *routeSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 		return err
 	}
 	for _, x := range rs.Items {
-		x.SetModule(rs.module)
+		x.SetContainer(rs)
 	}
 	return nil
-}
-
-func (rs *routeSet) Initialize(m Module, onModified func()) {
-	rs.module = m
-	rs.onModified = onModified
 }
 
 // Get number of entries
@@ -118,9 +112,9 @@ func (rs *routeSet) AddNew() model.Route {
 		}
 		r := newRoute()
 		r.SetID(id)
-		r.SetModule(rs.module)
+		r.SetContainer(rs)
 		rs.Items = append(rs.Items, r)
-		rs.onModified()
+		rs.OnModified()
 		return r
 	}
 }

@@ -26,8 +26,7 @@ import (
 
 type junctionSet struct {
 	junctionSetItems
-	module     Module
-	onModified func()
+	moduleEntityContainer
 }
 
 type junctionSetItems struct {
@@ -42,14 +41,9 @@ func (js *junctionSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 		return err
 	}
 	for _, x := range js.Items {
-		x.SetModule(js.module)
+		x.SetContainer(js)
 	}
 	return nil
-}
-
-func (js *junctionSet) Initialize(m Module, onModified func()) {
-	js.module = m
-	js.onModified = onModified
 }
 
 // Get number of entries
@@ -121,11 +115,11 @@ func (js *junctionSet) AddSwitch() model.Switch {
 			idx++
 			continue
 		}
-		sw := newSwitch(js.module)
+		sw := newSwitch()
 		sw.SetID(id)
-		sw.SetModule(js.module)
+		sw.SetContainer(js)
 		js.Items = append(js.Items, &JunctionContainer{Junction: sw})
-		js.onModified()
+		js.OnModified()
 		return sw
 	}
 }

@@ -27,7 +27,7 @@ import (
 type JunctionRef string
 
 // Get the block references by this reference
-func (jr JunctionRef) Get(m Module) (model.Junction, bool) {
+func (jr JunctionRef) Get(m model.Module) (model.Junction, bool) {
 	if jr == "" || m == nil {
 		return nil, false
 	}
@@ -36,7 +36,7 @@ func (jr JunctionRef) Get(m Module) (model.Junction, bool) {
 
 // Set the reference
 // Returns: changed, error
-func (jr *JunctionRef) Set(value model.Junction, m Module, onModified func()) error {
+func (jr *JunctionRef) Set(value model.Junction, m model.Module, onModified func()) error {
 	id := ""
 	var vm model.Module
 	if value != nil {

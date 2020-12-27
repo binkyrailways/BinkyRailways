@@ -23,31 +23,31 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// BlockRef is an ID reference to a block.
-type BlockRef string
+// SensorRef is an ID reference to a block.
+type SensorRef string
 
 // Get the block references by this reference
-func (br BlockRef) Get(m model.Module) (model.Block, bool) {
-	if br == "" || m == nil {
+func (sr SensorRef) Get(m model.Module) (model.Sensor, bool) {
+	if sr == "" || m == nil {
 		return nil, false
 	}
-	return m.GetBlocks().Get(string(br))
+	return m.GetSensors().Get(string(sr))
 }
 
 // Set the reference
 // Returns: changed, error
-func (br *BlockRef) Set(value model.Block, m model.Module, onModified func()) error {
+func (sr *SensorRef) Set(value model.Sensor, m model.Module, onModified func()) error {
 	id := ""
 	var vm model.Module
 	if value != nil {
 		id = value.GetID()
 		vm = value.GetModule()
 	}
-	if id != string(*br) {
+	if id != string(*sr) {
 		if vm != m {
 			return fmt.Errorf("Invalid module")
 		}
-		*br = BlockRef(id)
+		*sr = SensorRef(id)
 		onModified()
 		return nil
 	}

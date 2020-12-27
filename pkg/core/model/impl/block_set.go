@@ -26,8 +26,7 @@ import (
 
 type blockSet struct {
 	blockSetItems
-	module     Module
-	onModified func()
+	moduleEntityContainer
 }
 
 type blockSetItems struct {
@@ -42,14 +41,9 @@ func (bs *blockSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 		return err
 	}
 	for _, x := range bs.Items {
-		x.SetModule(bs.module)
+		x.SetContainer(bs)
 	}
 	return nil
-}
-
-func (bs *blockSet) Initialize(m Module, onModified func()) {
-	bs.module = m
-	bs.onModified = onModified
 }
 
 // Get number of entries
@@ -118,9 +112,9 @@ func (bs *blockSet) AddNew() model.Block {
 		}
 		b := newBlock()
 		b.SetID(id)
-		b.SetModule(bs.module)
+		b.SetContainer(bs)
 		bs.Items = append(bs.Items, b)
-		bs.onModified()
+		bs.OnModified()
 		return b
 	}
 }

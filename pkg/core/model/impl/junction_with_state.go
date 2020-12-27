@@ -27,30 +27,21 @@ import (
 type JunctionWithState interface {
 	ModuleEntity
 	model.JunctionWithState
-
-	SetRoute(*route)
 }
 
 type junctionWithState struct {
 	propertyChanged eventHandler
-	route           *route
+	moduleEntityContainer
 
 	JunctionID JunctionRef `xml:"Junction,omitempty"`
 }
 
 var _ JunctionWithState = &junctionWithState{}
 
-// Initialize the junction after construction
-func (j *junctionWithState) Initialize(r *route) {
-	j.route = r
-}
-func (j *junctionWithState) SetRoute(r *route) {
-	j.route = r
-}
-
 // OnModified fires the propertychanged callbacks
 func (j *junctionWithState) OnModified() {
 	j.propertyChanged.Invoke(j)
+	j.moduleEntityContainer.OnModified()
 }
 
 // A property of this entity has changed.
@@ -87,24 +78,13 @@ func (j *junctionWithState) HasAutomaticDescription() bool {
 	return true // TODO
 }
 
-// GetModule returns the containing module.
-func (j *junctionWithState) GetModule() model.Module {
-	if j.route != nil {
-		return j.route.GetModule()
-	}
-	return nil
-}
-func (j *junctionWithState) SetModule(value Module) {
-	// Not implemented
-}
-
 // The junction involved
 func (j *junctionWithState) GetJunction() model.Junction {
-	if j.route == nil {
-		return nil
+	if m := j.moduleEntityContainer.GetModule(); m != nil {
+		x, _ := j.JunctionID.Get(m)
+		return x
 	}
-	x, _ := j.JunctionID.Get(j.route.module)
-	return x
+	return nil
 }
 
 // Create a clone of this entity.

@@ -23,11 +23,33 @@ func NewBlockSide(value model.BlockSide) *model.BlockSide {
 	return &value
 }
 
+func NewLocSpeedBehavior(value model.LocSpeedBehavior) *model.LocSpeedBehavior {
+	return &value
+}
+
+func NewRouteStateBehavior(value model.RouteStateBehavior) *model.RouteStateBehavior {
+	return &value
+}
+
 func NewSwitchDirection(value model.SwitchDirection) *model.SwitchDirection {
 	return &value
 }
 
 func BlockSideValue(r *model.BlockSide, defaultValue model.BlockSide) model.BlockSide {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
+func LocSpeedBehaviorValue(r *model.LocSpeedBehavior, defaultValue model.LocSpeedBehavior) model.LocSpeedBehavior {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
+func RouteStateBehaviorValue(r *model.RouteStateBehavior, defaultValue model.RouteStateBehavior) model.RouteStateBehavior {
 	if r == nil {
 		return defaultValue
 	}

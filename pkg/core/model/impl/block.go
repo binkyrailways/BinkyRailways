@@ -24,7 +24,6 @@ import (
 )
 
 type block struct {
-	moduleEntity
 	positionedEntity
 
 	WaitProbability              int
@@ -51,7 +50,7 @@ func newBlock() *block {
 		ChangeDirectionReversingLocs: model.DefaultBlockChangeDirectionReversingLocs,
 		StationMode:                  model.DefaultBlockStationMode,
 	}
-	b.positionedEntity.Initialize(b.entity.OnModified, 32, 16)
+	b.positionedEntity.Initialize(32, 16)
 	return b
 }
 

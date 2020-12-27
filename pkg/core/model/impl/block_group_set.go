@@ -26,8 +26,7 @@ import (
 
 type blockGroupSet struct {
 	blockGroupSetItems
-	module     Module
-	onModified func()
+	moduleEntityContainer
 }
 
 type blockGroupSetItems struct {
@@ -42,14 +41,9 @@ func (bs *blockGroupSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) er
 		return err
 	}
 	for _, x := range bs.Items {
-		x.SetModule(bs.module)
+		x.SetContainer(bs)
 	}
 	return nil
-}
-
-func (bs *blockGroupSet) Initialize(m Module, onModified func()) {
-	bs.module = m
-	bs.onModified = onModified
 }
 
 // Get number of entries
@@ -118,9 +112,9 @@ func (bs *blockGroupSet) AddNew() model.BlockGroup {
 		}
 		bg := newBlockGroup()
 		bg.SetID(id)
-		bg.SetModule(bs.module)
+		bg.SetContainer(bs)
 		bs.Items = append(bs.Items, bg)
-		bs.onModified()
+		bs.OnModified()
 		return bg
 	}
 }

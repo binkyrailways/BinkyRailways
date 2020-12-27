@@ -27,8 +27,7 @@ import (
 
 type junctionWithStateSet struct {
 	junctionWithStateSetItems
-	route      *route
-	onModified func()
+	moduleEntityContainer
 }
 
 type junctionWithStateSetItems struct {
@@ -43,17 +42,9 @@ func (js *junctionWithStateSet) UnmarshalXML(d *xml.Decoder, start xml.StartElem
 		return err
 	}
 	for _, x := range js.Items {
-		x.SetRoute(js.route)
+		x.SetContainer(js)
 	}
 	return nil
-}
-
-func (js *junctionWithStateSet) Initialize(r *route, onModified func()) {
-	js.route = r
-	js.onModified = onModified
-	for _, x := range js.Items {
-		x.SetRoute(js.route)
-	}
 }
 
 // Get number of entries
@@ -128,7 +119,7 @@ func (js *junctionWithStateSet) CopyTo(destination model.JunctionWithStateSet) e
 	}
 	for _, x := range js.Items {
 		clone := x.Clone().(JunctionWithState)
-		clone.SetRoute(dt.route)
+		clone.SetContainer(dt)
 		dt.Items = append(dt.Items, &JunctionWithStateContainer{clone})
 	}
 	return nil
@@ -143,11 +134,12 @@ func (js *junctionWithStateSet) CopyTo(destination model.JunctionWithStateSet) e
 /// Add the given item to this set
 /// </summary>
 func (js *junctionWithStateSet) AddSwitch(item model.Switch, direction model.SwitchDirection) {
-	sws := newSwitchWithState(js.route)
+	sws := newSwitchWithState()
 	sws.JunctionID = JunctionRef(item.GetID())
 	sws.Direction = refs.NewSwitchDirection(direction)
+	sws.SetContainer(js)
 	js.Items = append(js.Items, &JunctionWithStateContainer{JunctionWithState: sws})
-	js.onModified()
+	js.OnModified()
 }
 
 /// <summary>

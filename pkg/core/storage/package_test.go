@@ -162,6 +162,11 @@ func TestLoad(t *testing.T) {
 	})
 	assert.Equal(t, 1, swsCount)
 
+	// Test Route.Events
+	r.GetEvents().ForEach(func(rev model.RouteEvent) {
+		assert.Equal(t, m, rev.GetModule(), rev.GetID())
+	})
+
 	// Foreach route
 	m.GetRoutes().ForEach(func(r model.Route) {
 		assert.Equal(t, m, r.GetModule(), r.GetID())

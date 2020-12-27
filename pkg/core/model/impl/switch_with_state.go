@@ -36,9 +36,8 @@ type switchWithState struct {
 
 var _ SwitchWithState = &switchWithState{}
 
-func newSwitchWithState(r *route) *switchWithState {
+func newSwitchWithState() *switchWithState {
 	ssw := &switchWithState{}
-	ssw.Initialize(r)
 	return ssw
 }
 
@@ -50,11 +49,12 @@ func (j *switchWithState) GetDirection() model.SwitchDirection {
 // Create a clone of this entity.
 // Do not clone the junction.
 func (j *switchWithState) Clone() model.JunctionWithState {
-	return &switchWithState{
+	result := &switchWithState{
 		junctionWithState: junctionWithState{
-			route:      j.route,
 			JunctionID: j.JunctionID,
 		},
 		Direction: refs.NewSwitchDirection(j.GetDirection()),
 	}
+	result.SetContainer(j.container)
+	return result
 }

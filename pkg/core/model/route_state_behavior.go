@@ -15,20 +15,16 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+// RouteStateBehavior indicates how a route event changes the state of the route.
+type RouteStateBehavior string
+
+const (
+	// RouteStateBehaviorNoChange indicates that the state does not change
+	RouteStateBehaviorNoChange RouteStateBehavior = "NoChange"
+	// RouteStateBehaviorEnter indicates that the loc has entered the To block.
+	RouteStateBehaviorEnter RouteStateBehavior = "Enter"
+	// RouteStateBehaviorReached indicates that the loc has reached the To block.
+	RouteStateBehaviorReached RouteStateBehavior = "Reached"
 )
-
-type binarySensor struct {
-	sensor
-}
-
-var _ model.BinarySensor = &binarySensor{}
-
-func newBinarySensor() *binarySensor {
-	sw := &binarySensor{}
-	sw.sensor.Initialize(12, 12)
-	return sw
-}

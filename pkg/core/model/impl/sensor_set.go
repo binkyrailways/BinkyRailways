@@ -26,8 +26,7 @@ import (
 
 type sensorSet struct {
 	sensorSetItems
-	module     Module
-	onModified func()
+	moduleEntityContainer
 }
 
 type sensorSetItems struct {
@@ -42,14 +41,9 @@ func (ss *sensorSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 		return err
 	}
 	for _, x := range ss.Items {
-		x.SetModule(ss.module)
+		x.SetContainer(ss)
 	}
 	return nil
-}
-
-func (ss *sensorSet) Initialize(m Module, onModified func()) {
-	ss.module = m
-	ss.onModified = onModified
 }
 
 // Get number of entries
@@ -116,11 +110,11 @@ func (ss *sensorSet) AddNewBinarySensor() model.BinarySensor {
 			idx++
 			continue
 		}
-		bs := newBinarySensor(ss.module)
+		bs := newBinarySensor()
 		bs.SetID(id)
-		bs.SetModule(ss.module)
+		bs.SetContainer(ss)
 		ss.Items = append(ss.Items, &SensorContainer{Sensor: bs})
-		ss.onModified()
+		ss.OnModified()
 		return bs
 	}
 }
