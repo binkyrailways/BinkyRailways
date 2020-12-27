@@ -163,9 +163,16 @@ func TestLoad(t *testing.T) {
 	assert.Equal(t, 1, swsCount)
 
 	// Test Route.Events
+	var routeEventList []model.RouteEvent
 	r.GetEvents().ForEach(func(rev model.RouteEvent) {
+		routeEventList = append(routeEventList, rev)
 		assert.Equal(t, m, rev.GetModule(), rev.GetID())
 	})
+	require.Len(t, routeEventList, 2)
+	assert.Equal(t, "e50b7a09-81f9-4a04-8030-feba4c8f8257", routeEventList[0].GetID())
+	assert.Equal(t, "S-215", routeEventList[0].GetDescription())
+	assert.Equal(t, "b8c93f02-ed0b-42c2-90b1-c397e36d1bc6", routeEventList[0].GetSensor().GetID())
+	assert.Equal(t, 1, routeEventList[0].GetBehaviors().GetCount())
 
 	// Foreach route
 	m.GetRoutes().ForEach(func(r model.Route) {

@@ -28,10 +28,8 @@ type Module interface {
 	/// Gets all block groups contained in this module.
 	GetBlockGroups() BlockGroupSet
 
-	/// <summary>
-	/// Gets all edges of this module.
-	/// </summary>
-	//IEntitySet2<IEdge> Edges { get; }
+	// Gets all edges of this module.
+	GetEdges() EdgeSet
 
 	// Gets all junctions contained in this module.
 	GetJunctions() JunctionSet

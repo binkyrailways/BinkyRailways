@@ -35,6 +35,7 @@ type module struct {
 
 	Blocks      blockSet      `xml:"Blocks"`
 	BlockGroups blockGroupSet `xml:"BlockGroups"`
+	Edges       edgeSet       `xml:"Edges"`
 	Junctions   junctionSet   `xml:"Junctions"`
 	Sensors     sensorSet     `xml:"Sensors"`
 	Routes      routeSet      `xml:"Routes"`
@@ -51,6 +52,7 @@ func NewModule() Module {
 	m.persistentEntity.Initialize(m.entity.OnModified)
 	m.Blocks.SetContainer(m)
 	m.BlockGroups.SetContainer(m)
+	m.Edges.SetContainer(m)
 	m.Junctions.SetContainer(m)
 	m.Sensors.SetContainer(m)
 	m.Routes.SetContainer(m)
@@ -72,10 +74,10 @@ func (m *module) GetBlockGroups() model.BlockGroupSet {
 	return &m.BlockGroups
 }
 
-/// <summary>
 /// Gets all edges of this module.
-/// </summary>
-//IEntitySet2<IEdge> Edges { get; }
+func (m *module) GetEdges() model.EdgeSet {
+	return &m.Edges
+}
 
 // Gets all junctions contained in this module.
 func (m *module) GetJunctions() model.JunctionSet {
