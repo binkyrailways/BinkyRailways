@@ -37,10 +37,8 @@ type Module interface {
 	// Gets all sensors contained in this module.
 	GetSensors() SensorSet
 
-	/// <summary>
-	/// Gets all signals contained in this module.
-	/// </summary>
-	//ISignalSet Signals { get; }
+	// Gets all signals contained in this module.
+	GetSignals() SignalSet
 
 	// Gets all outputs contained in this module.
 	GetOutputs() OutputSet

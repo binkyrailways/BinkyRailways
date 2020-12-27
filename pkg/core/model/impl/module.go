@@ -39,6 +39,7 @@ type module struct {
 	Outputs     outputSet     `xml:"Outputs"`
 	Junctions   junctionSet   `xml:"Junctions"`
 	Sensors     sensorSet     `xml:"Sensors"`
+	Signals     signalSet     `xml:"Signals"`
 	Routes      routeSet      `xml:"Routes"`
 }
 
@@ -57,6 +58,7 @@ func NewModule() Module {
 	m.Outputs.SetContainer(m)
 	m.Junctions.SetContainer(m)
 	m.Sensors.SetContainer(m)
+	m.Signals.SetContainer(m)
 	m.Routes.SetContainer(m)
 	return m
 }
@@ -91,10 +93,10 @@ func (m *module) GetSensors() model.SensorSet {
 	return &m.Sensors
 }
 
-/// <summary>
-/// Gets all signals contained in this module.
-/// </summary>
-//ISignalSet Signals { get; }
+// Gets all signals contained in this module.
+func (m *module) GetSignals() model.SignalSet {
+	return &m.Signals
+}
 
 // Gets all outputs contained in this module.
 func (m *module) GetOutputs() model.OutputSet {

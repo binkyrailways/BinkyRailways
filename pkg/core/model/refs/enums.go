@@ -23,6 +23,10 @@ func NewBlockSide(value model.BlockSide) *model.BlockSide {
 	return &value
 }
 
+func NewBlockSignalType(value model.BlockSignalType) *model.BlockSignalType {
+	return &value
+}
+
 func NewLocSpeedBehavior(value model.LocSpeedBehavior) *model.LocSpeedBehavior {
 	return &value
 }
@@ -36,6 +40,13 @@ func NewSwitchDirection(value model.SwitchDirection) *model.SwitchDirection {
 }
 
 func BlockSideValue(r *model.BlockSide, defaultValue model.BlockSide) model.BlockSide {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
+func BlockSignalTypeValue(r *model.BlockSignalType, defaultValue model.BlockSignalType) model.BlockSignalType {
 	if r == nil {
 		return defaultValue
 	}

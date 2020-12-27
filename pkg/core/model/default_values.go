@@ -114,7 +114,7 @@ const DefaultBlockSignalWhitePattern = 0x08
 const DefaultBlockSignalPosition = BlockSideFront
 
 // Default value of <see cref="IBlockSignal.Type"/>
-//const DefaultBlockSignalType = BlockSignalType.Entry
+const DefaultBlockSignalType = BlockSignalTypeEntry
 
 // Default value of <see cref="IClock4StageOutput.MorningPattern"/>
 const DefaultClock4StageOutputMorningPattern = 0x00

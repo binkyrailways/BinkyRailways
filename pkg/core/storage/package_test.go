@@ -203,4 +203,36 @@ func TestLoad(t *testing.T) {
 	m.GetOutputs().ForEach(func(r model.Output) {
 		assert.Equal(t, m, r.GetModule(), r.GetID())
 	})
+
+	// Test Signal
+	si, ok := m.GetSignals().Get("c20603fb-3442-42f0-9e5f-2f6e94919b1a")
+	assert.True(t, ok)
+	require.NotNil(t, si)
+	bs, ok := si.(model.BlockSignal)
+	assert.True(t, ok)
+	require.NotNil(t, bs)
+	assert.Equal(t, "> rcht-tor-n4.F", bs.GetDescription())
+	assert.Equal(t, 735, bs.GetX())
+	assert.Equal(t, 510, bs.GetY())
+	assert.Equal(t, 16, bs.GetWidth())
+	assert.Equal(t, 8, bs.GetHeight())
+	assert.Equal(t, 15, bs.GetRotation())
+	assert.Equal(t, 1, bs.GetRedPattern())
+	assert.Equal(t, 0, bs.GetGreenPattern())
+	assert.Equal(t, 3, bs.GetYellowPattern())
+	assert.Equal(t, 2147483647, bs.GetWhitePattern())
+	assert.True(t, bs.GetIsRedAvailable())
+	assert.True(t, bs.GetIsGreenAvailable())
+	assert.True(t, bs.GetIsYellowAvailable())
+	assert.False(t, bs.GetIsWhiteAvailable())
+	assert.Equal(t, "LocoNet 417", bs.GetAddress1().String())
+	assert.Equal(t, "LocoNet 418", bs.GetAddress2().String())
+	assert.Equal(t, "", bs.GetAddress3().String())
+	assert.Equal(t, "", bs.GetAddress4().String())
+	assert.Equal(t, "3477d0f8-5f15-4d1c-b832-b04284f344a0", bs.GetBlock().GetID())
+
+	// Foreach signal
+	m.GetSignals().ForEach(func(r model.Signal) {
+		assert.Equal(t, m, r.GetModule(), r.GetID())
+	})
 }
