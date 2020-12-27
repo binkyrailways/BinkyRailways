@@ -15,28 +15,12 @@
 // Author Ewout Prangsma
 //
 
-package refs
+package model
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+// SwitchWithState is a Switch reference with intended state.
+type SwitchWithState interface {
+	JunctionWithState
 
-func NewBlockSide(value model.BlockSide) *model.BlockSide {
-	return &value
-}
-
-func NewSwitchDirection(value model.SwitchDirection) *model.SwitchDirection {
-	return &value
-}
-
-func BlockSideValue(r *model.BlockSide, defaultValue model.BlockSide) model.BlockSide {
-	if r == nil {
-		return defaultValue
-	}
-	return *r
-}
-
-func SwitchDirectionValue(r *model.SwitchDirection, defaultValue model.SwitchDirection) model.SwitchDirection {
-	if r == nil {
-		return defaultValue
-	}
-	return *r
+	// Desired direction
+	GetDirection() SwitchDirection
 }

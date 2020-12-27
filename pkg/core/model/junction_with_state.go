@@ -15,28 +15,16 @@
 // Author Ewout Prangsma
 //
 
-package refs
+package model
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+// JunctionWithState is a Junction reference with intended state.
+type JunctionWithState interface {
+	ModuleEntity
 
-func NewBlockSide(value model.BlockSide) *model.BlockSide {
-	return &value
-}
+	// The junction involved
+	GetJunction() Junction
 
-func NewSwitchDirection(value model.SwitchDirection) *model.SwitchDirection {
-	return &value
-}
-
-func BlockSideValue(r *model.BlockSide, defaultValue model.BlockSide) model.BlockSide {
-	if r == nil {
-		return defaultValue
-	}
-	return *r
-}
-
-func SwitchDirectionValue(r *model.SwitchDirection, defaultValue model.SwitchDirection) model.SwitchDirection {
-	if r == nil {
-		return defaultValue
-	}
-	return *r
+	// Create a clone of this entity.
+	// Do not clone the junction.
+	Clone() JunctionWithState
 }

@@ -18,21 +18,31 @@
 package impl
 
 import (
+	"encoding/xml"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 type route struct {
-	moduleEntity
+	routeFields
+}
 
-	FromBlock         BlockRef         `xml:"FromBlock"`
-	ToBlock           BlockRef         `xml:"ToBlock"`
-	FromBlockSide     *model.BlockSide `xml:"FromBlockSide,omitempty"`
-	ToBlockSide       *model.BlockSide `xml:"ToBlockSide,omitempty"`
-	Speed             *int             `xml:"Speed"`
-	ChooseProbability *int             `xml:"ChooseProbability"`
-	MaxDuration       *int             `xml:"MaxDuration"`
-	Closed            *bool            `xml:"Closed"`
+type routeFields struct {
+	moduleEntity
+	FromBlock         BlockRef             `xml:"FromBlock"`
+	ToBlock           BlockRef             `xml:"ToBlock"`
+	FromBlockSide     *model.BlockSide     `xml:"FromBlockSide,omitempty"`
+	ToBlockSide       *model.BlockSide     `xml:"ToBlockSide,omitempty"`
+	Speed             *int                 `xml:"Speed"`
+	ChooseProbability *int                 `xml:"ChooseProbability"`
+	MaxDuration       *int                 `xml:"MaxDuration"`
+	Closed            *bool                `xml:"Closed"`
+	CrossingJunctions junctionWithStateSet `xml:"CrossingJunctions"`
+}
+
+func (rf *routeFields) Initialize(r *route) {
+	rf.CrossingJunctions.Initialize(r, r.OnModified)
 }
 
 var _ model.Route = &route{}
@@ -40,7 +50,17 @@ var _ model.Route = &route{}
 // newRoute initialize a new route
 func newRoute() *route {
 	r := &route{}
+	r.routeFields.Initialize(r)
 	return r
+}
+
+// UnmarshalXML unmarshals any persistent entity.
+func (r *route) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&r.routeFields, &start); err != nil {
+		return err
+	}
+	r.routeFields.Initialize(r)
+	return nil
 }
 
 // Starting point of the route
@@ -101,10 +121,10 @@ func (r *route) SetToBlockSide(value model.BlockSide) error {
 	return nil
 }
 
-/// <summary>
-/// Set of junctions with their states that are crossed when taking this route.
-/// </summary>
-//IJunctionWithStateSet CrossingJunctions { get; }
+// Set of junctions with their states that are crossed when taking this route.
+func (r *route) GetCrossingJunctions() model.JunctionWithStateSet {
+	return &r.CrossingJunctions
+}
 
 /// <summary>
 /// Set of events that change the state of the route and it's running loc.

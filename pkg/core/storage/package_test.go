@@ -150,6 +150,18 @@ func TestLoad(t *testing.T) {
 	assert.Equal(t, model.DefaultRouteMaxDuration, r.GetMaxDuration())
 	assert.False(t, r.GetClosed())
 
+	// Test Route.CrossingJunctions
+	swsCount := 0
+	r.GetCrossingJunctions().ForEach(func(jws model.JunctionWithState) {
+		assert.Equal(t, m, jws.GetModule(), jws.GetID())
+		if sws, ok := jws.(model.SwitchWithState); ok {
+			swsCount++
+			assert.Equal(t, "f99677ca-7861-451c-a279-39115dd793af", sws.GetJunction().GetID())
+			assert.Equal(t, model.SwitchDirectionStraight, sws.GetDirection())
+		}
+	})
+	assert.Equal(t, 1, swsCount)
+
 	// Foreach route
 	m.GetRoutes().ForEach(func(r model.Route) {
 		assert.Equal(t, m, r.GetModule(), r.GetID())

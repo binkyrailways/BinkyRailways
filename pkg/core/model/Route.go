@@ -38,10 +38,8 @@ type Route interface {
 	GetToBlockSide() BlockSide
 	SetToBlockSide(value BlockSide) error
 
-	/// <summary>
-	/// Set of junctions with their states that are crossed when taking this route.
-	/// </summary>
-	//IJunctionWithStateSet CrossingJunctions { get; }
+	// Set of junctions with their states that are crossed when taking this route.
+	GetCrossingJunctions() JunctionWithStateSet
 
 	/// <summary>
 	/// Set of events that change the state of the route and it's running loc.
