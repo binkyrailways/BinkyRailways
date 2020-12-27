@@ -121,10 +121,37 @@ func TestLoad(t *testing.T) {
 	})
 
 	// Test Sensor
-	// TODO
+	s, ok := m.GetSensors().Get("b9ec78e6-4255-4139-8e02-67d8d9f9e7b4")
+	assert.True(t, ok)
+	require.NotNil(t, s)
+	assert.Equal(t, "S-231", s.GetDescription())
+	assert.Equal(t, 559, s.GetX())
+	assert.Equal(t, 59, s.GetY())
+	assert.Equal(t, 10, s.GetWidth())
+	assert.Equal(t, 10, s.GetHeight())
+	assert.Equal(t, "LocoNet 231", s.GetAddress().String())
 
 	// Foreach sensor
 	m.GetSensors().ForEach(func(j model.Sensor) {
 		assert.Equal(t, m, j.GetModule(), j.GetID())
+	})
+
+	// Test Route
+	r, ok := m.GetRoutes().Get("17fc9047-646a-4fbf-b543-251f6f9c94d6")
+	assert.True(t, ok)
+	require.NotNil(t, r)
+	assert.Equal(t, "sch-ond-1 -> ond-a", r.GetDescription())
+	assert.Equal(t, "e851c545-e408-4ac4-b38f-28a6a4616fee", r.GetFrom().GetID())
+	assert.Equal(t, "5c181b09-4f7d-4e8b-b543-37bc1ed49898", r.GetTo().GetID())
+	assert.Equal(t, model.BlockSideFront, r.GetFromBlockSide())
+	assert.Equal(t, model.BlockSideBack, r.GetToBlockSide())
+	assert.Equal(t, model.DefaultRouteSpeed, r.GetSpeed())
+	assert.Equal(t, model.DefaultRouteChooseProbability, r.GetChooseProbability())
+	assert.Equal(t, model.DefaultRouteMaxDuration, r.GetMaxDuration())
+	assert.False(t, r.GetClosed())
+
+	// Foreach route
+	m.GetRoutes().ForEach(func(r model.Route) {
+		assert.Equal(t, m, r.GetModule(), r.GetID())
 	})
 }

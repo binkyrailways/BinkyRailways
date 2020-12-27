@@ -49,10 +49,8 @@ type Module interface {
 	/// </summary>
 	//IOutputSet Outputs { get; }
 
-	/// <summary>
-	/// Gets all routes contained in this module.
-	/// </summary>
-	//IEntitySet2<IRoute> Routes { get; }
+	// Gets all routes contained in this module.
+	GetRoutes() RouteSet
 
 	/// <summary>
 	/// Gets/sets the background image of the this module.

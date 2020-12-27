@@ -49,6 +49,9 @@ func (e *entity) PropertyChanged() model.EventHandler {
 
 // Get the Identification value.
 func (e *entity) GetID() string {
+	if e == nil {
+		return ""
+	}
 	return e.ID
 }
 
@@ -63,6 +66,9 @@ func (e *entity) SetID(value string) error {
 
 // Get human readable description
 func (e *entity) GetDescription() string {
+	if e == nil {
+		return ""
+	}
 	return e.Description
 }
 

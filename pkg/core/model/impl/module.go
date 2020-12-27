@@ -25,6 +25,8 @@ import (
 type Module interface {
 	model.Module
 	PersistentEntity
+
+	GetEndPoint(id string) (model.EndPoint, bool)
 }
 
 type module struct {
@@ -35,6 +37,7 @@ type module struct {
 	BlockGroups blockGroupSet `xml:"BlockGroups"`
 	Junctions   junctionSet   `xml:"Junctions"`
 	Sensors     sensorSet     `xml:"Sensors"`
+	Routes      routeSet      `xml:"Routes"`
 }
 
 var (
@@ -50,6 +53,7 @@ func NewModule() Module {
 	m.BlockGroups.Initialize(m, m.entity.OnModified)
 	m.Junctions.Initialize(m, m.OnModified)
 	m.Sensors.Initialize(m, m.entity.OnModified)
+	m.Routes.Initialize(m, m.entity.OnModified)
 	return m
 }
 
@@ -73,9 +77,7 @@ func (m *module) GetJunctions() model.JunctionSet {
 	return &m.Junctions
 }
 
-/// <summary>
-/// Gets all sensors contained in this module.
-/// </summary>
+// Gets all sensors contained in this module.
 func (m *module) GetSensors() model.SensorSet {
 	return &m.Sensors
 }
@@ -90,10 +92,10 @@ func (m *module) GetSensors() model.SensorSet {
 /// </summary>
 //IOutputSet Outputs { get; }
 
-/// <summary>
-/// Gets all routes contained in this module.
-/// </summary>
-//IEntitySet2<IRoute> Routes { get; }
+// Gets all routes contained in this module.
+func (m *module) GetRoutes() model.RouteSet {
+	return &m.Routes
+}
 
 /// <summary>
 /// Gets/sets the background image of the this module.
@@ -135,4 +137,14 @@ func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 // Upgrade to latest version
 func (m *module) Upgrade() {
 	// Empty on purpose
+}
+
+func (m *module) GetEndPoint(id string) (model.EndPoint, bool) {
+	// Try block
+	if b, ok := m.Blocks.Get(id); ok {
+		return b, true
+	}
+	// Try edge
+	// TODO
+	return nil, false
 }
