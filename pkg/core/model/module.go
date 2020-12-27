@@ -42,10 +42,8 @@ type Module interface {
 	/// </summary>
 	//ISignalSet Signals { get; }
 
-	/// <summary>
-	/// Gets all outputs contained in this module.
-	/// </summary>
-	//IOutputSet Outputs { get; }
+	// Gets all outputs contained in this module.
+	GetOutputs() OutputSet
 
 	// Gets all routes contained in this module.
 	GetRoutes() RouteSet

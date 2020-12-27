@@ -36,6 +36,7 @@ type module struct {
 	Blocks      blockSet      `xml:"Blocks"`
 	BlockGroups blockGroupSet `xml:"BlockGroups"`
 	Edges       edgeSet       `xml:"Edges"`
+	Outputs     outputSet     `xml:"Outputs"`
 	Junctions   junctionSet   `xml:"Junctions"`
 	Sensors     sensorSet     `xml:"Sensors"`
 	Routes      routeSet      `xml:"Routes"`
@@ -53,6 +54,7 @@ func NewModule() Module {
 	m.Blocks.SetContainer(m)
 	m.BlockGroups.SetContainer(m)
 	m.Edges.SetContainer(m)
+	m.Outputs.SetContainer(m)
 	m.Junctions.SetContainer(m)
 	m.Sensors.SetContainer(m)
 	m.Routes.SetContainer(m)
@@ -94,10 +96,10 @@ func (m *module) GetSensors() model.SensorSet {
 /// </summary>
 //ISignalSet Signals { get; }
 
-/// <summary>
-/// Gets all outputs contained in this module.
-/// </summary>
-//IOutputSet Outputs { get; }
+// Gets all outputs contained in this module.
+func (m *module) GetOutputs() model.OutputSet {
+	return &m.Outputs
+}
 
 // Gets all routes contained in this module.
 func (m *module) GetRoutes() model.RouteSet {

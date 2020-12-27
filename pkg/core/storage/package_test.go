@@ -178,4 +178,29 @@ func TestLoad(t *testing.T) {
 	m.GetRoutes().ForEach(func(r model.Route) {
 		assert.Equal(t, m, r.GetModule(), r.GetID())
 	})
+
+	// Foreach edge
+	m.GetEdges().ForEach(func(r model.Edge) {
+		assert.Equal(t, m, r.GetModule(), r.GetID())
+	})
+
+	// Test Output (Clock4Stage)
+	op, ok := m.GetOutputs().Get("9548a54d-b252-45d1-a734-4ba0d10cfb1d")
+	assert.True(t, ok)
+	require.NotNil(t, op)
+	cso, ok := op.(model.Clock4StageOutput)
+	assert.True(t, ok)
+	require.NotNil(t, cso)
+	assert.Equal(t, "Clock", cso.GetDescription())
+	assert.Equal(t, 394, cso.GetX())
+	assert.Equal(t, 214, cso.GetY())
+	assert.Equal(t, 32, cso.GetWidth())
+	assert.Equal(t, 32, cso.GetHeight())
+	assert.Equal(t, "LocoNet 1", cso.GetAddress1().String())
+	assert.Equal(t, "LocoNet 2", cso.GetAddress2().String())
+
+	// Foreach output
+	m.GetOutputs().ForEach(func(r model.Output) {
+		assert.Equal(t, m, r.GetModule(), r.GetID())
+	})
 }
