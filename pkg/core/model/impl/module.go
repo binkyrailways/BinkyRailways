@@ -142,7 +142,7 @@ func (m *module) GetHeight() int {
 // Call the callback for each positioned item in the module
 func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 	m.Blocks.ForEach(func(item model.Block) { cb(item) })
-	// TODO add other positioned entity sets
+	m.Edges.ForEach(func(item model.Edge) { cb(item) })
 }
 
 // Upgrade to latest version
@@ -156,6 +156,8 @@ func (m *module) GetEndPoint(id string) (model.EndPoint, bool) {
 		return b, true
 	}
 	// Try edge
-	// TODO
+	if e, ok := m.Edges.Get(id); ok {
+		return e, true
+	}
 	return nil, false
 }
