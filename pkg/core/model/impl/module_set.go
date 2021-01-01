@@ -27,7 +27,7 @@ type moduleSet struct {
 	onTryResolve func(id string) model.Module
 }
 
-var _ model.LocSet = &locSet{}
+var _ model.ModuleSet = &moduleSet{}
 
 func (bs *moduleSet) Initialize(onModified func(), onTryResolve func(id string) model.Module) {
 	bs.items = make(map[string]model.ModuleRef)

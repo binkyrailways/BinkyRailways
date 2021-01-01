@@ -38,7 +38,9 @@ func TestLoad(t *testing.T) {
 	})
 
 	// Check railway
+	assert.Equal(t, "6b627345-2927-42a2-85af-1bd7a6fdc069", p.GetRailway().GetID())
 	assert.Equal(t, "Zwitserlandbaan", p.GetRailway().GetDescription())
+	assert.Equal(t, 1200, p.GetRailway().GetClockSpeedFactor())
 
 	// Load Loc
 	l := p.GetLoc("79881cff-da67-4422-bf03-8d593984bdac")
@@ -234,5 +236,20 @@ func TestLoad(t *testing.T) {
 	// Foreach signal
 	m.GetSignals().ForEach(func(r model.Signal) {
 		assert.Equal(t, m, r.GetModule(), r.GetID())
+	})
+
+	// Test loc group
+	lg, ok := p.GetRailway().GetLocGroups().Get("68664513-5fd4-4c9d-be93-f9fc1c425afa")
+	assert.True(t, ok)
+	require.NotNil(t, lg)
+	assert.Equal(t, "Goederen", lg.GetDescription())
+	assert.Equal(t, 2, lg.GetLocs().GetCount())
+	assert.True(t, lg.GetLocs().ContainsID("0a85dd6e-46e3-4a25-bc8e-f7cc6f8f2afa"))
+	assert.True(t, lg.GetLocs().ContainsID("1847c3d6-6c91-4539-975e-a55f78384f8e"))
+
+	// Foreach loc group
+	assert.Equal(t, 6, p.GetRailway().GetLocGroups().GetCount())
+	p.GetRailway().GetLocGroups().ForEach(func(lg model.LocGroup) {
+		assert.Equal(t, p.GetRailway(), lg.GetRailway())
 	})
 }

@@ -25,7 +25,7 @@ type Railway interface {
 	//IPersistentEntityRefSet<ICommandStationRef, ICommandStation> CommandStations { get; }
 
 	// Gets locomotives used in this railway
-	GetLocs() LocSet
+	GetLocs() LocRefSet
 
 	// Gets all groups of locs used in this railway.
 	GetLocGroups() LocGroupSet

@@ -19,6 +19,7 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 type Railway interface {
@@ -31,10 +32,10 @@ type railway struct {
 	persistentEntity
 
 	p                model.Package
-	locs             locSet
-	locGroups        locGroupSet
-	modules          moduleSet
-	clockSpeedFactor int
+	Locs             railwayLocRefSet `xml:"Locs"`
+	LocGroups        locGroupSet      `xml:"LocGroups"`
+	Modules          moduleSet
+	ClockSpeedFactor *int `xml:"ClockSpeedFactor,omitempty"`
 	locPredicateBuilder
 }
 
@@ -45,13 +46,12 @@ var (
 // NewRailway initialize a new railway
 func NewRailway(p model.Package) Railway {
 	r := &railway{
-		p:                p,
-		clockSpeedFactor: model.DefaultRailwayClockSpeedFactor,
+		p: p,
 	}
 	r.persistentEntity.Initialize(r.entity.OnModified)
-	r.locs.Initialize(r.entity.OnModified, p.GetLoc)
-	r.locGroups.SetContainer(r)
-	r.modules.Initialize(r.entity.OnModified, p.GetModule)
+	r.Locs.SetContainer(r)
+	r.LocGroups.SetContainer(r)
+	r.Modules.Initialize(r.entity.OnModified, p.GetModule)
 	return r
 }
 
@@ -64,18 +64,18 @@ func (r *railway) GetRailway() model.Railway {
 //IPersistentEntityRefSet<ICommandStationRef, ICommandStation> CommandStations { get; }
 
 // Gets locomotives used in this railway
-func (r *railway) GetLocs() model.LocSet {
-	return &r.locs
+func (r *railway) GetLocs() model.LocRefSet {
+	return &r.Locs
 }
 
 // Gets all groups of locs used in this railway.
 func (r *railway) GetLocGroups() model.LocGroupSet {
-	return &r.locGroups
+	return &r.LocGroups
 }
 
 // Gets modules used in this railway
 func (r *railway) GetModules() model.ModuleSet {
-	return &r.modules
+	return &r.Modules
 }
 
 // Gets the connections between modules used in this railway
@@ -88,13 +88,13 @@ func (r *railway) GetModules() model.ModuleSet {
 
 // Gets the number of times human time is speed up to reach model time.
 func (r *railway) GetClockSpeedFactor() int {
-	return r.clockSpeedFactor
+	return refs.IntValue(r.ClockSpeedFactor, model.DefaultRailwayClockSpeedFactor)
 }
 
 // Sets the number of times human time is speed up to reach model time.
 func (r *railway) SetClockSpeedFactor(value int) error {
-	if r.clockSpeedFactor != value {
-		r.clockSpeedFactor = value
+	if r.GetClockSpeedFactor() != value {
+		r.ClockSpeedFactor = refs.NewInt(value)
 		r.OnModified()
 	}
 	return nil

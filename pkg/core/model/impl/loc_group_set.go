@@ -30,7 +30,7 @@ type locGroupSet struct {
 }
 
 type locGroupSetItems struct {
-	Items []LocGroup `xml:"LocGroup"`
+	Items []*locGroup `xml:"LocGroup"`
 }
 
 var _ model.LocGroupSet = &locGroupSet{}
@@ -110,7 +110,7 @@ func (bs *locGroupSet) AddNew() model.LocGroup {
 			idx++
 			continue
 		}
-		b := NewLocGroup()
+		b := newLocGroup()
 		b.SetID(id)
 		b.SetContainer(bs)
 		bs.Items = append(bs.Items, b)

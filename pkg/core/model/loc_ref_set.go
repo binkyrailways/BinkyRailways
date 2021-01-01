@@ -17,8 +17,8 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
+// LocRefSet is a set of locomotives references.
+type LocRefSet interface {
 	EntitySet
 
 	// Get an item by ID
@@ -38,5 +38,5 @@ type LocSet interface {
 	Add(Loc) LocRef
 
 	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	CopyTo(LocRefSet)
 }

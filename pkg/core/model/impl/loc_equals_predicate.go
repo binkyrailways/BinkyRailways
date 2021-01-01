@@ -28,7 +28,7 @@ type LocEqualsPredicate interface {
 type locEqualsPredicate struct {
 	locPredicate
 
-	LocID locRef `xml:"LocId"`
+	LocID string `xml:"LocId"`
 }
 
 var _ model.LocEqualsPredicate = &locEqualsPredicate{}
@@ -42,28 +42,28 @@ func newLocEqualsPredicate() *locEqualsPredicate {
 // Gets the set of nested predicates.
 func (p *locEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 	p.locPredicate.SetContainer(parent)
-	p.LocID.SetResolver(func(id string) model.Loc {
-		m, ok := p.GetModule().(Module)
-		if !ok || m == nil {
-			return nil
-		}
-		pkg := m.GetPackage()
-		if pkg == nil {
-			return nil
-		}
-		return pkg.GetLoc(id)
-	})
 }
 
 // Gets/Sets the loc to compare to.
 func (p *locEqualsPredicate) GetLoc() model.Loc {
-	return p.LocID.TryResolve()
+	if p.LocID == "" {
+		return nil
+	}
+	m, ok := p.GetModule().(Module)
+	if !ok || m == nil {
+		return nil
+	}
+	pkg := m.GetPackage()
+	if pkg == nil {
+		return nil
+	}
+	return pkg.GetLoc(p.LocID)
 }
 func (p *locEqualsPredicate) SetLoc(value model.Loc) error {
 	if value == nil {
-		p.LocID.id = ""
+		p.LocID = ""
 	} else {
-		p.LocID.id = value.GetID()
+		p.LocID = value.GetID()
 	}
 	return nil
 }
@@ -71,11 +71,11 @@ func (p *locEqualsPredicate) SetLoc(value model.Loc) error {
 // Create a deep clone.
 func (p *locEqualsPredicate) Clone() model.LocPredicate {
 	c := newLocEqualsPredicate()
-	c.LocID.id = p.LocID.id
+	c.LocID = p.LocID
 	return c
 }
 
 // Evaluate this predicate for the given loc.
 func (p *locEqualsPredicate) Evaluate(loc model.Loc) bool {
-	return loc.GetID() == p.LocID.id
+	return loc.GetID() == p.LocID
 }

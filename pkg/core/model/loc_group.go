@@ -23,5 +23,5 @@ type LocGroup interface {
 	RailwayEntity
 
 	// Set of locs which make up this group.
-	GetLocs() LocSet
+	GetLocs() LocRefSet
 }

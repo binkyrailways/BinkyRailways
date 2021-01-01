@@ -21,31 +21,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// LocGroup extends implementation methods to model.LocGroup
-type LocGroup interface {
-	RailwayEntity
-	model.LocGroup
-}
+// LocRefSet adds implementation methods to model.LocRefSet
+type LocRefSet interface {
+	model.LocRefSet
 
-type locGroup struct {
-	railwayEntity
-
-	Locs groupLocRefSet `xml:"Locs"`
-}
-
-var (
-	_ LocGroup = &locGroup{}
-)
-
-// newLocGroup initialize a new loc group
-func newLocGroup() *locGroup {
-	m := &locGroup{}
-	m.EnsureID()
-	m.Locs.SetContainer(m)
-	return m
-}
-
-// Set of locs which make up this group.
-func (lg *locGroup) GetLocs() model.LocRefSet {
-	return &lg.Locs
+	AddRef(model.LocRef)
 }

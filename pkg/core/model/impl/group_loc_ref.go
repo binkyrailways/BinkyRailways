@@ -18,54 +18,38 @@
 package impl
 
 import (
-	"encoding/xml"
-
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type locRef struct {
-	id           string
+type groupLocRef struct {
+	ID           string `xml:",chardata"`
 	onTryResolve func(id string) model.Loc
 }
 
-var _ model.LocRef = locRef{}
+var _ model.LocRef = groupLocRef{}
 
 // newLocRef creates a new loc ref
-func newLocRef(id string, onTryResolve func(id string) model.Loc) locRef {
-	return locRef{
-		id:           id,
+func newGroupLocRef(id string, onTryResolve func(id string) model.Loc) groupLocRef {
+	return groupLocRef{
+		ID:           id,
 		onTryResolve: onTryResolve,
 	}
 }
 
-func (lr *locRef) SetResolver(onTryResolve func(id string) model.Loc) {
+func (lr *groupLocRef) SetResolver(onTryResolve func(id string) model.Loc) {
 	lr.onTryResolve = onTryResolve
 }
 
-func (lr *locRef) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	var s string
-	if err := d.DecodeElement(&s, &start); err != nil {
-		return err
-	}
-	locRef := newLocRef(s, nil)
-	*lr = locRef
-	return nil
-}
-
-func (lr locRef) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	return e.EncodeElement(lr.id, start)
-}
-
 // Get the Identification value.
-func (lr locRef) GetID() string {
-	return lr.id
+func (lr groupLocRef) GetID() string {
+	return lr.ID
 }
 
 // Try to resolve the loc reference.
 // Returns non-nil Loc or nil if not found.
-func (lr locRef) TryResolve() model.Loc {
+func (lr groupLocRef) TryResolve() model.Loc {
 	if lr.onTryResolve == nil {
 		return nil
 	}
-	return lr.onTryResolve(lr.id)
+	return lr.onTryResolve(lr.ID)
 }
