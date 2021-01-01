@@ -57,12 +57,10 @@ type Route interface {
 	GetChooseProbability() int
 	SetChooseProbability(value int) error
 
-	/// <summary>
 	/// Gets the predicate used to decide which locs are allowed to use this route.
-	/// </summary>
-	//ILocStandardPredicate Permissions { get; }
+	GetPermissions() LocStandardPredicate
 
-	// Is this route open for traffic or not?
+	// Is this rout open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.
 	GetClosed() bool
 	SetClosed(value bool) error

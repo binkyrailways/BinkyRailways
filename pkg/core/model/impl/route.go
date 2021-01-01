@@ -40,11 +40,13 @@ type routeFields struct {
 	Closed            *bool                `xml:"Closed"`
 	Events            routeEventSet        `xml:"Events"`
 	CrossingJunctions junctionWithStateSet `xml:"CrossingJunctions"`
+	Permissions       locStandardPredicate `xml:"Permissions"`
 }
 
 func (rf *routeFields) SetRoute(r *route) {
 	rf.Events.SetContainer(r)
 	rf.CrossingJunctions.SetContainer(r)
+	rf.Permissions.SetContainer(r)
 }
 
 var _ model.Route = &route{}
@@ -52,6 +54,7 @@ var _ model.Route = &route{}
 // newRoute initialize a new route
 func newRoute() *route {
 	r := &route{}
+	r.routeFields.SetRoute(r)
 	return r
 }
 
@@ -161,10 +164,10 @@ func (r *route) SetChooseProbability(value int) error {
 	return nil
 }
 
-/// <summary>
 /// Gets the predicate used to decide which locs are allowed to use this route.
-/// </summary>
-//ILocStandardPredicate Permissions { get; }
+func (r *route) GetPermissions() model.LocStandardPredicate {
+	return &r.Permissions
+}
 
 // Is this route open for traffic or not?
 // Setting to true, allows for maintance etc. on this route.
