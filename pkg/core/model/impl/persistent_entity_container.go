@@ -50,6 +50,14 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 		entity = pec.PersistentEntity
 	case "LocoBufferCommandStation":
 		entity = NewLocoBufferCommandStation()
+	case "DccOverRs232CommandStation":
+		entity = NewDccOverRs232CommandStation()
+	case "EcosCommandStation":
+		entity = NewEcosCommandStation()
+	case "MqttCommandStation":
+		entity = NewMqttCommandStation()
+	case "P50xCommandStation":
+		entity = NewP50xCommandStation()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

@@ -29,6 +29,10 @@ func NewString(value string) *string {
 	return &value
 }
 
+func NewStringSlice(value []string) *[]string {
+	return &value
+}
+
 func BoolValue(r *bool, defaultValue bool) bool {
 	if r == nil {
 		return defaultValue
@@ -42,7 +46,15 @@ func IntValue(r *int, defaultValue int) int {
 	}
 	return *r
 }
+
 func StringValue(r *string, defaultValue string) string {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
+func StringSliceValue(r *[]string, defaultValue []string) []string {
 	if r == nil {
 		return defaultValue
 	}

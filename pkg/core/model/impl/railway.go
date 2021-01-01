@@ -31,11 +31,17 @@ type railway struct {
 	entity
 	persistentEntity
 
-	p                model.Package
-	Locs             railwayLocRefSet `xml:"Locs"`
-	LocGroups        locGroupSet      `xml:"LocGroups"`
-	Modules          moduleSet
-	ClockSpeedFactor *int `xml:"ClockSpeedFactor,omitempty"`
+	p                                 model.Package
+	Locs                              railwayLocRefSet `xml:"Locs"`
+	LocGroups                         locGroupSet      `xml:"LocGroups"`
+	Modules                           moduleSet
+	CommandStations                   railwayCommandStationRefSet `xml:"CommandStations"`
+	ClockSpeedFactor                  *int                        `xml:"ClockSpeedFactor,omitempty"`
+	PreferredDccCommandStationID      commandStationRef           `xml:"PreferredDccCommandStationId,omitempty"`
+	PreferredLocoNetCommandStationID  commandStationRef           `xml:"PreferredLocoNetCommandStationId,omitempty"`
+	PreferredMotorolaCommandStationID commandStationRef           `xml:"PreferredMotorolaCommandStationId,omitempty"`
+	PreferredMfxCommandStationID      commandStationRef           `xml:"PreferredMfxCommandStationId,omitempty"`
+	PreferredMqttCommandStationID     commandStationRef           `xml:"PreferredMqttCommandStationId,omitempty"`
 	locPredicateBuilder
 }
 
@@ -52,6 +58,7 @@ func NewRailway(p model.Package) Railway {
 	r.Locs.SetContainer(r)
 	r.LocGroups.SetContainer(r)
 	r.Modules.Initialize(r.entity.OnModified, p.GetModule)
+	r.CommandStations.SetContainer(r)
 	return r
 }
 
@@ -61,7 +68,9 @@ func (r *railway) GetRailway() model.Railway {
 }
 
 // Gets command stations used in this railway
-//IPersistentEntityRefSet<ICommandStationRef, ICommandStation> CommandStations { get; }
+func (r *railway) GetCommandStations() model.CommandStationRefSet {
+	return &r.CommandStations
+}
 
 // Gets locomotives used in this railway
 func (r *railway) GetLocs() model.LocRefSet {
@@ -106,19 +115,44 @@ func (r *railway) GetPredicateBuilder() model.LocPredicateBuilder {
 }
 
 // Preferred command station for DCC addresses.
-//ICommandStation PreferredDccCommandStation { get; set; }
+func (r *railway) GetPreferredDccCommandStation() model.CommandStation {
+	return r.PreferredDccCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredDccCommandStation(value model.CommandStation) error {
+	return r.PreferredDccCommandStationID.Set(value, r.OnModified)
+}
 
 // Preferred command station for LocoNet addresses.
-//ICommandStation PreferredLocoNetCommandStation { get; set; }
+func (r *railway) GetPreferredLocoNetCommandStation() model.CommandStation {
+	return r.PreferredLocoNetCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredLocoNetCommandStation(value model.CommandStation) error {
+	return r.PreferredLocoNetCommandStationID.Set(value, r.OnModified)
+}
 
 // Preferred command station for Motorola addresses.
-//ICommandStation PreferredMotorolaCommandStation { get; set; }
+func (r *railway) GetPreferredMotorolaCommandStation() model.CommandStation {
+	return r.PreferredMotorolaCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredMotorolaCommandStation(value model.CommandStation) error {
+	return r.PreferredMotorolaCommandStationID.Set(value, r.OnModified)
+}
 
 // Preferred command station for MFX addresses.
-//ICommandStation PreferredMfxCommandStation { get; set; }
+func (r *railway) GetPreferredMfxCommandStation() model.CommandStation {
+	return r.PreferredMfxCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredMfxCommandStation(value model.CommandStation) error {
+	return r.PreferredMfxCommandStationID.Set(value, r.OnModified)
+}
 
 // Preferred command station for Mqtt addresses.
-//        ICommandStation PreferredMqttCommandStation { get; set; }
+func (r *railway) GetPreferredMqttCommandStation() model.CommandStation {
+	return r.PreferredMqttCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredMqttCommandStation(value model.CommandStation) error {
+	return r.PreferredMqttCommandStationID.Set(value, r.OnModified)
+}
 
 // Upgrade to latest version
 func (r *railway) Upgrade() {

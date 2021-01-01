@@ -19,6 +19,7 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 // SerialPortCommandStation extends model SerialPortCommandStation with implementation methods
@@ -30,15 +31,18 @@ type SerialPortCommandStation interface {
 type serialPortCommandStation struct {
 	commandStation
 
-	ComPortName string `xml:"ComPortName,omitempty"`
+	ComPortName *string `xml:"ComPortName,omitempty"`
 }
 
 // Name of COM port used to communicate with the locobuffer.
 func (cs *serialPortCommandStation) GetComPortName() string {
-	return cs.ComPortName
+	return refs.StringValue(cs.ComPortName, "")
 }
 func (cs *serialPortCommandStation) SetComPortName(value string) error {
-	cs.ComPortName = value
+	if cs.GetComPortName() != value {
+		cs.ComPortName = refs.NewString(value)
+		cs.OnModified()
+	}
 	return nil
 }
 

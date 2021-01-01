@@ -34,16 +34,16 @@ type Package interface {
 	AddNewLocoBufferCommandStation() LocoBufferCommandStation
 
 	// Add a new DCC over RS232 type command station.
-	//IDccOverRs232CommandStation AddNewDccOverRs232CommandStation();
+	AddNewDccOverRs232CommandStation() DccOverRs232CommandStation
 
 	// Add a new Ecos command station.
-	//IEcosCommandStation AddNewEcosCommandStation();
+	AddNewEcosCommandStation() EcosCommandStation
 
 	// Add a new MQTT command station.
-	//IMqttCommandStation AddNewMqttCommandStation();
+	AddNewMqttCommandStation() MqttCommandStation
 
 	// Add a new P50x command station.
-	//IP50xCommandStation AddNewP50xCommandStation();
+	AddNewP50xCommandStation() P50xCommandStation
 
 	// Load a command station by it's id.
 	// <returns>Null if not found</returns>

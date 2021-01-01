@@ -261,4 +261,11 @@ func TestLoad(t *testing.T) {
 	require.NotNil(t, lbcs)
 	assert.Equal(t, "Locobuffer", lbcs.GetDescription())
 	assert.Equal(t, "COM4", lbcs.GetComPortName())
+
+	// Foreach command station in railway
+	p.GetRailway().GetCommandStations().ForEach(func(r model.CommandStationRef) {
+		assert.NotEmpty(t, r.GetID())
+		cs := r.TryResolve()
+		require.NotNil(t, cs, r.GetID())
+	})
 }

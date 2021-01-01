@@ -23,20 +23,20 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type railwayLocRefSet struct {
-	railwayLocRefSetItems
+type railwayCommandStationRefSet struct {
+	railwayCommandStationRefSetItems
 	railwayEntityContainer
 }
 
-type railwayLocRefSetItems struct {
-	Items []*railwayLocRef `xml:"LocRef"`
+type railwayCommandStationRefSetItems struct {
+	Items []*commandStationRef `xml:"CommandStationRef"`
 }
 
-var _ LocRefSet = &railwayLocRefSet{}
+var _ CommandStationRefSet = &railwayCommandStationRefSet{}
 
 // UnmarshalXML unmarshals and connects the module.
-func (bs *railwayLocRefSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	if err := d.DecodeElement(&bs.railwayLocRefSetItems, &start); err != nil {
+func (bs *railwayCommandStationRefSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&bs.railwayCommandStationRefSetItems, &start); err != nil {
 		return err
 	}
 	for _, x := range bs.Items {
@@ -46,12 +46,12 @@ func (bs *railwayLocRefSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 }
 
 // Get number of entries
-func (bs *railwayLocRefSet) GetCount() int {
+func (bs *railwayCommandStationRefSet) GetCount() int {
 	return len(bs.Items)
 }
 
 // Get an item by ID
-func (bs *railwayLocRefSet) Get(id string) (model.LocRef, bool) {
+func (bs *railwayCommandStationRefSet) Get(id string) (model.CommandStationRef, bool) {
 	for _, x := range bs.Items {
 		if x.GetID() == id {
 			return x, true
@@ -61,14 +61,14 @@ func (bs *railwayLocRefSet) Get(id string) (model.LocRef, bool) {
 }
 
 // Invoke the callback for each item
-func (bs *railwayLocRefSet) ForEach(cb func(model.LocRef)) {
+func (bs *railwayCommandStationRefSet) ForEach(cb func(model.CommandStationRef)) {
 	for _, x := range bs.Items {
 		cb(x)
 	}
 }
 
 // Does this set contain an item with the given id?
-func (bs *railwayLocRefSet) ContainsID(id string) bool {
+func (bs *railwayCommandStationRefSet) ContainsID(id string) bool {
 	for _, x := range bs.Items {
 		if x.GetID() == id {
 			return true
@@ -79,7 +79,7 @@ func (bs *railwayLocRefSet) ContainsID(id string) bool {
 
 // Remove the given item from this set.
 // Returns true if it was removed, false otherwise
-func (bs *railwayLocRefSet) Remove(item model.LocRef) bool {
+func (bs *railwayCommandStationRefSet) Remove(item model.CommandStationRef) bool {
 	for i, x := range bs.Items {
 		if x == item {
 			bs.Items = append(bs.Items[:i], bs.Items[i+1:]...)
@@ -90,7 +90,7 @@ func (bs *railwayLocRefSet) Remove(item model.LocRef) bool {
 }
 
 // Does this set contain the given item?
-func (bs *railwayLocRefSet) Contains(item model.LocRef) bool {
+func (bs *railwayCommandStationRefSet) Contains(item model.CommandStationRef) bool {
 	for _, x := range bs.Items {
 		if x == item {
 			return true
@@ -100,40 +100,40 @@ func (bs *railwayLocRefSet) Contains(item model.LocRef) bool {
 }
 
 // Add a reference to the given entity
-func (bs *railwayLocRefSet) Add(item model.Loc) model.LocRef {
+func (bs *railwayCommandStationRefSet) Add(item model.CommandStation) model.CommandStationRef {
 	for _, x := range bs.Items {
 		if x.GetID() == item.GetID() {
 			return x
 		}
 	}
-	b := newRailwayLocRef(item.GetID(), bs.tryResolve)
+	b := newCommandStationRef(item.GetID(), bs.tryResolve)
 	bs.Items = append(bs.Items, &b)
 	bs.OnModified()
 	return &b
 }
 
 // Add a reference to the given entity
-func (bs *railwayLocRefSet) AddRef(item model.LocRef) {
+func (bs *railwayCommandStationRefSet) AddRef(item model.CommandStationRef) {
 	for _, x := range bs.Items {
 		if x.GetID() == item.GetID() {
 			return
 		}
 	}
-	b := newRailwayLocRef(item.GetID(), bs.tryResolve)
+	b := newCommandStationRef(item.GetID(), bs.tryResolve)
 	bs.Items = append(bs.Items, &b)
 	bs.OnModified()
 }
 
 // Copy all entries into the given destination.
-func (bs *railwayLocRefSet) CopyTo(destination model.LocRefSet) {
-	dst := destination.(LocRefSet)
-	bs.ForEach(func(item model.LocRef) {
+func (bs *railwayCommandStationRefSet) CopyTo(destination model.CommandStationRefSet) {
+	dst := destination.(CommandStationRefSet)
+	bs.ForEach(func(item model.CommandStationRef) {
 		dst.AddRef(item)
 	})
 }
 
-// Try to resolve the given id into a loc.
-func (bs *railwayLocRefSet) tryResolve(id string) model.Loc {
+// Try to resolve the given id into a CommandStation.
+func (bs *railwayCommandStationRefSet) tryResolve(id string) model.CommandStation {
 	rw, ok := bs.GetRailway().(Railway)
 	if !ok || rw == nil {
 		return nil
@@ -142,5 +142,5 @@ func (bs *railwayLocRefSet) tryResolve(id string) model.Loc {
 	if pkg == nil {
 		return nil
 	}
-	return pkg.GetLoc(id)
+	return pkg.GetCommandStation(id)
 }

@@ -134,16 +134,32 @@ func (p *packageImpl) AddNewLocoBufferCommandStation() model.LocoBufferCommandSt
 }
 
 // Add a new DCC over RS232 type command station.
-//IDccOverRs232CommandStation AddNewDccOverRs232CommandStation();
+func (p *packageImpl) AddNewDccOverRs232CommandStation() model.DccOverRs232CommandStation {
+	cs := impl.NewDccOverRs232CommandStation()
+	cs.SetPackage(p)
+	return cs
+}
 
 // Add a new Ecos command station.
-//IEcosCommandStation AddNewEcosCommandStation();
+func (p *packageImpl) AddNewEcosCommandStation() model.EcosCommandStation {
+	cs := impl.NewEcosCommandStation()
+	cs.SetPackage(p)
+	return cs
+}
 
 // Add a new MQTT command station.
-//IMqttCommandStation AddNewMqttCommandStation();
+func (p *packageImpl) AddNewMqttCommandStation() model.MqttCommandStation {
+	cs := impl.NewMqttCommandStation()
+	cs.SetPackage(p)
+	return cs
+}
 
 // Add a new P50x command station.
-//IP50xCommandStation AddNewP50xCommandStation();
+func (p *packageImpl) AddNewP50xCommandStation() model.P50xCommandStation {
+	cs := impl.NewP50xCommandStation()
+	cs.SetPackage(p)
+	return cs
+}
 
 // Load a command station by it's id.
 // <returns>Null if not found</returns>

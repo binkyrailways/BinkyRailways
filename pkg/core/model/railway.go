@@ -22,7 +22,7 @@ type Railway interface {
 	PersistentEntity
 
 	// Gets command stations used in this railway
-	//IPersistentEntityRefSet<ICommandStationRef, ICommandStation> CommandStations { get; }
+	GetCommandStations() CommandStationRefSet
 
 	// Gets locomotives used in this railway
 	GetLocs() LocRefSet
@@ -50,17 +50,22 @@ type Railway interface {
 	GetPredicateBuilder() LocPredicateBuilder
 
 	// Preferred command station for DCC addresses.
-	//ICommandStation PreferredDccCommandStation { get; set; }
+	GetPreferredDccCommandStation() CommandStation
+	SetPreferredDccCommandStation(value CommandStation) error
 
 	// Preferred command station for LocoNet addresses.
-	//ICommandStation PreferredLocoNetCommandStation { get; set; }
+	GetPreferredLocoNetCommandStation() CommandStation
+	SetPreferredLocoNetCommandStation(value CommandStation) error
 
 	// Preferred command station for Motorola addresses.
-	//ICommandStation PreferredMotorolaCommandStation { get; set; }
+	GetPreferredMotorolaCommandStation() CommandStation
+	SetPreferredMotorolaCommandStation(value CommandStation) error
 
 	// Preferred command station for MFX addresses.
-	//ICommandStation PreferredMfxCommandStation { get; set; }
+	GetPreferredMfxCommandStation() CommandStation
+	SetPreferredMfxCommandStation(value CommandStation) error
 
 	// Preferred command station for Mqtt addresses.
-	//        ICommandStation PreferredMqttCommandStation { get; set; }
+	GetPreferredMqttCommandStation() CommandStation
+	SetPreferredMqttCommandStation(value CommandStation) error
 }
