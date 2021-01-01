@@ -48,6 +48,8 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 	case "Railway":
 		// Railway must have been initialized before
 		entity = pec.PersistentEntity
+	case "LocoBufferCommandStation":
+		entity = NewLocoBufferCommandStation()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

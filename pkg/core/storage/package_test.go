@@ -252,4 +252,13 @@ func TestLoad(t *testing.T) {
 	p.GetRailway().GetLocGroups().ForEach(func(lg model.LocGroup) {
 		assert.Equal(t, p.GetRailway(), lg.GetRailway())
 	})
+
+	// Load command station
+	cs := p.GetCommandStation("bbd872a1-2a81-4539-b9ed-f7ce0ac2cede")
+	require.NotNil(t, cs)
+	lbcs, ok := cs.(model.LocoBufferCommandStation)
+	assert.True(t, ok)
+	require.NotNil(t, lbcs)
+	assert.Equal(t, "Locobuffer", lbcs.GetDescription())
+	assert.Equal(t, "COM4", lbcs.GetComPortName())
 }

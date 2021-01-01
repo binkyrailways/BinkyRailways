@@ -31,7 +31,7 @@ type Package interface {
 	Remove(PersistentEntity) error
 
 	// Add a new LocoBuffer type command station.
-	//ILocoBufferCommandStation AddNewLocoBufferCommandStation();
+	AddNewLocoBufferCommandStation() LocoBufferCommandStation
 
 	// Add a new DCC over RS232 type command station.
 	//IDccOverRs232CommandStation AddNewDccOverRs232CommandStation();
@@ -47,10 +47,10 @@ type Package interface {
 
 	// Load a command station by it's id.
 	// <returns>Null if not found</returns>
-	//ICommandStation GetCommandStation(string id);
+	GetCommandStation(id string) CommandStation
 
 	// Get all command stations
-	//IEnumerable<ICommandStation> GetCommandStations();
+	ForEachCommandStation(func(CommandStation))
 
 	// Add a new loc.
 	AddNewLoc() (Loc, error)

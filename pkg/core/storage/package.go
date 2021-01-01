@@ -127,7 +127,11 @@ func (p *packageImpl) Remove(model.PersistentEntity) error {
 }
 
 // Add a new LocoBuffer type command station.
-//ILocoBufferCommandStation AddNewLocoBufferCommandStation();
+func (p *packageImpl) AddNewLocoBufferCommandStation() model.LocoBufferCommandStation {
+	cs := impl.NewLocoBufferCommandStation()
+	cs.SetPackage(p)
+	return cs
+}
 
 // Add a new DCC over RS232 type command station.
 //IDccOverRs232CommandStation AddNewDccOverRs232CommandStation();
@@ -143,10 +147,34 @@ func (p *packageImpl) Remove(model.PersistentEntity) error {
 
 // Load a command station by it's id.
 // <returns>Null if not found</returns>
-//ICommandStation GetCommandStation(string id);
+func (p *packageImpl) GetCommandStation(id string) model.CommandStation {
+	entity, err := p.ReadEntity(impl.PackageFolderCommandStation, id)
+	if err != nil {
+		p.onError.Invoke(err)
+		return nil
+	}
+	if entity == nil {
+		return nil
+	}
+	if result, ok := entity.(model.CommandStation); ok {
+		return result
+	}
+	p.onError.Invoke("Entity is not of type CommandStation")
+	return nil
+
+}
 
 // Get all command stations
-//IEnumerable<ICommandStation> GetCommandStations();
+func (p *packageImpl) ForEachCommandStation(cb func(model.CommandStation)) {
+	for uri := range p.parts {
+		if result, id := uriHasFolder(uri, impl.PackageFolderCommandStation); result {
+			cs := p.GetCommandStation(id)
+			if cs != nil {
+				cb(cs)
+			}
+		}
+	}
+}
 
 // Add a new loc.
 func (p *packageImpl) AddNewLoc() (model.Loc, error) {
