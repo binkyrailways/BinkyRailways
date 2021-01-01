@@ -17,26 +17,12 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
-	EntitySet
+// LocGroupRef is a reference to a locomotive group
+type LocGroupRef interface {
+	// Get the Identification value.
+	GetID() string
 
-	// Get an item by ID
-	Get(id string) (LocRef, bool)
-
-	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
-
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
-
-	// Does this set contain the given item?
-	Contains(item LocRef) bool
-
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Try to resolve the loc group reference.
+	// Returns non-nil LocGroup or nil if not found.
+	TryResolve() LocGroup
 }

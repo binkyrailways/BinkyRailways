@@ -17,26 +17,23 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
+// LocGroupSet is a set of locomotive groups.
+type LocGroupSet interface {
 	EntitySet
 
 	// Get an item by ID
-	Get(id string) (LocRef, bool)
+	Get(id string) (LocGroup, bool)
 
 	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
+	ForEach(cb func(LocGroup))
 
 	// Remove the given item from this set.
 	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
+	Remove(item LocGroup) bool
 
 	// Does this set contain the given item?
-	Contains(item LocRef) bool
+	Contains(item LocGroup) bool
 
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Add a new group to the list
+	AddNew() LocGroup
 }

@@ -21,6 +21,13 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
+// LocSet extends implementation methods to model.LocSet
+type LocSet interface {
+	model.LocSet
+
+	AddRef(model.LocRef)
+}
+
 type locSet struct {
 	items        map[string]model.LocRef
 	onModified   func()
@@ -38,6 +45,14 @@ func (bs *locSet) Initialize(onModified func(), onTryResolve func(id string) mod
 // Get number of entries
 func (bs *locSet) GetCount() int {
 	return len(bs.items)
+}
+
+// Get an item by ID
+func (bs *locSet) Get(id string) (model.LocRef, bool) {
+	if result, found := bs.items[id]; found {
+		return result, true
+	}
+	return nil, false
 }
 
 // Invoke the callback for each item
@@ -84,4 +99,21 @@ func (bs *locSet) Add(item model.Loc) model.LocRef {
 		bs.onModified()
 	}
 	return result
+}
+
+// Add a new item to this set
+func (bs *locSet) AddRef(item model.LocRef) {
+	id := item.GetID()
+	if _, found := bs.items[id]; !found {
+		bs.items[id] = newLocRef(id, bs.onTryResolve)
+		bs.onModified()
+	}
+}
+
+// Copy all entries into the given destination.
+func (bs *locSet) CopyTo(destination model.LocSet) {
+	dst := destination.(LocSet)
+	bs.ForEach(func(lr model.LocRef) {
+		dst.AddRef(lr)
+	})
 }

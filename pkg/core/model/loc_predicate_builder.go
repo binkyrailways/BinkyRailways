@@ -17,26 +17,23 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
-	EntitySet
+// LocPredicateBuilder is used to create predicate instances.
+type LocPredicateBuilder interface {
+	// Create an 'and' predicate
+	CreateAnd() LocAndPredicate
 
-	// Get an item by ID
-	Get(id string) (LocRef, bool)
+	// Create an 'or' predicate
+	CreateOr() LocOrPredicate
 
-	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
+	// Create a 'loc equals' predicate
+	CreateEquals(loc Loc) LocEqualsPredicate
 
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
+	// Create a 'loc group equals' predicate
+	CreateGroupEquals(group LocGroup) LocGroupEqualsPredicate
 
-	// Does this set contain the given item?
-	Contains(item LocRef) bool
+	// Create a 'loc is allowed to change direction' predicate
+	CreateCanChangeDirection() LocCanChangeDirectionPredicate
 
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Create a 'allowed between start and end time' predicate
+	//      ILocTimePredicate CreateTime(Time periodStart, Time periodEnd);
 }

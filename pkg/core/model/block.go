@@ -37,7 +37,7 @@ type Block interface {
 	SetMaximumWaitTime(value int) error
 
 	// Gets the predicate used to decide which locs are allowed to wait in this block.
-	//        ILocStandardPredicate WaitPermissions { get; }
+	GetWaitPermissions() LocStandardPredicate
 
 	// By default the front of the block is on the right of the block.
 	// When this property is set, that is reversed to the left of the block.
@@ -59,7 +59,6 @@ type Block interface {
 
 	// Is this block considered a station?
 	GetIsStation() bool
-	SetIsStation(value bool) error
 
 	// The block group that this block belongs to (if any).
 	GetBlockGroup() BlockGroup

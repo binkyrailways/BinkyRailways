@@ -28,6 +28,7 @@ import (
 type PersistentEntity interface {
 	model.PersistentEntity
 
+	GetPackage() model.Package
 	SetPackage(model.Package)
 	Upgrade()
 }
@@ -43,6 +44,9 @@ func (pe *persistentEntity) Initialize(onModified func()) {
 	pe.lastModified = time.Now().UTC()
 }
 
+func (pe *persistentEntity) GetPackage() model.Package {
+	return pe.pkg
+}
 func (pe *persistentEntity) SetPackage(value model.Package) {
 	pe.pkg = value
 }

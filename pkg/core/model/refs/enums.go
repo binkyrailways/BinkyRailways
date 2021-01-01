@@ -31,7 +31,15 @@ func NewLocSpeedBehavior(value model.LocSpeedBehavior) *model.LocSpeedBehavior {
 	return &value
 }
 
+func NewChangeDirection(value model.ChangeDirection) *model.ChangeDirection {
+	return &value
+}
+
 func NewRouteStateBehavior(value model.RouteStateBehavior) *model.RouteStateBehavior {
+	return &value
+}
+
+func NewStationMode(value model.StationMode) *model.StationMode {
 	return &value
 }
 
@@ -53,6 +61,13 @@ func BlockSignalTypeValue(r *model.BlockSignalType, defaultValue model.BlockSign
 	return *r
 }
 
+func ChangeDirectionValue(r *model.ChangeDirection, defaultValue model.ChangeDirection) model.ChangeDirection {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
 func LocSpeedBehaviorValue(r *model.LocSpeedBehavior, defaultValue model.LocSpeedBehavior) model.LocSpeedBehavior {
 	if r == nil {
 		return defaultValue
@@ -61,6 +76,13 @@ func LocSpeedBehaviorValue(r *model.LocSpeedBehavior, defaultValue model.LocSpee
 }
 
 func RouteStateBehaviorValue(r *model.RouteStateBehavior, defaultValue model.RouteStateBehavior) model.RouteStateBehavior {
+	if r == nil {
+		return defaultValue
+	}
+	return *r
+}
+
+func StationModeValue(r *model.StationMode, defaultValue model.StationMode) model.StationMode {
 	if r == nil {
 		return defaultValue
 	}

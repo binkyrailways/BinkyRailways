@@ -17,26 +17,19 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
-	EntitySet
+// LocStandardPredicate is a predicate that evaluates to true based on includes and excludes predicates.
+// The predicate evaluates to true if:
+// - Includes is empty and the excludes predicate for the loc evaluates to false.
+// - The Includes predicate evaluates to true and the excludes predicate for the loc evaluates to false
+type LocStandardPredicate interface {
+	LocPredicate
 
-	// Get an item by ID
-	Get(id string) (LocRef, bool)
+	// Including predicates.
+	GetIncludes() LocOrPredicate
 
-	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
+	// Excluding predicates.
+	GetExcludes() LocOrPredicate
 
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
-
-	// Does this set contain the given item?
-	Contains(item LocRef) bool
-
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Are both the <see cref="Includes"/> and <see cref="Excludes"/> set empty?
+	IsEmpty() bool
 }

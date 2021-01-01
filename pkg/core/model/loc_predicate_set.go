@@ -17,26 +17,27 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
+// LocPredicateSet is a set of loc predicates.
+type LocPredicateSet interface {
 	EntitySet
 
 	// Get an item by ID
-	Get(id string) (LocRef, bool)
+	Get(id string) (LocPredicate, bool)
 
 	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
+	ForEach(cb func(LocPredicate))
 
 	// Remove the given item from this set.
 	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
+	Remove(item LocPredicate) bool
+
+	// Remove all items from this set.
+	// Returns true if at least 1 item was removed, false otherwise
+	Clear() bool
 
 	// Does this set contain the given item?
-	Contains(item LocRef) bool
+	Contains(item LocPredicate) bool
 
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Add a new item to this set
+	Add(value LocPredicate)
 }

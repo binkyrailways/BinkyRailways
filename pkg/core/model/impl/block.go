@@ -18,40 +18,47 @@
 package impl
 
 import (
+	"encoding/xml"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 type block struct {
-	positionedEntity
+	blockFields
+}
 
-	WaitProbability              int
-	MinimumWaitTime              int
-	MaximumWaitTime              int
-	ReverseSides                 bool
-	ChangeDirection              model.ChangeDirection
-	ChangeDirectionReversingLocs bool
-	IsStation                    bool
-	StationMode                  model.StationMode
-	BlockGroupID                 string `xml:"BlockGroup"`
+type blockFields struct {
+	positionedEntity
+	WaitProbability              *int
+	MinimumWaitTime              *int
+	MaximumWaitTime              *int
+	ReverseSides                 *bool
+	ChangeDirection              *model.ChangeDirection
+	ChangeDirectionReversingLocs *bool
+	StationMode                  *model.StationMode
+	BlockGroupID                 string               `xml:"BlockGroup,omitempty"`
+	WaitPermissions              locStandardPredicate `xml:"WaitPermissions"`
 }
 
 var _ model.Block = &block{}
 
 // newBlock initialize a new block
 func newBlock() *block {
-	b := &block{
-		WaitProbability:              model.DefaultBlockWaitProbability,
-		MinimumWaitTime:              model.DefaultBlockMinimumWaitTime,
-		MaximumWaitTime:              model.DefaultBlockMaximumWaitTime,
-		ReverseSides:                 model.DefaultBlockReverseSides,
-		ChangeDirection:              model.DefaultBlockChangeDirection,
-		ChangeDirectionReversingLocs: model.DefaultBlockChangeDirectionReversingLocs,
-		StationMode:                  model.DefaultBlockStationMode,
-	}
+	b := &block{}
 	b.positionedEntity.Initialize(32, 16)
+	b.WaitPermissions.SetContainer(b)
 	return b
+}
+
+// UnmarshalXML unmarshals a block.
+func (b *block) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&b.blockFields, &start); err != nil {
+		return err
+	}
+	b.blockFields.SetContainer(b)
+	return nil
 }
 
 // Probability (in percentage) that a loc that is allowed to wait in this block
@@ -59,11 +66,11 @@ func newBlock() *block {
 // When set to 0, no locs will wait (unless there is no route available).
 // When set to 100, all locs (that are allowed) will wait.
 func (b *block) GetWaitProbability() int {
-	return b.WaitProbability
+	return refs.IntValue(b.WaitProbability, model.DefaultBlockWaitProbability)
 }
 func (b *block) SetWaitProbability(value int) error {
-	if b.WaitProbability != value {
-		b.WaitProbability = value
+	if b.GetWaitProbability() != value {
+		b.WaitProbability = refs.NewInt(value)
 		b.OnModified()
 	}
 	return nil
@@ -71,11 +78,11 @@ func (b *block) SetWaitProbability(value int) error {
 
 // Minimum amount of time to wait (if <see cref="WaitProbability"/> is set) in seconds.
 func (b *block) GetMinimumWaitTime() int {
-	return b.MinimumWaitTime
+	return refs.IntValue(b.MinimumWaitTime, model.DefaultBlockMinimumWaitTime)
 }
 func (b *block) SetMinimumWaitTime(value int) error {
-	if b.MinimumWaitTime != value {
-		b.MinimumWaitTime = value
+	if b.GetMinimumWaitTime() != value {
+		b.MinimumWaitTime = refs.NewInt(value)
 		b.OnModified()
 	}
 	return nil
@@ -83,28 +90,30 @@ func (b *block) SetMinimumWaitTime(value int) error {
 
 // Maximum amount of time to wait (if <see cref="WaitProbability"/> is set) in seconds.
 func (b *block) GetMaximumWaitTime() int {
-	return b.MaximumWaitTime
+	return refs.IntValue(b.MaximumWaitTime, model.DefaultBlockMaximumWaitTime)
 }
 func (b *block) SetMaximumWaitTime(value int) error {
-	if b.MaximumWaitTime != value {
-		b.MaximumWaitTime = value
+	if b.GetMaximumWaitTime() != value {
+		b.MaximumWaitTime = refs.NewInt(value)
 		b.OnModified()
 	}
 	return nil
 }
 
 // Gets the predicate used to decide which locs are allowed to wait in this block.
-//        ILocStandardPredicate WaitPermissions { get; }
+func (b *block) GetWaitPermissions() model.LocStandardPredicate {
+	return &b.WaitPermissions
+}
 
 // By default the front of the block is on the right of the block.
 // When this property is set, that is reversed to the left of the block.
 // Setting this property will only alter the display behavior of the block.
 func (b *block) GetReverseSides() bool {
-	return b.ReverseSides
+	return refs.BoolValue(b.ReverseSides, model.DefaultBlockReverseSides)
 }
 func (b *block) SetReverseSides(value bool) error {
-	if b.ReverseSides != value {
-		b.ReverseSides = value
+	if b.GetReverseSides() != value {
+		b.ReverseSides = refs.NewBool(value)
 		b.OnModified()
 	}
 	return nil
@@ -112,11 +121,11 @@ func (b *block) SetReverseSides(value bool) error {
 
 // Is it allowed for locs to change direction in this block?
 func (b *block) GetChangeDirection() model.ChangeDirection {
-	return b.ChangeDirection
+	return refs.ChangeDirectionValue(b.ChangeDirection, model.DefaultBlockChangeDirection)
 }
 func (b *block) SetChangeDirection(value model.ChangeDirection) error {
-	if b.ChangeDirection != value {
-		b.ChangeDirection = value
+	if b.GetChangeDirection() != value {
+		b.ChangeDirection = refs.NewChangeDirection(value)
 		b.OnModified()
 	}
 	return nil
@@ -124,11 +133,11 @@ func (b *block) SetChangeDirection(value model.ChangeDirection) error {
 
 // Must reversing locs change direction (back to normal) in this block?
 func (b *block) GetChangeDirectionReversingLocs() bool {
-	return b.ChangeDirectionReversingLocs
+	return refs.BoolValue(b.ChangeDirectionReversingLocs, model.DefaultBlockChangeDirectionReversingLocs)
 }
 func (b *block) SetChangeDirectionReversingLocs(value bool) error {
-	if b.ChangeDirectionReversingLocs != value {
-		b.ChangeDirectionReversingLocs = value
+	if b.GetChangeDirectionReversingLocs() != value {
+		b.ChangeDirectionReversingLocs = refs.NewBool(value)
 		b.OnModified()
 	}
 	return nil
@@ -136,11 +145,11 @@ func (b *block) SetChangeDirectionReversingLocs(value bool) error {
 
 // Determines how the system decides if this block is part of a station
 func (b *block) GetStationMode() model.StationMode {
-	return b.StationMode
+	return refs.StationModeValue(b.StationMode, model.DefaultBlockStationMode)
 }
 func (b *block) SetStationMode(value model.StationMode) error {
-	if b.StationMode != value {
-		b.StationMode = value
+	if b.GetStationMode() != value {
+		b.StationMode = refs.NewStationMode(value)
 		b.OnModified()
 	}
 	return nil
@@ -148,14 +157,17 @@ func (b *block) SetStationMode(value model.StationMode) error {
 
 // Is this block considered a station?
 func (b *block) GetIsStation() bool {
-	return b.IsStation
-}
-func (b *block) SetIsStation(value bool) error {
-	if b.IsStation != value {
-		b.IsStation = value
-		b.OnModified()
+	switch b.GetStationMode() {
+	case model.StationModeAlways:
+		return true
+	case model.StationModeNever:
+		return false
+	default:
+		if b.GetChangeDirection() == model.ChangeDirectionAllow {
+			return b.GetWaitProbability() >= 50
+		}
+		return b.GetWaitProbability() >= 75
 	}
-	return nil
 }
 
 // The block group that this block belongs to (if any).

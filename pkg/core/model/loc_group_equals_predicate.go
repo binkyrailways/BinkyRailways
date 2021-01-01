@@ -17,26 +17,12 @@
 
 package model
 
-// LocSet is a set of locomotives.
-type LocSet interface {
-	EntitySet
+// LocGroupEqualsPredicate is a predicate that evaluates to true the
+// given loc is part of the specified group.
+type LocGroupEqualsPredicate interface {
+	LocPredicate
 
-	// Get an item by ID
-	Get(id string) (LocRef, bool)
-
-	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
-
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
-
-	// Does this set contain the given item?
-	Contains(item LocRef) bool
-
-	// Add a reference to the given entity
-	Add(Loc) LocRef
-
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+	// Gets/Sets the group to compare to.
+	GetGroup() LocGroup
+	SetGroup(value LocGroup) error
 }

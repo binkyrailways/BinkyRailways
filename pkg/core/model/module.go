@@ -20,7 +20,7 @@ package model
 // Module is an unbreakable part of an entire railway.
 type Module interface {
 	PersistentEntity
-	// ImportableEntity
+	ImportableEntity
 
 	// Gets all blocks contained in this module.
 	GetBlocks() BlockSet

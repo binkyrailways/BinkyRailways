@@ -32,8 +32,10 @@ type railway struct {
 
 	p                model.Package
 	locs             locSet
+	locGroups        locGroupSet
 	modules          moduleSet
 	clockSpeedFactor int
+	locPredicateBuilder
 }
 
 var (
@@ -48,7 +50,13 @@ func NewRailway(p model.Package) Railway {
 	}
 	r.persistentEntity.Initialize(r.entity.OnModified)
 	r.locs.Initialize(r.entity.OnModified, p.GetLoc)
+	r.locGroups.SetContainer(r)
 	r.modules.Initialize(r.entity.OnModified, p.GetModule)
+	return r
+}
+
+// Return the containing railway
+func (r *railway) GetRailway() model.Railway {
 	return r
 }
 
@@ -61,7 +69,9 @@ func (r *railway) GetLocs() model.LocSet {
 }
 
 // Gets all groups of locs used in this railway.
-//IEntitySet2<ILocGroup> LocGroups { get; }
+func (r *railway) GetLocGroups() model.LocGroupSet {
+	return &r.locGroups
+}
 
 // Gets modules used in this railway
 func (r *railway) GetModules() model.ModuleSet {
@@ -91,7 +101,9 @@ func (r *railway) SetClockSpeedFactor(value int) error {
 }
 
 // Gets the builder used to create predicates.
-//ILocPredicateBuilder PredicateBuilder { get; }
+func (r *railway) GetPredicateBuilder() model.LocPredicateBuilder {
+	return &r.locPredicateBuilder
+}
 
 // Preferred command station for DCC addresses.
 //ICommandStation PreferredDccCommandStation { get; set; }

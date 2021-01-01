@@ -15,28 +15,38 @@
 // Author Ewout Prangsma
 //
 
-package model
+package impl
 
-// LocSet is a set of locomotives.
-type LocSet interface {
-	EntitySet
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
-	// Get an item by ID
-	Get(id string) (LocRef, bool)
+// LocGroup extends implementation methods to model.LocGroup
+type LocGroup interface {
+	RailwayEntity
+	model.LocGroup
+}
 
-	// Invoke the callback for each item
-	ForEach(cb func(LocRef))
+type locGroup struct {
+	railwayEntity
 
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item LocRef) bool
+	Locs locSet `xml:"Locs"`
+}
 
-	// Does this set contain the given item?
-	Contains(item LocRef) bool
+var (
+	_ LocGroup = &locGroup{}
+)
 
-	// Add a reference to the given entity
-	Add(Loc) LocRef
+// NewLocGroup initialize a new loc group
+func NewLocGroup() LocGroup {
+	m := &locGroup{}
+	m.EnsureID()
+	m.Locs.Initialize(m.OnModified, nil /*TODO*/)
+	return m
+}
 
-	// Copy all entries into the given destination.
-	CopyTo(LocSet)
+// Set of locs which make up this group.
+func (lg *locGroup) GetLocs() model.LocSet {
+	// TODO
+	return nil
 }

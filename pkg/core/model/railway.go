@@ -28,7 +28,7 @@ type Railway interface {
 	GetLocs() LocSet
 
 	// Gets all groups of locs used in this railway.
-	//IEntitySet2<ILocGroup> LocGroups { get; }
+	GetLocGroups() LocGroupSet
 
 	// Gets modules used in this railway
 	GetModules() ModuleSet
@@ -47,7 +47,7 @@ type Railway interface {
 	SetClockSpeedFactor(value int) error
 
 	// Gets the builder used to create predicates.
-	//ILocPredicateBuilder PredicateBuilder { get; }
+	GetPredicateBuilder() LocPredicateBuilder
 
 	// Preferred command station for DCC addresses.
 	//ICommandStation PreferredDccCommandStation { get; set; }
