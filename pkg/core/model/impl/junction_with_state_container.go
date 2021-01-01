@@ -43,6 +43,8 @@ func (jc *JunctionWithStateContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 		jws = newSwitchWithState()
 	case "PassiveJunctionWithState":
 		jws = newPassiveJunctionWithState()
+	case "TurnTableWithState":
+		jws = newTurnTableWithState()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

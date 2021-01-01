@@ -17,29 +17,10 @@
 
 package model
 
-// JunctionSet is a set of junctions.
-type JunctionSet interface {
-	EntitySet
+// TurnTableWithState is a TurnTable reference with intended state.
+type TurnTableWithState interface {
+	JunctionWithState
 
-	// Get an item by ID
-	Get(id string) (Junction, bool)
-
-	// Invoke the callback for each item
-	ForEach(cb func(Junction))
-
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item Junction) bool
-
-	// Does this set contain the given item?
-	Contains(item Junction) bool
-
-	// Add a new passive junction
-	AddPassiveJunction() PassiveJunction
-
-	// Add a new standard switch
-	AddSwitch() Switch
-
-	// Add a new turn table
-	AddTurnTable() TurnTable
+	// Desired position
+	GetPosition() int
 }

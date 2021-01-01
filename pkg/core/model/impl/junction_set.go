@@ -133,7 +133,19 @@ func (js *junctionSet) AddSwitch() model.Switch {
 	}
 }
 
-/// <summary>
-/// Add a new turn table
-/// </summary>
-//ITurnTable AddTurnTable();
+// Add a new turn table
+func (js *junctionSet) AddTurnTable() model.TurnTable {
+	// Create new id
+	for {
+		id := NewID()
+		if js.ContainsID(id) {
+			continue
+		}
+		sw := newTurnTable()
+		sw.SetID(id)
+		sw.SetContainer(js)
+		js.Items = append(js.Items, &JunctionContainer{Junction: sw})
+		js.OnModified()
+		return sw
+	}
+}
