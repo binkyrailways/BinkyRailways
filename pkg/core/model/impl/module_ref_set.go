@@ -15,22 +15,15 @@
 // Author Ewout Prangsma
 //
 
-package model
+package impl
 
-// ModuleSet is a set of modules.
-type ModuleSet interface {
-	EntitySet
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
-	// Invoke the callback for each item
-	ForEach(cb func(ModuleRef))
+// ModuleRefSet adds implementation methods to model.ModuleRefSet
+type ModuleRefSet interface {
+	model.ModuleRefSet
 
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item ModuleRef) bool
-
-	// Does this set contain the given item?
-	Contains(item ModuleRef) bool
-
-	// Add a reference to the given entity
-	Add(Module) ModuleRef
+	AddRef(model.ModuleRef)
 }

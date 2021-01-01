@@ -15,25 +15,25 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// ModuleConnectionSet is a set of module connections.
+type ModuleConnectionSet interface {
+	EntitySet
 
-// Signal adds implementation methods to model.Signal
-type Signal interface {
-	ModuleEntity
-	model.Signal
-}
+	// Get an item by ID
+	Get(id string) (ModuleConnection, bool)
 
-type signal struct {
-	positionedModuleEntity
-}
+	// Invoke the callback for each item
+	ForEach(cb func(ModuleConnection))
 
-//var _ model.Signal = &signal{}
+	// Remove the given item from this set.
+	// Returns true if it was removed, false otherwise
+	Remove(item ModuleConnection) bool
 
-// Initialize the signal after construction
-func (j *signal) Initialize() {
-	j.positionedModuleEntity.Initialize(16, 8)
+	// Does this set contain the given item?
+	Contains(item ModuleConnection) bool
+
+	// Add a new connection to the list
+	AddNew() ModuleConnection
 }

@@ -19,8 +19,15 @@ package model
 
 // ModuleRef is a reference to a module
 type ModuleRef interface {
-	// Get the Identification value.
-	GetID() string
+	PositionedEntity
+
+	/// Zoomfactor used in displaying the module (in percentage).
+	/// <value>100 means 100%</value>
+	GetZoomFactor() int
+	SetZoomFactor(value int) error
+
+	// Is this module a reference to the given module?
+	IsReferenceTo(module Module) bool
 
 	// Try to resolve the module reference.
 	// Returns non-nil Module or nil if not found.

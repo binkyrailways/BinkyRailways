@@ -28,12 +28,12 @@ type Output interface {
 }
 
 type output struct {
-	positionedEntity
+	positionedModuleEntity
 }
 
 var _ model.Output = &output{}
 
 // Initialize the output after construction
 func (j *output) Initialize() {
-	j.positionedEntity.Initialize(12, 12)
+	j.positionedModuleEntity.Initialize(12, 12)
 }

@@ -17,23 +17,24 @@
 
 package impl
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+type positionedRailwayEntity struct {
+	railwayEntity
+	positionedEntityFields
+}
+
+const (
+	defaultX  = 0
+	defaultY  = 0
+	minWidth  = 5
+	minHeight = 5
 )
 
-// Signal adds implementation methods to model.Signal
-type Signal interface {
-	ModuleEntity
-	model.Signal
+// Initialize the default position & size.
+func (pe *positionedRailwayEntity) Initialize(defaultWidth, defaultHeight int) {
+	pe.positionedEntityFields.Initialize(defaultX, defaultY, defaultWidth, defaultHeight, pe.railwayEntity.OnModified)
 }
 
-type signal struct {
-	positionedModuleEntity
-}
-
-//var _ model.Signal = &signal{}
-
-// Initialize the signal after construction
-func (j *signal) Initialize() {
-	j.positionedModuleEntity.Initialize(16, 8)
+// Invoke when anything has changed
+func (pe *positionedRailwayEntity) OnModified() {
+	pe.railwayEntity.OnModified()
 }

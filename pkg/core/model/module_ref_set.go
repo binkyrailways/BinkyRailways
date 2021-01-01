@@ -15,25 +15,25 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// ModuleRefSet is a set of modules.
+type ModuleRefSet interface {
+	EntitySet
 
-// Signal adds implementation methods to model.Signal
-type Signal interface {
-	ModuleEntity
-	model.Signal
-}
+	// Get an item by ID
+	Get(id string) (ModuleRef, bool)
 
-type signal struct {
-	positionedModuleEntity
-}
+	// Invoke the callback for each item
+	ForEach(cb func(ModuleRef))
 
-//var _ model.Signal = &signal{}
+	// Remove the given item from this set.
+	// Returns true if it was removed, false otherwise
+	Remove(item ModuleRef) bool
 
-// Initialize the signal after construction
-func (j *signal) Initialize() {
-	j.positionedModuleEntity.Initialize(16, 8)
+	// Does this set contain the given item?
+	Contains(item ModuleRef) bool
+
+	// Add a reference to the given entity
+	Add(Module) ModuleRef
 }

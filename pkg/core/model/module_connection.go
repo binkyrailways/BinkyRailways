@@ -15,25 +15,24 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package model
 
-import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// ModuleConnection is a connection between the edges of two modules.
+type ModuleConnection interface {
+	ImportableEntity
+	RailwayEntity
 
-// Signal adds implementation methods to model.Signal
-type Signal interface {
-	ModuleEntity
-	model.Signal
-}
+	// The first module in the connection
+	GetModuleA() Module
 
-type signal struct {
-	positionedModuleEntity
-}
+	// Edge of module A
+	GetEdgeA() Edge
+	SetEdgeA(value Edge) error
 
-//var _ model.Signal = &signal{}
+	// The second module in the connection
+	GetModuleB() Module
 
-// Initialize the signal after construction
-func (j *signal) Initialize() {
-	j.positionedModuleEntity.Initialize(16, 8)
+	// Edge of module B
+	GetEdgeB() Edge
+	SetEdgeB(value Edge) error
 }

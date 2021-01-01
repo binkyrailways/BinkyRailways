@@ -268,4 +268,29 @@ func TestLoad(t *testing.T) {
 		cs := r.TryResolve()
 		require.NotNil(t, cs, r.GetID())
 	})
+
+	// Foreach module in railway
+	p.GetRailway().GetModules().ForEach(func(mr model.ModuleRef) {
+		assert.NotEmpty(t, r.GetID())
+		m := mr.TryResolve()
+		require.NotNil(t, m)
+		assert.Equal(t, mr.GetID(), m.GetID())
+	})
+	assert.Equal(t, 1, p.GetRailway().GetModules().GetCount())
+
+	// Test module in railway
+	mr, ok := p.GetRailway().GetModules().Get("cfd620a5-a5e8-40f1-baa4-fd6efb2b8907")
+	assert.True(t, ok)
+	require.NotNil(t, mr)
+	assert.Equal(t, 16, mr.GetX())
+	assert.Equal(t, 17, mr.GetY())
+	m = mr.TryResolve()
+	require.NotNil(t, m)
+	assert.Equal(t, "De baan", m.GetDescription())
+	assert.Equal(t, 30, m.GetBlocks().GetCount())
+
+	// Foreach module connection in railway
+	p.GetRailway().GetModuleConnections().ForEach(func(r model.ModuleConnection) {
+		assert.NotEmpty(t, r.GetID())
+	})
 }

@@ -32,9 +32,10 @@ type railway struct {
 	persistentEntity
 
 	p                                 model.Package
-	Locs                              railwayLocRefSet `xml:"Locs"`
-	LocGroups                         locGroupSet      `xml:"LocGroups"`
-	Modules                           moduleSet
+	Locs                              railwayLocRefSet            `xml:"Locs"`
+	LocGroups                         locGroupSet                 `xml:"LocGroups"`
+	Modules                           railwayModuleRefSet         `xml:"Modules"`
+	ModuleConnections                 moduleConnectionSet         `xml:"ModuleConnections"`
 	CommandStations                   railwayCommandStationRefSet `xml:"CommandStations"`
 	ClockSpeedFactor                  *int                        `xml:"ClockSpeedFactor,omitempty"`
 	PreferredDccCommandStationID      commandStationRef           `xml:"PreferredDccCommandStationId,omitempty"`
@@ -57,7 +58,8 @@ func NewRailway(p model.Package) Railway {
 	r.persistentEntity.Initialize(r.entity.OnModified)
 	r.Locs.SetContainer(r)
 	r.LocGroups.SetContainer(r)
-	r.Modules.Initialize(r.entity.OnModified, p.GetModule)
+	r.Modules.SetContainer(r)
+	r.ModuleConnections.SetContainer(r)
 	r.CommandStations.SetContainer(r)
 	return r
 }
@@ -83,12 +85,14 @@ func (r *railway) GetLocGroups() model.LocGroupSet {
 }
 
 // Gets modules used in this railway
-func (r *railway) GetModules() model.ModuleSet {
+func (r *railway) GetModules() model.ModuleRefSet {
 	return &r.Modules
 }
 
 // Gets the connections between modules used in this railway
-//IEntitySet2<IModuleConnection> ModuleConnections { get; }
+func (r *railway) GetModuleConnections() model.ModuleConnectionSet {
+	return &r.ModuleConnections
+}
 
 // Gets/sets the background image of the this module.
 // <value>Null if there is no image.</value>

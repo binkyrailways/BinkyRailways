@@ -22,7 +22,7 @@ import (
 )
 
 type edge struct {
-	positionedEntity
+	positionedModuleEntity
 }
 
 var _ model.Edge = &edge{}
@@ -30,6 +30,6 @@ var _ model.Edge = &edge{}
 // newEdge initialize a new edge
 func newEdge() *edge {
 	result := &edge{}
-	result.positionedEntity.Initialize(8, 8)
+	result.positionedModuleEntity.Initialize(8, 8)
 	return result
 }

@@ -19,30 +19,81 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
-type moduleRef struct {
-	id           string
-	onTryResolve func(id string) model.Module
+// ModuleRef adds implementation methods to model.ModuleRef
+type ModuleRef interface {
+	model.ModuleRef
 }
 
-var _ model.ModuleRef = moduleRef{}
+type moduleRef struct {
+	positionedRailwayEntity
+	onTryResolve func(id string) model.Module
 
-// newModuleRef creates a new module ref
-func newModuleRef(id string, onTryResolve func(id string) model.Module) model.ModuleRef {
-	return moduleRef{
-		id:           id,
+	ZoomFactor *int `xml:"ZoomFactor,omitempty"`
+}
+
+var _ ModuleRef = &moduleRef{}
+
+// newCommandStationRef creates a new cs ref
+func newModuleRef(id string, onTryResolve func(id string) model.Module) moduleRef {
+	mr := moduleRef{
 		onTryResolve: onTryResolve,
 	}
+	mr.ID = id
+	return mr
+}
+
+func (lr *moduleRef) SetResolver(onTryResolve func(id string) model.Module) {
+	lr.onTryResolve = onTryResolve
 }
 
 // Get the Identification value.
-func (lr moduleRef) GetID() string {
-	return lr.id
+func (lr *moduleRef) GetID() string {
+	return lr.ID
 }
 
-// Try to resolve the module reference.
-// Returns non-nil Module or nil if not found.
-func (lr moduleRef) TryResolve() model.Module {
-	return lr.onTryResolve(lr.id)
+// Get the Identification value.
+func (lr *moduleRef) Set(value model.Module, onModified func()) error {
+	id := ""
+	if value == nil {
+		id = value.GetID()
+	}
+	if lr.ID != id {
+		lr.ID = id
+		onModified()
+	}
+	return nil
+}
+
+/// Zoomfactor used in displaying the module (in percentage).
+/// <value>100 means 100%</value>
+func (lr *moduleRef) GetZoomFactor() int {
+	return refs.IntValue(lr.ZoomFactor, model.DefaultModuleRefZoomFactor)
+}
+func (lr *moduleRef) SetZoomFactor(value int) error {
+	if lr.GetZoomFactor() != value {
+		lr.ZoomFactor = refs.NewInt(value)
+		lr.OnModified()
+	}
+	return nil
+}
+
+// Is this module a reference to the given module?
+func (lr *moduleRef) IsReferenceTo(module model.Module) bool {
+	id := ""
+	if module != nil {
+		id = module.GetID()
+	}
+	return lr.GetID() == id
+}
+
+// Try to resolve the loc reference.
+// Returns non-nil CommandStation or nil if not found.
+func (lr *moduleRef) TryResolve() model.Module {
+	if lr.onTryResolve == nil {
+		return nil
+	}
+	return lr.onTryResolve(lr.ID)
 }

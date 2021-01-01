@@ -30,7 +30,7 @@ type block struct {
 }
 
 type blockFields struct {
-	positionedEntity
+	positionedModuleEntity
 	WaitProbability              *int
 	MinimumWaitTime              *int
 	MaximumWaitTime              *int
@@ -47,7 +47,7 @@ var _ model.Block = &block{}
 // newBlock initialize a new block
 func newBlock() *block {
 	b := &block{}
-	b.positionedEntity.Initialize(32, 16)
+	b.positionedModuleEntity.Initialize(32, 16)
 	b.WaitPermissions.SetContainer(b)
 	return b
 }

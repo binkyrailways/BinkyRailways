@@ -31,10 +31,10 @@ type Railway interface {
 	GetLocGroups() LocGroupSet
 
 	// Gets modules used in this railway
-	GetModules() ModuleSet
+	GetModules() ModuleRefSet
 
 	// Gets the connections between modules used in this railway
-	//IEntitySet2<IModuleConnection> ModuleConnections { get; }
+	GetModuleConnections() ModuleConnectionSet
 
 	// Gets/sets the background image of the this module.
 	// <value>Null if there is no image.</value>
