@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -100,19 +99,29 @@ func (js *junctionSet) Contains(item model.Junction) bool {
 	return false
 }
 
-/// <summary>
-/// Add a new passive junction
-/// </summary>
-//IPassiveJunction AddPassiveJunction();
+// Add a new passive junction
+func (js *junctionSet) AddPassiveJunction() model.PassiveJunction {
+	// Create new id
+	for {
+		id := NewID()
+		if js.ContainsID(id) {
+			continue
+		}
+		sw := newPassiveJunction()
+		sw.SetID(id)
+		sw.SetContainer(js)
+		js.Items = append(js.Items, &JunctionContainer{Junction: sw})
+		js.OnModified()
+		return sw
+	}
+}
 
 // Add a new standard switch
 func (js *junctionSet) AddSwitch() model.Switch {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("switch%d", idx)
+		id := NewID()
 		if js.ContainsID(id) {
-			idx++
 			continue
 		}
 		sw := newSwitch()

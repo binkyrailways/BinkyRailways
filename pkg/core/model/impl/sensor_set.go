@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (ss *sensorSet) Contains(item model.Sensor) bool {
 // Add a new binary sensor
 func (ss *sensorSet) AddNewBinarySensor() model.BinarySensor {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("sensor%d", idx)
+		id := NewID()
 		if ss.ContainsID(id) {
-			idx++
 			continue
 		}
 		bs := newBinarySensor()

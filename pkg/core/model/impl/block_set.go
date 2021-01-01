@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (bs *blockSet) Contains(item model.Block) bool {
 // Add a new item to this set
 func (bs *blockSet) AddNew() model.Block {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("block%d", idx)
+		id := NewID()
 		if bs.ContainsID(id) {
-			idx++
 			continue
 		}
 		b := newBlock()

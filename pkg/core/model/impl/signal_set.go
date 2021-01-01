@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (ss *signalSet) Contains(item model.Signal) bool {
 // Add a new block signal
 func (ss *signalSet) AddNewBlockSignal() model.BlockSignal {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("binaryOutput%d", idx)
+		id := NewID()
 		if ss.ContainsID(id) {
-			idx++
 			continue
 		}
 		bs := newBlockSignal()

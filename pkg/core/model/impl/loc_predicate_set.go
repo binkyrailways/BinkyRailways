@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -113,17 +112,14 @@ func (lps *locPredicateSet) Contains(item model.LocPredicate) bool {
 func (lps *locPredicateSet) Add(item model.LocPredicate) {
 	// Ensure type
 	x := item.(LocPredicate)
-	idx := 1
 	// Ensure an id is set
 	if x.GetID() == "" {
-		x.SetID(fmt.Sprintf("predicate%d", idx))
-		idx++
+		x.SetID(NewID())
 	}
 	for {
 		// Ensure unique ID
 		if lps.ContainsID(x.GetID()) {
-			x.SetID(fmt.Sprintf("predicate%d", idx))
-			idx++
+			x.SetID(NewID())
 			continue
 		}
 		x.SetContainer(lps)

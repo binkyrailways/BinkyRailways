@@ -19,6 +19,7 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 // Switch adds implementation methods to model.Switch
@@ -30,25 +31,19 @@ type Switch interface {
 type stdSwitch struct {
 	junction
 
-	Address          model.Address         `xml:"Address"`
-	FeedbackAddress  model.Address         `xml:"FeedbackAddress,omitempty"`
-	HasFeedback      bool                  `xml:"HasFeedback,omitempty"`
-	SwitchDuration   int                   `xml:"SwitchDuration,omitempty"`
-	Invert           bool                  `xml:"Invert,omitempty"`
-	InvertFeedback   bool                  `xml:"InvertFeedback,omitempty"`
-	InitialDirection model.SwitchDirection `xml:"InitialDirection,omitempty"`
+	Address          model.Address          `xml:"Address"`
+	FeedbackAddress  model.Address          `xml:"FeedbackAddress,omitempty"`
+	HasFeedback      *bool                  `xml:"HasFeedback,omitempty"`
+	SwitchDuration   *int                   `xml:"SwitchDuration,omitempty"`
+	Invert           *bool                  `xml:"Invert,omitempty"`
+	InvertFeedback   *bool                  `xml:"InvertFeedback,omitempty"`
+	InitialDirection *model.SwitchDirection `xml:"InitialDirection,omitempty"`
 }
 
 var _ Switch = &stdSwitch{}
 
 func newSwitch() *stdSwitch {
-	sw := &stdSwitch{
-		HasFeedback:      false,
-		SwitchDuration:   1000,
-		Invert:           false,
-		InvertFeedback:   false,
-		InitialDirection: model.SwitchDirectionStraight,
-	}
+	sw := &stdSwitch{}
 	sw.junction.Initialize(16, 12)
 	return sw
 }
@@ -80,11 +75,11 @@ func (sw *stdSwitch) ForEachAddressUsage(cb func(model.AddressUsage)) {
 
 // Does this switch send a feedback when switched?
 func (sw *stdSwitch) GetHasFeedback() bool {
-	return sw.HasFeedback
+	return refs.BoolValue(sw.HasFeedback, true)
 }
 func (sw *stdSwitch) SetHasFeedback(value bool) error {
-	if sw.HasFeedback != value {
-		sw.HasFeedback = value
+	if sw.GetHasFeedback() != value {
+		sw.HasFeedback = refs.NewBool(value)
 		sw.OnModified()
 	}
 	return nil
@@ -105,11 +100,11 @@ func (sw *stdSwitch) SetFeedbackAddress(value model.Address) error {
 // Time (in ms) it takes for the switch to move from one direction to the other?
 // This property is only used when <see cref="HasFeedback"/> is false.
 func (sw *stdSwitch) GetSwitchDuration() int {
-	return sw.SwitchDuration
+	return refs.IntValue(sw.SwitchDuration, 1000)
 }
 func (sw *stdSwitch) SetSwitchDuration(value int) error {
-	if sw.SwitchDuration != value {
-		sw.SwitchDuration = value
+	if sw.GetSwitchDuration() != value {
+		sw.SwitchDuration = refs.NewInt(value)
 		sw.OnModified()
 	}
 	return nil
@@ -117,11 +112,11 @@ func (sw *stdSwitch) SetSwitchDuration(value int) error {
 
 // If set, the straight/off commands are inverted.
 func (sw *stdSwitch) GetInvert() bool {
-	return sw.Invert
+	return refs.BoolValue(sw.Invert, false)
 }
 func (sw *stdSwitch) SetInvert(value bool) error {
-	if sw.Invert != value {
-		sw.Invert = value
+	if sw.GetInvert() != value {
+		sw.Invert = refs.NewBool(value)
 		sw.OnModified()
 	}
 	return nil
@@ -129,11 +124,11 @@ func (sw *stdSwitch) SetInvert(value bool) error {
 
 // If there is a different feedback address and this is set, the straight/off feedback states are inverted.
 func (sw *stdSwitch) GetInvertFeedback() bool {
-	return sw.InvertFeedback
+	return refs.BoolValue(sw.InvertFeedback, false)
 }
 func (sw *stdSwitch) SetInvertFeedback(value bool) error {
-	if sw.InvertFeedback != value {
-		sw.InvertFeedback = value
+	if sw.GetInvertFeedback() != value {
+		sw.InvertFeedback = refs.NewBool(value)
 		sw.OnModified()
 	}
 	return nil
@@ -141,11 +136,11 @@ func (sw *stdSwitch) SetInvertFeedback(value bool) error {
 
 // At which direction should the switch be initialized?
 func (sw *stdSwitch) GetInitialDirection() model.SwitchDirection {
-	return sw.InitialDirection
+	return refs.SwitchDirectionValue(sw.InitialDirection, model.SwitchDirectionStraight)
 }
 func (sw *stdSwitch) SetInitialDirection(value model.SwitchDirection) error {
-	if sw.InitialDirection != value {
-		sw.InitialDirection = value
+	if sw.GetInitialDirection() != value {
+		sw.InitialDirection = refs.NewSwitchDirection(value)
 		sw.OnModified()
 	}
 	return nil

@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (os *outputSet) Contains(item model.Output) bool {
 // Add a new binary output
 func (os *outputSet) AddNewBinaryOutput() model.BinaryOutput {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("binaryOutput%d", idx)
+		id := NewID()
 		if os.ContainsID(id) {
-			idx++
 			continue
 		}
 		bo := newBinaryOutput()
@@ -122,11 +119,9 @@ func (os *outputSet) AddNewBinaryOutput() model.BinaryOutput {
 // Add a new 4-stage clock output
 func (os *outputSet) AddNewClock4StageOutput() model.Clock4StageOutput {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("clock4StageOutput%d", idx)
+		id := NewID()
 		if os.ContainsID(id) {
-			idx++
 			continue
 		}
 		cso := newClock4StageOutput()

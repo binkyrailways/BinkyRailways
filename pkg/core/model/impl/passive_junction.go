@@ -15,33 +15,26 @@
 // Author Ewout Prangsma
 //
 
-package model
+package impl
 
-// JunctionSet is a set of junctions.
-type JunctionSet interface {
-	EntitySet
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
-	// Get an item by ID
-	Get(id string) (Junction, bool)
+// PassiveJunction adds implementation methods to model.PassiveJunction
+type PassiveJunction interface {
+	ModuleEntity
+	model.PassiveJunction
+}
 
-	// Invoke the callback for each item
-	ForEach(cb func(Junction))
+type passiveJunction struct {
+	junction
+}
 
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item Junction) bool
+var _ PassiveJunction = &passiveJunction{}
 
-	// Does this set contain the given item?
-	Contains(item Junction) bool
-
-	// Add a new passive junction
-	AddPassiveJunction() PassiveJunction
-
-	// Add a new standard switch
-	AddSwitch() Switch
-
-	/// <summary>
-	/// Add a new turn table
-	/// </summary>
-	//ITurnTable AddTurnTable();
+func newPassiveJunction() *passiveJunction {
+	sw := &passiveJunction{}
+	sw.junction.Initialize(16, 12)
+	return sw
 }

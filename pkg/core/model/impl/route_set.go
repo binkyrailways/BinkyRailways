@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (rs *routeSet) Contains(item model.Route) bool {
 // Add a new item to this set
 func (rs *routeSet) AddNew() model.Route {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("route%d", idx)
+		id := NewID()
 		if rs.ContainsID(id) {
-			idx++
 			continue
 		}
 		r := newRoute()

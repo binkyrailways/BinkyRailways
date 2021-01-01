@@ -30,10 +30,15 @@ type entity struct {
 
 var _ model.Entity = &entity{}
 
+// NewID creates a new random ID
+func NewID() string {
+	return uniuri.New()
+}
+
 // EnsureID sets a unique ID if needed
 func (e *entity) EnsureID() {
 	if e.ID == "" {
-		e.ID = uniuri.New()
+		e.ID = NewID()
 	}
 }
 

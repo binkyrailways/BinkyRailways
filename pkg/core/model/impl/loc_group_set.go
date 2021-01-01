@@ -19,7 +19,6 @@ package impl
 
 import (
 	"encoding/xml"
-	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,11 +102,9 @@ func (bs *locGroupSet) Contains(item model.LocGroup) bool {
 // Add a new item to this set
 func (bs *locGroupSet) AddNew() model.LocGroup {
 	// Create new id
-	idx := 1
 	for {
-		id := fmt.Sprintf("group%d", idx)
+		id := NewID()
 		if bs.ContainsID(id) {
-			idx++
 			continue
 		}
 		b := newLocGroup()

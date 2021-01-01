@@ -17,31 +17,7 @@
 
 package model
 
-// JunctionSet is a set of junctions.
-type JunctionSet interface {
-	EntitySet
-
-	// Get an item by ID
-	Get(id string) (Junction, bool)
-
-	// Invoke the callback for each item
-	ForEach(cb func(Junction))
-
-	// Remove the given item from this set.
-	// Returns true if it was removed, false otherwise
-	Remove(item Junction) bool
-
-	// Does this set contain the given item?
-	Contains(item Junction) bool
-
-	// Add a new passive junction
-	AddPassiveJunction() PassiveJunction
-
-	// Add a new standard switch
-	AddSwitch() Switch
-
-	/// <summary>
-	/// Add a new turn table
-	/// </summary>
-	//ITurnTable AddTurnTable();
+// PassiveJunctionWithState is a passive junction reference with intended state (which is always non-existing).
+type PassiveJunctionWithState interface {
+	JunctionWithState
 }
