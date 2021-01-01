@@ -26,6 +26,7 @@ type AddressEntity interface {
 	// Set the Address of the entity
 	SetAddress(value Address) error
 
-	// Gets all (non-null) addresses configured in this entity with the direction their being used.
-	GetAddressUsages() []AddressUsage
+	// Call the given callback for all (non-empty) addresses configured in this
+	// entity with the direction their being used.
+	ForEachAddressUsage(func(AddressUsage))
 }

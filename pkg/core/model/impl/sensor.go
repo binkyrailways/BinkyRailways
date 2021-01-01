@@ -58,9 +58,15 @@ func (s *sensor) SetAddress(value model.Address) error {
 	return nil
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (s *sensor) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (s *sensor) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !s.Address.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   s.Address,
+			Direction: model.AddressDirectionInput,
+		})
+	}
 }
 
 // The block that this sensor belongs to.

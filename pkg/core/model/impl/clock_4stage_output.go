@@ -57,9 +57,21 @@ func (cso *clock4StageOutput) SetAddress(value model.Address) error {
 	return cso.SetAddress1(value)
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (cso *clock4StageOutput) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (cso *clock4StageOutput) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !cso.Address1.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   cso.Address1,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
+	if !cso.Address2.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   cso.Address2,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
 }
 
 // Address of first clock bit.

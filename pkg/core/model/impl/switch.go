@@ -67,9 +67,15 @@ func (sw *stdSwitch) SetAddress(value model.Address) error {
 	return nil
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (sw *stdSwitch) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (sw *stdSwitch) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !sw.Address.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   sw.Address,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
 }
 
 // Does this switch send a feedback when switched?

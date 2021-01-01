@@ -42,20 +42,26 @@ func newBinaryOutput() *binaryOutput {
 }
 
 // Get the Address of the entity
-func (sw *binaryOutput) GetAddress() model.Address {
-	return sw.Address
+func (bo *binaryOutput) GetAddress() model.Address {
+	return bo.Address
 }
 
 // Set the Address of the entity
-func (sw *binaryOutput) SetAddress(value model.Address) error {
-	if !sw.Address.Equals(value) {
-		sw.Address = value
-		sw.OnModified()
+func (bo *binaryOutput) SetAddress(value model.Address) error {
+	if !bo.Address.Equals(value) {
+		bo.Address = value
+		bo.OnModified()
 	}
 	return nil
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (sw *binaryOutput) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (bo *binaryOutput) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !bo.Address.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   bo.Address,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
 }

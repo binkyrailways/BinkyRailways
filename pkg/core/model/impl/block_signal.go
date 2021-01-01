@@ -62,9 +62,33 @@ func (bs *blockSignal) SetAddress(value model.Address) error {
 	return bs.SetAddress1(value)
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (sw *blockSignal) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (bs *blockSignal) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !bs.Address1.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   bs.Address1,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
+	if !bs.Address2.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   bs.Address2,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
+	if !bs.Address3.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   bs.Address3,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
+	if !bs.Address4.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   bs.Address4,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
 }
 
 // First address

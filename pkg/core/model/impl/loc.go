@@ -75,9 +75,15 @@ func (l *loc) SetAddress(value model.Address) error {
 	return nil
 }
 
-// Gets all (non-null) addresses configured in this entity with the direction their being used.
-func (l *loc) GetAddressUsages() []model.AddressUsage {
-	return nil // TODO
+// Call the given callback for all (non-empty) addresses configured in this
+// entity with the direction their being used.
+func (l *loc) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	if !l.Address.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   l.Address,
+			Direction: model.AddressDirectionOutput,
+		})
+	}
 }
 
 // Get percentage of speed steps for the slowest speed of this loc.
