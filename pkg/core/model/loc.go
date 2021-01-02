@@ -59,8 +59,8 @@ type Loc interface {
 	// Set if it is allowed for this loc to change direction.
 	SetChangeDirection(value ChangeDirection) error
 
-	/// Gets the names of all functions supported by this loc.
-	//        ILocFunctions Functions { get; }
+	// Gets the names of all functions supported by this loc.
+	GetFunctions() LocFunctions
 
 	// Gets the name of the person that owns this loc.
 	GetOwner() string

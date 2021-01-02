@@ -293,4 +293,15 @@ func TestLoad(t *testing.T) {
 	p.GetRailway().GetModuleConnections().ForEach(func(r model.ModuleConnection) {
 		assert.NotEmpty(t, r.GetID())
 	})
+
+	// Test loc functions
+	l = p.GetLoc("4ccbb1c1-9d52-4bac-995f-fadae3fa6759")
+	require.NotNil(t, l)
+	assert.Equal(t, 1, l.GetFunctions().GetCount())
+	// Test loc function
+	lf, ok := l.GetFunctions().Get("23c3a847-4150-4723-b3fc-a0374bdd349c")
+	assert.True(t, ok)
+	require.NotNil(t, lf)
+	assert.Equal(t, model.Light, lf.GetFunction())
+	assert.Equal(t, "Light", lf.GetDescription())
 }

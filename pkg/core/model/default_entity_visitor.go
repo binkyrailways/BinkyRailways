@@ -109,7 +109,9 @@ func (v *DefaultEntityVisitor) VisitLoc(x Loc) interface{} {
 	return nil
 }
 
-//func (v*DefaultEntityVisitor) VisitLocFunction(x LocFunction)interface{}
+func (v *DefaultEntityVisitor) VisitLocFunction(x LocFunction) interface{} {
+	return nil
+}
 
 func (v *DefaultEntityVisitor) VisitLocGroup(x LocGroup) interface{} {
 	return nil

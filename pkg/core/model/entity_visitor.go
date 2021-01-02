@@ -33,7 +33,7 @@ type EntityVisitor interface {
 	VisitEdge(Edge) interface{}
 	VisitEndPoint(EndPoint) interface{}
 	VisitLoc(Loc) interface{}
-	//VisitLocFunction(LocFunction)interface{}
+	VisitLocFunction(LocFunction) interface{}
 	VisitLocGroup(LocGroup) interface{}
 	VisitLocRef(LocRef) interface{}
 	VisitLocoBufferCommandStation(LocoBufferCommandStation) interface{}

@@ -39,6 +39,7 @@ type loc struct {
 	ChangeDirection model.ChangeDirection
 	Owner           string
 	Remarks         string
+	Functions       locFunctions `xml:"Functions"`
 }
 
 var (
@@ -58,6 +59,7 @@ func NewLoc() Loc {
 	}
 	l.EnsureID()
 	l.persistentEntity.Initialize(l.entity.OnModified)
+	l.Functions.SetContainer(l)
 	return l
 }
 
@@ -171,8 +173,10 @@ func (l *loc) SetChangeDirection(value model.ChangeDirection) error {
 	return nil
 }
 
-/// Gets the names of all functions supported by this loc.
-//        ILocFunctions Functions { get; }
+// Gets the names of all functions supported by this loc.
+func (l *loc) GetFunctions() model.LocFunctions {
+	return &l.Functions
+}
 
 // Gets the name of the person that owns this loc.
 func (l *loc) GetOwner() string {
@@ -205,4 +209,12 @@ func (l *loc) SetRemarks(value string) error {
 // Upgrade to latest version
 func (l *loc) Upgrade() {
 	// Empty on purpose
+}
+
+// GetRailway returns the containing railway
+func (l *loc) GetRailway() model.Railway {
+	if pkg := l.GetPackage(); pkg != nil {
+		return pkg.GetRailway()
+	}
+	return nil
 }
