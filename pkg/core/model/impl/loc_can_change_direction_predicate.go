@@ -37,6 +37,11 @@ func newLocCanChangeDirectionPredicate() *locCanChangeDirectionPredicate {
 	return p
 }
 
+// Accept a visit by the given visitor
+func (p *locCanChangeDirectionPredicate) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocCanChangeDirectionPredicate(p)
+}
+
 // Create a deep clone.
 func (p *locCanChangeDirectionPredicate) Clone() model.LocPredicate {
 	return newLocCanChangeDirectionPredicate()

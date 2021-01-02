@@ -61,6 +61,11 @@ func NewLoc() Loc {
 	return l
 }
 
+// Accept a visit by the given visitor
+func (l *loc) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLoc(l)
+}
+
 // Get the Address of the entity
 func (l *loc) GetAddress() model.Address {
 	return l.Address

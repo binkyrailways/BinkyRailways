@@ -35,9 +35,14 @@ var _ model.VirtualCommandStation = &virtualCommandStation{}
 
 // NewVirtualCommandStation creates a new virtual mode type command station
 func NewVirtualCommandStation() VirtualCommandStation {
-	cs := &ecosCommandStation{}
+	cs := &virtualCommandStation{}
 	cs.Initialize()
 	return cs
+}
+
+// Accept a visit by the given visitor
+func (cs *virtualCommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitVirtualCommandStation(cs)
 }
 
 // What types of addresses does this command station support?

@@ -38,6 +38,11 @@ type junctionWithState struct {
 
 var _ JunctionWithState = &junctionWithState{}
 
+// Accept a visit by the given visitor
+func (j *junctionWithState) Accept(v model.EntityVisitor) interface{} {
+	panic("Override me")
+}
+
 // OnModified fires the propertychanged callbacks
 func (j *junctionWithState) OnModified() {
 	j.propertyChanged.Invoke(j)

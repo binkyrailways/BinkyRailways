@@ -62,6 +62,11 @@ func newRoute() *route {
 	return r
 }
 
+// Accept a visit by the given visitor
+func (r *route) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitRoute(r)
+}
+
 // UnmarshalXML unmarshals any persistent entity.
 func (r *route) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if err := d.DecodeElement(&r.routeFields, &start); err != nil {

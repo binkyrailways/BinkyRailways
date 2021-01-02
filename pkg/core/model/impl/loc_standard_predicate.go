@@ -42,6 +42,11 @@ func newLocStandardPredicate() *locStandardPredicate {
 	return result
 }
 
+// Accept a visit by the given visitor
+func (p *locStandardPredicate) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocStandardPredicate(p)
+}
+
 // Gets the set of nested predicates.
 func (p *locStandardPredicate) SetContainer(parent ModuleEntityContainer) {
 	p.locPredicate.SetContainer(parent)

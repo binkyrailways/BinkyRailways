@@ -52,6 +52,11 @@ func newBlockSignal() *blockSignal {
 	return bs
 }
 
+// Accept a visit by the given visitor
+func (bs *blockSignal) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBlockSignal(bs)
+}
+
 // Get the Address of the entity
 func (bs *blockSignal) GetAddress() model.Address {
 	return bs.GetAddress1()

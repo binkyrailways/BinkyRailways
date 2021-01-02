@@ -55,6 +55,11 @@ func newTurnTable() *turnTable {
 	return sw
 }
 
+// Accept a visit by the given visitor
+func (sw *turnTable) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitTurnTable(sw)
+}
+
 // Get the Address of the entity
 func (sw *turnTable) GetAddress() model.Address {
 	return sw.GetPositionAddress1()

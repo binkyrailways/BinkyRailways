@@ -43,6 +43,11 @@ func NewEcosCommandStation() EcosCommandStation {
 	return cs
 }
 
+// Accept a visit by the given visitor
+func (cs *ecosCommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitEcosCommandStation(cs)
+}
+
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *ecosCommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {

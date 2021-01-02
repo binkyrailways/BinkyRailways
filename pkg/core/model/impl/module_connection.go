@@ -50,6 +50,11 @@ func newModuleConnection() *moduleConnection {
 	return m
 }
 
+// Accept a visit by the given visitor
+func (mc *moduleConnection) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitModuleConnection(mc)
+}
+
 // The first module in the connection
 func (mc *moduleConnection) GetModuleA() model.Module {
 	id := refs.StringValue(mc.ModuleIDA, "")

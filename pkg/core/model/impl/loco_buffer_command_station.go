@@ -38,6 +38,11 @@ func NewLocoBufferCommandStation() LocoBufferCommandStation {
 	return cs
 }
 
+// Accept a visit by the given visitor
+func (cs *locoBufferCommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocoBufferCommandStation(cs)
+}
+
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *locoBufferCommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {

@@ -22,6 +22,9 @@ type Entity interface {
 	// A property of this entity has changed.
 	PropertyChanged() EventHandler
 
+	// Accept a visit by the given visitor
+	Accept(EntityVisitor) interface{}
+
 	// Get the Identification value.
 	GetID() string
 	// Set the Identification value. Must be unique within it's context.

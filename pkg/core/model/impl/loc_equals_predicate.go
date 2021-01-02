@@ -39,6 +39,11 @@ func newLocEqualsPredicate() *locEqualsPredicate {
 	return p
 }
 
+// Accept a visit by the given visitor
+func (p *locEqualsPredicate) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocEqualsPredicate(p)
+}
+
 // Gets the set of nested predicates.
 func (p *locEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 	p.locPredicate.SetContainer(parent)

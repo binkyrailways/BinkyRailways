@@ -38,6 +38,11 @@ func NewDccOverRs232CommandStation() DccOverRs232CommandStation {
 	return cs
 }
 
+// Accept a visit by the given visitor
+func (cs *dccOverRs232CommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitDccOverRs232CommandStation(cs)
+}
+
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *dccOverRs232CommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {

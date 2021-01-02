@@ -56,6 +56,11 @@ func newRouteEvent(sensor model.Sensor) *routeEvent {
 	return re
 }
 
+// Accept a visit by the given visitor
+func (re *routeEvent) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitRouteEvent(re)
+}
+
 // UnmarshalXML unmarshals any persistent entity.
 func (re *routeEvent) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if err := d.DecodeElement(&re.routeEventFields, &start); err != nil {

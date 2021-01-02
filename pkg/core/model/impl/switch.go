@@ -48,6 +48,11 @@ func newSwitch() *stdSwitch {
 	return sw
 }
 
+// Accept a visit by the given visitor
+func (sw *stdSwitch) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitSwitch(sw)
+}
+
 // Get the Address of the entity
 func (sw *stdSwitch) GetAddress() model.Address {
 	return sw.Address

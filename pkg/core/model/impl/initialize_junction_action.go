@@ -41,9 +41,14 @@ func newInitializeJunctionAction() *initializeJunctionAction {
 	return a
 }
 
+// Accept a visit by the given visitor
+func (a *initializeJunctionAction) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitInitializeJunctionAction(a)
+}
+
 func (a *initializeJunctionAction) Clone() model.Action {
 	c := newInitializeJunctionAction()
-	// TODO
+	c.JunctionID = a.JunctionID
 	return c
 }
 

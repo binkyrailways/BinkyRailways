@@ -38,3 +38,8 @@ func newPassiveJunction() *passiveJunction {
 	sw.junction.Initialize(16, 12)
 	return sw
 }
+
+// Accept a visit by the given visitor
+func (pj *passiveJunction) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitPassiveJunction(pj)
+}

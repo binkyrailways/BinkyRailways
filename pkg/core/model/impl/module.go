@@ -63,6 +63,11 @@ func NewModule() Module {
 	return m
 }
 
+// Accept a visit by the given visitor
+func (m *module) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitModule(m)
+}
+
 // Return the containing module
 func (m *module) GetModule() model.Module {
 	return m

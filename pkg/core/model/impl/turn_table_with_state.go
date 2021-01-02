@@ -41,6 +41,11 @@ func newTurnTableWithState() *turnTableWithState {
 	return ssw
 }
 
+// Accept a visit by the given visitor
+func (j *turnTableWithState) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitTurnTableWithState(j)
+}
+
 // Desired position
 func (j *turnTableWithState) GetPosition() int {
 	return refs.IntValue(j.Position, model.DefaultTurnTableInitialPosition)

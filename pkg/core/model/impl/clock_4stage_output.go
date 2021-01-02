@@ -47,6 +47,11 @@ func newClock4StageOutput() *clock4StageOutput {
 	return cso
 }
 
+// Accept a visit by the given visitor
+func (cso *clock4StageOutput) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitClock4StageOutput(cso)
+}
+
 // Get the Address of the entity
 func (cso *clock4StageOutput) GetAddress() model.Address {
 	return cso.GetAddress1()

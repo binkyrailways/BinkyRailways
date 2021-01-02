@@ -45,6 +45,11 @@ func newLocGroup() *locGroup {
 	return m
 }
 
+// Accept a visit by the given visitor
+func (p *locGroup) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocGroup(p)
+}
+
 // Set of locs which make up this group.
 func (lg *locGroup) GetLocs() model.LocRefSet {
 	return &lg.Locs

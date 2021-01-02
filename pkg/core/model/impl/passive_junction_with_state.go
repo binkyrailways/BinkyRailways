@@ -38,6 +38,11 @@ func newPassiveJunctionWithState() *passiveJunctionWithState {
 	return ssw
 }
 
+// Accept a visit by the given visitor
+func (j *passiveJunctionWithState) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitPassiveJunctionWithState(j)
+}
+
 // Create a clone of this entity.
 // Do not clone the junction.
 func (j *passiveJunctionWithState) Clone() model.JunctionWithState {

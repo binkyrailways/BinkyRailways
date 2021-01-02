@@ -38,6 +38,11 @@ func NewP50xCommandStation() P50xCommandStation {
 	return cs
 }
 
+// Accept a visit by the given visitor
+func (cs *p50xCommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitP50xCommandStation(cs)
+}
+
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *p50xCommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {

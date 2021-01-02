@@ -61,6 +61,11 @@ func (b *block) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
+// Accept a visit by the given visitor
+func (b *block) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBlock(b)
+}
+
 // Probability (in percentage) that a loc that is allowed to wait in this block
 // will actually wait.
 // When set to 0, no locs will wait (unless there is no route available).

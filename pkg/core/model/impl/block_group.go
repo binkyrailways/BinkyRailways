@@ -39,6 +39,11 @@ func newBlockGroup() *blockGroup {
 	return b
 }
 
+// Accept a visit by the given visitor
+func (bg *blockGroup) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBlockGroup(bg)
+}
+
 // The minimum number of locs that must be present in this group.
 // Locs cannot leave if that results in a lower number of locs in this group.
 func (bg *blockGroup) GetMinimumLocsInGroup() int {

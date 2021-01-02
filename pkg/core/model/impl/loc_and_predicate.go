@@ -38,6 +38,11 @@ func newLocAndPredicate() *locAndPredicate {
 	return p
 }
 
+// Accept a visit by the given visitor
+func (p *locAndPredicate) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocAndPredicate(p)
+}
+
 // Create a deep clone.
 func (p *locAndPredicate) Clone() model.LocPredicate {
 	c := newLocAndPredicate()

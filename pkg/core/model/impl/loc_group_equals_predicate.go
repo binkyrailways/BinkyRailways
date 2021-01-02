@@ -39,6 +39,11 @@ func newLocGroupEqualsPredicate() *locGroupEqualsPredicate {
 	return p
 }
 
+// Accept a visit by the given visitor
+func (p *locGroupEqualsPredicate) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitLocGroupEqualsPredicate(p)
+}
+
 // Gets the set of nested predicates.
 func (p *locGroupEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 	p.locPredicate.SetContainer(parent)

@@ -32,3 +32,8 @@ func newBinarySensor() *binarySensor {
 	sw.sensor.Initialize(12, 12)
 	return sw
 }
+
+// Accept a visit by the given visitor
+func (bs *binarySensor) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBinarySensor(bs)
+}

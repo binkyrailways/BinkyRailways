@@ -41,6 +41,11 @@ func newBinaryOutput() *binaryOutput {
 	return sw
 }
 
+// Accept a visit by the given visitor
+func (bo *binaryOutput) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBinaryOutput(bo)
+}
+
 // Get the Address of the entity
 func (bo *binaryOutput) GetAddress() model.Address {
 	return bo.Address

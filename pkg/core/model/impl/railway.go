@@ -64,6 +64,11 @@ func NewRailway(p model.Package) Railway {
 	return r
 }
 
+// Accept a visit by the given visitor
+func (r *railway) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitRailway(r)
+}
+
 // Return the containing railway
 func (r *railway) GetRailway() model.Railway {
 	return r

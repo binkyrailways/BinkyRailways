@@ -35,6 +35,11 @@ func NewID() string {
 	return uniuri.New()
 }
 
+// Accept a visit by the given visitor
+func (e *entity) Accept(v model.EntityVisitor) interface{} {
+	panic("Override me")
+}
+
 // EnsureID sets a unique ID if needed
 func (e *entity) EnsureID() {
 	if e.ID == "" {

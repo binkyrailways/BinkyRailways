@@ -45,6 +45,11 @@ func NewMqttCommandStation() MqttCommandStation {
 	return cs
 }
 
+// Accept a visit by the given visitor
+func (cs *mqttCommandStation) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitMqttCommandStation(cs)
+}
+
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *mqttCommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {

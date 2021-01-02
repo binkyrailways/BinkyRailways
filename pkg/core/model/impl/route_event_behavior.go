@@ -43,6 +43,11 @@ func newRouteEventBehavior() *routeEventBehavior {
 	return reb
 }
 
+// Accept a visit by the given visitor
+func (s *routeEventBehavior) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitRouteEventBehavior(s)
+}
+
 /// <summary>
 /// Predicate used to select the locs to which this event applies.
 /// </summary>

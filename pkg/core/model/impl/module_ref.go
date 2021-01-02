@@ -45,6 +45,11 @@ func newModuleRef(id string, onTryResolve func(id string) model.Module) moduleRe
 	return mr
 }
 
+// Accept a visit by the given visitor
+func (lr *moduleRef) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitModuleRef(lr)
+}
+
 func (lr *moduleRef) SetResolver(onTryResolve func(id string) model.Module) {
 	lr.onTryResolve = onTryResolve
 }

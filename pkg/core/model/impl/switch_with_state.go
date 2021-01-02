@@ -41,6 +41,11 @@ func newSwitchWithState() *switchWithState {
 	return ssw
 }
 
+// Accept a visit by the given visitor
+func (j *switchWithState) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitSwitchWithState(j)
+}
+
 // Desired direction
 func (j *switchWithState) GetDirection() model.SwitchDirection {
 	return refs.SwitchDirectionValue(j.Direction, model.SwitchDirectionStraight)
