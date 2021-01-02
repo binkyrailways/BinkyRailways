@@ -20,7 +20,7 @@ package model
 // Route from one block to another.
 type Route interface {
 	ModuleEntity
-	// IActionTriggerSource
+	ActionTriggerSource
 
 	// Starting point of the route
 	GetFrom() EndPoint
@@ -70,13 +70,9 @@ type Route interface {
 	GetMaxDuration() int
 	SetMaxDuration(value int) error
 
-	/// <summary>
-	/// Trigger fired when a loc has starts entering the destination of this route.
-	/// </summary>
-	//IActionTrigger EnteringDestinationTrigger { get; }
+	// Trigger fired when a loc has starts entering the destination of this route.
+	GetEnteringDestinationTrigger() ActionTrigger
 
-	/// <summary>
-	/// Trigger fired when a loc has reached the destination of this route.
-	/// </summary>
-	//        IActionTrigger DestinationReachedTrigger { get; }
+	// Trigger fired when a loc has reached the destination of this route.
+	GetDestinationReachedTrigger() ActionTrigger
 }

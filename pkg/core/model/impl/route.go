@@ -30,23 +30,27 @@ type route struct {
 
 type routeFields struct {
 	moduleEntity
-	FromBlock         BlockRef             `xml:"FromBlock"`
-	ToBlock           BlockRef             `xml:"ToBlock"`
-	FromBlockSide     *model.BlockSide     `xml:"FromBlockSide,omitempty"`
-	ToBlockSide       *model.BlockSide     `xml:"ToBlockSide,omitempty"`
-	Speed             *int                 `xml:"Speed"`
-	ChooseProbability *int                 `xml:"ChooseProbability"`
-	MaxDuration       *int                 `xml:"MaxDuration"`
-	Closed            *bool                `xml:"Closed"`
-	Events            routeEventSet        `xml:"Events"`
-	CrossingJunctions junctionWithStateSet `xml:"CrossingJunctions"`
-	Permissions       locStandardPredicate `xml:"Permissions"`
+	FromBlock                  BlockRef             `xml:"FromBlock"`
+	ToBlock                    BlockRef             `xml:"ToBlock"`
+	FromBlockSide              *model.BlockSide     `xml:"FromBlockSide,omitempty"`
+	ToBlockSide                *model.BlockSide     `xml:"ToBlockSide,omitempty"`
+	Speed                      *int                 `xml:"Speed"`
+	ChooseProbability          *int                 `xml:"ChooseProbability"`
+	MaxDuration                *int                 `xml:"MaxDuration"`
+	Closed                     *bool                `xml:"Closed"`
+	Events                     routeEventSet        `xml:"Events"`
+	CrossingJunctions          junctionWithStateSet `xml:"CrossingJunctions"`
+	Permissions                locStandardPredicate `xml:"Permissions"`
+	EnteringDestinationTrigger actionTrigger        `xml:"EnteringDestinationTrigger"`
+	DestinationReachedTrigger  actionTrigger        `xml:"DestinationReachedTrigger"`
 }
 
 func (rf *routeFields) SetRoute(r *route) {
 	rf.Events.SetContainer(r)
 	rf.CrossingJunctions.SetContainer(r)
 	rf.Permissions.SetContainer(r)
+	rf.EnteringDestinationTrigger.Initialize(r, "Entering destination")
+	rf.DestinationReachedTrigger.Initialize(r, "Destination reached")
 }
 
 var _ model.Route = &route{}
@@ -195,12 +199,17 @@ func (r *route) SetMaxDuration(value int) error {
 	return nil
 }
 
-/// <summary>
-/// Trigger fired when a loc has starts entering the destination of this route.
-/// </summary>
-//IActionTrigger EnteringDestinationTrigger { get; }
+// GetTriggers returns all the triggers of this route
+func (r *route) GetTriggers() []model.ActionTrigger {
+	return []model.ActionTrigger{r.GetEnteringDestinationTrigger(), r.GetDestinationReachedTrigger()}
+}
 
-/// <summary>
-/// Trigger fired when a loc has reached the destination of this route.
-/// </summary>
-//        IActionTrigger DestinationReachedTrigger { get; }
+// Trigger fired when a loc has starts entering the destination of this route.
+func (r *route) GetEnteringDestinationTrigger() model.ActionTrigger {
+	return &r.EnteringDestinationTrigger
+}
+
+// Trigger fired when a loc has reached the destination of this route.
+func (r *route) GetDestinationReachedTrigger() model.ActionTrigger {
+	return &r.DestinationReachedTrigger
+}
