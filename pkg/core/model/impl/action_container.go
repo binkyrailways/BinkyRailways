@@ -41,6 +41,8 @@ func (jc *ActionContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	switch a.Value {
 	case "InitializeJunctionAction":
 		action = newInitializeJunctionAction()
+	case "LocFunctionAction":
+		action = newLocFunctionAction()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

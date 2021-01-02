@@ -74,7 +74,7 @@ type EntityVisitor interface {
 	// Actions
 	VisitInitializeJunctionAction(InitializeJunctionAction) interface{}
 	VisitLocAction(LocAction) interface{}
-	//VisitLocFunctionAction(LocFunctionAction) interface{}
+	VisitLocFunctionAction(LocFunctionAction) interface{}
 	VisitModuleAction(ModuleAction) interface{}
 	//VisitPlaySoundAction(PlaySoundAction) interface{}
 }

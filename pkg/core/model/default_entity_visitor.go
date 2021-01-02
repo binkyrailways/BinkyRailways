@@ -302,7 +302,12 @@ func (v *DefaultEntityVisitor) VisitLocAction(x LocAction) interface{} {
 	return nil
 }
 
-//func (v*DefaultEntityVisitor) VisitLocFunctionAction(x LocFunctionAction) interface{}
+func (v *DefaultEntityVisitor) VisitLocFunctionAction(x LocFunctionAction) interface{} {
+	if v.defaultVisitor != nil {
+		return v.defaultVisitor.VisitAction(x)
+	}
+	return nil
+}
 
 func (v *DefaultEntityVisitor) VisitModuleAction(x ModuleAction) interface{} {
 	if v.defaultVisitor != nil {
