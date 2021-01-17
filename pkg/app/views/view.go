@@ -1,4 +1,4 @@
-// Copyright 2020 Ewout Prangsma
+// Copyright 2021 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,14 @@
 // Author Ewout Prangsma
 //
 
-package main
+package views
 
-import (
-	"log"
+import "gioui.org/layout"
 
-	"github.com/binkyrailways/BinkyRailways/cmd"
-)
-
-var (
-	projectVersion = "dev"
-	projectBuild   = "dev"
-)
-
-func main() {
-	cmd.SetVersionAndBuild(projectVersion, projectBuild)
-	if err := cmd.RootCmd.Execute(); err != nil {
-		log.Fatalf("%v\n", err)
-	}
+// View in the application
+type View interface {
+	// Handle events and draw the view
+	Layout(gtx layout.Context) layout.Dimensions
+	// Return additional text to add to the window title
+	GetTitleExtension() string
 }

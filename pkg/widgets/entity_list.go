@@ -1,4 +1,4 @@
-// Copyright 2020 Ewout Prangsma
+// Copyright 2021 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,21 @@
 // Author Ewout Prangsma
 //
 
-package main
+package widgets
 
 import (
-	"log"
-
-	"github.com/binkyrailways/BinkyRailways/cmd"
+	"gioui.org/layout"
+	"gioui.org/widget/material"
 )
 
-var (
-	projectVersion = "dev"
-	projectBuild   = "dev"
-)
+type EntityGroupList struct {
+	Groups []EntityGroup
+	list   layout.List
+}
 
-func main() {
-	cmd.SetVersionAndBuild(projectVersion, projectBuild)
-	if err := cmd.RootCmd.Execute(); err != nil {
-		log.Fatalf("%v\n", err)
-	}
+func (v EntityGroupList) Layout(gtx C, th *material.Theme) D {
+	v.list.Axis = layout.Vertical
+	return v.list.Layout(gtx, len(v.Groups), func(gtx C, idx int) D {
+		return v.Groups[idx].Layout(gtx, th)
+	})
 }

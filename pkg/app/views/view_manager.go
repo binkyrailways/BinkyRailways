@@ -1,4 +1,4 @@
-// Copyright 2020 Ewout Prangsma
+// Copyright 2021 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,20 @@
 // Author Ewout Prangsma
 //
 
-package main
+package views
 
 import (
-	"log"
+	"gioui.org/widget/material"
 
-	"github.com/binkyrailways/BinkyRailways/cmd"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-var (
-	projectVersion = "dev"
-	projectBuild   = "dev"
-)
-
-func main() {
-	cmd.SetVersionAndBuild(projectVersion, projectBuild)
-	if err := cmd.RootCmd.Execute(); err != nil {
-		log.Fatalf("%v\n", err)
-	}
+// ViewManager managed a stack of views.
+type ViewManager interface {
+	// Return the current theme
+	GetTheme() *material.Theme
+	// Force a redraw of the window
+	Invalidate()
+	// Open the given railway
+	OpenRailway(model.Railway)
 }
