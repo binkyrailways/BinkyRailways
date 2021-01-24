@@ -20,16 +20,33 @@ package widgets
 import (
 	"gioui.org/layout"
 	"gioui.org/widget/material"
+	"gioui.org/x/outlay"
 )
 
-type EntityGroupList struct {
-	Groups []EntityGroup
-	list   layout.List
+func NewSettingsGrid(row ...SettingsGridRow) SettingsGrid {
+	return SettingsGrid{Rows: row}
 }
 
-func (v EntityGroupList) Layout(gtx C, th *material.Theme) D {
-	v.list.Axis = layout.Vertical
-	return v.list.Layout(gtx, len(v.Groups), func(gtx C, idx int) D {
-		return v.Groups[idx].Layout(gtx, th)
+// SettingsGrid shows a vertical align name+widget grid
+type SettingsGrid struct {
+	Rows []SettingsGridRow
+}
+
+type SettingsGridRow struct {
+	Title  string
+	Layout func(C) D
+}
+
+func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
+	rowCount := len(sg.Rows)
+	vGrid := outlay.Grid{
+		Num:  rowCount,
+		Axis: layout.Vertical,
+	}
+	return vGrid.Layout(gtx, rowCount*2, func(gtx C, i int) D {
+		if i < rowCount {
+			return material.Label(th, th.TextSize, sg.Rows[i].Title).Layout(gtx)
+		}
+		return sg.Rows[i-rowCount].Layout(gtx)
 	})
 }

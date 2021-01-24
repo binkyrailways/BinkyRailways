@@ -26,8 +26,8 @@ import (
 	"golang.org/x/exp/shiny/materialdesign/icons"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-	"github.com/binkyrailways/BinkyRailways/pkg/widgets"
 )
 
 type (

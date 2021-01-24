@@ -18,31 +18,32 @@
 package widgets
 
 import (
-	"sort"
-
 	"gioui.org/layout"
-	"gioui.org/unit"
 	"gioui.org/widget/material"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type EntityGroup struct {
-	Name       string
-	Collection func() []model.Entity
+type EntityGroupList struct {
+	Groups   []EntityGroup
+	list     layout.List
+	OnSelect func(model.Entity)
+	Selected model.Entity
 }
 
-func (v EntityGroup) Layout(gtx C, th *material.Theme) D {
-	entities := v.Collection()
-	sort.Slice(entities, func(i, j int) bool {
-		return entities[i].GetDescription() < entities[j].GetDescription()
-	})
-	items := make([]layout.FlexChild, 1, 1+len(entities))
-	items[0] = layout.Rigid(material.Label(th, th.TextSize.Scale(1.4), v.Name).Layout)
-	for _, entity := range entities {
-		descr := entity.GetDescription()
-		items = append(items, layout.Rigid(func(gtx C) D {
-			return layout.Inset{Left: unit.Dp(20)}.Layout(gtx, material.Label(th, th.TextSize, descr).Layout)
-		}))
+func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
+	v.list.Axis = layout.Vertical
+	selection := v.Selected
+	var widgets []entityGroupWidget
+	for idx := range v.Groups {
+		widgets = append(widgets, v.Groups[idx].generateWidgets()...)
 	}
-	return layout.Flex{Axis: layout.Vertical}.Layout(gtx, items...)
+	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
+		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
+		return widgets[idx](gtx, th, selection, func(entity model.Entity) {
+			v.Selected = entity
+			if v.OnSelect != nil {
+				v.OnSelect(entity)
+			}
+		})
+	})
 }
