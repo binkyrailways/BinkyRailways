@@ -22,6 +22,7 @@ import (
 	"gioui.org/op/paint"
 	"gioui.org/widget/material"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -42,8 +43,12 @@ func (b *block) GetRotation() int {
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *block) Layout(gtx C, th *material.Theme) {
-	paint.Fill(gtx.Ops, th.ContrastBg)
+func (b *block) Layout(gtx C, th *material.Theme, state canvas.WidgetState) {
+	bg := blockBg
+	if state.Hovered {
+		bg = hoverBg
+	}
+	paint.Fill(gtx.Ops, bg)
 	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
 	//lb.Alignment = text.Middle
 	//lb.Layout(gtx)

@@ -15,29 +15,20 @@
 // Author Ewout Prangsma
 //
 
-package editors
+package settings
 
 import (
+	"gioui.org/layout"
 	"gioui.org/widget/material"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// NewLocEditor constructs an editor for a Loc.
-func NewLocEditor(loc model.Loc, etx EditorContext) Editor {
-	editor := &locEditor{
-		settings: settings.NewLocSettings(loc),
-	}
-	return editor
-}
+type (
+	C = layout.Context
+	D = layout.Dimensions
+)
 
-// locEditor implements an editor for a Loc.
-type locEditor struct {
-	settings settings.Settings
-}
-
-// Handle events and draw the editor
-func (e *locEditor) Layout(gtx C, th *material.Theme) D {
-	return e.settings.Layout(gtx, th)
+// Settings defines the API for settings UI components
+type Settings interface {
+	// Handle events and draw the editor
+	Layout(gtx C, th *material.Theme) D
 }

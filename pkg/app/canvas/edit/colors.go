@@ -15,29 +15,26 @@
 // Author Ewout Prangsma
 //
 
-package editors
+package edit
 
 import (
-	"gioui.org/widget/material"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"image/color"
 )
 
-// NewLocEditor constructs an editor for a Loc.
-func NewLocEditor(loc model.Loc, etx EditorContext) Editor {
-	editor := &locEditor{
-		settings: settings.NewLocSettings(loc),
+var (
+	hoverBg = ARGB(0xC0333333)
+	blockBg = ARGB(0x80CCCCCC)
+)
+
+func RGB(value uint32) color.NRGBA {
+	return ARGB(0xFF000000 | value)
+}
+
+func ARGB(value uint32) color.NRGBA {
+	return color.NRGBA{
+		A: uint8(value >> 24),
+		R: uint8(value >> 16),
+		G: uint8(value >> 8),
+		B: uint8(value),
 	}
-	return editor
-}
-
-// locEditor implements an editor for a Loc.
-type locEditor struct {
-	settings settings.Settings
-}
-
-// Handle events and draw the editor
-func (e *locEditor) Layout(gtx C, th *material.Theme) D {
-	return e.settings.Layout(gtx, th)
 }

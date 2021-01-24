@@ -25,6 +25,7 @@ import (
 	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/clip"
+	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -41,11 +42,17 @@ type EntityCanvas struct {
 	Entities EntityIterator
 	// Builder must be set to an entity visitor that builds Widgets.
 	Builder model.EntityVisitor
+	// If set, OnSelect is called when the given entity is selected.
+	OnSelect func(model.PositionedEntity)
 
 	// Map of entityID -> widget
-	widgets map[string]Widget
+	widgets map[string]*canvasWidget
 	// Current scale
 	scale float32
+	// Current selection
+	selection model.PositionedEntity
+	// Click on background
+	widget.Clickable
 }
 
 // Widget is to be implemented by all positioned entities that
@@ -55,9 +62,34 @@ type Widget interface {
 	GetBounds() f32.Rectangle
 	// Returns rotation of entity in degrees
 	GetRotation() int
-	// Layout must be initialized to a layout function to draw the widget
-	// and process events.
-	Layout(layout.Context, *material.Theme)
+	// Layout draws the widget and process events.
+	Layout(layout.Context, *material.Theme, WidgetState)
+}
+
+// WidgetState describes the current state of the widget
+type WidgetState struct {
+	// Mouse hovers over the widget
+	Hovered bool
+}
+
+type canvasWidget struct {
+	entity model.PositionedEntity
+	widget.Clickable
+	widget Widget
+}
+
+// Layout draws the widget and process events.
+func (cw *canvasWidget) Layout(gtx layout.Context, th *material.Theme, size image.Point) {
+	// First as clickable
+	lgtx := gtx
+	lgtx.Constraints.Min = size
+	lgtx.Constraints.Max = size
+	cw.Clickable.Layout(lgtx)
+	// Now layout actual widget
+	state := WidgetState{
+		Hovered: cw.Clickable.Hovered(),
+	}
+	cw.widget.Layout(lgtx, th, state)
 }
 
 // SetScale adjusts the current scale
@@ -75,7 +107,7 @@ func (ec *EntityCanvas) SetScale(scale float32) bool {
 // Returns: maxSize
 func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 	if ec.widgets == nil {
-		ec.widgets = make(map[string]Widget)
+		ec.widgets = make(map[string]*canvasWidget)
 	}
 	// Ensure we have all widgets
 	maxSize := ec.GetMaxSize()
@@ -83,18 +115,21 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 	ec.Entities(func(entity model.PositionedEntity) {
 		id := entity.GetID()
 		foundIDs[id] = struct{}{}
-		w, found := ec.widgets[id]
+		entry, found := ec.widgets[id]
 		if !found {
 			// Build a new widget
 			raw := entity.Accept(ec.Builder)
-			var ok bool
-			w, ok = raw.(Widget)
+			w, ok := raw.(Widget)
 			if !ok {
 				return
 			}
-			ec.widgets[id] = w
+			entry = &canvasWidget{
+				entity: entity,
+				widget: w,
+			}
+			ec.widgets[id] = entry
 		}
-		bounds := w.GetBounds()
+		bounds := entry.widget.GetBounds()
 		if bounds.Max.X > maxSize.X {
 			maxSize.X = bounds.Max.X
 		}
@@ -111,8 +146,35 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 	return maxSize
 }
 
+// GetSelection returns the current selection (if any)
+func (ec *EntityCanvas) GetSelection() model.PositionedEntity {
+	return ec.selection
+}
+
+// Select sets the selected entity
+func (ec *EntityCanvas) Select(entity model.PositionedEntity) {
+	if ec.selection != entity {
+		ec.selection = entity
+		if ec.OnSelect != nil {
+			ec.OnSelect(entity)
+		}
+	}
+}
+
 // Layout generates the UI and processes events.
 func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	// Process events
+	if ec.Clickable.Clicked() {
+		ec.Select(nil)
+	}
+	for _, w := range ec.widgets {
+		if w.Clickable.Clicked() {
+			ec.Select(w.entity)
+		}
+	}
+
+	// Add background click
+	ec.Clickable.Layout(gtx)
 	// Ensure we have all widgets
 	max := gtx.Constraints.Max
 	maxSize := ec.rebuildWidgets()
@@ -133,9 +195,9 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 		// Save state
 		state := op.Save(gtx.Ops)
 		// Prepare transformation
-		bounds := w.GetBounds()
+		bounds := w.widget.GetBounds()
 		// Translate, scale & rotate
-		rot := w.GetRotation()
+		rot := w.widget.GetRotation()
 		tr := f32.Affine2D{}
 		rad := float32(rot) * (math.Pi / 180)
 		tr = tr.Offset(bounds.Min)
@@ -143,14 +205,15 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 		tr = tr.Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
 		op.Affine(tr).Add(gtx.Ops)
 		// Set clip rectangle
+		size := image.Point{
+			X: int(bounds.Max.X - bounds.Min.X),
+			Y: int(bounds.Max.Y - bounds.Min.Y),
+		}
 		clip.Rect{
-			Max: image.Point{
-				X: int(bounds.Max.X - bounds.Min.X),
-				Y: int(bounds.Max.Y - bounds.Min.Y),
-			},
+			Max: size,
 		}.Add(gtx.Ops)
 		// Layout widget
-		w.Layout(gtx, th)
+		w.Layout(gtx, th, size)
 		// Retore previous state
 		state.Load()
 	}

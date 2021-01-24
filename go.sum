@@ -17,6 +17,8 @@ gioui.org v0.0.0-20210106084211-c030065af7bc/go.mod h1:Y+uS7hHMvku1Q+ooaoq6fYD5B
 gioui.org v0.0.0-20210112202859-d331dd2de80d/go.mod h1:Y+uS7hHMvku1Q+ooaoq6fYD5B2LGoT8JtFgvmYmRzTw=
 gioui.org v0.0.0-20210116085804-99bfa6a33cdf h1:BPm0FHRKpTbpoe4DY2vKIVzWWni+IHvmltECoYRUYWk=
 gioui.org v0.0.0-20210116085804-99bfa6a33cdf/go.mod h1:Y+uS7hHMvku1Q+ooaoq6fYD5B2LGoT8JtFgvmYmRzTw=
+gioui.org v0.0.0-20210124160655-f88a8216e9d7 h1:jAIW2K7LBocCrgEExyL0UKo4o2qiIYeithYPMVO0ctU=
+gioui.org v0.0.0-20210124160655-f88a8216e9d7/go.mod h1:Y+uS7hHMvku1Q+ooaoq6fYD5B2LGoT8JtFgvmYmRzTw=
 gioui.org/example v0.0.0-20210117191909-1dee7b8c3b9a h1:mJ3/3qFAzmZz1ZXOIxQXu1zFOEtLUlDHwEKjReNqz8M=
 gioui.org/x v0.0.0-20210117142719-a307b4757e61 h1:qlEch6yEoi7+3kg2ib9M7KCPW6p3FAnp4YaqhTTjZKE=
 gioui.org/x v0.0.0-20210117142719-a307b4757e61/go.mod h1:+CDNGkslHDIe1EK2Q4E0G98qRllCaQrL6qtjBhBjSAo=

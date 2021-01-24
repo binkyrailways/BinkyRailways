@@ -25,7 +25,7 @@ import (
 
 func TextCenter(gtx C, th *material.Theme, str string) D {
 	lb := widget.Label{
-		Alignment: text.Start,
+		Alignment: text.Middle,
 		MaxLines:  1,
 	}
 	return lb.Layout(gtx, th.Shaper, text.Font{}, th.TextSize, str)
