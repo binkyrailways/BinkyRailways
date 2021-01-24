@@ -40,9 +40,11 @@ func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
 	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
 		return widgets[idx](gtx, th, selection, func(entity model.Entity) {
-			v.Selected = entity
-			if v.OnSelect != nil {
-				v.OnSelect(entity)
+			if v.Selected != entity {
+				v.Selected = entity
+				if v.OnSelect != nil {
+					v.OnSelect(entity)
+				}
 			}
 		})
 	})

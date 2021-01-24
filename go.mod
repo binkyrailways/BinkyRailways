@@ -6,7 +6,7 @@ require (
 	gioui.org v0.0.0-20210116085804-99bfa6a33cdf
 	gioui.org/x v0.0.0-20210117142719-a307b4757e61
 	github.com/aarzilli/nucular v0.0.0-20210111134321-0632296919bc // indirect
-	github.com/ajstarks/giocanvas v0.0.0-20210116002733-c0ab486f8f0a // indirect
+	github.com/ajstarks/giocanvas v0.0.0-20210116002733-c0ab486f8f0a
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
 	github.com/gen2brain/dlgs v0.0.0-20201118155338-03fe7f81ad25
 	github.com/harry1453/go-common-file-dialog v0.0.0-20201006113013-486d1d96d889 // indirect

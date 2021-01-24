@@ -25,6 +25,7 @@ import (
 	"gioui.org/io/system"
 	"gioui.org/layout"
 	"gioui.org/op"
+	"gioui.org/unit"
 	"gioui.org/widget/material"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway"
@@ -65,7 +66,7 @@ func New(cfg Config, deps Dependencies) *App {
 		Config:        cfg,
 		Dependencies:  deps,
 		theme:         material.NewTheme(gofont.Collection()),
-		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways")),
+		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways"), gapp.Size(unit.Dp(2048), unit.Dp(1600))),
 		railwayChange: make(chan model.Railway),
 	}
 	a.startView = start.New(deps.Logger, a)
