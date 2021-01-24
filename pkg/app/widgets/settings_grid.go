@@ -19,17 +19,22 @@ package widgets
 
 import (
 	"gioui.org/layout"
+	"gioui.org/unit"
 	"gioui.org/widget/material"
 	"gioui.org/x/outlay"
 )
 
 func NewSettingsGrid(row ...SettingsGridRow) SettingsGrid {
-	return SettingsGrid{Rows: row}
+	return SettingsGrid{
+		Rows:   row,
+		Gutter: unit.Dp(5),
+	}
 }
 
 // SettingsGrid shows a vertical align name+widget grid
 type SettingsGrid struct {
-	Rows []SettingsGridRow
+	Rows   []SettingsGridRow
+	Gutter unit.Value
 }
 
 type SettingsGridRow struct {
@@ -45,7 +50,9 @@ func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
 	}
 	return vGrid.Layout(gtx, rowCount*2, func(gtx C, i int) D {
 		if i < rowCount {
-			return material.Label(th, th.TextSize, sg.Rows[i].Title).Layout(gtx)
+			return layout.Inset{
+				Right: sg.Gutter,
+			}.Layout(gtx, material.Label(th, th.TextSize, sg.Rows[i].Title).Layout)
 		}
 		return sg.Rows[i-rowCount].Layout(gtx)
 	})

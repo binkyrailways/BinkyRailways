@@ -25,6 +25,7 @@ import (
 	"gioui.org/x/component"
 	"golang.org/x/exp/shiny/materialdesign/icons"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/app/editors"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -43,6 +44,7 @@ type editView struct {
 	appBar     *component.AppBar
 	buttonRun  widget.Clickable
 	entityList widgets.EntityGroupList
+	editor     editors.Editor
 }
 
 var (
@@ -85,6 +87,16 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 			},
 		},
 	}
+	v.entityList.OnSelect = func(selection model.Entity) {
+		if loc, ok := selection.(model.Loc); ok {
+			v.editor = editors.NewLocEditor(loc, v.vm)
+		} else if module, ok := selection.(model.Module); ok {
+			v.editor = editors.NewModuleEditor(module, v.vm)
+		} else {
+			v.editor = nil
+		}
+		vm.Invalidate()
+	}
 	v.appBar = component.NewAppBar(v.modal)
 	return v
 }
@@ -122,11 +134,18 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 		},
 		[]component.OverflowAction{})
 
-	bar := layout.Rigid(func(gtx C) D { return v.appBar.Layout(gtx, th) })
-	layout.Flex{Axis: layout.Vertical}.Layout(gtx,
-		bar,
-		layout.Flexed(1, func(gtx C) D { return v.entityList.Layout(gtx, th) }),
-	)
+	content := func(gtx C) D {
+		if v.editor != nil {
+			return v.editor.Layout(gtx, th)
+		}
+		return layout.Dimensions{Size: gtx.Constraints.Max}
+	}
+	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
+	hs := widgets.HorizontalSplit(func(gtx C) D { return v.entityList.Layout(gtx, th) }, content)
+	hs.End.Weight = 3
+	vs := widgets.VerticalSplit(bar, hs.Layout)
+	vs.Start.Rigid = true
+	vs.Layout(gtx)
 	v.modal.Layout(gtx, th)
 	return layout.Dimensions{Size: gtx.Constraints.Max}
 }

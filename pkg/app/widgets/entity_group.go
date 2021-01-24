@@ -22,6 +22,7 @@ import (
 	"sort"
 
 	"gioui.org/layout"
+	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
 	w "gioui.org/widget"
@@ -78,6 +79,9 @@ func (item *entityItem) Layout(gtx C, th *material.Theme, selected model.Entity,
 	return material.Clickable(gtx, &item.Clickable, func(gtx C) D {
 		if selected == item.entity {
 			lb.Color = th.ContrastFg
+			clip.Rect{
+				Max: gtx.Constraints.Max,
+			}.Add(gtx.Ops)
 			paint.Fill(gtx.Ops, th.ContrastBg)
 		}
 		return layout.Inset{Left: unit.Dp(20)}.Layout(gtx, lb.Layout)
