@@ -46,12 +46,11 @@ type Module interface {
 	// Gets all routes contained in this module.
 	GetRoutes() RouteSet
 
-	/// <summary>
-	/// Gets/sets the background image of the this module.
-	/// </summary>
-	/// <value>Null if there is no image.</value>
-	/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
-	//Stream BackgroundImage { get; set; }
+	// Gets/sets the background image of the this module.
+	// Null if there is no image.</value>
+	// Image must be png, bmp, gif, jpg, wmf or emf.
+	GetBackgroundImage() []byte
+	SetBackgroundImage(value []byte) error
 
 	// Gets the horizontal size (in pixels) of this entity.
 	GetWidth() int

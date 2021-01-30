@@ -275,8 +275,15 @@ func (p *packageImpl) ForEachModule(cb func(model.Module)) {
 //IEnumerable<string> GetGenericPartIDs(IPersistentEntity entity);
 
 // Load a generic file part that belongs to the given entity by it's id.
-// <returns>Null if not found</returns>
-//Stream GetGenericPart(IPersistentEntity entity, string id);
+// Returns: nil if not found
+func (p *packageImpl) GetGenericPart(entity model.PersistentEntity, id string) ([]byte, error) {
+	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
+	// Already loaded?
+	if result, found := p.parts[uri]; found {
+		return result, nil
+	}
+	return nil, nil
+}
 
 // Store a generic file part that belongs to the given entity by it's id.
 //void SetGenericPart(IPersistentEntity entity, string id, Stream source);

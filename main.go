@@ -20,6 +20,10 @@ package main
 import (
 	"log"
 
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+
 	"github.com/binkyrailways/BinkyRailways/cmd"
 )
 

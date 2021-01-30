@@ -63,6 +63,7 @@ func TestLoad(t *testing.T) {
 	require.NotNil(t, m)
 	assert.Equal(t, "De baan", m.GetDescription())
 	assert.Equal(t, 30, m.GetBlocks().GetCount())
+	assert.NotNil(t, m.GetBackgroundImage())
 
 	// Test block
 	b, ok := m.GetBlocks().Get("e851c545-e408-4ac4-b38f-28a6a4616fee")

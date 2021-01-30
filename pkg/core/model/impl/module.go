@@ -18,7 +18,13 @@
 package impl
 
 import (
+	"fmt"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
+
+const (
+	moduleBackgroundImageID = "BackgroundImage"
 )
 
 // Module extends implementation methods to model.Module
@@ -113,12 +119,19 @@ func (m *module) GetRoutes() model.RouteSet {
 	return &m.Routes
 }
 
-/// <summary>
-/// Gets/sets the background image of the this module.
-/// </summary>
-/// <value>Null if there is no image.</value>
-/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
-//Stream BackgroundImage { get; set; }
+// Gets/sets the background image of the this module.
+// Null if there is no image.</value>
+// Image must be png, bmp, gif, jpg, wmf or emf.
+func (m *module) GetBackgroundImage() []byte {
+	if pkg := m.GetPackage(); pkg != nil {
+		img, _ := pkg.GetGenericPart(m, moduleBackgroundImageID)
+		return img
+	}
+	return nil
+}
+func (m *module) SetBackgroundImage(value []byte) error {
+	return fmt.Errorf("Not implemented")
+}
 
 // Gets the horizontal size (in pixels) of this entity.
 func (m *module) GetWidth() int {

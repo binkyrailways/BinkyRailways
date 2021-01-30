@@ -28,6 +28,7 @@ import (
 	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/clip"
+	"gioui.org/op/paint"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -48,6 +49,9 @@ type EntityCanvas struct {
 	// If set, OnSelect is called when the given entity is selected.
 	OnSelect func(model.PositionedEntity)
 
+	// Background image
+	background   image.Image
+	backgroundOp paint.ImageOp
 	// Map of entityID -> widget
 	widgets map[string]*canvasWidget
 	// Current scale
@@ -134,6 +138,18 @@ func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size imag
 		Max: size,
 	}.Add(gtx.Ops)
 	cw.widget.Layout(gtx, th, state)
+}
+
+// SetBackground sets the background image
+func (ec *EntityCanvas) SetBackground(img image.Image) {
+	if ec.background != img {
+		ec.background = img
+		if img != nil {
+			ec.backgroundOp = paint.NewImageOp(img)
+		} else {
+			ec.backgroundOp = paint.ImageOp{}
+		}
+	}
 }
 
 // SetScale adjusts the current scale
@@ -235,6 +251,15 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 			minScale = sy
 		}
 		scale *= minScale
+	}
+	// Draw background (if any)
+	if ec.background != nil {
+		state := op.Save(gtx.Ops)
+		tr := f32.Affine2D{}.
+			Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
+		op.Affine(tr).Add(gtx.Ops)
+		widget.Image{Src: ec.backgroundOp}.Layout(gtx)
+		state.Load()
 	}
 	// Layout all widgets
 	for _, w := range ec.widgets {

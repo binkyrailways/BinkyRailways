@@ -18,6 +18,10 @@
 package canvas
 
 import (
+	"bytes"
+	"fmt"
+	"image"
+
 	"gioui.org/f32"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -34,6 +38,14 @@ func ModuleCanvas(module model.Module, builder model.EntityVisitor) *EntityCanva
 		Entities: module.ForEachPositionedEntity,
 		Builder:  builder,
 		scale:    1,
+	}
+	if bgImage := module.GetBackgroundImage(); bgImage != nil {
+		if img, format, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
+			fmt.Println(err)
+		} else if img != nil {
+			fmt.Printf("Found format '%s'\n", format)
+			ec.SetBackground(img)
+		}
 	}
 	return ec
 }

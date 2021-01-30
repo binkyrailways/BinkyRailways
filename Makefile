@@ -16,3 +16,6 @@ binaries:
 
 bootstrap:
 	go get github.com/mitchellh/gox
+
+test:
+	go test ./...

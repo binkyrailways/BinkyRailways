@@ -76,8 +76,8 @@ type Package interface {
 	//IEnumerable<string> GetGenericPartIDs(IPersistentEntity entity);
 
 	// Load a generic file part that belongs to the given entity by it's id.
-	// <returns>Null if not found</returns>
-	//Stream GetGenericPart(IPersistentEntity entity, string id);
+	// Returns: nil if not found
+	GetGenericPart(entity PersistentEntity, id string) ([]byte, error)
 
 	// Store a generic file part that belongs to the given entity by it's id.
 	//void SetGenericPart(IPersistentEntity entity, string id, Stream source);
