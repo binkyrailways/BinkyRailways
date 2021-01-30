@@ -119,9 +119,10 @@ func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size imag
 		}
 	}
 
-	// First as clickable
+	// Constraints paint area
 	gtx.Constraints.Min = size
 	gtx.Constraints.Max = size
+
 	// Add clicking & hover detection
 	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
 	cw.Click.Add(gtx.Ops)
@@ -130,14 +131,28 @@ func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size imag
 	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
 	cw.Drag.Add(gtx.Ops)
 	pointer.PassOp{Pass: true}.Add(gtx.Ops)
+
 	// Now layout actual widget
-	state := WidgetState{
+	wState := WidgetState{
 		Hovered: cw.Click.Hovered(),
 	}
+
+	// Layout actual widget
+	state := op.Save(gtx.Ops)
 	clip.Rect{
 		Max: size,
 	}.Add(gtx.Ops)
-	cw.widget.Layout(gtx, th, state)
+	cw.widget.Layout(gtx, th, wState)
+	state.Load()
+
+	// Draw selection overlay (if needed)
+	if wState.Hovered {
+		clip.Border{
+			Rect:  f32.Rectangle{Max: layout.FPt(size)},
+			Width: 1,
+			//Dashes: clip.DashSpec{},
+		}.Add(gtx.Ops)
+	}
 }
 
 // SetBackground sets the background image

@@ -18,15 +18,40 @@
 package widgets
 
 import (
+	"math"
+
+	"gioui.org/layout"
 	"gioui.org/text"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"golang.org/x/image/math/fixed"
 )
 
+// TextCenter prints the given string centered in the constrains of the given context,
+// scaling to the largest possible size that is less or equal to the text size
+// of the theme.
 func TextCenter(gtx C, th *material.Theme, str string) D {
 	lb := widget.Label{
 		Alignment: text.Middle,
 		MaxLines:  1,
 	}
-	return lb.Layout(gtx, th.Shaper, text.Font{}, th.TextSize, str)
+
+	// Calculate string size
+	fontSize := fixed.I(gtx.Px(th.TextSize))
+	lines := th.Shaper.LayoutString(text.Font{}, fontSize, math.MaxInt16, str)
+	b := lines[0].Bounds
+	textSize := b.Max.Sub(b.Min)
+	scaleX := float32(gtx.Constraints.Max.X) / float32(textSize.X.Ceil())
+	scaleY := float32(gtx.Constraints.Max.Y) / float32(textSize.Y.Ceil())
+	scale := scaleX
+	if scaleY < scale {
+		scale = scaleY
+	}
+	if scale > 1.0 {
+		scale = 1.0
+	}
+
+	return layout.Center.Layout(gtx, func(gtx C) D {
+		return lb.Layout(gtx, th.Shaper, text.Font{}, th.TextSize.Scale(scale), str)
+	})
 }

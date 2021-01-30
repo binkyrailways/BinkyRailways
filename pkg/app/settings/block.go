@@ -35,6 +35,7 @@ func NewBlockSettings(entity model.Block) Settings {
 	s.y.SetValue(entity.GetY())
 	s.width.SetValue(entity.GetWidth())
 	s.height.SetValue(entity.GetHeight())
+	s.rotation.SetValue(entity.GetRotation())
 	return s
 }
 
@@ -47,6 +48,7 @@ type blockSettings struct {
 	y           widgets.IntEditor
 	width       widgets.IntEditor
 	height      widgets.IntEditor
+	rotation    widgets.IntEditor
 }
 
 // Handle events and draw the editor
@@ -63,6 +65,9 @@ func (e *blockSettings) Layout(gtx C, th *material.Theme) D {
 	}
 	if value, err := e.height.GetValue(); err == nil {
 		e.entity.SetHeight(value)
+	}
+	if value, err := e.rotation.GetValue(); err == nil {
+		e.entity.SetRotation(value)
 	}
 
 	// Prepare settings grid
@@ -81,6 +86,9 @@ func (e *blockSettings) Layout(gtx C, th *material.Theme) D {
 		}},
 		widgets.SettingsGridRow{Title: "Height", Layout: func(gtx C) D {
 			return material.Editor(th, &e.height.Editor, "").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "Rotation", Layout: func(gtx C) D {
+			return material.Editor(th, &e.rotation.Editor, "").Layout(gtx)
 		}},
 	)
 
