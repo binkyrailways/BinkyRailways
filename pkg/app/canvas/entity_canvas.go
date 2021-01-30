@@ -239,6 +239,7 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 	ec.Clickable.Layout(gtx)
 	// Ensure we have all widgets
 	max := gtx.Constraints.Max
+	clip.Rect{Max: max}.Add(gtx.Ops)
 	maxSize := ec.rebuildWidgets()
 	// Prepare overall scaling
 	scale := ec.scale
@@ -269,7 +270,7 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 		bounds := w.widget.GetBounds()
 		// Translate, scale & rotate
 		rot := w.widget.GetRotation()
-		rad := float32(rot) * (math.Pi / 180)
+		rad := float32(rot%360) * (math.Pi / 180)
 		tr := f32.Affine2D{}.
 			Offset(bounds.Min).
 			Rotate(bounds.Min, rad).

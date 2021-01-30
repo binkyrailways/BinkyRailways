@@ -31,6 +31,10 @@ func NewBlockSettings(entity model.Block) Settings {
 		entity: entity,
 	}
 	s.description.SetText(entity.GetDescription())
+	s.x.SetValue(entity.GetX())
+	s.y.SetValue(entity.GetY())
+	s.width.SetValue(entity.GetWidth())
+	s.height.SetValue(entity.GetHeight())
 	return s
 }
 
@@ -39,16 +43,44 @@ type blockSettings struct {
 	entity model.Block
 
 	description w.Editor
+	x           widgets.IntEditor
+	y           widgets.IntEditor
+	width       widgets.IntEditor
+	height      widgets.IntEditor
 }
 
 // Handle events and draw the editor
 func (e *blockSettings) Layout(gtx C, th *material.Theme) D {
 	e.entity.SetDescription(e.description.Text())
+	if value, err := e.x.GetValue(); err == nil {
+		e.entity.SetX(value)
+	}
+	if value, err := e.y.GetValue(); err == nil {
+		e.entity.SetY(value)
+	}
+	if value, err := e.width.GetValue(); err == nil {
+		e.entity.SetWidth(value)
+	}
+	if value, err := e.height.GetValue(); err == nil {
+		e.entity.SetHeight(value)
+	}
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		widgets.SettingsGridRow{Title: "Name", Layout: func(gtx C) D {
 			return material.Editor(th, &e.description, "Name").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "X", Layout: func(gtx C) D {
+			return material.Editor(th, &e.x.Editor, "").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "Y", Layout: func(gtx C) D {
+			return material.Editor(th, &e.y.Editor, "").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "Width", Layout: func(gtx C) D {
+			return material.Editor(th, &e.width.Editor, "").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "Height", Layout: func(gtx C) D {
+			return material.Editor(th, &e.height.Editor, "").Layout(gtx)
 		}},
 	)
 
