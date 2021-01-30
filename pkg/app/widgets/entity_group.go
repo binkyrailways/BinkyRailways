@@ -35,14 +35,17 @@ type EntityGroup struct {
 	Name       string
 	Collection func() []model.Entity
 	items      []entityItem
+	widgets    []entityGroupWidget
+}
+
+type labelItem struct {
+	name string
 }
 
 type entityItem struct {
 	entity model.Entity
 	w.Clickable
 }
-
-type entityGroupWidget func(C, *material.Theme, model.Entity, func(entity model.Entity)) D
 
 // generateWidgets generates all widgets for this group
 func (v *EntityGroup) generateWidgets() []entityGroupWidget {
@@ -51,30 +54,40 @@ func (v *EntityGroup) generateWidgets() []entityGroupWidget {
 	sort.Slice(entities, func(i, j int) bool {
 		return entities[i].GetDescription() < entities[j].GetDescription()
 	})
-	// Prepare result list
-	result := make([]entityGroupWidget, 1+len(entities))
-	result[0] = func(gtx C, th *material.Theme, selection model.Entity, onSelect func(entity model.Entity)) D {
-		return material.Label(th, th.TextSize.Scale(1.4), v.Name).Layout(gtx)
-	}
 	// Rebuild items if needed
 	if len(v.items) != len(entities) {
 		fmt.Println("Rebuild items")
 		v.items = make([]entityItem, len(entities))
+		v.widgets = make([]entityGroupWidget, 1+len(entities))
+		v.widgets[0] = labelItem{name: v.Name}
 	}
+	// Pepare widgets
 	for idx, entity := range entities {
-		v.items[idx].entity = entity
-		result[idx+1] = v.items[idx].Layout
+		if v.items[idx].entity != entity {
+			v.items[idx].entity = entity
+			v.widgets[idx+1] = &v.items[idx]
+		}
 	}
-	return result
+	return v.widgets
 }
 
-func (item *entityItem) Layout(gtx C, th *material.Theme, selected model.Entity, onSelect func(entity model.Entity)) D {
-	// Process events
+func (item labelItem) ProcessEvents() model.Entity {
+	return nil
+}
+
+func (item labelItem) Layout(gtx C, th *material.Theme, selected model.Entity) D {
+	return material.Label(th, th.TextSize.Scale(1.4), item.name).Layout(gtx)
+}
+
+func (item *entityItem) ProcessEvents() model.Entity {
 	if item.Clicked() {
 		fmt.Println("click " + item.entity.GetID())
-		onSelect(item.entity)
+		return item.entity
 	}
+	return nil
+}
 
+func (item *entityItem) Layout(gtx C, th *material.Theme, selected model.Entity) D {
 	lb := material.Label(th, th.TextSize, item.entity.GetDescription())
 	return material.Clickable(gtx, &item.Clickable, func(gtx C) D {
 		if selected == item.entity {

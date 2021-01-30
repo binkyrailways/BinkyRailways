@@ -3,7 +3,7 @@ module github.com/binkyrailways/BinkyRailways
 go 1.14
 
 require (
-	gioui.org v0.0.0-20210124160655-f88a8216e9d7
+	gioui.org v0.0.0-20210127212131-b698c8ed8229
 	gioui.org/x v0.0.0-20210117142719-a307b4757e61
 	github.com/aarzilli/nucular v0.0.0-20210111134321-0632296919bc // indirect
 	github.com/ajstarks/giocanvas v0.0.0-20210116002733-c0ab486f8f0a

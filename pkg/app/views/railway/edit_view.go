@@ -18,6 +18,7 @@
 package railway
 
 import (
+	"fmt"
 	"log"
 
 	"gioui.org/layout"
@@ -53,6 +54,7 @@ var (
 
 // New constructs a new railway view
 func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayView) *editView {
+	fmt.Println("newEditView")
 	v := &editView{
 		vm:      vm,
 		railway: railway,

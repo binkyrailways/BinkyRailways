@@ -28,24 +28,42 @@ type EntityGroupList struct {
 	list     layout.List
 	OnSelect func(model.Entity)
 	Selected model.Entity
+	widgets  []entityGroupWidget
 }
 
+type entityGroupWidget interface {
+	// Process events, return an entity if it is clicked.
+	ProcessEvents() model.Entity
+	Layout(C, *material.Theme, model.Entity) D
+}
+
+// Layout processes events and redraws the list.
 func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
+	// Process events of widgets
+	var newSelection model.Entity
+	for _, w := range v.widgets {
+		if x := w.ProcessEvents(); x != nil {
+			if newSelection == nil {
+				newSelection = x
+			}
+		}
+	}
+	if newSelection != v.Selected && newSelection != nil {
+		v.Selected = newSelection
+		v.OnSelect(newSelection)
+	}
+
+	// Rebuild widgets
 	v.list.Axis = layout.Vertical
 	selection := v.Selected
 	var widgets []entityGroupWidget
 	for idx := range v.Groups {
 		widgets = append(widgets, v.Groups[idx].generateWidgets()...)
 	}
+	v.widgets = widgets
+	// Redraw widgets
 	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
-		return widgets[idx](gtx, th, selection, func(entity model.Entity) {
-			if v.Selected != entity {
-				v.Selected = entity
-				if v.OnSelect != nil {
-					v.OnSelect(entity)
-				}
-			}
-		})
+		return widgets[idx].Layout(gtx, th, selection)
 	})
 }

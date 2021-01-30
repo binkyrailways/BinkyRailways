@@ -18,10 +18,13 @@
 package canvas
 
 import (
+	"fmt"
 	"image"
 	"math"
 
 	"gioui.org/f32"
+	"gioui.org/gesture"
+	"gioui.org/io/pointer"
 	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/clip"
@@ -72,24 +75,65 @@ type WidgetState struct {
 	Hovered bool
 }
 
+// canvasWidget is a widget representation of the object on the canvas.
 type canvasWidget struct {
 	entity model.PositionedEntity
-	widget.Clickable
-	widget Widget
+	gesture.Drag
+	gesture.Click
+	widget        Widget
+	origEntityPos image.Point
+	startPt       f32.Point
+}
+
+// Clicked returns true if the widget has been clicked on and reset the clicked flag.
+func (cw *canvasWidget) Clicked() bool {
+	result := cw.Click.Pressed()
+	return result
 }
 
 // Layout draws the widget and process events.
-func (cw *canvasWidget) Layout(gtx layout.Context, th *material.Theme, size image.Point) {
+func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size image.Point, rad float32) {
+	// Process events
+	for range cw.Click.Events(gtx) {
+		// Nothing here
+	}
+	for _, evt := range cw.Drag.Events(gtx.Metric, gtx, gesture.Both) {
+		pt := f32.Affine2D{}.Rotate(f32.Point{}, -rad).Transform(evt.Position)
+		switch evt.Type {
+		case pointer.Press:
+			cw.origEntityPos = image.Point{X: cw.entity.GetX(), Y: cw.entity.GetY()}
+			cw.startPt = pt
+		case pointer.Drag:
+			delta := pt.Sub(cw.startPt)
+			newEntityPos := f32.Pt(float32(cw.origEntityPos.X), float32(cw.origEntityPos.Y)).Add(delta)
+			fmt.Println(pt, gtx.Constraints.Min, gtx.Constraints.Max, cw.origEntityPos, delta, newEntityPos)
+			cw.entity.SetX(int(newEntityPos.X))
+			cw.entity.SetY(int(newEntityPos.Y))
+		case pointer.Cancel:
+			cw.entity.SetX(cw.origEntityPos.X)
+			cw.entity.SetY(cw.origEntityPos.Y)
+		}
+	}
+
 	// First as clickable
-	lgtx := gtx
-	lgtx.Constraints.Min = size
-	lgtx.Constraints.Max = size
-	cw.Clickable.Layout(lgtx)
+	gtx.Constraints.Min = size
+	gtx.Constraints.Max = size
+	// Add clicking & hover detection
+	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
+	cw.Click.Add(gtx.Ops)
+	pointer.PassOp{Pass: true}.Add(gtx.Ops)
+	// Add dragging
+	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
+	cw.Drag.Add(gtx.Ops)
+	pointer.PassOp{Pass: true}.Add(gtx.Ops)
 	// Now layout actual widget
 	state := WidgetState{
-		Hovered: cw.Clickable.Hovered(),
+		Hovered: cw.Click.Hovered(),
 	}
-	cw.widget.Layout(lgtx, th, state)
+	clip.Rect{
+		Max: size,
+	}.Add(gtx.Ops)
+	cw.widget.Layout(gtx, th, state)
 }
 
 // SetScale adjusts the current scale
@@ -163,12 +207,14 @@ func (ec *EntityCanvas) Select(entity model.PositionedEntity) {
 
 // Layout generates the UI and processes events.
 func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	defer op.Save(gtx.Ops).Load()
+
 	// Process events
 	if ec.Clickable.Clicked() {
 		ec.Select(nil)
 	}
 	for _, w := range ec.widgets {
-		if w.Clickable.Clicked() {
+		if w.Clicked() {
 			ec.Select(w.entity)
 		}
 	}
@@ -198,22 +244,19 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 		bounds := w.widget.GetBounds()
 		// Translate, scale & rotate
 		rot := w.widget.GetRotation()
-		tr := f32.Affine2D{}
 		rad := float32(rot) * (math.Pi / 180)
-		tr = tr.Offset(bounds.Min)
-		tr = tr.Rotate(bounds.Min, rad)
-		tr = tr.Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
+		tr := f32.Affine2D{}.
+			Offset(bounds.Min).
+			Rotate(bounds.Min, rad).
+			Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
 		op.Affine(tr).Add(gtx.Ops)
 		// Set clip rectangle
 		size := image.Point{
 			X: int(bounds.Max.X - bounds.Min.X),
 			Y: int(bounds.Max.Y - bounds.Min.Y),
 		}
-		clip.Rect{
-			Max: size,
-		}.Add(gtx.Ops)
 		// Layout widget
-		w.Layout(gtx, th, size)
+		w.layout(gtx, th, size, rad)
 		// Retore previous state
 		state.Load()
 	}
