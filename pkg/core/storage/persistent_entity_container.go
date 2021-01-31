@@ -17,9 +17,12 @@
 
 package storage
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
+)
 
-type persistentEntityContainer struct {
+// PersistentEntityContainer defines the root structure.
+type PersistentEntityContainer struct {
 	Entity  impl.PersistentEntityContainer `xml:"Entity"`
 	Version string                         `xml:"Version,attr"`
 }

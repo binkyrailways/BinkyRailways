@@ -75,7 +75,6 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 
 // MarshalXML marshals any persistent entity.
 func (pec PersistentEntityContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-
 	// Add Type attribute
 	tEntity, ok := pec.PersistentEntity.(TypedEntity)
 	if !ok {

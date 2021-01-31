@@ -44,7 +44,8 @@ type packageImpl struct {
 var _ model.Package = &packageImpl{}
 
 const (
-	railwayID = "_default"
+	railwayID             = "_default"
+	currentPackageVersion = "2.0.0"
 )
 
 // IValidationSubject
@@ -381,7 +382,7 @@ func (p *packageImpl) ReadEntity(folder, id string, template ...model.Persistent
 	decoder := xml.NewDecoder(nr)
 	decoder.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) { return input, nil }
 
-	container := persistentEntityContainer{}
+	container := PersistentEntityContainer{}
 	if len(template) == 1 {
 		container.Entity.PersistentEntity = template[0]
 	}
@@ -405,10 +406,11 @@ func (p *packageImpl) updateEntityParts() error {
 		encoder := xml.NewEncoder(&buf)
 
 		// Prepare container
-		container := persistentEntityContainer{
+		container := PersistentEntityContainer{
 			Entity: impl.PersistentEntityContainer{
 				PersistentEntity: entity,
 			},
+			Version: currentPackageVersion,
 		}
 
 		// Encode container

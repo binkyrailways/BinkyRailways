@@ -399,4 +399,5 @@ func TestLoadSaveLoad(t *testing.T) {
 	t.Run("p2", func(t *testing.T) {
 		tzlTests(t, p2)
 	})
+	t.Logf("tmpPath: %s", tmpPath.Name())
 }
