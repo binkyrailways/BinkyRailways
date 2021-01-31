@@ -38,6 +38,11 @@ func NewP50xCommandStation() P50xCommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *p50xCommandStation) GetEntityType() string {
+	return TypeP50xCommandStation
+}
+
 // Accept a visit by the given visitor
 func (cs *p50xCommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitP50xCommandStation(cs)

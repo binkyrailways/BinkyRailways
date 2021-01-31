@@ -39,6 +39,11 @@ func newLocGroupEqualsPredicate() *locGroupEqualsPredicate {
 	return p
 }
 
+// GetEntityType returns the type of this entity
+func (p *locGroupEqualsPredicate) GetEntityType() string {
+	return TypeLocGroupEqualsPredicate
+}
+
 // Accept a visit by the given visitor
 func (p *locGroupEqualsPredicate) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocGroupEqualsPredicate(p)

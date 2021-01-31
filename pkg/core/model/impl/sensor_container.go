@@ -39,7 +39,7 @@ func (sc *SensorContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	// Create correct entity based on type
 	var item Sensor
 	switch a.Value {
-	case "BinarySensor":
+	case TypeBinarySensor:
 		item = newBinarySensor()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -58,6 +58,17 @@ func (sc *SensorContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 
 // MarshalXML marshals any persistent entity.
 func (sc SensorContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(sc.Sensor, start)
+	// Add Type attribute
+	tEntity, ok := sc.Sensor.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(sc.Sensor, start); err != nil {
+		return err
+	}
+
+	return nil
 }

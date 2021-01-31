@@ -39,9 +39,9 @@ func (jc *OutputContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	// Create correct entity based on type
 	var output Output
 	switch a.Value {
-	case "BinaryOutput":
+	case TypeBinaryOutput:
 		output = newBinaryOutput()
-	case "Clock4StageOutput":
+	case TypeClock4StageOutput:
 		output = newClock4StageOutput()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -60,6 +60,17 @@ func (jc *OutputContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 
 // MarshalXML marshals any persistent entity.
 func (jc OutputContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(jc.Output, start)
+	// Add Type attribute
+	tEntity, ok := jc.Output.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(jc.Output, start); err != nil {
+		return err
+	}
+
+	return nil
 }

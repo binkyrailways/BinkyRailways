@@ -38,6 +38,11 @@ func NewDccOverRs232CommandStation() DccOverRs232CommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *dccOverRs232CommandStation) GetEntityType() string {
+	return TypeDccOverRs232CommandStation
+}
+
 // Accept a visit by the given visitor
 func (cs *dccOverRs232CommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitDccOverRs232CommandStation(cs)

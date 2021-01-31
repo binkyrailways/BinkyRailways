@@ -39,6 +39,11 @@ func newLocEqualsPredicate() *locEqualsPredicate {
 	return p
 }
 
+// GetEntityType returns the type of this entity
+func (p *locEqualsPredicate) GetEntityType() string {
+	return TypeLocEqualsPredicate
+}
+
 // Accept a visit by the given visitor
 func (p *locEqualsPredicate) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocEqualsPredicate(p)

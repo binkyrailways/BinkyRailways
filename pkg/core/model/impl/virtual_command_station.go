@@ -40,6 +40,11 @@ func NewVirtualCommandStation() VirtualCommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *virtualCommandStation) GetEntityType() string {
+	panic("Not implemented")
+}
+
 // Accept a visit by the given visitor
 func (cs *virtualCommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitVirtualCommandStation(cs)

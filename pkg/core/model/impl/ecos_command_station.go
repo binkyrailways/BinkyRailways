@@ -43,6 +43,11 @@ func NewEcosCommandStation() EcosCommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *ecosCommandStation) GetEntityType() string {
+	return TypeEcosCommandStation
+}
+
 // Accept a visit by the given visitor
 func (cs *ecosCommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitEcosCommandStation(cs)

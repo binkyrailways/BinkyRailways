@@ -35,3 +35,21 @@ func FindAttr(list []xml.Attr, name, namespace string) (xml.Attr, bool) {
 	}
 	return xml.Attr{}, false
 }
+
+// UpdateOrAddAttr returns the first a modified attribute list.
+// The new list contains an attribute with given name and value.
+func UpdateOrAddAttr(list []xml.Attr, name, namespace, value string) []xml.Attr {
+	for idx, x := range list {
+		if x.Name.Local == name && x.Name.Space == namespace {
+			list[idx].Value = value
+			return list
+		}
+	}
+	return append(list, xml.Attr{
+		Name: xml.Name{
+			Space: namespace,
+			Local: name,
+		},
+		Value: value,
+	})
+}

@@ -47,6 +47,11 @@ func newClock4StageOutput() *clock4StageOutput {
 	return cso
 }
 
+// GetEntityType returns the type of this entity
+func (bo *clock4StageOutput) GetEntityType() string {
+	return TypeClock4StageOutput
+}
+
 // Accept a visit by the given visitor
 func (cso *clock4StageOutput) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitClock4StageOutput(cso)

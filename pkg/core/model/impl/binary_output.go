@@ -41,6 +41,11 @@ func newBinaryOutput() *binaryOutput {
 	return sw
 }
 
+// GetEntityType returns the type of this entity
+func (bo *binaryOutput) GetEntityType() string {
+	return TypeBinaryOutput
+}
+
 // Accept a visit by the given visitor
 func (bo *binaryOutput) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitBinaryOutput(bo)

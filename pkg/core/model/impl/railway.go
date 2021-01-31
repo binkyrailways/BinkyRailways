@@ -64,6 +64,11 @@ func NewRailway(p model.Package) Railway {
 	return r
 }
 
+// GetEntityType returns the type of this entity
+func (r *railway) GetEntityType() string {
+	return TypeRailway
+}
+
 // Accept a visit by the given visitor
 func (r *railway) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitRailway(r)

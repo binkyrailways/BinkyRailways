@@ -48,6 +48,11 @@ func newSwitch() *stdSwitch {
 	return sw
 }
 
+// GetEntityType returns the type of this entity
+func (sw *stdSwitch) GetEntityType() string {
+	return TypeSwitch
+}
+
 // Accept a visit by the given visitor
 func (sw *stdSwitch) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitSwitch(sw)

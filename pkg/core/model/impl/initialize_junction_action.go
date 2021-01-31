@@ -41,6 +41,11 @@ func newInitializeJunctionAction() *initializeJunctionAction {
 	return a
 }
 
+// GetEntityType returns the type of this entity
+func (a *initializeJunctionAction) GetEntityType() string {
+	return TypeInitializeJunctionAction
+}
+
 // Accept a visit by the given visitor
 func (a *initializeJunctionAction) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitInitializeJunctionAction(a)

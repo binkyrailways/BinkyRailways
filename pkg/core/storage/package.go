@@ -36,12 +36,16 @@ type packageImpl struct {
 	railway model.Railway
 
 	onError        impl.EventHandler
-	parts          map[string][]byte
-	loadedEntities map[string]model.PersistentEntity
+	parts          map[string][]byte                 // uri -> data
+	loadedEntities map[string]model.PersistentEntity // uri -> entity
 	dirty          bool
 }
 
 var _ model.Package = &packageImpl{}
+
+const (
+	railwayID = "_default"
+)
 
 // IValidationSubject
 
@@ -91,14 +95,18 @@ func NewPackageFromFile(path string) (model.Package, error) {
 			sharedURI := createSharedObjectPartURI(hexID)
 			if sharedData, found := p.parts[sharedURI]; found {
 				p.parts[uri] = sharedData
-			} else {
-				fmt.Printf("%s %s\n", uri, sharedURI)
 			}
+		}
+	}
+	// Remove shared objects from memory
+	for uri := range p.parts {
+		if isSharedObject(uri) {
+			delete(p.parts, uri)
 		}
 	}
 
 	// Read railway
-	entry, err := p.ReadEntity(impl.PackageFolderRailway, "_default", impl.NewRailway(p))
+	entry, err := p.ReadEntity(impl.PackageFolderRailway, railwayID, impl.NewRailway(p))
 	if err != nil {
 		return nil, err
 	}
@@ -198,7 +206,6 @@ func (p *packageImpl) AddNewLoc() (model.Loc, error) {
 	uri := createPartURI(impl.PackageFolderLoc, result.GetID())
 	p.loadedEntities[uri] = result
 	p.dirty = true
-	// TODO add to parts
 	return result, nil
 }
 
@@ -272,7 +279,17 @@ func (p *packageImpl) ForEachModule(cb func(model.Module)) {
 }
 
 // Gets the ID's of all generic parts that belong to the given entity.
-//IEnumerable<string> GetGenericPartIDs(IPersistentEntity entity);
+func (p *packageImpl) GetGenericPartIDs(entity model.PersistentEntity) []string {
+	uriPrefix := createPartURI(impl.PackageFolderGenericParts, entity.GetID()) + "/"
+	var result []string
+	for uri := range p.parts {
+		if strings.HasPrefix(uri, uriPrefix) {
+			id := uri[len(uriPrefix):]
+			result = append(result, id)
+		}
+	}
+	return result
+}
 
 // Load a generic file part that belongs to the given entity by it's id.
 // Returns: nil if not found
@@ -286,14 +303,56 @@ func (p *packageImpl) GetGenericPart(entity model.PersistentEntity, id string) (
 }
 
 // Store a generic file part that belongs to the given entity by it's id.
-//void SetGenericPart(IPersistentEntity entity, string id, Stream source);
+func (p *packageImpl) SetGenericPart(entity model.PersistentEntity, id string, data []byte) error {
+	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
+	p.parts[uri] = data
+	p.dirty = true
+	return nil
+}
 
 // Remove a generic file part that belongs to the given entity by it's id.
-//void RemoveGenericPart(IPersistentEntity entity, string id);
+func (p *packageImpl) RemoveGenericPart(entity model.PersistentEntity, id string) error {
+	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
+	if _, found := p.parts[uri]; found {
+		delete(p.parts, uri)
+		p.dirty = true
+	}
+	return nil
+}
 
 // Save to disk.
 func (p *packageImpl) Save(path string) error {
-	return fmt.Errorf("Not implemented")
+	// Update all parts
+	if err := p.updateEntityParts(); err != nil {
+		return err
+	}
+
+	// Create archive
+	buf := bytes.Buffer{}
+	zf := zip.NewWriter(&buf)
+
+	// Add all parts
+	for uri, data := range p.parts {
+		w, err := zf.Create(uri)
+		if err != nil {
+			return err
+		}
+		if _, err := io.Copy(w, bytes.NewReader(data)); err != nil {
+			return err
+		}
+	}
+
+	// Close archive
+	if err := zf.Close(); err != nil {
+		return err
+	}
+
+	// Write to disk
+	if err := ioutil.WriteFile(path, buf.Bytes(), 0644); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Has this package been changed since the last save?
@@ -301,10 +360,8 @@ func (p *packageImpl) GetIsDirty() bool {
 	return p.dirty
 }
 
-/// <summary>
-/// Read an entity in a given folder.
-/// </summary>
-/// <returns>Null if not found</returns>
+// Read an entity in a given folder.
+// Returns: nil if not found
 func (p *packageImpl) ReadEntity(folder, id string, template ...model.PersistentEntity) (model.PersistentEntity, error) {
 	uri := createPartURI(folder, id)
 	// Already loaded?
@@ -338,6 +395,35 @@ func (p *packageImpl) ReadEntity(folder, id string, template ...model.Persistent
 	p.loadedEntities[uri] = result
 	result.Upgrade()
 	return result, nil
+}
+
+// updateEntityParts marshals all loaded entities and updates their parts.
+func (p *packageImpl) updateEntityParts() error {
+	for uri, entity := range p.loadedEntities {
+		// Prepare encoder
+		buf := bytes.Buffer{}
+		encoder := xml.NewEncoder(&buf)
+
+		// Prepare container
+		container := persistentEntityContainer{
+			Entity: impl.PersistentEntityContainer{
+				PersistentEntity: entity,
+			},
+		}
+
+		// Encode container
+		if err := encoder.Encode(container); err != nil {
+			return err
+		}
+
+		// Update part
+		if entity == p.railway {
+			uri = createPartURI(impl.PackageFolderRailway, railwayID)
+		}
+		p.parts[uri] = buf.Bytes()
+		fmt.Println(uri)
+	}
+	return nil
 }
 
 // createPartURI creates an uri for a part with given id in given folder.

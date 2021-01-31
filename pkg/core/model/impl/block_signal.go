@@ -52,6 +52,11 @@ func newBlockSignal() *blockSignal {
 	return bs
 }
 
+// GetEntityType returns the type of this entity
+func (bs *blockSignal) GetEntityType() string {
+	return TypeBlockSignal
+}
+
 // Accept a visit by the given visitor
 func (bs *blockSignal) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitBlockSignal(bs)

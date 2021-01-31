@@ -42,6 +42,11 @@ func newLocFunctionAction() *locFunctionAction {
 	return a
 }
 
+// GetEntityType returns the type of this entity
+func (a *locFunctionAction) GetEntityType() string {
+	return TypeLocFunctionAction
+}
+
 // Accept a visit by the given visitor
 func (a *locFunctionAction) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocFunctionAction(a)

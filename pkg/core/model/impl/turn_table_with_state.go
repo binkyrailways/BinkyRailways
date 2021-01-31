@@ -41,6 +41,11 @@ func newTurnTableWithState() *turnTableWithState {
 	return ssw
 }
 
+// GetEntityType returns the type of this entity
+func (j *turnTableWithState) GetEntityType() string {
+	return TypeTurnTableWithState
+}
+
 // Accept a visit by the given visitor
 func (j *turnTableWithState) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitTurnTableWithState(j)

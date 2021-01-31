@@ -39,11 +39,11 @@ func (jc *JunctionWithStateContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 	// Create correct entity based on type
 	var jws JunctionWithState
 	switch a.Value {
-	case "SwitchWithState":
+	case TypeSwitchWithState:
 		jws = newSwitchWithState()
-	case "PassiveJunctionWithState":
+	case TypePassiveJunctionWithState:
 		jws = newPassiveJunctionWithState()
-	case "TurnTableWithState":
+	case TypeTurnTableWithState:
 		jws = newTurnTableWithState()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -62,6 +62,17 @@ func (jc *JunctionWithStateContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 
 // MarshalXML marshals any persistent entity.
 func (jc JunctionWithStateContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(jc.JunctionWithState, start)
+	// Add Type attribute
+	tEntity, ok := jc.JunctionWithState.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(jc.JunctionWithState, start); err != nil {
+		return err
+	}
+
+	return nil
 }

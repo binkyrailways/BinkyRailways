@@ -45,6 +45,11 @@ func NewMqttCommandStation() MqttCommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *mqttCommandStation) GetEntityType() string {
+	return TypeMqttCommandStation
+}
+
 // Accept a visit by the given visitor
 func (cs *mqttCommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitMqttCommandStation(cs)

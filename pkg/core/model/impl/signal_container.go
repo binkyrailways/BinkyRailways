@@ -39,7 +39,7 @@ func (jc *SignalContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	// Create correct entity based on type
 	var item Signal
 	switch a.Value {
-	case "BlockSignal":
+	case TypeBlockSignal:
 		item = newBlockSignal()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -58,6 +58,17 @@ func (jc *SignalContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 
 // MarshalXML marshals any persistent entity.
 func (jc SignalContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(jc.Signal, start)
+	// Add Type attribute
+	tEntity, ok := jc.Signal.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(jc.Signal, start); err != nil {
+		return err
+	}
+
+	return nil
 }

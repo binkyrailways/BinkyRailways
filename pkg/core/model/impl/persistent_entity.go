@@ -27,6 +27,7 @@ import (
 // with storage methods.
 type PersistentEntity interface {
 	model.PersistentEntity
+	TypedEntity
 
 	GetPackage() model.Package
 	SetPackage(model.Package)

@@ -25,6 +25,7 @@ import (
 type Signal interface {
 	ModuleEntity
 	model.Signal
+	TypedEntity
 }
 
 type signal struct {

@@ -41,22 +41,22 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 	// Create correct entity based on type
 	var entity model.PersistentEntity
 	switch a.Value {
-	case "Loc":
+	case TypeLoc:
 		entity = NewLoc()
-	case "Module":
+	case TypeModule:
 		entity = NewModule()
-	case "Railway":
+	case TypeRailway:
 		// Railway must have been initialized before
 		entity = pec.PersistentEntity
-	case "LocoBufferCommandStation":
+	case TypeLocoBufferCommandStation:
 		entity = NewLocoBufferCommandStation()
-	case "DccOverRs232CommandStation":
+	case TypeDccOverRs232CommandStation:
 		entity = NewDccOverRs232CommandStation()
-	case "EcosCommandStation":
+	case TypeEcosCommandStation:
 		entity = NewEcosCommandStation()
-	case "MqttCommandStation":
+	case TypeMqttCommandStation:
 		entity = NewMqttCommandStation()
-	case "P50xCommandStation":
+	case TypeP50xCommandStation:
 		entity = NewP50xCommandStation()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -75,6 +75,18 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 
 // MarshalXML marshals any persistent entity.
 func (pec PersistentEntityContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(pec.PersistentEntity, start)
+
+	// Add Type attribute
+	tEntity, ok := pec.PersistentEntity.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(pec.PersistentEntity, start); err != nil {
+		return err
+	}
+
+	return nil
 }

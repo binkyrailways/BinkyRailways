@@ -63,6 +63,11 @@ func NewLoc() Loc {
 	return l
 }
 
+// GetEntityType returns the type of this entity
+func (l *loc) GetEntityType() string {
+	return TypeLoc
+}
+
 // Accept a visit by the given visitor
 func (l *loc) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLoc(l)

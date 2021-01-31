@@ -38,6 +38,11 @@ func newPassiveJunctionWithState() *passiveJunctionWithState {
 	return ssw
 }
 
+// GetEntityType returns the type of this entity
+func (j *passiveJunctionWithState) GetEntityType() string {
+	return TypePassiveJunctionWithState
+}
+
 // Accept a visit by the given visitor
 func (j *passiveJunctionWithState) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitPassiveJunctionWithState(j)

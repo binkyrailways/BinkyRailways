@@ -73,17 +73,17 @@ type Package interface {
 	ForEachModule(func(Module))
 
 	// Gets the ID's of all generic parts that belong to the given entity.
-	//IEnumerable<string> GetGenericPartIDs(IPersistentEntity entity);
+	GetGenericPartIDs(entity PersistentEntity) []string
 
 	// Load a generic file part that belongs to the given entity by it's id.
 	// Returns: nil if not found
 	GetGenericPart(entity PersistentEntity, id string) ([]byte, error)
 
 	// Store a generic file part that belongs to the given entity by it's id.
-	//void SetGenericPart(IPersistentEntity entity, string id, Stream source);
+	SetGenericPart(entity PersistentEntity, id string, data []byte) error
 
 	// Remove a generic file part that belongs to the given entity by it's id.
-	//void RemoveGenericPart(IPersistentEntity entity, string id);
+	RemoveGenericPart(entity PersistentEntity, id string) error
 
 	// Save to disk.
 	Save(path string) error

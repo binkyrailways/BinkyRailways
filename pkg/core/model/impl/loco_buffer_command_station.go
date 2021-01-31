@@ -38,6 +38,11 @@ func NewLocoBufferCommandStation() LocoBufferCommandStation {
 	return cs
 }
 
+// GetEntityType returns the type of this entity
+func (cs *locoBufferCommandStation) GetEntityType() string {
+	return TypeLocoBufferCommandStation
+}
+
 // Accept a visit by the given visitor
 func (cs *locoBufferCommandStation) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocoBufferCommandStation(cs)

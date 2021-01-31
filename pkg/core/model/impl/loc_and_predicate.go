@@ -38,6 +38,11 @@ func newLocAndPredicate() *locAndPredicate {
 	return p
 }
 
+// GetEntityType returns the type of this entity
+func (p *locAndPredicate) GetEntityType() string {
+	return TypeLocAndPredicate
+}
+
 // Accept a visit by the given visitor
 func (p *locAndPredicate) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocAndPredicate(p)

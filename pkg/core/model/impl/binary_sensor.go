@@ -33,6 +33,11 @@ func newBinarySensor() *binarySensor {
 	return sw
 }
 
+// GetEntityType returns the type of this entity
+func (bs *binarySensor) GetEntityType() string {
+	return TypeBinarySensor
+}
+
 // Accept a visit by the given visitor
 func (bs *binarySensor) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitBinarySensor(bs)

@@ -37,6 +37,11 @@ func newLocCanChangeDirectionPredicate() *locCanChangeDirectionPredicate {
 	return p
 }
 
+// GetEntityType returns the type of this entity
+func (p *locCanChangeDirectionPredicate) GetEntityType() string {
+	return TypeLocCanChangeDirectionPredicate
+}
+
 // Accept a visit by the given visitor
 func (p *locCanChangeDirectionPredicate) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLocCanChangeDirectionPredicate(p)

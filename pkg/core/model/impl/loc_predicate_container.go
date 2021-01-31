@@ -39,17 +39,17 @@ func (jc *LocPredicateContainer) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 	// Create correct entity based on type
 	var predicate LocPredicate
 	switch a.Value {
-	case "LocAndPredicate":
+	case TypeLocAndPredicate:
 		predicate = newLocAndPredicate()
-	case "LocOrPredicate":
+	case TypeLocOrPredicate:
 		predicate = newLocOrPredicate()
-	case "LocCanChangeDirectionPredicate":
+	case TypeLocCanChangeDirectionPredicate:
 		predicate = newLocCanChangeDirectionPredicate()
-	case "LocEqualsPredicate":
+	case TypeLocEqualsPredicate:
 		predicate = newLocEqualsPredicate()
-	case "LocGroupEqualsPredicate":
+	case TypeLocGroupEqualsPredicate:
 		predicate = newLocGroupEqualsPredicate()
-	case "LocStandardPredicate":
+	case TypeLocStandardPredicate:
 		predicate = newLocStandardPredicate()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
@@ -68,6 +68,17 @@ func (jc *LocPredicateContainer) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 
 // MarshalXML marshals any persistent entity.
 func (jc LocPredicateContainer) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// TODO set Type attribute
-	return e.EncodeElement(jc.LocPredicate, start)
+	// Add Type attribute
+	tEntity, ok := jc.LocPredicate.(TypedEntity)
+	if !ok {
+		return fmt.Errorf("Entity does not implement TypedEntity")
+	}
+	start.Attr = UpdateOrAddAttr(start.Attr, "type", nsSchemaInstance, tEntity.GetEntityType())
+
+	// Normal encoding
+	if err := e.EncodeElement(jc.LocPredicate, start); err != nil {
+		return err
+	}
+
+	return nil
 }

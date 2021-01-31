@@ -41,6 +41,11 @@ func newSwitchWithState() *switchWithState {
 	return ssw
 }
 
+// GetEntityType returns the type of this entity
+func (j *switchWithState) GetEntityType() string {
+	return TypeSwitchWithState
+}
+
 // Accept a visit by the given visitor
 func (j *switchWithState) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitSwitchWithState(j)

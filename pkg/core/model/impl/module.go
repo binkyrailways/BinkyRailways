@@ -69,6 +69,11 @@ func NewModule() Module {
 	return m
 }
 
+// GetEntityType returns the type of this entity
+func (m *module) GetEntityType() string {
+	return TypeModule
+}
+
 // Accept a visit by the given visitor
 func (m *module) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitModule(m)
