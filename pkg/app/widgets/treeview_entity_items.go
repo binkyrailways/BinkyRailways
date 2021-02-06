@@ -19,6 +19,7 @@ package widgets
 
 import (
 	"fmt"
+	"strings"
 
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
@@ -57,6 +58,11 @@ type entityItem struct {
 	w.Clickable
 }
 
+// Return a key used to sort the items
+func (item *entityItem) SortKey() string {
+	return strings.ToLower(item.entity.GetDescription())
+}
+
 func (item *entityItem) ProcessEvents() interface{} {
 	if item.Clicked() {
 		return item.entity
@@ -79,6 +85,6 @@ func (item *entityItem) Layout(gtx C, th *material.Theme, selected interface{}) 
 }
 
 // Generate sub-widgets
-func (item entityItem) GenerateWidgets(level int) []TreeViewItem {
+func (item entityItem) GenerateWidgets(level int) TreeViewItems {
 	return nil
 }

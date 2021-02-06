@@ -73,6 +73,11 @@ func (v *TreeViewGroup) SetCollapsed(value bool) {
 	v.collapsed = value
 }
 
+// SortKey returns a key used to sort the items
+func (v *TreeViewGroup) SortKey() string {
+	return v.Name
+}
+
 // ProcessEvents processes events of this item, return an entity if it is clicked.
 func (v *TreeViewGroup) ProcessEvents() interface{} {
 	if v.clickable.Clicked() {
@@ -99,7 +104,7 @@ func (v *TreeViewGroup) Layout(gtx C, th *material.Theme, selection interface{})
 }
 
 // GenerateWidgets generates all widgets for this group
-func (v *TreeViewGroup) GenerateWidgets(level int) []TreeViewItem {
+func (v *TreeViewGroup) GenerateWidgets(level int) TreeViewItems {
 	if v.collapsed {
 		return nil
 	}
@@ -107,6 +112,7 @@ func (v *TreeViewGroup) GenerateWidgets(level int) []TreeViewItem {
 	for idx := 0; idx < len(result); idx = idx + 1 {
 		if subItems := result[idx].GenerateWidgets(level + 1); len(subItems) > 0 {
 			// Insert items
+			subItems.Sort()
 			prefix := result[:idx+1]
 			remaining := result[idx+1:]
 			result = append(append(prefix, subItems...), remaining...)

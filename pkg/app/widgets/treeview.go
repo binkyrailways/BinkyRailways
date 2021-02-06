@@ -18,6 +18,8 @@
 package widgets
 
 import (
+	"sort"
+
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget/material"
@@ -34,12 +36,25 @@ type TreeView struct {
 
 // TreeViewItem must be implemented by items that are part of a TreeView.
 type TreeViewItem interface {
+	// Return a key used to sort the items
+	SortKey() string
 	// Process events, return an entity if it is clicked.
 	ProcessEvents() interface{}
 	// Layout the widget
 	Layout(gtx C, th *material.Theme, selection interface{}) D
 	// Generate sub-widgets
-	GenerateWidgets(level int) []TreeViewItem
+	GenerateWidgets(level int) TreeViewItems
+}
+
+// TreeViewItems is a list of TreeViewItem's
+type TreeViewItems []TreeViewItem
+
+// Sort by SortKey
+func (l TreeViewItems) Sort() {
+	sort.SliceStable(l, func(i, j int) bool {
+		ii, ij := l[i], l[j]
+		return ii.SortKey() < ij.SortKey()
+	})
 }
 
 // Layout processes events and redraws the list.
