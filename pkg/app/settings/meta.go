@@ -31,12 +31,12 @@ type metaSettings struct {
 }
 
 // Initialize the UI from the given entity
-func (e *metaSettings) Initialize(source model.PositionedEntity) {
+func (e *metaSettings) Initialize(source model.Entity) {
 	e.description.SetText(source.GetDescription())
 }
 
 // Update the values in the given entity from the UI.
-func (e *metaSettings) Update(entity model.PositionedEntity) {
+func (e *metaSettings) Update(entity model.Entity) {
 	entity.SetDescription(e.description.Text())
 }
 

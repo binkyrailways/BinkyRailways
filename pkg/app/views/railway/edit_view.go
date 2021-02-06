@@ -115,21 +115,36 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 			},
 		},
 	}
-	v.entityList.OnSelect = func(selection interface{}) {
-		switch selection := selection.(type) {
-		case model.Loc:
-			v.editor = editors.NewLocEditor(selection, v.vm)
-		case model.Module:
-			v.editor = editors.NewModuleEditor(selection, v.vm)
-		case model.Railway:
-			v.editor = editors.NewRailwayEditor(selection, v.vm)
-		default:
-			v.editor = nil
-		}
-		vm.Invalidate()
-	}
+	v.entityList.OnSelect = v.onSelect
 	v.appBar = component.NewAppBar(v.modal)
 	return v
+}
+
+// onSelect ensures that the given object is selected in the view
+func (v *editView) onSelect(selection interface{}) {
+	switch selection := selection.(type) {
+	case model.Loc:
+		v.editor = editors.NewLocEditor(selection, v.vm)
+	case model.Module:
+		v.editor = editors.NewModuleEditor(selection, v.vm)
+	case model.Railway:
+		v.editor = editors.NewRailwayEditor(selection, v.vm)
+	case model.ModuleEntity:
+		// Re-use existing module editor (if possible)
+		module := selection.GetModule()
+		if modEditor, ok := v.editor.(editors.ModuleEditor); ok && modEditor.Module() == module {
+			// Re-use module editor
+			modEditor.OnSelect(selection)
+		} else {
+			// Build new module editor
+			modEditor := editors.NewModuleEditor(module, v.vm)
+			modEditor.OnSelect(selection)
+			v.editor = modEditor
+		}
+	default:
+		v.editor = nil
+	}
+	v.vm.Invalidate()
 }
 
 // Handle events and draw the view

@@ -24,34 +24,30 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// NewBlockSettings constructs a settings component for a Block.
-func NewBlockSettings(entity model.Block) Settings {
-	s := &blockSettings{
+// NewRouteSettings constructs a settings component for a Route.
+func NewRouteSettings(entity model.Route) Settings {
+	s := &routeSettings{
 		entity: entity,
 	}
 	s.metaSettings.Initialize(entity)
-	s.positionSettings.Initialize(entity)
 	return s
 }
 
-// blockSettings implements an settings grid for a Block.
-type blockSettings struct {
-	entity model.Block
+// routeSettings implements an settings grid for a Route.
+type routeSettings struct {
+	entity model.Route
 
 	metaSettings
-	positionSettings
 }
 
 // Handle events and draw the editor
-func (e *blockSettings) Layout(gtx C, th *material.Theme) D {
+func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
-	e.positionSettings.Update(e.entity)
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		append(
 			e.metaSettings.Rows(th),
-			e.positionSettings.Rows(th)...,
 		)...,
 	)
 

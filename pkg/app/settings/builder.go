@@ -46,3 +46,7 @@ func (v *builder) VisitModule(x model.Module) interface{} {
 func (v *builder) VisitRailway(x model.Railway) interface{} {
 	return NewRailwaySettings(x)
 }
+
+func (v *builder) VisitRoute(x model.Route) interface{} {
+	return NewRouteSettings(x)
+}

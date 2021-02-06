@@ -29,8 +29,18 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
+// ModuleEditor extends the basic Editor interface
+type ModuleEditor interface {
+	Editor
+
+	// Module returns the module we're editing
+	Module() model.Module
+	// OnSelect is called when the currently selected entity has changed.
+	OnSelect(entity model.ModuleEntity)
+}
+
 // NewModuleEditor constructs an editor for a Module.
-func NewModuleEditor(module model.Module, etx EditorContext) Editor {
+func NewModuleEditor(module model.Module, etx EditorContext) ModuleEditor {
 	editor := &moduleEditor{
 		module: module,
 		etx:    etx,
@@ -40,7 +50,14 @@ func NewModuleEditor(module model.Module, etx EditorContext) Editor {
 			Axis:  layout.Horizontal,
 		},
 	}
-	editor.canvas.OnSelect = editor.onSelect
+	editor.canvas.OnSelect = func(selection model.PositionedEntity) {
+		switch selection := selection.(type) {
+		case model.ModuleEntity:
+			editor.OnSelect(selection)
+		default:
+			editor.OnSelect(nil)
+		}
+	}
 	editor.settings = settings.NewModuleSettings(module)
 
 	return editor
@@ -56,8 +73,13 @@ type moduleEditor struct {
 	scaleSlider *widget.Float
 }
 
-// onSelect is called when the currently selected entity has changed.
-func (e *moduleEditor) onSelect(entity model.PositionedEntity) {
+// Module returns the module we're editing
+func (e *moduleEditor) Module() model.Module {
+	return e.module
+}
+
+// OnSelect is called when the currently selected entity has changed.
+func (e *moduleEditor) OnSelect(entity model.ModuleEntity) {
 	if entity != nil {
 		if x, ok := entity.Accept(settings.NewBuilder()).(settings.Settings); ok {
 			e.settings = x
