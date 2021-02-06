@@ -47,7 +47,8 @@ type EditorContext interface {
 
 // AddButton is used to generate a button for adding an entity
 type AddButton struct {
-	Title   string
-	OnClick func()
+	Title     string
+	Separator bool
+	OnClick   func()
 	widget.Clickable
 }

@@ -59,6 +59,7 @@ var _ model.Route = &route{}
 func newRoute() *route {
 	r := &route{}
 	r.routeFields.SetRoute(r)
+	r.SetDescription("New route")
 	return r
 }
 

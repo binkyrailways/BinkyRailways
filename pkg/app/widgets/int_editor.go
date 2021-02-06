@@ -30,6 +30,7 @@ type IntEditor struct {
 
 // SetValue updates the editor to the current value
 func (e *IntEditor) SetValue(value int) {
+	e.SingleLine = true
 	e.SetText(strconv.Itoa(value))
 }
 

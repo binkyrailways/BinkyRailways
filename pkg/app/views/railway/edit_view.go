@@ -130,7 +130,7 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 
 // Select the given entity in the view
 func (v *editView) Select(entity model.Entity) {
-	v.onSelect(entity)
+	v.entityList.OnSelect(entity)
 }
 
 // Invalidate the UI
@@ -247,6 +247,11 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 func (v *editView) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
 	return v.addSheetList.Layout(gtx, len(v.addSheetButtons), func(gtx C, index int) D {
 		btn := &v.addSheetButtons[index]
+		if btn.Separator {
+			return layout.Spacer{
+				Height: unit.Dp(20),
+			}.Layout(gtx)
+		}
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		return layout.UniformInset(unit.Dp(6)).Layout(gtx, material.Button(th, &btn.Clickable, btn.Title).Layout)
 	})

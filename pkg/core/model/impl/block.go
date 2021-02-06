@@ -49,6 +49,7 @@ func newBlock() *block {
 	b := &block{}
 	b.positionedModuleEntity.Initialize(32, 16)
 	b.WaitPermissions.SetContainer(b)
+	b.SetDescription("New block")
 	return b
 }
 

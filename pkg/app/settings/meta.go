@@ -32,6 +32,7 @@ type metaSettings struct {
 
 // Initialize the UI from the given entity
 func (e *metaSettings) Initialize(source model.Entity) {
+	e.description.SingleLine = true
 	e.description.SetText(source.GetDescription())
 }
 
