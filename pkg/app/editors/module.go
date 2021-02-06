@@ -112,6 +112,7 @@ func (e *moduleEditor) Layout(gtx C, th *material.Theme) D {
 		func(gtx C) D { return e.settings.Layout(gtx, th) },
 	)
 	hs.Start.Weight = 6
+	hs.End.Rigid = true
 	hs.End.Weight = 1
 
 	return hs.Layout(gtx)

@@ -188,7 +188,7 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 	}
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
 	hs := widgets.HorizontalSplit(func(gtx C) D { return v.entityList.Layout(gtx, th) }, content)
-	hs.End.Weight = 3
+	hs.End.Weight = 6
 	vs := widgets.VerticalSplit(bar, hs.Layout)
 	vs.Start.Rigid = true
 	vs.Layout(gtx)

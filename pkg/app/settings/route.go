@@ -30,6 +30,8 @@ func NewRouteSettings(entity model.Route) Settings {
 		entity: entity,
 	}
 	s.metaSettings.Initialize(entity)
+	s.fromBlockSideEditor.SetValue(entity.GetFromBlockSide())
+	s.toBlockSideEditor.SetValue(entity.GetToBlockSide())
 	return s
 }
 
@@ -38,16 +40,36 @@ type routeSettings struct {
 	entity model.Route
 
 	metaSettings
+	fromBlockSideEditor widgets.BlockSideEditor
+	toBlockSideEditor   widgets.BlockSideEditor
 }
 
 // Handle events and draw the editor
 func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
+	if x, err := e.fromBlockSideEditor.GetValue(); err == nil {
+		e.entity.SetFromBlockSide(x)
+	}
+	if x, err := e.toBlockSideEditor.GetValue(); err == nil {
+		e.entity.SetToBlockSide(x)
+	}
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		append(
 			e.metaSettings.Rows(th),
+			widgets.SettingsGridRow{
+				Title: "From block side",
+				Layout: func(gtx C) D {
+					return e.fromBlockSideEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "To block side",
+				Layout: func(gtx C) D {
+					return e.toBlockSideEditor.Layout(gtx, th)
+				},
+			},
 		)...,
 	)
 

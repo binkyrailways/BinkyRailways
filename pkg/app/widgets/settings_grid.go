@@ -18,10 +18,15 @@
 package widgets
 
 import (
+	"image"
+	"math"
+
 	"gioui.org/layout"
+	"gioui.org/text"
 	"gioui.org/unit"
 	"gioui.org/widget/material"
 	"gioui.org/x/outlay"
+	"golang.org/x/image/math/fixed"
 )
 
 func NewSettingsGrid(row ...SettingsGridRow) SettingsGrid {
@@ -45,15 +50,38 @@ type SettingsGridRow struct {
 func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
 	rowCount := len(sg.Rows)
 	vGrid := outlay.Grid{
-		Num:  rowCount,
-		Axis: layout.Vertical,
+		Num:  2, //rowCount,
+		Axis: layout.Horizontal,
 	}
-	return vGrid.Layout(gtx, rowCount*2, func(gtx C, i int) D {
-		if i < rowCount {
-			return layout.Inset{
-				Right: sg.Gutter,
-			}.Layout(gtx, material.Label(th, th.TextSize, sg.Rows[i].Title).Layout)
+	// Calculate largest label size
+	maxTextSize := fixed.Point26_6{}
+	for _, row := range sg.Rows {
+		fontSize := fixed.I(gtx.Px(th.TextSize))
+		lines := th.Shaper.LayoutString(text.Font{}, fontSize, math.MaxInt16, row.Title)
+		b := lines[0].Bounds
+		textSize := b.Max.Sub(b.Min)
+		if textSize.X > maxTextSize.X {
+			maxTextSize.X = textSize.X
 		}
-		return sg.Rows[i-rowCount].Layout(gtx)
+		if textSize.Y > maxTextSize.Y {
+			maxTextSize.Y = textSize.Y
+		}
+	}
+	textDim := D{
+		Size: image.Pt(maxTextSize.X.Ceil(), maxTextSize.Y.Ceil()),
+	}
+	// Layout grid
+	return vGrid.Layout(gtx, rowCount*2, func(gtx C, i int) D {
+		if i%2 == 0 {
+			layout.Inset{
+				Right: sg.Gutter,
+			}.Layout(gtx, material.Label(th, th.TextSize, sg.Rows[i/2].Title).Layout)
+			return textDim
+		}
+		dims := sg.Rows[i/2].Layout(gtx)
+		if dims.Size.X < textDim.Size.X {
+			dims.Size.X = textDim.Size.X
+		}
+		return dims
 	})
 }
