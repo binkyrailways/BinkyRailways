@@ -27,17 +27,26 @@ import (
 // NewLocEditor constructs an editor for a Loc.
 func NewLocEditor(loc model.Loc, etx EditorContext) Editor {
 	editor := &locEditor{
+		loc:      loc,
 		settings: settings.NewLocSettings(loc),
+		etx:      etx,
 	}
 	return editor
 }
 
 // locEditor implements an editor for a Loc.
 type locEditor struct {
+	loc      model.Loc
 	settings settings.Settings
+	etx      EditorContext
 }
 
 // Handle events and draw the editor
 func (e *locEditor) Layout(gtx C, th *material.Theme) D {
 	return e.settings.Layout(gtx, th)
+}
+
+// Create the buttons for the "Add resource sheet"
+func (e *locEditor) CreateAddButtons() []AddButton {
+	return CreatePersistentEntityAddButtons(e.loc, e.etx)
 }

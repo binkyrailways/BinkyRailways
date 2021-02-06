@@ -26,6 +26,8 @@ import (
 type PersistentEntity interface {
 	Entity
 
+	// Gets the package that contains this entity
+	GetPackage() Package
 	// Gets last modification date.
 	GetLastModified() time.Time
 }

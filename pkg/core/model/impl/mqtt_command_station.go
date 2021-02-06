@@ -42,6 +42,7 @@ var _ model.MqttCommandStation = &mqttCommandStation{}
 func NewMqttCommandStation() MqttCommandStation {
 	cs := &mqttCommandStation{}
 	cs.Initialize()
+	cs.SetDescription("New MQTT command station")
 	return cs
 }
 

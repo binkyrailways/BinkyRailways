@@ -19,7 +19,9 @@ package editors
 
 import (
 	"gioui.org/layout"
+	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 type (
@@ -31,10 +33,21 @@ type (
 type Editor interface {
 	// Handle events and draw the editor
 	Layout(gtx C, th *material.Theme) D
+	// Create the buttons for the "Add resource sheet"
+	CreateAddButtons() []AddButton
 }
 
 // EditorContext is passed to each Editor upon construction.
 type EditorContext interface {
+	// Select the given entity in the view
+	Select(entity model.Entity)
 	// Invalidate the UI
 	Invalidate()
+}
+
+// AddButton is used to generate a button for adding an entity
+type AddButton struct {
+	Title   string
+	OnClick func()
+	widget.Clickable
 }

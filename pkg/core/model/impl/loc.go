@@ -58,6 +58,7 @@ func NewLoc() Loc {
 		Remarks:         model.DefaultLocRemarks,
 	}
 	l.EnsureID()
+	l.SetDescription("New loc")
 	l.persistentEntity.Initialize(l.entity.OnModified)
 	l.Functions.SetContainer(l)
 	return l

@@ -40,6 +40,7 @@ var _ model.EcosCommandStation = &ecosCommandStation{}
 func NewEcosCommandStation() EcosCommandStation {
 	cs := &ecosCommandStation{}
 	cs.Initialize()
+	cs.SetDescription("New ECOS command station")
 	return cs
 }
 

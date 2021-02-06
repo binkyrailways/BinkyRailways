@@ -18,11 +18,12 @@
 package railway
 
 import (
-	"fmt"
 	"log"
 
 	"gioui.org/layout"
+	"gioui.org/unit"
 	"gioui.org/widget"
+	"gioui.org/widget/material"
 	"gioui.org/x/component"
 	"golang.org/x/exp/shiny/materialdesign/icons"
 
@@ -38,23 +39,27 @@ type (
 )
 
 type editView struct {
-	vm         views.ViewManager
-	railway    model.Railway
-	parent     *railwayView
-	modal      *component.ModalLayer
-	appBar     *component.AppBar
-	buttonRun  widget.Clickable
-	entityList widgets.TreeView
-	editor     editors.Editor
+	vm              views.ViewManager
+	railway         model.Railway
+	parent          *railwayView
+	modal           *component.ModalLayer
+	appBar          *component.AppBar
+	addSheet        *component.ModalSheet
+	addSheetList    layout.List
+	addSheetButtons []editors.AddButton
+	buttonRun       widget.Clickable
+	buttonAdd       widget.Clickable
+	entityList      widgets.TreeView
+	editor          editors.Editor
 }
 
 var (
-	iconX, _ = widget.NewIcon(icons.AVPlayArrow)
+	iconAdd, _ = widget.NewIcon(icons.ContentAdd)
+	iconRun, _ = widget.NewIcon(icons.AVPlayArrow)
 )
 
 // New constructs a new railway view
 func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayView) *editView {
-	fmt.Println("newEditView")
 	itemCache := widgets.EntityTreeViewItemCache{}
 	groupCache := widgets.EntityTreeGroupCache{}
 	v := &editView{
@@ -117,18 +122,31 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 	}
 	v.entityList.OnSelect = v.onSelect
 	v.appBar = component.NewAppBar(v.modal)
+	v.addSheet = component.NewModalSheet(v.modal)
+	v.addSheetList.Axis = layout.Vertical
+	v.entityList.OnSelect(railway)
 	return v
+}
+
+// Select the given entity in the view
+func (v *editView) Select(entity model.Entity) {
+	v.onSelect(entity)
+}
+
+// Invalidate the UI
+func (v *editView) Invalidate() {
+	v.vm.Invalidate()
 }
 
 // onSelect ensures that the given object is selected in the view
 func (v *editView) onSelect(selection interface{}) {
 	switch selection := selection.(type) {
 	case model.Loc:
-		v.editor = editors.NewLocEditor(selection, v.vm)
+		v.editor = editors.NewLocEditor(selection, v)
 	case model.Module:
-		v.editor = editors.NewModuleEditor(selection, v.vm)
+		v.editor = editors.NewModuleEditor(selection, v)
 	case model.Railway:
-		v.editor = editors.NewRailwayEditor(selection, v.vm)
+		v.editor = editors.NewRailwayEditor(selection, v)
 	case model.ModuleEntity:
 		// Re-use existing module editor (if possible)
 		module := selection.GetModule()
@@ -137,12 +155,17 @@ func (v *editView) onSelect(selection interface{}) {
 			modEditor.OnSelect(selection)
 		} else {
 			// Build new module editor
-			modEditor := editors.NewModuleEditor(module, v.vm)
+			modEditor := editors.NewModuleEditor(module, v)
 			modEditor.OnSelect(selection)
 			v.editor = modEditor
 		}
 	default:
 		v.editor = nil
+	}
+	if v.editor != nil {
+		v.addSheetButtons = v.editor.CreateAddButtons()
+	} else {
+		v.addSheetButtons = nil
 	}
 	v.vm.Invalidate()
 }
@@ -153,6 +176,18 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 
 	if v.buttonRun.Clicked() {
 		v.parent.SetRunMode(true)
+	}
+	if v.buttonAdd.Clicked() {
+		v.addSheet.Appear(gtx.Now)
+	}
+	for idx := range v.addSheetButtons {
+		btn := &v.addSheetButtons[idx]
+		if btn.Clicked() {
+			if btn.OnClick != nil {
+				btn.OnClick()
+			}
+			v.addSheet.Disappear(gtx.Now)
+		}
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
@@ -176,10 +211,12 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 	v.appBar.Title = v.railway.GetDescription()
 	v.appBar.SetActions(
 		[]component.AppBarAction{
-			component.SimpleIconAction(th, &v.buttonRun, iconX, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
+			component.SimpleIconAction(th, &v.buttonAdd, iconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+			component.SimpleIconAction(th, &v.buttonRun, iconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
 		},
 		[]component.OverflowAction{})
 
+	// Prepare content layout
 	content := func(gtx C) D {
 		if v.editor != nil {
 			return v.editor.Layout(gtx, th)
@@ -191,7 +228,26 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 	hs.End.Weight = 6
 	vs := widgets.VerticalSplit(bar, hs.Layout)
 	vs.Start.Rigid = true
-	vs.Layout(gtx)
-	v.modal.Layout(gtx, th)
+
+	// Draw layers
+	stack := layout.Stack{
+		Alignment: layout.Direction(layout.SE),
+	}
+	v.addSheet.LayoutModal(func(gtx C, th *material.Theme, anim *component.VisibilityAnimation) D {
+		return v.layoutAddSheet(gtx, th)
+	})
+	stack.Layout(gtx,
+		layout.Stacked(vs.Layout),
+		layout.Stacked(func(gtx C) D { return v.modal.Layout(gtx, th) }),
+	)
 	return layout.Dimensions{Size: gtx.Constraints.Max}
+}
+
+// Handle events and draw the add sheet
+func (v *editView) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	return v.addSheetList.Layout(gtx, len(v.addSheetButtons), func(gtx C, index int) D {
+		btn := &v.addSheetButtons[index]
+		gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		return layout.UniformInset(unit.Dp(6)).Layout(gtx, material.Button(th, &btn.Clickable, btn.Title).Layout)
+	})
 }

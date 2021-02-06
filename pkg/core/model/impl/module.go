@@ -57,6 +57,7 @@ var (
 func NewModule() Module {
 	m := &module{}
 	m.EnsureID()
+	m.SetDescription("New module")
 	m.persistentEntity.Initialize(m.entity.OnModified)
 	m.Blocks.SetContainer(m)
 	m.BlockGroups.SetContainer(m)

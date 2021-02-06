@@ -117,3 +117,9 @@ func (e *moduleEditor) Layout(gtx C, th *material.Theme) D {
 
 	return hs.Layout(gtx)
 }
+
+// Create the buttons for the "Add resource sheet"
+func (e *moduleEditor) CreateAddButtons() []AddButton {
+	// TODO add other buttons
+	return CreatePersistentEntityAddButtons(e.module, e.etx)
+}
