@@ -19,28 +19,33 @@ package widgets
 
 import (
 	"gioui.org/layout"
+	"gioui.org/unit"
 	"gioui.org/widget/material"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type EntityGroupList struct {
-	Groups   []EntityGroup
-	list     layout.List
-	OnSelect func(model.Entity)
-	Selected model.Entity
-	widgets  []entityGroupWidget
+// TreeView is a UI component that shows a tree of items.
+type TreeView struct {
+	RootItems []TreeViewItem
+	list      layout.List
+	OnSelect  func(interface{})
+	Selected  interface{}
+	widgets   []TreeViewItem
 }
 
-type entityGroupWidget interface {
+// TreeViewItem must be implemented by items that are part of a TreeView.
+type TreeViewItem interface {
 	// Process events, return an entity if it is clicked.
-	ProcessEvents() model.Entity
-	Layout(C, *material.Theme, model.Entity) D
+	ProcessEvents() interface{}
+	// Layout the widget
+	Layout(gtx C, th *material.Theme, selection interface{}) D
+	// Generate sub-widgets
+	GenerateWidgets(level int) []TreeViewItem
 }
 
 // Layout processes events and redraws the list.
-func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
+func (v *TreeView) Layout(gtx C, th *material.Theme) D {
 	// Process events of widgets
-	var newSelection model.Entity
+	var newSelection interface{}
 	for _, w := range v.widgets {
 		if x := w.ProcessEvents(); x != nil {
 			if newSelection == nil {
@@ -56,9 +61,10 @@ func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
 	// Rebuild widgets
 	v.list.Axis = layout.Vertical
 	selection := v.Selected
-	var widgets []entityGroupWidget
-	for idx := range v.Groups {
-		widgets = append(widgets, v.Groups[idx].generateWidgets()...)
+	widgets := v.widgets[:0]
+	for _, rootItem := range v.RootItems {
+		widgets = append(widgets, rootItem)
+		widgets = append(widgets, rootItem.GenerateWidgets(0)...)
 	}
 	v.widgets = widgets
 	// Redraw widgets
@@ -66,4 +72,12 @@ func (v *EntityGroupList) Layout(gtx C, th *material.Theme) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
 		return widgets[idx].Layout(gtx, th, selection)
 	})
+}
+
+// LayoutWithLevel renders the given widget with given treeview level.
+func LayoutWithLevel(gtx C, level int, widget func(C) D) D {
+	if level == 0 {
+		return widget(gtx)
+	}
+	return layout.Inset{Left: unit.Dp(float32(level * 20))}.Layout(gtx, widget)
 }

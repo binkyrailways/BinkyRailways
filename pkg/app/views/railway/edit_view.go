@@ -44,7 +44,7 @@ type editView struct {
 	modal      *component.ModalLayer
 	appBar     *component.AppBar
 	buttonRun  widget.Clickable
-	entityList widgets.EntityGroupList
+	entityList widgets.TreeView
 	editor     editors.Editor
 }
 
@@ -55,32 +55,58 @@ var (
 // New constructs a new railway view
 func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayView) *editView {
 	fmt.Println("newEditView")
+	itemCache := widgets.EntityTreeViewItemCache{}
+	groupCache := widgets.EntityTreeGroupCache{}
 	v := &editView{
 		vm:      vm,
 		railway: railway,
 		parent:  parent,
 		modal:   component.NewModal(),
-		entityList: widgets.EntityGroupList{
-			Groups: []widgets.EntityGroup{
-				{
+		entityList: widgets.TreeView{
+			RootItems: []widgets.TreeViewItem{
+				&widgets.TreeViewGroup{
+					Name: "Railway",
+					Collection: func(level int) []widgets.TreeViewItem {
+						return []widgets.TreeViewItem{
+							itemCache.CreateItem(railway, level),
+						}
+					},
+				},
+				&widgets.TreeViewGroup{
 					Name: "Locs",
-					Collection: func() []model.Entity {
-						var result []model.Entity
+					Collection: func(level int) []widgets.TreeViewItem {
+						var result []widgets.TreeViewItem
 						railway.GetLocs().ForEach(func(c model.LocRef) {
 							if x := c.TryResolve(); x != nil {
-								result = append(result, x)
+								result = append(result, itemCache.CreateItem(x, level))
 							}
 						})
 						return result
 					},
 				},
-				{
+				&widgets.TreeViewGroup{
 					Name: "Modules",
-					Collection: func() []model.Entity {
-						var result []model.Entity
+					Collection: func(level int) []widgets.TreeViewItem {
+						var result []widgets.TreeViewItem
 						railway.GetModules().ForEach(func(c model.ModuleRef) {
 							if x := c.TryResolve(); x != nil {
-								result = append(result, x)
+								result = append(result,
+									itemCache.CreateItem(x, level),
+									groupCache.CreateItem("Blocks", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetBlocks().ForEach(func(entity model.Block) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Routes", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetRoutes().ForEach(func(entity model.Route) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+								)
 							}
 						})
 						return result
@@ -89,12 +115,15 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 			},
 		},
 	}
-	v.entityList.OnSelect = func(selection model.Entity) {
-		if loc, ok := selection.(model.Loc); ok {
-			v.editor = editors.NewLocEditor(loc, v.vm)
-		} else if module, ok := selection.(model.Module); ok {
-			v.editor = editors.NewModuleEditor(module, v.vm)
-		} else {
+	v.entityList.OnSelect = func(selection interface{}) {
+		switch selection := selection.(type) {
+		case model.Loc:
+			v.editor = editors.NewLocEditor(selection, v.vm)
+		case model.Module:
+			v.editor = editors.NewModuleEditor(selection, v.vm)
+		case model.Railway:
+			v.editor = editors.NewRailwayEditor(selection, v.vm)
+		default:
 			v.editor = nil
 		}
 		vm.Invalidate()
