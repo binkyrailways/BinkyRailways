@@ -25,7 +25,6 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"gioui.org/x/component"
-	"golang.org/x/exp/shiny/materialdesign/icons"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/editors"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
@@ -33,30 +32,21 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type (
-	C = layout.Context
-	D = layout.Dimensions
-)
-
 type editView struct {
-	vm              views.ViewManager
-	railway         model.Railway
-	parent          *railwayView
-	modal           *component.ModalLayer
-	appBar          *component.AppBar
-	addSheet        *component.ModalSheet
-	addSheetList    layout.List
-	addSheetButtons []editors.AddButton
-	buttonRun       widget.Clickable
-	buttonAdd       widget.Clickable
-	entityList      widgets.TreeView
-	editor          editors.Editor
+	vm               views.ViewManager
+	railway          model.Railway
+	parent           *railwayView
+	modal            *component.ModalLayer
+	appBar           *component.AppBar
+	addSheet         *component.ModalSheet
+	addSheetList     layout.List
+	addSheetButtons  []editors.AddButton
+	buttonRun        widget.Clickable
+	buttonRunVirtual widget.Clickable
+	buttonAdd        widget.Clickable
+	entityList       widgets.TreeView
+	editor           editors.Editor
 }
-
-var (
-	iconAdd, _ = widget.NewIcon(icons.ContentAdd)
-	iconRun, _ = widget.NewIcon(icons.AVPlayArrow)
-)
 
 // New constructs a new railway view
 func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayView) *editView {
@@ -175,7 +165,10 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 
 	if v.buttonRun.Clicked() {
-		v.parent.SetRunMode(true)
+		v.parent.SetRunMode(true, false)
+	}
+	if v.buttonRunVirtual.Clicked() {
+		v.parent.SetRunMode(true, true)
 	}
 	if v.buttonAdd.Clicked() {
 		v.addSheet.Appear(gtx.Now)
@@ -213,6 +206,7 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 		[]component.AppBarAction{
 			component.SimpleIconAction(th, &v.buttonAdd, iconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
 			component.SimpleIconAction(th, &v.buttonRun, iconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
+			component.SimpleIconAction(th, &v.buttonRunVirtual, iconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
 		},
 		[]component.OverflowAction{})
 

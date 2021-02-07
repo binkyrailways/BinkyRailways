@@ -15,36 +15,23 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package canvas
 
 import (
-	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
+	"gioui.org/f32"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// builder implements an entity visitor to create canvas widgets.
-type builder struct {
-	model.DefaultEntityVisitor
-}
-
-// NewBuilder creates an entity visitor to create canvas widgets.
-func NewBuilder() canvas.WidgetBuilder {
-	return &builder{}
-}
-
-// Create a widget for the given entity.
-// A return value of nil means no widget.
-func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
-	entity := x.(model.Entity)
-	raw := entity.Accept(v)
-	if w, ok := raw.(canvas.Widget); ok {
-		return w
-	}
-	return nil
-}
-
-func (v *builder) VisitBlock(x model.Block) interface{} {
-	return &block{
-		entity: x,
+// GetPositionedEntityBounds returns the bounds of the given entity.
+func GetPositionedEntityBounds(entity model.PositionedEntity) f32.Rectangle {
+	return f32.Rectangle{
+		Min: f32.Point{
+			X: float32(entity.GetX()),
+			Y: float32(entity.GetY()),
+		},
+		Max: f32.Point{
+			X: float32(entity.GetX() + entity.GetWidth()),
+			Y: float32(entity.GetY() + entity.GetHeight()),
+		},
 	}
 }

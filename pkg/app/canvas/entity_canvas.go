@@ -31,11 +31,37 @@ import (
 	"gioui.org/op/paint"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
+// Entity represents a distinct resource on the canvas.
+type Entity interface {
+	// Get the ID of the resource
+	GetID() string
+}
+
+// MoveableEntity represents an entity that can be moved.
+type MoveableEntity interface {
+	Entity
+
+	// Gets the X coordinate
+	GetX() int
+	// Gets the Y coordinate
+	GetY() int
+	// Sets the X coordinate
+	SetX(int) error
+	// Sets the Y coordinate
+	SetY(int) error
+}
+
+// WidgetBuilder abstracts the creation of a widget for an Entity.
+type WidgetBuilder interface {
+	// Create a widget for the given entity.
+	// A return value of nil means no widget.
+	CreateWidget(Entity) Widget
+}
+
 // EntityIterator defines an iterator function for positioned entities
-type EntityIterator = func(func(entity model.PositionedEntity))
+type EntityIterator = func(func(entity Entity))
 
 // EntityCanvas shows positioned entities in a 2D view.
 type EntityCanvas struct {
@@ -45,9 +71,9 @@ type EntityCanvas struct {
 	// all entities that must be displayed in the canvas.
 	Entities EntityIterator
 	// Builder must be set to an entity visitor that builds Widgets.
-	Builder model.EntityVisitor
+	Builder WidgetBuilder
 	// If set, OnSelect is called when the given entity is selected.
-	OnSelect func(model.PositionedEntity)
+	OnSelect func(Entity)
 
 	// Background image
 	background   image.Image
@@ -57,7 +83,7 @@ type EntityCanvas struct {
 	// Current scale
 	scale float32
 	// Current selection
-	selection model.PositionedEntity
+	selection Entity
 	// Click on background
 	widget.Clickable
 }
@@ -81,7 +107,7 @@ type WidgetState struct {
 
 // canvasWidget is a widget representation of the object on the canvas.
 type canvasWidget struct {
-	entity model.PositionedEntity
+	entity Entity
 	gesture.Drag
 	gesture.Click
 	widget        Widget
@@ -105,17 +131,23 @@ func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size imag
 		pt := f32.Affine2D{}.Rotate(f32.Point{}, -rad).Transform(evt.Position)
 		switch evt.Type {
 		case pointer.Press:
-			cw.origEntityPos = image.Point{X: cw.entity.GetX(), Y: cw.entity.GetY()}
-			cw.startPt = pt
+			if mentity, ok := cw.entity.(MoveableEntity); ok {
+				cw.origEntityPos = image.Point{X: mentity.GetX(), Y: mentity.GetY()}
+				cw.startPt = pt
+			}
 		case pointer.Drag:
-			delta := pt.Sub(cw.startPt)
-			newEntityPos := f32.Pt(float32(cw.origEntityPos.X), float32(cw.origEntityPos.Y)).Add(delta)
-			fmt.Println(pt, gtx.Constraints.Min, gtx.Constraints.Max, cw.origEntityPos, delta, newEntityPos)
-			cw.entity.SetX(int(newEntityPos.X))
-			cw.entity.SetY(int(newEntityPos.Y))
+			if mentity, ok := cw.entity.(MoveableEntity); ok {
+				delta := pt.Sub(cw.startPt)
+				newEntityPos := f32.Pt(float32(cw.origEntityPos.X), float32(cw.origEntityPos.Y)).Add(delta)
+				fmt.Println(pt, gtx.Constraints.Min, gtx.Constraints.Max, cw.origEntityPos, delta, newEntityPos)
+				mentity.SetX(int(newEntityPos.X))
+				mentity.SetY(int(newEntityPos.Y))
+			}
 		case pointer.Cancel:
-			cw.entity.SetX(cw.origEntityPos.X)
-			cw.entity.SetY(cw.origEntityPos.Y)
+			if mentity, ok := cw.entity.(MoveableEntity); ok {
+				mentity.SetX(cw.origEntityPos.X)
+				mentity.SetY(cw.origEntityPos.Y)
+			}
 		}
 	}
 
@@ -187,15 +219,14 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 	// Ensure we have all widgets
 	maxSize := ec.GetMaxSize()
 	foundIDs := make(map[string]struct{})
-	ec.Entities(func(entity model.PositionedEntity) {
+	ec.Entities(func(entity Entity) {
 		id := entity.GetID()
 		foundIDs[id] = struct{}{}
 		entry, found := ec.widgets[id]
 		if !found {
 			// Build a new widget
-			raw := entity.Accept(ec.Builder)
-			w, ok := raw.(Widget)
-			if !ok {
+			w := ec.Builder.CreateWidget(entity)
+			if w == nil {
 				return
 			}
 			entry = &canvasWidget{
@@ -222,12 +253,12 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 }
 
 // GetSelection returns the current selection (if any)
-func (ec *EntityCanvas) GetSelection() model.PositionedEntity {
+func (ec *EntityCanvas) GetSelection() Entity {
 	return ec.selection
 }
 
 // Select sets the selected entity
-func (ec *EntityCanvas) Select(entity model.PositionedEntity) {
+func (ec *EntityCanvas) Select(entity Entity) {
 	if ec.selection != entity {
 		ec.selection = entity
 		if ec.OnSelect != nil {

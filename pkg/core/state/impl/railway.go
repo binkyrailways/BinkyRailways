@@ -378,3 +378,8 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 		cb(x)
 	}
 }
+
+// Close the railway
+func (r *railway) Close() {
+	// TODO
+}

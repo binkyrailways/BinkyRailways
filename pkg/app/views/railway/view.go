@@ -19,17 +19,36 @@ package railway
 
 import (
 	"gioui.org/layout"
+	"gioui.org/widget"
+	"golang.org/x/exp/shiny/materialdesign/icons"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state/impl"
+)
+
+type (
+	C = layout.Context
+	D = layout.Dimensions
 )
 
 type railwayView struct {
-	vm       views.ViewManager
-	railway  model.Railway
-	runMode  bool
-	editView *editView
+	vm      views.ViewManager
+	railway model.Railway
+
+	railwayState state.Railway
+	runMode      bool
+	virtualMode  bool
+	currentView  layout.Widget
 }
+
+var (
+	iconAdd, _        = widget.NewIcon(icons.ContentAdd)
+	iconEdit, _       = widget.NewIcon(icons.ContentCreate)
+	iconRun, _        = widget.NewIcon(icons.AVPlayArrow)
+	iconRunVirtual, _ = widget.NewIcon(icons.AVPlayCircleOutline)
+)
 
 // New constructs a new railway view
 func New(vm views.ViewManager, railway model.Railway) views.View {
@@ -37,7 +56,8 @@ func New(vm views.ViewManager, railway model.Railway) views.View {
 		vm:      vm,
 		railway: railway,
 	}
-	v.editView = newEditView(vm, railway, v)
+	editView := newEditView(vm, railway, v)
+	v.currentView = editView.Layout
 	return v
 }
 
@@ -48,11 +68,39 @@ func (v *railwayView) GetTitleExtension() string {
 
 // Handle events and draw the view
 func (v *railwayView) Layout(gtx layout.Context) layout.Dimensions {
-	return v.editView.Layout(gtx)
+	return v.currentView(gtx)
 }
 
 // SetRunMode switch from edit to run mode and back
-func (v *railwayView) SetRunMode(runMode bool) {
+func (v *railwayView) SetRunMode(runMode, virtualMode bool) error {
+	// Any changes?
+	if v.runMode == runMode && v.virtualMode == virtualMode {
+		return nil
+	}
+	// Close any existing state
+	if v.railwayState != nil {
+		v.railwayState.Close()
+		v.railwayState = nil
+	}
 	v.runMode = runMode
+	v.virtualMode = virtualMode
+	if runMode {
+		var err error
+		v.railwayState, err = impl.New(v.railway, v, v, virtualMode)
+		if err != nil {
+			return err
+		}
+		runView := newRunView(v.vm, v.railwayState, v)
+		v.currentView = runView.Layout
+	} else {
+		editView := newEditView(v.vm, v.railway, v)
+		v.currentView = editView.Layout
+	}
 	v.vm.Invalidate()
+	return nil
+}
+
+// The COM port for the given command station is invalid.
+func (v *railwayView) ChooseComPortName(state.CommandStation) (string, error) {
+	return "", nil // TODO
 }

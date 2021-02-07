@@ -21,7 +21,11 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // Block specifies the state of a single block.
 type Block interface {
+	Entity
 	Lockable
+
+	// Gets the underlying model
+	GetModel() model.Block
 
 	// Probability (in percentage) that a loc that is allowed to wait in this block
 	// will actually wait.

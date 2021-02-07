@@ -18,38 +18,35 @@
 package canvas
 
 import (
-	"bytes"
-	"fmt"
-	"image"
-
 	"gioui.org/f32"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// ModuleCanvas creates an entity canvas for the given module.
-func ModuleCanvas(module model.Module, builder WidgetBuilder) *EntityCanvas {
+// RailwayStateCanvas creates an entity canvas for the given railway in running mode.
+func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCanvas {
+	//rm := railway.GetModel()
 	ec := &EntityCanvas{
 		GetMaxSize: func() f32.Point {
 			return f32.Point{
-				X: float32(module.GetWidth()),
-				Y: float32(module.GetHeight()),
+				X: float32(200 /* TODO rm.GetWidth()*/),
+				Y: float32(200 /* TODO rm.GetHeight() */),
 			}
 		},
 		Entities: func(cb func(Entity)) {
-			module.ForEachPositionedEntity(func(x model.PositionedEntity) {
+			railway.ForEachBlock(func(x state.Block) {
 				cb(x)
 			})
 		},
 		Builder: builder,
 		scale:   1,
 	}
-	if bgImage := module.GetBackgroundImage(); bgImage != nil {
+	/*	if bgImage := module.GetBackgroundImage(); bgImage != nil {
 		if img, format, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
 			fmt.Println(err)
 		} else if img != nil {
 			fmt.Printf("Found format '%s'\n", format)
 			ec.SetBackground(img)
 		}
-	}
+	}*/
 	return ec
 }

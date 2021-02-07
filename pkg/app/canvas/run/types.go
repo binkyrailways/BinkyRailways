@@ -15,26 +15,13 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package run
 
 import (
-	"image/color"
+	"gioui.org/layout"
 )
 
-var (
-	hoverBg = ARGB(0xC0333333)
-	blockBg = ARGB(0x80CCCCCC)
+type (
+	C = layout.Context
+	D = layout.Dimensions
 )
-
-func RGB(value uint32) color.NRGBA {
-	return ARGB(0xFF000000 | value)
-}
-
-func ARGB(value uint32) color.NRGBA {
-	return color.NRGBA{
-		A: uint8(value >> 24),
-		R: uint8(value >> 16),
-		G: uint8(value >> 8),
-		B: uint8(value),
-	}
-}

@@ -50,7 +50,7 @@ func NewModuleEditor(module model.Module, etx EditorContext) ModuleEditor {
 			Axis:  layout.Horizontal,
 		},
 	}
-	editor.canvas.OnSelect = func(selection model.PositionedEntity) {
+	editor.canvas.OnSelect = func(selection canvas.Entity) {
 		switch selection := selection.(type) {
 		case model.ModuleEntity:
 			editor.OnSelect(selection)

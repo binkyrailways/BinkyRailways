@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package run
 
 import (
 	"gioui.org/f32"
@@ -24,21 +24,21 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 type block struct {
-	entity model.Block
+	entity state.Block
 }
 
 // Return the bounds of the widget on the canvas
 func (b *block) GetBounds() f32.Rectangle {
-	return canvas.GetPositionedEntityBounds(b.entity)
+	return canvas.GetPositionedEntityBounds(b.entity.GetModel())
 }
 
 // Returns rotation of entity in degrees
 func (b *block) GetRotation() int {
-	return b.entity.GetRotation()
+	return b.entity.GetModel().GetRotation()
 }
 
 // Layout must be initialized to a layout function to draw the widget

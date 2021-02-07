@@ -57,6 +57,11 @@ func (b *block) TryPrepareForUse(state.UserInterface, state.Persistence) error {
 	return nil
 }
 
+// Gets the underlying model
+func (b *block) GetModel() model.Block {
+	return b.getBlock()
+}
+
 // Probability (in percentage) that a loc that is allowed to wait in this block
 // will actually wait.
 // When set to 0, no locs will wait (unless there is no route available).

@@ -80,4 +80,7 @@ type Railway interface {
 
 	// Gets the states of all outputs in this railway
 	ForEachOutput(func(Output))
+
+	// Close the railway
+	Close()
 }
