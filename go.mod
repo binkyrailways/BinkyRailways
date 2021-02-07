@@ -14,6 +14,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.6.1
+	go.uber.org/multierr v1.6.0
 	golang.org/x/exp v0.0.0-20201229011636-eab1b5eb1a03
 	golang.org/x/image v0.0.0-20201208152932-35266b937fa6
 	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb

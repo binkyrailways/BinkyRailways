@@ -41,9 +41,9 @@ type ActualStateChangedEvent struct {
 // Implement Event interface
 func (e ActualStateChangedEvent) implementsEvent() {}
 
-// RequestStateChangedEvent is raised when a requested state of a property of an
+// RequestedStateChangedEvent is raised when a requested state of a property of an
 // entity has changed.
-type RequestStateChangedEvent struct {
+type RequestedStateChangedEvent struct {
 	// Subject holds the entity for which a requested state has changed
 	Subject Entity
 	// Property that has changed
@@ -51,7 +51,7 @@ type RequestStateChangedEvent struct {
 }
 
 // Implement Event interface
-func (e RequestStateChangedEvent) implementsEvent() {}
+func (e RequestedStateChangedEvent) implementsEvent() {}
 
 // IdleChangedEvent is raised when the idle state of a commandstation has changed.
 type IdleChangedEvent struct {

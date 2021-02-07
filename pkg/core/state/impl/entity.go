@@ -30,6 +30,8 @@ type Entity interface {
 	// Returns nil when the entity is successfully prepared,
 	// returns an error otherwise.
 	TryPrepareForUse(state.UserInterface, state.Persistence) error
+	// Set this entity's readiness for use in the live railway?
+	SetIsReadyForUse(value bool)
 }
 
 type entity struct {
@@ -82,16 +84,9 @@ func (e *entity) SetIsReadyForUse(value bool) {
 	e.isReadyForUse = value
 }
 
-// preparable helps in prepareForUse.
-type preparable interface {
-	Entity
-	// Set this entity's readiness for use in the live railway?
-	SetIsReadyForUse(value bool)
-}
-
 // Try to prepare the entity for use.
 // Returns true when the entity is successfully prepared.
-func prepareForUse(entity preparable, ui state.UserInterface, persistence state.Persistence) error {
+func prepareForUse(entity Entity, ui state.UserInterface, persistence state.Persistence) error {
 	if !entity.GetIsReadyForUse() {
 		if err := entity.TryPrepareForUse(ui, persistence); err != nil {
 			return err

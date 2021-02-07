@@ -50,7 +50,7 @@ func (p *propertyBase) SendActualStateChanged() {
 // SendActualStateChanged dispatches an RequestedStateChangedEvent
 func (p *propertyBase) SendRequestedStateChanged(prop state.Property) {
 	if p.Dispatcher != nil {
-		p.Dispatcher.Send(state.RequestStateChangedEvent{
+		p.Dispatcher.Send(state.RequestedStateChangedEvent{
 			Subject:  p.Subject,
 			Property: prop,
 		})
