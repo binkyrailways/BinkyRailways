@@ -31,8 +31,17 @@ func TestRailway(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, p)
 
-	// Create state
-	st, err := New(p.GetRailway(), nil, nil)
-	require.NoError(t, err)
-	require.NotNil(t, st)
+	// Create state in non-virtual mode
+	t.Run("non-virtual mode", func(t *testing.T) {
+		st, err := New(p.GetRailway(), nil, nil, false)
+		require.NoError(t, err)
+		require.NotNil(t, st)
+	})
+
+	// Create state in virtual mode
+	t.Run("virtual mode", func(t *testing.T) {
+		st, err := New(p.GetRailway(), nil, nil, true)
+		require.NoError(t, err)
+		require.NotNil(t, st)
+	})
 }

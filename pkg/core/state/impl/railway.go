@@ -42,6 +42,7 @@ type Railway interface {
 type railway struct {
 	entity
 
+	virtualMode     virtualMode
 	power           powerProperty
 	blocks          []Block
 	blockGroups     []BlockGroup
@@ -55,13 +56,14 @@ type railway struct {
 }
 
 // New constructs and initializes state for the given railway.
-func New(entity model.Railway, ui state.UserInterface, persistence state.Persistence) (state.Railway, error) {
+func New(entity model.Railway, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
 	// Create
 	r := &railway{}
 	r.entity = newEntity(entity, r)
 	r.power = powerProperty{
 		Railway: r,
 	}
+	r.virtualMode.Enabled = virtual
 
 	// Construct children
 	builder := &builder{Railway: r}
@@ -113,14 +115,19 @@ func New(entity model.Railway, ui state.UserInterface, persistence state.Persist
 		}
 	})
 	// Create command stations
-	entity.GetCommandStations().ForEach(func(csRef model.CommandStationRef) {
-		if cs := csRef.TryResolve(); cs != nil {
-			if st, ok := cs.Accept(builder).(CommandStation); ok {
-				st.SetAddressSpaces(csRef.GetAddressSpaces())
-				r.commandStations = append(r.commandStations, st)
+	if virtual {
+		st := newVirtualCommandStation(r)
+		r.commandStations = append(r.commandStations, st)
+	} else {
+		entity.GetCommandStations().ForEach(func(csRef model.CommandStationRef) {
+			if cs := csRef.TryResolve(); cs != nil {
+				if st, ok := cs.Accept(builder).(CommandStation); ok {
+					st.SetAddressSpaces(csRef.GetAddressSpaces())
+					r.commandStations = append(r.commandStations, st)
+				}
 			}
-		}
-	})
+		})
+	}
 	// Create locs
 	entity.GetLocs().ForEach(func(locRef model.LocRef) {
 		if loc := locRef.TryResolve(); loc != nil {
@@ -297,7 +304,9 @@ func (r *railway) GetModel() model.Railway {
 
 // Gets the virtual mode.
 // This will never return null.
-//        IVirtualMode VirtualMode { get; }
+func (r *railway) GetVirtualMode() state.VirtualMode {
+	return &r.virtualMode
+}
 
 // Get the model time
 //        IActualStateProperty<Time> ModelTime { get; }

@@ -45,8 +45,8 @@ type Railway interface {
 	//        IStateDispatcher Dispatcher { get; }
 
 	// Gets the virtual mode.
-	// This will never return null.
-	//        IVirtualMode VirtualMode { get; }
+	// This will never return nil.
+	GetVirtualMode() VirtualMode
 
 	// Get the model time
 	//        IActualStateProperty<Time> ModelTime { get; }
