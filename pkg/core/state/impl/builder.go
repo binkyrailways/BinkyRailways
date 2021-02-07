@@ -39,3 +39,7 @@ func (b *builder) VisitLoc(x model.Loc) interface{} {
 func (b *builder) VisitRoute(x model.Route) interface{} {
 	return newRoute(x, b.Railway)
 }
+
+func (b *builder) VisitLocoBufferCommandStation(x model.LocoBufferCommandStation) interface{} {
+	return newLocoBufferCommandStation(x, b.Railway)
+}

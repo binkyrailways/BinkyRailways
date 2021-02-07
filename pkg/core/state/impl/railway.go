@@ -116,6 +116,7 @@ func New(entity model.Railway, ui state.UserInterface, persistence state.Persist
 	entity.GetCommandStations().ForEach(func(csRef model.CommandStationRef) {
 		if cs := csRef.TryResolve(); cs != nil {
 			if st, ok := cs.Accept(builder).(CommandStation); ok {
+				st.SetAddressSpaces(csRef.GetAddressSpaces())
 				r.commandStations = append(r.commandStations, st)
 			}
 		}

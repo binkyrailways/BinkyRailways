@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"strings"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -27,6 +29,8 @@ type CommandStation interface {
 	Entity
 	state.CommandStation
 
+	// Set the address spaces configured for this command station
+	SetAddressSpaces(value []string)
 	// Register the given junction as controlled by this command station
 	RegisterJunction(state.Junction)
 	// Register the given loc as controlled by this command station
@@ -43,16 +47,61 @@ type CommandStation interface {
 type commandStation struct {
 	entity
 
-	junctions []state.Junction
-	locs      []state.Loc
-	inputs    []state.Input
-	sensors   []state.Sensor
-	signals   []state.Signal
+	addressSpaces []string
+	junctions     []state.Junction
+	locs          []state.Loc
+	inputs        []state.Input
+	sensors       []state.Sensor
+	signals       []state.Signal
+}
+
+// Create a new entity
+func newCommandStation(en model.CommandStation, railway Railway) commandStation {
+	return commandStation{
+		entity: newEntity(en, railway),
+	}
 }
 
 // getCommandStation returns the entity as CommandStation.
 func (cs *commandStation) getCommandStation() model.CommandStation {
 	return cs.GetEntity().(model.CommandStation)
+}
+
+// Can this command station be used to serve the given network?
+// <param name="entity">The entity being search for.</param>
+// <param name="network">The network in question</param>
+// <param name="exactMatch">Set to true when there is an exact match in address type and address space, false otherwise.</param>
+// Returns: supports, exactMatch
+func (cs *commandStation) Supports(entity model.AddressEntity, network model.Network) (bool, bool) {
+	supportedTypes := cs.getCommandStation().GetSupportedAddressTypes(entity)
+	typeSupported := false
+	for _, x := range supportedTypes {
+		if x == network.Type {
+			typeSupported = true
+			break
+		}
+	}
+	if !typeSupported {
+		return false, false
+	}
+	// There is a match in type, look for an exact match
+	addressSpace := strings.ToLower(network.AddressSpace)
+	if addressSpace == "" {
+		// No address space specified, so no exact match
+		return true, false
+	}
+	exactMatch := false
+	for _, x := range cs.addressSpaces {
+		if strings.ToLower(x) == addressSpace {
+			exactMatch = true
+		}
+	}
+	if len(cs.addressSpaces) > 0 && !exactMatch {
+		// We have specific address spaces we support, the network has a different specific
+		// address space, so we do not support it
+		return false, false
+	}
+	return true, exactMatch
 }
 
 // Junctions driven by this command station
@@ -88,6 +137,11 @@ func (cs *commandStation) ForEachSignal(cb func(state.Signal)) {
 	for _, x := range cs.signals {
 		cb(x)
 	}
+}
+
+// Set the address spaces configured for this command station
+func (cs *commandStation) SetAddressSpaces(value []string) {
+	cs.addressSpaces = value
 }
 
 // Register the given junction as controlled by this command station
