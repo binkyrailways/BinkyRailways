@@ -43,5 +43,5 @@ type Switch interface {
 	GetInvertFeedback() bool
 
 	// Direction of the switch.
-	//IStateProperty<SwitchDirection> Direction { get; }
+	GetDirection() SwitchDirectionProperty
 }

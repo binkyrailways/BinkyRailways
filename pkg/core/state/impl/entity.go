@@ -19,7 +19,6 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-	modelimpl "github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -27,35 +26,25 @@ import (
 type Entity interface {
 	state.Entity
 
-	// Set this entity's readiness for use in the live railway?
-	SetIsReadyForUse(value bool)
+	// Try to prepare the entity for use.
+	// Returns nil when the entity is successfully prepared,
+	// returns an error otherwise.
+	TryPrepareForUse(state.UserInterface, state.Persistence) error
 }
 
 type entity struct {
 	entity  model.Entity
-	railway state.Railway
+	railway Railway
 
-	requestedStateChanged model.EventHandler
-	actualStateChanged    model.EventHandler
-	isReadyForUse         bool
+	isReadyForUse bool
 }
 
-// Initialize the state
-func (e *entity) Initialize(en model.Entity, railway state.Railway) {
-	e.entity = en
-	e.railway = railway
-	e.requestedStateChanged = modelimpl.NewEventHandler()
-	e.actualStateChanged = modelimpl.NewEventHandler()
-}
-
-// A requested value of a property of this state object has changed.
-func (e *entity) RequestedStateChanged() model.EventHandler {
-	return e.requestedStateChanged
-}
-
-// An actual value of a property of this state object has changed.
-func (e *entity) ActualStateChanged() model.EventHandler {
-	return e.actualStateChanged
+// Create a new entity
+func newEntity(en model.Entity, railway Railway) entity {
+	return entity{
+		entity:  en,
+		railway: railway,
+	}
 }
 
 // Gets the underlying entity
@@ -74,7 +63,12 @@ func (e *entity) GetDescription() string {
 }
 
 // Gets the railway state this object is a part of.
-func (e *entity) GetRailwayState() state.Railway {
+func (e *entity) GetRailway() state.Railway {
+	return e.railway
+}
+
+// Gets the railway state this object is a part of.
+func (e *entity) GetRailwayImpl() Railway {
 	return e.railway
 }
 
@@ -86,4 +80,23 @@ func (e *entity) GetIsReadyForUse() bool {
 // Set this entity's readiness for use in the live railway?
 func (e *entity) SetIsReadyForUse(value bool) {
 	e.isReadyForUse = value
+}
+
+// preparable helps in prepareForUse.
+type preparable interface {
+	Entity
+	// Set this entity's readiness for use in the live railway?
+	SetIsReadyForUse(value bool)
+}
+
+// Try to prepare the entity for use.
+// Returns true when the entity is successfully prepared.
+func prepareForUse(entity preparable, ui state.UserInterface, persistence state.Persistence) error {
+	if !entity.GetIsReadyForUse() {
+		if err := entity.TryPrepareForUse(ui, persistence); err != nil {
+			return err
+		}
+		entity.SetIsReadyForUse(true)
+	}
+	return nil
 }

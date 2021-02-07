@@ -17,17 +17,6 @@
 
 package state
 
-// Entity specifies the state of a single entity.
-type Entity interface {
-	// Unique ID of the underlying entity
-	GetID() string
-
-	// Description of the underlying entity
-	GetDescription() string
-
-	// Gets the railway state this object is a part of.
-	GetRailway() Railway
-
-	// Is this entity fully resolved such that is can be used in the live railway?
-	GetIsReadyForUse() bool
+// Persistence passed to the railway state during preparation.
+type Persistence interface {
 }

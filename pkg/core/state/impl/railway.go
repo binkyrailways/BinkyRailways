@@ -15,19 +15,21 @@
 // Author Ewout Prangsma
 //
 
-package state
+package impl
 
-// Entity specifies the state of a single entity.
-type Entity interface {
-	// Unique ID of the underlying entity
-	GetID() string
+import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+)
 
-	// Description of the underlying entity
-	GetDescription() string
+// Railway adds implementation functions to state.Railway.
+type Railway interface {
+	Entity
+	state.Railway
+	state.EventDispatcher
 
-	// Gets the railway state this object is a part of.
-	GetRailway() Railway
-
-	// Is this entity fully resolved such that is can be used in the live railway?
-	GetIsReadyForUse() bool
+	// Try to resolve the given endpoint into a block state.
+	ResolveEndPoint(model.EndPoint) (Block, error)
+	// Select a command station that can best drive the given entity
+	SelectCommandStation(model.AddressEntity) (CommandStation, error)
 }

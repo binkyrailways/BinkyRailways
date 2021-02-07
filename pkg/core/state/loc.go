@@ -21,12 +21,13 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // Loc specifies the state of a single loc
 type Loc interface {
+	Entity
 
 	// All settings of this loc will be reset, because the loc is taken of the track.
-	BeforeReset() model.EventHandler
+	//BeforeReset() model.EventHandler
 
 	// All settings of this loc have been reset, because the loc is taken of the track.
-	AfterReset() model.EventHandler
+	//AfterReset() model.EventHandler
 
 	// Address of the entity
 	GetAddress() model.Address
@@ -77,7 +78,7 @@ type Loc interface {
 	GetWaitAfterCurrentRoute() ActualBoolProperty
 
 	// Time when this loc will exceed the maximum duration of the current route.
-	//IActualStateProperty<DateTime> DurationExceedsCurrentRouteTime { get; }
+	GetDurationExceedsCurrentRouteTime() ActualTimeProperty
 
 	// Is the maximum duration of the current route this loc is taken exceeded?
 	GetIsCurrentRouteDurationExceeded() bool
@@ -93,7 +94,7 @@ type Loc interface {
 	GetCurrentBlockEnterSide() ActualBlockSideProperty
 
 	// Time when this loc will start it's next route.
-	//IActualStateProperty<DateTime> StartNextRouteTime { get; }
+	GetStartNextRouteTime() ActualTimeProperty
 
 	// Route options as considered last by the automatic train controller.
 	//IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
@@ -145,7 +146,7 @@ type Loc interface {
 	// <param name="block">The new block to assign to. If null, the loc will only be unassigned from the current block.</param>
 	// <param name="currentBlockEnterSide">The site to which the block is entered (invert of facing)</param>
 	// <returns>True on success, false otherwise</returns>
-	AssignTo(Block, currentBlockEnterSide model.BlockSide) bool
+	AssignTo(block Block, currentBlockEnterSide model.BlockSide) bool
 
 	// Gets command station specific (advanced) info for this loc.
 	GetCommandStationInfo() string

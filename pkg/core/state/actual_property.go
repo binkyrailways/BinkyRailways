@@ -17,13 +17,15 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"time"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // ActualProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type ActualProperty interface {
-	// Fired when the actual value has changed.
-	ActualChanged() model.EventHandler
 }
 
 // ActualBoolProperty contains the value of a property in a state object.
@@ -46,6 +48,16 @@ type ActualIntProperty interface {
 	SetActual(value int) error
 }
 
+// ActualTimeProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type ActualTimeProperty interface {
+	ActualProperty
+
+	// Gets / sets the actual value
+	GetActual() time.Time
+	SetActual(value time.Time) error
+}
+
 // ActualLocDirectionProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type ActualLocDirectionProperty interface {
@@ -54,6 +66,16 @@ type ActualLocDirectionProperty interface {
 	// Gets / sets the actual value
 	GetActual() LocDirection
 	SetActual(value LocDirection) error
+}
+
+// ActualSwitchDirectionProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type ActualSwitchDirectionProperty interface {
+	ActualProperty
+
+	// Gets / sets the actual value
+	GetActual() model.SwitchDirection
+	SetActual(value model.SwitchDirection) error
 }
 
 // ActualBlockSideProperty contains the value of a property in a state object.

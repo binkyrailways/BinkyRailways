@@ -27,7 +27,7 @@ type Block interface {
 	// will actually wait.
 	// When set to 0, no locs will wait (unless there is no route available).
 	// When set to 100, all locs (that are allowed) will wait.
-	GetWaitProbability() bool
+	GetWaitProbability() int
 
 	// Minimum amount of time to wait (if <see cref="WaitProbability"/> is set) in seconds.
 	GetMinimumWaitTime() int

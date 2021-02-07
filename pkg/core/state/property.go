@@ -24,9 +24,6 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 type Property interface {
 	ActualProperty
 
-	// Fired when the requested value has changed.
-	RequestedChanged() model.EventHandler
-
 	// Is the request value equal to the actual value?
 	IsConsistent() bool
 }
@@ -62,4 +59,14 @@ type LocDirectionProperty interface {
 	// Gets / sets the requested value
 	GetRequested() LocDirection
 	SetRequested(value LocDirection) error
+}
+
+// SwitchDirectionProperty contains the value of a property in a state object.
+// The value contains a requested value and an actual value.
+type SwitchDirectionProperty interface {
+	ActualSwitchDirectionProperty
+
+	// Gets / sets the requested value
+	GetRequest() model.SwitchDirection
+	SetRequested(value model.SwitchDirection) error
 }

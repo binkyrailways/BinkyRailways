@@ -21,6 +21,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // Route specifies the state of a single route.
 type Route interface {
+	Entity
 	Lockable
 
 	// Speed of locs when going this route.

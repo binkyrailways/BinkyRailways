@@ -26,3 +26,10 @@ const (
 	// LocDirectionReverse means the loc must go in reverse
 	LocDirectionReverse LocDirection = 1
 )
+
+func (d LocDirection) String() string {
+	if d == LocDirectionForward {
+		return "Forward"
+	}
+	return "Reverse"
+}

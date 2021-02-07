@@ -23,9 +23,6 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 type CommandStation interface {
 	Entity
 
-	// Fired when the value of <see cref="Idle"/> has changed.
-	IdleChanged() model.EventHandler
-
 	// Junctions driven by this command station
 	ForEachJunction(func(Junction))
 
@@ -41,13 +38,12 @@ type CommandStation interface {
 	// Signals driven by this command station
 	ForEachSignal(func(Signal))
 
-	// <summary>
 	// Can this command station be used to serve the given network?
-	// </summary>
 	// <param name="entity">The entity being search for.</param>
 	// <param name="network">The network in question</param>
 	// <param name="exactMatch">Set to true when there is an exact match in address type and address space, false otherwise.</param>
-	//bool Supports(IAddressEntity entity, Network network, out bool exactMatch);
+	// Returns: supports, exactMatch
+	Supports(entity model.AddressEntity, network model.Network) (bool, bool)
 
 	// Enable/disable power on the railway
 	GetPower() BoolProperty

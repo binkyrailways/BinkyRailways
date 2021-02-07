@@ -19,5 +19,6 @@ package state
 
 // Junction specifies the state of a single junction
 type Junction interface {
+	Entity
 	Lockable
 }
