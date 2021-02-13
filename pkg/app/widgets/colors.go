@@ -15,11 +15,21 @@
 // Author Ewout Prangsma
 //
 
-package canvas
+package widgets
 
-import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-
-var (
-	HoverBg = widgets.ARGB(0xC0333333)
-	BlockBg = widgets.ARGB(0x80CCCCCC)
+import (
+	"image/color"
 )
+
+func RGB(value uint32) color.NRGBA {
+	return ARGB(0xFF000000 | value)
+}
+
+func ARGB(value uint32) color.NRGBA {
+	return color.NRGBA{
+		A: uint8(value >> 24),
+		R: uint8(value >> 16),
+		G: uint8(value >> 8),
+		B: uint8(value),
+	}
+}

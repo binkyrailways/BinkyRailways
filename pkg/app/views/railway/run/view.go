@@ -21,7 +21,6 @@ import (
 	"log"
 
 	"gioui.org/layout"
-	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/x/component"
 
@@ -48,7 +47,9 @@ type View struct {
 	appBar      *component.AppBar
 	buttonEdit  widget.Clickable
 	canvas      *canvas.EntityCanvas
+	power       *powerView
 	locs        *runLocsView
+	loc         *runLocView
 }
 
 // New constructs a new railway view
@@ -59,8 +60,10 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 		setEditMode: setEditMode,
 		modal:       component.NewModal(),
 		canvas:      canvas.RailwayStateCanvas(railway, run.NewBuilder()),
-		locs:        newRunLocsView(vm, railway),
+		power:       newPowerView(vm, railway),
+		loc:         newRunLocView(vm),
 	}
+	v.locs = newRunLocsView(vm, railway, v.loc.Select)
 	v.appBar = component.NewAppBar(v.modal)
 	return v
 }
@@ -100,9 +103,30 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
 	canvas := func(gtx C) D { return v.canvas.Layout(gtx, th) }
+	vsLeft := func(gtx C) D {
+		return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
+			layout.Rigid(func(gtx C) D {
+				return widgets.WithBorder(gtx, th, v.power.Layout)
+			}),
+			layout.Rigid(func(gtx C) D {
+				return layout.Spacer{Height: widgets.Padding}.Layout(gtx)
+			}),
+			layout.Flexed(1, func(gtx C) D {
+				return widgets.WithBorder(gtx, th, func(gtx C) D {
+					return widgets.WithPadding(gtx, v.locs.Layout)
+				})
+			}),
+			layout.Rigid(func(gtx C) D {
+				return layout.Spacer{Height: widgets.Padding}.Layout(gtx)
+			}),
+			layout.Rigid(func(gtx C) D {
+				return widgets.WithBorder(gtx, th, v.loc.Layout)
+			}),
+		)
+	}
 	hs := widgets.HorizontalSplit(
-		func(gtx C) D { return layout.UniformInset(unit.Dp(5)).Layout(gtx, v.locs.Layout) },
-		func(gtx C) D { return layout.UniformInset(unit.Dp(5)).Layout(gtx, canvas) },
+		func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
+		func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
 	)
 	hs.Start.Weight = 1
 	hs.End.Weight = 5

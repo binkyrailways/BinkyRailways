@@ -15,11 +15,13 @@
 // Author Ewout Prangsma
 //
 
-package canvas
+package widgets
 
-import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-
-var (
-	HoverBg = widgets.ARGB(0xC0333333)
-	BlockBg = widgets.ARGB(0x80CCCCCC)
+import (
+	"gioui.org/layout"
 )
+
+// WithPadding adds a standard padding around the given widget.
+func WithPadding(gtx C, w func(C) D) D {
+	return layout.UniformInset(Padding).Layout(gtx, w)
+}

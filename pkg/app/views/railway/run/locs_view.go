@@ -19,8 +19,6 @@ package run
 
 import (
 	"gioui.org/layout"
-	"gioui.org/unit"
-	"gioui.org/widget"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -30,11 +28,10 @@ import (
 type runLocsView struct {
 	vm         views.ViewManager
 	entityList widgets.TreeView
-	locView    *runLocView
 }
 
 // New constructs a new locs view
-func newRunLocsView(vm views.ViewManager, railway state.Railway) *runLocsView {
+func newRunLocsView(vm views.ViewManager, railway state.Railway, onSelect func(state.Loc)) *runLocsView {
 	itemCache := widgets.EntityTreeViewItemCache{}
 	v := &runLocsView{
 		vm: vm,
@@ -53,43 +50,20 @@ func newRunLocsView(vm views.ViewManager, railway state.Railway) *runLocsView {
 				},
 			},
 		},
-		locView: newRunLocView(vm),
 	}
-	v.entityList.OnSelect = v.onSelect
+	v.entityList.OnSelect = func(selection interface{}) {
+		switch selection := selection.(type) {
+		case state.Loc:
+			onSelect(selection)
+		default:
+			onSelect(nil)
+		}
+	}
 	return v
-}
-
-// Invalidate the UI
-func (v *runLocsView) Invalidate() {
-	v.vm.Invalidate()
-}
-
-// onSelect ensures that the given object is selected in the view
-func (v *runLocsView) onSelect(selection interface{}) {
-	switch selection := selection.(type) {
-	case state.Loc:
-		v.locView.Select(selection)
-	default:
-		v.locView.Select(nil)
-	}
-	v.vm.Invalidate()
 }
 
 // Handle events and draw the view
 func (v *runLocsView) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
-
-	vs := widgets.VerticalSplit(
-		func(gtx C) D { return v.entityList.Layout(gtx, th) },
-		func(gtx C) D {
-			return widget.Border{
-				Color:        th.Fg,
-				CornerRadius: unit.Dp(5),
-				Width:        unit.Dp(1),
-			}.Layout(gtx, func(gtx C) D { return layout.UniformInset(unit.Dp(5)).Layout(gtx, v.locView.Layout) })
-		},
-	)
-	vs.End.Rigid = true
-
-	return vs.Layout(gtx)
+	return v.entityList.Layout(gtx, th)
 }

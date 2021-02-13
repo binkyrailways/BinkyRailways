@@ -226,7 +226,10 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		return layout.Dimensions{Size: gtx.Constraints.Max}
 	}
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
-	hs := widgets.HorizontalSplit(func(gtx C) D { return v.entityList.Layout(gtx, th) }, content)
+	hs := widgets.HorizontalSplit(
+		func(gtx C) D { return widgets.WithPadding(gtx, func(gtx C) D { return v.entityList.Layout(gtx, th) }) },
+		func(gtx C) D { return widgets.WithPadding(gtx, content) },
+	)
 	hs.End.Weight = 6
 	vs := widgets.VerticalSplit(bar, hs.Layout)
 	vs.Start.Rigid = true

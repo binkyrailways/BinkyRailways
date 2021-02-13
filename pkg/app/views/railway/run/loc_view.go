@@ -18,19 +18,26 @@
 package run
 
 import (
+	"fmt"
+
 	"gioui.org/layout"
+	"gioui.org/text"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 type runLocView struct {
-	current   state.Loc
-	vm        views.ViewManager
-	direction widget.Enum
-	speed     widget.Float
+	current    state.Loc
+	vm         views.ViewManager
+	speed      widget.Float
+	buttonRev  widget.Clickable
+	buttonFor  widget.Clickable
+	buttonStop widget.Clickable
+	f0         widget.Bool
 }
 
 // newRunLocView initializes a runLocView
@@ -48,10 +55,10 @@ func (v *runLocView) Select(loc state.Loc) {
 	v.current = loc
 	if loc == nil {
 		v.speed.Value = 0
-		v.direction.Value = state.LocDirectionForward.String()
+		v.f0.Value = false
 	} else {
 		v.speed.Value = float32(loc.GetSpeed().GetRequested())
-		v.direction.Value = loc.GetDirection().GetRequested().String()
+		v.f0.Value = loc.GetF0().GetRequested()
 	}
 }
 
@@ -59,36 +66,106 @@ func (v *runLocView) Select(loc state.Loc) {
 func (v *runLocView) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 
-	name := ""
-	if l := v.current; l != nil {
-		// Update requested value
-		if v.direction.Changed() {
-			if dir, err := state.ParseLocDirection(v.direction.Value); err == nil {
-				l.GetDirection().SetRequested(dir)
-			}
+	name := "n/a"
+	direction := "n/a"
+	speed := ""
+	l := v.current
+	if v.buttonRev.Clicked() {
+		if l != nil {
+			l.GetDirection().SetRequested(state.LocDirectionReverse)
 		}
-		if v.speed.Changed() {
+	}
+	if v.buttonFor.Clicked() {
+		if l != nil {
+			l.GetDirection().SetRequested(state.LocDirectionForward)
+		}
+	}
+	if v.speed.Changed() {
+		if l != nil {
 			l.GetSpeed().SetRequested(int(v.speed.Value))
 		}
-
+	}
+	if v.f0.Changed() {
+		if l != nil {
+			l.GetF0().SetRequested(v.f0.Value)
+		}
+	}
+	if v.buttonStop.Clicked() {
+		if l != nil {
+			l.GetSpeedInSteps().SetRequested(0)
+		}
+	}
+	if l != nil {
 		// Update UI
 		name = l.GetDescription()
-		v.direction.Value = l.GetDirection().GetRequested().String()
-		v.speed.Value = float32(l.GetSpeed().GetRequested())
+		sp := l.GetSpeed()
+		v.speed.Value = float32(sp.GetRequested())
+		if sp.IsConsistent() {
+			speed = fmt.Sprintf("%d %%", sp.GetRequested())
+		} else {
+			speed = fmt.Sprintf("Changing to %d %%", sp.GetRequested())
+		}
+		dir := l.GetDirection()
+		if dir.IsConsistent() {
+			direction = dir.GetRequested().String()
+		} else {
+			direction = "Changing to " + dir.GetRequested().String()
+		}
+		v.f0.Value = l.GetF0().GetRequested()
+	} else {
+		return widgets.WithPadding(gtx, material.H5(th, name).Layout)
 	}
 
-	direction := func(gtx C) D {
+	buttons := func(gtx C) D {
 		return layout.Flex{Axis: layout.Horizontal}.Layout(gtx,
-			layout.Flexed(1, material.RadioButton(th, &v.direction, state.LocDirectionReverse.String(), "Reverse").Layout),
-			layout.Flexed(1, material.RadioButton(th, &v.direction, state.LocDirectionForward.String(), "Forward").Layout),
+			layout.Flexed(1, func(gtx C) D {
+				b := material.Button(th, &v.buttonRev, "Reverse")
+				b.Background = widgets.BlueGrey
+				return widgets.WithPadding(gtx, b.Layout)
+			}),
+			layout.Flexed(1, func(gtx C) D {
+				b := material.Button(th, &v.buttonFor, "Forward")
+				b.Background = widgets.Teal
+				return widgets.WithPadding(gtx, b.Layout)
+			}),
+		)
+	}
+
+	speedSlider := func(gtx C) D {
+		return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
+			layout.Rigid(func(gtx C) D {
+				lb := material.Caption(th, speed)
+				lb.Alignment = text.Middle
+				return lb.Layout(gtx)
+			}),
+			layout.Rigid(func(gtx C) D {
+				return material.Slider(th, &v.speed, 0, 100).Layout(gtx)
+			}),
 		)
 	}
 
 	return layout.Flex{
 		Axis: layout.Vertical,
 	}.Layout(gtx,
-		layout.Rigid(material.H5(th, name).Layout),
-		layout.Rigid(direction),
-		layout.Rigid(material.Slider(th, &v.speed, 0, 100).Layout),
+		layout.Rigid(func(gtx C) D {
+			return widgets.WithPadding(gtx, material.H5(th, name).Layout)
+		}),
+		layout.Rigid(func(gtx C) D {
+			return widgets.WithPadding(gtx, material.H6(th, direction).Layout)
+		}),
+		layout.Rigid(buttons),
+		layout.Rigid(func(gtx C) D {
+			return widgets.WithPadding(gtx, speedSlider)
+		}),
+		layout.Rigid(func(gtx C) D {
+			b := material.Button(th, &v.buttonStop, "Stop")
+			b.Background = widgets.Red
+			return widgets.WithPadding(gtx, b.Layout)
+		}),
+		layout.Rigid(func(gtx C) D {
+			dims := widgets.WithPadding(gtx, material.CheckBox(th, &v.f0, "Lights").Layout)
+			dims.Size.X = gtx.Constraints.Min.X
+			return dims
+		}),
 	)
 }

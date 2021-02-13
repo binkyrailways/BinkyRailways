@@ -15,11 +15,19 @@
 // Author Ewout Prangsma
 //
 
-package canvas
+package widgets
 
-import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-
-var (
-	HoverBg = widgets.ARGB(0xC0333333)
-	BlockBg = widgets.ARGB(0x80CCCCCC)
+import (
+	"gioui.org/unit"
+	"gioui.org/widget"
+	"gioui.org/widget/material"
 )
+
+// WithBorder adds a border around the given widget.
+func WithBorder(gtx C, th *material.Theme, w func(C) D) D {
+	return widget.Border{
+		Color:        th.Fg,
+		CornerRadius: unit.Dp(5),
+		Width:        unit.Dp(1),
+	}.Layout(gtx, w)
+}
