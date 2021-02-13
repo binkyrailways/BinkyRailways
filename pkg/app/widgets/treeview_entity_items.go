@@ -25,9 +25,13 @@ import (
 	"gioui.org/op/paint"
 	w "gioui.org/widget"
 	"gioui.org/widget/material"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
+
+// Entity provides enough of the core Entity interface to display it.
+type Entity interface {
+	GetID() string
+	GetDescription() string
+}
 
 // EntityTreeViewItemCache is a cache for creating Entity TreeViewItem's
 type EntityTreeViewItemCache struct {
@@ -36,7 +40,7 @@ type EntityTreeViewItemCache struct {
 
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
-func (c *EntityTreeViewItemCache) CreateItem(entity model.Entity, level int) TreeViewItem {
+func (c *EntityTreeViewItemCache) CreateItem(entity Entity, level int) TreeViewItem {
 	key := fmt.Sprintf("%s/%d", entity.GetID(), level)
 	if c.cache == nil {
 		c.cache = make(map[string]TreeViewItem)
@@ -53,7 +57,7 @@ func (c *EntityTreeViewItemCache) CreateItem(entity model.Entity, level int) Tre
 }
 
 type entityItem struct {
-	entity model.Entity
+	entity Entity
 	level  int
 	w.Clickable
 }

@@ -17,6 +17,11 @@
 
 package state
 
+import (
+	"fmt"
+	"strings"
+)
+
 // LocDirection describes the direction of a loc.
 type LocDirection int
 
@@ -32,4 +37,16 @@ func (d LocDirection) String() string {
 		return "Forward"
 	}
 	return "Reverse"
+}
+
+// ParseLocDirection converts a string into a loc direction.
+func ParseLocDirection(input string) (LocDirection, error) {
+	switch strings.ToLower(input) {
+	case "forward":
+		return LocDirectionForward, nil
+	case "reverse":
+		return LocDirectionReverse, nil
+	default:
+		return 0, fmt.Errorf("Unknown LocDirection '%s'", input)
+	}
 }

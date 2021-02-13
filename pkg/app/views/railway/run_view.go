@@ -21,6 +21,7 @@ import (
 	"log"
 
 	"gioui.org/layout"
+	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/x/component"
 
@@ -39,6 +40,7 @@ type runView struct {
 	appBar     *component.AppBar
 	buttonEdit widget.Clickable
 	canvas     *canvas.EntityCanvas
+	locs       *runLocsView
 }
 
 // New constructs a new railway view
@@ -49,6 +51,7 @@ func newRunView(vm views.ViewManager, railway state.Railway, parent *railwayView
 		parent:  parent,
 		modal:   component.NewModal(),
 		canvas:  canvas.RailwayStateCanvas(railway, run.NewBuilder()),
+		locs:    newRunLocsView(vm, railway),
 	}
 	v.appBar = component.NewAppBar(v.modal)
 	return v
@@ -89,7 +92,13 @@ func (v *runView) Layout(gtx layout.Context) layout.Dimensions {
 
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
 	canvas := func(gtx C) D { return v.canvas.Layout(gtx, th) }
-	vs := widgets.VerticalSplit(bar, canvas)
+	hs := widgets.HorizontalSplit(
+		func(gtx C) D { return layout.UniformInset(unit.Dp(5)).Layout(gtx, v.locs.Layout) },
+		func(gtx C) D { return layout.UniformInset(unit.Dp(5)).Layout(gtx, canvas) },
+	)
+	hs.Start.Weight = 1
+	hs.End.Weight = 5
+	vs := widgets.VerticalSplit(bar, hs.Layout)
 	vs.Start.Rigid = true
 
 	// Draw layers
