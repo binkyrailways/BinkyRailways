@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Railway specifies the state of an entire railway.
 type Railway interface {
@@ -28,6 +32,10 @@ type Railway interface {
 
 	// Unknown standard switch has been detected.
 	//        event EventHandler<PropertyEventArgs<Address>> UnknownSwitch;
+
+	// Subscribe to events.
+	// To cancel the subscription, call the given cancel function.
+	Subscribe(cb func(Event)) context.CancelFunc
 
 	// Gets the railway entity (model)
 	GetModel() model.Railway

@@ -41,6 +41,7 @@ type Railway interface {
 // railway implements the Railway state
 type railway struct {
 	entity
+	eventDispatcher
 
 	virtualMode     virtualMode
 	power           powerProperty
@@ -189,9 +190,6 @@ func (r *railway) TryPrepareForUse(ui state.UserInterface, persistence state.Per
 	})
 	return err
 }
-
-// Send the given event to all interested receivers.
-func (r *railway) Send(state.Event) {}
 
 // Try to resolve the given endpoint into a block state.
 func (r *railway) ResolveEndPoint(endpoint model.EndPoint) (Block, error) {
@@ -381,5 +379,6 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 
 // Close the railway
 func (r *railway) Close() {
+	r.eventDispatcher.CancelAll()
 	// TODO
 }

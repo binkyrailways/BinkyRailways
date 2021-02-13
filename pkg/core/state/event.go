@@ -17,6 +17,8 @@
 
 package state
 
+import "context"
+
 // Event is implemented by all Event types.
 type Event interface {
 	// Just to ensure we can identify events.
@@ -27,6 +29,9 @@ type Event interface {
 type EventDispatcher interface {
 	// Send the given event to all interested receivers.
 	Send(Event)
+	// Subscribe to events.
+	// To cancel the subscription, call the given cancel function.
+	Subscribe(func(Event)) context.CancelFunc
 }
 
 // ActualStateChangedEvent is raised when an actual state of a property of an

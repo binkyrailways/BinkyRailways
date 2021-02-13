@@ -23,7 +23,8 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/state"
 // The value contains a requested value and an actual value.
 type boolProperty struct {
 	actualBoolProperty
-	requested bool
+	requested          bool
+	OnRequestedChanged func(bool)
 }
 
 func (p *boolProperty) IsConsistent() bool {
@@ -35,6 +36,9 @@ func (p *boolProperty) GetRequested() bool {
 func (p *boolProperty) SetRequested(value bool) error {
 	if p.requested != value {
 		p.requested = value
+		if p.OnRequestedChanged != nil {
+			p.OnRequestedChanged(value)
+		}
 		p.SendRequestedStateChanged(p)
 	}
 	return nil
@@ -44,7 +48,8 @@ func (p *boolProperty) SetRequested(value bool) error {
 // The value contains a requested value and an actual value.
 type intProperty struct {
 	actualIntProperty
-	requested int
+	requested          int
+	OnRequestedChanged func(int)
 }
 
 func (p *intProperty) IsConsistent() bool {
@@ -56,6 +61,9 @@ func (p *intProperty) GetRequested() int {
 func (p *intProperty) SetRequested(value int) error {
 	if p.requested != value {
 		p.requested = value
+		if p.OnRequestedChanged != nil {
+			p.OnRequestedChanged(value)
+		}
 		p.SendRequestedStateChanged(p)
 	}
 	return nil
@@ -65,7 +73,8 @@ func (p *intProperty) SetRequested(value int) error {
 // The value contains a requested value and an actual value.
 type locDirectionProperty struct {
 	actualLocDirectionProperty
-	requested state.LocDirection
+	requested          state.LocDirection
+	OnRequestedChanged func(state.LocDirection)
 }
 
 func (p *locDirectionProperty) IsConsistent() bool {
@@ -77,6 +86,9 @@ func (p *locDirectionProperty) GetRequested() state.LocDirection {
 func (p *locDirectionProperty) SetRequested(value state.LocDirection) error {
 	if p.requested != value {
 		p.requested = value
+		if p.OnRequestedChanged != nil {
+			p.OnRequestedChanged(value)
+		}
 		p.SendRequestedStateChanged(p)
 	}
 	return nil

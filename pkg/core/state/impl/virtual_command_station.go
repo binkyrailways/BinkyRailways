@@ -36,6 +36,9 @@ func newVirtualCommandStation(railway Railway) CommandStation {
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
 	}
 	cs.power.Configure(cs, railway)
+	cs.power.OnRequestedChanged = func(value bool) {
+		cs.power.SetActual(value)
+	}
 	return cs
 }
 
@@ -49,6 +52,11 @@ func (cs *virtualCommandStation) getCommandStation() model.VirtualCommandStation
 // returns an error otherwise.
 func (cs *virtualCommandStation) TryPrepareForUse(state.UserInterface, state.Persistence) error {
 	return nil
+}
+
+// Description of the underlying entity
+func (cs *virtualCommandStation) GetDescription() string {
+	return "Virtual"
 }
 
 // Enable/disable power on the railway

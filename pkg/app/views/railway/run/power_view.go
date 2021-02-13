@@ -57,13 +57,13 @@ func (v *powerView) Layout(gtx layout.Context) layout.Dimensions {
 	buttons := func(gtx C) D {
 		return layout.Flex{Axis: layout.Horizontal}.Layout(gtx,
 			layout.Flexed(1, func(gtx C) D {
-				b := material.Button(th, &v.buttonOn, "Power On")
-				b.Background = widgets.Green
+				b := material.Button(th, &v.buttonOff, "Power Off")
+				b.Background = widgets.Red
 				return widgets.WithPadding(gtx, b.Layout)
 			}),
 			layout.Flexed(1, func(gtx C) D {
-				b := material.Button(th, &v.buttonOff, "Power Off")
-				b.Background = widgets.Red
+				b := material.Button(th, &v.buttonOn, "Power On")
+				b.Background = widgets.Green
 				return widgets.WithPadding(gtx, b.Layout)
 			}),
 		)

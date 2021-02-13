@@ -18,6 +18,7 @@
 package run
 
 import (
+	"fmt"
 	"log"
 
 	"gioui.org/layout"
@@ -65,7 +66,14 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 	}
 	v.locs = newRunLocsView(vm, railway, v.loc.Select)
 	v.appBar = component.NewAppBar(v.modal)
+	railway.Subscribe(v.processEvent)
 	return v
+}
+
+// processEvent receives events send by railway state
+func (v *View) processEvent(evt state.Event) {
+	fmt.Println(evt)
+	v.vm.Invalidate()
 }
 
 // Layout handles events and draw the view

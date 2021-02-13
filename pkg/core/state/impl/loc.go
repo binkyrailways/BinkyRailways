@@ -63,20 +63,20 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.startNextRouteTime.Configure(l, railway)
 	l.speed.loc = l
 	l.speedInSteps.Configure(l, railway)
-	l.speedInSteps.OnActualChanged = func(int) {
+	l.speedInSteps.OnRequestedChanged = func(int) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(l)
 		}
 	}
 	l.direction.Configure(l, railway)
-	l.direction.OnActualChanged = func(state.LocDirection) {
+	l.direction.OnRequestedChanged = func(state.LocDirection) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(l)
 		}
 	}
 	l.reversing.Configure(l, railway)
 	l.f0.Configure(l, railway)
-	l.f0.OnActualChanged = func(bool) {
+	l.f0.OnRequestedChanged = func(bool) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(l)
 		}

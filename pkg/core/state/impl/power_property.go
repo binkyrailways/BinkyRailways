@@ -38,14 +38,14 @@ func (sp *powerProperty) GetActual() bool {
 	return sp.actual
 }
 func (sp *powerProperty) SetActual(value bool) error {
+	var err error
+	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+		multierr.AppendInto(&err, cs.GetPower().SetActual(value))
+	})
+	if err != nil {
+		return err
+	}
 	if sp.actual != value {
-		var err error
-		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-			multierr.AppendInto(&err, cs.GetPower().SetActual(value))
-		})
-		if err != nil {
-			return err
-		}
 		sp.actual = value
 		sp.Railway.Send(state.ActualStateChangedEvent{
 			Subject:  sp.Railway,
@@ -60,14 +60,14 @@ func (sp *powerProperty) GetRequested() bool {
 	return sp.requested
 }
 func (sp *powerProperty) SetRequested(value bool) error {
+	var err error
+	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+		multierr.AppendInto(&err, cs.GetPower().SetRequested(value))
+	})
+	if err != nil {
+		return err
+	}
 	if sp.requested != value {
-		var err error
-		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-			multierr.AppendInto(&err, cs.GetPower().SetRequested(value))
-		})
-		if err != nil {
-			return err
-		}
 		sp.requested = value
 		sp.Railway.Send(state.RequestedStateChangedEvent{
 			Subject:  sp.Railway,

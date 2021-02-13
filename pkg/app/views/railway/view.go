@@ -42,7 +42,13 @@ type railwayView struct {
 	railwayState state.Railway
 	runMode      bool
 	virtualMode  bool
-	currentView  layout.Widget
+	currentView  childView
+}
+
+// childView is implemented by direct children of this view
+type childView interface {
+	// Layout the view
+	Layout(gtx C) D
 }
 
 // New constructs a new railway view
@@ -51,8 +57,7 @@ func New(vm views.ViewManager, railway model.Railway) views.View {
 		vm:      vm,
 		railway: railway,
 	}
-	editView := edit.New(vm, railway, v.SetRunMode)
-	v.currentView = editView.Layout
+	v.currentView = edit.New(vm, railway, v.SetRunMode)
 	return v
 }
 
@@ -63,7 +68,7 @@ func (v *railwayView) GetTitleExtension() string {
 
 // Handle events and draw the view
 func (v *railwayView) Layout(gtx layout.Context) layout.Dimensions {
-	return v.currentView(gtx)
+	return v.currentView.Layout(gtx)
 }
 
 // SetEditMode switches to edit mode
@@ -100,10 +105,10 @@ func (v *railwayView) setRunMode(runMode, virtualMode bool) error {
 			return err
 		}
 		runView := run.New(v.vm, v.railwayState, v.SetEditMode)
-		v.currentView = runView.Layout
+		v.currentView = runView
 	} else {
 		editView := edit.New(v.vm, v.railway, v.SetRunMode)
-		v.currentView = editView.Layout
+		v.currentView = editView
 	}
 	v.vm.Invalidate()
 	return nil
