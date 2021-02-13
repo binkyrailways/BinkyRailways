@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-package railway
+package edit
 
 import (
 	"log"
@@ -32,10 +32,18 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type editView struct {
+type (
+	C = layout.Context
+	D = layout.Dimensions
+)
+
+type setRunModeFunc = func(virtual bool)
+
+// View represents the view in which a railroad is being edited.
+type View struct {
 	vm               views.ViewManager
 	railway          model.Railway
-	parent           *railwayView
+	setRunMode       setRunModeFunc
 	modal            *component.ModalLayer
 	appBar           *component.AppBar
 	addSheet         *component.ModalSheet
@@ -48,15 +56,15 @@ type editView struct {
 	editor           editors.Editor
 }
 
-// New constructs a new railway view
-func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayView) *editView {
+// New constructs a new editing railway view
+func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc) *View {
 	itemCache := widgets.EntityTreeViewItemCache{}
 	groupCache := widgets.EntityTreeGroupCache{}
-	v := &editView{
-		vm:      vm,
-		railway: railway,
-		parent:  parent,
-		modal:   component.NewModal(),
+	v := &View{
+		vm:         vm,
+		railway:    railway,
+		setRunMode: setRunMode,
+		modal:      component.NewModal(),
 		entityList: widgets.TreeView{
 			RootItems: []widgets.TreeViewItem{
 				&widgets.TreeViewGroup{
@@ -119,17 +127,17 @@ func newEditView(vm views.ViewManager, railway model.Railway, parent *railwayVie
 }
 
 // Select the given entity in the view
-func (v *editView) Select(entity model.Entity) {
+func (v *View) Select(entity model.Entity) {
 	v.entityList.OnSelect(entity)
 }
 
 // Invalidate the UI
-func (v *editView) Invalidate() {
+func (v *View) Invalidate() {
 	v.vm.Invalidate()
 }
 
 // onSelect ensures that the given object is selected in the view
-func (v *editView) onSelect(selection interface{}) {
+func (v *View) onSelect(selection interface{}) {
 	switch selection := selection.(type) {
 	case model.Loc:
 		v.editor = editors.NewLocEditor(selection, v)
@@ -161,14 +169,14 @@ func (v *editView) onSelect(selection interface{}) {
 }
 
 // Handle events and draw the view
-func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
+func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 
 	if v.buttonRun.Clicked() {
-		v.parent.SetRunMode(true, false)
+		v.setRunMode(false)
 	}
 	if v.buttonRunVirtual.Clicked() {
-		v.parent.SetRunMode(true, true)
+		v.setRunMode(true)
 	}
 	if v.buttonAdd.Clicked() {
 		v.addSheet.Appear(gtx.Now)
@@ -204,9 +212,9 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 	v.appBar.Title = v.railway.GetDescription()
 	v.appBar.SetActions(
 		[]component.AppBarAction{
-			component.SimpleIconAction(th, &v.buttonAdd, iconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
-			component.SimpleIconAction(th, &v.buttonRun, iconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
-			component.SimpleIconAction(th, &v.buttonRunVirtual, iconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
+			component.SimpleIconAction(th, &v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+			component.SimpleIconAction(th, &v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
+			component.SimpleIconAction(th, &v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
 		},
 		[]component.OverflowAction{})
 
@@ -238,7 +246,7 @@ func (v *editView) Layout(gtx layout.Context) layout.Dimensions {
 }
 
 // Handle events and draw the add sheet
-func (v *editView) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
+func (v *View) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
 	return v.addSheetList.Layout(gtx, len(v.addSheetButtons), func(gtx C, index int) D {
 		btn := &v.addSheetButtons[index]
 		if btn.Separator {

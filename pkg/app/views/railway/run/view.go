@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-package railway
+package run
 
 import (
 	"log"
@@ -32,37 +32,45 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-type runView struct {
-	vm         views.ViewManager
-	railway    state.Railway
-	parent     *railwayView
-	modal      *component.ModalLayer
-	appBar     *component.AppBar
-	buttonEdit widget.Clickable
-	canvas     *canvas.EntityCanvas
-	locs       *runLocsView
+type (
+	C = layout.Context
+	D = layout.Dimensions
+
+	setEditModeFunc func()
+)
+
+// View implements the view in which trains are being operated.
+type View struct {
+	vm          views.ViewManager
+	railway     state.Railway
+	setEditMode setEditModeFunc
+	modal       *component.ModalLayer
+	appBar      *component.AppBar
+	buttonEdit  widget.Clickable
+	canvas      *canvas.EntityCanvas
+	locs        *runLocsView
 }
 
 // New constructs a new railway view
-func newRunView(vm views.ViewManager, railway state.Railway, parent *railwayView) *runView {
-	v := &runView{
-		vm:      vm,
-		railway: railway,
-		parent:  parent,
-		modal:   component.NewModal(),
-		canvas:  canvas.RailwayStateCanvas(railway, run.NewBuilder()),
-		locs:    newRunLocsView(vm, railway),
+func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFunc) *View {
+	v := &View{
+		vm:          vm,
+		railway:     railway,
+		setEditMode: setEditMode,
+		modal:       component.NewModal(),
+		canvas:      canvas.RailwayStateCanvas(railway, run.NewBuilder()),
+		locs:        newRunLocsView(vm, railway),
 	}
 	v.appBar = component.NewAppBar(v.modal)
 	return v
 }
 
-// Handle events and draw the view
-func (v *runView) Layout(gtx layout.Context) layout.Dimensions {
+// Layout handles events and draw the view
+func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 
 	if v.buttonEdit.Clicked() {
-		v.parent.SetRunMode(false, false)
+		v.setEditMode()
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
@@ -86,7 +94,7 @@ func (v *runView) Layout(gtx layout.Context) layout.Dimensions {
 	v.appBar.Title = v.railway.GetDescription()
 	v.appBar.SetActions(
 		[]component.AppBarAction{
-			component.SimpleIconAction(th, &v.buttonEdit, iconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
+			component.SimpleIconAction(th, &v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
 		},
 		[]component.OverflowAction{})
 

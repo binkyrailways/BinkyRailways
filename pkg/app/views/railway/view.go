@@ -18,11 +18,13 @@
 package railway
 
 import (
+	"fmt"
+
 	"gioui.org/layout"
-	"gioui.org/widget"
-	"golang.org/x/exp/shiny/materialdesign/icons"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway/edit"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway/run"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/impl"
@@ -43,20 +45,13 @@ type railwayView struct {
 	currentView  layout.Widget
 }
 
-var (
-	iconAdd, _        = widget.NewIcon(icons.ContentAdd)
-	iconEdit, _       = widget.NewIcon(icons.ContentCreate)
-	iconRun, _        = widget.NewIcon(icons.AVPlayArrow)
-	iconRunVirtual, _ = widget.NewIcon(icons.AVPlayCircleOutline)
-)
-
 // New constructs a new railway view
 func New(vm views.ViewManager, railway model.Railway) views.View {
 	v := &railwayView{
 		vm:      vm,
 		railway: railway,
 	}
-	editView := newEditView(vm, railway, v)
+	editView := edit.New(vm, railway, v.SetRunMode)
 	v.currentView = editView.Layout
 	return v
 }
@@ -71,8 +66,22 @@ func (v *railwayView) Layout(gtx layout.Context) layout.Dimensions {
 	return v.currentView(gtx)
 }
 
-// SetRunMode switch from edit to run mode and back
-func (v *railwayView) SetRunMode(runMode, virtualMode bool) error {
+// SetEditMode switches to edit mode
+func (v *railwayView) SetEditMode() {
+	if err := v.setRunMode(false, false); err != nil {
+		fmt.Printf("Switching to edit mode failed: %s\n", err)
+	}
+}
+
+// SetRunMode switches to run mode
+func (v *railwayView) SetRunMode(virtual bool) {
+	if err := v.setRunMode(true, virtual); err != nil {
+		fmt.Printf("Switching to run mode failed: %s\n", err)
+	}
+}
+
+// setRunMode switch from edit to run mode and back
+func (v *railwayView) setRunMode(runMode, virtualMode bool) error {
 	// Any changes?
 	if v.runMode == runMode && v.virtualMode == virtualMode {
 		return nil
@@ -90,10 +99,10 @@ func (v *railwayView) SetRunMode(runMode, virtualMode bool) error {
 		if err != nil {
 			return err
 		}
-		runView := newRunView(v.vm, v.railwayState, v)
+		runView := run.New(v.vm, v.railwayState, v.SetEditMode)
 		v.currentView = runView.Layout
 	} else {
-		editView := newEditView(v.vm, v.railway, v)
+		editView := edit.New(v.vm, v.railway, v.SetRunMode)
 		v.currentView = editView.Layout
 	}
 	v.vm.Invalidate()

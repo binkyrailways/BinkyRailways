@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-package railway
+package run
 
 import (
 	"gioui.org/layout"
