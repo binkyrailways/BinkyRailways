@@ -67,6 +67,16 @@ func (item *entityItem) SortKey() string {
 	return strings.ToLower(item.entity.GetDescription())
 }
 
+// Return true if the given selection is contained in this item
+func (item *entityItem) Select() interface{} {
+	return item.entity
+}
+
+// Contains returns true if the given selection is contained in this item
+func (item *entityItem) Contains(selection interface{}) bool {
+	return item.entity == selection
+}
+
 func (item *entityItem) ProcessEvents() interface{} {
 	if item.Clicked() {
 		return item.entity

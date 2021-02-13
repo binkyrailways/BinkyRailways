@@ -20,6 +20,7 @@ package widgets
 import (
 	"sort"
 
+	"gioui.org/io/key"
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget/material"
@@ -38,6 +39,10 @@ type TreeView struct {
 type TreeViewItem interface {
 	// Return a key used to sort the items
 	SortKey() string
+	// Return true if the given selection is contained in this item
+	Contains(selection interface{}) bool
+	// Select returns the selection that this item represents (can be nil)
+	Select() interface{}
 	// Process events, return an entity if it is clicked.
 	ProcessEvents() interface{}
 	// Layout the widget
@@ -57,8 +62,99 @@ func (l TreeViewItems) Sort() {
 	})
 }
 
+// onSelectWidget ensures the given selection is becoming the new selection
+// and the widget with given index is visible
+func (v *TreeView) onSelectWidget(index int, selection interface{}) {
+	// Save selection
+	v.Selected = selection
+	v.OnSelect(selection)
+	// Scroll widget into view
+	if index < v.list.Position.First {
+		// We have to scroll up
+		v.list.Position.First = index
+	} else if index >= v.list.Position.First+v.list.Position.Count {
+		// We have to scroll down
+		v.list.Position.First = index - (v.list.Position.Count - 1)
+	}
+}
+
+// SelectFirst selects the first entry in the list.
+func (v *TreeView) SelectFirst() {
+	for i, w := range v.widgets {
+		if x := w.Select(); x != nil {
+			v.onSelectWidget(i, x)
+			break
+		}
+	}
+}
+
+// SelectLast selects the last entry in the list.
+func (v *TreeView) SelectLast() {
+	for i := len(v.widgets) - 1; i >= 0; i-- {
+		w := v.widgets[i]
+		if x := w.Select(); x != nil {
+			v.onSelectWidget(i, x)
+			break
+		}
+	}
+}
+
+// SelectNext selects the next entry in the list.
+func (v *TreeView) SelectNext() {
+	if v.Selected == nil {
+		v.SelectFirst()
+		return
+	}
+	foundSelection := false
+	for i, w := range v.widgets {
+		if foundSelection {
+			if x := w.Select(); x != nil {
+				v.onSelectWidget(i, x)
+				break
+			}
+		} else if w.Contains(v.Selected) {
+			foundSelection = true
+		}
+	}
+}
+
+// SelectPrevious selects the previous entry in the list.
+func (v *TreeView) SelectPrevious() {
+	if v.Selected == nil {
+		v.SelectLast()
+		return
+	}
+	foundSelection := false
+	for i := len(v.widgets) - 1; i >= 0; i-- {
+		w := v.widgets[i]
+		if foundSelection {
+			if x := w.Select(); x != nil {
+				v.onSelectWidget(i, x)
+				break
+			}
+		} else if w.Contains(v.Selected) {
+			foundSelection = true
+		}
+	}
+}
+
 // Layout processes events and redraws the list.
 func (v *TreeView) Layout(gtx C, th *material.Theme) D {
+
+	for _, evt := range gtx.Events(v) {
+		switch evt := evt.(type) {
+		case key.Event:
+			if evt.State == key.Press {
+				switch evt.Name {
+				case key.NameUpArrow:
+					v.SelectPrevious()
+				case key.NameDownArrow:
+					v.SelectNext()
+				}
+			}
+		}
+	}
+
 	// Process events of widgets
 	var newSelection interface{}
 	for _, w := range v.widgets {
@@ -82,6 +178,9 @@ func (v *TreeView) Layout(gtx C, th *material.Theme) D {
 		widgets = append(widgets, rootItem.GenerateWidgets(0)...)
 	}
 	v.widgets = widgets
+	// Register for input
+	key.FocusOp{Tag: v}.Add(gtx.Ops)
+	key.InputOp{Tag: v}.Add(gtx.Ops)
 	// Redraw widgets
 	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)

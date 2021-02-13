@@ -78,6 +78,16 @@ func (v *TreeViewGroup) SortKey() string {
 	return v.Name
 }
 
+// Select returns the selection that this item represents (can be nil)
+func (v *TreeViewGroup) Select() interface{} {
+	return nil
+}
+
+// Contains returns true if the given selection is contained in this item
+func (v *TreeViewGroup) Contains(selection interface{}) bool {
+	return false
+}
+
 // ProcessEvents processes events of this item, return an entity if it is clicked.
 func (v *TreeViewGroup) ProcessEvents() interface{} {
 	if v.clickable.Clicked() {
