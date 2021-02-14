@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	mimpl "github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -36,8 +38,8 @@ func newVirtualCommandStation(railway Railway) CommandStation {
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
 	}
 	cs.power.Configure(cs, railway)
-	cs.power.OnRequestedChanged = func(value bool) {
-		cs.power.SetActual(value)
+	cs.power.OnRequestedChanged = func(ctx context.Context, value bool) {
+		cs.power.SetActual(ctx, value)
 	}
 	return cs
 }
@@ -65,20 +67,20 @@ func (cs *virtualCommandStation) GetPower() state.BoolProperty {
 }
 
 // Has the command station not send or received anything for a while.
-func (cs *virtualCommandStation) GetIdle() bool {
+func (cs *virtualCommandStation) GetIdle(context.Context) bool {
 	return true // TODO
 }
 
 // Send the speed and direction of the given loc towards the railway.
-func (cs *virtualCommandStation) SendLocSpeedAndDirection(l state.Loc) {
-	l.GetSpeedInSteps().SetActual(l.GetSpeedInSteps().GetRequested())
-	l.GetDirection().SetActual(l.GetDirection().GetRequested())
-	l.GetF0().SetActual(l.GetF0().GetRequested())
+func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l state.Loc) {
+	l.GetSpeedInSteps().SetActual(ctx, l.GetSpeedInSteps().GetRequested(ctx))
+	l.GetDirection().SetActual(ctx, l.GetDirection().GetRequested(ctx))
+	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))
 }
 
 // Send the direction of the given switch towards the railway.
-func (cs *virtualCommandStation) SendSwitchDirection(sw state.Switch) {
-	sw.GetDirection().SetActual(sw.GetDirection().GetRequest())
+func (cs *virtualCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
+	sw.GetDirection().SetActual(ctx, sw.GetDirection().GetRequest(ctx))
 }
 
 // Send the position of the given turntable towards the railway.

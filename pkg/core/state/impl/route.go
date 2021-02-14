@@ -228,8 +228,8 @@ func (r *route) GetIsPrepared() bool {
 }
 
 // Create a specific route state for the given loc.
-func (r *route) CreateStateForLoc(loc state.Loc) state.RouteStateForLoc {
-	return newRouteStateForLoc(loc, r)
+func (r *route) CreateStateForLoc(loc state.Loc) state.RouteForLoc {
+	return newRouteForLoc(loc, r)
 }
 
 // Fire the actions attached to the entering destination trigger.

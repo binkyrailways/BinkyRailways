@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -30,6 +31,11 @@ import (
 type Loc interface {
 	Entity
 	state.Loc
+
+	// Add a state object to the list of entities locked by this locomotive.
+	AddLockedEntity(context.Context, Lockable)
+	// Remove a state object from the list of entities locked by this locomotive.
+	RemoveLockedEntity(context.Context, Lockable)
 }
 
 type loc struct {
@@ -49,6 +55,8 @@ type loc struct {
 	reversing                       actualBoolProperty
 	f0                              boolProperty
 	controlledAutomatically         boolProperty
+	currentRoute                    actualRouteForLocProperty
+	lockedEntities                  []Lockable
 }
 
 // Create a new entity
@@ -65,25 +73,26 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.startNextRouteTime.Configure(l, railway)
 	l.speed.loc = l
 	l.speedInSteps.Configure(l, railway)
-	l.speedInSteps.OnRequestedChanged = func(int) {
+	l.speedInSteps.OnRequestedChanged = func(ctx context.Context, value int) {
 		if l.commandStation != nil {
-			l.commandStation.SendLocSpeedAndDirection(l)
+			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
 	l.direction.Configure(l, railway)
-	l.direction.OnRequestedChanged = func(state.LocDirection) {
+	l.direction.OnRequestedChanged = func(ctx context.Context, value state.LocDirection) {
 		if l.commandStation != nil {
-			l.commandStation.SendLocSpeedAndDirection(l)
+			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
 	l.reversing.Configure(l, railway)
 	l.f0.Configure(l, railway)
-	l.f0.OnRequestedChanged = func(bool) {
+	l.f0.OnRequestedChanged = func(ctx context.Context, value bool) {
 		if l.commandStation != nil {
-			l.commandStation.SendLocSpeedAndDirection(l)
+			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
 	l.controlledAutomatically.Configure(l, railway)
+	l.currentRoute.Configure(l, railway)
 	return l
 }
 
@@ -111,25 +120,25 @@ func (l *loc) TryPrepareForUse(state.UserInterface, state.Persistence) error {
 //AfterReset() model.EventHandler
 
 // Address of the entity
-func (l *loc) GetAddress() model.Address {
+func (l *loc) GetAddress(context.Context) model.Address {
 	return l.getLoc().GetAddress()
 }
 
 // Percentage of speed steps for the slowest speed of this loc.
 // Value between 1 and 100.
-func (l *loc) GetSlowSpeed() int {
+func (l *loc) GetSlowSpeed(context.Context) int {
 	return l.getLoc().GetSlowSpeed()
 }
 
 // Percentage of speed steps for the medium speed of this loc.
 // Value between 1 and 100.
-func (l *loc) GetMediumSpeed() int {
+func (l *loc) GetMediumSpeed(context.Context) int {
 	return l.getLoc().GetMediumSpeed()
 }
 
 // Percentage of speed steps for the maximum speed of this loc.
 // Value between 1 and 100.
-func (l *loc) GetMaximumSpeed() int {
+func (l *loc) GetMaximumSpeed(context.Context) int {
 	return l.getLoc().GetMaximumSpeed()
 }
 
@@ -139,7 +148,7 @@ func (l *loc) GetControlledAutomatically() state.BoolProperty {
 }
 
 // Gets the number of speed steps supported by this loc.
-func (l *loc) GetSpeedSteps() int {
+func (l *loc) GetSpeedSteps(context.Context) int {
 	return l.getLoc().GetSpeedSteps()
 }
 
@@ -152,19 +161,19 @@ func (l *loc) GetSpeedSteps() int {
 // GetFunctionName(LocFunction function, out bool isCustom) string;
 
 // Is it allowed for this loc to change direction?
-func (l *loc) GetChangeDirection() model.ChangeDirection {
+func (l *loc) GetChangeDirection(context.Context) model.ChangeDirection {
 	return l.getLoc().GetChangeDirection()
 }
 
 // Gets the name of the person that owns this loc.
-func (l *loc) GetOwner() string {
+func (l *loc) GetOwner(context.Context) string {
 	return l.getLoc().GetOwner()
 }
 
 // Is it allowed to set the ControlledAutomatically property to true?
-func (l *loc) GetCanSetAutomaticControl() bool {
+func (l *loc) GetCanSetAutomaticControl(ctx context.Context) bool {
 	// Current block must be set
-	return l.GetCurrentBlock().GetActual() != nil
+	return l.GetCurrentBlock().GetActual(ctx) != nil
 }
 
 // The current state of this loc in the automatic loc controller.
@@ -174,7 +183,9 @@ func (l *loc) GetAutomaticState() state.ActualAutoLocStateProperty {
 
 // Gets the route that this loc is currently taking.
 // Do not assign this property directly, instead use the assign methods.
-//IActualStateProperty<IRouteStateForLoc> CurrentRoute { get; }
+func (l *loc) GetCurrentRoute() state.ActualRouteForLocProperty {
+	return &l.currentRoute
+}
 
 // Should the loc wait when the current route has finished?
 func (l *loc) GetWaitAfterCurrentRoute() state.ActualBoolProperty {
@@ -187,8 +198,8 @@ func (l *loc) GetDurationExceedsCurrentRouteTime() state.ActualTimeProperty {
 }
 
 // Is the maximum duration of the current route this loc is taken exceeded?
-func (l *loc) GetIsCurrentRouteDurationExceeded() bool {
-	return time.Now().After(l.GetDurationExceedsCurrentRouteTime().GetActual())
+func (l *loc) GetIsCurrentRouteDurationExceeded(ctx context.Context) bool {
+	return time.Now().After(l.GetDurationExceedsCurrentRouteTime().GetActual(ctx))
 }
 
 // Gets the route that this loc will take when the current route has finished.
@@ -227,14 +238,14 @@ func (l *loc) GetSpeed() state.IntProperty {
 }
 
 // Gets a human readable representation of the speed of the loc.
-func (l *loc) GetSpeedText() string {
-	speed := l.GetSpeed().GetActual()
-	direction := l.GetDirection().GetActual()
+func (l *loc) GetSpeedText(ctx context.Context) string {
+	speed := l.GetSpeed().GetActual(ctx)
+	direction := l.GetDirection().GetActual(ctx)
 	return fmt.Sprintf("%d %s", speed, strings.ToLower(direction.String()))
 }
 
 // Gets a human readable representation of the state of the loc.
-func (l *loc) GetStateText() string {
+func (l *loc) GetStateText(ctx context.Context) string {
 	return "" // TODO
 }
 
@@ -278,29 +289,66 @@ func (l *loc) GetF0() state.BoolProperty {
 // <param name="block">The new block to assign to. If null, the loc will only be unassigned from the current block.</param>
 // <param name="currentBlockEnterSide">The site to which the block is entered (invert of facing)</param>
 // <returns>True on success, false otherwise</returns>
-func (l *loc) AssignTo(block state.Block, currentBlockEnterSide model.BlockSide) bool {
-	return false // TODO
+func (l *loc) AssignTo(ctx context.Context, block state.Block, currentBlockEnterSide model.BlockSide) bool {
+	ca := l.GetControlledAutomatically()
+	if ca.GetActual(ctx) || ca.GetRequested(ctx) {
+		return false
+	}
+
+	// No change?
+	current := l.GetCurrentBlock().GetActual(ctx)
+	if current == block {
+		return true
+	}
+
+	// Try to lock new block
+	if block != nil {
+		if _, canLock := block.CanLock(l); !canLock {
+			return false
+		}
+	}
+
+	// Unassign from current block
+	if current != nil {
+		if err := current.ValidateLockedBy(l); err != nil {
+			return false
+		}
+		current.Unlock(nil)
+	}
+	l.GetCurrentBlock().SetActual(ctx, nil)
+
+	// Now assign to new block (if any)
+	if block != nil {
+		block.Lock(l)
+		l.GetCurrentBlockEnterSide().SetActual(ctx, currentBlockEnterSide)
+		l.GetCurrentBlock().SetActual(ctx, block)
+	} else {
+		// Unassign -> unlock all
+		l.UnlockAll(ctx)
+	}
+
+	return true
 }
 
 // Gets command station specific (advanced) info for this loc.
-func (l *loc) GetCommandStationInfo() string {
+func (l *loc) GetCommandStationInfo(ctx context.Context) string {
 	return "" // TODO
 }
 
 // Forcefully reset of settings of this loc.
 // This should be used when a loc is taken of the track.
-func (l *loc) Reset() {
+func (l *loc) Reset(ctx context.Context) {
 	// TODO
 }
 
 // Save the current state to the state persistence.
-func (l *loc) PersistState() {
+func (l *loc) PersistState(ctx context.Context) {
 	// TODO
 }
 
 // Gets zero or more blocks that were recently visited by this loc.
 // The first block was last visited.
-func (l *loc) ForEachRecentlyVisitedBlock(func(state.Block)) {
+func (l *loc) ForEachRecentlyVisitedBlock(ctx context.Context, cb func(state.Block)) {
 	// TODO
 }
 
@@ -308,6 +356,28 @@ func (l *loc) ForEachRecentlyVisitedBlock(func(state.Block)) {
 //IRouteEventBehaviorState LastEventBehavior { get; set; }
 
 // Is the speed behavior of the last event set to default?
-func (l *loc) GetIsLastEventBehaviorSpeedDefault() bool {
+func (l *loc) GetIsLastEventBehaviorSpeedDefault(ctx context.Context) bool {
 	return false // TODO
+}
+
+// Add a state object to the list of entities locked by this locomotive.
+func (l *loc) AddLockedEntity(ctx context.Context, x Lockable) {
+	l.lockedEntities = append(l.lockedEntities, x)
+}
+
+// Remove a state object from the list of entities locked by this locomotive.
+func (l *loc) RemoveLockedEntity(ctx context.Context, x Lockable) {
+	for i, e := range l.lockedEntities {
+		if e == x {
+			// Remove entry
+			l.lockedEntities = append(l.lockedEntities[:i], l.lockedEntities[i+1:]...)
+		}
+	}
+}
+
+// Unlock all entities locked by me
+func (l *loc) UnlockAll(ctx context.Context) {
+	for len(l.lockedEntities) > 0 {
+		l.lockedEntities[0].Unlock(nil)
+	}
 }

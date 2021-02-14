@@ -17,27 +17,31 @@
 
 package impl
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/state"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+)
 
 // BoolProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type boolProperty struct {
 	actualBoolProperty
 	requested          bool
-	OnRequestedChanged func(bool)
+	OnRequestedChanged func(context.Context, bool)
 }
 
-func (p *boolProperty) IsConsistent() bool {
-	return p.GetActual() == p.GetRequested()
+func (p *boolProperty) IsConsistent(ctx context.Context) bool {
+	return p.GetActual(ctx) == p.GetRequested(ctx)
 }
-func (p *boolProperty) GetRequested() bool {
+func (p *boolProperty) GetRequested(ctx context.Context) bool {
 	return p.requested
 }
-func (p *boolProperty) SetRequested(value bool) error {
+func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
 	if p.requested != value {
 		p.requested = value
 		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(value)
+			p.OnRequestedChanged(ctx, value)
 		}
 		p.SendRequestedStateChanged(p)
 	}
@@ -49,20 +53,20 @@ func (p *boolProperty) SetRequested(value bool) error {
 type intProperty struct {
 	actualIntProperty
 	requested          int
-	OnRequestedChanged func(int)
+	OnRequestedChanged func(context.Context, int)
 }
 
-func (p *intProperty) IsConsistent() bool {
-	return p.GetActual() == p.GetRequested()
+func (p *intProperty) IsConsistent(ctx context.Context) bool {
+	return p.GetActual(ctx) == p.GetRequested(ctx)
 }
-func (p *intProperty) GetRequested() int {
+func (p *intProperty) GetRequested(ctx context.Context) int {
 	return p.requested
 }
-func (p *intProperty) SetRequested(value int) error {
+func (p *intProperty) SetRequested(ctx context.Context, value int) error {
 	if p.requested != value {
 		p.requested = value
 		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(value)
+			p.OnRequestedChanged(ctx, value)
 		}
 		p.SendRequestedStateChanged(p)
 	}
@@ -74,20 +78,20 @@ func (p *intProperty) SetRequested(value int) error {
 type locDirectionProperty struct {
 	actualLocDirectionProperty
 	requested          state.LocDirection
-	OnRequestedChanged func(state.LocDirection)
+	OnRequestedChanged func(context.Context, state.LocDirection)
 }
 
-func (p *locDirectionProperty) IsConsistent() bool {
-	return p.GetActual() == p.GetRequested()
+func (p *locDirectionProperty) IsConsistent(ctx context.Context) bool {
+	return p.GetActual(ctx) == p.GetRequested(ctx)
 }
-func (p *locDirectionProperty) GetRequested() state.LocDirection {
+func (p *locDirectionProperty) GetRequested(ctx context.Context) state.LocDirection {
 	return p.requested
 }
-func (p *locDirectionProperty) SetRequested(value state.LocDirection) error {
+func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.LocDirection) error {
 	if p.requested != value {
 		p.requested = value
 		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(value)
+			p.OnRequestedChanged(ctx, value)
 		}
 		p.SendRequestedStateChanged(p)
 	}

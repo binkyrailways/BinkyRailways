@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Loc specifies the state of a single loc
 type Loc interface {
@@ -30,25 +34,25 @@ type Loc interface {
 	//AfterReset() model.EventHandler
 
 	// Address of the entity
-	GetAddress() model.Address
+	GetAddress(context.Context) model.Address
 
 	// Percentage of speed steps for the slowest speed of this loc.
 	// Value between 1 and 100.
-	GetSlowSpeed() int
+	GetSlowSpeed(context.Context) int
 
 	// Percentage of speed steps for the medium speed of this loc.
 	// Value between 1 and 100.
-	GetMediumSpeed() int
+	GetMediumSpeed(context.Context) int
 
 	// Percentage of speed steps for the maximum speed of this loc.
 	// Value between 1 and 100.
-	GetMaximumSpeed() int
+	GetMaximumSpeed(context.Context) int
 
 	// Is this loc controlled by the automatic loc controller?
 	GetControlledAutomatically() BoolProperty
 
 	// Gets the number of speed steps supported by this loc.
-	GetSpeedSteps() int
+	GetSpeedSteps(context.Context) int
 
 	// Gets/sets the image of the given loc.
 	// <value>Null if there is no image.</value>
@@ -59,20 +63,20 @@ type Loc interface {
 	// GetFunctionName(LocFunction function, out bool isCustom) string;
 
 	// Is it allowed for this loc to change direction?
-	GetChangeDirection() model.ChangeDirection
+	GetChangeDirection(context.Context) model.ChangeDirection
 
 	// Gets the name of the person that owns this loc.
-	GetOwner() string
+	GetOwner(context.Context) string
 
 	// Is it allowed to set the ControlledAutomatically property to true?
-	GetCanSetAutomaticControl() bool
+	GetCanSetAutomaticControl(context.Context) bool
 
 	// The current state of this loc in the automatic loc controller.
 	GetAutomaticState() ActualAutoLocStateProperty
 
 	// Gets the route that this loc is currently taking.
 	// Do not assign this property directly, instead use the assign methods.
-	//IActualStateProperty<IRouteStateForLoc> CurrentRoute { get; }
+	GetCurrentRoute() ActualRouteForLocProperty
 
 	// Should the loc wait when the current route has finished?
 	GetWaitAfterCurrentRoute() ActualBoolProperty
@@ -81,7 +85,7 @@ type Loc interface {
 	GetDurationExceedsCurrentRouteTime() ActualTimeProperty
 
 	// Is the maximum duration of the current route this loc is taken exceeded?
-	GetIsCurrentRouteDurationExceeded() bool
+	GetIsCurrentRouteDurationExceeded(context.Context) bool
 
 	// Gets the route that this loc will take when the current route has finished.
 	// This property is only set by the automatic loc controller.
@@ -109,10 +113,10 @@ type Loc interface {
 	GetSpeed() IntProperty
 
 	// Gets a human readable representation of the speed of the loc.
-	GetSpeedText() string
+	GetSpeedText(context.Context) string
 
 	// Gets a human readable representation of the state of the loc.
-	GetStateText() string
+	GetStateText(context.Context) string
 
 	// Gets the actual speed of the loc in speed steps
 	// Value between 0 and the maximum number of speed steps supported by this loc.
@@ -146,25 +150,25 @@ type Loc interface {
 	// <param name="block">The new block to assign to. If null, the loc will only be unassigned from the current block.</param>
 	// <param name="currentBlockEnterSide">The site to which the block is entered (invert of facing)</param>
 	// <returns>True on success, false otherwise</returns>
-	AssignTo(block Block, currentBlockEnterSide model.BlockSide) bool
+	AssignTo(ctx context.Context, block Block, currentBlockEnterSide model.BlockSide) bool
 
 	// Gets command station specific (advanced) info for this loc.
-	GetCommandStationInfo() string
+	GetCommandStationInfo(context.Context) string
 
 	// Forcefully reset of settings of this loc.
 	// This should be used when a loc is taken of the track.
-	Reset()
+	Reset(context.Context)
 
 	// Save the current state to the state persistence.
-	PersistState()
+	PersistState(context.Context)
 
 	// Gets zero or more blocks that were recently visited by this loc.
 	// The first block was last visited.
-	ForEachRecentlyVisitedBlock(func(Block))
+	ForEachRecentlyVisitedBlock(context.Context, func(Block))
 
 	// Behavior of the last event triggered by this loc.
 	//IRouteEventBehaviorState LastEventBehavior { get; set; }
 
 	// Is the speed behavior of the last event set to default?
-	GetIsLastEventBehaviorSpeedDefault() bool
+	GetIsLastEventBehaviorSpeedDefault(context.Context) bool
 }

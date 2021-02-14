@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"testing"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -52,6 +53,7 @@ func TestRailwayFromFile(t *testing.T) {
 // TestRailwayVirtualMode checks a railway state in virtual mode
 func TestRailwayVirtualMode(t *testing.T) {
 	// Create empty railway
+	ctx := context.Background()
 	p := storage.NewPackage()
 	require.NotNil(t, p)
 	r := p.GetRailway()
@@ -89,7 +91,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	// Check loc
 	rs.ForEachLoc(func(ls state.Loc) {
 		assert.Equal(t, l.GetID(), ls.GetID())
-		assert.Equal(t, "DCC 136", ls.GetAddress().String())
+		assert.Equal(t, "DCC 136", ls.GetAddress(ctx).String())
 		assert.Equal(t, rs, ls.GetRailway())
 	})
 }
@@ -97,6 +99,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 // TestRailwayPower checks a railway power property
 func TestRailwayPower(t *testing.T) {
 	// Create empty railway
+	ctx := context.Background()
 	p := storage.NewPackage()
 	require.NotNil(t, p)
 	r := p.GetRailway()
@@ -109,16 +112,16 @@ func TestRailwayPower(t *testing.T) {
 
 	// Check initial state
 	t.Run("Check initial state", func(t *testing.T) {
-		assert.False(t, rs.GetPower().GetActual(), "actual")
-		assert.False(t, rs.GetPower().GetRequested(), "requested")
-		assert.True(t, rs.GetPower().IsConsistent(), "consistent")
+		assert.False(t, rs.GetPower().GetActual(ctx), "actual")
+		assert.False(t, rs.GetPower().GetRequested(ctx), "requested")
+		assert.True(t, rs.GetPower().IsConsistent(ctx), "consistent")
 	})
 
 	// Check turning power on
 	t.Run("Check turn on", func(t *testing.T) {
-		assert.NoError(t, rs.GetPower().SetRequested(true))
-		assert.True(t, rs.GetPower().GetActual(), "actual") // In virtual mode, change must be immediate
-		assert.True(t, rs.GetPower().GetRequested(), "requested")
-		assert.True(t, rs.GetPower().IsConsistent(), "consistent")
+		assert.NoError(t, rs.GetPower().SetRequested(ctx, true))
+		assert.True(t, rs.GetPower().GetActual(ctx), "actual") // In virtual mode, change must be immediate
+		assert.True(t, rs.GetPower().GetRequested(ctx), "requested")
+		assert.True(t, rs.GetPower().IsConsistent(ctx), "consistent")
 	})
 }

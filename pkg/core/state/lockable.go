@@ -23,6 +23,9 @@ type Lockable interface {
 	// Returns null if this state is not locked.
 	GetLockedBy() Loc
 
+	// ValidateLockedBy checks that this entity is locked by the given loc.
+	ValidateLockedBy(loc Loc) error
+
 	// Can this state be locked by the intended owner?
 	// Return true is this entity and all underlying entities are not locked.
 	// Returns: lockedBy, canLock

@@ -18,6 +18,7 @@
 package state
 
 import (
+	"context"
 	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -34,8 +35,8 @@ type ActualBoolProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() bool
-	SetActual(value bool) error
+	GetActual(context.Context) bool
+	SetActual(context.Context, bool) error
 }
 
 // ActualIntProperty contains the value of a property in a state object.
@@ -44,8 +45,8 @@ type ActualIntProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() int
-	SetActual(value int) error
+	GetActual(context.Context) int
+	SetActual(context.Context, int) error
 }
 
 // ActualTimeProperty contains the value of a property in a state object.
@@ -54,8 +55,8 @@ type ActualTimeProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() time.Time
-	SetActual(value time.Time) error
+	GetActual(context.Context) time.Time
+	SetActual(context.Context, time.Time) error
 }
 
 // ActualAutoLocStateProperty contains the value of a property in a state object.
@@ -64,8 +65,8 @@ type ActualAutoLocStateProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() AutoLocState
-	SetActual(value AutoLocState) error
+	GetActual(context.Context) AutoLocState
+	SetActual(context.Context, AutoLocState) error
 }
 
 // ActualLocDirectionProperty contains the value of a property in a state object.
@@ -74,8 +75,8 @@ type ActualLocDirectionProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() LocDirection
-	SetActual(value LocDirection) error
+	GetActual(context.Context) LocDirection
+	SetActual(context.Context, LocDirection) error
 }
 
 // ActualSwitchDirectionProperty contains the value of a property in a state object.
@@ -84,8 +85,8 @@ type ActualSwitchDirectionProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() model.SwitchDirection
-	SetActual(value model.SwitchDirection) error
+	GetActual(context.Context) model.SwitchDirection
+	SetActual(context.Context, model.SwitchDirection) error
 }
 
 // ActualBlockSideProperty contains the value of a property in a state object.
@@ -94,8 +95,8 @@ type ActualBlockSideProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() model.BlockSide
-	SetActual(value model.BlockSide) error
+	GetActual(context.Context) model.BlockSide
+	SetActual(context.Context, model.BlockSide) error
 }
 
 // ActualBlockProperty contains the value of a property in a state object.
@@ -104,8 +105,8 @@ type ActualBlockProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() Block
-	SetActual(value Block) error
+	GetActual(context.Context) Block
+	SetActual(context.Context, Block) error
 }
 
 // ActualRouteProperty contains the value of a property in a state object.
@@ -114,6 +115,16 @@ type ActualRouteProperty interface {
 	ActualProperty
 
 	// Gets / sets the actual value
-	GetActual() Route
-	SetActual(value Route) error
+	GetActual(context.Context) Route
+	SetActual(context.Context, Route) error
+}
+
+// ActualRouteForLocProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type ActualRouteForLocProperty interface {
+	ActualProperty
+
+	// Gets / sets the actual value
+	GetActual(context.Context) RouteForLoc
+	SetActual(context.Context, RouteForLoc) error
 }

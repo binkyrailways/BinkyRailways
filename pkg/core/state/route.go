@@ -93,7 +93,7 @@ type Route interface {
 	GetIsPrepared() bool
 
 	// Create a specific route state for the given loc.
-	CreateStateForLoc(loc Loc) RouteStateForLoc
+	CreateStateForLoc(loc Loc) RouteForLoc
 
 	// Fire the actions attached to the entering destination trigger.
 	FireEnteringDestinationTrigger(Loc)

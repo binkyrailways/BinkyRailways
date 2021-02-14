@@ -17,7 +17,11 @@
 
 package impl
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/state"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+)
 
 // autoRunLocState implements auto-run behavior for a specific loc.
 type autoRunLocState struct {
@@ -32,20 +36,20 @@ func newAutoRunLocState(loc state.Loc) *autoRunLocState {
 }
 
 // Tick performs a single step in the auto run behavior of the loc
-func (s *autoRunLocState) Tick() {
-	if !s.loc.GetControlledAutomatically().GetActual() {
+func (s *autoRunLocState) Tick(ctx context.Context) {
+	if !s.loc.GetControlledAutomatically().GetActual(ctx) {
 		return
 	}
 	/*	route := s.loc.getcurr
-	var route = loc.CurrentRoute.Actual;
-	if (route == null)
-		return;
-	switch (loc.AutomaticState.Actual)
-	{
-		case AutoLocState.Running:
-		case AutoLocState.EnterSensorActivated:
-		case AutoLocState.EnteringDestination:
-			SelectNextState(route.Route);
-			break;
-	}*/
+		var route = loc.CurrentRoute.Actual;
+		if (route == null)
+			return;
+		switch (loc.AutomaticState.Actual)
+		{
+			case AutoLocState.Running:
+			case AutoLocState.EnterSensorActivated:
+			case AutoLocState.EnteringDestination:
+				SelectNextState(route.Route);
+				break;
+		}*/
 }

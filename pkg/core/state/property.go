@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Property contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
@@ -25,7 +29,7 @@ type Property interface {
 	ActualProperty
 
 	// Is the request value equal to the actual value?
-	IsConsistent() bool
+	IsConsistent(context.Context) bool
 }
 
 // BoolProperty contains the value of a property in a state object.
@@ -35,8 +39,8 @@ type BoolProperty interface {
 	ActualBoolProperty
 
 	// Gets / sets the requested value
-	GetRequested() bool
-	SetRequested(value bool) error
+	GetRequested(context.Context) bool
+	SetRequested(context.Context, bool) error
 }
 
 // IntProperty contains the value of a property in a state object.
@@ -46,8 +50,8 @@ type IntProperty interface {
 	ActualIntProperty
 
 	// Gets / sets the requested value
-	GetRequested() int
-	SetRequested(value int) error
+	GetRequested(context.Context) int
+	SetRequested(context.Context, int) error
 }
 
 // LocDirectionProperty contains the value of a property in a state object.
@@ -57,8 +61,8 @@ type LocDirectionProperty interface {
 	ActualLocDirectionProperty
 
 	// Gets / sets the requested value
-	GetRequested() LocDirection
-	SetRequested(value LocDirection) error
+	GetRequested(context.Context) LocDirection
+	SetRequested(context.Context, LocDirection) error
 }
 
 // SwitchDirectionProperty contains the value of a property in a state object.
@@ -67,6 +71,6 @@ type SwitchDirectionProperty interface {
 	ActualSwitchDirectionProperty
 
 	// Gets / sets the requested value
-	GetRequest() model.SwitchDirection
-	SetRequested(value model.SwitchDirection) error
+	GetRequest(context.Context) model.SwitchDirection
+	SetRequested(context.Context, model.SwitchDirection) error
 }

@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"go.uber.org/multierr"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -33,11 +35,11 @@ type powerProperty struct {
 var _ state.BoolProperty = &powerProperty{}
 
 // Gets / sets the actual value
-func (sp *powerProperty) GetActual() bool {
+func (sp *powerProperty) GetActual(ctx context.Context) bool {
 	csOn := 0
 	csOff := 0
 	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		if cs.GetPower().GetActual() {
+		if cs.GetPower().GetActual(ctx) {
 			csOn++
 		} else {
 			csOff++
@@ -45,12 +47,12 @@ func (sp *powerProperty) GetActual() bool {
 	})
 	return csOff == 0 && csOn > 0
 }
-func (sp *powerProperty) SetActual(value bool) error {
-	actual := sp.GetActual()
+func (sp *powerProperty) SetActual(ctx context.Context, value bool) error {
+	actual := sp.GetActual(ctx)
 
 	var err error
 	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		multierr.AppendInto(&err, cs.GetPower().SetActual(value))
+		multierr.AppendInto(&err, cs.GetPower().SetActual(ctx, value))
 	})
 	if err != nil {
 		return err
@@ -65,13 +67,13 @@ func (sp *powerProperty) SetActual(value bool) error {
 }
 
 // Gets / sets the requested value
-func (sp *powerProperty) GetRequested() bool {
+func (sp *powerProperty) GetRequested(ctx context.Context) bool {
 	return sp.requested
 }
-func (sp *powerProperty) SetRequested(value bool) error {
+func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
 	var err error
 	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		multierr.AppendInto(&err, cs.GetPower().SetRequested(value))
+		multierr.AppendInto(&err, cs.GetPower().SetRequested(ctx, value))
 	})
 	if err != nil {
 		return err
@@ -86,6 +88,6 @@ func (sp *powerProperty) SetRequested(value bool) error {
 	return nil
 }
 
-func (sp *powerProperty) IsConsistent() bool {
-	return sp.GetActual() == sp.GetRequested()
+func (sp *powerProperty) IsConsistent(ctx context.Context) bool {
+	return sp.GetActual(ctx) == sp.GetRequested(ctx)
 }

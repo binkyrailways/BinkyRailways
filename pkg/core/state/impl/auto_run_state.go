@@ -90,7 +90,7 @@ func (s *autoRunState) run(ctx context.Context) {
 		case <-t.C:
 			// Tick
 			for _, ls := range locStates {
-				ls.Tick()
+				ls.Tick(ctx)
 			}
 		}
 	}

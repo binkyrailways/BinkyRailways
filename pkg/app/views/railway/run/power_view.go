@@ -18,6 +18,8 @@
 package run
 
 import (
+	"context"
+
 	"gioui.org/layout"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -44,14 +46,15 @@ func newPowerView(vm views.ViewManager, railway state.Railway) *powerView {
 
 // Handle events and draw the view
 func (v *powerView) Layout(gtx layout.Context) layout.Dimensions {
+	ctx := context.Background()
 	th := v.vm.GetTheme()
 
 	power := v.railway.GetPower()
 	if v.buttonOn.Clicked() {
-		power.SetRequested(true)
+		power.SetRequested(ctx, true)
 	}
 	if v.buttonOff.Clicked() {
-		power.SetRequested(false)
+		power.SetRequested(ctx, false)
 	}
 
 	buttons := func(gtx C) D {
@@ -70,14 +73,14 @@ func (v *powerView) Layout(gtx layout.Context) layout.Dimensions {
 	}
 
 	state := ""
-	if power.IsConsistent() {
-		if power.GetActual() {
+	if power.IsConsistent(ctx) {
+		if power.GetActual(ctx) {
 			state = "Power is On"
 		} else {
 			state = "Power is Off"
 		}
 	} else {
-		if power.GetRequested() {
+		if power.GetRequested(ctx) {
 			state = "Power is turning on"
 		} else {
 			state = "Power is turning off"

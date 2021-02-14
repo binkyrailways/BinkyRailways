@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -57,17 +59,17 @@ func (cs *locoBufferCommandStation) GetPower() state.BoolProperty {
 }
 
 // Has the command station not send or received anything for a while.
-func (cs *locoBufferCommandStation) GetIdle() bool {
+func (cs *locoBufferCommandStation) GetIdle(context.Context) bool {
 	return true // TODO
 }
 
 // Send the speed and direction of the given loc towards the railway.
-func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(state.Loc) {
+func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(context.Context, state.Loc) {
 	// TODO
 }
 
 // Send the direction of the given switch towards the railway.
-func (cs *locoBufferCommandStation) SendSwitchDirection(state.Switch) {
+func (cs *locoBufferCommandStation) SendSwitchDirection(context.Context, state.Switch) {
 	// TODO
 }
 

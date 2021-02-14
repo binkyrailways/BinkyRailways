@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"math"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -31,35 +32,35 @@ type speedProperty struct {
 var _ state.IntProperty = &speedProperty{}
 
 // Gets / sets the actual value
-func (sp *speedProperty) GetActual() int {
-	return sp.convertFromSpeedSteps(sp.loc.GetSpeedInSteps().GetActual())
+func (sp *speedProperty) GetActual(ctx context.Context) int {
+	return sp.convertFromSpeedSteps(ctx, sp.loc.GetSpeedInSteps().GetActual(ctx))
 }
-func (sp *speedProperty) SetActual(value int) error {
-	return sp.loc.GetSpeedInSteps().SetActual(sp.convertToSpeedSteps(value))
+func (sp *speedProperty) SetActual(ctx context.Context, value int) error {
+	return sp.loc.GetSpeedInSteps().SetActual(ctx, sp.convertToSpeedSteps(ctx, value))
 }
 
 // Gets / sets the requested value
-func (sp *speedProperty) GetRequested() int {
-	return sp.convertFromSpeedSteps(sp.loc.GetSpeedInSteps().GetRequested())
+func (sp *speedProperty) GetRequested(ctx context.Context) int {
+	return sp.convertFromSpeedSteps(ctx, sp.loc.GetSpeedInSteps().GetRequested(ctx))
 }
-func (sp *speedProperty) SetRequested(value int) error {
-	return sp.loc.GetSpeedInSteps().SetRequested(sp.convertToSpeedSteps(value))
+func (sp *speedProperty) SetRequested(ctx context.Context, value int) error {
+	return sp.loc.GetSpeedInSteps().SetRequested(ctx, sp.convertToSpeedSteps(ctx, value))
 }
 
-func (sp *speedProperty) IsConsistent() bool {
-	return sp.loc.GetSpeedInSteps().IsConsistent()
+func (sp *speedProperty) IsConsistent(ctx context.Context) bool {
+	return sp.loc.GetSpeedInSteps().IsConsistent(ctx)
 }
 
 // Convert a speed percentage to speed steps
-func (sp *speedProperty) convertToSpeedSteps(percentage int) int {
-	speedSteps := sp.loc.GetSpeedSteps()
+func (sp *speedProperty) convertToSpeedSteps(ctx context.Context, percentage int) int {
+	speedSteps := sp.loc.GetSpeedSteps(ctx)
 	p := math.Max(0, math.Min(100, float64(percentage))) / 100.0
 	return int(math.Round(p * float64(speedSteps-1)))
 }
 
 // Convert a speed steps value to a percentage value
-func (sp *speedProperty) convertFromSpeedSteps(steps int) int {
-	speedSteps := sp.loc.GetSpeedSteps()
+func (sp *speedProperty) convertFromSpeedSteps(ctx context.Context, steps int) int {
+	speedSteps := sp.loc.GetSpeedSteps(ctx)
 	maxSteps := float64(speedSteps - 1)
 	p := math.Max(0, math.Min(maxSteps, float64(steps))) / maxSteps
 	return int(math.Round(p * 100))

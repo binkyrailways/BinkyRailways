@@ -17,8 +17,8 @@
 
 package state
 
-// RouteStateForLoc specifies the state of a single route for a specific loc.
-type RouteStateForLoc interface {
+// RouteForLoc specifies the state of a single route for a specific loc.
+type RouteForLoc interface {
 	// Gets the loc for which this route state is
 	GetLoc() Loc
 

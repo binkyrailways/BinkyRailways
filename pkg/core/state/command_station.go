@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // CommandStation specifies the state of a command station.
 type CommandStation interface {
@@ -49,13 +53,13 @@ type CommandStation interface {
 	GetPower() BoolProperty
 
 	// Has the command station not send or received anything for a while.
-	GetIdle() bool
+	GetIdle(context.Context) bool
 
 	// Send the speed and direction of the given loc towards the railway.
-	SendLocSpeedAndDirection(Loc)
+	SendLocSpeedAndDirection(context.Context, Loc)
 
 	// Send the direction of the given switch towards the railway.
-	SendSwitchDirection(Switch)
+	SendSwitchDirection(context.Context, Switch)
 
 	// Send the position of the given turntable towards the railway.
 	//void SendTurnTablePosition(ITurnTableState turnTable);

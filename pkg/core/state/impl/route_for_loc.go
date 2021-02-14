@@ -21,20 +21,20 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// RouteStateForLoc adds implementation functions to state.RouteStateForLoc.
-type RouteStateForLoc interface {
-	state.RouteStateForLoc
+// RouteForLoc adds implementation functions to state.RouteForLoc.
+type RouteForLoc interface {
+	state.RouteForLoc
 }
 
-type routeStateForLoc struct {
+type routeForLoc struct {
 	loc       state.Loc
 	route     Route
 	behaviors map[string]state.RouteEventBehavior // sensor.ID -> ...
 }
 
 // Create a new entity
-func newRouteStateForLoc(loc state.Loc, route Route) RouteStateForLoc {
-	rs := &routeStateForLoc{
+func newRouteForLoc(loc state.Loc, route Route) RouteForLoc {
+	rs := &routeForLoc{
 		loc:       loc,
 		route:     route,
 		behaviors: make(map[string]state.RouteEventBehavior),
@@ -57,24 +57,24 @@ func newRouteStateForLoc(loc state.Loc, route Route) RouteStateForLoc {
 }
 
 // Gets the loc for which this route state is
-func (rs *routeStateForLoc) GetLoc() state.Loc {
+func (rs *routeForLoc) GetLoc() state.Loc {
 	return rs.loc
 }
 
 // Gets the underlying route state
-func (rs *routeStateForLoc) GetRoute() state.Route {
+func (rs *routeForLoc) GetRoute() state.Route {
 	return rs.route
 }
 
 // Try to get the behavior for the given sensor.
-func (rs *routeStateForLoc) TryGetBehavior(sensor state.Sensor) (state.RouteEventBehavior, bool) {
+func (rs *routeForLoc) TryGetBehavior(sensor state.Sensor) (state.RouteEventBehavior, bool) {
 	id := sensor.GetID()
 	b, found := rs.behaviors[id]
 	return b, found
 }
 
 // Does this route contain an event for the given sensor for my loc?
-func (rs *routeStateForLoc) Contains(sensor state.Sensor) bool {
+func (rs *routeForLoc) Contains(sensor state.Sensor) bool {
 	id := sensor.GetID()
 	_, found := rs.behaviors[id]
 	return found

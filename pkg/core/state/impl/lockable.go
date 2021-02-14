@@ -23,10 +23,15 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
+// Lockable adds implementation methods to state.Lockable
+type Lockable interface {
+	state.Lockable
+}
+
 type lockable struct {
 	Children []state.Lockable
 
-	lockedBy state.Loc
+	lockedBy Loc
 }
 
 // Gets the locomotive that has this state locked.
@@ -35,15 +40,31 @@ func (l *lockable) GetLockedBy() state.Loc {
 	return l.lockedBy
 }
 
+// ValidateLockedBy checks that this entity is locked by the given loc.
+func (l *lockable) ValidateLockedBy(loc state.Loc) error {
+	current := l.lockedBy
+	if current != loc {
+		if current == nil {
+			return fmt.Errorf("Expect object to be locked by '%s', but is not locked at all", loc.GetDescription())
+		}
+		return fmt.Errorf("Expect object to be locked by '%s', but it is not locked by '%s'", loc.GetDescription(), current.GetDescription())
+	}
+	return nil
+}
+
 // Can this state be locked by the intended owner?
 // Return true is this entity and all underlying entities are not locked.
 // Returns: lockedBy, canLock
 func (l *lockable) CanLock(owner state.Loc) (state.Loc, bool) {
-	if l.lockedBy != nil && l.lockedBy != owner {
+	ownerImpl, ok := owner.(Loc)
+	if !ok {
+		return nil, false
+	}
+	if l.lockedBy != nil && l.lockedBy != ownerImpl {
 		return l.lockedBy, false
 	}
 	for _, c := range l.Children {
-		if lockedBy, canLock := c.CanLock(owner); !canLock {
+		if lockedBy, canLock := c.CanLock(ownerImpl); !canLock {
 			return lockedBy, canLock
 		}
 	}
@@ -53,12 +74,16 @@ func (l *lockable) CanLock(owner state.Loc) (state.Loc, bool) {
 // Lock this state by the given owner.
 // Also lock all underlying entities.
 func (l *lockable) Lock(owner state.Loc) error {
-	if lockedBy, canLock := l.CanLock(owner); !canLock {
+	ownerImpl, ok := owner.(Loc)
+	if !ok {
+		return fmt.Errorf("owner does not implement Loc")
+	}
+	if lockedBy, canLock := l.CanLock(ownerImpl); !canLock {
 		return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
 	}
-	l.lockedBy = owner
+	l.lockedBy = ownerImpl
 	for _, c := range l.Children {
-		if err := c.Lock(owner); err != nil {
+		if err := c.Lock(ownerImpl); err != nil {
 			return err
 		}
 	}

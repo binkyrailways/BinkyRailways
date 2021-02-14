@@ -18,6 +18,7 @@
 package run
 
 import (
+	"context"
 	"fmt"
 
 	"gioui.org/layout"
@@ -57,13 +58,15 @@ func (v *runLocView) Select(loc state.Loc) {
 		v.speed.Value = 0
 		v.f0.Value = false
 	} else {
-		v.speed.Value = float32(loc.GetSpeed().GetRequested())
-		v.f0.Value = loc.GetF0().GetRequested()
+		ctx := context.Background()
+		v.speed.Value = float32(loc.GetSpeed().GetRequested(ctx))
+		v.f0.Value = loc.GetF0().GetRequested(ctx)
 	}
 }
 
 // Handle events and draw the view
 func (v *runLocView) Layout(gtx layout.Context) layout.Dimensions {
+	ctx := context.Background()
 	th := v.vm.GetTheme()
 
 	name := "n/a"
@@ -72,46 +75,46 @@ func (v *runLocView) Layout(gtx layout.Context) layout.Dimensions {
 	l := v.current
 	if v.buttonRev.Clicked() {
 		if l != nil {
-			l.GetDirection().SetRequested(state.LocDirectionReverse)
+			l.GetDirection().SetRequested(ctx, state.LocDirectionReverse)
 		}
 	}
 	if v.buttonFor.Clicked() {
 		if l != nil {
-			l.GetDirection().SetRequested(state.LocDirectionForward)
+			l.GetDirection().SetRequested(ctx, state.LocDirectionForward)
 		}
 	}
 	if v.speed.Changed() {
 		if l != nil {
-			l.GetSpeed().SetRequested(int(v.speed.Value))
+			l.GetSpeed().SetRequested(ctx, int(v.speed.Value))
 		}
 	}
 	if v.f0.Changed() {
 		if l != nil {
-			l.GetF0().SetRequested(v.f0.Value)
+			l.GetF0().SetRequested(ctx, v.f0.Value)
 		}
 	}
 	if v.buttonStop.Clicked() {
 		if l != nil {
-			l.GetSpeedInSteps().SetRequested(0)
+			l.GetSpeedInSteps().SetRequested(ctx, 0)
 		}
 	}
 	if l != nil {
 		// Update UI
 		name = l.GetDescription()
 		sp := l.GetSpeed()
-		v.speed.Value = float32(sp.GetRequested())
-		if sp.IsConsistent() {
-			speed = fmt.Sprintf("%d %%", sp.GetRequested())
+		v.speed.Value = float32(sp.GetRequested(ctx))
+		if sp.IsConsistent(ctx) {
+			speed = fmt.Sprintf("%d %%", sp.GetRequested(ctx))
 		} else {
-			speed = fmt.Sprintf("Changing to %d %%", sp.GetRequested())
+			speed = fmt.Sprintf("Changing to %d %%", sp.GetRequested(ctx))
 		}
 		dir := l.GetDirection()
-		if dir.IsConsistent() {
-			direction = dir.GetRequested().String()
+		if dir.IsConsistent(ctx) {
+			direction = dir.GetRequested(ctx).String()
 		} else {
-			direction = "Changing to " + dir.GetRequested().String()
+			direction = "Changing to " + dir.GetRequested(ctx).String()
 		}
-		v.f0.Value = l.GetF0().GetRequested()
+		v.f0.Value = l.GetF0().GetRequested(ctx)
 	} else {
 		return widgets.WithPadding(gtx, material.H5(th, name).Layout)
 	}

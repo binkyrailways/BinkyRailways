@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -62,17 +63,17 @@ func (p *propertyBase) SendRequestedStateChanged(prop state.Property) {
 type actualBoolProperty struct {
 	propertyBase
 	actual          bool
-	OnActualChanged func(bool)
+	OnActualChanged func(context.Context, bool)
 }
 
-func (p *actualBoolProperty) GetActual() bool {
+func (p *actualBoolProperty) GetActual(ctx context.Context) bool {
 	return p.actual
 }
-func (p *actualBoolProperty) SetActual(value bool) error {
+func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -84,17 +85,17 @@ func (p *actualBoolProperty) SetActual(value bool) error {
 type actualIntProperty struct {
 	propertyBase
 	actual          int
-	OnActualChanged func(int)
+	OnActualChanged func(context.Context, int)
 }
 
-func (p *actualIntProperty) GetActual() int {
+func (p *actualIntProperty) GetActual(ctx context.Context) int {
 	return p.actual
 }
-func (p *actualIntProperty) SetActual(value int) error {
+func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -106,17 +107,17 @@ func (p *actualIntProperty) SetActual(value int) error {
 type actualTimeProperty struct {
 	propertyBase
 	actual          time.Time
-	OnActualChanged func(time.Time)
+	OnActualChanged func(context.Context, time.Time)
 }
 
-func (p *actualTimeProperty) GetActual() time.Time {
+func (p *actualTimeProperty) GetActual(ctx context.Context) time.Time {
 	return p.actual
 }
-func (p *actualTimeProperty) SetActual(value time.Time) error {
+func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) error {
 	if !p.actual.Equal(value) {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -128,17 +129,17 @@ func (p *actualTimeProperty) SetActual(value time.Time) error {
 type actualAutoLocStateProperty struct {
 	propertyBase
 	actual          state.AutoLocState
-	OnActualChanged func(state.AutoLocState)
+	OnActualChanged func(context.Context, state.AutoLocState)
 }
 
-func (p *actualAutoLocStateProperty) GetActual() state.AutoLocState {
+func (p *actualAutoLocStateProperty) GetActual(ctx context.Context) state.AutoLocState {
 	return p.actual
 }
-func (p *actualAutoLocStateProperty) SetActual(value state.AutoLocState) error {
+func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.AutoLocState) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -150,17 +151,17 @@ func (p *actualAutoLocStateProperty) SetActual(value state.AutoLocState) error {
 type actualLocDirectionProperty struct {
 	propertyBase
 	actual          state.LocDirection
-	OnActualChanged func(state.LocDirection)
+	OnActualChanged func(context.Context, state.LocDirection)
 }
 
-func (p *actualLocDirectionProperty) GetActual() state.LocDirection {
+func (p *actualLocDirectionProperty) GetActual(ctx context.Context) state.LocDirection {
 	return p.actual
 }
-func (p *actualLocDirectionProperty) SetActual(value state.LocDirection) error {
+func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.LocDirection) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -172,17 +173,17 @@ func (p *actualLocDirectionProperty) SetActual(value state.LocDirection) error {
 type actualBlockSideProperty struct {
 	propertyBase
 	actual          model.BlockSide
-	OnActualChanged func(model.BlockSide)
+	OnActualChanged func(context.Context, model.BlockSide)
 }
 
-func (p *actualBlockSideProperty) GetActual() model.BlockSide {
+func (p *actualBlockSideProperty) GetActual(ctx context.Context) model.BlockSide {
 	return p.actual
 }
-func (p *actualBlockSideProperty) SetActual(value model.BlockSide) error {
+func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.BlockSide) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -194,17 +195,17 @@ func (p *actualBlockSideProperty) SetActual(value model.BlockSide) error {
 type actualBlockProperty struct {
 	propertyBase
 	actual          state.Block
-	OnActualChanged func(state.Block)
+	OnActualChanged func(context.Context, state.Block)
 }
 
-func (p *actualBlockProperty) GetActual() state.Block {
+func (p *actualBlockProperty) GetActual(ctx context.Context) state.Block {
 	return p.actual
 }
-func (p *actualBlockProperty) SetActual(value state.Block) error {
+func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
@@ -216,17 +217,39 @@ func (p *actualBlockProperty) SetActual(value state.Block) error {
 type actualRouteProperty struct {
 	propertyBase
 	actual          state.Route
-	OnActualChanged func(state.Route)
+	OnActualChanged func(context.Context, state.Route)
 }
 
-func (p *actualRouteProperty) GetActual() state.Route {
+func (p *actualRouteProperty) GetActual(ctx context.Context) state.Route {
 	return p.actual
 }
-func (p *actualRouteProperty) SetActual(value state.Route) error {
+func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) error {
 	if p.actual != value {
 		p.actual = value
 		if p.OnActualChanged != nil {
-			p.OnActualChanged(value)
+			p.OnActualChanged(ctx, value)
+		}
+		p.SendActualStateChanged()
+	}
+	return nil
+}
+
+// actualRouteForLocProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualRouteForLocProperty struct {
+	propertyBase
+	actual          state.RouteForLoc
+	OnActualChanged func(context.Context, state.RouteForLoc)
+}
+
+func (p *actualRouteForLocProperty) GetActual(ctx context.Context) state.RouteForLoc {
+	return p.actual
+}
+func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) error {
+	if p.actual != value {
+		p.actual = value
+		if p.OnActualChanged != nil {
+			p.OnActualChanged(ctx, value)
 		}
 		p.SendActualStateChanged()
 	}
