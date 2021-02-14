@@ -65,49 +65,61 @@ func (l *lockable) ValidateLockedBy(ctx context.Context, loc state.Loc) error {
 // Can this state be locked by the intended owner?
 // Return true is this entity and all underlying entities are not locked.
 // Returns: lockedBy, canLock
-func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (state.Loc, bool) {
-	ownerImpl, ok := owner.(Loc)
-	if !ok {
-		return nil, false
-	}
-	if l.lockedBy != nil && l.lockedBy != ownerImpl {
-		return l.lockedBy, false
-	}
-	for _, c := range l.Children {
-		if lockedBy, canLock := c.CanLock(ctx, ownerImpl); !canLock {
-			return lockedBy, canLock
+func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (lockedBy state.Loc, canLock bool) {
+	l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		ownerImpl, ok := owner.(Loc)
+		if !ok {
+			lockedBy, canLock = nil, false
+			return nil
 		}
-	}
-	return nil, true
+		if l.lockedBy != nil && l.lockedBy != ownerImpl {
+			lockedBy, canLock = l.lockedBy, false
+			return nil
+		}
+		for _, c := range l.Children {
+			if lb, cl := c.CanLock(ctx, ownerImpl); !cl {
+				lockedBy, canLock = lb, cl
+				return nil
+			}
+		}
+		lockedBy, canLock = nil, true
+		return nil
+	})
+	return
 }
 
 // Lock this state by the given owner.
 // Also lock all underlying entities.
 func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
-	ownerImpl, ok := owner.(Loc)
-	if !ok {
-		return fmt.Errorf("owner does not implement Loc")
-	}
-	if lockedBy, canLock := l.CanLock(ctx, ownerImpl); !canLock {
-		return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
-	}
-	l.lockedBy = ownerImpl
-	for _, c := range l.Children {
-		if err := c.Lock(ctx, ownerImpl); err != nil {
-			return err
+	return l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		ownerImpl, ok := owner.(Loc)
+		if !ok {
+			return fmt.Errorf("owner does not implement Loc")
 		}
-	}
-	return nil
+		if lockedBy, canLock := l.CanLock(ctx, ownerImpl); !canLock {
+			return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
+		}
+		l.lockedBy = ownerImpl
+		for _, c := range l.Children {
+			if err := c.Lock(ctx, ownerImpl); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }
 
 // Unlock this state from the given owner.
 // Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
 func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
-	if l == exclusion {
-		return
-	}
-	l.lockedBy = nil
-	for _, c := range l.Children {
-		c.Unlock(ctx, exclusion)
-	}
+	l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if l == exclusion {
+			return nil
+		}
+		l.lockedBy = nil
+		for _, c := range l.Children {
+			c.Unlock(ctx, exclusion)
+		}
+		return nil
+	})
 }
