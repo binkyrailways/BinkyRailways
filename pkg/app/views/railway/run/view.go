@@ -18,6 +18,7 @@
 package run
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -66,7 +67,7 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 	}
 	v.locs = newRunLocsView(vm, railway, v.loc.Select)
 	v.appBar = component.NewAppBar(v.modal)
-	railway.Subscribe(v.processEvent)
+	railway.Subscribe(context.Background(), v.processEvent)
 	return v
 }
 

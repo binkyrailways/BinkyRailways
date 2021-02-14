@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -33,10 +35,10 @@ type routeEvent struct {
 }
 
 // Create a new entity
-func newRouteEvent(entity model.RouteEvent, railway Railway) (RouteEvent, error) {
+func newRouteEvent(ctx context.Context, entity model.RouteEvent, railway Railway) (RouteEvent, error) {
 	rb := &routeEvent{}
 	var err error
-	rb.sensor, err = railway.ResolveSensor(entity.GetSensor())
+	rb.sensor, err = railway.ResolveSensor(ctx, entity.GetSensor())
 	if err != nil {
 		return nil, err
 	}

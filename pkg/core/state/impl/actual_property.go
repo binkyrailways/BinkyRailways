@@ -23,6 +23,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // propertyBase contains the value of a property in a state object.
@@ -30,12 +31,14 @@ import (
 type propertyBase struct {
 	Subject    state.Entity
 	Dispatcher state.EventDispatcher
+	exclusive  util.Exclusive
 }
 
 // Configure the values of the property
-func (p *propertyBase) Configure(subject state.Entity, dispatcher state.EventDispatcher) {
+func (p *propertyBase) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
 	p.Subject = subject
 	p.Dispatcher = dispatcher
+	p.exclusive = exclusive
 }
 
 // SendActualStateChanged dispatches an ActualStateChangedEvent
@@ -70,14 +73,16 @@ func (p *actualBoolProperty) GetActual(ctx context.Context) bool {
 	return p.actual
 }
 func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualIntProperty contains the value of a property in a state object.
@@ -92,14 +97,16 @@ func (p *actualIntProperty) GetActual(ctx context.Context) int {
 	return p.actual
 }
 func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualTimeProperty contains the value of a property in a state object.
@@ -114,14 +121,16 @@ func (p *actualTimeProperty) GetActual(ctx context.Context) time.Time {
 	return p.actual
 }
 func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) error {
-	if !p.actual.Equal(value) {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if !p.actual.Equal(value) {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualAutoLocStateProperty contains the value of a property in a state object.
@@ -136,14 +145,16 @@ func (p *actualAutoLocStateProperty) GetActual(ctx context.Context) state.AutoLo
 	return p.actual
 }
 func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.AutoLocState) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualLocDirectionProperty contains the value of a property in a state object.
@@ -158,14 +169,16 @@ func (p *actualLocDirectionProperty) GetActual(ctx context.Context) state.LocDir
 	return p.actual
 }
 func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.LocDirection) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualBlockSideProperty contains the value of a property in a state object.
@@ -180,14 +193,16 @@ func (p *actualBlockSideProperty) GetActual(ctx context.Context) model.BlockSide
 	return p.actual
 }
 func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.BlockSide) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualBlockProperty contains the value of a property in a state object.
@@ -202,14 +217,16 @@ func (p *actualBlockProperty) GetActual(ctx context.Context) state.Block {
 	return p.actual
 }
 func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualRouteProperty contains the value of a property in a state object.
@@ -224,14 +241,16 @@ func (p *actualRouteProperty) GetActual(ctx context.Context) state.Route {
 	return p.actual
 }
 func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }
 
 // actualRouteForLocProperty contains the value of a property in a state object.
@@ -246,12 +265,14 @@ func (p *actualRouteForLocProperty) GetActual(ctx context.Context) state.RouteFo
 	return p.actual
 }
 func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) error {
-	if p.actual != value {
-		p.actual = value
-		if p.OnActualChanged != nil {
-			p.OnActualChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
 		}
-		p.SendActualStateChanged()
-	}
-	return nil
+		return nil
+	})
 }

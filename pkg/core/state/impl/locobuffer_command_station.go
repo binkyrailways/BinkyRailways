@@ -36,7 +36,7 @@ func newLocoBufferCommandStation(en model.LocoBufferCommandStation, railway Rail
 	cs := &locoBufferCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
-	cs.power.Configure(cs, railway)
+	cs.power.Configure(cs, railway, railway)
 	return cs
 }
 
@@ -48,7 +48,7 @@ func (cs *locoBufferCommandStation) getCommandStation() model.LocoBufferCommandS
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (cs *locoBufferCommandStation) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+func (cs *locoBufferCommandStation) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
 	// TODO
 	return nil
 }

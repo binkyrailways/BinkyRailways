@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"go.uber.org/multierr"
@@ -41,7 +43,8 @@ type route struct {
 // Create a new entity
 func newRoute(en model.Route, railway Railway) Route {
 	r := &route{
-		entity: newEntity(en, railway),
+		entity:   newEntity(en, railway),
+		lockable: newLockable(railway),
 	}
 	return r
 }
@@ -54,14 +57,14 @@ func (r *route) getRoute() model.Route {
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (r *route) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+func (r *route) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	// Resolve from, to
 	var err error
-	r.from, err = r.GetRailwayImpl().ResolveEndPoint(r.getRoute().GetFrom())
+	r.from, err = r.GetRailwayImpl().ResolveEndPoint(ctx, r.getRoute().GetFrom())
 	if err != nil {
 		return err
 	}
-	r.to, err = r.GetRailwayImpl().ResolveEndPoint(r.getRoute().GetTo())
+	r.to, err = r.GetRailwayImpl().ResolveEndPoint(ctx, r.getRoute().GetTo())
 	if err != nil {
 		return err
 	}
@@ -69,7 +72,7 @@ func (r *route) TryPrepareForUse(state.UserInterface, state.Persistence) error {
 	// Construct event states
 	var merr error
 	r.getRoute().GetEvents().ForEach(func(evt model.RouteEvent) {
-		if evt, err := newRouteEvent(evt, r.railway); err != nil {
+		if evt, err := newRouteEvent(ctx, evt, r.railway); err != nil {
 			multierr.AppendInto(&merr, err)
 		} else {
 			r.events = append(r.events, evt)

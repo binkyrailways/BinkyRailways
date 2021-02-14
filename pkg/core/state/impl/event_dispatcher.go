@@ -71,7 +71,7 @@ func (d *eventDispatcher) Send(evt state.Event) {
 
 // Subscribe to events.
 // To cancel the subscription, call the given cancel function.
-func (d *eventDispatcher) Subscribe(cb func(state.Event)) context.CancelFunc {
+func (d *eventDispatcher) Subscribe(ctx context.Context, cb func(state.Event)) context.CancelFunc {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 

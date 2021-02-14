@@ -18,6 +18,7 @@
 package railway
 
 import (
+	"context"
 	"fmt"
 
 	"gioui.org/layout"
@@ -92,15 +93,16 @@ func (v *railwayView) setRunMode(runMode, virtualMode bool) error {
 		return nil
 	}
 	// Close any existing state
+	ctx := context.Background()
 	if v.railwayState != nil {
-		v.railwayState.Close()
+		v.railwayState.Close(ctx)
 		v.railwayState = nil
 	}
 	v.runMode = runMode
 	v.virtualMode = virtualMode
 	if runMode {
 		var err error
-		v.railwayState, err = impl.New(v.railway, v, v, virtualMode)
+		v.railwayState, err = impl.New(ctx, v.railway, v, v, virtualMode)
 		if err != nil {
 			return err
 		}

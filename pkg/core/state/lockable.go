@@ -17,25 +17,27 @@
 
 package state
 
+import "context"
+
 // Lockable specifies a state that can be locked by a locomotive
 type Lockable interface {
 	// Gets the locomotive that has this state locked.
 	// Returns null if this state is not locked.
-	GetLockedBy() Loc
+	GetLockedBy(context.Context) Loc
 
 	// ValidateLockedBy checks that this entity is locked by the given loc.
-	ValidateLockedBy(loc Loc) error
+	ValidateLockedBy(ctx context.Context, loc Loc) error
 
 	// Can this state be locked by the intended owner?
 	// Return true is this entity and all underlying entities are not locked.
 	// Returns: lockedBy, canLock
-	CanLock(owner Loc) (Loc, bool)
+	CanLock(ctx context.Context, owner Loc) (Loc, bool)
 
 	// Lock this state by the given owner.
 	// Also lock all underlying entities.
-	Lock(owner Loc) error
+	Lock(ctx context.Context, owner Loc) error
 
 	// Unlock this state from the given owner.
 	// Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
-	Unlock(exclusion Lockable)
+	Unlock(ctx context.Context, exclusion Lockable)
 }

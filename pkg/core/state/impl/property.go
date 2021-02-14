@@ -38,14 +38,16 @@ func (p *boolProperty) GetRequested(ctx context.Context) bool {
 	return p.requested
 }
 func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
-	if p.requested != value {
-		p.requested = value
-		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.requested != value {
+			p.requested = value
+			if p.OnRequestedChanged != nil {
+				p.OnRequestedChanged(ctx, value)
+			}
+			p.SendRequestedStateChanged(p)
 		}
-		p.SendRequestedStateChanged(p)
-	}
-	return nil
+		return nil
+	})
 }
 
 // intProperty contains the value of a property in a state object.
@@ -63,14 +65,16 @@ func (p *intProperty) GetRequested(ctx context.Context) int {
 	return p.requested
 }
 func (p *intProperty) SetRequested(ctx context.Context, value int) error {
-	if p.requested != value {
-		p.requested = value
-		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.requested != value {
+			p.requested = value
+			if p.OnRequestedChanged != nil {
+				p.OnRequestedChanged(ctx, value)
+			}
+			p.SendRequestedStateChanged(p)
 		}
-		p.SendRequestedStateChanged(p)
-	}
-	return nil
+		return nil
+	})
 }
 
 // locDirectionProperty contains the value of a property in a state object.
@@ -88,12 +92,14 @@ func (p *locDirectionProperty) GetRequested(ctx context.Context) state.LocDirect
 	return p.requested
 }
 func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.LocDirection) error {
-	if p.requested != value {
-		p.requested = value
-		if p.OnRequestedChanged != nil {
-			p.OnRequestedChanged(ctx, value)
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.requested != value {
+			p.requested = value
+			if p.OnRequestedChanged != nil {
+				p.OnRequestedChanged(ctx, value)
+			}
+			p.SendRequestedStateChanged(p)
 		}
-		p.SendRequestedStateChanged(p)
-	}
-	return nil
+		return nil
+	})
 }

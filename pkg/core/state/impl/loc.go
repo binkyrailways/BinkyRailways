@@ -64,35 +64,35 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
 		entity: newEntity(en, railway),
 	}
-	l.waitAfterCurrentRoute.Configure(l, railway)
-	l.durationExceedsCurrentRouteTime.Configure(l, railway)
-	l.autoLocState.Configure(l, railway)
-	l.nextRoute.Configure(l, railway)
-	l.currentBlock.Configure(l, railway)
-	l.currentBlockEnterSide.Configure(l, railway)
-	l.startNextRouteTime.Configure(l, railway)
+	l.waitAfterCurrentRoute.Configure(l, railway, railway)
+	l.durationExceedsCurrentRouteTime.Configure(l, railway, railway)
+	l.autoLocState.Configure(l, railway, railway)
+	l.nextRoute.Configure(l, railway, railway)
+	l.currentBlock.Configure(l, railway, railway)
+	l.currentBlockEnterSide.Configure(l, railway, railway)
+	l.startNextRouteTime.Configure(l, railway, railway)
 	l.speed.loc = l
-	l.speedInSteps.Configure(l, railway)
+	l.speedInSteps.Configure(l, railway, railway)
 	l.speedInSteps.OnRequestedChanged = func(ctx context.Context, value int) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
-	l.direction.Configure(l, railway)
+	l.direction.Configure(l, railway, railway)
 	l.direction.OnRequestedChanged = func(ctx context.Context, value state.LocDirection) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
-	l.reversing.Configure(l, railway)
-	l.f0.Configure(l, railway)
+	l.reversing.Configure(l, railway, railway)
+	l.f0.Configure(l, railway, railway)
 	l.f0.OnRequestedChanged = func(ctx context.Context, value bool) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	}
-	l.controlledAutomatically.Configure(l, railway)
-	l.currentRoute.Configure(l, railway)
+	l.controlledAutomatically.Configure(l, railway, railway)
+	l.currentRoute.Configure(l, railway, railway)
 	return l
 }
 
@@ -104,9 +104,9 @@ func (l *loc) getLoc() model.Loc {
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (l *loc) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	var err error
-	l.commandStation, err = l.GetRailwayImpl().SelectCommandStation(l.getLoc())
+	l.commandStation, err = l.GetRailwayImpl().SelectCommandStation(ctx, l.getLoc())
 	if err != nil {
 		return err
 	}
@@ -303,23 +303,23 @@ func (l *loc) AssignTo(ctx context.Context, block state.Block, currentBlockEnter
 
 	// Try to lock new block
 	if block != nil {
-		if _, canLock := block.CanLock(l); !canLock {
+		if _, canLock := block.CanLock(ctx, l); !canLock {
 			return false
 		}
 	}
 
 	// Unassign from current block
 	if current != nil {
-		if err := current.ValidateLockedBy(l); err != nil {
+		if err := current.ValidateLockedBy(ctx, l); err != nil {
 			return false
 		}
-		current.Unlock(nil)
+		current.Unlock(ctx, nil)
 	}
 	l.GetCurrentBlock().SetActual(ctx, nil)
 
 	// Now assign to new block (if any)
 	if block != nil {
-		block.Lock(l)
+		block.Lock(ctx, l)
 		l.GetCurrentBlockEnterSide().SetActual(ctx, currentBlockEnterSide)
 		l.GetCurrentBlock().SetActual(ctx, block)
 	} else {
@@ -378,6 +378,6 @@ func (l *loc) RemoveLockedEntity(ctx context.Context, x Lockable) {
 // Unlock all entities locked by me
 func (l *loc) UnlockAll(ctx context.Context) {
 	for len(l.lockedEntities) > 0 {
-		l.lockedEntities[0].Unlock(nil)
+		l.lockedEntities[0].Unlock(ctx, nil)
 	}
 }

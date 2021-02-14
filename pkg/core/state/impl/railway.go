@@ -18,12 +18,14 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	"go.uber.org/multierr"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // Railway adds implementation functions to state.Railway.
@@ -31,15 +33,16 @@ type Railway interface {
 	Entity
 	state.Railway
 	state.EventDispatcher
+	util.Exclusive
 
 	// Try to resolve the given block into a block state.
-	ResolveBlock(model.Block) (Block, error)
+	ResolveBlock(context.Context, model.Block) (Block, error)
 	// Try to resolve the given endpoint into a block state.
-	ResolveEndPoint(model.EndPoint) (Block, error)
+	ResolveEndPoint(context.Context, model.EndPoint) (Block, error)
 	// Try to resolve the given sensor (model) into a sensor state.
-	ResolveSensor(model.Sensor) (Sensor, error)
+	ResolveSensor(context.Context, model.Sensor) (Sensor, error)
 	// Select a command station that can best drive the given entity
-	SelectCommandStation(model.AddressEntity) (CommandStation, error)
+	SelectCommandStation(context.Context, model.AddressEntity) (CommandStation, error)
 }
 
 // railway implements the Railway state
@@ -47,6 +50,7 @@ type railway struct {
 	entity
 	eventDispatcher
 
+	exclusive       util.Exclusive
 	virtualMode     VirtualMode
 	power           powerProperty
 	blocks          []Block
@@ -61,9 +65,11 @@ type railway struct {
 }
 
 // New constructs and initializes state for the given railway.
-func New(entity model.Railway, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
+func New(ctx context.Context, entity model.Railway, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
 	// Create
-	r := &railway{}
+	r := &railway{
+		exclusive: util.NewExclusive(),
+	}
 	r.entity = newEntity(entity, r)
 	r.power = powerProperty{
 		Railway: r,
@@ -143,60 +149,66 @@ func New(entity model.Railway, ui state.UserInterface, persistence state.Persist
 	})
 
 	// Prepare
-	if err := prepareForUse(r, ui, persistence); err != nil {
+	if err := prepareForUse(ctx, r, ui, persistence); err != nil {
 		return nil, err
 	}
 
 	return r, nil
 }
 
+// Exclusive runs the given function while holding an exclusive lock.
+// This function allows nesting.
+func (r *railway) Exclusive(ctx context.Context, cb func(context.Context) error) error {
+	return r.exclusive.Exclusive(ctx, cb)
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (r *railway) TryPrepareForUse(ui state.UserInterface, persistence state.Persistence) error {
+func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, persistence state.Persistence) error {
 	var err error
 	// Note that the order of preparation is important
 	r.ForEachCommandStation(func(x state.CommandStation) {
 		ix := x.(CommandStation)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachBlock(func(x state.Block) {
 		ix := x.(Block)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachBlockGroup(func(x state.BlockGroup) {
 		ix := x.(BlockGroup)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachJunction(func(x state.Junction) {
 		ix := x.(Junction)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachSensor(func(x state.Sensor) {
 		ix := x.(Sensor)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachSignal(func(x state.Signal) {
 		ix := x.(Signal)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachOutput(func(x state.Output) {
 		ix := x.(Output)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachRoute(func(x state.Route) {
 		ix := x.(Route)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachLoc(func(x state.Loc) {
 		ix := x.(Loc)
-		multierr.AppendInto(&err, prepareForUse(ix, ui, persistence))
+		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	return err
 }
 
 // Try to resolve the given block (model) into a block state.
-func (r *railway) ResolveBlock(block model.Block) (Block, error) {
+func (r *railway) ResolveBlock(ctx context.Context, block model.Block) (Block, error) {
 	id := block.GetID()
 	for _, x := range r.blocks {
 		if x.GetID() == id {
@@ -207,15 +219,15 @@ func (r *railway) ResolveBlock(block model.Block) (Block, error) {
 }
 
 // Try to resolve the given endpoint into a block state.
-func (r *railway) ResolveEndPoint(endpoint model.EndPoint) (Block, error) {
+func (r *railway) ResolveEndPoint(ctx context.Context, endpoint model.EndPoint) (Block, error) {
 	if block, ok := endpoint.(model.Block); ok {
-		return r.ResolveBlock(block)
+		return r.ResolveBlock(ctx, block)
 	}
 	return nil, fmt.Errorf("Non block not implemented") // TODO
 }
 
 // Try to resolve the given sensor (model) into a sensor state.
-func (r *railway) ResolveSensor(sensor model.Sensor) (Sensor, error) {
+func (r *railway) ResolveSensor(ctx context.Context, sensor model.Sensor) (Sensor, error) {
 	id := sensor.GetID()
 	for _, x := range r.sensors {
 		if x.GetID() == id {
@@ -226,7 +238,7 @@ func (r *railway) ResolveSensor(sensor model.Sensor) (Sensor, error) {
 }
 
 // Try to resolve the given commandstatin into a commandstation state.
-func (r *railway) ResolveCommandStation(cs model.CommandStation) (CommandStation, error) {
+func (r *railway) ResolveCommandStation(ctx context.Context, cs model.CommandStation) (CommandStation, error) {
 	id := cs.GetID()
 	for _, x := range r.commandStations {
 		if x.GetID() == id {
@@ -237,7 +249,7 @@ func (r *railway) ResolveCommandStation(cs model.CommandStation) (CommandStation
 }
 
 // Select a command station that can best drive the given entity
-func (r *railway) SelectCommandStation(entity model.AddressEntity) (CommandStation, error) {
+func (r *railway) SelectCommandStation(ctx context.Context, entity model.AddressEntity) (CommandStation, error) {
 	addr := entity.GetAddress()
 	if addr.IsEmpty() {
 		// No address
@@ -260,7 +272,7 @@ func (r *railway) SelectCommandStation(entity model.AddressEntity) (CommandStati
 		return nil, fmt.Errorf("Unknown network type: '%s'", addr.Network.Type)
 	}
 	if prefCS != nil {
-		if cs, err := r.ResolveCommandStation(prefCS); err == nil {
+		if cs, err := r.ResolveCommandStation(ctx, prefCS); err == nil {
 			if supports, _ := cs.Supports(entity, addr.Network); supports {
 				// Preferred command station suppports the entity, use it.
 				return cs, nil
@@ -399,7 +411,7 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 }
 
 // Close the railway
-func (r *railway) Close() {
+func (r *railway) Close(ctx context.Context) {
 	r.virtualMode.Close()
 	r.eventDispatcher.CancelAll()
 	// TODO

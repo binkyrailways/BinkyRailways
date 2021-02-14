@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Block specifies the state of a single block.
 type Block interface {
@@ -31,13 +35,13 @@ type Block interface {
 	// will actually wait.
 	// When set to 0, no locs will wait (unless there is no route available).
 	// When set to 100, all locs (that are allowed) will wait.
-	GetWaitProbability() int
+	GetWaitProbability(context.Context) int
 
 	// Minimum amount of time to wait (if <see cref="WaitProbability"/> is set) in seconds.
-	GetMinimumWaitTime() int
+	GetMinimumWaitTime(context.Context) int
 
 	// Maximum amount of time to wait (if <see cref="WaitProbability"/> is set) in seconds.
-	GetMaximumWaitTime() int
+	GetMaximumWaitTime(context.Context) int
 
 	// Gets the predicate used to decide which locs are allowed to wait in this block.
 	//ILocPredicateState WaitPermissions { get; }
@@ -45,34 +49,34 @@ type Block interface {
 	// By default the front of the block is on the right of the block.
 	// When this property is set, that is reversed to the left of the block.
 	// Setting this property will only alter the display behavior of the block.
-	GetReverseSides() bool
+	GetReverseSides(context.Context) bool
 
 	// Is it allowed for locs to change direction in this block?
-	GetChangeDirection() model.ChangeDirection
+	GetChangeDirection(context.Context) model.ChangeDirection
 
 	// Must reversing locs change direction (back to normal) in this block?
-	GetChangeDirectionReversingLocs() bool
+	GetChangeDirectionReversingLocs(context.Context) bool
 
 	// Gets all sensors that are either an "entering" or a "reached" sensor for a route
 	// that leads to this block.
-	ForEachSensor(func(Sensor))
+	ForEachSensor(context.Context, func(Sensor))
 
 	// Gets the current state of this block
-	GetState() BlockState
+	GetState(context.Context) BlockState
 
 	// Is this block closed for traffic?
 	GetClosed() BoolProperty
 
 	// Can a loc only leave this block at the same side it got in?
-	GetIsDeadEnd() bool
+	GetIsDeadEnd(context.Context) bool
 
 	// Is this block considered a station?
-	GetIsStation() bool
+	GetIsStation(context.Context) bool
 
 	// Gets the state of the group this block belongs to.
 	// Can be nil.
-	GetBlockGroup() BlockGroup
+	GetBlockGroup(context.Context) BlockGroup
 
 	// Is there a loc waiting in this block?
-	GetHasWaitingLoc() bool
+	GetHasWaitingLoc(context.Context) bool
 }

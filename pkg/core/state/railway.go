@@ -35,7 +35,7 @@ type Railway interface {
 
 	// Subscribe to events.
 	// To cancel the subscription, call the given cancel function.
-	Subscribe(cb func(Event)) context.CancelFunc
+	Subscribe(context.Context, func(Event)) context.CancelFunc
 
 	// Gets the railway entity (model)
 	GetModel() model.Railway
@@ -90,5 +90,5 @@ type Railway interface {
 	ForEachOutput(func(Output))
 
 	// Close the railway
-	Close()
+	Close(ctx context.Context)
 }

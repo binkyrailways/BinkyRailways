@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -44,7 +46,7 @@ func newSensor(en model.Sensor, railway Railway) sensor {
 
 // getSensor returns the entity as Sensor.
 func (s *sensor) Configure(railway Railway) {
-	s.active.Configure(s, railway)
+	s.active.Configure(s, railway, railway)
 }
 
 // getSensor returns the entity as Sensor.
@@ -55,9 +57,9 @@ func (s *sensor) getSensor() model.Sensor {
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (s *sensor) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+func (s *sensor) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	// Resolve command station
-	cs, err := s.railway.SelectCommandStation(s.getSensor())
+	cs, err := s.railway.SelectCommandStation(ctx, s.getSensor())
 	if err != nil {
 		return err
 	}
@@ -70,7 +72,7 @@ func (s *sensor) TryPrepareForUse(state.UserInterface, state.Persistence) error 
 		}
 	})
 	if eb := s.getSensor().GetBlock(); eb != nil {
-		ebs, err := s.railway.ResolveBlock(eb)
+		ebs, err := s.railway.ResolveBlock(ctx, eb)
 		if err != nil {
 			return err
 		}

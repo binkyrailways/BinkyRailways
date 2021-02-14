@@ -31,20 +31,21 @@ import (
 // TestRailwayFromFile tests the construction on of a new Railway state.
 func TestRailwayFromFile(t *testing.T) {
 	// Open package
+	ctx := context.Background()
 	p, err := storage.NewPackageFromFile("../../../../Fixtures/tzl.brw")
 	require.NoError(t, err)
 	require.NotNil(t, p)
 
 	// Create state in non-virtual mode
 	t.Run("non-virtual mode", func(t *testing.T) {
-		st, err := New(p.GetRailway(), nil, nil, false)
+		st, err := New(ctx, p.GetRailway(), nil, nil, false)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
 
 	// Create state in virtual mode
 	t.Run("virtual mode", func(t *testing.T) {
-		st, err := New(p.GetRailway(), nil, nil, true)
+		st, err := New(ctx, p.GetRailway(), nil, nil, true)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
@@ -70,7 +71,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	assert.NoError(t, l.SetAddress(model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "136")))
 
 	// Create state
-	rs, err := New(r, nil, nil, true)
+	rs, err := New(ctx, r, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 
@@ -106,7 +107,7 @@ func TestRailwayPower(t *testing.T) {
 	require.NotNil(t, r)
 
 	// Create state (virtual mode)
-	rs, err := New(r, nil, nil, true)
+	rs, err := New(ctx, r, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 

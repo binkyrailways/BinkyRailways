@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -29,7 +31,7 @@ type Entity interface {
 	// Try to prepare the entity for use.
 	// Returns nil when the entity is successfully prepared,
 	// returns an error otherwise.
-	TryPrepareForUse(state.UserInterface, state.Persistence) error
+	TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error
 	// Set this entity's readiness for use in the live railway?
 	SetIsReadyForUse(value bool)
 }
@@ -86,9 +88,9 @@ func (e *entity) SetIsReadyForUse(value bool) {
 
 // Try to prepare the entity for use.
 // Returns true when the entity is successfully prepared.
-func prepareForUse(entity Entity, ui state.UserInterface, persistence state.Persistence) error {
+func prepareForUse(ctx context.Context, entity Entity, ui state.UserInterface, persistence state.Persistence) error {
 	if !entity.GetIsReadyForUse() {
-		if err := entity.TryPrepareForUse(ui, persistence); err != nil {
+		if err := entity.TryPrepareForUse(ctx, ui, persistence); err != nil {
 			return err
 		}
 		entity.SetIsReadyForUse(true)

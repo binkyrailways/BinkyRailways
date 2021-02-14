@@ -18,9 +18,11 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // Lockable adds implementation methods to state.Lockable
@@ -31,17 +33,25 @@ type Lockable interface {
 type lockable struct {
 	Children []state.Lockable
 
-	lockedBy Loc
+	exclusive util.Exclusive
+	lockedBy  Loc
+}
+
+// newLockable initializes a new lockable
+func newLockable(exclusive util.Exclusive) lockable {
+	return lockable{
+		exclusive: exclusive,
+	}
 }
 
 // Gets the locomotive that has this state locked.
 // Returns null if this state is not locked.
-func (l *lockable) GetLockedBy() state.Loc {
+func (l *lockable) GetLockedBy(context.Context) state.Loc {
 	return l.lockedBy
 }
 
 // ValidateLockedBy checks that this entity is locked by the given loc.
-func (l *lockable) ValidateLockedBy(loc state.Loc) error {
+func (l *lockable) ValidateLockedBy(ctx context.Context, loc state.Loc) error {
 	current := l.lockedBy
 	if current != loc {
 		if current == nil {
@@ -55,7 +65,7 @@ func (l *lockable) ValidateLockedBy(loc state.Loc) error {
 // Can this state be locked by the intended owner?
 // Return true is this entity and all underlying entities are not locked.
 // Returns: lockedBy, canLock
-func (l *lockable) CanLock(owner state.Loc) (state.Loc, bool) {
+func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (state.Loc, bool) {
 	ownerImpl, ok := owner.(Loc)
 	if !ok {
 		return nil, false
@@ -64,7 +74,7 @@ func (l *lockable) CanLock(owner state.Loc) (state.Loc, bool) {
 		return l.lockedBy, false
 	}
 	for _, c := range l.Children {
-		if lockedBy, canLock := c.CanLock(ownerImpl); !canLock {
+		if lockedBy, canLock := c.CanLock(ctx, ownerImpl); !canLock {
 			return lockedBy, canLock
 		}
 	}
@@ -73,17 +83,17 @@ func (l *lockable) CanLock(owner state.Loc) (state.Loc, bool) {
 
 // Lock this state by the given owner.
 // Also lock all underlying entities.
-func (l *lockable) Lock(owner state.Loc) error {
+func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 	ownerImpl, ok := owner.(Loc)
 	if !ok {
 		return fmt.Errorf("owner does not implement Loc")
 	}
-	if lockedBy, canLock := l.CanLock(ownerImpl); !canLock {
+	if lockedBy, canLock := l.CanLock(ctx, ownerImpl); !canLock {
 		return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
 	}
 	l.lockedBy = ownerImpl
 	for _, c := range l.Children {
-		if err := c.Lock(ownerImpl); err != nil {
+		if err := c.Lock(ctx, ownerImpl); err != nil {
 			return err
 		}
 	}
@@ -92,12 +102,12 @@ func (l *lockable) Lock(owner state.Loc) error {
 
 // Unlock this state from the given owner.
 // Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
-func (l *lockable) Unlock(exclusion state.Lockable) {
+func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 	if l == exclusion {
 		return
 	}
 	l.lockedBy = nil
 	for _, c := range l.Children {
-		c.Unlock(exclusion)
+		c.Unlock(ctx, exclusion)
 	}
 }

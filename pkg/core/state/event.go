@@ -31,7 +31,7 @@ type EventDispatcher interface {
 	Send(Event)
 	// Subscribe to events.
 	// To cancel the subscription, call the given cancel function.
-	Subscribe(func(Event)) context.CancelFunc
+	Subscribe(context.Context, func(Event)) context.CancelFunc
 }
 
 // ActualStateChangedEvent is raised when an actual state of a property of an

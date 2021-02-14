@@ -38,32 +38,37 @@ var _ state.BoolProperty = &powerProperty{}
 func (sp *powerProperty) GetActual(ctx context.Context) bool {
 	csOn := 0
 	csOff := 0
-	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		if cs.GetPower().GetActual(ctx) {
-			csOn++
-		} else {
-			csOff++
-		}
+	sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+			if cs.GetPower().GetActual(ctx) {
+				csOn++
+			} else {
+				csOff++
+			}
+		})
+		return nil
 	})
 	return csOff == 0 && csOn > 0
 }
 func (sp *powerProperty) SetActual(ctx context.Context, value bool) error {
-	actual := sp.GetActual(ctx)
+	return sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+		actual := sp.GetActual(ctx)
 
-	var err error
-	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		multierr.AppendInto(&err, cs.GetPower().SetActual(ctx, value))
-	})
-	if err != nil {
-		return err
-	}
-	if actual != value {
-		sp.Railway.Send(state.ActualStateChangedEvent{
-			Subject:  sp.Railway,
-			Property: sp,
+		var err error
+		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+			multierr.AppendInto(&err, cs.GetPower().SetActual(ctx, value))
 		})
-	}
-	return nil
+		if err != nil {
+			return err
+		}
+		if actual != value {
+			sp.Railway.Send(state.ActualStateChangedEvent{
+				Subject:  sp.Railway,
+				Property: sp,
+			})
+		}
+		return nil
+	})
 }
 
 // Gets / sets the requested value
@@ -71,21 +76,23 @@ func (sp *powerProperty) GetRequested(ctx context.Context) bool {
 	return sp.requested
 }
 func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
-	var err error
-	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-		multierr.AppendInto(&err, cs.GetPower().SetRequested(ctx, value))
-	})
-	if err != nil {
-		return err
-	}
-	if sp.requested != value {
-		sp.requested = value
-		sp.Railway.Send(state.RequestedStateChangedEvent{
-			Subject:  sp.Railway,
-			Property: sp,
+	return sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+		var err error
+		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+			multierr.AppendInto(&err, cs.GetPower().SetRequested(ctx, value))
 		})
-	}
-	return nil
+		if err != nil {
+			return err
+		}
+		if sp.requested != value {
+			sp.requested = value
+			sp.Railway.Send(state.RequestedStateChangedEvent{
+				Subject:  sp.Railway,
+				Property: sp,
+			})
+		}
+		return nil
+	})
 }
 
 func (sp *powerProperty) IsConsistent(ctx context.Context) bool {

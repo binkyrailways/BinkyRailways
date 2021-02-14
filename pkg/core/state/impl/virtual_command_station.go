@@ -37,7 +37,7 @@ func newVirtualCommandStation(railway Railway) CommandStation {
 	cs := &virtualCommandStation{
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
 	}
-	cs.power.Configure(cs, railway)
+	cs.power.Configure(cs, railway, railway)
 	cs.power.OnRequestedChanged = func(ctx context.Context, value bool) {
 		cs.power.SetActual(ctx, value)
 	}
@@ -52,7 +52,7 @@ func (cs *virtualCommandStation) getCommandStation() model.VirtualCommandStation
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (cs *virtualCommandStation) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+func (cs *virtualCommandStation) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
 	return nil
 }
 
