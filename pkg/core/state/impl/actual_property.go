@@ -123,6 +123,28 @@ func (p *actualTimeProperty) SetActual(value time.Time) error {
 	return nil
 }
 
+// actualAutoLocStateProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualAutoLocStateProperty struct {
+	propertyBase
+	actual          state.AutoLocState
+	OnActualChanged func(state.AutoLocState)
+}
+
+func (p *actualAutoLocStateProperty) GetActual() state.AutoLocState {
+	return p.actual
+}
+func (p *actualAutoLocStateProperty) SetActual(value state.AutoLocState) error {
+	if p.actual != value {
+		p.actual = value
+		if p.OnActualChanged != nil {
+			p.OnActualChanged(value)
+		}
+		p.SendActualStateChanged()
+	}
+	return nil
+}
+
 // actualLocDirectionProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type actualLocDirectionProperty struct {

@@ -72,7 +72,7 @@ type Route interface {
 	//ICriticalSectionRoutes CriticalSection { get; }
 
 	// Gets all events configured for this route.
-	//IEnumerable<IRouteEventState> Events { get; }
+	ForEachEvent(func(RouteEvent))
 
 	// Gets the predicate used to decide which locs are allowed to use this route.
 
@@ -93,7 +93,7 @@ type Route interface {
 	GetIsPrepared() bool
 
 	// Create a specific route state for the given loc.
-	//IRouteStateForLoc CreateStateForLoc(ILocState loc);
+	CreateStateForLoc(loc Loc) RouteStateForLoc
 
 	// Fire the actions attached to the entering destination trigger.
 	FireEnteringDestinationTrigger(Loc)

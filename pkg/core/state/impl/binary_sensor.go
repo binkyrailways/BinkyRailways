@@ -19,31 +19,24 @@ package impl
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// builder is used to build state objects for entities.
-type builder struct {
-	Railway Railway
-
-	model.DefaultEntityVisitor
+// BinarySensor adds implementation functions to state.BinarySensor.
+type BinarySensor interface {
+	Entity
+	state.BinarySensor
 }
 
-func (b *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
-	return newBinarySensor(x, b.Railway)
+type binarySensor struct {
+	sensor
 }
 
-func (b *builder) VisitBlock(x model.Block) interface{} {
-	return newBlock(x, b.Railway)
-}
-
-func (b *builder) VisitLoc(x model.Loc) interface{} {
-	return newLoc(x, b.Railway)
-}
-
-func (b *builder) VisitRoute(x model.Route) interface{} {
-	return newRoute(x, b.Railway)
-}
-
-func (b *builder) VisitLocoBufferCommandStation(x model.LocoBufferCommandStation) interface{} {
-	return newLocoBufferCommandStation(x, b.Railway)
+// Create a new entity
+func newBinarySensor(en model.BinarySensor, railway Railway) BinarySensor {
+	s := &binarySensor{
+		sensor: newSensor(en, railway),
+	}
+	s.Configure(railway)
+	return s
 }

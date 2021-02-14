@@ -64,11 +64,11 @@ type Loc interface {
 	// Gets the name of the person that owns this loc.
 	GetOwner() string
 
-	// Is it allowed to set the ControlledAutoatically property to true?
+	// Is it allowed to set the ControlledAutomatically property to true?
 	GetCanSetAutomaticControl() bool
 
 	// The current state of this loc in the automatic loc controller.
-	//IActualStateProperty<AutoLocState> AutomaticState { get; }
+	GetAutomaticState() ActualAutoLocStateProperty
 
 	// Gets the route that this loc is currently taking.
 	// Do not assign this property directly, instead use the assign methods.

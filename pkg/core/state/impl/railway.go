@@ -32,8 +32,12 @@ type Railway interface {
 	state.Railway
 	state.EventDispatcher
 
+	// Try to resolve the given block into a block state.
+	ResolveBlock(model.Block) (Block, error)
 	// Try to resolve the given endpoint into a block state.
 	ResolveEndPoint(model.EndPoint) (Block, error)
+	// Try to resolve the given sensor (model) into a sensor state.
+	ResolveSensor(model.Sensor) (Sensor, error)
 	// Select a command station that can best drive the given entity
 	SelectCommandStation(model.AddressEntity) (CommandStation, error)
 }
@@ -43,7 +47,7 @@ type railway struct {
 	entity
 	eventDispatcher
 
-	virtualMode     virtualMode
+	virtualMode     VirtualMode
 	power           powerProperty
 	blocks          []Block
 	blockGroups     []BlockGroup
@@ -64,7 +68,7 @@ func New(entity model.Railway, ui state.UserInterface, persistence state.Persist
 	r.power = powerProperty{
 		Railway: r,
 	}
-	r.virtualMode.Enabled = virtual
+	r.virtualMode = newVirtualMode(virtual, r)
 
 	// Construct children
 	builder := &builder{Railway: r}
@@ -191,17 +195,34 @@ func (r *railway) TryPrepareForUse(ui state.UserInterface, persistence state.Per
 	return err
 }
 
-// Try to resolve the given endpoint into a block state.
-func (r *railway) ResolveEndPoint(endpoint model.EndPoint) (Block, error) {
-	id := endpoint.GetID()
-	if _, ok := endpoint.(model.Block); ok {
-		for _, x := range r.blocks {
-			if x.GetID() == id {
-				return x, nil
-			}
+// Try to resolve the given block (model) into a block state.
+func (r *railway) ResolveBlock(block model.Block) (Block, error) {
+	id := block.GetID()
+	for _, x := range r.blocks {
+		if x.GetID() == id {
+			return x, nil
 		}
 	}
+	return nil, fmt.Errorf("Block '%s' not found", id)
+}
+
+// Try to resolve the given endpoint into a block state.
+func (r *railway) ResolveEndPoint(endpoint model.EndPoint) (Block, error) {
+	if block, ok := endpoint.(model.Block); ok {
+		return r.ResolveBlock(block)
+	}
 	return nil, fmt.Errorf("Non block not implemented") // TODO
+}
+
+// Try to resolve the given sensor (model) into a sensor state.
+func (r *railway) ResolveSensor(sensor model.Sensor) (Sensor, error) {
+	id := sensor.GetID()
+	for _, x := range r.sensors {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, fmt.Errorf("Sensor '%s' not found", id)
 }
 
 // Try to resolve the given commandstatin into a commandstation state.
@@ -303,7 +324,7 @@ func (r *railway) GetModel() model.Railway {
 // Gets the virtual mode.
 // This will never return null.
 func (r *railway) GetVirtualMode() state.VirtualMode {
-	return &r.virtualMode
+	return r.virtualMode
 }
 
 // Get the model time
@@ -379,6 +400,7 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 
 // Close the railway
 func (r *railway) Close() {
+	r.virtualMode.Close()
 	r.eventDispatcher.CancelAll()
 	// TODO
 }

@@ -20,6 +20,7 @@ package impl
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"go.uber.org/multierr"
 )
 
 // Route adds implementation functions to state.Route.
@@ -32,8 +33,9 @@ type route struct {
 	entity
 	lockable
 
-	from Block
-	to   Block
+	from   Block
+	to     Block
+	events []RouteEvent
 }
 
 // Create a new entity
@@ -53,6 +55,7 @@ func (r *route) getRoute() model.Route {
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (r *route) TryPrepareForUse(state.UserInterface, state.Persistence) error {
+	// Resolve from, to
 	var err error
 	r.from, err = r.GetRailwayImpl().ResolveEndPoint(r.getRoute().GetFrom())
 	if err != nil {
@@ -62,6 +65,20 @@ func (r *route) TryPrepareForUse(state.UserInterface, state.Persistence) error {
 	if err != nil {
 		return err
 	}
+
+	// Construct event states
+	var merr error
+	r.getRoute().GetEvents().ForEach(func(evt model.RouteEvent) {
+		if evt, err := newRouteEvent(evt, r.railway); err != nil {
+			multierr.AppendInto(&merr, err)
+		} else {
+			r.events = append(r.events, evt)
+		}
+	})
+	if merr != nil {
+		return merr
+	}
+
 	return nil
 }
 
@@ -106,23 +123,60 @@ func (r *route) GetHasNonStraightSwitches() bool {
 }
 
 // Is the given sensor listed as one of the "entering destination" sensors of this route?
-func (r *route) IsEnteringDestinationSensor(state.Sensor, state.Loc) bool {
-	return false // TODO
+func (r *route) IsEnteringDestinationSensor(sensor state.Sensor, loc state.Loc) bool {
+	for _, evt := range r.events {
+		if evt.GetSensor() != sensor {
+			continue
+		}
+		found := false
+		evt.ForEachBehavior(func(b state.RouteEventBehavior) {
+			if !found && b.GetStateBehavior() == model.RouteStateBehaviorEnter {
+				if b.AppliesTo(loc) {
+					found = true
+				}
+			}
+		})
+		if found {
+			return true
+		}
+	}
+	return false
 }
 
 // Is the given sensor listed as one of the "entering destination" sensors of this route?
-func (r *route) IsReachedDestinationSensor(state.Sensor, state.Loc) bool {
-	return false // TODO
+func (r *route) IsReachedDestinationSensor(sensor state.Sensor, loc state.Loc) bool {
+	for _, evt := range r.events {
+		if evt.GetSensor() != sensor {
+			continue
+		}
+		found := false
+		evt.ForEachBehavior(func(b state.RouteEventBehavior) {
+			if !found && b.GetStateBehavior() == model.RouteStateBehaviorReached {
+				if b.AppliesTo(loc) {
+					found = true
+				}
+			}
+		})
+		if found {
+			return true
+		}
+	}
+	return false
 }
 
 // Does this route contains the given block (either as from, to or crossing)
-func (r *route) ContainsBlock(state.Block) bool {
-	return false // TODO
+func (r *route) ContainsBlock(b state.Block) bool {
+	return r.from == b || r.to == b
 }
 
 // Does this route contains the given sensor (either as entering or reached)
-func (r *route) ContainsSensor(state.Sensor) bool {
-	return false // TODO
+func (r *route) ContainsSensor(s state.Sensor) bool {
+	for _, x := range r.events {
+		if x.GetSensor() == s {
+			return true
+		}
+	}
+	return false
 }
 
 // Does this route contains the given junction
@@ -131,15 +185,21 @@ func (r *route) ContainsJunction(state.Junction) bool {
 }
 
 // Gets all sensors that are listed as entering/reached sensor of this route.
-func (r *route) ForEachSensor(func(state.Sensor)) {
-	// TODO
+func (r *route) ForEachSensor(cb func(state.Sensor)) {
+	for _, x := range r.events {
+		cb(x.GetSensor())
+	}
 }
 
 // All routes that must be free before this route can be taken.
 //ICriticalSectionRoutes CriticalSection { get; }
 
 // Gets all events configured for this route.
-//IEnumerable<IRouteEventState> Events { get; }
+func (r *route) ForEachEvent(cb func(state.RouteEvent)) {
+	for _, x := range r.events {
+		cb(x)
+	}
+}
 
 // Gets the predicate used to decide which locs are allowed to use this route.
 
@@ -168,7 +228,9 @@ func (r *route) GetIsPrepared() bool {
 }
 
 // Create a specific route state for the given loc.
-//IRouteStateForLoc CreateStateForLoc(ILocState loc);
+func (r *route) CreateStateForLoc(loc state.Loc) state.RouteStateForLoc {
+	return newRouteStateForLoc(loc, r)
+}
 
 // Fire the actions attached to the entering destination trigger.
 func (r *route) FireEnteringDestinationTrigger(state.Loc) {

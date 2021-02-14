@@ -23,7 +23,7 @@ import (
 )
 
 // LocDirection describes the direction of a loc.
-type LocDirection int
+type LocDirection uint8
 
 const (
 	// LocDirectionForward means the loc must go forward

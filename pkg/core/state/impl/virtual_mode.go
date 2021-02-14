@@ -23,34 +23,56 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-type virtualMode struct {
-	Enabled bool
-	autoRun bool
+// VirtualMode adds implementation methods to state.VirtualMode
+type VirtualMode interface {
+	state.VirtualMode
+
+	// Close all virtual activities
+	Close()
 }
 
-var _ state.VirtualMode = &virtualMode{}
+type virtualMode struct {
+	enabled bool
+	autoRun *autoRunState
+}
+
+var _ VirtualMode = &virtualMode{}
+
+// newVirtualMode constructs a new VirtualMode
+func newVirtualMode(enabled bool, railway Railway) VirtualMode {
+	return &virtualMode{
+		enabled: enabled,
+		autoRun: newAutoRunState(railway),
+	}
+}
 
 // Is virtual mode enabled?
 func (v *virtualMode) GetEnabled() bool {
-	return v.Enabled
+	return v.enabled
 }
 
 // Automatically run locs?
 func (v *virtualMode) GetAutoRun() bool {
-	if !v.Enabled {
+	if !v.enabled {
 		return false
 	}
-	return v.autoRun
+	return v.autoRun.GetEnabled()
 }
 func (v *virtualMode) SetAutoRun(value bool) error {
-	if !v.Enabled {
+	if !v.enabled {
 		return fmt.Errorf("SetAutoRun is not allowed in non virtual mode")
 	}
-	v.autoRun = value
-	return nil
+	return v.autoRun.SetEnabled(value)
 }
 
 // Entity is being clicked on.
 func (v *virtualMode) EntityClick(entity state.Entity) {
 	// TODO
+}
+
+// Close all virtual activities
+func (v *virtualMode) Close() {
+	if v.GetAutoRun() {
+		v.SetAutoRun(false)
+	}
 }

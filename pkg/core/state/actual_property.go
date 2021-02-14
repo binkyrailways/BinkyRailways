@@ -58,6 +58,16 @@ type ActualTimeProperty interface {
 	SetActual(value time.Time) error
 }
 
+// ActualAutoLocStateProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type ActualAutoLocStateProperty interface {
+	ActualProperty
+
+	// Gets / sets the actual value
+	GetActual() AutoLocState
+	SetActual(value AutoLocState) error
+}
+
 // ActualLocDirectionProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type ActualLocDirectionProperty interface {

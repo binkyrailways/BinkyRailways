@@ -38,6 +38,7 @@ type loc struct {
 	commandStation                  CommandStation
 	waitAfterCurrentRoute           actualBoolProperty
 	durationExceedsCurrentRouteTime actualTimeProperty
+	autoLocState                    actualAutoLocStateProperty
 	nextRoute                       actualRouteProperty
 	currentBlock                    actualBlockProperty
 	currentBlockEnterSide           actualBlockSideProperty
@@ -57,6 +58,7 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	}
 	l.waitAfterCurrentRoute.Configure(l, railway)
 	l.durationExceedsCurrentRouteTime.Configure(l, railway)
+	l.autoLocState.Configure(l, railway)
 	l.nextRoute.Configure(l, railway)
 	l.currentBlock.Configure(l, railway)
 	l.currentBlockEnterSide.Configure(l, railway)
@@ -166,7 +168,9 @@ func (l *loc) GetCanSetAutomaticControl() bool {
 }
 
 // The current state of this loc in the automatic loc controller.
-//IActualStateProperty<AutoLocState> AutomaticState { get; }
+func (l *loc) GetAutomaticState() state.ActualAutoLocStateProperty {
+	return &l.autoLocState
+}
 
 // Gets the route that this loc is currently taking.
 // Do not assign this property directly, instead use the assign methods.
