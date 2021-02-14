@@ -55,6 +55,7 @@ func NewRailway(p model.Package) Railway {
 	r := &railway{
 		p: p,
 	}
+	r.EnsureID()
 	r.persistentEntity.Initialize(r.entity.OnModified)
 	r.Locs.SetContainer(r)
 	r.LocGroups.SetContainer(r)

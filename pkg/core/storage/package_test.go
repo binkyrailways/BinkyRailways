@@ -28,6 +28,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestNew(t *testing.T) {
+	p := NewPackage()
+	require.NotNil(t, p)
+	require.NotNil(t, p.GetRailway(), "railway")
+	assert.NotEmpty(t, p.GetRailway().GetID())
+}
+
 func TestLoad(t *testing.T) {
 	// Open package
 	t.Log(os.Getwd())

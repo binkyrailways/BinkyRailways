@@ -27,7 +27,6 @@ import (
 type powerProperty struct {
 	Railway Railway
 
-	actual    bool
 	requested bool
 }
 
@@ -35,9 +34,20 @@ var _ state.BoolProperty = &powerProperty{}
 
 // Gets / sets the actual value
 func (sp *powerProperty) GetActual() bool {
-	return sp.actual
+	csOn := 0
+	csOff := 0
+	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
+		if cs.GetPower().GetActual() {
+			csOn++
+		} else {
+			csOff++
+		}
+	})
+	return csOff == 0 && csOn > 0
 }
 func (sp *powerProperty) SetActual(value bool) error {
+	actual := sp.GetActual()
+
 	var err error
 	sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
 		multierr.AppendInto(&err, cs.GetPower().SetActual(value))
@@ -45,8 +55,7 @@ func (sp *powerProperty) SetActual(value bool) error {
 	if err != nil {
 		return err
 	}
-	if sp.actual != value {
-		sp.actual = value
+	if actual != value {
 		sp.Railway.Send(state.ActualStateChangedEvent{
 			Subject:  sp.Railway,
 			Property: sp,
