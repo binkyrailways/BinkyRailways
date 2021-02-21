@@ -76,7 +76,7 @@ func (s *autoRunState) run(ctx context.Context) {
 	// Build loc states
 	var locStates []*autoRunLocState
 	s.railway.ForEachLoc(func(loc state.Loc) {
-		locStates = append(locStates, newAutoRunLocState(loc))
+		locStates = append(locStates, newAutoRunLocState(loc, s.railway))
 	})
 
 	// Build ticker

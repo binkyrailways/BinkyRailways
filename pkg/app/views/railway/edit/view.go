@@ -102,9 +102,51 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 										})
 										return result
 									}, level+1, x),
+									groupCache.CreateItem("Block groups", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetBlockGroups().ForEach(func(entity model.BlockGroup) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Edges", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetEdges().ForEach(func(entity model.Edge) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Junctions", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetJunctions().ForEach(func(entity model.Junction) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Outputs", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetOutputs().ForEach(func(entity model.Output) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
 									groupCache.CreateItem("Routes", func(level int) []widgets.TreeViewItem {
 										var result []widgets.TreeViewItem
 										x.GetRoutes().ForEach(func(entity model.Route) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Sensors", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetSensors().ForEach(func(entity model.Sensor) {
+											result = append(result, itemCache.CreateItem(entity, level+1))
+										})
+										return result
+									}, level+1, x),
+									groupCache.CreateItem("Signals", func(level int) []widgets.TreeViewItem {
+										var result []widgets.TreeViewItem
+										x.GetSignals().ForEach(func(entity model.Signal) {
 											result = append(result, itemCache.CreateItem(entity, level+1))
 										})
 										return result

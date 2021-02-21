@@ -21,35 +21,82 @@ import (
 	"context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // autoRunLocState implements auto-run behavior for a specific loc.
 type autoRunLocState struct {
-	loc state.Loc
+	exclusive  util.Exclusive
+	loc        state.Loc
+	lastSensor state.Sensor
+	state      autoRunLocStates
 }
 
+type autoRunLocStates uint8
+
+const (
+	Initial autoRunLocStates = 0
+	Enter   autoRunLocStates = 1
+)
+
 // newAutoRunLocState constructs an auto run state for the given loc
-func newAutoRunLocState(loc state.Loc) *autoRunLocState {
+func newAutoRunLocState(loc state.Loc, exclusive util.Exclusive) *autoRunLocState {
 	return &autoRunLocState{
-		loc: loc,
+		exclusive: exclusive,
+		loc:       loc,
 	}
 }
 
 // Tick performs a single step in the auto run behavior of the loc
 func (s *autoRunLocState) Tick(ctx context.Context) {
-	if !s.loc.GetControlledAutomatically().GetActual(ctx) {
-		return
+	s.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if !s.loc.GetControlledAutomatically().GetActual(ctx) {
+			return nil
+		}
+		route := s.loc.GetCurrentRoute().GetActual(ctx)
+		if route == nil {
+			return nil
+		}
+		switch s.loc.GetAutomaticState().GetActual(ctx) {
+		case state.Running, state.EnterSensorActivated, state.EnteringDestination:
+			s.selectNextState(ctx, route.GetRoute())
+		}
+		return nil
+	})
+}
+
+func (s *autoRunLocState) selectNextState(ctx context.Context, route state.Route) {
+	if s.lastSensor != nil {
+		s.lastSensor.GetActive().SetActual(ctx, false)
 	}
-	/*	route := s.loc.getcurr
-		var route = loc.CurrentRoute.Actual;
-		if (route == null)
-			return;
-		switch (loc.AutomaticState.Actual)
-		{
-			case AutoLocState.Running:
-			case AutoLocState.EnterSensorActivated:
-			case AutoLocState.EnteringDestination:
-				SelectNextState(route.Route);
-				break;
-		}*/
+	if s.state == Initial {
+		var sensor state.Sensor
+		route.ForEachSensor(func(sx state.Sensor) {
+			if sensor == nil {
+				if route.IsEnteringDestinationSensor(sx, s.loc) {
+					sensor = sx
+				}
+			}
+		})
+		if sensor != nil {
+			sensor.GetActive().SetActual(ctx, true)
+			s.lastSensor = sensor
+			s.state = Enter
+			return
+		}
+	}
+	// Activate reached sensor
+	var sensor state.Sensor
+	route.ForEachSensor(func(sx state.Sensor) {
+		if sensor == nil {
+			if route.IsReachedDestinationSensor(sx, s.loc) {
+				sensor = sx
+			}
+		}
+	})
+	if sensor != nil {
+		sensor.GetActive().SetActual(ctx, true)
+		s.lastSensor = sensor
+		s.state = Initial
+	}
 }

@@ -167,6 +167,10 @@ func (m *module) GetHeight() int {
 func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 	m.Blocks.ForEach(func(item model.Block) { cb(item) })
 	m.Edges.ForEach(func(item model.Edge) { cb(item) })
+	m.Junctions.ForEach(func(item model.Junction) { cb(item) })
+	m.Outputs.ForEach(func(item model.Output) { cb(item) })
+	m.Sensors.ForEach(func(item model.Sensor) { cb(item) })
+	m.Signals.ForEach(func(item model.Signal) { cb(item) })
 }
 
 // Upgrade to latest version

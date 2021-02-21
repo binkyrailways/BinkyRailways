@@ -48,3 +48,21 @@ func (v *builder) VisitBlock(x model.Block) interface{} {
 		entity: x,
 	}
 }
+
+func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
+	return &sensor{
+		entity: x,
+	}
+}
+
+func (v *builder) VisitSensor(x model.Sensor) interface{} {
+	return &sensor{
+		entity: x,
+	}
+}
+
+func (v *builder) VisitSwitch(x model.Switch) interface{} {
+	return &stdSwitch{
+		entity: x,
+	}
+}

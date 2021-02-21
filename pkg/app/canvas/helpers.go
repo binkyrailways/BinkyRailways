@@ -35,3 +35,11 @@ func GetPositionedEntityBounds(entity model.PositionedEntity) f32.Rectangle {
 		},
 	}
 }
+
+// GetPositionedEntitySize returns the size of the given entity.
+func GetPositionedEntitySize(entity model.PositionedEntity) f32.Point {
+	return f32.Point{
+		X: float32(entity.GetWidth()),
+		Y: float32(entity.GetHeight()),
+	}
+}

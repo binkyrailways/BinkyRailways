@@ -54,6 +54,11 @@ func (s *sensor) getSensor() model.Sensor {
 	return s.GetEntity().(model.Sensor)
 }
 
+// Gets the underlying model
+func (s *sensor) GetModel() model.Sensor {
+	return s.getSensor()
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.

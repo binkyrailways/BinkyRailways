@@ -31,6 +31,10 @@ func NewBuilder() model.EntityVisitor {
 	return &builder{}
 }
 
+func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
+	return NewBinarySensorSettings(x)
+}
+
 func (v *builder) VisitBlock(x model.Block) interface{} {
 	return NewBlockSettings(x)
 }
@@ -49,4 +53,8 @@ func (v *builder) VisitRailway(x model.Railway) interface{} {
 
 func (v *builder) VisitRoute(x model.Route) interface{} {
 	return NewRouteSettings(x)
+}
+
+func (v *builder) VisitSwitch(x model.Switch) interface{} {
+	return NewSwitchSettings(x)
 }

@@ -23,6 +23,9 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 type Sensor interface {
 	Input
 
+	// Gets the underlying model
+	GetModel() model.Sensor
+
 	// Gets all blocks for which this sensor is either an "entering" or a "reached"
 	// sensor or to which this sensor is attached.
 	ForEachDestinationBlock(func(Block))
