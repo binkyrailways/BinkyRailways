@@ -49,7 +49,7 @@ type Railway interface {
 	//void PrepareForUse(IStateUserInterface ui, IStatePersistence statePersistence);
 
 	// Gets the state of the automatic loc controller?
-	//IAutomaticLocController AutomaticLocController { get; }
+	GetAutomaticLocController() AutomaticLocController
 
 	// Gets the state dispatcher
 	//        IStateDispatcher Dispatcher { get; }

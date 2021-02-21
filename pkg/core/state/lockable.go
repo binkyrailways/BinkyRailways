@@ -41,3 +41,13 @@ type Lockable interface {
 	// Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
 	Unlock(ctx context.Context, exclusion Lockable)
 }
+
+// IsLocked returns true if the given lockable is locked by any loc.
+func IsLocked(ctx context.Context, l Lockable) bool {
+	return l.GetLockedBy(ctx) != nil
+}
+
+// IsLockedBy returns true if the given lockable is locked by the given loc.
+func IsLockedBy(ctx context.Context, l Lockable, loc Loc) bool {
+	return l.GetLockedBy(ctx) == loc
+}

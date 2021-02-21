@@ -25,6 +25,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
@@ -50,18 +51,19 @@ type railway struct {
 	entity
 	eventDispatcher
 
-	exclusive       util.Exclusive
-	virtualMode     VirtualMode
-	power           powerProperty
-	blocks          []Block
-	blockGroups     []BlockGroup
-	commandStations []CommandStation
-	junctions       []Junction
-	locs            []Loc
-	routes          []Route
-	sensors         []Sensor
-	signals         []Signal
-	outputs         []Output
+	exclusive              util.Exclusive
+	virtualMode            VirtualMode
+	power                  powerProperty
+	blocks                 []Block
+	blockGroups            []BlockGroup
+	commandStations        []CommandStation
+	junctions              []Junction
+	locs                   []Loc
+	routes                 []Route
+	sensors                []Sensor
+	signals                []Signal
+	outputs                []Output
+	automaticLocController state.AutomaticLocController
 }
 
 // New constructs and initializes state for the given railway.
@@ -204,6 +206,12 @@ func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, 
 		ix := x.(Loc)
 		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
+
+	if alc, xerr := automatic.NewAutomaticLocController(r); xerr != nil {
+		multierr.AppendInto(&err, xerr)
+	} else {
+		r.automaticLocController = alc
+	}
 	return err
 }
 
@@ -328,7 +336,9 @@ func (r *railway) GetModel() model.Railway {
 //void PrepareForUse(IStateUserInterface ui, IStatePersistence statePersistence);
 
 // Gets the state of the automatic loc controller?
-//IAutomaticLocController AutomaticLocController { get; }
+func (r *railway) GetAutomaticLocController() state.AutomaticLocController {
+	return r.automaticLocController
+}
 
 // Gets the state dispatcher
 //        IStateDispatcher Dispatcher { get; }
@@ -414,5 +424,8 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 func (r *railway) Close(ctx context.Context) {
 	r.virtualMode.Close()
 	r.eventDispatcher.CancelAll()
+	if r.automaticLocController != nil {
+		r.automaticLocController.Close(ctx)
+	}
 	// TODO
 }

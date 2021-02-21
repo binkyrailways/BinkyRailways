@@ -66,3 +66,13 @@ type IdleChangedEvent struct {
 
 // Implement Event interface
 func (e IdleChangedEvent) implementsEvent() {}
+
+// UnexpectedSensorActivatedEvent is raised when a sensor is activated that wa not expected
+// from the automatic control of the locs.
+type UnexpectedSensorActivatedEvent struct {
+	// Subject holds the sensor that was unexpectedly activated
+	Subject Sensor
+}
+
+// Implement Event interface
+func (e UnexpectedSensorActivatedEvent) implementsEvent() {}
