@@ -19,6 +19,7 @@ package state
 
 import (
 	"context"
+	"math"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -167,8 +168,28 @@ type Loc interface {
 	ForEachRecentlyVisitedBlock(context.Context, func(Block))
 
 	// Behavior of the last event triggered by this loc.
-	//IRouteEventBehaviorState LastEventBehavior { get; set; }
+	GetLastEventBehavior(ctx context.Context) RouteEventBehavior
+	SetLastEventBehavior(ctx context.Context, value RouteEventBehavior) error
 
 	// Is the speed behavior of the last event set to default?
 	GetIsLastEventBehaviorSpeedDefault(context.Context) bool
+}
+
+// GetMaximumSpeedForRoute returns the maximum speed of the given loc on the given route.
+func GetMaximumSpeedForRoute(ctx context.Context, loc Loc, route Route) int {
+	var speed int
+	if loc.GetReversing().GetActual(ctx) {
+		speed = loc.GetMediumSpeed(ctx)
+	} else {
+		speed = loc.GetMaximumSpeed(ctx)
+	}
+	routeSpeed := float64(route.GetSpeed()) / 100.0
+	return int(math.Max(float64(speed)*routeSpeed, float64(loc.GetSlowSpeed(ctx))))
+}
+
+// GetMediumSpeedForRoute returns the medium speed of the given loc on the given route.
+func GetMediumSpeedForRoute(ctx context.Context, loc Loc, route Route) int {
+	speed := loc.GetMediumSpeed(ctx)
+	routeSpeed := float64(route.GetSpeed()) / 100.0
+	return int(math.Max(float64(speed)*routeSpeed, float64(loc.GetSlowSpeed(ctx))))
 }

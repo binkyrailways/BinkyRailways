@@ -57,6 +57,7 @@ type loc struct {
 	controlledAutomatically         boolProperty
 	currentRoute                    actualRouteForLocProperty
 	lockedEntities                  []Lockable
+	lastEventBehavior               state.RouteEventBehavior
 }
 
 // Create a new entity
@@ -352,12 +353,31 @@ func (l *loc) ForEachRecentlyVisitedBlock(ctx context.Context, cb func(state.Blo
 	// TODO
 }
 
-// Behavior of the last event triggered by this loc.
-//IRouteEventBehaviorState LastEventBehavior { get; set; }
+// Get behavior of the last event triggered by this loc.
+func (l *loc) GetLastEventBehavior(ctx context.Context) state.RouteEventBehavior {
+	var result state.RouteEventBehavior
+	l.GetRailway().Exclusive(ctx, func(ctx context.Context) error {
+		result = l.lastEventBehavior
+		return nil
+	})
+	return result
+}
+
+// Set behavior of the last event triggered by this loc.
+func (l *loc) SetLastEventBehavior(ctx context.Context, value state.RouteEventBehavior) error {
+	return l.GetRailway().Exclusive(ctx, func(ctx context.Context) error {
+		l.lastEventBehavior = value
+		return nil
+	})
+}
 
 // Is the speed behavior of the last event set to default?
 func (l *loc) GetIsLastEventBehaviorSpeedDefault(ctx context.Context) bool {
-	return false // TODO
+	b := l.GetLastEventBehavior(ctx)
+	if b == nil {
+		return false
+	}
+	return b.GetSpeedBehavior() == model.LocSpeedBehaviorDefault
 }
 
 // Add a state object to the list of entities locked by this locomotive.

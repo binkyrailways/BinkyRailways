@@ -21,6 +21,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
@@ -61,19 +62,36 @@ func (alc *automaticLocController) Close(ctx context.Context) {
 
 // Run the automatic controller loop until automatic control is disabled.
 func (alc *automaticLocController) run() {
+	sensorActiveChanged := make(chan state.Sensor, 32)
+	defer close(sensorActiveChanged)
+	cancel := alc.railway.Subscribe(context.Background(), func(evt state.Event) {
+		switch evt := evt.(type) {
+		case state.ActualStateChangedEvent:
+			if sensor, ok := evt.Subject.(state.Sensor); ok && sensor.GetActive() == evt.Property {
+				sensorActiveChanged <- sensor
+			}
+		}
+	})
+	defer cancel()
 	delay := time.Second
 	for {
 		// Wait for trigger or heartbeat
+		var sensor state.Sensor
 		select {
 		case <-alc.trigger.Done():
 			// Update triggered
 		case <-time.After(delay):
 			// Heartbeat
+		case sensor = <-sensorActiveChanged:
+			// Sensor active property change
 		}
 
 		// Update state of locs
 		var canClose bool
 		alc.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+			if sensor != nil {
+				alc.onSensorActiveChanged(ctx, sensor)
+			}
 			delay, canClose = alc.updateLocStates(ctx)
 			return nil
 		})
@@ -159,6 +177,97 @@ func (alc *automaticLocController) removeLocFromAutomaticControl(ctx context.Con
 	delete(alc.autoLocs, loc.GetID())
 	loc.GetAutomaticState().SetActual(ctx, state.AssignRoute)
 	loc.GetControlledAutomatically().SetActual(ctx, false)
+}
+
+// Active state of given sensor has changed.
+func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, sensor state.Sensor) {
+	if !sensor.GetActive().GetActual(ctx) {
+		// Sensor became inactive
+		return
+	}
+
+	// log.Trace("OnSensorActive {0}", sensor);
+	// TODO ^^
+	var locsWithRoutes, locsWithSensor []state.Loc
+	alc.railway.ForEachLoc(func(x state.Loc) {
+		if x.GetCurrentRoute().GetActual(ctx) != nil {
+			locsWithRoutes = append(locsWithRoutes, x)
+		}
+	})
+	for _, x := range locsWithRoutes {
+		if x.GetCurrentRoute().GetActual(ctx).Contains(sensor) {
+			locsWithSensor = append(locsWithSensor, x)
+		}
+	}
+	ghost := true
+
+	// Update state of all locs
+	for _, loc := range locsWithSensor {
+		route := loc.GetCurrentRoute().GetActual(ctx)
+		behavior, found := route.TryGetBehavior(sensor)
+		if !found {
+			continue
+		}
+		// Save in loc
+		loc.SetLastEventBehavior(ctx, behavior)
+
+		// Update state
+		autoLocState := loc.GetAutomaticState().GetActual(ctx)
+		ghost = false
+		switch behavior.GetStateBehavior() {
+		case model.RouteStateBehaviorNoChange:
+			// No change
+		case model.RouteStateBehaviorEnter:
+			if autoLocState == state.Running {
+				loc.GetAutomaticState().SetActual(ctx, state.EnterSensorActivated)
+				alc.trigger.Trigger()
+			}
+		case model.RouteStateBehaviorReached:
+			if (autoLocState == state.Running) ||
+				(autoLocState == state.EnterSensorActivated) ||
+				(autoLocState == state.EnteringDestination) {
+				loc.GetAutomaticState().SetActual(ctx, state.ReachedSensorActivated)
+				alc.trigger.Trigger()
+			}
+		}
+
+		// Update speed
+		switch behavior.GetSpeedBehavior() {
+		case model.LocSpeedBehaviorNoChange:
+			// No change
+		case model.LocSpeedBehaviorDefault:
+			// This is handled in the applicable states
+		case model.LocSpeedBehaviorMaximum:
+			loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, route.GetRoute()))
+		case model.LocSpeedBehaviorMedium:
+			loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, route.GetRoute()))
+		case model.LocSpeedBehaviorMinimum:
+			loc.GetSpeed().SetRequested(ctx, loc.GetSlowSpeed(ctx))
+		}
+	}
+
+	// Handle ghost events
+	if ghost {
+		// Is the sensor connected to any route, other then the routes that are active?
+		mustHandleGhost := false
+		sensor.ForEachDestinationBlock(func(b state.Block) {
+			anyRouteContainsBlock := false
+			for _, x := range locsWithRoutes {
+				rt := x.GetCurrentRoute().GetActual(ctx)
+				if rt.GetRoute().ContainsBlock(b) {
+					anyRouteContainsBlock = true
+					break
+				}
+			}
+			if !anyRouteContainsBlock {
+				mustHandleGhost = true
+			}
+		})
+		if mustHandleGhost {
+			// Yes, now consider it a ghost event
+			alc.handleGhost(sensor)
+		}
+	}
 }
 
 // Update the state of all automatically controlled locs.
