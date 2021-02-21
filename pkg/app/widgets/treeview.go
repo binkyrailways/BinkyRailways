@@ -18,16 +18,19 @@
 package widgets
 
 import (
+	"context"
 	"sort"
 
 	"gioui.org/io/key"
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget/material"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // TreeView is a UI component that shows a tree of items.
 type TreeView struct {
+	Exclusive util.Exclusive
 	RootItems []TreeViewItem
 	list      layout.List
 	OnSelect  func(interface{})
@@ -46,9 +49,9 @@ type TreeViewItem interface {
 	// Process events, return an entity if it is clicked.
 	ProcessEvents() interface{}
 	// Layout the widget
-	Layout(gtx C, th *material.Theme, selection interface{}) D
+	Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}) D
 	// Generate sub-widgets
-	GenerateWidgets(level int) TreeViewItems
+	GenerateWidgets(ctx context.Context, level int) TreeViewItems
 }
 
 // TreeViewItems is a list of TreeViewItem's
@@ -140,6 +143,19 @@ func (v *TreeView) SelectPrevious() {
 
 // Layout processes events and redraws the list.
 func (v *TreeView) Layout(gtx C, th *material.Theme) D {
+	if v.Exclusive == nil {
+		return v.layout(context.Background(), gtx, th)
+	}
+	var result D
+	v.Exclusive.Exclusive(context.Background(), func(ctx context.Context) error {
+		result = v.layout(ctx, gtx, th)
+		return nil
+	})
+	return result
+}
+
+// Layout processes events and redraws the list.
+func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 
 	for _, evt := range gtx.Events(v) {
 		switch evt := evt.(type) {
@@ -175,7 +191,7 @@ func (v *TreeView) Layout(gtx C, th *material.Theme) D {
 	widgets := v.widgets[:0]
 	for _, rootItem := range v.RootItems {
 		widgets = append(widgets, rootItem)
-		widgets = append(widgets, rootItem.GenerateWidgets(0)...)
+		widgets = append(widgets, rootItem.GenerateWidgets(ctx, 0)...)
 	}
 	v.widgets = widgets
 	// Register for input
@@ -184,7 +200,7 @@ func (v *TreeView) Layout(gtx C, th *material.Theme) D {
 	// Redraw widgets
 	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
-		return widgets[idx].Layout(gtx, th, selection)
+		return widgets[idx].Layout(ctx, gtx, th, selection)
 	})
 }
 

@@ -25,6 +25,6 @@ var (
 	JunctionBg = widgets.ARGB(0xA081c784)
 
 	SensorBg         = widgets.ARGB(0xA0ffa726)
-	ActiveSensorBg   = widgets.ARGB(0xA00288d1)
-	InactiveSensorBg = widgets.ARGB(0xA090a4ae)
+	ActiveSensorBg   = widgets.ARGB(0xFFba000d)
+	InactiveSensorBg = widgets.ARGB(0xFF90a4ae)
 )

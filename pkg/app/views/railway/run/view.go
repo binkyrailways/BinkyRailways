@@ -42,16 +42,17 @@ type (
 
 // View implements the view in which trains are being operated.
 type View struct {
-	vm          views.ViewManager
-	railway     state.Railway
-	setEditMode setEditModeFunc
-	modal       *component.ModalLayer
-	appBar      *component.AppBar
-	buttonEdit  widget.Clickable
-	canvas      *canvas.EntityCanvas
-	power       *powerView
-	locs        *runLocsView
-	loc         *runLocView
+	vm            views.ViewManager
+	railway       state.Railway
+	setEditMode   setEditModeFunc
+	modal         *component.ModalLayer
+	appBar        *component.AppBar
+	buttonEdit    widget.Clickable
+	buttonAutoRun widget.Clickable
+	canvas        *canvas.EntityCanvas
+	power         *powerView
+	locs          *runLocsView
+	loc           *runLocView
 }
 
 // New constructs a new railway view
@@ -80,9 +81,15 @@ func (v *View) processEvent(evt state.Event) {
 // Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
+	vm := v.railway.GetVirtualMode()
 
 	if v.buttonEdit.Clicked() {
 		v.setEditMode()
+	}
+	if v.buttonAutoRun.Clicked() {
+		if vm.GetEnabled() {
+			vm.SetAutoRun(!vm.GetAutoRun())
+		}
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
@@ -104,10 +111,22 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 
 	// Configure appBar
 	v.appBar.Title = v.railway.GetDescription()
+	appBarActions := []component.AppBarAction{
+		component.SimpleIconAction(th, &v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
+	}
+	if vm.GetEnabled() {
+		if vm.GetAutoRun() {
+			appBarActions = append(appBarActions,
+				component.SimpleIconAction(th, &v.buttonAutoRun, views.IconStopAutoRun, component.OverflowAction{Name: "Stop Auto run", Tag: &v.buttonAutoRun}),
+			)
+		} else {
+			appBarActions = append(appBarActions,
+				component.SimpleIconAction(th, &v.buttonAutoRun, views.IconStartAutoRun, component.OverflowAction{Name: "Start Auto run", Tag: &v.buttonAutoRun}),
+			)
+		}
+	}
 	v.appBar.SetActions(
-		[]component.AppBarAction{
-			component.SimpleIconAction(th, &v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
-		},
+		appBarActions,
 		[]component.OverflowAction{})
 
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }

@@ -17,6 +17,8 @@
 
 package state
 
+import "context"
+
 // VirtualMode provides control of virtual mode of a railway.
 type VirtualMode interface {
 	// Is virtual mode enabled?
@@ -27,5 +29,5 @@ type VirtualMode interface {
 	SetAutoRun(value bool) error
 
 	// Entity is being clicked on.
-	EntityClick(entity Entity)
+	EntityClick(ctx context.Context, entity Entity)
 }

@@ -107,6 +107,8 @@ type Widget interface {
 type WidgetState struct {
 	// Mouse hovers over the widget
 	Hovered bool
+	// Widget has been clicked on
+	Clicked bool
 }
 
 // canvasWidget is a widget representation of the object on the canvas.
@@ -171,6 +173,7 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	// Now layout actual widget
 	wState := WidgetState{
 		Hovered: cw.Click.Hovered(),
+		Clicked: cw.Clicked(),
 	}
 
 	// Layout actual widget

@@ -18,6 +18,8 @@
 package run
 
 import (
+	"context"
+
 	"gioui.org/layout"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
@@ -36,13 +38,29 @@ func newRunLocsView(vm views.ViewManager, railway state.Railway, onSelect func(s
 	v := &runLocsView{
 		vm: vm,
 		entityList: widgets.TreeView{
+			Exclusive: railway,
 			RootItems: []widgets.TreeViewItem{
 				&widgets.TreeViewGroup{
-					Name: "Locs",
-					Collection: func(level int) []widgets.TreeViewItem {
+					Name: "Automatic Locs",
+					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
 						var result widgets.TreeViewItems
 						railway.ForEachLoc(func(x state.Loc) {
-							result = append(result, itemCache.CreateItem(x, level))
+							if x.GetCurrentBlock().GetActual(ctx) != nil {
+								result = append(result, itemCache.CreateItem(x, level))
+							}
+						})
+						result.Sort()
+						return result
+					},
+				},
+				&widgets.TreeViewGroup{
+					Name: "Locs",
+					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
+						var result widgets.TreeViewItems
+						railway.ForEachLoc(func(x state.Loc) {
+							if x.GetCurrentBlock().GetActual(ctx) == nil {
+								result = append(result, itemCache.CreateItem(x, level))
+							}
 						})
 						result.Sort()
 						return result

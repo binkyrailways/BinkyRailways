@@ -18,6 +18,7 @@
 package widgets
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -84,7 +85,7 @@ func (item *entityItem) ProcessEvents() interface{} {
 	return nil
 }
 
-func (item *entityItem) Layout(gtx C, th *material.Theme, selected interface{}) D {
+func (item *entityItem) Layout(ctx context.Context, gtx C, th *material.Theme, selected interface{}) D {
 	lb := material.Label(th, th.TextSize, item.entity.GetDescription())
 	return material.Clickable(gtx, &item.Clickable, func(gtx C) D {
 		if selected == item.entity {
@@ -99,6 +100,6 @@ func (item *entityItem) Layout(gtx C, th *material.Theme, selected interface{}) 
 }
 
 // Generate sub-widgets
-func (item entityItem) GenerateWidgets(level int) TreeViewItems {
+func (item entityItem) GenerateWidgets(ctx context.Context, level int) TreeViewItems {
 	return nil
 }

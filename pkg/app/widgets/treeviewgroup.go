@@ -18,6 +18,7 @@
 package widgets
 
 import (
+	"context"
 	"fmt"
 
 	w "gioui.org/widget"
@@ -32,7 +33,7 @@ type EntityTreeGroupCache struct {
 
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
-func (c *EntityTreeGroupCache) CreateItem(name string, collection func(level int) []TreeViewItem,
+func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx context.Context, level int) []TreeViewItem,
 	level int, entity model.Entity) *TreeViewGroup {
 	key := fmt.Sprintf("%s/%d/%s", entity.GetID(), level, name)
 	if c.cache == nil {
@@ -55,7 +56,7 @@ func (c *EntityTreeGroupCache) CreateItem(name string, collection func(level int
 // TreeViewGroup is a collapsable group of treeview items
 type TreeViewGroup struct {
 	Name       string
-	Collection func(level int) []TreeViewItem
+	Collection func(ctx context.Context, level int) []TreeViewItem
 	Level      int
 
 	collapsed bool
@@ -97,7 +98,7 @@ func (v *TreeViewGroup) ProcessEvents() interface{} {
 }
 
 // Layout the widget
-func (v *TreeViewGroup) Layout(gtx C, th *material.Theme, selection interface{}) D {
+func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}) D {
 	return material.Clickable(gtx, &v.clickable, func(gtx C) D {
 		postfix := ""
 		if v.Collapsed() {
@@ -114,13 +115,13 @@ func (v *TreeViewGroup) Layout(gtx C, th *material.Theme, selection interface{})
 }
 
 // GenerateWidgets generates all widgets for this group
-func (v *TreeViewGroup) GenerateWidgets(level int) TreeViewItems {
+func (v *TreeViewGroup) GenerateWidgets(ctx context.Context, level int) TreeViewItems {
 	if v.collapsed {
 		return nil
 	}
-	result := v.Collection(level + 1)
+	result := v.Collection(ctx, level+1)
 	for idx := 0; idx < len(result); idx = idx + 1 {
-		if subItems := result[idx].GenerateWidgets(level + 1); len(subItems) > 0 {
+		if subItems := result[idx].GenerateWidgets(ctx, level+1); len(subItems) > 0 {
 			// Insert items
 			subItems.Sort()
 			prefix := result[:idx+1]

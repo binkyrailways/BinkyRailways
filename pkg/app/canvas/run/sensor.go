@@ -19,6 +19,7 @@ package run
 
 import (
 	"context"
+	"fmt"
 	"image/color"
 
 	"gioui.org/f32"
@@ -45,9 +46,18 @@ func (b *sensor) GetRotation() int {
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
 func (b *sensor) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
-	bg := canvas.BlockBg
+	if state.Clicked {
+		vm := b.entity.GetRailway().GetVirtualMode()
+		fmt.Println("Sensor clicked")
+		if vm.GetEnabled() {
+			vm.EntityClick(ctx, b.entity)
+			fmt.Println("EntityClick returned")
+		}
+	}
+
+	bg := b.getBackgroundColor(ctx)
 	if state.Hovered {
-		bg = canvas.HoverBg
+		bg.A = 0xA0
 	}
 
 	sz := canvas.GetPositionedEntitySize(b.entity.GetModel())

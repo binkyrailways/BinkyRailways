@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -66,8 +67,12 @@ func (v *virtualMode) SetAutoRun(value bool) error {
 }
 
 // Entity is being clicked on.
-func (v *virtualMode) EntityClick(entity state.Entity) {
-	// TODO
+func (v *virtualMode) EntityClick(ctx context.Context, entity state.Entity) {
+	switch st := entity.(type) {
+	case state.Sensor:
+		st.GetActive().SetActual(ctx, !st.GetActive().GetActual(ctx))
+		fmt.Println("Change sensor active to ", st.GetActive().GetActual(ctx))
+	}
 }
 
 // Close all virtual activities
