@@ -26,6 +26,7 @@ import (
 func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCanvas {
 	//rm := railway.GetModel()
 	ec := &EntityCanvas{
+		Exclusive: railway,
 		GetMaxSize: func() f32.Point {
 			return f32.Point{
 				X: float32(200 /* TODO rm.GetWidth()*/),
@@ -34,6 +35,18 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 		},
 		Entities: func(cb func(Entity)) {
 			railway.ForEachBlock(func(x state.Block) {
+				cb(x)
+			})
+			railway.ForEachJunction(func(x state.Junction) {
+				cb(x)
+			})
+			railway.ForEachOutput(func(x state.Output) {
+				cb(x)
+			})
+			railway.ForEachSensor(func(x state.Sensor) {
+				cb(x)
+			})
+			railway.ForEachSignal(func(x state.Signal) {
 				cb(x)
 			})
 		},

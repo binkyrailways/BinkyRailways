@@ -23,5 +23,8 @@ var (
 	HoverBg    = widgets.ARGB(0xC0333333)
 	BlockBg    = widgets.ARGB(0xA0CCCCCC)
 	JunctionBg = widgets.ARGB(0xA081c784)
-	SensorBg   = widgets.ARGB(0xA0ffa726)
+
+	SensorBg         = widgets.ARGB(0xA0ffa726)
+	ActiveSensorBg   = widgets.ARGB(0xA00288d1)
+	InactiveSensorBg = widgets.ARGB(0xA090a4ae)
 )

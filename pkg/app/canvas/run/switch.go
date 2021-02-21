@@ -15,46 +15,44 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package run
 
 import (
 	"context"
 
 	"gioui.org/f32"
-	"gioui.org/op/clip"
 	"gioui.org/op/paint"
-	"gioui.org/unit"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 type stdSwitch struct {
-	entity model.Switch
+	entity state.Switch
 }
 
 // Return the bounds of the widget on the canvas
 func (b *stdSwitch) GetBounds() f32.Rectangle {
-	return canvas.GetPositionedEntityBounds(b.entity)
+	return canvas.GetPositionedEntityBounds(b.entity.GetModel())
 }
 
 // Returns rotation of entity in degrees
 func (b *stdSwitch) GetRotation() int {
-	return b.entity.GetRotation()
+	return b.entity.GetModel().GetRotation()
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
 func (b *stdSwitch) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
-	bg := canvas.JunctionBg
+	bg := canvas.BlockBg
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
-
-	rect := f32.Rectangle{Max: canvas.GetPositionedEntitySize(b.entity)}
-	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
-
+	paint.Fill(gtx.Ops, bg)
+	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
+	//lb.Alignment = text.Middle
+	//lb.Layout(gtx)
 	widgets.TextCenter(gtx, th, b.entity.GetDescription())
 }

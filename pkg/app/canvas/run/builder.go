@@ -41,6 +41,8 @@ func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 		return &sensor{entity: entity}
 	case state.Sensor:
 		return &sensor{entity: entity}
+	case state.Switch:
+		return &stdSwitch{entity: entity}
 	default:
 		return nil
 	}

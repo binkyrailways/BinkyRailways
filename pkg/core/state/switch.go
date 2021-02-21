@@ -23,6 +23,9 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 type Switch interface {
 	Junction
 
+	// Get the model
+	GetModel() model.Switch
+
 	// Address of the entity
 	GetAddress() model.Address
 

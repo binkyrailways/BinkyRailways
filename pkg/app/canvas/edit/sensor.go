@@ -18,8 +18,9 @@
 package edit
 
 import (
+	"context"
+
 	"gioui.org/f32"
-	"gioui.org/op/paint"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
@@ -42,13 +43,11 @@ func (b *sensor) GetRotation() int {
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *sensor) Layout(gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *sensor) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
 	bg := canvas.SensorBg
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
-	paint.Fill(gtx.Ops, bg)
-	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
-	//lb.Alignment = text.Middle
-	//lb.Layout(gtx)
+	sz := canvas.GetPositionedEntitySize(b.entity)
+	canvas.DrawSensorShape(gtx, b.entity.GetShape(), bg, sz)
 }

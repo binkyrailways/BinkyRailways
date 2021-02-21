@@ -19,6 +19,8 @@ package state
 
 // Signal specifies the state of a single signal
 type Signal interface {
+	Entity
+
 	// Update the output of this signal
 	Update()
 }

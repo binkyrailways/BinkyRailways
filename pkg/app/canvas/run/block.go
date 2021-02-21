@@ -18,6 +18,8 @@
 package run
 
 import (
+	"context"
+
 	"gioui.org/f32"
 	"gioui.org/op/paint"
 	"gioui.org/widget/material"
@@ -43,7 +45,7 @@ func (b *block) GetRotation() int {
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *block) Layout(gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *block) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
 	bg := canvas.BlockBg
 	if state.Hovered {
 		bg = canvas.HoverBg

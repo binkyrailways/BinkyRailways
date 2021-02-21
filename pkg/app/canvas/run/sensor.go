@@ -18,12 +18,13 @@
 package run
 
 import (
+	"context"
+	"image/color"
+
 	"gioui.org/f32"
-	"gioui.org/op/paint"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
-	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -43,14 +44,23 @@ func (b *sensor) GetRotation() int {
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *sensor) Layout(gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *sensor) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
 	bg := canvas.BlockBg
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
-	paint.Fill(gtx.Ops, bg)
-	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
-	//lb.Alignment = text.Middle
-	//lb.Layout(gtx)
-	widgets.TextCenter(gtx, th, b.entity.GetDescription())
+
+	sz := canvas.GetPositionedEntitySize(b.entity.GetModel())
+	canvas.DrawSensorShape(gtx, b.entity.GetShape(), bg, sz)
+}
+
+// getBackgroundColor returns the color for the sensor based on the current state
+func (b *sensor) getBackgroundColor(ctx context.Context) color.NRGBA {
+	switch st := b.entity.(type) {
+	case state.BinarySensor:
+		if st.GetActive().GetActual(ctx) {
+			return canvas.ActiveSensorBg
+		}
+	}
+	return canvas.InactiveSensorBg
 }

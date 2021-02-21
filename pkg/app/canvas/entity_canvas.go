@@ -18,6 +18,7 @@
 package canvas
 
 import (
+	"context"
 	"fmt"
 	"image"
 	"math"
@@ -31,6 +32,7 @@ import (
 	"gioui.org/op/paint"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // Entity represents a distinct resource on the canvas.
@@ -65,6 +67,8 @@ type EntityIterator = func(func(entity Entity))
 
 // EntityCanvas shows positioned entities in a 2D view.
 type EntityCanvas struct {
+	// Exclusive to claim when painting
+	Exclusive util.Exclusive
 	// Return the maximum size of the canvas
 	GetMaxSize func() f32.Point
 	// Entities must be set to an iterator function that yields
@@ -96,7 +100,7 @@ type Widget interface {
 	// Returns rotation of entity in degrees
 	GetRotation() int
 	// Layout draws the widget and process events.
-	Layout(layout.Context, *material.Theme, WidgetState)
+	Layout(context.Context, layout.Context, *material.Theme, WidgetState)
 }
 
 // WidgetState describes the current state of the widget
@@ -122,7 +126,7 @@ func (cw *canvasWidget) Clicked() bool {
 }
 
 // Layout draws the widget and process events.
-func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size image.Point, rad float32) {
+func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *material.Theme, size image.Point, rad float32) {
 	// Process events
 	for range cw.Click.Events(gtx) {
 		// Nothing here
@@ -174,7 +178,7 @@ func (cw *canvasWidget) layout(gtx layout.Context, th *material.Theme, size imag
 	clip.Rect{
 		Max: size,
 	}.Add(gtx.Ops)
-	cw.widget.Layout(gtx, th, wState)
+	cw.widget.Layout(ctx, gtx, th, wState)
 	state.Load()
 
 	// Draw selection overlay (if needed)
@@ -269,6 +273,21 @@ func (ec *EntityCanvas) Select(entity Entity) {
 
 // Layout generates the UI and processes events.
 func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	if ec.Exclusive == nil {
+		// No exclusive configured
+		return ec.layout(context.Background(), gtx, th)
+	}
+	// Run exclusively
+	var result layout.Dimensions
+	ec.Exclusive.Exclusive(context.Background(), func(ctx context.Context) error {
+		result = ec.layout(ctx, gtx, th)
+		return nil
+	})
+	return result
+}
+
+// Layout generates the UI and processes events.
+func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *material.Theme) layout.Dimensions {
 	defer op.Save(gtx.Ops).Load()
 
 	// Process events
@@ -328,7 +347,7 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 			Y: int(bounds.Max.Y - bounds.Min.Y),
 		}
 		// Layout widget
-		w.layout(gtx, th, size, rad)
+		w.layout(ctx, gtx, th, size, rad)
 		// Retore previous state
 		state.Load()
 	}

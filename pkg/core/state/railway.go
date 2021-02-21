@@ -21,11 +21,13 @@ import (
 	"context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // Railway specifies the state of an entire railway.
 type Railway interface {
 	Entity
+	util.Exclusive
 
 	// Unknown sensor has been detected.
 	//event EventHandler<PropertyEventArgs<Address>> UnknownSensor;

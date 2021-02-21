@@ -19,4 +19,5 @@ package state
 
 // Output specifies the state of a single output
 type Output interface {
+	Entity
 }
