@@ -24,4 +24,8 @@ type BinkyNetCommandStation interface {
 	// Network Port of the command station
 	GetGRPCPort() int
 	SetGRPCPort(value int) error
+
+	// The required version of local workers
+	GetRequiredWorkerVersion() string
+	SetRequiredWorkerVersion(value string) error
 }

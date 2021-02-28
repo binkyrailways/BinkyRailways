@@ -75,3 +75,8 @@ func (cs *locoBufferCommandStation) SendSwitchDirection(context.Context, state.S
 
 // Send the position of the given turntable towards the railway.
 //void SendTurnTablePosition(ITurnTableState turnTable);
+
+// Close the commandstation
+func (cs *locoBufferCommandStation) Close(ctx context.Context) {
+	// TODO
+}

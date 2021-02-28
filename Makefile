@@ -19,3 +19,7 @@ bootstrap:
 
 test:
 	go test -v ./...
+
+update-modules:
+	go get -u github.com/binkynet/NetManager
+	go get -u github.com/binkynet/BinkyNet/apis/v1

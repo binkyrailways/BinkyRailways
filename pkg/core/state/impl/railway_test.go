@@ -24,6 +24,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,20 +33,21 @@ import (
 func TestRailwayFromFile(t *testing.T) {
 	// Open package
 	ctx := context.Background()
+	log := zerolog.Logger{}
 	p, err := storage.NewPackageFromFile("../../../../Fixtures/tzl.brw")
 	require.NoError(t, err)
 	require.NotNil(t, p)
 
 	// Create state in non-virtual mode
 	t.Run("non-virtual mode", func(t *testing.T) {
-		st, err := New(ctx, p.GetRailway(), nil, nil, false)
+		st, err := New(ctx, p.GetRailway(), log, nil, nil, false)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
 
 	// Create state in virtual mode
 	t.Run("virtual mode", func(t *testing.T) {
-		st, err := New(ctx, p.GetRailway(), nil, nil, true)
+		st, err := New(ctx, p.GetRailway(), log, nil, nil, true)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
@@ -55,6 +57,7 @@ func TestRailwayFromFile(t *testing.T) {
 func TestRailwayVirtualMode(t *testing.T) {
 	// Create empty railway
 	ctx := context.Background()
+	log := zerolog.Logger{}
 	p := storage.NewPackage()
 	require.NotNil(t, p)
 	r := p.GetRailway()
@@ -71,7 +74,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	assert.NoError(t, l.SetAddress(model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "136")))
 
 	// Create state
-	rs, err := New(ctx, r, nil, nil, true)
+	rs, err := New(ctx, r, log, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 
@@ -101,13 +104,14 @@ func TestRailwayVirtualMode(t *testing.T) {
 func TestRailwayPower(t *testing.T) {
 	// Create empty railway
 	ctx := context.Background()
+	log := zerolog.Logger{}
 	p := storage.NewPackage()
 	require.NotNil(t, p)
 	r := p.GetRailway()
 	require.NotNil(t, r)
 
 	// Create state (virtual mode)
-	rs, err := New(ctx, r, nil, nil, true)
+	rs, err := New(ctx, r, log, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 

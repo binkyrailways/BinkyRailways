@@ -29,6 +29,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/impl"
+	"github.com/rs/zerolog"
 )
 
 type (
@@ -102,7 +103,8 @@ func (v *railwayView) setRunMode(runMode, virtualMode bool) error {
 	v.virtualMode = virtualMode
 	if runMode {
 		var err error
-		v.railwayState, err = impl.New(ctx, v.railway, v, v, virtualMode)
+		log := zerolog.New(zerolog.NewConsoleWriter())
+		v.railwayState, err = impl.New(ctx, v.railway, log, v, v, virtualMode)
 		if err != nil {
 			return err
 		}

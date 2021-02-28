@@ -27,6 +27,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	"github.com/rs/zerolog"
 )
 
 // Railway adds implementation functions to state.Railway.
@@ -35,6 +36,9 @@ type Railway interface {
 	state.Railway
 	state.EventDispatcher
 	util.Exclusive
+
+	// Get logger
+	Logger() zerolog.Logger
 
 	// Try to resolve the given block into a block state.
 	ResolveBlock(context.Context, model.Block) (Block, error)
@@ -50,6 +54,7 @@ type Railway interface {
 type railway struct {
 	entity
 	eventDispatcher
+	log zerolog.Logger
 
 	exclusive              util.Exclusive
 	virtualMode            VirtualMode
@@ -67,10 +72,11 @@ type railway struct {
 }
 
 // New constructs and initializes state for the given railway.
-func New(ctx context.Context, entity model.Railway, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
+func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
 	// Create
 	r := &railway{
 		exclusive: util.NewExclusive(),
+		log:       log,
 	}
 	r.entity = newEntity(entity, r)
 	r.power = powerProperty{
@@ -162,6 +168,11 @@ func New(ctx context.Context, entity model.Railway, ui state.UserInterface, pers
 // This function allows nesting.
 func (r *railway) Exclusive(ctx context.Context, cb func(context.Context) error) error {
 	return r.exclusive.Exclusive(ctx, cb)
+}
+
+// Get logger
+func (r *railway) Logger() zerolog.Logger {
+	return r.log
 }
 
 // Try to prepare the entity for use.
@@ -422,10 +433,17 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 
 // Close the railway
 func (r *railway) Close(ctx context.Context) {
+	// Stop virtual mode
 	r.virtualMode.Close()
-	r.eventDispatcher.CancelAll()
+	// Stop automatic loc controller
 	if r.automaticLocController != nil {
 		r.automaticLocController.Close(ctx)
 	}
+	// Close all commandstations
+	for _, cs := range r.commandStations {
+		cs.Close(ctx)
+	}
+	// Stop event dispatching
+	r.eventDispatcher.CancelAll()
 	// TODO
 }

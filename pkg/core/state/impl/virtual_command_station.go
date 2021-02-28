@@ -85,3 +85,8 @@ func (cs *virtualCommandStation) SendSwitchDirection(ctx context.Context, sw sta
 
 // Send the position of the given turntable towards the railway.
 //void SendTurnTablePosition(ITurnTableState turnTable);
+
+// Close the commandstation
+func (cs *virtualCommandStation) Close(ctx context.Context) {
+	// Nothing to do here
+}

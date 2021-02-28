@@ -28,10 +28,16 @@ type BinkyNetCommandStation interface {
 	PersistentEntity
 }
 
+const (
+	defaultGRPCPort              = 8823
+	defaultRequiredWorkerVersion = "1.0.0"
+)
+
 type binkyNetCommandStation struct {
 	commandStation
 
-	GRPCPort *int `xml:"GRPCPort,omitempty"`
+	GRPCPort              *int    `xml:"GRPCPort,omitempty"`
+	RequiredWorkerVersion *string `xml:RequiredWorkerVersion,omitempty"`
 }
 
 var _ model.BinkyNetCommandStation = &binkyNetCommandStation{}
@@ -66,11 +72,23 @@ func (cs *binkyNetCommandStation) GetSupportedAddressTypes(entity model.AddressE
 
 // Network Port of the command station
 func (cs *binkyNetCommandStation) GetGRPCPort() int {
-	return refs.IntValue(cs.GRPCPort, 8823)
+	return refs.IntValue(cs.GRPCPort, defaultGRPCPort)
 }
 func (cs *binkyNetCommandStation) SetGRPCPort(value int) error {
 	if cs.GetGRPCPort() != value {
 		cs.GRPCPort = refs.NewInt(value)
+		cs.OnModified()
+	}
+	return nil
+}
+
+// The required version of local workers
+func (cs *binkyNetCommandStation) GetRequiredWorkerVersion() string {
+	return refs.StringValue(cs.RequiredWorkerVersion, defaultRequiredWorkerVersion)
+}
+func (cs *binkyNetCommandStation) SetRequiredWorkerVersion(value string) error {
+	if cs.GetRequiredWorkerVersion() != value {
+		cs.RequiredWorkerVersion = refs.NewString(value)
 		cs.OnModified()
 	}
 	return nil

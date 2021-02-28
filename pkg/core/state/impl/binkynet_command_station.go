@@ -19,6 +19,13 @@ package impl
 
 import (
 	"context"
+	"fmt"
+
+	bn "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkynet/NetManager/service"
+	"github.com/binkynet/NetManager/service/manager"
+	"github.com/binkynet/NetManager/service/server"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -29,11 +36,17 @@ type binkyNetCommandStation struct {
 	commandStation
 
 	power boolProperty
+
+	reconfigureQueue chan string
+	manager          manager.Manager
+	service          service.Service
+	server           server.Server
+	cancel           context.CancelFunc
 }
 
 // Create a new entity
 func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
-	cs := &locoBufferCommandStation{
+	cs := &binkyNetCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
 	cs.power.Configure(cs, railway, railway)
@@ -48,9 +61,47 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (cs *binkyNetCommandStation) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
-	// TODO
+func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+	var err error
+	serverHost := "0.0.0.0"
+	cs.reconfigureQueue = make(chan string, 64)
+	cs.manager, err = manager.New(manager.Dependencies{
+		Log:              cs.log,
+		ConfigRegistry:   cs,
+		ReconfigureQueue: cs.reconfigureQueue,
+	})
+	if err != nil {
+		return err
+	}
+	cs.service, err = service.NewService(service.Config{
+		RequiredWorkerVersion: cs.getCommandStation().GetRequiredWorkerVersion(),
+	}, service.Dependencies{
+		Log:            cs.log,
+		Manager:        cs.manager,
+		ConfigRegistry: cs,
+	})
+	if err != nil {
+		return err
+	}
+	cs.server, err = server.NewServer(server.Config{
+		Host:     serverHost,
+		GRPCPort: cs.getCommandStation().GetGRPCPort(),
+	}, cs.service, cs.log)
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cs.cancel = cancel
+	g, ctx := errgroup.WithContext(ctx)
+	ctx = bn.WithServiceInfoHost(ctx, serverHost)
+	g.Go(func() error { return cs.manager.Run(ctx) })
+	g.Go(func() error { return cs.server.Run(ctx) })
 	return nil
+}
+
+// Get returns the configuration for a worker with given ID.
+func (cs *binkyNetCommandStation) Get(id string) (bn.LocalWorkerConfig, error) {
+	return bn.LocalWorkerConfig{}, fmt.Errorf("Not found") // TODO
 }
 
 // Enable/disable power on the railway
@@ -75,3 +126,17 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(context.Context, state.Swi
 
 // Send the position of the given turntable towards the railway.
 //void SendTurnTablePosition(ITurnTableState turnTable);
+
+// Close the commandstation
+func (cs *binkyNetCommandStation) Close(ctx context.Context) {
+	cancel, reconfigureQueue := cs.cancel, cs.reconfigureQueue
+	cs.cancel = nil
+	cs.reconfigureQueue = nil
+	if cancel != nil {
+		cancel()
+	}
+	if reconfigureQueue != nil {
+		close(reconfigureQueue)
+	}
+	// TODO
+}
