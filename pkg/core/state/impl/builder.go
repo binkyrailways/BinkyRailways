@@ -44,6 +44,10 @@ func (b *builder) VisitRoute(x model.Route) interface{} {
 	return newRoute(x, b.Railway)
 }
 
+func (b *builder) VisitBinkyNetCommandStation(x model.BinkyNetCommandStation) interface{} {
+	return newBinkyNetCommandStation(x, b.Railway)
+}
+
 func (b *builder) VisitLocoBufferCommandStation(x model.LocoBufferCommandStation) interface{} {
 	return newLocoBufferCommandStation(x, b.Railway)
 }

@@ -135,39 +135,64 @@ func (p *packageImpl) Remove(model.PersistentEntity) error {
 	return nil
 }
 
+// Add a new BinkyNet command station.
+func (p *packageImpl) AddNewBinkyNetCommandStation() (model.BinkyNetCommandStation, error) {
+	cs := impl.NewBinkyNetCommandStation()
+	cs.SetPackage(p)
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
+}
+
 // Add a new LocoBuffer type command station.
-func (p *packageImpl) AddNewLocoBufferCommandStation() model.LocoBufferCommandStation {
+func (p *packageImpl) AddNewLocoBufferCommandStation() (model.LocoBufferCommandStation, error) {
 	cs := impl.NewLocoBufferCommandStation()
 	cs.SetPackage(p)
-	return cs
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
 }
 
 // Add a new DCC over RS232 type command station.
-func (p *packageImpl) AddNewDccOverRs232CommandStation() model.DccOverRs232CommandStation {
+func (p *packageImpl) AddNewDccOverRs232CommandStation() (model.DccOverRs232CommandStation, error) {
 	cs := impl.NewDccOverRs232CommandStation()
 	cs.SetPackage(p)
-	return cs
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
 }
 
 // Add a new Ecos command station.
-func (p *packageImpl) AddNewEcosCommandStation() model.EcosCommandStation {
+func (p *packageImpl) AddNewEcosCommandStation() (model.EcosCommandStation, error) {
 	cs := impl.NewEcosCommandStation()
 	cs.SetPackage(p)
-	return cs
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
 }
 
 // Add a new MQTT command station.
-func (p *packageImpl) AddNewMqttCommandStation() model.MqttCommandStation {
+func (p *packageImpl) AddNewMqttCommandStation() (model.MqttCommandStation, error) {
 	cs := impl.NewMqttCommandStation()
 	cs.SetPackage(p)
-	return cs
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
 }
 
 // Add a new P50x command station.
-func (p *packageImpl) AddNewP50xCommandStation() model.P50xCommandStation {
+func (p *packageImpl) AddNewP50xCommandStation() (model.P50xCommandStation, error) {
 	cs := impl.NewP50xCommandStation()
 	cs.SetPackage(p)
-	return cs
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
 }
 
 // Load a command station by it's id.

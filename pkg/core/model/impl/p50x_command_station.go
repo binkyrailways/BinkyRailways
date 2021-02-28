@@ -35,6 +35,7 @@ var _ model.P50xCommandStation = &p50xCommandStation{}
 func NewP50xCommandStation() P50xCommandStation {
 	cs := &p50xCommandStation{}
 	cs.Initialize()
+	cs.EnsureID()
 	cs.SetDescription("New P50x command station")
 	return cs
 }

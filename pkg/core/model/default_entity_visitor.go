@@ -39,6 +39,13 @@ func (v *DefaultEntityVisitor) VisitBinaryOutput(x BinaryOutput) interface{} {
 	return nil
 }
 
+func (v *DefaultEntityVisitor) VisitBinkyNetCommandStation(x BinkyNetCommandStation) interface{} {
+	if v.defaultVisitor != nil {
+		return v.defaultVisitor.VisitCommandStation(x)
+	}
+	return nil
+}
+
 func (v *DefaultEntityVisitor) VisitBinarySensor(x BinarySensor) interface{} {
 	if v.defaultVisitor != nil {
 		return v.defaultVisitor.VisitSensor(x)

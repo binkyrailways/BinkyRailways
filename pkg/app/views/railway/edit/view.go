@@ -158,6 +158,18 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 						return result
 					},
 				},
+				&widgets.TreeViewGroup{
+					Name: "Command stations",
+					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
+						var result []widgets.TreeViewItem
+						railway.GetCommandStations().ForEach(func(c model.CommandStationRef) {
+							if x := c.TryResolve(); x != nil {
+								result = append(result, itemCache.CreateItem(x, level))
+							}
+						})
+						return result
+					},
+				},
 			},
 		},
 	}
@@ -182,6 +194,8 @@ func (v *View) Invalidate() {
 // onSelect ensures that the given object is selected in the view
 func (v *View) onSelect(selection interface{}) {
 	switch selection := selection.(type) {
+	case model.CommandStation:
+		v.editor = editors.NewCommandStationEditor(selection, v)
 	case model.Loc:
 		v.editor = editors.NewLocEditor(selection, v)
 	case model.Module:
@@ -231,6 +245,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 				btn.OnClick()
 			}
 			v.addSheet.Disappear(gtx.Now)
+			break
 		}
 	}
 

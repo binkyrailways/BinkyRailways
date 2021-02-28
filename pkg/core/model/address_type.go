@@ -23,6 +23,7 @@ import "fmt"
 type AddressType string
 
 const (
+	AddressTypeBinkyNet AddressType = "BinkyNet"
 	AddressTypeDcc      AddressType = "Dcc"
 	AddressTypeLocoNet  AddressType = "LocoNet"
 	AddressTypeMotorola AddressType = "Motorola"
@@ -33,7 +34,7 @@ const (
 // Validate checks if the given address type is valid
 func (tp AddressType) Validate() error {
 	switch tp {
-	case AddressTypeDcc, AddressTypeLocoNet, AddressTypeMotorola, AddressTypeMfx, AddressTypeMqtt:
+	case AddressTypeBinkyNet, AddressTypeDcc, AddressTypeLocoNet, AddressTypeMotorola, AddressTypeMfx, AddressTypeMqtt:
 		return nil // Ok
 	default:
 		return fmt.Errorf("Unknown address type '%s", string(tp))
@@ -46,7 +47,7 @@ func (tp AddressType) RequiresNumericValue() bool {
 	switch tp {
 	case AddressTypeDcc, AddressTypeLocoNet, AddressTypeMotorola, AddressTypeMfx:
 		return true
-	case AddressTypeMqtt:
+	case AddressTypeBinkyNet, AddressTypeMqtt:
 		return false
 	default:
 		panic("Unknown address type " + tp)
@@ -64,7 +65,7 @@ func (tp AddressType) MaxValue() int {
 		return 80
 	case AddressTypeMfx:
 		return 16000
-	case AddressTypeMqtt:
+	case AddressTypeBinkyNet, AddressTypeMqtt:
 		return 0
 	default:
 		panic("Unknown address type " + tp)
@@ -82,7 +83,7 @@ func (tp AddressType) MinValue() int {
 		return 1
 	case AddressTypeMfx:
 		return 1
-	case AddressTypeMqtt:
+	case AddressTypeBinkyNet, AddressTypeMqtt:
 		return 0
 	default:
 		panic("Unknown address type " + tp)

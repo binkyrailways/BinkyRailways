@@ -35,6 +35,7 @@ var _ model.DccOverRs232CommandStation = &dccOverRs232CommandStation{}
 func NewDccOverRs232CommandStation() DccOverRs232CommandStation {
 	cs := &dccOverRs232CommandStation{}
 	cs.Initialize()
+	cs.EnsureID()
 	cs.SetDescription("New Dcc over RS232 command station")
 	return cs
 }

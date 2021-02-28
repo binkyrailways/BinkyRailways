@@ -26,6 +26,18 @@ type builder struct {
 	model.DefaultEntityVisitor
 }
 
+// BuildSettings tries to build a settings implementation for the given entity.
+func BuildSettings(x model.Entity) Settings {
+	if x == nil {
+		return nil
+	}
+	b := &builder{}
+	if result, ok := x.Accept(b).(Settings); ok {
+		return result
+	}
+	return nil
+}
+
 // NewBuilder creates an entity visitor to create settings components.
 func NewBuilder() model.EntityVisitor {
 	return &builder{}
@@ -35,8 +47,16 @@ func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
 	return NewBinarySensorSettings(x)
 }
 
+func (v *builder) VisitBinkyNetCommandStation(x model.BinkyNetCommandStation) interface{} {
+	return NewBinkyNetCommandStationSettings(x)
+}
+
 func (v *builder) VisitBlock(x model.Block) interface{} {
 	return NewBlockSettings(x)
+}
+
+func (v *builder) VisitLocoBufferCommandStation(x model.LocoBufferCommandStation) interface{} {
+	return NewLocoBufferCommandStationSettings(x)
 }
 
 func (v *builder) VisitLoc(x model.Loc) interface{} {

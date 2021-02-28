@@ -22,6 +22,7 @@ const (
 	TypeModule  = "Module"
 	TypeRailway = "Railway"
 
+	TypeBinkyNetCommandStation     = "BinkyNetCommandStation"
 	TypeLocoBufferCommandStation   = "LocoBufferCommandStation"
 	TypeDccOverRs232CommandStation = "DccOverRs232CommandStation"
 	TypeEcosCommandStation         = "EcosCommandStation"

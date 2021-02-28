@@ -35,6 +35,7 @@ var _ model.LocoBufferCommandStation = &locoBufferCommandStation{}
 func NewLocoBufferCommandStation() LocoBufferCommandStation {
 	cs := &locoBufferCommandStation{}
 	cs.Initialize()
+	cs.EnsureID()
 	cs.SetDescription("New Locobuffer command station")
 	return cs
 }

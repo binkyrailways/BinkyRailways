@@ -38,6 +38,7 @@ type railway struct {
 	ModuleConnections                 moduleConnectionSet         `xml:"ModuleConnections"`
 	CommandStations                   railwayCommandStationRefSet `xml:"CommandStations"`
 	ClockSpeedFactor                  *int                        `xml:"ClockSpeedFactor,omitempty"`
+	PreferredBinkyNetCommandStationID commandStationRef           `xml:"PreferredBinkyNetCommandStationId,omitempty"`
 	PreferredDccCommandStationID      commandStationRef           `xml:"PreferredDccCommandStationId,omitempty"`
 	PreferredLocoNetCommandStationID  commandStationRef           `xml:"PreferredLocoNetCommandStationId,omitempty"`
 	PreferredMotorolaCommandStationID commandStationRef           `xml:"PreferredMotorolaCommandStationId,omitempty"`
@@ -127,6 +128,14 @@ func (r *railway) SetClockSpeedFactor(value int) error {
 // Gets the builder used to create predicates.
 func (r *railway) GetPredicateBuilder() model.LocPredicateBuilder {
 	return &r.locPredicateBuilder
+}
+
+// Preferred command station for BinkyNet addresses.
+func (r *railway) GetPreferredBinkyNetCommandStation() model.CommandStation {
+	return r.PreferredBinkyNetCommandStationID.TryResolve()
+}
+func (r *railway) SetPreferredBinkyNetCommandStation(value model.CommandStation) error {
+	return r.PreferredBinkyNetCommandStationID.Set(value, r.OnModified)
 }
 
 // Preferred command station for DCC addresses.

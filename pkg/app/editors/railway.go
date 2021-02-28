@@ -53,11 +53,17 @@ func (e *railwayEditor) CreateAddButtons() []AddButton {
 
 // CreatePersistentEntityAddButtons creates the buttons for the "Add resource sheet" that apply to persistent entities
 func CreatePersistentEntityAddButtons(entity model.PersistentEntity, etx EditorContext) []AddButton {
+	if entity == nil {
+		return nil
+	}
+	pkg := entity.GetPackage()
+	if pkg == nil {
+		return nil
+	}
 	return []AddButton{
 		{
 			Title: "Add loc",
 			OnClick: func() {
-				pkg := entity.GetPackage()
 				if loc, err := pkg.AddNewLoc(); err == nil {
 					pkg.GetRailway().GetLocs().Add(loc)
 					etx.Select(loc)
@@ -67,10 +73,27 @@ func CreatePersistentEntityAddButtons(entity model.PersistentEntity, etx EditorC
 		{
 			Title: "Add module",
 			OnClick: func() {
-				pkg := entity.GetPackage()
 				if module, err := pkg.AddNewModule(); err == nil {
 					pkg.GetRailway().GetModules().Add(module)
 					etx.Select(module)
+				}
+			},
+		},
+		{
+			Title: "Add BinkyNet Command station",
+			OnClick: func() {
+				if cs, err := pkg.AddNewBinkyNetCommandStation(); err == nil {
+					pkg.GetRailway().GetCommandStations().Add(cs)
+					etx.Select(cs)
+				}
+			},
+		},
+		{
+			Title: "Add LocoBuffer Command station",
+			OnClick: func() {
+				if cs, err := pkg.AddNewLocoBufferCommandStation(); err == nil {
+					pkg.GetRailway().GetCommandStations().Add(cs)
+					etx.Select(cs)
 				}
 			},
 		},

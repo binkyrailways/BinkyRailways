@@ -49,6 +49,10 @@ type Railway interface {
 	// Gets the builder used to create predicates.
 	GetPredicateBuilder() LocPredicateBuilder
 
+	// Preferred command station for BinkyNet addresses.
+	GetPreferredBinkyNetCommandStation() CommandStation
+	SetPreferredBinkyNetCommandStation(value CommandStation) error
+
 	// Preferred command station for DCC addresses.
 	GetPreferredDccCommandStation() CommandStation
 	SetPreferredDccCommandStation(value CommandStation) error

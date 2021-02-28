@@ -30,20 +30,23 @@ type Package interface {
 	// Remove the given entity from this package
 	Remove(PersistentEntity) error
 
+	// Add a new BinkyNet command station.
+	AddNewBinkyNetCommandStation() (BinkyNetCommandStation, error)
+
 	// Add a new LocoBuffer type command station.
-	AddNewLocoBufferCommandStation() LocoBufferCommandStation
+	AddNewLocoBufferCommandStation() (LocoBufferCommandStation, error)
 
 	// Add a new DCC over RS232 type command station.
-	AddNewDccOverRs232CommandStation() DccOverRs232CommandStation
+	AddNewDccOverRs232CommandStation() (DccOverRs232CommandStation, error)
 
 	// Add a new Ecos command station.
-	AddNewEcosCommandStation() EcosCommandStation
+	AddNewEcosCommandStation() (EcosCommandStation, error)
 
 	// Add a new MQTT command station.
-	AddNewMqttCommandStation() MqttCommandStation
+	AddNewMqttCommandStation() (MqttCommandStation, error)
 
 	// Add a new P50x command station.
-	AddNewP50xCommandStation() P50xCommandStation
+	AddNewP50xCommandStation() (P50xCommandStation, error)
 
 	// Load a command station by it's id.
 	// <returns>Null if not found</returns>

@@ -22,6 +22,7 @@ type EntityVisitor interface {
 	VisitAction(Action) interface{}
 	VisitBinaryOutput(BinaryOutput) interface{}
 	VisitBinarySensor(BinarySensor) interface{}
+	VisitBinkyNetCommandStation(BinkyNetCommandStation) interface{}
 	VisitBlock(Block) interface{}
 	VisitBlockGroup(BlockGroup) interface{}
 	VisitBlockSignal(BlockSignal) interface{}
