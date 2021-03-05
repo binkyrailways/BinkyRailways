@@ -42,7 +42,7 @@ func (d *binkyNetDevice) Accept(v model.EntityVisitor) interface{} {
 
 // Gets the description of the entity
 func (d *binkyNetDevice) GetDescription() string {
-	return fmt.Sprintf("%s (%s, %s)", d.GetDeviceType(), d.GetID(), d.GetAddress())
+	return fmt.Sprintf("%s (%s)", d.GetDeviceType(), d.GetAddress())
 }
 
 // ID of the device (equal to entity ID)

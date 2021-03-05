@@ -82,6 +82,14 @@ func (v *builder) VisitSwitch(x model.Switch) interface{} {
 	return NewSwitchSettings(x)
 }
 
+func (v *builder) VisitBinkyNetDevice(x model.BinkyNetDevice) interface{} {
+	return NewBinkyNetDeviceSettings(x)
+}
+
 func (v *builder) VisitBinkyNetLocalWorker(x model.BinkyNetLocalWorker) interface{} {
 	return NewBinkyNetLocalWorkerSettings(x)
+}
+
+func (v *builder) VisitBinkyNetObject(x model.BinkyNetObject) interface{} {
+	return NewBinkyNetObjectSettings(x)
 }
