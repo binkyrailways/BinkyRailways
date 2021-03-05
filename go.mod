@@ -3,8 +3,8 @@ module github.com/binkyrailways/BinkyRailways
 go 1.16
 
 require (
-	gioui.org v0.0.0-20210210205757-7286b075e2fb
-	gioui.org/x v0.0.0-20210120222453-b55819bc712b
+	gioui.org v0.0.0-20210305084558-9793fcfcd0ac
+	gioui.org/x v0.0.0-20210226015410-958111222865
 	github.com/aarzilli/nucular v0.0.0-20210111134321-0632296919bc // indirect
 	github.com/ajstarks/giocanvas v0.0.0-20210116002733-c0ab486f8f0a
 	github.com/binkynet/BinkyNet v0.1.1-0.20201007101025-5d7baa763005 // indirect
@@ -27,7 +27,6 @@ require (
 	golang.org/x/image v0.0.0-20201208152932-35266b937fa6
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	golang.org/x/sys v0.0.0-20210228012217-479acdf4ea46 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/genproto v0.0.0-20210226172003-ab064af71705 // indirect
 	google.golang.org/grpc v1.36.0 // indirect
