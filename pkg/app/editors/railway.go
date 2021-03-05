@@ -18,8 +18,6 @@
 package editors
 
 import (
-	"fmt"
-
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
@@ -56,12 +54,10 @@ func (e *railwayEditor) CreateAddButtons() []AddButton {
 // CreatePersistentEntityAddButtons creates the buttons for the "Add resource sheet" that apply to persistent entities
 func CreatePersistentEntityAddButtons(entity model.PersistentEntity, etx EditorContext) []AddButton {
 	if entity == nil {
-		fmt.Println("entity == nil")
 		return nil
 	}
 	pkg := entity.GetPackage()
 	if pkg == nil {
-		fmt.Println("pkg == nil")
 		return nil
 	}
 	return []AddButton{

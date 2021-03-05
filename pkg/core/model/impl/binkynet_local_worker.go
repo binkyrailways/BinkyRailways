@@ -17,7 +17,11 @@
 
 package impl
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"fmt"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 type binkyNetLocalWorker struct {
 	onModified func()
@@ -29,6 +33,14 @@ type binkyNetLocalWorker struct {
 }
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
+
+// Gets the description of the entity
+func (lw *binkyNetLocalWorker) GetDescription() string {
+	if lw.Alias != "" {
+		return fmt.Sprintf("%s (%s)", lw.Alias, lw.GetID())
+	}
+	return lw.GetID()
+}
 
 // Optional alias for the local worker.
 func (lw *binkyNetLocalWorker) GetAlias() string {

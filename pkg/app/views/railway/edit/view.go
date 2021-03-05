@@ -166,7 +166,38 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 						var result []widgets.TreeViewItem
 						railway.GetCommandStations().ForEach(func(c model.CommandStationRef) {
 							if x := c.TryResolve(); x != nil {
-								result = append(result, itemCache.CreateItem(x, level))
+								result = append(result,
+									itemCache.CreateItem(x, level))
+								if cs, ok := x.(model.BinkyNetCommandStation); ok {
+									result = append(result,
+										groupCache.CreateItem("Local workers", func(ctx context.Context, level int) []widgets.TreeViewItem {
+											var result []widgets.TreeViewItem
+											cs.GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
+												result = append(result,
+													itemCache.CreateItem(lw, level+1),
+													groupCache.CreateItem("Devices", func(ctx context.Context, level int) []widgets.TreeViewItem {
+														var result []widgets.TreeViewItem
+														lw.GetDevices().ForEach(func(entity model.BinkyNetDevice) {
+															result = append(result, itemCache.CreateItem(entity, level+2))
+														})
+														return result
+
+													}, level+2, x),
+													groupCache.CreateItem("Objects", func(ctx context.Context, level int) []widgets.TreeViewItem {
+														var result []widgets.TreeViewItem
+														lw.GetObjects().ForEach(func(entity model.BinkyNetObject) {
+															result = append(result, itemCache.CreateItem(entity, level+2))
+														})
+														return result
+
+													}, level+2, x),
+												)
+											})
+											return result
+
+										}, level+1, x),
+									)
+								}
 							}
 						})
 						return result

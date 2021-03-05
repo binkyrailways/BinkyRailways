@@ -22,6 +22,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/gen2brain/dlgs"
 )
 
 // NewCommandStationEditor constructs an editor for a CommandStation.
@@ -48,5 +49,21 @@ func (e *commandStationEditor) Layout(gtx C, th *material.Theme) D {
 
 // Create the buttons for the "Add resource sheet"
 func (e *commandStationEditor) CreateAddButtons() []AddButton {
-	return CreatePersistentEntityAddButtons(e.cs, e.etx)
+	buttons := CreatePersistentEntityAddButtons(e.cs, e.etx)
+	switch cs := e.cs.(type) {
+	case model.BinkyNetCommandStation:
+		buttons = append(buttons, AddButton{
+			Title: "Add Local Worker",
+			OnClick: func() {
+				if id, ok, err := dlgs.Entry("Add Local Worker", "ID", ""); err == nil && ok {
+					if lw, err := cs.GetLocalWorkers().AddNew(id); err == nil {
+						e.etx.Select(lw)
+					} else {
+						dlgs.Error("Failed to add Local Worker", err.Error())
+					}
+				}
+			},
+		})
+	}
+	return buttons
 }
