@@ -62,6 +62,7 @@ func newPackage() *packageImpl {
 func NewPackage() model.Package {
 	p := newPackage()
 	p.railway = impl.NewRailway(p)
+	p.railway.SetDescription("New railway")
 	return p
 }
 

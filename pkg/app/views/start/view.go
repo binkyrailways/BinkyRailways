@@ -26,7 +26,13 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
+)
+
+type (
+	C = layout.Context
+	D = layout.Dimensions
 )
 
 // New constructs a new start view
@@ -42,6 +48,7 @@ type startView struct {
 	vm  views.ViewManager
 
 	buttonOpenFile widget.Clickable
+	buttonNew      widget.Clickable
 }
 
 // Return additional text to add to the window title
@@ -54,8 +61,20 @@ func (v *startView) Layout(gtx layout.Context) layout.Dimensions {
 	if v.buttonOpenFile.Clicked() {
 		go v.openFile()
 	}
+	if v.buttonNew.Clicked() {
+		go v.createNew()
+	}
 	th := v.vm.GetTheme()
-	return material.Button(th, &v.buttonOpenFile, "Open file").Layout(gtx)
+
+	hs := widgets.HorizontalSplit(
+		func(gtx C) D {
+			return material.Button(th, &v.buttonOpenFile, "Open file").Layout(gtx)
+		},
+		func(gtx C) D {
+			return material.Button(th, &v.buttonNew, "New").Layout(gtx)
+		},
+	)
+	return hs.Layout(gtx)
 }
 
 // Open a file dialog to select a railway
@@ -72,4 +91,11 @@ func (v *startView) openFile() {
 			v.vm.OpenRailway(pkg.GetRailway())
 		}
 	}
+}
+
+// Create a new (blank) railway
+func (v *startView) createNew() {
+	// NewPackageFromFile loads a package from file
+	pkg := storage.NewPackage()
+	v.vm.OpenRailway(pkg.GetRailway())
 }
