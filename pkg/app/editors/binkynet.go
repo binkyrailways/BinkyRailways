@@ -24,29 +24,51 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// newLocEditor constructs an editor for a Loc.
-func newLocEditor(loc model.Loc, etx EditorContext) Editor {
-	editor := &locEditor{
-		loc:      loc,
-		settings: settings.NewLocSettings(loc),
+// newBinkyNetEditor constructs an editor for a BinkyNet entities.
+func newBinkyNetEditor(entity interface{}, etx EditorContext) Editor {
+	editor := &binkyNetEditor{
+		entity:   entity,
+		settings: settings.BuildSettings(entity),
 		etx:      etx,
 	}
 	return editor
 }
 
-// locEditor implements an editor for a Loc.
-type locEditor struct {
-	loc      model.Loc
+// binkyNetEditor implements an editor for a BinkyNet entities.
+type binkyNetEditor struct {
+	entity   interface{}
 	settings settings.Settings
 	etx      EditorContext
 }
 
 // Handle events and draw the editor
-func (e *locEditor) Layout(gtx C, th *material.Theme) D {
+func (e *binkyNetEditor) Layout(gtx C, th *material.Theme) D {
+	if e.settings == nil {
+		return D{}
+	}
 	return e.settings.Layout(gtx, th)
 }
 
 // Create the buttons for the "Add resource sheet"
-func (e *locEditor) CreateAddButtons() []AddButton {
-	return CreatePersistentEntityAddButtons(e.loc, e.etx)
+func (e *binkyNetEditor) CreateAddButtons() []AddButton {
+	switch entity := e.entity.(type) {
+	case model.BinkyNetLocalWorker:
+		return []AddButton{
+			{
+				Title: "Add Device",
+				OnClick: func() {
+					dev := entity.GetDevices().AddNew()
+					e.etx.Select(dev)
+				},
+			},
+			{
+				Title: "Add Object",
+				OnClick: func() {
+					dev := entity.GetObjects().AddNew()
+					e.etx.Select(dev)
+				},
+			},
+		}
+	}
+	return nil
 }

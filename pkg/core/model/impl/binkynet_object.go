@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"fmt"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -31,6 +33,16 @@ type binkyNetObject struct {
 }
 
 var _ model.BinkyNetObject = &binkyNetObject{}
+
+// Accept a visit by the given visitor
+func (o *binkyNetObject) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBinkyNetObject(o)
+}
+
+// Gets the description of the entity
+func (o *binkyNetObject) GetDescription() string {
+	return fmt.Sprintf("%s (%s)", o.GetObjectType(), o.GetID())
+}
 
 // ID of the object (equal to entity ID)
 func (o *binkyNetObject) GetObjectID() api.ObjectID {

@@ -65,7 +65,7 @@ type entityItem struct {
 
 // Return a key used to sort the items
 func (item *entityItem) SortKey() string {
-	return strings.ToLower(item.entity.GetDescription())
+	return "0." + strings.ToLower(item.entity.GetDescription())
 }
 
 // Return true if the given selection is contained in this item

@@ -20,6 +20,7 @@ package widgets
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	w "gioui.org/widget"
 	"gioui.org/widget/material"
@@ -76,7 +77,7 @@ func (v *TreeViewGroup) SetCollapsed(value bool) {
 
 // SortKey returns a key used to sort the items
 func (v *TreeViewGroup) SortKey() string {
-	return v.Name
+	return "1." + strings.ToLower(v.Name)
 }
 
 // Select returns the selection that this item represents (can be nil)
@@ -119,14 +120,14 @@ func (v *TreeViewGroup) GenerateWidgets(ctx context.Context, level int) TreeView
 	if v.collapsed {
 		return nil
 	}
-	result := v.Collection(ctx, level+1)
-	for idx := 0; idx < len(result); idx = idx + 1 {
-		if subItems := result[idx].GenerateWidgets(ctx, level+1); len(subItems) > 0 {
+	var result TreeViewItems
+	collected := TreeViewItems(v.Collection(ctx, level+1))
+	collected.Sort()
+	for _, item := range collected {
+		result = append(result, item)
+		if subItems := item.GenerateWidgets(ctx, level+1); len(subItems) > 0 {
 			// Insert items
-			subItems.Sort()
-			prefix := result[:idx+1]
-			remaining := result[idx+1:]
-			result = append(append(prefix, subItems...), remaining...)
+			result = append(result, subItems...)
 		}
 	}
 	return result

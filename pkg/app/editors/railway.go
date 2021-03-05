@@ -24,8 +24,8 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// NewRailwayEditor constructs an editor for a Railway.
-func NewRailwayEditor(railway model.Railway, etx EditorContext) Editor {
+// newRailwayEditor constructs an editor for a Railway.
+func newRailwayEditor(railway model.Railway, etx EditorContext) Editor {
 	editor := &railwayEditor{
 		railway:  railway,
 		settings: settings.NewRailwaySettings(railway),

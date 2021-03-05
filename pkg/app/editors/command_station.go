@@ -25,8 +25,8 @@ import (
 	"github.com/gen2brain/dlgs"
 )
 
-// NewCommandStationEditor constructs an editor for a CommandStation.
-func NewCommandStationEditor(cs model.CommandStation, etx EditorContext) Editor {
+// newCommandStationEditor constructs an editor for a CommandStation.
+func newCommandStationEditor(cs model.CommandStation, etx EditorContext) Editor {
 	editor := &commandStationEditor{
 		cs:       cs,
 		settings: settings.BuildSettings(cs),
@@ -50,13 +50,13 @@ func (e *commandStationEditor) Layout(gtx C, th *material.Theme) D {
 // Create the buttons for the "Add resource sheet"
 func (e *commandStationEditor) CreateAddButtons() []AddButton {
 	buttons := CreatePersistentEntityAddButtons(e.cs, e.etx)
-	switch cs := e.cs.(type) {
+	switch entity := e.cs.(type) {
 	case model.BinkyNetCommandStation:
 		buttons = append(buttons, AddButton{
 			Title: "Add Local Worker",
 			OnClick: func() {
 				if id, ok, err := dlgs.Entry("Add Local Worker", "ID", ""); err == nil && ok {
-					if lw, err := cs.GetLocalWorkers().AddNew(id); err == nil {
+					if lw, err := entity.GetLocalWorkers().AddNew(id); err == nil {
 						e.etx.Select(lw)
 					} else {
 						dlgs.Error("Failed to add Local Worker", err.Error())
@@ -64,6 +64,23 @@ func (e *commandStationEditor) CreateAddButtons() []AddButton {
 				}
 			},
 		})
+	case model.BinkyNetLocalWorker:
+		buttons = append(buttons,
+			AddButton{
+				Title: "Add Device",
+				OnClick: func() {
+					dev := entity.GetDevices().AddNew()
+					e.etx.Select(dev)
+				},
+			},
+			AddButton{
+				Title: "Add Object",
+				OnClick: func() {
+					dev := entity.GetObjects().AddNew()
+					e.etx.Select(dev)
+				},
+			},
+		)
 	}
 	return buttons
 }

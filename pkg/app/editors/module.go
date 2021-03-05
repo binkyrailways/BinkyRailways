@@ -39,8 +39,8 @@ type ModuleEditor interface {
 	OnSelect(entity model.ModuleEntity)
 }
 
-// NewModuleEditor constructs an editor for a Module.
-func NewModuleEditor(module model.Module, etx EditorContext) ModuleEditor {
+// newModuleEditor constructs an editor for a Module.
+func newModuleEditor(module model.Module, etx EditorContext) ModuleEditor {
 	editor := &moduleEditor{
 		module: module,
 		etx:    etx,

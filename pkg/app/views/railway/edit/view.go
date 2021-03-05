@@ -73,134 +73,25 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 				&widgets.TreeViewGroup{
 					Name: "Railway",
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return []widgets.TreeViewItem{
-							itemCache.CreateItem(railway, level),
-						}
+						return buildTreeViewItems(railway, &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name: "Locs",
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						var result []widgets.TreeViewItem
-						railway.GetLocs().ForEach(func(c model.LocRef) {
-							if x := c.TryResolve(); x != nil {
-								result = append(result, itemCache.CreateItem(x, level))
-							}
-						})
-						return result
+						return buildTreeViewItems(railway.GetLocs(), &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name: "Modules",
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						var result []widgets.TreeViewItem
-						railway.GetModules().ForEach(func(c model.ModuleRef) {
-							if x := c.TryResolve(); x != nil {
-								result = append(result,
-									itemCache.CreateItem(x, level),
-									groupCache.CreateItem("Blocks", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetBlocks().ForEach(func(entity model.Block) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Block groups", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetBlockGroups().ForEach(func(entity model.BlockGroup) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Edges", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetEdges().ForEach(func(entity model.Edge) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Junctions", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetJunctions().ForEach(func(entity model.Junction) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Outputs", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetOutputs().ForEach(func(entity model.Output) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Routes", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetRoutes().ForEach(func(entity model.Route) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Sensors", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetSensors().ForEach(func(entity model.Sensor) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-									groupCache.CreateItem("Signals", func(ctx context.Context, level int) []widgets.TreeViewItem {
-										var result []widgets.TreeViewItem
-										x.GetSignals().ForEach(func(entity model.Signal) {
-											result = append(result, itemCache.CreateItem(entity, level+1))
-										})
-										return result
-									}, level+1, x),
-								)
-							}
-						})
-						return result
+						return buildTreeViewItems(railway.GetModules(), &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name: "Command stations",
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						var result []widgets.TreeViewItem
-						railway.GetCommandStations().ForEach(func(c model.CommandStationRef) {
-							if x := c.TryResolve(); x != nil {
-								result = append(result,
-									itemCache.CreateItem(x, level))
-								if cs, ok := x.(model.BinkyNetCommandStation); ok {
-									result = append(result,
-										groupCache.CreateItem("Local workers", func(ctx context.Context, level int) []widgets.TreeViewItem {
-											var result []widgets.TreeViewItem
-											cs.GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
-												result = append(result,
-													itemCache.CreateItem(lw, level+1),
-													groupCache.CreateItem("Devices", func(ctx context.Context, level int) []widgets.TreeViewItem {
-														var result []widgets.TreeViewItem
-														lw.GetDevices().ForEach(func(entity model.BinkyNetDevice) {
-															result = append(result, itemCache.CreateItem(entity, level+2))
-														})
-														return result
-
-													}, level+2, x),
-													groupCache.CreateItem("Objects", func(ctx context.Context, level int) []widgets.TreeViewItem {
-														var result []widgets.TreeViewItem
-														lw.GetObjects().ForEach(func(entity model.BinkyNetObject) {
-															result = append(result, itemCache.CreateItem(entity, level+2))
-														})
-														return result
-
-													}, level+2, x),
-												)
-											})
-											return result
-
-										}, level+1, x),
-									)
-								}
-							}
-						})
-						return result
+						return buildTreeViewItems(railway.GetCommandStations(), &itemCache, &groupCache, level)
 					},
 				},
 			},
@@ -233,30 +124,7 @@ func (v *View) Save() {
 
 // onSelect ensures that the given object is selected in the view
 func (v *View) onSelect(selection interface{}) {
-	switch selection := selection.(type) {
-	case model.CommandStation:
-		v.editor = editors.NewCommandStationEditor(selection, v)
-	case model.Loc:
-		v.editor = editors.NewLocEditor(selection, v)
-	case model.Module:
-		v.editor = editors.NewModuleEditor(selection, v)
-	case model.Railway:
-		v.editor = editors.NewRailwayEditor(selection, v)
-	case model.ModuleEntity:
-		// Re-use existing module editor (if possible)
-		module := selection.GetModule()
-		if modEditor, ok := v.editor.(editors.ModuleEditor); ok && modEditor.Module() == module {
-			// Re-use module editor
-			modEditor.OnSelect(selection)
-		} else {
-			// Build new module editor
-			modEditor := editors.NewModuleEditor(module, v)
-			modEditor.OnSelect(selection)
-			v.editor = modEditor
-		}
-	default:
-		v.editor = nil
-	}
+	v.editor = editors.BuildEditor(selection, v, v.editor)
 	if v.editor != nil {
 		v.addSheetButtons = v.editor.CreateAddButtons()
 	} else {
@@ -265,7 +133,7 @@ func (v *View) onSelect(selection interface{}) {
 	v.vm.Invalidate()
 }
 
-// Handle events and draw the view
+// Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 

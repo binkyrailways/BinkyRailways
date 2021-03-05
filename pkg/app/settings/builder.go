@@ -27,13 +27,16 @@ type builder struct {
 }
 
 // BuildSettings tries to build a settings implementation for the given entity.
-func BuildSettings(x model.Entity) Settings {
+func BuildSettings(x interface{}) Settings {
 	if x == nil {
 		return nil
 	}
-	b := &builder{}
-	if result, ok := x.Accept(b).(Settings); ok {
-		return result
+	switch x := x.(type) {
+	case model.Entity:
+		b := &builder{}
+		if result, ok := x.Accept(b).(Settings); ok {
+			return result
+		}
 	}
 	return nil
 }
@@ -77,4 +80,8 @@ func (v *builder) VisitRoute(x model.Route) interface{} {
 
 func (v *builder) VisitSwitch(x model.Switch) interface{} {
 	return NewSwitchSettings(x)
+}
+
+func (v *builder) VisitBinkyNetLocalWorker(x model.BinkyNetLocalWorker) interface{} {
+	return NewBinkyNetLocalWorkerSettings(x)
 }

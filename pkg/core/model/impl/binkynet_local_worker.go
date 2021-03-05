@@ -34,6 +34,11 @@ type binkyNetLocalWorker struct {
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
 
+// Accept a visit by the given visitor
+func (lw *binkyNetLocalWorker) Accept(v model.EntityVisitor) interface{} {
+	return v.VisitBinkyNetLocalWorker(lw)
+}
+
 // Gets the description of the entity
 func (lw *binkyNetLocalWorker) GetDescription() string {
 	if lw.Alias != "" {

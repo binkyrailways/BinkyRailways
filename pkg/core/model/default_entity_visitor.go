@@ -324,3 +324,14 @@ func (v *DefaultEntityVisitor) VisitModuleAction(x ModuleAction) interface{} {
 }
 
 //func (v*DefaultEntityVisitor) VisitPlaySoundAction(x PlaySoundAction) interface{}
+
+// BinkyNet
+func (v *DefaultEntityVisitor) VisitBinkyNetDevice(BinkyNetDevice) interface{} {
+	return nil
+}
+func (v *DefaultEntityVisitor) VisitBinkyNetLocalWorker(BinkyNetLocalWorker) interface{} {
+	return nil
+}
+func (v *DefaultEntityVisitor) VisitBinkyNetObject(BinkyNetObject) interface{} {
+	return nil
+}

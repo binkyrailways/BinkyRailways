@@ -78,4 +78,9 @@ type EntityVisitor interface {
 	VisitLocFunctionAction(LocFunctionAction) interface{}
 	VisitModuleAction(ModuleAction) interface{}
 	//VisitPlaySoundAction(PlaySoundAction) interface{}
+
+	// BinkyNet
+	VisitBinkyNetDevice(BinkyNetDevice) interface{}
+	VisitBinkyNetLocalWorker(BinkyNetLocalWorker) interface{}
+	VisitBinkyNetObject(BinkyNetObject) interface{}
 }
