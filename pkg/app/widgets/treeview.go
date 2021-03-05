@@ -30,12 +30,14 @@ import (
 
 // TreeView is a UI component that shows a tree of items.
 type TreeView struct {
-	Exclusive util.Exclusive
-	RootItems []TreeViewItem
-	list      layout.List
-	OnSelect  func(interface{})
-	Selected  interface{}
-	widgets   []TreeViewItem
+	Exclusive    util.Exclusive
+	RootItems    []TreeViewItem
+	list         layout.List
+	OnSelect     func(interface{})
+	Selected     interface{}
+	widgets      []TreeViewItem
+	requestFocus bool
+	focused      bool
 }
 
 // TreeViewItem must be implemented by items that are part of a TreeView.
@@ -49,7 +51,7 @@ type TreeViewItem interface {
 	// Process events, return an entity if it is clicked.
 	ProcessEvents() interface{}
 	// Layout the widget
-	Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}) D
+	Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}, focused bool) D
 	// Generate sub-widgets
 	GenerateWidgets(ctx context.Context, level int) TreeViewItems
 }
@@ -159,6 +161,8 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 
 	for _, evt := range gtx.Events(v) {
 		switch evt := evt.(type) {
+		case key.FocusEvent:
+			v.focused = evt.Focus
 		case key.Event:
 			if evt.State == key.Press {
 				switch evt.Name {
@@ -176,6 +180,7 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 	for _, w := range v.widgets {
 		if x := w.ProcessEvents(); x != nil {
 			if newSelection == nil {
+				v.requestFocus = true
 				newSelection = x
 			}
 		}
@@ -195,12 +200,15 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 	}
 	v.widgets = widgets
 	// Register for input
-	key.FocusOp{Tag: v}.Add(gtx.Ops)
 	key.InputOp{Tag: v}.Add(gtx.Ops)
+	if v.requestFocus {
+		key.FocusOp{Tag: v}.Add(gtx.Ops)
+		v.requestFocus = false
+	}
 	// Redraw widgets
 	return v.list.Layout(gtx, len(widgets), func(gtx C, idx int) D {
 		//pointer.PassOp{Pass: true}.Add(gtx.Ops)
-		return widgets[idx].Layout(ctx, gtx, th, selection)
+		return widgets[idx].Layout(ctx, gtx, th, selection, v.focused)
 	})
 }
 

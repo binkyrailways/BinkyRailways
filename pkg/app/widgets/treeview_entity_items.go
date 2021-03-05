@@ -85,15 +85,20 @@ func (item *entityItem) ProcessEvents() interface{} {
 	return nil
 }
 
-func (item *entityItem) Layout(ctx context.Context, gtx C, th *material.Theme, selected interface{}) D {
+func (item *entityItem) Layout(ctx context.Context, gtx C, th *material.Theme, selected interface{}, focused bool) D {
 	lb := material.Label(th, th.TextSize, item.entity.GetDescription())
 	return material.Clickable(gtx, &item.Clickable, func(gtx C) D {
 		if selected == item.entity {
-			lb.Color = th.ContrastFg
+			fg := th.ContrastFg
+			bg := th.ContrastBg
+			if !focused {
+				bg.A = bg.A / 2
+			}
+			lb.Color = fg
 			clip.Rect{
 				Max: gtx.Constraints.Max,
 			}.Add(gtx.Ops)
-			paint.Fill(gtx.Ops, th.ContrastBg)
+			paint.Fill(gtx.Ops, bg)
 		}
 		return LayoutWithLevel(gtx, item.level, lb.Layout)
 	})

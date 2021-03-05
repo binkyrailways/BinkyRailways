@@ -98,7 +98,7 @@ func (v *TreeViewGroup) ProcessEvents() interface{} {
 }
 
 // Layout the widget
-func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}) D {
+func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}, focused bool) D {
 	return material.Clickable(gtx, &v.clickable, func(gtx C) D {
 		postfix := ""
 		if v.Collapsed() {
