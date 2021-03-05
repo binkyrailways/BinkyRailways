@@ -58,7 +58,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	// Create empty railway
 	ctx := context.Background()
 	log := zerolog.Logger{}
-	p := storage.NewPackage()
+	p := storage.NewPackage("test.brw")
 	require.NotNil(t, p)
 	r := p.GetRailway()
 	require.NotNil(t, r)
@@ -105,7 +105,7 @@ func TestRailwayPower(t *testing.T) {
 	// Create empty railway
 	ctx := context.Background()
 	log := zerolog.Logger{}
-	p := storage.NewPackage()
+	p := storage.NewPackage("test.brw")
 	require.NotNil(t, p)
 	r := p.GetRailway()
 	require.NotNil(t, r)

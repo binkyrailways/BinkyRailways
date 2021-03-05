@@ -27,6 +27,7 @@ var (
 	IconEdit, _         = widget.NewIcon(icons.ContentCreate)
 	IconRun, _          = widget.NewIcon(icons.AVPlayArrow)
 	IconRunVirtual, _   = widget.NewIcon(icons.AVPlayCircleOutline)
+	IconSave, _         = widget.NewIcon(icons.ContentSave)
 	IconStartAutoRun, _ = widget.NewIcon(icons.AVFastForward)
 	IconStopAutoRun, _  = widget.NewIcon(icons.AVPause)
 )

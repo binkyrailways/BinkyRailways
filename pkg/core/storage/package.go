@@ -39,6 +39,7 @@ type packageImpl struct {
 	parts          map[string][]byte                 // uri -> data
 	loadedEntities map[string]model.PersistentEntity // uri -> entity
 	dirty          bool
+	path           string
 }
 
 var _ model.Package = &packageImpl{}
@@ -50,25 +51,29 @@ const (
 
 // IValidationSubject
 
-func newPackage() *packageImpl {
+func newPackage(path string) *packageImpl {
 	return &packageImpl{
 		onError:        impl.NewEventHandler(),
 		parts:          make(map[string][]byte),
 		loadedEntities: make(map[string]model.PersistentEntity),
+		path:           path,
 	}
 }
 
 // NewPackage creates a new empty package
-func NewPackage() model.Package {
-	p := newPackage()
+func NewPackage(path string) model.Package {
+	p := newPackage(path)
 	p.railway = impl.NewRailway(p)
 	p.railway.SetDescription("New railway")
+	uri := createPartURI(impl.PackageFolderRailway, railwayID)
+	p.loadedEntities[uri] = p.railway
+	p.dirty = true
 	return p
 }
 
 // NewPackageFromFile loads a package from file
 func NewPackageFromFile(path string) (model.Package, error) {
-	p := newPackage()
+	p := newPackage(path)
 
 	// Open a zip archive for reading.
 	r, err := zip.OpenReader(path)
@@ -348,7 +353,16 @@ func (p *packageImpl) RemoveGenericPart(entity model.PersistentEntity, id string
 }
 
 // Save to disk.
-func (p *packageImpl) Save(path string) error {
+func (p *packageImpl) Save() error {
+	if err := p.SaveAs(p.path); err != nil {
+		return err
+	}
+	p.dirty = false
+	return nil
+}
+
+// Save to disk.
+func (p *packageImpl) SaveAs(path string) error {
 	// Update all parts
 	if err := p.updateEntityParts(); err != nil {
 		return err

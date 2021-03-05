@@ -95,7 +95,12 @@ func (v *startView) openFile() {
 
 // Create a new (blank) railway
 func (v *startView) createNew() {
-	// NewPackageFromFile loads a package from file
-	pkg := storage.NewPackage()
-	v.vm.OpenRailway(pkg.GetRailway())
+	if fName, ok, err := dlgs.Entry("Create a railway", "File name", "newRailway.brw"); err != nil {
+		v.log.Warn().Err(err).Msg("Open file failed")
+	} else if ok {
+		log.Info().Str("file", fName).Msg("File selected")
+		// NewPackageFromFile loads a package from file
+		pkg := storage.NewPackage(fName)
+		v.vm.OpenRailway(pkg.GetRailway())
+	}
 }

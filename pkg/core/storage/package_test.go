@@ -29,7 +29,7 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	p := NewPackage()
+	p := NewPackage("test.brw")
 	require.NotNil(t, p)
 	require.NotNil(t, p.GetRailway(), "railway")
 	assert.NotEmpty(t, p.GetRailway().GetID())
@@ -391,7 +391,7 @@ func TestLoadSaveLoad(t *testing.T) {
 	// Create tmp file
 	tmpPath, err := ioutil.TempFile("", "")
 	require.NoError(t, err)
-	err = p.Save(tmpPath.Name())
+	err = p.SaveAs(tmpPath.Name())
 	assert.NoError(t, err)
 
 	// Open package again

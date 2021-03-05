@@ -26,6 +26,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"gioui.org/x/component"
+	"github.com/gen2brain/dlgs"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/editors"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
@@ -53,6 +54,7 @@ type View struct {
 	buttonRun        widget.Clickable
 	buttonRunVirtual widget.Clickable
 	buttonAdd        widget.Clickable
+	buttonSave       widget.Clickable
 	entityList       widgets.TreeView
 	editor           editors.Editor
 }
@@ -191,6 +193,13 @@ func (v *View) Invalidate() {
 	v.vm.Invalidate()
 }
 
+// Save the railway
+func (v *View) Save() {
+	if err := v.railway.GetPackage().Save(); err != nil {
+		dlgs.Error("Save failed", err.Error())
+	}
+}
+
 // onSelect ensures that the given object is selected in the view
 func (v *View) onSelect(selection interface{}) {
 	switch selection := selection.(type) {
@@ -229,6 +238,9 @@ func (v *View) onSelect(selection interface{}) {
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 
+	if v.buttonSave.Clicked() {
+		v.Save()
+	}
 	if v.buttonRun.Clicked() {
 		v.setRunMode(false)
 	}
@@ -268,8 +280,12 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 
 	// Configure appBar
 	v.appBar.Title = v.railway.GetDescription()
+	if v.railway.GetPackage().GetIsDirty() {
+		v.appBar.Title = v.appBar.Title + " *"
+	}
 	v.appBar.SetActions(
 		[]component.AppBarAction{
+			component.SimpleIconAction(th, &v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
 			component.SimpleIconAction(th, &v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
 			component.SimpleIconAction(th, &v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
 			component.SimpleIconAction(th, &v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),

@@ -89,7 +89,10 @@ type Package interface {
 	RemoveGenericPart(entity PersistentEntity, id string) error
 
 	// Save to disk.
-	Save(path string) error
+	Save() error
+
+	// Save to disk.
+	SaveAs(path string) error
 
 	// Has this package been changed since the last save?
 	GetIsDirty() bool
