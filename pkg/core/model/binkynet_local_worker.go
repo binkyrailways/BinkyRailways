@@ -17,19 +17,16 @@
 
 package model
 
-// BinkyNetCommandStation is a BinkyNet type command station.
-type BinkyNetCommandStation interface {
-	CommandStation
+// BinkyNetLocalWorker represents the configuration of a Local Worker in the Bink network.
+type BinkyNetLocalWorker interface {
+	Entity
 
-	// Network Port of the command station
-	GetGRPCPort() int
-	SetGRPCPort(value int) error
+	// Optional alias for the local worker.
+	GetAlias() string
+	SetAlias(value string) error
 
-	// The required version of local workers
-	GetRequiredWorkerVersion() string
-	SetRequiredWorkerVersion(value string) error
-
-	// Gets the configuration of local workers on the Binky network
-	// that this command station is attached to.
-	GetLocalWorkers() BinkyNetLocalWorkerSet
+	// Set of devices that must be configured on this local worker.
+	GetDevices() BinkyNetDeviceSet
+	// Set of real world objects controlled by the local worker
+	GetObjects() BinkyNetObjectSet
 }

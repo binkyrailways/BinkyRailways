@@ -19,7 +19,6 @@ package impl
 
 import (
 	"context"
-	"fmt"
 
 	bn "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/NetManager/service"
@@ -65,9 +64,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	var err error
 	serverHost := "0.0.0.0"
 	cs.reconfigureQueue = make(chan string, 64)
+	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers())
 	cs.manager, err = manager.New(manager.Dependencies{
 		Log:              cs.log,
-		ConfigRegistry:   cs,
+		ConfigRegistry:   registry,
 		ReconfigureQueue: cs.reconfigureQueue,
 	})
 	if err != nil {
@@ -78,7 +78,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	}, service.Dependencies{
 		Log:            cs.log,
 		Manager:        cs.manager,
-		ConfigRegistry: cs,
+		ConfigRegistry: registry,
 	})
 	if err != nil {
 		return err
@@ -97,11 +97,6 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
 	return nil
-}
-
-// Get returns the configuration for a worker with given ID.
-func (cs *binkyNetCommandStation) Get(id string) (bn.LocalWorkerConfig, error) {
-	return bn.LocalWorkerConfig{}, fmt.Errorf("Not found") // TODO
 }
 
 // Enable/disable power on the railway

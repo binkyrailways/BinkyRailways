@@ -17,19 +17,19 @@
 
 package model
 
-// BinkyNetCommandStation is a BinkyNet type command station.
-type BinkyNetCommandStation interface {
-	CommandStation
+import (
+	api "github.com/binkynet/BinkyNet/apis/v1"
+)
 
-	// Network Port of the command station
-	GetGRPCPort() int
-	SetGRPCPort(value int) error
+// BinkyNetConnection represents a connection from a BinkyNetObject to a BinkyNetDevice.
+type BinkyNetConnection interface {
+	// Key is specific to the type of device.
+	GetKey() api.ConnectionName
+	SetKey(value api.ConnectionName) error
 
-	// The required version of local workers
-	GetRequiredWorkerVersion() string
-	SetRequiredWorkerVersion(value string) error
+	// The pins of devices to connect to.
+	GetPins() BinkyNetConnectionPinList
 
-	// Gets the configuration of local workers on the Binky network
-	// that this command station is attached to.
-	GetLocalWorkers() BinkyNetLocalWorkerSet
+	// Gets optional configuration for this connection.
+	GetConfiguration() BinkyNetConnectionConfiguration
 }

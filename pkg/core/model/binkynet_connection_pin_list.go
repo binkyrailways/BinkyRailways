@@ -17,19 +17,21 @@
 
 package model
 
-// BinkyNetCommandStation is a BinkyNet type command station.
-type BinkyNetCommandStation interface {
-	CommandStation
+// BinkyNetConnectionPinList is a list of device pins.
+type BinkyNetConnectionPinList interface {
+	// Get number of entries
+	GetCount() int
 
-	// Network Port of the command station
-	GetGRPCPort() int
-	SetGRPCPort(value int) error
+	// Get a pin by index
+	Get(index int) (BinkyNetDevicePin, bool)
 
-	// The required version of local workers
-	GetRequiredWorkerVersion() string
-	SetRequiredWorkerVersion(value string) error
+	// Invoke the callback for each pin
+	ForEach(cb func(BinkyNetDevicePin))
 
-	// Gets the configuration of local workers on the Binky network
-	// that this command station is attached to.
-	GetLocalWorkers() BinkyNetLocalWorkerSet
+	// Remove the item at given index.
+	// Returns true if it was removed, false otherwise
+	Remove(index int) bool
+
+	// Add a new pin
+	AddNew() BinkyNetDevicePin
 }

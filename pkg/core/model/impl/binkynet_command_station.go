@@ -36,8 +36,9 @@ const (
 type binkyNetCommandStation struct {
 	commandStation
 
-	GRPCPort              *int    `xml:"GRPCPort,omitempty"`
-	RequiredWorkerVersion *string `xml:RequiredWorkerVersion,omitempty"`
+	GRPCPort              *int                   `xml:"GRPCPort,omitempty"`
+	RequiredWorkerVersion *string                `xml:"RequiredWorkerVersion,omitempty"`
+	LocalWorkers          binkyNetLocalWorkerSet `xml:"LocalWorkers,omitempty"`
 }
 
 var _ model.BinkyNetCommandStation = &binkyNetCommandStation{}
@@ -48,6 +49,7 @@ func NewBinkyNetCommandStation() BinkyNetCommandStation {
 	cs.Initialize()
 	cs.EnsureID()
 	cs.SetDescription("New BinkyNet command station")
+	cs.LocalWorkers.onModified = cs.OnModified
 	return cs
 }
 
@@ -92,6 +94,12 @@ func (cs *binkyNetCommandStation) SetRequiredWorkerVersion(value string) error {
 		cs.OnModified()
 	}
 	return nil
+}
+
+// Gets the configuration of local workers on the Binky network
+// that this command station is attached to.
+func (cs *binkyNetCommandStation) GetLocalWorkers() model.BinkyNetLocalWorkerSet {
+	return &cs.LocalWorkers
 }
 
 func (cs *binkyNetCommandStation) Upgrade() {

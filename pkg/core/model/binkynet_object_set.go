@@ -17,19 +17,26 @@
 
 package model
 
-// BinkyNetCommandStation is a BinkyNet type command station.
-type BinkyNetCommandStation interface {
-	CommandStation
+import api "github.com/binkynet/BinkyNet/apis/v1"
 
-	// Network Port of the command station
-	GetGRPCPort() int
-	SetGRPCPort(value int) error
+// BinkyNetObjectSet is a set of objects.
+type BinkyNetObjectSet interface {
+	// Get number of entries
+	GetCount() int
 
-	// The required version of local workers
-	GetRequiredWorkerVersion() string
-	SetRequiredWorkerVersion(value string) error
+	// Get an entry by ID.
+	Get(id api.ObjectID) (BinkyNetObject, bool)
 
-	// Gets the configuration of local workers on the Binky network
-	// that this command station is attached to.
-	GetLocalWorkers() BinkyNetLocalWorkerSet
+	// Invoke the callback for each entry.
+	ForEach(cb func(BinkyNetObject))
+
+	// Remove the given entry.
+	// Returns true if it was removed, false otherwise
+	Remove(BinkyNetObject) bool
+
+	// Is the given entry contained in this set?
+	Contains(BinkyNetObject) bool
+
+	// Add a new entry
+	AddNew() BinkyNetObject
 }
