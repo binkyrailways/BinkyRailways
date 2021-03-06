@@ -56,9 +56,17 @@ func (o *binkyNetObject) GetObjectType() api.ObjectType {
 func (o *binkyNetObject) SetObjectType(value api.ObjectType) error {
 	if o.Type != value {
 		o.Type = value
+		o.ensureConnectionsForType()
 		o.OnModified()
 	}
 	return nil
+}
+
+// ensureConnectionsForType ensures that all expected connections exists.
+func (o *binkyNetObject) ensureConnectionsForType() {
+	// Ensure all expected connections are there and remove all unexpected (empty) connections.
+	req, opt := o.GetObjectType().ExpectedConnections()
+	o.Connections.ensureConnections(append(req, opt...))
 }
 
 // Connections to devices used by this object

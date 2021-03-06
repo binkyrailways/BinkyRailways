@@ -149,9 +149,27 @@ func buildTreeViewItems(entity interface{},
 		return result
 	case model.BinkyNetObjectSet:
 		entity.ForEach(func(entity model.BinkyNetObject) {
-			result = append(result, itemCache.CreateItem(entity, level))
+			result = append(result,
+				itemCache.CreateItem(entity, level),
+				groupCache.CreateItem("Connections", func(ctx context.Context, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(entity.GetConnections(), itemCache, groupCache, level)
+				}, level+1, entity),
+			)
+		})
+		return result
+	case model.BinkyNetConnectionSet:
+		entity.ForEach(func(entity model.BinkyNetConnection) {
+			result = append(result, itemCache.CreateItem(binkyNetConnectionEntity{entity}, level))
 		})
 		return result
 	}
 	return nil
 }
+
+// Entity implementation for BinkyNetConnection
+type binkyNetConnectionEntity struct {
+	model.BinkyNetConnection
+}
+
+func (e binkyNetConnectionEntity) GetID() string          { return string(e.GetKey()) }
+func (e binkyNetConnectionEntity) GetDescription() string { return string(e.GetKey()) }

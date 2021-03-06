@@ -24,7 +24,7 @@ type BinkyNetConnectionSet interface {
 	// Get number of entries
 	GetCount() int
 
-	// Get an entry by ID.
+	// Get an entry by name.
 	Get(key api.ConnectionName) (BinkyNetConnection, bool)
 
 	// Invoke the callback for each entry.
@@ -36,6 +36,9 @@ type BinkyNetConnectionSet interface {
 
 	// Is the given entry contained in this set?
 	Contains(BinkyNetConnection) bool
+
+	// Is the given name contained in this set?
+	ContainsName(name api.ConnectionName) bool
 
 	// Add a new entry
 	AddNew(key api.ConnectionName) (BinkyNetConnection, error)

@@ -92,6 +92,16 @@ func (l *binkyNetConnectionSet) Contains(entry model.BinkyNetConnection) bool {
 	return false
 }
 
+// Is the given name contained in this set?
+func (l *binkyNetConnectionSet) ContainsName(name api.ConnectionName) bool {
+	for _, x := range l.Items {
+		if x.Key == name {
+			return true
+		}
+	}
+	return false
+}
+
 // Add a new entry
 func (l *binkyNetConnectionSet) AddNew(key api.ConnectionName) (model.BinkyNetConnection, error) {
 	if _, found := l.Get(key); found {
@@ -110,5 +120,34 @@ func (l *binkyNetConnectionSet) AddNew(key api.ConnectionName) (model.BinkyNetCo
 func (l *binkyNetConnectionSet) OnModified() {
 	if l.onModified != nil {
 		l.onModified()
+	}
+}
+
+// ensureConnections ensures that a connection exists for all of the given names.
+// Also remove all empty connections with a name other than the given names.
+func (l *binkyNetConnectionSet) ensureConnections(names []api.ConnectionName) {
+	// Ensure connections
+	for _, name := range names {
+		if !l.ContainsName(name) {
+			l.AddNew(name)
+		}
+	}
+	// Remove empty unexpected connections
+	isExpected := func(name api.ConnectionName) bool {
+		for _, x := range names {
+			if x == name {
+				return true
+			}
+		}
+		return false
+	}
+	isEmpty := func(conn model.BinkyNetConnection) bool {
+		return conn.GetPins().GetCount() == 0 && conn.GetConfiguration().GetCount() == 0
+	}
+	items := append([]*binkyNetConnection{}, l.Items...) // Copy slice since we're going to modify it
+	for _, conn := range items {
+		if !isExpected(conn.GetKey()) && isEmpty(conn) {
+			l.Remove(conn)
+		}
 	}
 }
