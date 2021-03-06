@@ -32,7 +32,13 @@ func NewBinkyNetObjectSettings(entity model.BinkyNetObject) Settings {
 	s := &binkyNetObjectSettings{
 		entity: entity,
 	}
-	s.dtype.SetText(string(entity.GetObjectType()))
+	s.otype.Value = string(entity.GetObjectType())
+	var values []widgets.LabeledValue
+	for _, ot := range api.AllObjectTypes() {
+		values = append(values, widgets.LV(string(ot)))
+	}
+	s.otypeSel = widgets.NewSimpleSelect(&s.otype, values...)
+	s.otype.Value = string(entity.GetObjectType())
 	return s
 }
 
@@ -40,17 +46,18 @@ func NewBinkyNetObjectSettings(entity model.BinkyNetObject) Settings {
 type binkyNetObjectSettings struct {
 	entity model.BinkyNetObject
 
-	dtype w.Editor
+	otype    w.Enum
+	otypeSel *widgets.SimpleSelect
 }
 
 // Handle events and draw the editor
 func (e *binkyNetObjectSettings) Layout(gtx C, th *material.Theme) D {
-	e.entity.SetObjectType(api.ObjectType(e.dtype.Text()))
+	e.entity.SetObjectType(api.ObjectType(e.otype.Value))
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		widgets.SettingsGridRow{Title: "Type", Layout: func(gtx C) D {
-			return material.Editor(th, &e.dtype, "Type").Layout(gtx)
+			return e.otypeSel.Layout(gtx, th)
 		}},
 	)
 
