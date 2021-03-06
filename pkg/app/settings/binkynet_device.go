@@ -32,7 +32,12 @@ func NewBinkyNetDeviceSettings(entity model.BinkyNetDevice) Settings {
 	s := &binkyNetDeviceSettings{
 		entity: entity,
 	}
-	s.dtype.SetText(string(entity.GetDeviceType()))
+	s.dtype.Value = string(entity.GetDeviceType())
+	var values []widgets.LabeledValue
+	for _, dt := range api.AllDeviceTypes() {
+		values = append(values, widgets.LV(string(dt)))
+	}
+	s.dtypeSel = widgets.NewSimpleSelect(&s.dtype, values...)
 	s.address.SetText(entity.GetAddress())
 	return s
 }
@@ -41,19 +46,20 @@ func NewBinkyNetDeviceSettings(entity model.BinkyNetDevice) Settings {
 type binkyNetDeviceSettings struct {
 	entity model.BinkyNetDevice
 
-	dtype   w.Editor
-	address w.Editor
+	dtype    w.Enum
+	dtypeSel *widgets.SimpleSelect
+	address  w.Editor
 }
 
 // Handle events and draw the editor
 func (e *binkyNetDeviceSettings) Layout(gtx C, th *material.Theme) D {
-	e.entity.SetDeviceType(api.DeviceType(e.dtype.Text()))
+	e.entity.SetDeviceType(api.DeviceType(e.dtype.Value))
 	e.entity.SetAddress(e.address.Text())
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		widgets.SettingsGridRow{Title: "Type", Layout: func(gtx C) D {
-			return material.Editor(th, &e.dtype, "Type").Layout(gtx)
+			return e.dtypeSel.Layout(gtx, th)
 		}},
 		widgets.SettingsGridRow{Title: "Address", Layout: func(gtx C) D {
 			return material.Editor(th, &e.address, "Address").Layout(gtx)
