@@ -26,7 +26,7 @@ import (
 
 // BinkyNetDevice represents a hardware device such as a I2C chip.
 type binkyNetDevice struct {
-	onModified func()
+	container *binkyNetDeviceSet
 	entity
 
 	Type    api.DeviceType `xml:"Type,omitempty"`
@@ -34,6 +34,26 @@ type binkyNetDevice struct {
 }
 
 var _ model.BinkyNetDevice = &binkyNetDevice{}
+
+// newBinkyNetDevice creates and initializes a new binky device.
+func newBinkyNetDevice() *binkyNetDevice {
+	o := &binkyNetDevice{}
+	o.EnsureID()
+	return o
+}
+
+// SetContainer links this instance to its container
+func (d *binkyNetDevice) SetContainer(container *binkyNetDeviceSet) {
+	d.container = container
+}
+
+// Gets the local worker this object belongs to
+func (d *binkyNetDevice) GetLocalWorker() model.BinkyNetLocalWorker {
+	if d.container != nil {
+		return d.container.GetLocalWorker()
+	}
+	return nil
+}
 
 // Accept a visit by the given visitor
 func (d *binkyNetDevice) Accept(v model.EntityVisitor) interface{} {
@@ -76,8 +96,8 @@ func (d *binkyNetDevice) SetAddress(value string) error {
 
 // OnModified triggers the modified function of the parent (if any)
 func (d *binkyNetDevice) OnModified() {
-	if d.onModified != nil {
-		d.onModified()
+	if d.container != nil {
+		d.container.OnModified()
 	}
 	d.entity.OnModified()
 }

@@ -21,12 +21,11 @@ import (
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// newBinkyNetEditor constructs an editor for a BinkyNet entities.
-func newBinkyNetEditor(entity interface{}, etx EditorContext) Editor {
-	editor := &binkyNetEditor{
+// newGenericEditor constructs an editor for an entity for which only settings are shown.
+func newGenericEditor(entity interface{}, etx EditorContext) Editor {
+	editor := &genericEditor{
 		entity:   entity,
 		settings: settings.BuildSettings(entity),
 		etx:      etx,
@@ -34,15 +33,15 @@ func newBinkyNetEditor(entity interface{}, etx EditorContext) Editor {
 	return editor
 }
 
-// binkyNetEditor implements an editor for a BinkyNet entities.
-type binkyNetEditor struct {
+// genericEditor implements an editor for an entity for which only settings are shown.
+type genericEditor struct {
 	entity   interface{}
 	settings settings.Settings
 	etx      EditorContext
 }
 
 // Handle events and draw the editor
-func (e *binkyNetEditor) Layout(gtx C, th *material.Theme) D {
+func (e *genericEditor) Layout(gtx C, th *material.Theme) D {
 	if e.settings == nil {
 		return D{}
 	}
@@ -50,25 +49,6 @@ func (e *binkyNetEditor) Layout(gtx C, th *material.Theme) D {
 }
 
 // Create the buttons for the "Add resource sheet"
-func (e *binkyNetEditor) CreateAddButtons() []AddButton {
-	switch entity := e.entity.(type) {
-	case model.BinkyNetLocalWorker:
-		return []AddButton{
-			{
-				Title: "Add Device",
-				OnClick: func() {
-					dev := entity.GetDevices().AddNew()
-					e.etx.Select(dev)
-				},
-			},
-			{
-				Title: "Add Object",
-				OnClick: func() {
-					dev := entity.GetObjects().AddNew()
-					e.etx.Select(dev)
-				},
-			},
-		}
-	}
-	return nil
+func (e *genericEditor) CreateAddButtons() []AddButton {
+	return createAddButtonsFor(e.etx, e.entity)
 }

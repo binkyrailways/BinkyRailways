@@ -25,7 +25,7 @@ import (
 )
 
 type binkyNetObjectSet struct {
-	onModified func()
+	container *binkyNetLocalWorker
 	binkyNetObjectSetItems
 }
 
@@ -41,9 +41,19 @@ func (l *binkyNetObjectSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 		return err
 	}
 	for _, x := range l.Objects {
-		x.onModified = l.OnModified
+		x.SetContainer(l)
 	}
 	return nil
+}
+
+// Gets the local worker this set belongs to
+func (l *binkyNetObjectSet) GetLocalWorker() model.BinkyNetLocalWorker {
+	return l.container
+}
+
+// SetContainer links this instance to its container
+func (l *binkyNetObjectSet) SetContainer(container *binkyNetLocalWorker) {
+	l.container = container
 }
 
 // Get number of entries
@@ -93,9 +103,8 @@ func (l *binkyNetObjectSet) Contains(entry model.BinkyNetObject) bool {
 
 // Add a new entry
 func (l *binkyNetObjectSet) AddNew() model.BinkyNetObject {
-	d := &binkyNetObject{}
-	d.EnsureID()
-	d.onModified = l.OnModified
+	d := newBinkyNetObject()
+	d.SetContainer(l)
 	l.Objects = append(l.Objects, d)
 	l.OnModified()
 	return d
@@ -103,7 +112,7 @@ func (l *binkyNetObjectSet) AddNew() model.BinkyNetObject {
 
 // OnModified triggers the modified function of the parent (if any)
 func (l *binkyNetObjectSet) OnModified() {
-	if l.onModified != nil {
-		l.onModified()
+	if l.container != nil {
+		l.container.OnModified()
 	}
 }

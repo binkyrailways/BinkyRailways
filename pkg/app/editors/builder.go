@@ -24,14 +24,6 @@ import (
 // BuildEditor constructs an editor the given selection.
 func BuildEditor(selection interface{}, etx EditorContext, current Editor) Editor {
 	switch selection := selection.(type) {
-	case model.BinkyNetLocalWorker:
-		return newBinkyNetEditor(selection, etx)
-	case model.BinkyNetDevice:
-		return newBinkyNetEditor(selection, etx)
-	case model.BinkyNetObject:
-		return newBinkyNetEditor(selection, etx)
-	case model.CommandStation:
-		return newCommandStationEditor(selection, etx)
 	case model.Loc:
 		return newLocEditor(selection, etx)
 	case model.Module:
@@ -51,6 +43,6 @@ func BuildEditor(selection interface{}, etx EditorContext, current Editor) Edito
 		modEditor.OnSelect(selection)
 		return modEditor
 	default:
-		return nil
+		return newGenericEditor(selection, etx)
 	}
 }

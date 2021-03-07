@@ -24,11 +24,24 @@ import (
 
 // BinkyNetConnection represents a connection from a BinkyNetObject to a BinkyNetDevice.
 type binkyNetConnection struct {
-	onModified func()
+	container *binkyNetConnectionSet
 
 	Key           api.ConnectionName              `xml:"Key,omitempty"`
 	Pins          binkyNetConnectionPinList       `xml:"Pins"`
 	Configuration binkyNetConnectionConfiguration `xml:"Configuration"`
+}
+
+// SetContainer links this instance to its container
+func (c *binkyNetConnection) SetContainer(container *binkyNetConnectionSet) {
+	c.container = container
+}
+
+// Gets the object this connection belongs to
+func (c *binkyNetConnection) GetObject() model.BinkyNetObject {
+	if c.container != nil {
+		return c.container.GetObject()
+	}
+	return nil
 }
 
 // Key is specific to the type of device.
@@ -54,7 +67,7 @@ func (c *binkyNetConnection) GetConfiguration() model.BinkyNetConnectionConfigur
 
 // OnModified calls the parents modified callback
 func (c *binkyNetConnection) OnModified() {
-	if c.onModified != nil {
-		c.onModified()
+	if c.container != nil {
+		c.container.OnModified()
 	}
 }

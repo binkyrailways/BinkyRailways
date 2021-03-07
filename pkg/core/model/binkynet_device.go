@@ -25,6 +25,9 @@ import (
 type BinkyNetDevice interface {
 	Entity
 
+	// Gets the local worker this device belongs to
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// ID of the device (equal to entity ID)
 	GetDeviceID() api.DeviceID
 

@@ -48,5 +48,5 @@ func (e *locEditor) Layout(gtx C, th *material.Theme) D {
 
 // Create the buttons for the "Add resource sheet"
 func (e *locEditor) CreateAddButtons() []AddButton {
-	return CreatePersistentEntityAddButtons(e.loc, e.etx)
+	return createAddButtonsFor(e.etx, e.loc)
 }

@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"encoding/xml"
 	"fmt"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
@@ -25,14 +26,47 @@ import (
 )
 
 type binkyNetObject struct {
-	onModified func()
+	container *binkyNetObjectSet
 	entity
+	binkyNetObjectFields
+}
 
+type binkyNetObjectFields struct {
 	Type        api.ObjectType        `xml:"Type,omitempty"`
 	Connections binkyNetConnectionSet `xml:"Connections"`
 }
 
 var _ model.BinkyNetObject = &binkyNetObject{}
+
+// newBinkyNetObject creates and initializes a new binky object.
+func newBinkyNetObject() *binkyNetObject {
+	o := &binkyNetObject{}
+	o.EnsureID()
+	o.Connections.SetContainer(o)
+	return o
+}
+
+// UnmarshalXML unmarshals and connects the module.
+func (o *binkyNetObject) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&o.binkyNetObjectFields, &start); err != nil {
+		return err
+	}
+	o.Connections.SetContainer(o)
+	return nil
+}
+
+// Gets the local worker this object belongs to
+func (o *binkyNetObject) GetLocalWorker() model.BinkyNetLocalWorker {
+	if o.container != nil {
+		return o.container.GetLocalWorker()
+	}
+	return nil
+}
+
+// SetContainer links this instance to its container
+func (o *binkyNetObject) SetContainer(container *binkyNetObjectSet) {
+	o.container = container
+}
 
 // Accept a visit by the given visitor
 func (o *binkyNetObject) Accept(v model.EntityVisitor) interface{} {
@@ -72,14 +106,13 @@ func (o *binkyNetObject) ensureConnectionsForType() {
 // Connections to devices used by this object
 // The keys used in this map are specific to the type of object.
 func (o *binkyNetObject) GetConnections() model.BinkyNetConnectionSet {
-	o.Connections.onModified = o.OnModified
 	return &o.Connections
 }
 
 // OnModified triggers the modified function of the parent (if any)
 func (o *binkyNetObject) OnModified() {
-	if o.onModified != nil {
-		o.onModified()
+	if o.container != nil {
+		o.container.OnModified()
 	}
 	o.entity.OnModified()
 }

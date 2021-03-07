@@ -49,7 +49,7 @@ func NewBinkyNetCommandStation() BinkyNetCommandStation {
 	cs.Initialize()
 	cs.EnsureID()
 	cs.SetDescription("New BinkyNet command station")
-	cs.LocalWorkers.onModified = cs.OnModified
+	cs.LocalWorkers.SetContainer(cs)
 	return cs
 }
 

@@ -25,7 +25,7 @@ import (
 )
 
 type binkyNetLocalWorkerSet struct {
-	onModified func()
+	container *binkyNetCommandStation
 	binkyNetLocalWorkerSetItems
 }
 
@@ -41,9 +41,19 @@ func (l *binkyNetLocalWorkerSet) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 		return err
 	}
 	for _, x := range l.Items {
-		x.onModified = l.OnModified
+		x.SetContainer(l)
 	}
 	return nil
+}
+
+// Gets the command station this object belongs to
+func (l *binkyNetLocalWorkerSet) GetCommandStation() model.BinkyNetCommandStation {
+	return l.container
+}
+
+// SetContainer links this instance to its container
+func (l *binkyNetLocalWorkerSet) SetContainer(container *binkyNetCommandStation) {
+	l.container = container
 }
 
 // Get number of entries
@@ -97,9 +107,8 @@ func (l *binkyNetLocalWorkerSet) AddNew(id string) (model.BinkyNetLocalWorker, e
 	if found {
 		return nil, fmt.Errorf("Duplicate id: %s", id)
 	}
-	d := &binkyNetLocalWorker{}
-	d.SetID(id)
-	d.onModified = l.OnModified
+	d := newBinkyNetLocalWorker(id)
+	d.SetContainer(l)
 	l.Items = append(l.Items, d)
 	l.OnModified()
 	return d, nil
@@ -107,7 +116,7 @@ func (l *binkyNetLocalWorkerSet) AddNew(id string) (model.BinkyNetLocalWorker, e
 
 // OnModified triggers the modified function of the parent (if any)
 func (l *binkyNetLocalWorkerSet) OnModified() {
-	if l.onModified != nil {
-		l.onModified()
+	if l.container != nil {
+		l.container.OnModified()
 	}
 }

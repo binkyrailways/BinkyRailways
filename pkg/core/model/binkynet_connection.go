@@ -23,6 +23,9 @@ import (
 
 // BinkyNetConnection represents a connection from a BinkyNetObject to a BinkyNetDevice.
 type BinkyNetConnection interface {
+	// Gets the object this connection belongs to
+	GetObject() BinkyNetObject
+
 	// Key is specific to the type of device.
 	GetKey() api.ConnectionName
 	SetKey(value api.ConnectionName) error

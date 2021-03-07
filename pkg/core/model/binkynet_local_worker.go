@@ -21,6 +21,9 @@ package model
 type BinkyNetLocalWorker interface {
 	Entity
 
+	// Gets the command station this object belongs to
+	GetCommandStation() BinkyNetCommandStation
+
 	// Optional alias for the local worker.
 	GetAlias() string
 	SetAlias(value string) error

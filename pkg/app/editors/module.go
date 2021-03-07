@@ -120,23 +120,5 @@ func (e *moduleEditor) Layout(gtx C, th *material.Theme) D {
 
 // Create the buttons for the "Add resource sheet"
 func (e *moduleEditor) CreateAddButtons() []AddButton {
-	return append(CreatePersistentEntityAddButtons(e.module, e.etx),
-		AddButton{
-			Separator: true,
-		},
-		AddButton{
-			Title: "Add block",
-			OnClick: func() {
-				x := e.module.GetBlocks().AddNew()
-				e.etx.Select(x)
-			},
-		},
-		AddButton{
-			Title: "Add route",
-			OnClick: func() {
-				x := e.module.GetRoutes().AddNew()
-				e.etx.Select(x)
-			},
-		},
-	)
+	return createAddButtonsFor(e.etx, e.module)
 }

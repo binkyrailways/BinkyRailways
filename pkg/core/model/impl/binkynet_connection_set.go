@@ -26,7 +26,7 @@ import (
 )
 
 type binkyNetConnectionSet struct {
-	onModified func()
+	container *binkyNetObject
 	binkyNetConnectionSetItems
 }
 
@@ -42,9 +42,19 @@ func (l *binkyNetConnectionSet) UnmarshalXML(d *xml.Decoder, start xml.StartElem
 		return err
 	}
 	for _, x := range l.Items {
-		x.onModified = l.OnModified
+		x.SetContainer(l)
 	}
 	return nil
+}
+
+// SetContainer links this instance to its container
+func (l *binkyNetConnectionSet) SetContainer(container *binkyNetObject) {
+	l.container = container
+}
+
+// Gets the object this connection set belongs to
+func (l *binkyNetConnectionSet) GetObject() model.BinkyNetObject {
+	return l.container
 }
 
 // Get number of entries
@@ -110,7 +120,7 @@ func (l *binkyNetConnectionSet) AddNew(key api.ConnectionName) (model.BinkyNetCo
 	d := &binkyNetConnection{
 		Key: key,
 	}
-	d.onModified = l.OnModified
+	d.SetContainer(l)
 	l.Items = append(l.Items, d)
 	l.OnModified()
 	return d, nil
@@ -118,8 +128,8 @@ func (l *binkyNetConnectionSet) AddNew(key api.ConnectionName) (model.BinkyNetCo
 
 // OnModified triggers the modified function of the parent (if any)
 func (l *binkyNetConnectionSet) OnModified() {
-	if l.onModified != nil {
-		l.onModified()
+	if l.container != nil {
+		l.container.OnModified()
 	}
 }
 

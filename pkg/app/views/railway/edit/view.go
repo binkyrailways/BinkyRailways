@@ -19,6 +19,7 @@ package edit
 
 import (
 	"context"
+	"image/color"
 	"log"
 
 	"gioui.org/layout"
@@ -221,8 +222,35 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	return layout.Dimensions{Size: gtx.Constraints.Max}
 }
 
+var (
+	addButtonColors = []color.NRGBA{
+		widgets.RGB(0x33691e),
+		widgets.RGB(0x558b2f),
+		widgets.RGB(0x689f38),
+		widgets.RGB(0x7cb342),
+		widgets.RGB(0x8bc34a),
+		widgets.RGB(0x9ccc65),
+		widgets.RGB(0xaed581),
+		widgets.RGB(0xc5e1a5),
+		widgets.RGB(0xdcedc8),
+		widgets.RGB(0xf1f8e9),
+	}
+)
+
 // Handle events and draw the add sheet
 func (v *View) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	getBgColor := func(index int) color.NRGBA {
+		cIdx := 0
+		for i := 0; i < index; i++ {
+			if v.addSheetButtons[i].Separator {
+				if cIdx+1 < len(addButtonColors) {
+					cIdx++
+				}
+			}
+		}
+		return addButtonColors[cIdx]
+	}
+
 	return v.addSheetList.Layout(gtx, len(v.addSheetButtons), func(gtx C, index int) D {
 		btn := &v.addSheetButtons[index]
 		if btn.Separator {
@@ -231,6 +259,10 @@ func (v *View) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dim
 			}.Layout(gtx)
 		}
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return layout.UniformInset(unit.Dp(6)).Layout(gtx, material.Button(th, &btn.Clickable, btn.Title).Layout)
+		return layout.UniformInset(unit.Dp(6)).Layout(gtx, func(gtx C) D {
+			button := material.Button(th, &btn.Clickable, btn.Title)
+			button.Background = getBgColor(index)
+			return button.Layout(gtx)
+		})
 	})
 }
