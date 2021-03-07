@@ -62,7 +62,7 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // returns an error otherwise.
 func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	var err error
-	serverHost := "0.0.0.0"
+	serverHost := cs.getCommandStation().GetServerHost()
 	cs.reconfigureQueue = make(chan string, 64)
 	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers())
 	cs.manager, err = manager.New(manager.Dependencies{

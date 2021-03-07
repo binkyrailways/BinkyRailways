@@ -36,6 +36,7 @@ const (
 type binkyNetCommandStation struct {
 	commandStation
 
+	ServerHost            *string                `xml:ServerHost,omitempty"`
 	GRPCPort              *int                   `xml:"GRPCPort,omitempty"`
 	RequiredWorkerVersion *string                `xml:"RequiredWorkerVersion,omitempty"`
 	LocalWorkers          binkyNetLocalWorkerSet `xml:"LocalWorkers,omitempty"`
@@ -70,6 +71,18 @@ func (cs *binkyNetCommandStation) GetSupportedAddressTypes(entity model.AddressE
 		return []model.AddressType{model.AddressTypeDcc}
 	}
 	return []model.AddressType{model.AddressTypeBinkyNet}
+}
+
+// Network host address (defaults to 0.0.0.0)
+func (cs *binkyNetCommandStation) GetServerHost() string {
+	return refs.StringValue(cs.ServerHost, "0.0.0.0")
+}
+func (cs *binkyNetCommandStation) SetServerHost(value string) error {
+	if cs.GetServerHost() != value {
+		cs.ServerHost = refs.NewString(value)
+		cs.OnModified()
+	}
+	return nil
 }
 
 // Network Port of the command station

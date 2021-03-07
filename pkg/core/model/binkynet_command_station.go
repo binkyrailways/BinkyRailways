@@ -21,6 +21,10 @@ package model
 type BinkyNetCommandStation interface {
 	CommandStation
 
+	// Network host address (defaults to 0.0.0.0)
+	GetServerHost() string
+	SetServerHost(value string) error
+
 	// Network Port of the command station
 	GetGRPCPort() int
 	SetGRPCPort(value int) error

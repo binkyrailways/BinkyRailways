@@ -18,6 +18,7 @@
 package settings
 
 import (
+	"gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -30,6 +31,8 @@ func NewBinkyNetCommandStationSettings(entity model.BinkyNetCommandStation) Sett
 		entity: entity,
 	}
 	s.metaSettings.Initialize(entity)
+	s.serverHost.SetText(entity.GetServerHost())
+	s.requiredWorkerVersion.SetText(entity.GetRequiredWorkerVersion())
 	return s
 }
 
@@ -38,15 +41,26 @@ type binkyNetCommandStationSettings struct {
 	entity model.BinkyNetCommandStation
 
 	metaSettings
+	serverHost            widget.Editor
+	requiredWorkerVersion widget.Editor
 }
 
 // Handle events and draw the editor
 func (e *binkyNetCommandStationSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
+	e.entity.SetServerHost(e.serverHost.Text())
+	e.entity.SetRequiredWorkerVersion(e.requiredWorkerVersion.Text())
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		e.metaSettings.Rows(th)...,
+		append(e.metaSettings.Rows(th),
+			widgets.SettingsGridRow{Title: "Server host", Layout: func(gtx C) D {
+				return material.Editor(th, &e.serverHost, "0.0.0.0").Layout(gtx)
+			}},
+			widgets.SettingsGridRow{Title: "Required worker version", Layout: func(gtx C) D {
+				return material.Editor(th, &e.requiredWorkerVersion, "Required worker version").Layout(gtx)
+			}},
+		)...,
 	)
 
 	return grid.Layout(gtx, th)
