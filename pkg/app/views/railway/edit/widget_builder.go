@@ -19,6 +19,7 @@ package edit
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -159,7 +160,19 @@ func buildTreeViewItems(entity interface{},
 		return result
 	case model.BinkyNetConnectionSet:
 		entity.ForEach(func(entity model.BinkyNetConnection) {
-			result = append(result, itemCache.CreateItem(binkyNetConnectionEntity{entity}, level))
+			result = append(result,
+				itemCache.CreateItem(binkyNetConnectionEntity{entity}, level),
+				groupCache.CreateItem("Pins", func(ctx context.Context, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(entity.GetPins(), itemCache, groupCache, level)
+				}, level+1, binkyNetConnectionEntity{entity}),
+			)
+		})
+		return result
+	case model.BinkyNetConnectionPinList:
+		entity.ForEach(func(entity model.BinkyNetDevicePin) {
+			result = append(result,
+				itemCache.CreateItem(binkyNetDevicePinEntity{entity}, level),
+			)
 		})
 		return result
 	}
@@ -173,3 +186,15 @@ type binkyNetConnectionEntity struct {
 
 func (e binkyNetConnectionEntity) GetID() string          { return string(e.GetKey()) }
 func (e binkyNetConnectionEntity) GetDescription() string { return string(e.GetKey()) }
+func (e binkyNetConnectionEntity) Select() interface{}    { return e.BinkyNetConnection }
+
+// Entity implementation for BinkyNetDevicePin
+type binkyNetDevicePinEntity struct {
+	model.BinkyNetDevicePin
+}
+
+func (e binkyNetDevicePinEntity) GetID() string { return string(e.BinkyNetDevicePin.GetDeviceID()) }
+func (e binkyNetDevicePinEntity) GetDescription() string {
+	return fmt.Sprintf("%s[%d]", e.BinkyNetDevicePin.GetDeviceID(), e.BinkyNetDevicePin.GetIndex())
+}
+func (e binkyNetDevicePinEntity) Select() interface{} { return e.BinkyNetDevicePin }

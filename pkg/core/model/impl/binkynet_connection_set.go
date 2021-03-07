@@ -117,9 +117,7 @@ func (l *binkyNetConnectionSet) AddNew(key api.ConnectionName) (model.BinkyNetCo
 	if _, found := l.Get(key); found {
 		return nil, fmt.Errorf("Duplicate key '%s'", key)
 	}
-	d := &binkyNetConnection{
-		Key: key,
-	}
+	d := newBinkyNetConnection(key)
 	d.SetContainer(l)
 	l.Items = append(l.Items, d)
 	l.OnModified()

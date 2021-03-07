@@ -32,6 +32,7 @@ type binkyNetObject struct {
 }
 
 type binkyNetObjectFields struct {
+	ObjectID    api.ObjectID          `xml:"ObjectID,omitempty"`
 	Type        api.ObjectType        `xml:"Type,omitempty"`
 	Connections binkyNetConnectionSet `xml:"Connections"`
 }
@@ -75,12 +76,19 @@ func (o *binkyNetObject) Accept(v model.EntityVisitor) interface{} {
 
 // Gets the description of the entity
 func (o *binkyNetObject) GetDescription() string {
-	return fmt.Sprintf("%s (%s)", o.GetObjectType(), o.GetID())
+	return fmt.Sprintf("%s, %s (%s)", o.GetObjectID(), o.GetObjectType(), o.GetID())
 }
 
 // ID of the object (equal to entity ID)
 func (o *binkyNetObject) GetObjectID() api.ObjectID {
-	return api.ObjectID(o.GetID())
+	return o.ObjectID
+}
+func (o *binkyNetObject) SetObjectID(value api.ObjectID) error {
+	if o.ObjectID != value {
+		o.ObjectID = value
+		o.OnModified()
+	}
+	return nil
 }
 
 // Type of the object

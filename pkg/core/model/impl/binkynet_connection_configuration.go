@@ -18,9 +18,14 @@
 package impl
 
 type binkyNetConnectionConfiguration struct {
-	onModified func()
+	container *binkyNetConnection
 
 	Data map[string]string `xml:"Data,omitempty"`
+}
+
+// SetContainer links this instance to its container
+func (c *binkyNetConnectionConfiguration) SetContainer(container *binkyNetConnection) {
+	c.container = container
 }
 
 // Get number of entries
@@ -66,7 +71,7 @@ func (c *binkyNetConnectionConfiguration) Set(key, value string) {
 
 // OnModified triggers the modified function of the parent (if any)
 func (c *binkyNetConnectionConfiguration) OnModified() {
-	if c.onModified != nil {
-		c.onModified()
+	if c.container != nil {
+		c.container.OnModified()
 	}
 }

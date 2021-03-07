@@ -24,7 +24,7 @@ import (
 )
 
 type binkyNetConnectionPinList struct {
-	onModified func()
+	container *binkyNetConnection
 	binkyNetConnectionPinListItems
 }
 
@@ -40,9 +40,19 @@ func (l *binkyNetConnectionPinList) UnmarshalXML(d *xml.Decoder, start xml.Start
 		return err
 	}
 	for _, x := range l.Pins {
-		x.onModified = l.OnModified
+		x.SetContainer(l)
 	}
 	return nil
+}
+
+// Gets the connection that contains this pin
+func (l *binkyNetConnectionPinList) GetConnection() model.BinkyNetConnection {
+	return l.container
+}
+
+// SetContainer links this instance to its container
+func (l *binkyNetConnectionPinList) SetContainer(container *binkyNetConnection) {
+	l.container = container
 }
 
 // Get number of entries
@@ -79,14 +89,14 @@ func (l *binkyNetConnectionPinList) Remove(index int) bool {
 // Add a new pin
 func (l *binkyNetConnectionPinList) AddNew() model.BinkyNetDevicePin {
 	p := &binkyNetDevicePin{}
-	p.onModified = l.OnModified
+	p.SetContainer(l)
 	l.Pins = append(l.Pins, p)
 	return p
 }
 
 // OnModified calls the parents modified callback
 func (l *binkyNetConnectionPinList) OnModified() {
-	if l.onModified != nil {
-		l.onModified()
+	if l.container != nil {
+		l.container.OnModified()
 	}
 }

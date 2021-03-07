@@ -34,6 +34,12 @@ type Entity interface {
 	GetDescription() string
 }
 
+// IndirectEntity is used to allow for customization of the selection.
+type IndirectEntity interface {
+	Entity
+	Select() interface{}
+}
+
 // EntityTreeViewItemCache is a cache for creating Entity TreeViewItem's
 type EntityTreeViewItemCache struct {
 	cache map[string]TreeViewItem
@@ -70,12 +76,23 @@ func (item *entityItem) SortKey() string {
 
 // Return true if the given selection is contained in this item
 func (item *entityItem) Select() interface{} {
+	if iEntity, ok := item.entity.(IndirectEntity); ok {
+		return iEntity.Select()
+	}
 	return item.entity
 }
 
 // Contains returns true if the given selection is contained in this item
 func (item *entityItem) Contains(selection interface{}) bool {
-	return item.entity == selection
+	if item.entity == selection {
+		return true
+	}
+	if iEntity, ok := item.entity.(IndirectEntity); ok {
+		if iEntity.Select() == selection {
+			return true
+		}
+	}
+	return false
 }
 
 func (item *entityItem) ProcessEvents() interface{} {

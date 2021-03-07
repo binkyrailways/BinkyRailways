@@ -21,7 +21,6 @@ import (
 	"gioui.org/layout"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 type (
@@ -40,7 +39,7 @@ type Editor interface {
 // EditorContext is passed to each Editor upon construction.
 type EditorContext interface {
 	// Select the given entity in the view
-	Select(entity model.Entity)
+	Select(entity interface{})
 	// Invalidate the UI
 	Invalidate()
 }

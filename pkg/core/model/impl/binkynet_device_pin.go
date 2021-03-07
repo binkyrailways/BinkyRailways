@@ -19,13 +19,27 @@ package impl
 
 import (
 	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 type binkyNetDevicePin struct {
-	onModified func()
+	container *binkyNetConnectionPinList
 
 	DeviceID api.DeviceID    `xml:"DeviceID,omitempty"`
 	Index    api.DeviceIndex `xml:"Index,omiyempty"`
+}
+
+// Gets the connection that contains this pin
+func (p *binkyNetDevicePin) GetConnection() model.BinkyNetConnection {
+	if p.container != nil {
+		return p.container.GetConnection()
+	}
+	return nil
+}
+
+// SetContainer links this instance to its container
+func (p *binkyNetDevicePin) SetContainer(container *binkyNetConnectionPinList) {
+	p.container = container
 }
 
 // ID of the device that this connection refers to.
@@ -54,7 +68,7 @@ func (p *binkyNetDevicePin) SetIndex(value api.DeviceIndex) error {
 
 // OnModified calls the parents modified callback.
 func (p *binkyNetDevicePin) OnModified() {
-	if p.onModified != nil {
-		p.onModified()
+	if p.container != nil {
+		p.container.OnModified()
 	}
 }

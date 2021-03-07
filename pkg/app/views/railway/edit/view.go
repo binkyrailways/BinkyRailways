@@ -107,7 +107,7 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 }
 
 // Select the given entity in the view
-func (v *View) Select(entity model.Entity) {
+func (v *View) Select(entity interface{}) {
 	v.entityList.OnSelect(entity)
 }
 

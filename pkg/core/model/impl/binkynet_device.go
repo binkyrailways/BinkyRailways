@@ -29,8 +29,9 @@ type binkyNetDevice struct {
 	container *binkyNetDeviceSet
 	entity
 
-	Type    api.DeviceType `xml:"Type,omitempty"`
-	Address string         `xml:"Address,omitempty"`
+	DeviceID api.DeviceID   `xml:"DeviceID,omitempty"`
+	Type     api.DeviceType `xml:"Type,omitempty"`
+	Address  string         `xml:"Address,omitempty"`
 }
 
 var _ model.BinkyNetDevice = &binkyNetDevice{}
@@ -62,12 +63,19 @@ func (d *binkyNetDevice) Accept(v model.EntityVisitor) interface{} {
 
 // Gets the description of the entity
 func (d *binkyNetDevice) GetDescription() string {
-	return fmt.Sprintf("%s (%s)", d.GetDeviceType(), d.GetAddress())
+	return fmt.Sprintf("%s, %s (%s)", d.GetDeviceID(), d.GetDeviceType(), d.GetAddress())
 }
 
-// ID of the device (equal to entity ID)
+// ID of the device
 func (d *binkyNetDevice) GetDeviceID() api.DeviceID {
-	return api.DeviceID(d.GetID())
+	return d.DeviceID
+}
+func (d *binkyNetDevice) SetDeviceID(value api.DeviceID) error {
+	if d.DeviceID != value {
+		d.DeviceID = value
+		d.OnModified()
+	}
+	return nil
 }
 
 // Type of the device

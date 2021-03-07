@@ -23,6 +23,9 @@ import (
 
 // BinkyNetDevicePin identifies a hardware device and an index within that hardware address.
 type BinkyNetDevicePin interface {
+	// Gets the connection that contains this pin
+	GetConnection() BinkyNetConnection
+
 	// ID of the device that this connection refers to.
 	GetDeviceID() api.DeviceID
 	SetDeviceID(value api.DeviceID) error

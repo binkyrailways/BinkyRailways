@@ -28,8 +28,9 @@ type BinkyNetObject interface {
 	// Gets the local worker this object belongs to
 	GetLocalWorker() BinkyNetLocalWorker
 
-	// ID of the object (equal to entity ID)
+	// ID of the object
 	GetObjectID() api.ObjectID
+	SetObjectID(value api.ObjectID) error
 
 	// Type of the object
 	GetObjectType() api.ObjectType

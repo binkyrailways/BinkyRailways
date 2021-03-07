@@ -32,6 +32,8 @@ func BuildSettings(x interface{}) Settings {
 		return nil
 	}
 	switch x := x.(type) {
+	case model.BinkyNetDevicePin:
+		return NewBinkyNetDevicePinSettings(x)
 	case model.Entity:
 		b := &builder{}
 		if result, ok := x.Accept(b).(Settings); ok {

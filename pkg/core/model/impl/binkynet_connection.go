@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"encoding/xml"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -25,10 +27,32 @@ import (
 // BinkyNetConnection represents a connection from a BinkyNetObject to a BinkyNetDevice.
 type binkyNetConnection struct {
 	container *binkyNetConnectionSet
+	binkyNetConnectionFields
+}
 
+type binkyNetConnectionFields struct {
 	Key           api.ConnectionName              `xml:"Key,omitempty"`
 	Pins          binkyNetConnectionPinList       `xml:"Pins"`
 	Configuration binkyNetConnectionConfiguration `xml:"Configuration"`
+}
+
+// newBinkyNetConnection creates a new BinkyNetConnection
+func newBinkyNetConnection(key api.ConnectionName) *binkyNetConnection {
+	c := &binkyNetConnection{}
+	c.Key = key
+	c.Pins.SetContainer(c)
+	c.Configuration.SetContainer(c)
+	return c
+}
+
+// UnmarshalXML unmarshals and connects the module.
+func (c *binkyNetConnection) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&c.binkyNetConnectionFields, &start); err != nil {
+		return err
+	}
+	c.Pins.SetContainer(c)
+	c.Configuration.SetContainer(c)
+	return nil
 }
 
 // SetContainer links this instance to its container
@@ -55,13 +79,11 @@ func (c *binkyNetConnection) SetKey(value api.ConnectionName) error {
 
 // The pins of devices to connect to.
 func (c *binkyNetConnection) GetPins() model.BinkyNetConnectionPinList {
-	c.Pins.onModified = c.OnModified
 	return &c.Pins
 }
 
 // Gets optional configuration for this connection.
 func (c *binkyNetConnection) GetConfiguration() model.BinkyNetConnectionConfiguration {
-	c.Configuration.onModified = c.OnModified
 	return &c.Configuration
 }
 

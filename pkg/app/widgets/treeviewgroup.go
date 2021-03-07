@@ -24,7 +24,6 @@ import (
 
 	w "gioui.org/widget"
 	"gioui.org/widget/material"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // EntityTreeGroupCache is a cache for creating Entity TreeViewGroup's
@@ -35,7 +34,7 @@ type EntityTreeGroupCache struct {
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
 func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx context.Context, level int) []TreeViewItem,
-	level int, entity model.Entity) *TreeViewGroup {
+	level int, entity Entity) *TreeViewGroup {
 	key := fmt.Sprintf("%s/%d/%s", entity.GetID(), level, name)
 	if c.cache == nil {
 		c.cache = make(map[string]*TreeViewGroup)

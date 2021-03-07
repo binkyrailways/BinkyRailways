@@ -28,8 +28,9 @@ type BinkyNetDevice interface {
 	// Gets the local worker this device belongs to
 	GetLocalWorker() BinkyNetLocalWorker
 
-	// ID of the device (equal to entity ID)
+	// ID of the device
 	GetDeviceID() api.DeviceID
+	SetDeviceID(value api.DeviceID) error
 
 	// Type of the device
 	GetDeviceType() api.DeviceType
