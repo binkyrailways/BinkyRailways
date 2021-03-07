@@ -24,6 +24,10 @@ type BinkyNetLocalWorker interface {
 	// Gets the command station this object belongs to
 	GetCommandStation() BinkyNetCommandStation
 
+	// Hardware ID of the local worker.
+	GetHardwareID() string
+	SetHardwareID(value string) error
+
 	// Optional alias for the local worker.
 	GetAlias() string
 	SetAlias(value string) error

@@ -33,7 +33,7 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 			{
 				Title: "Add Local Worker",
 				OnClick: func() {
-					if id, ok, err := dlgs.Entry("Add Local Worker", "ID", ""); err == nil && ok {
+					if id, ok, err := dlgs.Entry("Add Local Worker", "Hardware ID", ""); err == nil && ok {
 						if lw, err := entity.GetLocalWorkers().AddNew(id); err == nil {
 							etx.Select(lw)
 						} else {

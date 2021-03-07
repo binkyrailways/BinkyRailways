@@ -31,17 +31,19 @@ type binkyNetLocalWorker struct {
 }
 
 type binkyNetLocalWorkerFields struct {
-	Alias   string            `xml:"Alias,omitempty"`
-	Devices binkyNetDeviceSet `xml:"Devices"`
-	Objects binkyNetObjectSet `xml:"Objects"`
+	HardwareID string            `xml:"HardwareID,omitempty"`
+	Alias      string            `xml:"Alias,omitempty"`
+	Devices    binkyNetDeviceSet `xml:"Devices"`
+	Objects    binkyNetObjectSet `xml:"Objects"`
 }
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
 
 // newBinkyNetLocalWorker creates and initializes a new binky local worker.
-func newBinkyNetLocalWorker(id string) *binkyNetLocalWorker {
+func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw := &binkyNetLocalWorker{}
-	lw.SetID(id)
+	lw.EnsureID()
+	lw.SetHardwareID(hardwareID)
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
 	return lw
@@ -78,9 +80,21 @@ func (lw *binkyNetLocalWorker) Accept(v model.EntityVisitor) interface{} {
 // Gets the description of the entity
 func (lw *binkyNetLocalWorker) GetDescription() string {
 	if lw.Alias != "" {
-		return fmt.Sprintf("%s (%s)", lw.Alias, lw.GetID())
+		return fmt.Sprintf("%s (%s)", lw.Alias, lw.GetHardwareID())
 	}
-	return lw.GetID()
+	return lw.GetHardwareID()
+}
+
+// Hardware ID of the local worker.
+func (lw *binkyNetLocalWorker) GetHardwareID() string {
+	return lw.HardwareID
+}
+func (lw *binkyNetLocalWorker) SetHardwareID(value string) error {
+	if lw.HardwareID != value {
+		lw.HardwareID = value
+		lw.OnModified()
+	}
+	return nil
 }
 
 // Optional alias for the local worker.

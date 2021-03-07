@@ -30,6 +30,7 @@ func NewBinkyNetLocalWorkerSettings(entity model.BinkyNetLocalWorker) Settings {
 	s := &binkyNetLocalWorkerSettings{
 		entity: entity,
 	}
+	s.hardwareID.SetText(entity.GetHardwareID())
 	s.alias.SetText(entity.GetAlias())
 	return s
 }
@@ -38,15 +39,20 @@ func NewBinkyNetLocalWorkerSettings(entity model.BinkyNetLocalWorker) Settings {
 type binkyNetLocalWorkerSettings struct {
 	entity model.BinkyNetLocalWorker
 
-	alias w.Editor
+	hardwareID w.Editor
+	alias      w.Editor
 }
 
 // Handle events and draw the editor
 func (e *binkyNetLocalWorkerSettings) Layout(gtx C, th *material.Theme) D {
+	e.entity.SetHardwareID(e.hardwareID.Text())
 	e.entity.SetAlias(e.alias.Text())
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
+		widgets.SettingsGridRow{Title: "Hardware ID", Layout: func(gtx C) D {
+			return material.Editor(th, &e.hardwareID, "Hardware ID").Layout(gtx)
+		}},
 		widgets.SettingsGridRow{Title: "Alias", Layout: func(gtx C) D {
 			return material.Editor(th, &e.alias, "Alias").Layout(gtx)
 		}},

@@ -82,16 +82,16 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 			lw.Objects = append(lw.Objects, o)
 		})
 		// Store config
-		lwConfig[lwModel.GetID()] = lw
+		lwConfig[lwModel.GetHardwareID()] = lw
 	})
 	r.lwConfig = lwConfig
 }
 
-// Get returns the configuration for a worker with given ID.
-func (r *binkyNetConfigRegistry) Get(id string) (api.LocalWorkerConfig, error) {
-	result, found := r.lwConfig[id]
+// Get returns the configuration for a worker with given hardware ID.
+func (r *binkyNetConfigRegistry) Get(hardwareID string) (api.LocalWorkerConfig, error) {
+	result, found := r.lwConfig[hardwareID]
 	if !found {
-		return api.LocalWorkerConfig{}, api.NotFound(id)
+		return api.LocalWorkerConfig{}, api.NotFound(hardwareID)
 	}
 	return result, nil
 }
