@@ -22,6 +22,8 @@ import (
 	"fmt"
 	"strings"
 
+	"gioui.org/op/clip"
+	"gioui.org/op/paint"
 	w "gioui.org/widget"
 	"gioui.org/widget/material"
 )
@@ -34,7 +36,7 @@ type EntityTreeGroupCache struct {
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
 func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx context.Context, level int) []TreeViewItem,
-	level int, entity Entity) *TreeViewGroup {
+	level int, entity Identifyable) *TreeViewGroup {
 	key := fmt.Sprintf("%s/%d/%s", entity.GetID(), level, name)
 	if c.cache == nil {
 		c.cache = make(map[string]*TreeViewGroup)
@@ -47,6 +49,7 @@ func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx conte
 		Name:       name,
 		Collection: collection,
 		Level:      level,
+		Entity:     entity,
 	}
 	w.SetCollapsed(true)
 	c.cache[key] = w
@@ -58,6 +61,7 @@ type TreeViewGroup struct {
 	Name       string
 	Collection func(ctx context.Context, level int) []TreeViewItem
 	Level      int
+	Entity     Identifyable
 
 	collapsed bool
 	widgets   []TreeViewItem
@@ -74,6 +78,16 @@ func (v *TreeViewGroup) SetCollapsed(value bool) {
 	v.collapsed = value
 }
 
+// Expand sets the collapsed state of the group to false
+func (v *TreeViewGroup) Expand() {
+	v.SetCollapsed(false)
+}
+
+// Collapse sets the collapsed state of the group to true
+func (v *TreeViewGroup) Collapse() {
+	v.SetCollapsed(true)
+}
+
 // SortKey returns a key used to sort the items
 func (v *TreeViewGroup) SortKey() string {
 	return "1." + strings.ToLower(v.Name)
@@ -81,11 +95,22 @@ func (v *TreeViewGroup) SortKey() string {
 
 // Select returns the selection that this item represents (can be nil)
 func (v *TreeViewGroup) Select() interface{} {
-	return nil
+	if sEntity, ok := v.Entity.(Selectable); ok {
+		return sEntity.Select()
+	}
+	return v.Entity
 }
 
 // Contains returns true if the given selection is contained in this item
 func (v *TreeViewGroup) Contains(selection interface{}) bool {
+	if v.Entity == selection {
+		return true
+	}
+	if sEntity, ok := v.Entity.(Selectable); ok {
+		if sEntity.Select() == selection {
+			return true
+		}
+	}
 	return false
 }
 
@@ -93,6 +118,9 @@ func (v *TreeViewGroup) Contains(selection interface{}) bool {
 func (v *TreeViewGroup) ProcessEvents() interface{} {
 	if v.clickable.Clicked() {
 		v.SetCollapsed(!v.Collapsed())
+		if sEntity, ok := v.Entity.(Selectable); ok {
+			return sEntity.Select()
+		}
 	}
 	return nil
 }
@@ -104,12 +132,25 @@ func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, s
 		if v.Collapsed() {
 			postfix = "..."
 		}
+		scale := 1.4 - (float32(v.Level) / 5.0)
+		if scale < 1 {
+			scale = 1
+		}
+		lb := material.Label(th, th.TextSize.Scale(scale), v.Name+postfix)
 		return LayoutWithLevel(gtx, v.Level, func(gtx C) D {
-			scale := 1.4 - (float32(v.Level) / 5.0)
-			if scale < 1 {
-				scale = 1
+			if sEntity, ok := v.Entity.(Selectable); ok && sEntity.Select() == selection {
+				fg := th.ContrastFg
+				bg := th.ContrastBg
+				if !focused {
+					bg.A = bg.A / 2
+				}
+				lb.Color = fg
+				clip.Rect{
+					Max: gtx.Constraints.Max,
+				}.Add(gtx.Ops)
+				paint.Fill(gtx.Ops, bg)
 			}
-			return material.Label(th, th.TextSize.Scale(scale), v.Name+postfix).Layout(gtx)
+			return lb.Layout(gtx)
 		})
 	})
 }

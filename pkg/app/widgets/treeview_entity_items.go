@@ -28,15 +28,19 @@ import (
 	"gioui.org/widget/material"
 )
 
+// Identifyable provides an ID of some resource.
+type Identifyable interface {
+	GetID() string
+}
+
 // Entity provides enough of the core Entity interface to display it.
 type Entity interface {
-	GetID() string
+	Identifyable
 	GetDescription() string
 }
 
-// IndirectEntity is used to allow for customization of the selection.
-type IndirectEntity interface {
-	Entity
+// Selectable is used to allow for customization of the selection.
+type Selectable interface {
 	Select() interface{}
 }
 
@@ -76,8 +80,8 @@ func (item *entityItem) SortKey() string {
 
 // Return true if the given selection is contained in this item
 func (item *entityItem) Select() interface{} {
-	if iEntity, ok := item.entity.(IndirectEntity); ok {
-		return iEntity.Select()
+	if sEntity, ok := item.entity.(Selectable); ok {
+		return sEntity.Select()
 	}
 	return item.entity
 }
@@ -87,8 +91,8 @@ func (item *entityItem) Contains(selection interface{}) bool {
 	if item.entity == selection {
 		return true
 	}
-	if iEntity, ok := item.entity.(IndirectEntity); ok {
-		if iEntity.Select() == selection {
+	if sEntity, ok := item.entity.(Selectable); ok {
+		if sEntity.Select() == selection {
 			return true
 		}
 	}

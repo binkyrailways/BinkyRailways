@@ -56,6 +56,12 @@ type TreeViewItem interface {
 	GenerateWidgets(ctx context.Context, level int) TreeViewItems
 }
 
+// Expandable is implemented by widgets that can expand & collapse
+type Expandable interface {
+	Expand()
+	Collapse()
+}
+
 // TreeViewItems is a list of TreeViewItem's
 type TreeViewItems []TreeViewItem
 
@@ -143,6 +149,36 @@ func (v *TreeView) SelectPrevious() {
 	}
 }
 
+// ExpandSelection tries to expand the currently selected item.
+func (v *TreeView) ExpandSelection() {
+	if v.Selected == nil {
+		return
+	}
+	for _, w := range v.widgets {
+		if w.Contains(v.Selected) {
+			if exp, ok := w.(Expandable); ok {
+				exp.Expand()
+			}
+			return
+		}
+	}
+}
+
+// CollapseSelection tries to collapse the currently selected item.
+func (v *TreeView) CollapseSelection() {
+	if v.Selected == nil {
+		return
+	}
+	for _, w := range v.widgets {
+		if w.Contains(v.Selected) {
+			if exp, ok := w.(Expandable); ok {
+				exp.Collapse()
+			}
+			return
+		}
+	}
+}
+
 // Layout processes events and redraws the list.
 func (v *TreeView) Layout(gtx C, th *material.Theme) D {
 	if v.Exclusive == nil {
@@ -170,6 +206,10 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 					v.SelectPrevious()
 				case key.NameDownArrow:
 					v.SelectNext()
+				case key.NameRightArrow:
+					v.ExpandSelection()
+				case key.NameLeftArrow:
+					v.CollapseSelection()
 				}
 			}
 		}

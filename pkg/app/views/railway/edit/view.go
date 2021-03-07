@@ -71,26 +71,24 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 		modal:      component.NewModal(),
 		entityList: widgets.TreeView{
 			RootItems: []widgets.TreeViewItem{
+				itemCache.CreateItem(railway, 0),
 				&widgets.TreeViewGroup{
-					Name: "Railway",
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway, &itemCache, &groupCache, level)
-					},
-				},
-				&widgets.TreeViewGroup{
-					Name: "Locs",
+					Name:   "Locs",
+					Entity: railwayLocRefSet{railway},
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
 						return buildTreeViewItems(railway.GetLocs(), &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
-					Name: "Modules",
+					Name:   "Modules",
+					Entity: railwayModuleRefSet{railway},
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
 						return buildTreeViewItems(railway.GetModules(), &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
-					Name: "Command stations",
+					Name:   "Command stations",
+					Entity: railwayCommandStationRefSet{railway},
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
 						return buildTreeViewItems(railway.GetCommandStations(), &itemCache, &groupCache, level)
 					},
@@ -266,3 +264,27 @@ func (v *View) layoutAddSheet(gtx layout.Context, th *material.Theme) layout.Dim
 		})
 	})
 }
+
+// Identifyable & Selectable implementation for LocRefSet
+type railwayLocRefSet struct {
+	model.Railway
+}
+
+func (e railwayLocRefSet) GetID() string       { return e.Railway.GetID() }
+func (e railwayLocRefSet) Select() interface{} { return e.Railway.GetLocs() }
+
+// Identifyable & Selectable implementation for ModuleRefSet
+type railwayModuleRefSet struct {
+	model.Railway
+}
+
+func (e railwayModuleRefSet) GetID() string       { return e.Railway.GetID() }
+func (e railwayModuleRefSet) Select() interface{} { return e.Railway.GetModules() }
+
+// Identifyable & Selectable implementation for CommandStationRefSet
+type railwayCommandStationRefSet struct {
+	model.Railway
+}
+
+func (e railwayCommandStationRefSet) GetID() string       { return e.Railway.GetID() }
+func (e railwayCommandStationRefSet) Select() interface{} { return e.Railway.GetCommandStations() }
