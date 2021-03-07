@@ -76,3 +76,13 @@ type UnexpectedSensorActivatedEvent struct {
 
 // Implement Event interface
 func (e UnexpectedSensorActivatedEvent) implementsEvent() {}
+
+// UnknownBinkyNetLocalWorkerEvent is raised when a request is made for configuration
+// of an unknown local worker on the Binky Net.
+type UnknownBinkyNetLocalWorkerEvent struct {
+	// Hardware ID of the unknown local worker
+	HardwareID string
+}
+
+// Implement Event interface
+func (e UnknownBinkyNetLocalWorkerEvent) implementsEvent() {}

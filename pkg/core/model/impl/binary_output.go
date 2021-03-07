@@ -37,6 +37,8 @@ var _ BinaryOutput = &binaryOutput{}
 
 func newBinaryOutput() *binaryOutput {
 	sw := &binaryOutput{}
+	sw.EnsureID()
+	sw.SetDescription("New binary output")
 	sw.output.Initialize()
 	return sw
 }

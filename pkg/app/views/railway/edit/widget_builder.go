@@ -164,7 +164,7 @@ func buildTreeViewItems(entity interface{},
 				itemCache.CreateItem(binkyNetConnectionEntity{entity}, level),
 				groupCache.CreateItem("Pins", func(ctx context.Context, level int) []widgets.TreeViewItem {
 					return buildTreeViewItems(entity.GetPins(), itemCache, groupCache, level)
-				}, level+1, binkyNetConnectionEntity{entity}),
+				}, level+1, binkyNetObjectConnectionPinSet{entity}),
 			)
 		})
 		return result
@@ -276,6 +276,19 @@ type binkyNetObjectConnectionSet struct {
 
 func (e binkyNetObjectConnectionSet) GetID() string       { return e.BinkyNetObject.GetID() }
 func (e binkyNetObjectConnectionSet) Select() interface{} { return e.BinkyNetObject.GetConnections() }
+
+// Identifyable & Selectable implementation for BinkyNetConnectionSet
+type binkyNetObjectConnectionPinSet struct {
+	model.BinkyNetConnection
+}
+
+func (e binkyNetObjectConnectionPinSet) GetID() string {
+	if obj := e.BinkyNetConnection.GetObject(); obj != nil {
+		return obj.GetID() + "/pins"
+	}
+	return ""
+}
+func (e binkyNetObjectConnectionPinSet) Select() interface{} { return e.BinkyNetConnection.GetPins() }
 
 // Entity implementation for BinkyNetConnection
 type binkyNetConnectionEntity struct {

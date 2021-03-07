@@ -21,6 +21,9 @@ package model
 type SignalSet interface {
 	EntitySet
 
+	// Gets the containing module
+	GetModule() Module
+
 	// Get an item by ID
 	Get(id string) (Signal, bool)
 

@@ -44,6 +44,8 @@ var _ Switch = &stdSwitch{}
 
 func newSwitch() *stdSwitch {
 	sw := &stdSwitch{}
+	sw.EnsureID()
+	sw.SetDescription("New switch")
 	sw.junction.Initialize(16, 12)
 	return sw
 }

@@ -64,7 +64,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	var err error
 	serverHost := cs.getCommandStation().GetServerHost()
 	cs.reconfigureQueue = make(chan string, 64)
-	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers())
+	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(), cs.onUnknownLocalWorker)
 	cs.manager, err = manager.New(manager.Dependencies{
 		Log:              cs.log,
 		ConfigRegistry:   registry,
@@ -121,6 +121,15 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(context.Context, state.Swi
 
 // Send the position of the given turntable towards the railway.
 //void SendTurnTablePosition(ITurnTableState turnTable);
+
+// Send an event about the given unknown worker
+func (cs *binkyNetCommandStation) onUnknownLocalWorker(hardwareID string) {
+	if sender := cs.GetRailwayImpl(); sender != nil {
+		sender.Send(state.UnknownBinkyNetLocalWorkerEvent{
+			HardwareID: hardwareID,
+		})
+	}
+}
 
 // Close the commandstation
 func (cs *binkyNetCommandStation) Close(ctx context.Context) {

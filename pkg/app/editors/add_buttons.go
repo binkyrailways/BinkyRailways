@@ -94,9 +94,72 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 				},
 			},
 			{
+				Title: "Add block group",
+				OnClick: func() {
+					x := entity.GetBlockGroups().AddNew()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add edge",
+				OnClick: func() {
+					x := entity.GetEdges().AddNew()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add binary output",
+				OnClick: func() {
+					x := entity.GetOutputs().AddNewBinaryOutput()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add click 4 stage output",
+				OnClick: func() {
+					x := entity.GetOutputs().AddNewClock4StageOutput()
+					etx.Select(x)
+				},
+			},
+			{
 				Title: "Add route",
 				OnClick: func() {
 					x := entity.GetRoutes().AddNew()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add passive junction",
+				OnClick: func() {
+					x := entity.GetJunctions().AddPassiveJunction()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add switch",
+				OnClick: func() {
+					x := entity.GetJunctions().AddSwitch()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add turntable",
+				OnClick: func() {
+					x := entity.GetJunctions().AddTurnTable()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add binary sensor",
+				OnClick: func() {
+					x := entity.GetSensors().AddNewBinarySensor()
+					etx.Select(x)
+				},
+			},
+			{
+				Title: "Add block signal",
+				OnClick: func() {
+					x := entity.GetSignals().AddNewBlockSignal()
 					etx.Select(x)
 				},
 			},
@@ -105,6 +168,34 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 			},
 		}
 		return append(prefix, createPersistentEntityAddButtons(entity, etx)...)
+
+		// Sets in module
+	case model.BlockSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.BlockGroupSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.EdgeSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.JunctionSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.OutputSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.RouteSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.SensorSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+	case model.SignalSet:
+		return createAddButtonsFor(etx, entity.GetModule())
+
+	// Sets in railway
+	case model.LocRefSet:
+		return createPersistentEntityAddButtons(entity.GetRailway(), etx)
+	case model.LocGroupSet:
+		return createPersistentEntityAddButtons(entity.GetRailway(), etx)
+	case model.ModuleRefSet:
+		return createPersistentEntityAddButtons(entity.GetRailway(), etx)
+	case model.CommandStationRefSet:
+		return createPersistentEntityAddButtons(entity.GetRailway(), etx)
 
 	// Keep this generic entity last
 	case model.PersistentEntity:

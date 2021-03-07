@@ -49,6 +49,12 @@ func (v *builder) VisitBlock(x model.Block) interface{} {
 	}
 }
 
+func (v *builder) VisitBinaryOutput(x model.BinaryOutput) interface{} {
+	return &output{
+		entity: x,
+	}
+}
+
 func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
 	return &sensor{
 		entity: x,

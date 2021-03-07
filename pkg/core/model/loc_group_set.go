@@ -21,6 +21,9 @@ package model
 type LocGroupSet interface {
 	EntitySet
 
+	// Get the containing railway
+	GetRailway() Railway
+
 	// Get an item by ID
 	Get(id string) (LocGroup, bool)
 

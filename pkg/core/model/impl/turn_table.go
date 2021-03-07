@@ -51,6 +51,8 @@ var _ TurnTable = &turnTable{}
 
 func newTurnTable() *turnTable {
 	sw := &turnTable{}
+	sw.EnsureID()
+	sw.SetDescription("New turntable")
 	sw.junction.Initialize(16, 12)
 	return sw
 }

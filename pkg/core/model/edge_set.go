@@ -21,6 +21,9 @@ package model
 type EdgeSet interface {
 	EntitySet
 
+	// Gets the containing module
+	GetModule() Module
+
 	// Get an item by ID
 	Get(id string) (Edge, bool)
 

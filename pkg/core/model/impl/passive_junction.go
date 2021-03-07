@@ -35,6 +35,8 @@ var _ PassiveJunction = &passiveJunction{}
 
 func newPassiveJunction() *passiveJunction {
 	sw := &passiveJunction{}
+	sw.EnsureID()
+	sw.SetDescription("New passive junction")
 	sw.junction.Initialize(16, 12)
 	return sw
 }

@@ -21,6 +21,9 @@ package model
 type LocRefSet interface {
 	EntitySet
 
+	// Get the containing railway
+	GetRailway() Railway
+
 	// Get an item by ID
 	Get(id string) (LocRef, bool)
 

@@ -109,23 +109,25 @@ func (item *entityItem) ProcessEvents() interface{} {
 func (item *entityItem) Layout(ctx context.Context, gtx C, th *material.Theme, selected interface{}, focused bool) D {
 	lb := material.Label(th, th.TextSize, item.entity.GetDescription())
 	return material.Clickable(gtx, &item.Clickable, func(gtx C) D {
-		if selected == item.entity {
-			fg := th.ContrastFg
-			bg := th.ContrastBg
-			if !focused {
-				bg.A = bg.A / 2
+		return LayoutWithLevel(gtx, item.level, func(gtx C) D {
+			if item.Contains(selected) {
+				fg := th.ContrastFg
+				bg := th.ContrastBg
+				if !focused {
+					bg.A = bg.A / 2
+				}
+				lb.Color = fg
+				clip.Rect{
+					Max: gtx.Constraints.Max,
+				}.Add(gtx.Ops)
+				paint.Fill(gtx.Ops, bg)
 			}
-			lb.Color = fg
-			clip.Rect{
-				Max: gtx.Constraints.Max,
-			}.Add(gtx.Ops)
-			paint.Fill(gtx.Ops, bg)
-		}
-		return LayoutWithLevel(gtx, item.level, lb.Layout)
+			return lb.Layout(gtx)
+		})
 	})
 }
 
 // Generate sub-widgets
-func (item entityItem) GenerateWidgets(ctx context.Context, level int) TreeViewItems {
+func (item entityItem) GenerateWidgets(ctx context.Context) TreeViewItems {
 	return nil
 }

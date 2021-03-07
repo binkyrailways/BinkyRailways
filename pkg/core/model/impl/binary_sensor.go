@@ -29,6 +29,8 @@ var _ model.BinarySensor = &binarySensor{}
 
 func newBinarySensor() *binarySensor {
 	sw := &binarySensor{}
+	sw.EnsureID()
+	sw.SetDescription("New binary sensor")
 	sw.sensor.Initialize(12, 12)
 	return sw
 }

@@ -80,10 +80,24 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 					},
 				},
 				&widgets.TreeViewGroup{
+					Name:   "Loc groups",
+					Entity: railwayLocGroupSet{railway},
+					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetLocGroups(), &itemCache, &groupCache, level)
+					},
+				},
+				&widgets.TreeViewGroup{
 					Name:   "Modules",
 					Entity: railwayModuleRefSet{railway},
 					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
 						return buildTreeViewItems(railway.GetModules(), &itemCache, &groupCache, level)
+					},
+				},
+				&widgets.TreeViewGroup{
+					Name:   "Module connections",
+					Entity: railwayModuleConnectionSet{railway},
+					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetModuleConnections(), &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
@@ -273,6 +287,14 @@ type railwayLocRefSet struct {
 func (e railwayLocRefSet) GetID() string       { return e.Railway.GetID() }
 func (e railwayLocRefSet) Select() interface{} { return e.Railway.GetLocs() }
 
+// Identifyable & Selectable implementation for LocGroupSet
+type railwayLocGroupSet struct {
+	model.Railway
+}
+
+func (e railwayLocGroupSet) GetID() string       { return e.Railway.GetID() }
+func (e railwayLocGroupSet) Select() interface{} { return e.Railway.GetLocGroups() }
+
 // Identifyable & Selectable implementation for ModuleRefSet
 type railwayModuleRefSet struct {
 	model.Railway
@@ -280,6 +302,14 @@ type railwayModuleRefSet struct {
 
 func (e railwayModuleRefSet) GetID() string       { return e.Railway.GetID() }
 func (e railwayModuleRefSet) Select() interface{} { return e.Railway.GetModules() }
+
+// Identifyable & Selectable implementation for ModuleConnectionSet
+type railwayModuleConnectionSet struct {
+	model.Railway
+}
+
+func (e railwayModuleConnectionSet) GetID() string       { return e.Railway.GetID() }
+func (e railwayModuleConnectionSet) Select() interface{} { return e.Railway.GetModuleConnections() }
 
 // Identifyable & Selectable implementation for CommandStationRefSet
 type railwayCommandStationRefSet struct {

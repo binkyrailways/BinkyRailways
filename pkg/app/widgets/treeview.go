@@ -25,6 +25,7 @@ import (
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget/material"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
@@ -53,7 +54,7 @@ type TreeViewItem interface {
 	// Layout the widget
 	Layout(ctx context.Context, gtx C, th *material.Theme, selection interface{}, focused bool) D
 	// Generate sub-widgets
-	GenerateWidgets(ctx context.Context, level int) TreeViewItems
+	GenerateWidgets(ctx context.Context) TreeViewItems
 }
 
 // Expandable is implemented by widgets that can expand & collapse
@@ -236,7 +237,7 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 	widgets := v.widgets[:0]
 	for _, rootItem := range v.RootItems {
 		widgets = append(widgets, rootItem)
-		widgets = append(widgets, rootItem.GenerateWidgets(ctx, 0)...)
+		widgets = append(widgets, rootItem.GenerateWidgets(ctx)...)
 	}
 	v.widgets = widgets
 	// Register for input
@@ -257,5 +258,5 @@ func LayoutWithLevel(gtx C, level int, widget func(C) D) D {
 	if level == 0 {
 		return widget(gtx)
 	}
-	return layout.Inset{Left: unit.Dp(float32(level * 20))}.Layout(gtx, widget)
+	return layout.Inset{Left: unit.Dp(float32(level * 10))}.Layout(gtx, widget)
 }

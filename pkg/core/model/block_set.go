@@ -21,6 +21,9 @@ package model
 type BlockSet interface {
 	EntitySet
 
+	// Gets the containing module
+	GetModule() Module
+
 	// Get a block by ID
 	Get(id string) (Block, bool)
 

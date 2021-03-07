@@ -36,6 +36,8 @@ func newBlockGroup() *blockGroup {
 		MinimumLocsInGroup:                           model.DefaultBlockGroupMinimumLocsInGroup,
 		MinimumLocsOnTrackForMinimumLocsInGroupStart: model.DefaultBlockGroupMinimumLocsOnTrackForMinimumLocsInGroupStart,
 	}
+	b.EnsureID()
+	b.SetDescription("New block group")
 	return b
 }
 

@@ -26,15 +26,17 @@ import (
 
 // binkyNetCommandStation implements the BinkyNetCommandStation.
 type binkyNetConfigRegistry struct {
-	lwSet model.BinkyNetLocalWorkerSet
+	lwSet                model.BinkyNetLocalWorkerSet
+	onUnknownLocalWorker func(hardwareID string)
 
 	lwConfig map[string]api.LocalWorkerConfig
 }
 
 // Create a new registry
-func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet) config.Registry {
+func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet, onUnknownLocalWorker func(hardwareID string)) config.Registry {
 	cs := &binkyNetConfigRegistry{
-		lwSet: lwSet,
+		lwSet:                lwSet,
+		onUnknownLocalWorker: onUnknownLocalWorker,
 	}
 	cs.Reconfigure()
 	return cs
@@ -91,6 +93,9 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 func (r *binkyNetConfigRegistry) Get(hardwareID string) (api.LocalWorkerConfig, error) {
 	result, found := r.lwConfig[hardwareID]
 	if !found {
+		if r.onUnknownLocalWorker != nil {
+			r.onUnknownLocalWorker(hardwareID)
+		}
 		return api.LocalWorkerConfig{}, api.NotFound(hardwareID)
 	}
 	return result, nil

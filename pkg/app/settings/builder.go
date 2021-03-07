@@ -48,6 +48,10 @@ func NewBuilder() model.EntityVisitor {
 	return &builder{}
 }
 
+func (v *builder) VisitBinaryOutput(x model.BinaryOutput) interface{} {
+	return NewBinaryOutputSettings(x)
+}
+
 func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
 	return NewBinarySensorSettings(x)
 }
@@ -58,6 +62,10 @@ func (v *builder) VisitBinkyNetCommandStation(x model.BinkyNetCommandStation) in
 
 func (v *builder) VisitBlock(x model.Block) interface{} {
 	return NewBlockSettings(x)
+}
+
+func (v *builder) VisitEdge(x model.Edge) interface{} {
+	return NewEdgeSettings(x)
 }
 
 func (v *builder) VisitLocoBufferCommandStation(x model.LocoBufferCommandStation) interface{} {

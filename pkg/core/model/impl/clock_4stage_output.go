@@ -43,6 +43,8 @@ var _ Clock4StageOutput = &clock4StageOutput{}
 
 func newClock4StageOutput() *clock4StageOutput {
 	cso := &clock4StageOutput{}
+	cso.EnsureID()
+	cso.SetDescription("New clock")
 	cso.output.Initialize()
 	return cso
 }

@@ -48,6 +48,8 @@ var _ BlockSignal = &blockSignal{}
 
 func newBlockSignal() *blockSignal {
 	bs := &blockSignal{}
+	bs.EnsureID()
+	bs.SetDescription("New block signal")
 	bs.signal.Initialize()
 	return bs
 }

@@ -30,6 +30,8 @@ var _ model.Edge = &edge{}
 // newEdge initialize a new edge
 func newEdge() *edge {
 	result := &edge{}
+	result.EnsureID()
+	result.SetDescription("New edge")
 	result.positionedModuleEntity.Initialize(8, 8)
 	return result
 }

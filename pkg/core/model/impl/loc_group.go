@@ -41,6 +41,7 @@ var (
 func newLocGroup() *locGroup {
 	m := &locGroup{}
 	m.EnsureID()
+	m.SetDescription("New loc group")
 	m.Locs.SetContainer(m)
 	return m
 }

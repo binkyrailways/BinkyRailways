@@ -138,7 +138,7 @@ func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, s
 		}
 		lb := material.Label(th, th.TextSize.Scale(scale), v.Name+postfix)
 		return LayoutWithLevel(gtx, v.Level, func(gtx C) D {
-			if sEntity, ok := v.Entity.(Selectable); ok && sEntity.Select() == selection {
+			if v.Contains(selection) {
 				fg := th.ContrastFg
 				bg := th.ContrastBg
 				if !focused {
@@ -156,16 +156,16 @@ func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, s
 }
 
 // GenerateWidgets generates all widgets for this group
-func (v *TreeViewGroup) GenerateWidgets(ctx context.Context, level int) TreeViewItems {
+func (v *TreeViewGroup) GenerateWidgets(ctx context.Context) TreeViewItems {
 	if v.collapsed {
 		return nil
 	}
 	var result TreeViewItems
-	collected := TreeViewItems(v.Collection(ctx, level+1))
+	collected := TreeViewItems(v.Collection(ctx, v.Level+1))
 	collected.Sort()
 	for _, item := range collected {
 		result = append(result, item)
-		if subItems := item.GenerateWidgets(ctx, level+1); len(subItems) > 0 {
+		if subItems := item.GenerateWidgets(ctx); len(subItems) > 0 {
 			// Insert items
 			result = append(result, subItems...)
 		}
