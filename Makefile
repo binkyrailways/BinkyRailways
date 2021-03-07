@@ -23,4 +23,4 @@ test:
 update-modules:
 	go get -u \
 		github.com/binkynet/NetManager \
-		github.com/binkynet/BinkyNet@v0.2.4
+		github.com/binkynet/BinkyNet@v0.3.0
