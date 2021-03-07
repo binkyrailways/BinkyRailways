@@ -104,8 +104,12 @@ github.com/binkynet/BinkyNet v0.2.4 h1:TxUSievROv/pP8l7z0kgQdZ9N7dvkS0RKLsL/+R3i
 github.com/binkynet/BinkyNet v0.2.4/go.mod h1:tD16+MFN65p0Xcb0WtbUX0DAhK+hmCR7Ll2IhGvvCC4=
 github.com/binkynet/BinkyNet v0.3.0 h1:jE2Um6cf34ChFL4c9zfne3QAMEwg5SLKnQdHde0NpG4=
 github.com/binkynet/BinkyNet v0.3.0/go.mod h1:tD16+MFN65p0Xcb0WtbUX0DAhK+hmCR7Ll2IhGvvCC4=
+github.com/binkynet/BinkyNet v0.6.0 h1:oZ/4SLg713svvBEtwTRFgxvCtRUuBlkaV+UdC7YgxVU=
+github.com/binkynet/BinkyNet v0.6.0/go.mod h1:tD16+MFN65p0Xcb0WtbUX0DAhK+hmCR7Ll2IhGvvCC4=
 github.com/binkynet/NetManager v0.0.0-20210228104155-3f41de9ce005 h1:PXhqfVtAr1MszQ1eCZJC3G4cReFjjC6yLh6R5Yklz0s=
 github.com/binkynet/NetManager v0.0.0-20210228104155-3f41de9ce005/go.mod h1:Ft279pv4asgWrtKjqPTrhjngfeMaGT8TbOA4q/c5hLQ=
+github.com/binkynet/NetManager v0.2.0 h1:771F9rCBkF95lWkSX6jB7GMTSmOYG04OffF1r3eO/hA=
+github.com/binkynet/NetManager v0.2.0/go.mod h1:zwiAsxg0APVmCLelp2LeKrHXchslRvQ1DEVAkzqLCBw=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c h1:+0HFd5KSZ/mm3JmhmrDukiId5iR6w4+BdFtfSy4yWIc=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c/go.mod h1:MKsuJmJgSg28kpZDP6UIiPt0e0Oz0kqKNGyRaWEPv84=
 github.com/casbin/casbin/v2 v2.1.2 h1:bTwon/ECRx9dwBy2ewRVr5OiqjeXSGiTUY74sDPQi/g=

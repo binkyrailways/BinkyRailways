@@ -7,8 +7,8 @@ require (
 	gioui.org/x v0.0.0-20210226015410-958111222865
 	github.com/aarzilli/nucular v0.0.0-20210111134321-0632296919bc // indirect
 	github.com/ajstarks/giocanvas v0.0.0-20210116002733-c0ab486f8f0a
-	github.com/binkynet/BinkyNet v0.3.0 // indirect
-	github.com/binkynet/NetManager v0.0.0-20210228104155-3f41de9ce005 // indirect
+	github.com/binkynet/BinkyNet v0.6.0 // indirect
+	github.com/binkynet/NetManager v0.2.0 // indirect
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
 	github.com/gen2brain/dlgs v0.0.0-20201118155338-03fe7f81ad25
 	github.com/gogo/protobuf v1.3.2 // indirect
