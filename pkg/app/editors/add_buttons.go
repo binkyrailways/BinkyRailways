@@ -71,6 +71,8 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 		return createAddButtonsFor(etx, entity.GetLocalWorker())
 	case model.BinkyNetObject:
 		return createAddButtonsFor(etx, entity.GetLocalWorker())
+	case model.BinkyNetConnection:
+		return createAddButtonsFor(etx, entity.GetObject())
 	case model.Module:
 		prefix := []AddButton{
 			{
