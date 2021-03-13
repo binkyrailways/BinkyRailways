@@ -55,6 +55,7 @@ type View struct {
 	buttonRun        widget.Clickable
 	buttonRunVirtual widget.Clickable
 	buttonAdd        widget.Clickable
+	buttonRemove     widget.Clickable
 	buttonSave       widget.Clickable
 	entityList       widgets.TreeView
 	editor           editors.Editor
@@ -146,6 +147,14 @@ func (v *View) onSelect(selection interface{}) {
 	v.vm.Invalidate()
 }
 
+func (v *View) onRemove() {
+	if v.editor != nil && v.editor.CanDelete() {
+		if err := v.editor.Delete(context.Background()); err != nil {
+			dlgs.Error("Remove", "Failed to remove item: "+err.Error())
+		}
+	}
+}
+
 // Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
@@ -161,6 +170,9 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	}
 	if v.buttonAdd.Clicked() {
 		v.addSheet.Appear(gtx.Now)
+	}
+	if v.buttonRemove.Clicked() {
+		v.onRemove()
 	}
 	for idx := range v.addSheetButtons {
 		btn := &v.addSheetButtons[idx]
@@ -199,6 +211,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		[]component.AppBarAction{
 			component.SimpleIconAction(th, &v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
 			component.SimpleIconAction(th, &v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+			component.SimpleIconAction(th, &v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove", Tag: &v.buttonRemove}),
 			component.SimpleIconAction(th, &v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
 			component.SimpleIconAction(th, &v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
 		},

@@ -18,6 +18,9 @@
 package editors
 
 import (
+	"context"
+	"fmt"
+
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
@@ -49,4 +52,19 @@ func (e *locEditor) Layout(gtx C, th *material.Theme) D {
 // Create the buttons for the "Add resource sheet"
 func (e *locEditor) CreateAddButtons() []AddButton {
 	return createAddButtonsFor(e.etx, e.loc)
+}
+
+// Can the currently selected item be deleted?
+func (e *locEditor) CanDelete() bool {
+	return true
+}
+
+// Delete the currently selected item
+func (e *locEditor) Delete(ctx context.Context) error {
+	railway := e.loc.GetPackage().GetRailway()
+	if locRef, found := railway.GetLocs().Get(e.loc.GetID()); found {
+		railway.GetLocs().Remove(locRef)
+		return nil
+	}
+	return fmt.Errorf("Loc with ID '%s' not found", e.loc.GetID())
 }

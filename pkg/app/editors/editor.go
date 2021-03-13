@@ -18,6 +18,8 @@
 package editors
 
 import (
+	"context"
+
 	"gioui.org/layout"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -34,6 +36,10 @@ type Editor interface {
 	Layout(gtx C, th *material.Theme) D
 	// Create the buttons for the "Add resource sheet"
 	CreateAddButtons() []AddButton
+	// Can the currently selected item be deleted?
+	CanDelete() bool
+	// Delete the currently selected item
+	Delete(context.Context) error
 }
 
 // EditorContext is passed to each Editor upon construction.

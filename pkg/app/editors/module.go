@@ -18,6 +18,8 @@
 package editors
 
 import (
+	"context"
+
 	"gioui.org/layout"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -121,4 +123,14 @@ func (e *moduleEditor) Layout(gtx C, th *material.Theme) D {
 // Create the buttons for the "Add resource sheet"
 func (e *moduleEditor) CreateAddButtons() []AddButton {
 	return createAddButtonsFor(e.etx, e.module)
+}
+
+// Can the currently selected item be deleted?
+func (e *moduleEditor) CanDelete() bool {
+	return false
+}
+
+// Delete the currently selected item
+func (e *moduleEditor) Delete(ctx context.Context) error {
+	return nil
 }

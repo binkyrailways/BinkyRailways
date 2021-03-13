@@ -18,6 +18,8 @@
 package editors
 
 import (
+	"context"
+
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
@@ -49,4 +51,14 @@ func (e *railwayEditor) Layout(gtx C, th *material.Theme) D {
 // Create the buttons for the "Add resource sheet"
 func (e *railwayEditor) CreateAddButtons() []AddButton {
 	return createAddButtonsFor(e.etx, e.railway)
+}
+
+// Can the currently selected item be deleted?
+func (e *railwayEditor) CanDelete() bool {
+	return false
+}
+
+// Delete the currently selected item
+func (e *railwayEditor) Delete(context.Context) error {
+	return nil
 }

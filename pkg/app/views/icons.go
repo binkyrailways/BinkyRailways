@@ -25,6 +25,7 @@ import (
 var (
 	IconAdd, _          = widget.NewIcon(icons.ContentAdd)
 	IconEdit, _         = widget.NewIcon(icons.ContentCreate)
+	IconRemove, _       = widget.NewIcon(icons.ContentRemove)
 	IconRun, _          = widget.NewIcon(icons.AVPlayArrow)
 	IconRunVirtual, _   = widget.NewIcon(icons.AVPlayCircleOutline)
 	IconSave, _         = widget.NewIcon(icons.ContentSave)

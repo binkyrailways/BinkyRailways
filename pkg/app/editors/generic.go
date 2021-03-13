@@ -18,16 +18,20 @@
 package editors
 
 import (
+	"context"
+	"fmt"
+
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/settings"
 )
 
 // newGenericEditor constructs an editor for an entity for which only settings are shown.
-func newGenericEditor(entity interface{}, etx EditorContext) Editor {
+func newGenericEditor(entity interface{}, onDelete func(context.Context) error, etx EditorContext) Editor {
 	editor := &genericEditor{
 		entity:   entity,
 		settings: settings.BuildSettings(entity),
+		onDelete: onDelete,
 		etx:      etx,
 	}
 	return editor
@@ -37,6 +41,7 @@ func newGenericEditor(entity interface{}, etx EditorContext) Editor {
 type genericEditor struct {
 	entity   interface{}
 	settings settings.Settings
+	onDelete func(context.Context) error
 	etx      EditorContext
 }
 
@@ -51,4 +56,17 @@ func (e *genericEditor) Layout(gtx C, th *material.Theme) D {
 // Create the buttons for the "Add resource sheet"
 func (e *genericEditor) CreateAddButtons() []AddButton {
 	return createAddButtonsFor(e.etx, e.entity)
+}
+
+// Can the currently selected item be deleted?
+func (e *genericEditor) CanDelete() bool {
+	return e.onDelete != nil
+}
+
+// Delete the currently selected item
+func (e *genericEditor) Delete(ctx context.Context) error {
+	if e.onDelete != nil {
+		return e.onDelete(ctx)
+	}
+	return fmt.Errorf("Object cannot be deleted")
 }

@@ -43,6 +43,6 @@ func BuildEditor(selection interface{}, etx EditorContext, current Editor) Edito
 		modEditor.OnSelect(selection)
 		return modEditor
 	default:
-		return newGenericEditor(selection, etx)
+		return newGenericEditor(selection, createOnDelete(etx, selection), etx)
 	}
 }
