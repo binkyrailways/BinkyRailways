@@ -42,6 +42,7 @@ func (l *binkyNetObjectSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 	}
 	for _, x := range l.Objects {
 		x.SetContainer(l)
+		x.EnsureID()
 	}
 	return nil
 }

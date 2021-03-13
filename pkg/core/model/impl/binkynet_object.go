@@ -27,11 +27,11 @@ import (
 
 type binkyNetObject struct {
 	container *binkyNetObjectSet
-	entity
 	binkyNetObjectFields
 }
 
 type binkyNetObjectFields struct {
+	entity
 	ObjectID    api.ObjectID          `xml:"ObjectID,omitempty"`
 	Type        api.ObjectType        `xml:"Type,omitempty"`
 	Connections binkyNetConnectionSet `xml:"Connections"`

@@ -21,6 +21,7 @@ test:
 	go test -v ./...
 
 update-modules:
-	go get -u \
-		github.com/binkynet/NetManager@v0.2.0 \
+	go get \
+		github.com/binkynet/NetManager@v0.2.1 \
 		github.com/binkynet/BinkyNet@v0.6.0
+	go mod tidy

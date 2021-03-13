@@ -102,8 +102,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { cs.logReceiver.Run(ctx); return nil })
 
 	g.Go(func() error {
-		time.Sleep(time.Second * 15)
-		cs.TriggerDiscover(ctx, "e4957e6ee4")
+		for i := 0; i < 20; i++ {
+			time.Sleep(time.Second * 15)
+			cs.TriggerDiscover(ctx, "e4957e6ee4")
+		}
 		return nil
 	})
 
