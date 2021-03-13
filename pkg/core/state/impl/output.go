@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -25,4 +26,26 @@ import (
 type Output interface {
 	Entity
 	state.Output
+}
+
+type output struct {
+	entity
+}
+
+// Create a new entity
+func newOutput(en model.Output, railway Railway) output {
+	s := output{
+		entity: newEntity(en, railway),
+	}
+	return s
+}
+
+// getOutput returns the entity as Output.
+func (s *output) getOutput() model.Output {
+	return s.GetEntity().(model.Output)
+}
+
+// Gets the underlying model
+func (s *output) GetModel() model.Output {
+	return s.getOutput()
 }

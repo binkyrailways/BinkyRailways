@@ -17,12 +17,7 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
-
-// Output specifies the state of a single output
-type Output interface {
-	Entity
-
-	// Gets the underlying model
-	GetModel() model.Output
+// BinaryOutput specifies the state of a single binary output
+type BinaryOutput interface {
+	Output
 }

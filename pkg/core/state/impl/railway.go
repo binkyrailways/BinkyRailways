@@ -277,6 +277,8 @@ func (r *railway) SelectCommandStation(ctx context.Context, entity model.Address
 	// Lookup preferred command station
 	var prefCS model.CommandStation
 	switch addr.Network.Type {
+	case model.AddressTypeBinkyNet:
+		prefCS = r.GetModel().GetPreferredBinkyNetCommandStation()
 	case model.AddressTypeDcc:
 		prefCS = r.GetModel().GetPreferredDccCommandStation()
 	case model.AddressTypeLocoNet:

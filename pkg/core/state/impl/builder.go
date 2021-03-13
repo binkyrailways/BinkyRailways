@@ -28,6 +28,10 @@ type builder struct {
 	model.DefaultEntityVisitor
 }
 
+func (b *builder) VisitBinaryOutput(x model.BinaryOutput) interface{} {
+	return newBinaryOutput(x, b.Railway)
+}
+
 func (b *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
 	return newBinarySensor(x, b.Railway)
 }

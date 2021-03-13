@@ -37,6 +37,8 @@ func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 	switch entity := x.(type) {
 	case state.Block:
 		return &block{entity: entity}
+	case state.Output:
+		return &output{entity: entity}
 	case state.BinarySensor:
 		return &sensor{entity: entity}
 	case state.Sensor:

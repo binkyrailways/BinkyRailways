@@ -39,6 +39,8 @@ type CommandStation interface {
 	RegisterLoc(state.Loc)
 	// Register the given input as controlled by this command station
 	RegisterInput(state.Input)
+	// Register the given output as controlled by this command station
+	RegisterOutput(state.Output)
 	// Register the given sensor as controlled by this command station
 	RegisterSensor(state.Sensor)
 	// Register the given signal as controlled by this command station
@@ -57,6 +59,7 @@ type commandStation struct {
 	junctions     []state.Junction
 	locs          []state.Loc
 	inputs        []state.Input
+	outputs       []state.Output
 	sensors       []state.Sensor
 	signals       []state.Signal
 }
@@ -132,6 +135,13 @@ func (cs *commandStation) ForEachInput(cb func(state.Input)) {
 	}
 }
 
+// Outputs driven by this command station.
+func (cs *commandStation) ForEachOutput(cb func(state.Output)) {
+	for _, x := range cs.outputs {
+		cb(x)
+	}
+}
+
 // Sensors driven by this command station
 func (cs *commandStation) ForEachSensor(cb func(state.Sensor)) {
 	for _, x := range cs.sensors {
@@ -164,6 +174,11 @@ func (cs *commandStation) RegisterLoc(x state.Loc) {
 // Register the given input as controlled by this command station
 func (cs *commandStation) RegisterInput(x state.Input) {
 	cs.inputs = append(cs.inputs, x)
+}
+
+// Register the given output as controlled by this command station
+func (cs *commandStation) RegisterOutput(x state.Output) {
+	cs.outputs = append(cs.outputs, x)
 }
 
 // Register the given sensor as controlled by this command station
