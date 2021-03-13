@@ -80,3 +80,9 @@ func (cs *locoBufferCommandStation) SendSwitchDirection(context.Context, state.S
 func (cs *locoBufferCommandStation) Close(ctx context.Context) {
 	// TODO
 }
+
+// Trigger discovery of attached hardware with given ID.
+func (cs *locoBufferCommandStation) TriggerDiscover(ctx context.Context, hardwareID string) error {
+	// Do nothing
+	return nil
+}

@@ -101,14 +101,6 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error { cs.logReceiver.Run(ctx); return nil })
 
-	g.Go(func() error {
-		for i := 0; i < 20; i++ {
-			time.Sleep(time.Second * 15)
-			cs.TriggerDiscover(ctx, "e4957e6ee4")
-		}
-		return nil
-	})
-
 	return nil
 }
 
@@ -145,17 +137,20 @@ func (cs *binkyNetCommandStation) onUnknownLocalWorker(hardwareID string) {
 }
 
 // Trigger discovery of locally attached devices on local worker
-func (cs *binkyNetCommandStation) TriggerDiscover(ctx context.Context, hardwareID string) {
-	log := cs.log.With().Str("hardware_id", hardwareID).Logger()
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-	log.Info().Msg("Trigger discover...")
-	result, err := cs.manager.Discover(ctx, hardwareID)
-	if err != nil {
-		log.Warn().Err(err).Msg("Discover failed")
-	} else {
-		log.Info().Strs("addresses", result.GetAddresses()).Msg("Discover result")
-	}
+func (cs *binkyNetCommandStation) TriggerDiscover(ctx context.Context, hardwareID string) error {
+	go func() {
+		log := cs.log.With().Str("hardware_id", hardwareID).Logger()
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		log.Info().Msg("Trigger discover...")
+		result, err := cs.manager.Discover(ctx, hardwareID)
+		if err != nil {
+			log.Warn().Err(err).Msg("Discover failed")
+		} else {
+			log.Info().Strs("addresses", result.GetAddresses()).Msg("Discover result")
+		}
+	}()
+	return nil
 }
 
 // Close the commandstation

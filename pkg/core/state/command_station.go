@@ -63,4 +63,7 @@ type CommandStation interface {
 
 	// Send the position of the given turntable towards the railway.
 	//void SendTurnTablePosition(ITurnTableState turnTable);
+
+	// Trigger discovery of attached hardware with given ID.
+	TriggerDiscover(ctx context.Context, hardwareID string) error
 }

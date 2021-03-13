@@ -90,3 +90,9 @@ func (cs *virtualCommandStation) SendSwitchDirection(ctx context.Context, sw sta
 func (cs *virtualCommandStation) Close(ctx context.Context) {
 	// Nothing to do here
 }
+
+// Trigger discovery of attached hardware with given ID.
+func (cs *virtualCommandStation) TriggerDiscover(ctx context.Context, hardwareID string) error {
+	// Do nothing
+	return nil
+}

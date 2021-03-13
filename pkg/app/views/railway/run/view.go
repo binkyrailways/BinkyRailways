@@ -31,6 +31,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/gen2brain/dlgs"
 )
 
 type (
@@ -42,17 +43,18 @@ type (
 
 // View implements the view in which trains are being operated.
 type View struct {
-	vm            views.ViewManager
-	railway       state.Railway
-	setEditMode   setEditModeFunc
-	modal         *component.ModalLayer
-	appBar        *component.AppBar
-	buttonEdit    widget.Clickable
-	buttonAutoRun widget.Clickable
-	canvas        *canvas.EntityCanvas
-	power         *powerView
-	locs          *runLocsView
-	loc           *runLocView
+	vm             views.ViewManager
+	railway        state.Railway
+	setEditMode    setEditModeFunc
+	modal          *component.ModalLayer
+	appBar         *component.AppBar
+	buttonEdit     widget.Clickable
+	buttonAutoRun  widget.Clickable
+	buttonDiscover widget.Clickable
+	canvas         *canvas.EntityCanvas
+	power          *powerView
+	locs           *runLocsView
+	loc            *runLocView
 }
 
 // New constructs a new railway view
@@ -78,6 +80,14 @@ func (v *View) processEvent(evt state.Event) {
 	v.vm.Invalidate()
 }
 
+func (v *View) onDiscover() {
+	if id, ok, err := dlgs.Entry("Discover hardware", "Hardware ID", ""); err == nil && ok {
+		v.railway.ForEachCommandStation(func(cs state.CommandStation) {
+			cs.TriggerDiscover(context.Background(), id)
+		})
+	}
+}
+
 // Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
@@ -90,6 +100,9 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		if vm.GetEnabled() {
 			vm.SetAutoRun(!vm.GetAutoRun())
 		}
+	}
+	if v.buttonDiscover.Clicked() {
+		v.onDiscover()
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
@@ -112,6 +125,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	// Configure appBar
 	v.appBar.Title = v.railway.GetDescription()
 	appBarActions := []component.AppBarAction{
+		component.SimpleIconAction(th, &v.buttonDiscover, views.IconSearch, component.OverflowAction{Name: "Discover", Tag: &v.buttonDiscover}),
 		component.SimpleIconAction(th, &v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
 	}
 	if vm.GetEnabled() {
