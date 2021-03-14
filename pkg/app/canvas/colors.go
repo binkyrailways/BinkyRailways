@@ -27,4 +27,10 @@ var (
 	SensorBg         = widgets.ARGB(0xA0ffa726)
 	ActiveSensorBg   = widgets.ARGB(0xFFba000d)
 	InactiveSensorBg = widgets.ARGB(0xFF90a4ae)
+
+	OutputBg    = widgets.ARGB(0xA0ce93d8)
+	OutputOnBg  = widgets.ARGB(0xFFce93d8)
+	OutputOffBg = widgets.ARGB(0xFF6a1b9a)
+
+	InConsistentBorder = widgets.ARGB(0xFFffd740)
 )

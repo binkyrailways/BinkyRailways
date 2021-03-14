@@ -109,6 +109,8 @@ type WidgetState struct {
 	Hovered bool
 	// Widget has been clicked on
 	Clicked bool
+	// Widget is currently pressed on
+	Pressed bool
 }
 
 // canvasWidget is a widget representation of the object on the canvas.
@@ -119,10 +121,18 @@ type canvasWidget struct {
 	widget        Widget
 	origEntityPos image.Point
 	startPt       f32.Point
+	clicked       bool
 }
 
 // Clicked returns true if the widget has been clicked on and reset the clicked flag.
 func (cw *canvasWidget) Clicked() bool {
+	result := cw.clicked
+	cw.clicked = false
+	return result
+}
+
+// Clicked returns true if the widget has been clicked on and reset the clicked flag.
+func (cw *canvasWidget) Pressed() bool {
 	result := cw.Click.Pressed()
 	return result
 }
@@ -130,8 +140,11 @@ func (cw *canvasWidget) Clicked() bool {
 // Layout draws the widget and process events.
 func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *material.Theme, size image.Point, rad float32) {
 	// Process events
-	for range cw.Click.Events(gtx) {
-		// Nothing here
+	for _, evt := range cw.Click.Events(gtx) {
+		switch evt.Type {
+		case gesture.TypeClick:
+			cw.clicked = true
+		}
 	}
 	for _, evt := range cw.Drag.Events(gtx.Metric, gtx, gesture.Both) {
 		pt := f32.Affine2D{}.Rotate(f32.Point{}, -rad).Transform(evt.Position)
@@ -174,6 +187,7 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	wState := WidgetState{
 		Hovered: cw.Click.Hovered(),
 		Clicked: cw.Clicked(),
+		Pressed: cw.Pressed(),
 	}
 
 	// Layout actual widget

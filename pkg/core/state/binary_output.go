@@ -17,7 +17,15 @@
 
 package state
 
+import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+
 // BinaryOutput specifies the state of a single binary output
 type BinaryOutput interface {
 	Output
+
+	// Gets the address of the output
+	GetAddress() model.Address
+
+	// Is this output in the 'active' state?
+	GetActive() BoolProperty
 }

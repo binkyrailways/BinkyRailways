@@ -100,6 +100,18 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error { cs.logReceiver.Run(ctx); return nil })
+	g.Go(func() error {
+		actuals, cancel := cs.manager.SubscribeOutputActuals()
+		defer cancel()
+		for {
+			select {
+			case actual := <-actuals:
+				cs.onOutputActual(ctx, actual)
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
 
 	return nil
 }
@@ -119,9 +131,52 @@ func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(context.Context, stat
 	// TODO
 }
 
+// Send the state of the binary output towards the railway.
+func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state.BinaryOutput) {
+	addr := cs.createObjectAddress(bo.GetAddress())
+	value := int32(0)
+	if bo.GetActive().GetRequested(ctx) {
+		value = 1
+	}
+	cs.manager.SetOutputRequest(bn.Output{
+		Address: addr,
+		Request: &bn.OutputState{
+			Value: value,
+		},
+	})
+}
+
+// Send the state of the binary output towards the railway.
+func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.Output) {
+	objAddr := actual.GetAddress()
+	cs.ForEachOutput(func(output state.Output) {
+		if bo, ok := output.(state.BinaryOutput); ok {
+			if isAddressEqual(bo.GetAddress(), objAddr) {
+				bo.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
+			}
+		}
+	})
+}
+
 // Send the direction of the given switch towards the railway.
-func (cs *binkyNetCommandStation) SendSwitchDirection(context.Context, state.Switch) {
-	// TODO
+func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
+	addr := cs.createObjectAddress(sw.GetAddress())
+	var direction bn.SwitchDirection
+	switch sw.GetDirection().GetRequest(ctx) {
+	case model.SwitchDirectionStraight:
+		direction = bn.SwitchDirection_STRAIGHT
+	case model.SwitchDirectionOff:
+		direction = bn.SwitchDirection_OFF
+	default:
+		// Unknown direction
+		return
+	}
+	cs.manager.SetSwitchRequest(bn.Switch{
+		Address: addr,
+		Request: &bn.SwitchState{
+			Direction: direction,
+		},
+	})
 }
 
 // Send the position of the given turntable towards the railway.
@@ -165,4 +220,14 @@ func (cs *binkyNetCommandStation) Close(ctx context.Context) {
 		close(reconfigureQueue)
 	}
 	// TODO
+}
+
+// createObjectAddress converts a model address into a BinkyNet object address.
+func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.ObjectAddress {
+	return bn.ObjectAddress(addr.Value)
+}
+
+// isAddressEqual returns true if the given addresses are the same
+func isAddressEqual(modelAddr model.Address, objAddr bn.ObjectAddress) bool {
+	return modelAddr.Value == string(objAddr)
 }

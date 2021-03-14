@@ -68,6 +68,11 @@ func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(context.Context, st
 	// TODO
 }
 
+// Send the state of the binary output towards the railway.
+func (cs *locoBufferCommandStation) SendOutputActive(context.Context, state.BinaryOutput) {
+	// TODO
+}
+
 // Send the direction of the given switch towards the railway.
 func (cs *locoBufferCommandStation) SendSwitchDirection(context.Context, state.Switch) {
 	// TODO

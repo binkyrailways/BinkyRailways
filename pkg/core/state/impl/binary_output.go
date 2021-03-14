@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -32,36 +33,54 @@ type BinaryOutput interface {
 
 type binaryOutput struct {
 	output
+
+	commandStation CommandStation
+	active         boolProperty
 }
 
 // Create a new entity
 func newBinaryOutput(en model.BinaryOutput, railway Railway) BinaryOutput {
-	s := &binaryOutput{
+	bo := &binaryOutput{
 		output: newOutput(en, railway),
 	}
-	return s
+	bo.active.Configure(bo, railway, railway)
+	bo.active.OnRequestedChanged = func(ctx context.Context, value bool) {
+		if bo.commandStation != nil {
+			bo.commandStation.SendOutputActive(ctx, bo)
+		}
+	}
+	return bo
 }
 
 // getBinaryOutput returns the entity as BinaryOutput.
-func (s *output) getBinaryOutput() model.BinaryOutput {
-	return s.GetEntity().(model.BinaryOutput)
+func (bo *output) getBinaryOutput() model.BinaryOutput {
+	return bo.GetEntity().(model.BinaryOutput)
 }
 
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (s *binaryOutput) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+func (bo *binaryOutput) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	// Resolve command station
-	cs, err := s.railway.SelectCommandStation(ctx, s.getBinaryOutput())
+	var err error
+	bo.commandStation, err = bo.railway.SelectCommandStation(ctx, bo.getBinaryOutput())
 	if err != nil {
 		return err
 	}
-	cs.RegisterOutput(s)
+	if bo.commandStation == nil {
+		return fmt.Errorf("Output does not have a commandstation attached.")
+	}
+	bo.commandStation.RegisterOutput(bo)
 
 	return nil
 }
 
 // Address of the entity
-func (s *binaryOutput) GetAddress() model.Address {
-	return s.getBinaryOutput().GetAddress()
+func (bo *binaryOutput) GetAddress() model.Address {
+	return bo.getBinaryOutput().GetAddress()
+}
+
+// Is this output in the 'active' state?
+func (bo *binaryOutput) GetActive() state.BoolProperty {
+	return &bo.active
 }

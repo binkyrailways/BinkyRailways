@@ -78,6 +78,11 @@ func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l
 	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))
 }
 
+// Send the state of the binary output towards the railway.
+func (cs *virtualCommandStation) SendOutputActive(ctx context.Context, bo state.BinaryOutput) {
+	bo.GetActive().SetActual(ctx, bo.GetActive().GetRequested(ctx))
+}
+
 // Send the direction of the given switch towards the railway.
 func (cs *virtualCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
 	sw.GetDirection().SetActual(ctx, sw.GetDirection().GetRequest(ctx))

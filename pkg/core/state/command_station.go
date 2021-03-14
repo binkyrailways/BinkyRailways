@@ -58,6 +58,9 @@ type CommandStation interface {
 	// Send the speed and direction of the given loc towards the railway.
 	SendLocSpeedAndDirection(context.Context, Loc)
 
+	// Send the state of the binary output towards the railway.
+	SendOutputActive(context.Context, BinaryOutput)
+
 	// Send the direction of the given switch towards the railway.
 	SendSwitchDirection(context.Context, Switch)
 
