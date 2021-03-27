@@ -42,11 +42,11 @@ func newRunLocsView(vm views.ViewManager, railway state.Railway, onSelect func(s
 			RootItems: []widgets.TreeViewItem{
 				&widgets.TreeViewGroup{
 					Name: "Automatic Locs",
-					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+					Collection: func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
 						var result widgets.TreeViewItems
 						railway.ForEachLoc(func(x state.Loc) {
 							if x.GetCurrentBlock().GetActual(ctx) != nil {
-								result = append(result, itemCache.CreateItem(x, parent, level))
+								result = append(result, itemCache.CreateItem(x, parentKey, level))
 							}
 						})
 						result.Sort()
@@ -55,11 +55,11 @@ func newRunLocsView(vm views.ViewManager, railway state.Railway, onSelect func(s
 				},
 				&widgets.TreeViewGroup{
 					Name: "Locs",
-					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+					Collection: func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
 						var result widgets.TreeViewItems
 						railway.ForEachLoc(func(x state.Loc) {
 							if x.GetCurrentBlock().GetActual(ctx) == nil {
-								result = append(result, itemCache.CreateItem(x, parent, level))
+								result = append(result, itemCache.CreateItem(x, parentKey, level))
 							}
 						})
 						result.Sort()

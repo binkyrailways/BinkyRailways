@@ -26,7 +26,7 @@ import (
 )
 
 func buildTreeViewItems(entity interface{},
-	parent widgets.Identifyable,
+	parentKey string,
 	itemCache *widgets.EntityTreeViewItemCache,
 	groupCache *widgets.EntityTreeGroupCache,
 	level int) []widgets.TreeViewItem {
@@ -34,12 +34,12 @@ func buildTreeViewItems(entity interface{},
 	switch entity := entity.(type) {
 	case model.Railway:
 		return []widgets.TreeViewItem{
-			itemCache.CreateItem(entity, parent, level),
+			itemCache.CreateItem(entity, parentKey, level),
 		}
 	case model.LocRefSet:
 		entity.ForEach(func(c model.LocRef) {
 			if x := c.TryResolve(); x != nil {
-				result = append(result, itemCache.CreateItem(x, parent, level))
+				result = append(result, itemCache.CreateItem(x, parentKey, level))
 			}
 		})
 		return result
@@ -47,30 +47,30 @@ func buildTreeViewItems(entity interface{},
 		entity.ForEach(func(c model.ModuleRef) {
 			if x := c.TryResolve(); x != nil {
 				result = append(result,
-					itemCache.CreateItem(x, parent, level),
-					groupCache.CreateItem("Blocks", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetBlocks(), parent, itemCache, groupCache, level)
+					itemCache.CreateItem(x, parentKey, level),
+					groupCache.CreateItem("Blocks", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetBlocks(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleBlockSet{x}),
-					groupCache.CreateItem("Block groups", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetBlockGroups(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Block groups", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetBlockGroups(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleBlockGroupSet{x}),
-					groupCache.CreateItem("Edges", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetEdges(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Edges", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetEdges(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleEdgeSet{x}),
-					groupCache.CreateItem("Junctions", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetJunctions(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Junctions", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetJunctions(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleJunctionSet{x}),
-					groupCache.CreateItem("Outputs", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetOutputs(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Outputs", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetOutputs(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleOutputSet{x}),
-					groupCache.CreateItem("Routes", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetRoutes(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Routes", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetRoutes(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleRouteSet{x}),
-					groupCache.CreateItem("Sensors", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetSensors(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Sensors", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetSensors(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleSensorSet{x}),
-					groupCache.CreateItem("Signals", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetSignals(), parent, itemCache, groupCache, level)
+					groupCache.CreateItem("Signals", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x.GetSignals(), parentKey, itemCache, groupCache, level)
 					}, level+1, moduleSignalSet{x}),
 				)
 			}
@@ -78,53 +78,53 @@ func buildTreeViewItems(entity interface{},
 		return result
 	case model.BlockSet:
 		entity.ForEach(func(entity model.Block) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.BlockGroupSet:
 		entity.ForEach(func(entity model.BlockGroup) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.EdgeSet:
 		entity.ForEach(func(entity model.Edge) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.JunctionSet:
 		entity.ForEach(func(entity model.Junction) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.OutputSet:
 		entity.ForEach(func(entity model.Output) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.RouteSet:
 		entity.ForEach(func(entity model.Route) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.SensorSet:
 		entity.ForEach(func(entity model.Sensor) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.SignalSet:
 		entity.ForEach(func(entity model.Signal) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.CommandStationRefSet:
 		entity.ForEach(func(c model.CommandStationRef) {
 			if x := c.TryResolve(); x != nil {
 				result = append(result,
-					itemCache.CreateItem(x, parent, level))
+					itemCache.CreateItem(x, parentKey, level))
 				if cs, ok := x.(model.BinkyNetCommandStation); ok {
 					result = append(result,
-						groupCache.CreateItem("Local workers", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-							return buildTreeViewItems(cs.GetLocalWorkers(), parent, itemCache, groupCache, level)
+						groupCache.CreateItem("Local workers", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+							return buildTreeViewItems(cs.GetLocalWorkers(), parentKey, itemCache, groupCache, level)
 						}, level+1, binkyNetCommandStationLocalWorkerSet{cs}),
 					)
 				}
@@ -134,27 +134,27 @@ func buildTreeViewItems(entity interface{},
 	case model.BinkyNetLocalWorkerSet:
 		entity.ForEach(func(lw model.BinkyNetLocalWorker) {
 			result = append(result,
-				itemCache.CreateItem(lw, parent, level),
-				groupCache.CreateItem("Devices", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(lw.GetDevices(), parent, itemCache, groupCache, level)
+				itemCache.CreateItem(lw, parentKey, level),
+				groupCache.CreateItem("Devices", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(lw.GetDevices(), parentKey, itemCache, groupCache, level)
 				}, level+1, binkyNetLocalWorkerDeviceSet{lw}),
-				groupCache.CreateItem("Objects", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(lw.GetObjects(), parent, itemCache, groupCache, level)
+				groupCache.CreateItem("Objects", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(lw.GetObjects(), parentKey, itemCache, groupCache, level)
 				}, level+1, binkyNetLocalWorkerObjectSet{lw}),
 			)
 		})
 		return result
 	case model.BinkyNetDeviceSet:
 		entity.ForEach(func(entity model.BinkyNetDevice) {
-			result = append(result, itemCache.CreateItem(entity, parent, level))
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	case model.BinkyNetObjectSet:
 		entity.ForEach(func(entity model.BinkyNetObject) {
 			result = append(result,
-				itemCache.CreateItem(entity, parent, level),
-				groupCache.CreateItem("Connections", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(entity.GetConnections(), parent, itemCache, groupCache, level)
+				itemCache.CreateItem(entity, parentKey, level),
+				groupCache.CreateItem("Connections", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(entity.GetConnections(), parentKey, itemCache, groupCache, level)
 				}, level+1, binkyNetObjectConnectionSet{entity}),
 			)
 		})
@@ -162,9 +162,9 @@ func buildTreeViewItems(entity interface{},
 	case model.BinkyNetConnectionSet:
 		entity.ForEach(func(entity model.BinkyNetConnection) {
 			result = append(result,
-				itemCache.CreateItem(binkyNetConnectionEntity{entity}, parent, level),
-				groupCache.CreateItem("Pins", func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(entity.GetPins(), parent, itemCache, groupCache, level)
+				itemCache.CreateItem(binkyNetConnectionEntity{entity}, parentKey, level),
+				groupCache.CreateItem("Pins", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(entity.GetPins(), parentKey, itemCache, groupCache, level)
 				}, level+1, binkyNetObjectConnectionPinSet{entity}),
 			)
 		})
@@ -172,7 +172,7 @@ func buildTreeViewItems(entity interface{},
 	case model.BinkyNetConnectionPinList:
 		entity.ForEach(func(entity model.BinkyNetDevicePin) {
 			result = append(result,
-				itemCache.CreateItem(binkyNetDevicePinEntity{entity}, parent, level),
+				itemCache.CreateItem(binkyNetDevicePinEntity{entity}, parentKey, level),
 			)
 		})
 		return result

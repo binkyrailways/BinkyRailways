@@ -35,9 +35,9 @@ type EntityTreeGroupCache struct {
 
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
-func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx context.Context, parent Identifyable, level int) []TreeViewItem,
+func (c *EntityTreeGroupCache) CreateItem(name, parentKey string, collection func(ctx context.Context, parentKey string, level int) []TreeViewItem,
 	level int, entity Identifyable) *TreeViewGroup {
-	key := fmt.Sprintf("%s/%d/%s", entity.GetID(), level, name)
+	key := fmt.Sprintf("%s/%s/%d/%s", parentKey, entity.GetID(), level, name)
 	if c.cache == nil {
 		c.cache = make(map[string]*TreeViewGroup)
 	}
@@ -46,6 +46,7 @@ func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx conte
 		return result
 	}
 	w := &TreeViewGroup{
+		key:        key,
 		Name:       name,
 		Collection: collection,
 		Level:      level,
@@ -58,8 +59,9 @@ func (c *EntityTreeGroupCache) CreateItem(name string, collection func(ctx conte
 
 // TreeViewGroup is a collapsable group of treeview items
 type TreeViewGroup struct {
+	key        string
 	Name       string
-	Collection func(ctx context.Context, parent Identifyable, level int) []TreeViewItem
+	Collection func(ctx context.Context, parentKey string, level int) []TreeViewItem
 	Level      int
 	Entity     Identifyable
 
@@ -161,7 +163,7 @@ func (v *TreeViewGroup) GenerateWidgets(ctx context.Context) TreeViewItems {
 		return nil
 	}
 	var result TreeViewItems
-	collected := TreeViewItems(v.Collection(ctx, v.Entity, v.Level+1))
+	collected := TreeViewItems(v.Collection(ctx, v.key, v.Level+1))
 	//collected.Sort()
 	for _, item := range collected {
 		result = append(result, item)
