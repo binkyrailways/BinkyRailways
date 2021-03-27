@@ -51,8 +51,12 @@ type EntityTreeViewItemCache struct {
 
 // CreateItem creates a TreeView item for the given entity, using the cache
 // when possible.
-func (c *EntityTreeViewItemCache) CreateItem(entity Entity, level int) TreeViewItem {
-	key := fmt.Sprintf("%s/%d", entity.GetID(), level)
+func (c *EntityTreeViewItemCache) CreateItem(entity Entity, parent Identifyable, level int) TreeViewItem {
+	parentKey := ""
+	if parent != nil {
+		parentKey = parent.GetID()
+	}
+	key := fmt.Sprintf("%s/%s/%d", parentKey, entity.GetID(), level)
 	if c.cache == nil {
 		c.cache = make(map[string]TreeViewItem)
 	}

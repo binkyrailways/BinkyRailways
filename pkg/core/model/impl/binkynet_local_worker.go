@@ -26,11 +26,11 @@ import (
 
 type binkyNetLocalWorker struct {
 	container *binkyNetLocalWorkerSet
-	entity
 	binkyNetLocalWorkerFields
 }
 
 type binkyNetLocalWorkerFields struct {
+	entity
 	HardwareID string            `xml:"HardwareID,omitempty"`
 	Alias      string            `xml:"Alias,omitempty"`
 	Devices    binkyNetDeviceSet `xml:"Devices"`

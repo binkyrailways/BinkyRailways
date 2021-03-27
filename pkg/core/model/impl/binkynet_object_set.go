@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -106,6 +107,7 @@ func (l *binkyNetObjectSet) Contains(entry model.BinkyNetObject) bool {
 func (l *binkyNetObjectSet) AddNew() model.BinkyNetObject {
 	d := newBinkyNetObject()
 	d.SetContainer(l)
+	d.SetObjectID(api.ObjectID(fmt.Sprintf("newObject%d", len(l.Objects)+1)))
 	l.Objects = append(l.Objects, d)
 	l.OnModified()
 	return d

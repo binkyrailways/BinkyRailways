@@ -72,40 +72,40 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 		modal:      component.NewModal(),
 		entityList: widgets.TreeView{
 			RootItems: []widgets.TreeViewItem{
-				itemCache.CreateItem(railway, 0),
+				itemCache.CreateItem(railway, nil, 0),
 				&widgets.TreeViewGroup{
 					Name:   "Locs",
 					Entity: railwayLocRefSet{railway},
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway.GetLocs(), &itemCache, &groupCache, level)
+					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetLocs(), parent, &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name:   "Loc groups",
 					Entity: railwayLocGroupSet{railway},
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway.GetLocGroups(), &itemCache, &groupCache, level)
+					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetLocGroups(), parent, &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name:   "Modules",
 					Entity: railwayModuleRefSet{railway},
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway.GetModules(), &itemCache, &groupCache, level)
+					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetModules(), parent, &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name:   "Module connections",
 					Entity: railwayModuleConnectionSet{railway},
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway.GetModuleConnections(), &itemCache, &groupCache, level)
+					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetModuleConnections(), parent, &itemCache, &groupCache, level)
 					},
 				},
 				&widgets.TreeViewGroup{
 					Name:   "Command stations",
 					Entity: railwayCommandStationRefSet{railway},
-					Collection: func(ctx context.Context, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(railway.GetCommandStations(), &itemCache, &groupCache, level)
+					Collection: func(ctx context.Context, parent widgets.Identifyable, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(railway.GetCommandStations(), parent, &itemCache, &groupCache, level)
 					},
 				},
 			},

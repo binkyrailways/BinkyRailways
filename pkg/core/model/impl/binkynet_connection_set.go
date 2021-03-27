@@ -137,7 +137,11 @@ func (l *binkyNetConnectionSet) ensureConnections(names []api.ConnectionName) {
 	// Ensure connections
 	for _, name := range names {
 		if !l.ContainsName(name) {
-			l.AddNew(name)
+			if conn, err := l.AddNew(name); err == nil {
+				for i := 0; i < name.ExpectedPins(); i++ {
+					conn.GetPins().AddNew()
+				}
+			}
 		}
 	}
 	// Remove empty unexpected connections
@@ -149,12 +153,9 @@ func (l *binkyNetConnectionSet) ensureConnections(names []api.ConnectionName) {
 		}
 		return false
 	}
-	isEmpty := func(conn model.BinkyNetConnection) bool {
-		return conn.GetPins().GetCount() == 0 && conn.GetConfiguration().GetCount() == 0
-	}
 	items := append([]*binkyNetConnection{}, l.Items...) // Copy slice since we're going to modify it
 	for _, conn := range items {
-		if !isExpected(conn.GetKey()) && isEmpty(conn) {
+		if !isExpected(conn.GetKey()) {
 			l.Remove(conn)
 		}
 	}

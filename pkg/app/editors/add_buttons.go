@@ -47,6 +47,21 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 			},
 		}
 		return append(prefix, createPersistentEntityAddButtons(entity, etx)...)
+	case model.BinkyNetLocalWorkerSet:
+		return []AddButton{
+			{
+				Title: "Add Local Worker",
+				OnClick: func() {
+					if id, ok, err := dlgs.Entry("Add Local Worker", "Hardware ID", ""); err == nil && ok {
+						if lw, err := entity.AddNew(id); err == nil {
+							etx.Select(lw)
+						} else {
+							dlgs.Error("Failed to add Local Worker", err.Error())
+						}
+					}
+				},
+			},
+		}
 	case model.BinkyNetLocalWorker:
 		prefix := []AddButton{
 			{
@@ -67,6 +82,26 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 			},
 		}
 		return append(prefix, createAddButtonsFor(etx, entity.GetCommandStation())...)
+	case model.BinkyNetDeviceSet:
+		return []AddButton{
+			{
+				Title: "Add Device",
+				OnClick: func() {
+					dev := entity.AddNew()
+					etx.Select(dev)
+				},
+			},
+		}
+	case model.BinkyNetObjectSet:
+		return []AddButton{
+			{
+				Title: "Add Object",
+				OnClick: func() {
+					obj := entity.AddNew()
+					etx.Select(obj)
+				},
+			},
+		}
 	case model.BinkyNetDevice:
 		return createAddButtonsFor(etx, entity.GetLocalWorker())
 	case model.BinkyNetObject:

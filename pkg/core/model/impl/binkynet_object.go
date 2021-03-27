@@ -76,7 +76,10 @@ func (o *binkyNetObject) Accept(v model.EntityVisitor) interface{} {
 
 // Gets the description of the entity
 func (o *binkyNetObject) GetDescription() string {
-	return fmt.Sprintf("%s, %s (%s)", o.GetObjectID(), o.GetObjectType(), o.GetID())
+	if o.GetObjectID() == "" && o.GetObjectType() == "" {
+		return o.GetID()
+	}
+	return fmt.Sprintf("%s, %s", o.GetObjectID(), o.GetObjectType())
 }
 
 // ID of the object (equal to entity ID)

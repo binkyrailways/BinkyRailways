@@ -44,8 +44,9 @@ github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+Ce
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
-github.com/binkynet/BinkyNet v0.6.0 h1:oZ/4SLg713svvBEtwTRFgxvCtRUuBlkaV+UdC7YgxVU=
 github.com/binkynet/BinkyNet v0.6.0/go.mod h1:tD16+MFN65p0Xcb0WtbUX0DAhK+hmCR7Ll2IhGvvCC4=
+github.com/binkynet/BinkyNet v0.6.1 h1:6JEbxuh7uoKf0T8jzzmaa2go/HVav2tpQJfQtarVc0Q=
+github.com/binkynet/BinkyNet v0.6.1/go.mod h1:tD16+MFN65p0Xcb0WtbUX0DAhK+hmCR7Ll2IhGvvCC4=
 github.com/binkynet/NetManager v0.2.1 h1:4ILVadGYArVn/IO3I0kp2E7TwWajZn7poMlcprlikqM=
 github.com/binkynet/NetManager v0.2.1/go.mod h1:zwiAsxg0APVmCLelp2LeKrHXchslRvQ1DEVAkzqLCBw=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c/go.mod h1:MKsuJmJgSg28kpZDP6UIiPt0e0Oz0kqKNGyRaWEPv84=
