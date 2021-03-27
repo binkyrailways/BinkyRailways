@@ -49,22 +49,40 @@ type EntityTreeViewItemCache struct {
 	cache map[string]TreeViewItem
 }
 
-// CreateItem creates a TreeView item for the given entity, using the cache
+// createItem creates a TreeView item for the given entity, using the cache
 // when possible.
-func (c *EntityTreeViewItemCache) CreateItem(entity Entity, parentKey string, level int) TreeViewItem {
+// Returns: item, key
+func (c *EntityTreeViewItemCache) createItem(entity Entity, parentKey string, level int) (TreeViewItem, string) {
 	key := fmt.Sprintf("%s/%s/%d", parentKey, entity.GetID(), level)
 	if c.cache == nil {
 		c.cache = make(map[string]TreeViewItem)
 	}
 	if result, found := c.cache[key]; found {
-		return result
+		return result, key
 	}
 	w := &entityItem{
 		level:  level,
 		entity: entity,
 	}
 	c.cache[key] = w
-	return w
+	return w, key
+}
+
+// CreateItem creates a TreeView item for the given entity, using the cache
+// when possible.
+func (c *EntityTreeViewItemCache) CreateItem(entity Entity, parentKey string, level int) TreeViewItem {
+	item, _ := c.createItem(entity, parentKey, level)
+	return item
+}
+
+// CreateItemWithChildren creates a TreeView item for the given entity, using the cache
+// when possible.
+// It then calls the callback to create children on the item.
+func (c *EntityTreeViewItemCache) CreateItemWithChildren(entity Entity, parentKey string, level int, childrenBuilder func(parentKey string, level int) []TreeViewItem) TreeViewItems {
+	item, key := c.createItem(entity, parentKey, level)
+	result := TreeViewItems{item}
+	result = append(result, childrenBuilder(key, level+1)...)
+	return result
 }
 
 type entityItem struct {

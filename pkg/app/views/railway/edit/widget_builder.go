@@ -20,6 +20,7 @@ package edit
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -47,34 +48,40 @@ func buildTreeViewItems(entity interface{},
 		entity.ForEach(func(c model.ModuleRef) {
 			if x := c.TryResolve(); x != nil {
 				result = append(result,
-					itemCache.CreateItem(x, parentKey, level),
-					groupCache.CreateItem("Blocks", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetBlocks(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleBlockSet{x}),
-					groupCache.CreateItem("Block groups", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetBlockGroups(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleBlockGroupSet{x}),
-					groupCache.CreateItem("Edges", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetEdges(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleEdgeSet{x}),
-					groupCache.CreateItem("Junctions", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetJunctions(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleJunctionSet{x}),
-					groupCache.CreateItem("Outputs", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetOutputs(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleOutputSet{x}),
-					groupCache.CreateItem("Routes", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetRoutes(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleRouteSet{x}),
-					groupCache.CreateItem("Sensors", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetSensors(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleSensorSet{x}),
-					groupCache.CreateItem("Signals", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-						return buildTreeViewItems(x.GetSignals(), parentKey, itemCache, groupCache, level)
-					}, level+1, moduleSignalSet{x}),
+					itemCache.CreateItemWithChildren(x, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x, parentKey, itemCache, groupCache, level)
+					})...,
 				)
 			}
 		})
+		return result
+	case model.Module:
+		result = append(result,
+			groupCache.CreateItem("Blocks", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetBlocks(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleBlockSet{entity}),
+			groupCache.CreateItem("Block groups", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetBlockGroups(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleBlockGroupSet{entity}),
+			groupCache.CreateItem("Edges", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetEdges(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleEdgeSet{entity}),
+			groupCache.CreateItem("Junctions", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetJunctions(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleJunctionSet{entity}),
+			groupCache.CreateItem("Outputs", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetOutputs(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleOutputSet{entity}),
+			groupCache.CreateItem("Routes", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetRoutes(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleRouteSet{entity}),
+			groupCache.CreateItem("Sensors", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetSensors(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleSensorSet{entity}),
+			groupCache.CreateItem("Signals", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetSignals(), parentKey, itemCache, groupCache, level)
+			}, level+1, moduleSignalSet{entity}),
+		)
 		return result
 	case model.BlockSet:
 		entity.ForEach(func(entity model.Block) {
@@ -120,29 +127,37 @@ func buildTreeViewItems(entity interface{},
 		entity.ForEach(func(c model.CommandStationRef) {
 			if x := c.TryResolve(); x != nil {
 				result = append(result,
-					itemCache.CreateItem(x, parentKey, level))
-				if cs, ok := x.(model.BinkyNetCommandStation); ok {
-					result = append(result,
-						groupCache.CreateItem("Local workers", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-							return buildTreeViewItems(cs.GetLocalWorkers(), parentKey, itemCache, groupCache, level)
-						}, level+1, binkyNetCommandStationLocalWorkerSet{cs}),
-					)
-				}
+					itemCache.CreateItemWithChildren(x, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
+						return buildTreeViewItems(x, parentKey, itemCache, groupCache, level)
+					})...)
 			}
 		})
+		return result
+	case model.BinkyNetCommandStation:
+		result = append(result,
+			groupCache.CreateItem("Local workers", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetLocalWorkers(), parentKey, itemCache, groupCache, level)
+			}, level+1, binkyNetCommandStationLocalWorkerSet{entity}),
+		)
 		return result
 	case model.BinkyNetLocalWorkerSet:
 		entity.ForEach(func(lw model.BinkyNetLocalWorker) {
 			result = append(result,
-				itemCache.CreateItem(lw, parentKey, level),
-				groupCache.CreateItem("Devices", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(lw.GetDevices(), parentKey, itemCache, groupCache, level)
-				}, level+1, binkyNetLocalWorkerDeviceSet{lw}),
-				groupCache.CreateItem("Objects", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(lw.GetObjects(), parentKey, itemCache, groupCache, level)
-				}, level+1, binkyNetLocalWorkerObjectSet{lw}),
+				itemCache.CreateItemWithChildren(lw, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(lw, parentKey, itemCache, groupCache, level)
+				})...,
 			)
 		})
+		return result
+	case model.BinkyNetLocalWorker:
+		result = append(result,
+			groupCache.CreateItem("Devices", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetDevices(), parentKey, itemCache, groupCache, level)
+			}, level, binkyNetLocalWorkerDeviceSet{entity}),
+			groupCache.CreateItem("Objects", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetObjects(), parentKey, itemCache, groupCache, level)
+			}, level, binkyNetLocalWorkerObjectSet{entity}),
+		)
 		return result
 	case model.BinkyNetDeviceSet:
 		entity.ForEach(func(entity model.BinkyNetDevice) {
@@ -152,12 +167,18 @@ func buildTreeViewItems(entity interface{},
 	case model.BinkyNetObjectSet:
 		entity.ForEach(func(entity model.BinkyNetObject) {
 			result = append(result,
-				itemCache.CreateItem(entity, parentKey, level),
-				groupCache.CreateItem("Connections", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(entity.GetConnections(), parentKey, itemCache, groupCache, level)
-				}, level+1, binkyNetObjectConnectionSet{entity}),
+				itemCache.CreateItemWithChildren(entity, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
+					return buildTreeViewItems(entity, parentKey, itemCache, groupCache, level)
+				})...,
 			)
 		})
+		return result
+	case model.BinkyNetObject:
+		result = append(result,
+			groupCache.CreateItem("Connections", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
+				return buildTreeViewItems(entity.GetConnections(), parentKey, itemCache, groupCache, level)
+			}, level, binkyNetObjectConnectionSet{entity}),
+		)
 		return result
 	case model.BinkyNetConnectionSet:
 		entity.ForEach(func(entity model.BinkyNetConnection) {
@@ -170,10 +191,12 @@ func buildTreeViewItems(entity interface{},
 		})
 		return result
 	case model.BinkyNetConnectionPinList:
+		i := 0
 		entity.ForEach(func(entity model.BinkyNetDevicePin) {
 			result = append(result,
-				itemCache.CreateItem(binkyNetDevicePinEntity{entity}, parentKey, level),
+				itemCache.CreateItem(binkyNetDevicePinEntity{i, entity}, parentKey, level),
 			)
+			i++
 		})
 		return result
 	}
@@ -185,7 +208,7 @@ type moduleBlockSet struct {
 	model.Module
 }
 
-func (e moduleBlockSet) GetID() string       { return e.Module.GetID() + "/blocks" }
+func (e moduleBlockSet) GetID() string       { return "blocks" }
 func (e moduleBlockSet) Select() interface{} { return e.Module.GetBlocks() }
 
 // Identifyable & Selectable implementation for BlockGroupSet
@@ -193,7 +216,7 @@ type moduleBlockGroupSet struct {
 	model.Module
 }
 
-func (e moduleBlockGroupSet) GetID() string       { return e.Module.GetID() + "/blockGroups" }
+func (e moduleBlockGroupSet) GetID() string       { return "blockGroups" }
 func (e moduleBlockGroupSet) Select() interface{} { return e.Module.GetBlockGroups() }
 
 // Identifyable & Selectable implementation for EdgeSet
@@ -201,7 +224,7 @@ type moduleEdgeSet struct {
 	model.Module
 }
 
-func (e moduleEdgeSet) GetID() string       { return e.Module.GetID() + "/edges" }
+func (e moduleEdgeSet) GetID() string       { return "edges" }
 func (e moduleEdgeSet) Select() interface{} { return e.Module.GetEdges() }
 
 // Identifyable & Selectable implementation for JunctionSet
@@ -209,7 +232,7 @@ type moduleJunctionSet struct {
 	model.Module
 }
 
-func (e moduleJunctionSet) GetID() string       { return e.Module.GetID() + "/junctions" }
+func (e moduleJunctionSet) GetID() string       { return "junctions" }
 func (e moduleJunctionSet) Select() interface{} { return e.Module.GetJunctions() }
 
 // Identifyable & Selectable implementation for OutputSet
@@ -217,7 +240,7 @@ type moduleOutputSet struct {
 	model.Module
 }
 
-func (e moduleOutputSet) GetID() string       { return e.Module.GetID() + "/outputs" }
+func (e moduleOutputSet) GetID() string       { return "outputs" }
 func (e moduleOutputSet) Select() interface{} { return e.Module.GetOutputs() }
 
 // Identifyable & Selectable implementation for RouteSet
@@ -225,7 +248,7 @@ type moduleRouteSet struct {
 	model.Module
 }
 
-func (e moduleRouteSet) GetID() string       { return e.Module.GetID() + "/routes" }
+func (e moduleRouteSet) GetID() string       { return "routes" }
 func (e moduleRouteSet) Select() interface{} { return e.Module.GetRoutes() }
 
 // Identifyable & Selectable implementation for SensorSet
@@ -233,7 +256,7 @@ type moduleSensorSet struct {
 	model.Module
 }
 
-func (e moduleSensorSet) GetID() string       { return e.Module.GetID() + "/sensors" }
+func (e moduleSensorSet) GetID() string       { return "sensors" }
 func (e moduleSensorSet) Select() interface{} { return e.Module.GetSensors() }
 
 // Identifyable & Selectable implementation for SignalSet
@@ -241,7 +264,7 @@ type moduleSignalSet struct {
 	model.Module
 }
 
-func (e moduleSignalSet) GetID() string       { return e.Module.GetID() + "/signals" }
+func (e moduleSignalSet) GetID() string       { return "signals" }
 func (e moduleSignalSet) Select() interface{} { return e.Module.GetSignals() }
 
 // Identifyable & Selectable implementation for BinkyNetLocalWorkerSet
@@ -250,7 +273,7 @@ type binkyNetCommandStationLocalWorkerSet struct {
 }
 
 func (e binkyNetCommandStationLocalWorkerSet) GetID() string {
-	return e.BinkyNetCommandStation.GetID() + "/localworkers"
+	return "localworkers"
 }
 func (e binkyNetCommandStationLocalWorkerSet) Select() interface{} {
 	return e.BinkyNetCommandStation.GetLocalWorkers()
@@ -262,7 +285,7 @@ type binkyNetLocalWorkerDeviceSet struct {
 }
 
 func (e binkyNetLocalWorkerDeviceSet) GetID() string {
-	return e.BinkyNetLocalWorker.GetID() + "/devices"
+	return "devices"
 }
 func (e binkyNetLocalWorkerDeviceSet) Select() interface{} { return e.BinkyNetLocalWorker.GetDevices() }
 
@@ -272,7 +295,7 @@ type binkyNetLocalWorkerObjectSet struct {
 }
 
 func (e binkyNetLocalWorkerObjectSet) GetID() string {
-	return e.BinkyNetLocalWorker.GetID() + "/objects"
+	return "objects"
 }
 func (e binkyNetLocalWorkerObjectSet) Select() interface{} { return e.BinkyNetLocalWorker.GetObjects() }
 
@@ -281,7 +304,7 @@ type binkyNetObjectConnectionSet struct {
 	model.BinkyNetObject
 }
 
-func (e binkyNetObjectConnectionSet) GetID() string       { return e.BinkyNetObject.GetID() + "/connections" }
+func (e binkyNetObjectConnectionSet) GetID() string       { return "connections" }
 func (e binkyNetObjectConnectionSet) Select() interface{} { return e.BinkyNetObject.GetConnections() }
 
 // Identifyable & Selectable implementation for BinkyNetConnectionSet
@@ -290,10 +313,7 @@ type binkyNetObjectConnectionPinSet struct {
 }
 
 func (e binkyNetObjectConnectionPinSet) GetID() string {
-	if obj := e.BinkyNetConnection.GetObject(); obj != nil {
-		return fmt.Sprintf("%s-%s/pins", obj.GetID(), e.BinkyNetConnection.GetKey())
-	}
-	return ""
+	return "pins"
 }
 func (e binkyNetObjectConnectionPinSet) Select() interface{} { return e.BinkyNetConnection.GetPins() }
 
@@ -303,18 +323,19 @@ type binkyNetConnectionEntity struct {
 }
 
 func (e binkyNetConnectionEntity) GetID() string {
-	return fmt.Sprintf("%s-%s", e.GetObject().GetID(), e.GetKey())
+	return string(e.GetKey())
 }
 func (e binkyNetConnectionEntity) GetDescription() string { return string(e.GetKey()) }
 func (e binkyNetConnectionEntity) Select() interface{}    { return e.BinkyNetConnection }
 
 // Entity implementation for BinkyNetDevicePin
 type binkyNetDevicePinEntity struct {
+	index int
 	model.BinkyNetDevicePin
 }
 
 func (e binkyNetDevicePinEntity) GetID() string {
-	return fmt.Sprintf("%s-%s-%d", e.GetConnection().GetObject().GetID(), e.BinkyNetDevicePin.GetDeviceID(), e.BinkyNetDevicePin.GetIndex())
+	return strconv.Itoa(e.index)
 }
 func (e binkyNetDevicePinEntity) GetDescription() string {
 	return fmt.Sprintf("%s[%d]", e.BinkyNetDevicePin.GetDeviceID(), e.BinkyNetDevicePin.GetIndex())
