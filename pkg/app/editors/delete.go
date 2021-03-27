@@ -31,6 +31,11 @@ func createOnDelete(etx EditorContext, entity interface{}) func(context.Context)
 	}
 	return func(ctx context.Context) error {
 		switch entity := entity.(type) {
+		case model.BinkyNetLocalWorker:
+			cs := entity.GetCommandStation()
+			if !cs.GetLocalWorkers().Remove(entity) {
+				return fmt.Errorf("Failed to remove local worker")
+			}
 		case model.BinkyNetDevice:
 			lw := entity.GetLocalWorker()
 			if !lw.GetDevices().Remove(entity) {
