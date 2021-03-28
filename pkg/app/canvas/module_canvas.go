@@ -28,12 +28,10 @@ import (
 
 // ModuleCanvas creates an entity canvas for the given module.
 func ModuleCanvas(module model.Module, builder WidgetBuilder) *EntityCanvas {
+	bounds := f32.Rect(0, 0, float32(module.GetWidth()), float32(module.GetHeight()))
 	ec := &EntityCanvas{
 		GetMaxSize: func() f32.Point {
-			return f32.Point{
-				X: float32(module.GetWidth()),
-				Y: float32(module.GetHeight()),
-			}
+			return bounds.Size()
 		},
 		Entities: func(cb func(Entity)) {
 			module.ForEachPositionedEntity(func(x model.PositionedEntity) {
@@ -44,11 +42,11 @@ func ModuleCanvas(module model.Module, builder WidgetBuilder) *EntityCanvas {
 		scale:   1,
 	}
 	if bgImage := module.GetBackgroundImage(); bgImage != nil {
-		if img, format, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
+		if img, _, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
 			fmt.Println(err)
 		} else if img != nil {
-			fmt.Printf("Found format '%s'\n", format)
-			ec.SetBackground(img)
+			bgWidget := NewImageWidget(bounds, img)
+			ec.SetBackground(bgWidget)
 		}
 	}
 	return ec

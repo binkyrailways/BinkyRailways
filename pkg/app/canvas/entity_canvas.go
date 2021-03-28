@@ -29,7 +29,6 @@ import (
 	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/clip"
-	"gioui.org/op/paint"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
@@ -79,9 +78,8 @@ type EntityCanvas struct {
 	// If set, OnSelect is called when the given entity is selected.
 	OnSelect func(Entity)
 
-	// Background image
-	background   image.Image
-	backgroundOp paint.ImageOp
+	// Background widget
+	background Widget
 	// Map of entityID -> widget
 	widgets map[string]*canvasWidget
 	// Current scale
@@ -208,16 +206,9 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	}
 }
 
-// SetBackground sets the background image
-func (ec *EntityCanvas) SetBackground(img image.Image) {
-	if ec.background != img {
-		ec.background = img
-		if img != nil {
-			ec.backgroundOp = paint.NewImageOp(img)
-		} else {
-			ec.backgroundOp = paint.ImageOp{}
-		}
-	}
+// SetBackground stores a background widget
+func (ec *EntityCanvas) SetBackground(background Widget) {
+	ec.background = background
 }
 
 // SetScale adjusts the current scale
@@ -233,13 +224,21 @@ func (ec *EntityCanvas) SetScale(scale float32) bool {
 // rebuildWidgets ensures that the map of widgets contains
 // exactly those widgets that we currently need.
 // Returns: maxSize
-func (ec *EntityCanvas) rebuildWidgets() f32.Point {
+func (ec *EntityCanvas) rebuildWidgets() ([]*canvasWidget, f32.Point) {
 	if ec.widgets == nil {
 		ec.widgets = make(map[string]*canvasWidget)
 	}
 	// Ensure we have all widgets
 	maxSize := ec.GetMaxSize()
 	foundIDs := make(map[string]struct{})
+	minCap := len(ec.widgets) + 64
+	list := make([]*canvasWidget, 0, minCap)
+	if ec.background != nil {
+		list = append(list, &canvasWidget{
+			entity: nil,
+			widget: ec.background,
+		})
+	}
 	ec.Entities(func(entity Entity) {
 		id := entity.GetID()
 		foundIDs[id] = struct{}{}
@@ -263,6 +262,7 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 		if sz.Y > maxSize.Y {
 			maxSize.Y = sz.Y
 		}
+		list = append(list, entry)
 	})
 	// Ensure we do not have too much widgets
 	for id := range ec.widgets {
@@ -270,7 +270,7 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 			delete(ec.widgets, id)
 		}
 	}
-	return maxSize
+	return list, maxSize
 }
 
 // GetSelection returns the current selection (if any)
@@ -322,7 +322,7 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 	// Ensure we have all widgets
 	max := gtx.Constraints.Max
 	clip.Rect{Max: max}.Add(gtx.Ops)
-	maxSize := ec.rebuildWidgets()
+	widgets, maxSize := ec.rebuildWidgets()
 	// Prepare overall scaling
 	scale := ec.scale
 	if maxSize.X > 0 && maxSize.Y > 0 {
@@ -335,27 +335,8 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 		}
 		scale *= minScale
 	}
-	// Draw background (if any)
-	if ec.background != nil {
-		// Calculate scale of background image
-		imgSz := layout.FPt(ec.background.Bounds().Size())
-		if imgSz.X > 0 && imgSz.Y > 0 {
-			state := op.Save(gtx.Ops)
-			tr := f32.Affine2D{}.
-				Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
-			op.Affine(tr).Add(gtx.Ops)
-			prevMax := gtx.Constraints.Max
-			gtx.Constraints.Max = image.Point{X: int(maxSize.X), Y: int(maxSize.Y)}
-			widget.Image{
-				Src: ec.backgroundOp,
-				Fit: widget.Contain,
-			}.Layout(gtx)
-			state.Load()
-			gtx.Constraints.Max = prevMax
-		}
-	}
 	// Layout all widgets
-	for _, w := range ec.widgets {
+	for _, w := range widgets {
 		// Save state
 		state := op.Save(gtx.Ops)
 		// Prepare transformation & size
