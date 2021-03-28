@@ -64,6 +64,9 @@ type WidgetBuilder interface {
 // EntityIterator defines an iterator function for positioned entities
 type EntityIterator = func(func(entity Entity))
 
+// WidgetTransformer is used to transform widgets
+type WidgetTransformer = func(entity Entity, tx f32.Affine2D) f32.Affine2D
+
 // EntityCanvas shows positioned entities in a 2D view.
 type EntityCanvas struct {
 	// Exclusive to claim when painting
@@ -73,6 +76,8 @@ type EntityCanvas struct {
 	// Entities must be set to an iterator function that yields
 	// all entities that must be displayed in the canvas.
 	Entities EntityIterator
+	// Transformer allows widgets to be replaced.
+	Transformer WidgetTransformer
 	// Builder must be set to an entity visitor that builds Widgets.
 	Builder WidgetBuilder
 	// If set, OnSelect is called when the given entity is selected.
@@ -198,11 +203,10 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 
 	// Draw selection overlay (if needed)
 	if wState.Hovered {
-		clip.Border{
-			Rect:  f32.Rectangle{Max: layout.FPt(size)},
-			Width: 1,
-			//Dashes: clip.DashSpec{},
-		}.Add(gtx.Ops)
+		clip.Stroke{
+			Path:  clip.UniformRRect(f32.Rectangle{Max: layout.FPt(size)}, 0).Path(gtx.Ops),
+			Style: clip.StrokeStyle{Width: 1},
+		}.Op().Add(gtx.Ops)
 	}
 }
 
@@ -224,7 +228,7 @@ func (ec *EntityCanvas) SetScale(scale float32) bool {
 // rebuildWidgets ensures that the map of widgets contains
 // exactly those widgets that we currently need.
 // Returns: maxSize
-func (ec *EntityCanvas) rebuildWidgets() ([]*canvasWidget, f32.Point) {
+func (ec *EntityCanvas) rebuildWidgets(tranformer WidgetTransformer) ([]*canvasWidget, f32.Point) {
 	if ec.widgets == nil {
 		ec.widgets = make(map[string]*canvasWidget)
 	}
@@ -322,7 +326,13 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 	// Ensure we have all widgets
 	max := gtx.Constraints.Max
 	clip.Rect{Max: max}.Add(gtx.Ops)
-	widgets, maxSize := ec.rebuildWidgets()
+	transformer := ec.Transformer
+	if transformer == nil {
+		transformer = func(entity Entity, tx f32.Affine2D) f32.Affine2D {
+			return tx
+		}
+	}
+	widgets, maxSize := ec.rebuildWidgets(transformer)
 	// Prepare overall scaling
 	scale := ec.scale
 	if maxSize.X > 0 && maxSize.Y > 0 {
@@ -341,6 +351,7 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 		state := op.Save(gtx.Ops)
 		// Prepare transformation & size
 		tr, size, rad := w.widget.GetAffineAndSize()
+		tr = transformer(w.entity, tr)
 		tr = tr.Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
 		op.Affine(tr).Add(gtx.Ops)
 		// Layout widget

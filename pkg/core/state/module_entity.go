@@ -17,15 +17,9 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
-
-// Input specifies the state of a single input
-type Input interface {
-	ModuleEntity
-
-	// Address of the entity
-	GetAddress() model.Address
-
-	// Is this sensor in the 'active' state?
-	GetActive() ActualBoolProperty
+// ModuleEntity specifies the state of a single entity that is contained in a module.
+type ModuleEntity interface {
+	Entity
+	// Unique ID of the module containing this entity
+	GetModuleID() string
 }

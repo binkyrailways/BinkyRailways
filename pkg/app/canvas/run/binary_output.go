@@ -68,10 +68,10 @@ func (b *binaryOutput) Layout(ctx context.Context, gtx C, size image.Point, th *
 	if !active.IsConsistent(ctx) {
 		state := op.Save(gtx.Ops)
 		paint.ColorOp{Color: canvas.InConsistentBorder}.Add(gtx.Ops)
-		clip.Border{
-			Rect:  rect,
-			Width: 2,
-		}.Add(gtx.Ops)
+		clip.Stroke{
+			Path:  clip.UniformRRect(rect, 0).Path(gtx.Ops),
+			Style: clip.StrokeStyle{Width: 2},
+		}.Op().Add(gtx.Ops)
 		state.Load()
 	}
 

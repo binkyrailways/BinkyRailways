@@ -27,29 +27,38 @@ import (
 
 // NewModuleSettings constructs a settings component for a Module.
 func NewModuleSettings(entity model.Module) Settings {
+	moduleRef, _ := entity.GetPackage().GetRailway().GetModules().Get(entity.GetID())
 	s := &moduleSettings{
-		entity: entity,
+		entity:    entity,
+		moduleRef: moduleRef,
 	}
 	s.description.SetText(entity.GetDescription())
+	s.positionSettings.Initialize(moduleRef, true)
 	return s
 }
 
 // moduleSettings implements an settings grid for a Module.
 type moduleSettings struct {
-	entity model.Module
+	entity    model.Module
+	moduleRef model.ModuleRef
 
 	description w.Editor
+	positionSettings
 }
 
 // Handle events and draw the editor
 func (e *moduleSettings) Layout(gtx C, th *material.Theme) D {
 	e.entity.SetDescription(e.description.Text())
+	e.positionSettings.Update(e.moduleRef)
 
+	positionRows := e.positionSettings.Rows(th)
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		widgets.SettingsGridRow{Title: "Name", Layout: func(gtx C) D {
-			return material.Editor(th, &e.description, "Name").Layout(gtx)
-		}},
+		append([]widgets.SettingsGridRow{
+			{Title: "Name", Layout: func(gtx C) D {
+				return material.Editor(th, &e.description, "Name").Layout(gtx)
+			}},
+		}, positionRows...)...,
 	)
 
 	return grid.Layout(gtx, th)

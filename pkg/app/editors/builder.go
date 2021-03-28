@@ -26,8 +26,11 @@ func BuildEditor(selection interface{}, etx EditorContext, current Editor) Edito
 	switch selection := selection.(type) {
 	case model.Loc:
 		return newLocEditor(selection, etx)
-	case model.Module:
-		return newModuleEditor(selection, etx)
+	case model.ModuleRef:
+		if module := selection.TryResolve(); module != nil {
+			return newModuleEditor(module, etx)
+		}
+		return nil
 	case model.Railway:
 		return newRailwayEditor(selection, etx)
 	case model.ModuleEntity:

@@ -26,15 +26,17 @@ import (
 
 // positionSettings implements a part of settings grid for a positioned entities.
 type positionSettings struct {
-	x        widgets.IntEditor
-	y        widgets.IntEditor
-	width    widgets.IntEditor
-	height   widgets.IntEditor
-	rotation widgets.IntEditor
+	excludeSize bool
+	x           widgets.IntEditor
+	y           widgets.IntEditor
+	width       widgets.IntEditor
+	height      widgets.IntEditor
+	rotation    widgets.IntEditor
 }
 
 // Initialize the UI from the given entity
-func (e *positionSettings) Initialize(source model.PositionedEntity) {
+func (e *positionSettings) Initialize(source model.PositionedEntity, excludeSize ...bool) {
+	e.excludeSize = len(excludeSize) > 0 && excludeSize[0]
 	e.x.SetValue(source.GetX())
 	e.y.SetValue(source.GetY())
 	e.width.SetValue(source.GetWidth())
@@ -50,11 +52,13 @@ func (e *positionSettings) Update(entity model.PositionedEntity) {
 	if value, err := e.y.GetValue(); err == nil {
 		entity.SetY(value)
 	}
-	if value, err := e.width.GetValue(); err == nil {
-		entity.SetWidth(value)
-	}
-	if value, err := e.height.GetValue(); err == nil {
-		entity.SetHeight(value)
+	if !e.excludeSize {
+		if value, err := e.width.GetValue(); err == nil {
+			entity.SetWidth(value)
+		}
+		if value, err := e.height.GetValue(); err == nil {
+			entity.SetHeight(value)
+		}
 	}
 	if value, err := e.rotation.GetValue(); err == nil {
 		entity.SetRotation(value)
@@ -63,21 +67,28 @@ func (e *positionSettings) Update(entity model.PositionedEntity) {
 
 // Rows generates rows for a settings grid.
 func (e *positionSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
-	return []widgets.SettingsGridRow{
+	rows := []widgets.SettingsGridRow{
 		{Title: "X", Layout: func(gtx C) D {
 			return material.Editor(th, &e.x.Editor, "").Layout(gtx)
 		}},
 		{Title: "Y", Layout: func(gtx C) D {
 			return material.Editor(th, &e.y.Editor, "").Layout(gtx)
 		}},
-		{Title: "Width", Layout: func(gtx C) D {
-			return material.Editor(th, &e.width.Editor, "").Layout(gtx)
-		}},
-		{Title: "Height", Layout: func(gtx C) D {
-			return material.Editor(th, &e.height.Editor, "").Layout(gtx)
-		}},
-		{Title: "Rotation", Layout: func(gtx C) D {
+	}
+	if !e.excludeSize {
+		rows = append(rows,
+			widgets.SettingsGridRow{Title: "Width", Layout: func(gtx C) D {
+				return material.Editor(th, &e.width.Editor, "").Layout(gtx)
+			}},
+			widgets.SettingsGridRow{Title: "Height", Layout: func(gtx C) D {
+				return material.Editor(th, &e.height.Editor, "").Layout(gtx)
+			}},
+		)
+	}
+	rows = append(rows,
+		widgets.SettingsGridRow{Title: "Rotation", Layout: func(gtx C) D {
 			return material.Editor(th, &e.rotation.Editor, "").Layout(gtx)
 		}},
-	}
+	)
+	return rows
 }

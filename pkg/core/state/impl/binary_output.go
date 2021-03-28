@@ -52,8 +52,13 @@ func newBinaryOutput(en model.BinaryOutput, railway Railway) BinaryOutput {
 	return bo
 }
 
+// Unique ID of the module containing this entity
+func (b *binaryOutput) GetModuleID() string {
+	return b.getBinaryOutput().GetModule().GetID()
+}
+
 // getBinaryOutput returns the entity as BinaryOutput.
-func (bo *output) getBinaryOutput() model.BinaryOutput {
+func (bo *binaryOutput) getBinaryOutput() model.BinaryOutput {
 	return bo.GetEntity().(model.BinaryOutput)
 }
 

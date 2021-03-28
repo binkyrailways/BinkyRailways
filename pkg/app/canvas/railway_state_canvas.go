@@ -21,11 +21,17 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"math"
 
 	"gioui.org/f32"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
+
+type moduleTransform struct {
+	bounds f32.Rectangle
+	rad    float32
+}
 
 // RailwayStateCanvas creates an entity canvas for the given railway in running mode.
 func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCanvas {
@@ -33,6 +39,7 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 	bounds := f32.Rectangle{}
 	rm := railway.GetModel()
 	var bgWidgets []Widget
+	moduleTxs := make(map[string]moduleTransform)
 	rm.GetModules().ForEach(func(modRef model.ModuleRef) {
 		if module := modRef.TryResolve(); module != nil {
 			// Calculate module bounds
@@ -40,6 +47,12 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 			mofs := f32.Pt(float32(modRef.GetX()), float32(modRef.GetY()))
 			mbounds := f32.Rectangle{Min: mofs, Max: mofs.Add(msz)}
 			bounds = bounds.Union(mbounds)
+
+			// Prepare module transform
+			moduleTxs[module.GetID()] = moduleTransform{
+				bounds: mbounds,
+				rad:    float32(modRef.GetRotation()%360) * (math.Pi / 180),
+			}
 
 			// Prepare module background (if any)
 			if bgImage := module.GetBackgroundImage(); bgImage != nil {
@@ -57,6 +70,15 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 		Exclusive: railway,
 		GetMaxSize: func() f32.Point {
 			return bounds.Size()
+		},
+		Transformer: func(entity Entity, tr f32.Affine2D) f32.Affine2D {
+			if modEntity, ok := entity.(state.ModuleEntity); ok {
+				if modTx, found := moduleTxs[modEntity.GetModuleID()]; found {
+					mtr := f32.Affine2D{}.Offset(modTx.bounds.Min).Rotate(modTx.bounds.Min, modTx.rad)
+					tr = mtr.Mul(tr)
+				}
+			}
+			return tr
 		},
 		Entities: func(cb func(Entity)) {
 			railway.ForEachBlock(func(x state.Block) {

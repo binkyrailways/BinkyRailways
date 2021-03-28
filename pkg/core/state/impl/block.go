@@ -60,6 +60,11 @@ func (b *block) TryPrepareForUse(context.Context, state.UserInterface, state.Per
 	return nil
 }
 
+// Unique ID of the module containing this entity
+func (b *block) GetModuleID() string {
+	return b.getBlock().GetModule().GetID()
+}
+
 // Gets the underlying model
 func (b *block) GetModel() model.Block {
 	return b.getBlock()

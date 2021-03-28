@@ -49,6 +49,11 @@ func (s *sensor) Configure(railway Railway) {
 	s.active.Configure(s, railway, railway)
 }
 
+// Unique ID of the module containing this entity
+func (s *sensor) GetModuleID() string {
+	return s.getSensor().GetModule().GetID()
+}
+
 // getSensor returns the entity as Sensor.
 func (s *sensor) getSensor() model.Sensor {
 	return s.GetEntity().(model.Sensor)

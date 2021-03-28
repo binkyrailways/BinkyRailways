@@ -49,6 +49,11 @@ func newRoute(en model.Route, railway Railway) Route {
 	return r
 }
 
+// Unique ID of the module containing this entity
+func (r *route) GetModuleID() string {
+	return r.getRoute().GetModule().GetID()
+}
+
 // getRoute returns the entity as Route.
 func (r *route) getRoute() model.Route {
 	return r.GetEntity().(model.Route)

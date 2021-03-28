@@ -25,7 +25,7 @@ import (
 
 // Block specifies the state of a single block.
 type Block interface {
-	Entity
+	ModuleEntity
 	Lockable
 
 	// Gets the underlying model
