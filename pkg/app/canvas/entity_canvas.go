@@ -79,7 +79,7 @@ type EntityCanvas struct {
 	OnSelect func(Entity)
 
 	// Background widget
-	background Widget
+	background []Widget
 	// Map of entityID -> widget
 	widgets map[string]*canvasWidget
 	// Current scale
@@ -207,7 +207,7 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 }
 
 // SetBackground stores a background widget
-func (ec *EntityCanvas) SetBackground(background Widget) {
+func (ec *EntityCanvas) SetBackground(background ...Widget) {
 	ec.background = background
 }
 
@@ -231,12 +231,12 @@ func (ec *EntityCanvas) rebuildWidgets() ([]*canvasWidget, f32.Point) {
 	// Ensure we have all widgets
 	maxSize := ec.GetMaxSize()
 	foundIDs := make(map[string]struct{})
-	minCap := len(ec.widgets) + 64
+	minCap := len(ec.widgets) + 64 + len(ec.background)
 	list := make([]*canvasWidget, 0, minCap)
-	if ec.background != nil {
+	for _, bg := range ec.background {
 		list = append(list, &canvasWidget{
 			entity: nil,
-			widget: ec.background,
+			widget: bg,
 		})
 	}
 	ec.Entities(func(entity Entity) {

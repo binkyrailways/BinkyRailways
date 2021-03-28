@@ -18,20 +18,45 @@
 package canvas
 
 import (
+	"bytes"
+	"fmt"
+	"image"
+
 	"gioui.org/f32"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 // RailwayStateCanvas creates an entity canvas for the given railway in running mode.
 func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCanvas {
-	//rm := railway.GetModel()
+	// Calculate dimensions & prepare background images
+	bounds := f32.Rectangle{}
+	rm := railway.GetModel()
+	var bgWidgets []Widget
+	rm.GetModules().ForEach(func(modRef model.ModuleRef) {
+		if module := modRef.TryResolve(); module != nil {
+			// Calculate module bounds
+			msz := f32.Pt(float32(module.GetWidth()), float32(module.GetHeight()))
+			mofs := f32.Pt(float32(modRef.GetX()), float32(modRef.GetY()))
+			mbounds := f32.Rectangle{Min: mofs, Max: mofs.Add(msz)}
+			bounds = bounds.Union(mbounds)
+
+			// Prepare module background (if any)
+			if bgImage := module.GetBackgroundImage(); bgImage != nil {
+				if img, _, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
+					fmt.Println(err)
+				} else if img != nil {
+					bgWidget := NewImageWidget(mbounds, img)
+					bgWidgets = append(bgWidgets, bgWidget)
+				}
+			}
+		}
+	})
+
 	ec := &EntityCanvas{
 		Exclusive: railway,
 		GetMaxSize: func() f32.Point {
-			return f32.Point{
-				X: float32(200 /* TODO rm.GetWidth()*/),
-				Y: float32(200 /* TODO rm.GetHeight() */),
-			}
+			return bounds.Size()
 		},
 		Entities: func(cb func(Entity)) {
 			railway.ForEachBlock(func(x state.Block) {
@@ -53,13 +78,6 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 		Builder: builder,
 		scale:   1,
 	}
-	/*	if bgImage := module.GetBackgroundImage(); bgImage != nil {
-		if img, format, err := image.Decode(bytes.NewReader(bgImage)); err != nil {
-			fmt.Println(err)
-		} else if img != nil {
-			fmt.Printf("Found format '%s'\n", format)
-			ec.SetBackground(img)
-		}
-	}*/
+	ec.SetBackground(bgWidgets...)
 	return ec
 }
