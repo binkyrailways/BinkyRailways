@@ -19,8 +19,10 @@ package run
 
 import (
 	"context"
+	"image"
 
 	"gioui.org/f32"
+	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
@@ -36,19 +38,15 @@ type binaryOutput struct {
 	entity state.BinaryOutput
 }
 
-// Return the bounds of the widget on the canvas
-func (b *binaryOutput) GetBounds() f32.Rectangle {
-	return canvas.GetPositionedEntityBounds(b.entity.GetModel())
-}
-
-// Returns rotation of entity in degrees
-func (b *binaryOutput) GetRotation() int {
-	return b.entity.GetModel().GetRotation()
+// Return a matrix for drawing the widget in its proper orientation and
+// the size of the area it is drawing into.
+func (b *binaryOutput) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
+	return canvas.GetPositionedEntityAffineAndSize(b.entity.GetModel())
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *binaryOutput) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *binaryOutput) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
 	active := b.entity.GetActive()
 	if state.Clicked {
 		// Toggle output
@@ -64,7 +62,7 @@ func (b *binaryOutput) Layout(ctx context.Context, gtx C, th *material.Theme, st
 		bg = canvas.HoverBg
 	}
 
-	rect := f32.Rectangle{Max: canvas.GetPositionedEntitySize(b.entity.GetModel())}
+	rect := f32.Rectangle{Max: layout.FPt(size)}
 	rrect := clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4))))
 	paint.FillShape(gtx.Ops, bg, rrect.Op(gtx.Ops))
 	if !active.IsConsistent(ctx) {

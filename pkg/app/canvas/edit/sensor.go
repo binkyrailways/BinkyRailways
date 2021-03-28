@@ -19,8 +19,10 @@ package edit
 
 import (
 	"context"
+	"image"
 
 	"gioui.org/f32"
+	"gioui.org/layout"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
@@ -31,23 +33,18 @@ type sensor struct {
 	entity model.Sensor
 }
 
-// Return the bounds of the widget on the canvas
-func (b *sensor) GetBounds() f32.Rectangle {
-	return canvas.GetPositionedEntityBounds(b.entity)
-}
-
-// Returns rotation of entity in degrees
-func (b *sensor) GetRotation() int {
-	return b.entity.GetRotation()
+// Return a matrix for drawing the widget in its proper orientation and
+// the size of the area it is drawing into.
+func (b *sensor) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
+	return canvas.GetPositionedEntityAffineAndSize(b.entity)
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *sensor) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *sensor) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
 	bg := canvas.SensorBg
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
-	sz := canvas.GetPositionedEntitySize(b.entity)
-	canvas.DrawSensorShape(gtx, b.entity.GetShape(), bg, sz)
+	canvas.DrawSensorShape(gtx, b.entity.GetShape(), bg, layout.FPt(size))
 }

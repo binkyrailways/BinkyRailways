@@ -19,8 +19,10 @@ package edit
 
 import (
 	"context"
+	"image"
 
 	"gioui.org/f32"
+	"gioui.org/layout"
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
@@ -35,25 +37,21 @@ type block struct {
 	entity model.Block
 }
 
-// Return the bounds of the widget on the canvas
-func (b *block) GetBounds() f32.Rectangle {
-	return canvas.GetPositionedEntityBounds(b.entity)
-}
-
-// Returns rotation of entity in degrees
-func (b *block) GetRotation() int {
-	return b.entity.GetRotation()
+// Return a matrix for drawing the widget in its proper orientation and
+// the size of the area it is drawing into.
+func (b *block) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
+	return canvas.GetPositionedEntityAffineAndSize(b.entity)
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *block) Layout(ctx context.Context, gtx C, th *material.Theme, state canvas.WidgetState) {
+func (b *block) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
 	bg := canvas.BlockBg
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
 
-	rect := f32.Rectangle{Max: canvas.GetPositionedEntitySize(b.entity)}
+	rect := f32.Rectangle{Max: layout.FPt(size)}
 	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
 
 	widgets.TextCenter(gtx, th, b.entity.GetDescription())

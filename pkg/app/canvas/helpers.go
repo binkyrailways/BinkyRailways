@@ -18,28 +18,34 @@
 package canvas
 
 import (
+	"math"
+
 	"gioui.org/f32"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// GetPositionedEntityBounds returns the bounds of the given entity.
-func GetPositionedEntityBounds(entity model.PositionedEntity) f32.Rectangle {
+// getPositionedEntityBounds returns the bounds of the given entity.
+func getPositionedEntityBounds(entity model.PositionedEntity) f32.Rectangle {
 	return f32.Rectangle{
-		Min: f32.Point{
-			X: float32(entity.GetX()),
-			Y: float32(entity.GetY()),
-		},
-		Max: f32.Point{
-			X: float32(entity.GetX() + entity.GetWidth()),
-			Y: float32(entity.GetY() + entity.GetHeight()),
-		},
+		Min: f32.Pt(float32(entity.GetX()), float32(entity.GetY())),
+		Max: f32.Pt(float32(entity.GetX()+entity.GetWidth()), float32(entity.GetY()+entity.GetHeight())),
 	}
 }
 
-// GetPositionedEntitySize returns the size of the given entity.
-func GetPositionedEntitySize(entity model.PositionedEntity) f32.Point {
-	return f32.Point{
-		X: float32(entity.GetWidth()),
-		Y: float32(entity.GetHeight()),
-	}
+// GetPositionedEntityAffineAndSize returns a matrix for positioning the entity
+// and the size of the clipping area.
+// Note that scaling is not applied.
+// Returns: Matrix, Size, Rotation (in radials, already applied in Matrix)
+func GetPositionedEntityAffineAndSize(entity model.PositionedEntity) (f32.Affine2D, f32.Point, float32) {
+	// Prepare transformation
+	bounds := getPositionedEntityBounds(entity)
+	// Translate, scale & rotate
+	rot := entity.GetRotation()
+	rad := float32(rot%360) * (math.Pi / 180)
+	tr := f32.Affine2D{}.
+		Offset(bounds.Min).
+		Rotate(bounds.Min, rad)
+	// Set clip rectangle
+	size := bounds.Size()
+	return tr, size, rad
 }

@@ -95,12 +95,12 @@ type EntityCanvas struct {
 // Widget is to be implemented by all positioned entities that
 // are to be made visible on the canvas.
 type Widget interface {
-	// Return the bounds of the widget on the canvas
-	GetBounds() f32.Rectangle
-	// Returns rotation of entity in degrees
-	GetRotation() int
+	// Return a matrix for drawing the widget in its proper orientation and
+	// the size of the area it is drawing into.
+	// Returns: Matrix, Size, Rotation (in radials, already applied in Matrix)
+	GetAffineAndSize() (f32.Affine2D, f32.Point, float32)
 	// Layout draws the widget and process events.
-	Layout(context.Context, layout.Context, *material.Theme, WidgetState)
+	Layout(ctx context.Context, gtx layout.Context, size image.Point, th *material.Theme, state WidgetState)
 }
 
 // WidgetState describes the current state of the widget
@@ -195,7 +195,7 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	clip.Rect{
 		Max: size,
 	}.Add(gtx.Ops)
-	cw.widget.Layout(ctx, gtx, th, wState)
+	cw.widget.Layout(ctx, gtx, size, th, wState)
 	state.Load()
 
 	// Draw selection overlay (if needed)
@@ -256,12 +256,12 @@ func (ec *EntityCanvas) rebuildWidgets() f32.Point {
 			}
 			ec.widgets[id] = entry
 		}
-		bounds := entry.widget.GetBounds()
-		if bounds.Max.X > maxSize.X {
-			maxSize.X = bounds.Max.X
+		_, sz, _ := entry.widget.GetAffineAndSize()
+		if sz.X > maxSize.X {
+			maxSize.X = sz.X
 		}
-		if bounds.Max.Y > maxSize.Y {
-			maxSize.Y = bounds.Max.Y
+		if sz.Y > maxSize.Y {
+			maxSize.Y = sz.Y
 		}
 	})
 	// Ensure we do not have too much widgets
@@ -337,34 +337,37 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 	}
 	// Draw background (if any)
 	if ec.background != nil {
-		state := op.Save(gtx.Ops)
-		tr := f32.Affine2D{}.
-			Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
-		op.Affine(tr).Add(gtx.Ops)
-		widget.Image{Src: ec.backgroundOp}.Layout(gtx)
-		state.Load()
+		// Calculate scale of background image
+		imgSz := layout.FPt(ec.background.Bounds().Size())
+		if imgSz.X > 0 && imgSz.Y > 0 {
+			state := op.Save(gtx.Ops)
+			tr := f32.Affine2D{}.
+				Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
+			op.Affine(tr).Add(gtx.Ops)
+			prevMax := gtx.Constraints.Max
+			gtx.Constraints.Max = image.Point{X: int(maxSize.X), Y: int(maxSize.Y)}
+			widget.Image{
+				Src: ec.backgroundOp,
+				Fit: widget.Contain,
+			}.Layout(gtx)
+			state.Load()
+			gtx.Constraints.Max = prevMax
+		}
 	}
 	// Layout all widgets
 	for _, w := range ec.widgets {
 		// Save state
 		state := op.Save(gtx.Ops)
-		// Prepare transformation
-		bounds := w.widget.GetBounds()
-		// Translate, scale & rotate
-		rot := w.widget.GetRotation()
-		rad := float32(rot%360) * (math.Pi / 180)
-		tr := f32.Affine2D{}.
-			Offset(bounds.Min).
-			Rotate(bounds.Min, rad).
-			Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
+		// Prepare transformation & size
+		tr, size, rad := w.widget.GetAffineAndSize()
+		tr = tr.Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
 		op.Affine(tr).Add(gtx.Ops)
-		// Set clip rectangle
-		size := image.Point{
-			X: int(bounds.Max.X - bounds.Min.X),
-			Y: int(bounds.Max.Y - bounds.Min.Y),
-		}
 		// Layout widget
-		w.layout(ctx, gtx, th, size, rad)
+		sz := image.Point{
+			X: int(math.Ceil(float64(size.X))),
+			Y: int(math.Ceil(float64(size.Y))),
+		}
+		w.layout(ctx, gtx, th, sz, rad)
 		// Retore previous state
 		state.Load()
 	}

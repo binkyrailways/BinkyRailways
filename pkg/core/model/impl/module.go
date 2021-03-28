@@ -143,7 +143,7 @@ func (m *module) SetBackgroundImage(value []byte) error {
 func (m *module) GetWidth() int {
 	maxw := 0
 	m.ForEachPositionedEntity(func(item model.PositionedEntity) {
-		w := item.GetWidth()
+		w := item.GetX() + item.GetWidth()
 		if w > maxw {
 			maxw = w
 		}
@@ -155,7 +155,7 @@ func (m *module) GetWidth() int {
 func (m *module) GetHeight() int {
 	maxh := 0
 	m.ForEachPositionedEntity(func(item model.PositionedEntity) {
-		h := item.GetHeight()
+		h := item.GetY() + item.GetHeight()
 		if h > maxh {
 			maxh = h
 		}
