@@ -21,6 +21,11 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
+type moduleEntitySet interface {
+	model.EntitySet
+	GetModule() model.Module
+}
+
 // BuildEditor constructs an editor the given selection.
 func BuildEditor(selection interface{}, etx EditorContext, current Editor) Editor {
 	switch selection := selection.(type) {
@@ -44,6 +49,18 @@ func BuildEditor(selection interface{}, etx EditorContext, current Editor) Edito
 		// Build new module editor
 		modEditor := newModuleEditor(module, etx)
 		modEditor.OnSelect(selection)
+		return modEditor
+	case moduleEntitySet:
+		// Re-use existing module editor (if possible)
+		module := selection.GetModule()
+		if modEditor, ok := current.(ModuleEditor); ok && modEditor.Module() == module {
+			// Re-use module editor
+			modEditor.OnSelect(nil)
+			return modEditor
+		}
+		// Build new module editor
+		modEditor := newModuleEditor(module, etx)
+		modEditor.OnSelect(nil)
 		return modEditor
 	default:
 		return newGenericEditor(selection, createOnDelete(etx, selection), etx)

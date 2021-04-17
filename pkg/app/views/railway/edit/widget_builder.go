@@ -48,7 +48,7 @@ func buildTreeViewItems(entity interface{},
 		entity.ForEach(func(c model.ModuleRef) {
 			if x := c.TryResolve(); x != nil {
 				result = append(result,
-					itemCache.CreateItemWithChildren(c, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
+					itemCache.CreateItemWithChildren(x, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
 						return buildTreeViewItems(x, parentKey, itemCache, groupCache, level)
 					})...,
 				)
