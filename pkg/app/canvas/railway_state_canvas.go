@@ -24,6 +24,7 @@ import (
 	"math"
 
 	"gioui.org/f32"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -53,6 +54,10 @@ func RailwayStateCanvas(railway state.Railway, builder WidgetBuilder) *EntityCan
 				bounds: mbounds,
 				rad:    float32(modRef.GetRotation()%360) * (math.Pi / 180),
 			}
+
+			// Prepare module border
+			borderWidget := NewBorderWidget(mbounds, widgets.ARGB(0x88333333))
+			bgWidgets = append(bgWidgets, borderWidget)
 
 			// Prepare module background (if any)
 			if bgImage := module.GetBackgroundImage(); bgImage != nil {

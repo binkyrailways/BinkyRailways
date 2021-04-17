@@ -66,7 +66,7 @@ func New(cfg Config, deps Dependencies) *App {
 		Config:        cfg,
 		Dependencies:  deps,
 		theme:         material.NewTheme(gofont.Collection()),
-		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways"), gapp.Size(unit.Dp(2048), unit.Dp(1600))),
+		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways"), gapp.WindowMode(gapp.Fullscreen), gapp.Size(unit.Dp(2048), unit.Dp(1600))),
 		railwayChange: make(chan model.Railway),
 	}
 	a.startView = start.New(deps.Logger, a)

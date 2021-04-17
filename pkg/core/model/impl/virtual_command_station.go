@@ -53,7 +53,7 @@ func (cs *virtualCommandStation) Accept(v model.EntityVisitor) interface{} {
 // What types of addresses does this command station support?
 // The result may vary depending on the type of the optional given entity.
 func (cs *virtualCommandStation) GetSupportedAddressTypes(entity model.AddressEntity) []model.AddressType {
-	return []model.AddressType{model.AddressTypeLocoNet, model.AddressTypeDcc, model.AddressTypeMotorola}
+	return []model.AddressType{model.AddressTypeBinkyNet, model.AddressTypeLocoNet, model.AddressTypeDcc, model.AddressTypeMotorola}
 }
 
 func (cs *virtualCommandStation) Upgrade() {

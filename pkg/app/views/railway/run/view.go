@@ -125,17 +125,17 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	// Configure appBar
 	v.appBar.Title = v.railway.GetDescription()
 	appBarActions := []component.AppBarAction{
-		component.SimpleIconAction(th, &v.buttonDiscover, views.IconSearch, component.OverflowAction{Name: "Discover", Tag: &v.buttonDiscover}),
-		component.SimpleIconAction(th, &v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
+		component.SimpleIconAction(&v.buttonDiscover, views.IconSearch, component.OverflowAction{Name: "Discover", Tag: &v.buttonDiscover}),
+		component.SimpleIconAction(&v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
 	}
 	if vm.GetEnabled() {
 		if vm.GetAutoRun() {
 			appBarActions = append(appBarActions,
-				component.SimpleIconAction(th, &v.buttonAutoRun, views.IconStopAutoRun, component.OverflowAction{Name: "Stop Auto run", Tag: &v.buttonAutoRun}),
+				component.SimpleIconAction(&v.buttonAutoRun, views.IconStopAutoRun, component.OverflowAction{Name: "Stop Auto run", Tag: &v.buttonAutoRun}),
 			)
 		} else {
 			appBarActions = append(appBarActions,
-				component.SimpleIconAction(th, &v.buttonAutoRun, views.IconStartAutoRun, component.OverflowAction{Name: "Start Auto run", Tag: &v.buttonAutoRun}),
+				component.SimpleIconAction(&v.buttonAutoRun, views.IconStartAutoRun, component.OverflowAction{Name: "Start Auto run", Tag: &v.buttonAutoRun}),
 			)
 		}
 	}

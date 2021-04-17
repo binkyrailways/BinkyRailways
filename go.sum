@@ -17,8 +17,13 @@ gioui.org v0.0.0-20210305084558-9793fcfcd0ac h1:b4tc/yIKXKVEXGPqQkLaeEVRwNFwir9F
 gioui.org v0.0.0-20210305084558-9793fcfcd0ac/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 gioui.org v0.0.0-20210328121704-c2e0910c8bb9 h1:YPasdSdr0wO9r7UYUhzhKR2mpyXj6Pi9rifjxzr+qhg=
 gioui.org v0.0.0-20210328121704-c2e0910c8bb9/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
+gioui.org v0.0.0-20210402191542-ce7f0da06ee3/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
+gioui.org v0.0.0-20210417091033-9bf4e559bca8 h1:gQjhqNd1KMXzy6EgeWf1dLwQf8mikDoATm2ZR8YTIOY=
+gioui.org v0.0.0-20210417091033-9bf4e559bca8/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 gioui.org/x v0.0.0-20210226015410-958111222865 h1:+Oqlmqi1rRugWA//OMKrQsdulyQB6j4QRo5Dm13jcqs=
 gioui.org/x v0.0.0-20210226015410-958111222865/go.mod h1:y7BpIia0O/1wgqVHlfTBaoOCcR1Xm/psmu/1M9AfX9E=
+gioui.org/x v0.0.0-20210405014033-ab05db36ed5b h1:F5y0TDqXReud0BBl+SPv9c5wMlTM4rr1+gwxDtmuiO8=
+gioui.org/x v0.0.0-20210405014033-ab05db36ed5b/go.mod h1:qsAS5EBzGhn3sJ98FJdA+ae+E5/DgmxjySERjjR1Zvg=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=

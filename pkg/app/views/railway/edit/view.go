@@ -209,11 +209,11 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	}
 	v.appBar.SetActions(
 		[]component.AppBarAction{
-			component.SimpleIconAction(th, &v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
-			component.SimpleIconAction(th, &v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
-			component.SimpleIconAction(th, &v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove", Tag: &v.buttonRemove}),
-			component.SimpleIconAction(th, &v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
-			component.SimpleIconAction(th, &v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
+			component.SimpleIconAction(&v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
+			component.SimpleIconAction(&v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+			component.SimpleIconAction(&v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove", Tag: &v.buttonRemove}),
+			component.SimpleIconAction(&v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
+			component.SimpleIconAction(&v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
 		},
 		[]component.OverflowAction{})
 
