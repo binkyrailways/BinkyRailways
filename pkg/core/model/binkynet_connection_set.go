@@ -21,11 +21,17 @@ import api "github.com/binkynet/BinkyNet/apis/v1"
 
 // BinkyNetConnectionSet is a set of connections.
 type BinkyNetConnectionSet interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Get number of entries
 	GetCount() int
 
 	// Get an entry by name.
 	Get(key api.ConnectionName) (BinkyNetConnection, bool)
+
+	// Get an entry by index.
+	GetAt(index int) (BinkyNetConnection, bool)
 
 	// Invoke the callback for each entry.
 	ForEach(cb func(BinkyNetConnection))

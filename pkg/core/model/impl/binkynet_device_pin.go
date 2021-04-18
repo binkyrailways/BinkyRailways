@@ -29,6 +29,14 @@ type binkyNetDevicePin struct {
 	Index    api.DeviceIndex `xml:"Index,omiyempty"`
 }
 
+// Gets the containing local worker
+func (p *binkyNetDevicePin) GetLocalWorker() model.BinkyNetLocalWorker {
+	if p.container != nil {
+		return p.container.GetLocalWorker()
+	}
+	return nil
+}
+
 // Gets the connection that contains this pin
 func (p *binkyNetDevicePin) GetConnection() model.BinkyNetConnection {
 	if p.container != nil {

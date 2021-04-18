@@ -19,9 +19,32 @@ package widgets
 
 import (
 	"gioui.org/layout"
+	"gioui.org/unit"
 )
 
 // WithPadding adds a standard padding around the given widget.
-func WithPadding(gtx C, w func(C) D) D {
-	return layout.UniformInset(Padding).Layout(gtx, w)
+// If not padding is given, the default padding is applied.
+// When 2 padding values are given, they are taken as top/bottom, left/right
+// When 4 padding values are given, they are taken as top, right, bottom, left
+func WithPadding(gtx C, w func(C) D, padding ...unit.Value) D {
+	inset := layout.Inset{
+		Top:    Padding,
+		Bottom: Padding,
+		Left:   Padding,
+		Right:  Padding,
+	}
+	switch len(padding) {
+	case 2:
+		inset.Top = padding[0]
+		inset.Bottom = padding[0]
+		inset.Left = padding[1]
+		inset.Right = padding[1]
+	case 4:
+		inset.Top = padding[0]
+		inset.Right = padding[1]
+		inset.Bottom = padding[2]
+		inset.Left = padding[3]
+	}
+
+	return inset.Layout(gtx, w)
 }

@@ -23,6 +23,9 @@ import (
 
 // BinkyNetDevicePin identifies a hardware device and an index within that hardware address.
 type BinkyNetDevicePin interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Gets the connection that contains this pin
 	GetConnection() BinkyNetConnection
 

@@ -60,6 +60,14 @@ func (c *binkyNetConnection) SetContainer(container *binkyNetConnectionSet) {
 	c.container = container
 }
 
+// Gets the containing local worker
+func (c *binkyNetConnection) GetLocalWorker() model.BinkyNetLocalWorker {
+	if c.container != nil {
+		return c.container.GetLocalWorker()
+	}
+	return nil
+}
+
 // Gets the object this connection belongs to
 func (c *binkyNetConnection) GetObject() model.BinkyNetObject {
 	if c.container != nil {

@@ -19,6 +19,9 @@ package model
 
 // BinkyNetConnectionPinList is a list of device pins.
 type BinkyNetConnectionPinList interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Get number of entries
 	GetCount() int
 

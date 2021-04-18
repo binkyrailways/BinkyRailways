@@ -21,11 +21,17 @@ import api "github.com/binkynet/BinkyNet/apis/v1"
 
 // BinkyNetObjectSet is a set of objects.
 type BinkyNetObjectSet interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Get number of entries
 	GetCount() int
 
 	// Get an entry by ID.
 	Get(id api.ObjectID) (BinkyNetObject, bool)
+
+	// Get an entry by index.
+	GetAt(index int) (BinkyNetObject, bool)
 
 	// Invoke the callback for each entry.
 	ForEach(cb func(BinkyNetObject))

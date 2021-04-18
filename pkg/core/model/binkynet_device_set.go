@@ -21,11 +21,17 @@ import api "github.com/binkynet/BinkyNet/apis/v1"
 
 // BinkyNetDeviceSet is a set of devices.
 type BinkyNetDeviceSet interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Get number of entries
 	GetCount() int
 
 	// Get an entry by ID.
 	Get(id api.DeviceID) (BinkyNetDevice, bool)
+
+	// Get an entry by index.
+	GetAt(index int) (BinkyNetDevice, bool)
 
 	// Invoke the callback for each entry.
 	ForEach(cb func(BinkyNetDevice))

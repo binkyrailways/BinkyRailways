@@ -23,6 +23,9 @@ import (
 
 // BinkyNetConnection represents a connection from a BinkyNetObject to a BinkyNetDevice.
 type BinkyNetConnection interface {
+	// Gets the containing local worker
+	GetLocalWorker() BinkyNetLocalWorker
+
 	// Gets the object this connection belongs to
 	GetObject() BinkyNetObject
 

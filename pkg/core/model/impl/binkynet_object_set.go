@@ -73,6 +73,14 @@ func (l *binkyNetObjectSet) Get(id api.ObjectID) (model.BinkyNetObject, bool) {
 	return nil, false
 }
 
+// Get an entry by index.
+func (l *binkyNetObjectSet) GetAt(index int) (model.BinkyNetObject, bool) {
+	if index >= 0 && index < len(l.Objects) {
+		return l.Objects[index], true
+	}
+	return nil, false
+}
+
 // Invoke the callback for each entry.
 func (l *binkyNetObjectSet) ForEach(cb func(model.BinkyNetObject)) {
 	for _, d := range l.Objects {

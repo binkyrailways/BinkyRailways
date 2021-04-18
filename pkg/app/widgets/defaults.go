@@ -38,4 +38,5 @@ var (
 // Default units
 var (
 	Padding = unit.Dp(5)
+	Zero    = unit.Dp(0)
 )

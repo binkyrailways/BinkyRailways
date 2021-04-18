@@ -45,6 +45,14 @@ func (l *binkyNetConnectionPinList) UnmarshalXML(d *xml.Decoder, start xml.Start
 	return nil
 }
 
+// Gets the containing local worker
+func (l *binkyNetConnectionPinList) GetLocalWorker() model.BinkyNetLocalWorker {
+	if l.container != nil {
+		return l.container.GetLocalWorker()
+	}
+	return nil
+}
+
 // Gets the connection that contains this pin
 func (l *binkyNetConnectionPinList) GetConnection() model.BinkyNetConnection {
 	return l.container

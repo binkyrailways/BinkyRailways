@@ -72,6 +72,14 @@ func (l *binkyNetDeviceSet) Get(id api.DeviceID) (model.BinkyNetDevice, bool) {
 	return nil, false
 }
 
+// Get an entry by index.
+func (l *binkyNetDeviceSet) GetAt(index int) (model.BinkyNetDevice, bool) {
+	if index >= 0 && index < len(l.Devices) {
+		return l.Devices[index], true
+	}
+	return nil, false
+}
+
 // Invoke the callback for each entry.
 func (l *binkyNetDeviceSet) ForEach(cb func(model.BinkyNetDevice)) {
 	for _, d := range l.Devices {
