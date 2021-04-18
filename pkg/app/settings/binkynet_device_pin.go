@@ -26,8 +26,8 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// NewBinkyNetDevicePinSettings constructs a settings component for a BinkyNetDevicePin.
-func NewBinkyNetDevicePinSettings(entity model.BinkyNetDevicePin) Settings {
+// newBinkyNetDevicePinSettings constructs a settings component for a BinkyNetDevicePin.
+func newBinkyNetDevicePinSettings(entity model.BinkyNetDevicePin) *binkyNetDevicePinSettings {
 	s := &binkyNetDevicePinSettings{
 		entity: entity,
 	}
@@ -62,22 +62,22 @@ type binkyNetDevicePinSettings struct {
 	index    widgets.IntEditor
 }
 
-// Handle events and draw the editor
-func (e *binkyNetDevicePinSettings) Layout(gtx C, th *material.Theme) D {
+// Update the values in the given entity from the UI.
+func (e *binkyNetDevicePinSettings) Update(entity model.BinkyNetDevicePin) {
 	e.entity.SetDeviceID(api.DeviceID(e.devID.Value))
 	if x, err := e.index.GetValue(); err == nil {
 		e.entity.SetIndex(api.DeviceIndex(x))
 	}
+}
 
-	// Prepare settings grid
-	grid := widgets.NewSettingsGrid(
+// Handle events and draw the editor
+func (e *binkyNetDevicePinSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
+	return []widgets.SettingsGridRow{
 		widgets.SettingsGridRow{Title: "Device ID", Layout: func(gtx C) D {
 			return e.devIDSel.Layout(gtx, th)
 		}},
 		widgets.SettingsGridRow{Title: "Index", Layout: func(gtx C) D {
 			return material.Editor(th, &e.index.Editor, "").Layout(gtx)
 		}},
-	)
-
-	return grid.Layout(gtx, th)
+	}
 }

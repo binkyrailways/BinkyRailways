@@ -19,8 +19,6 @@ package edit
 
 import (
 	"context"
-	"fmt"
-	"strconv"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -166,37 +164,7 @@ func buildTreeViewItems(entity interface{},
 		return result
 	case model.BinkyNetObjectSet:
 		entity.ForEach(func(entity model.BinkyNetObject) {
-			result = append(result,
-				itemCache.CreateItemWithChildren(entity, parentKey, level, func(parentKey string, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(entity, parentKey, itemCache, groupCache, level)
-				})...,
-			)
-		})
-		return result
-	case model.BinkyNetObject:
-		result = append(result,
-			groupCache.CreateItem("Connections", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-				return buildTreeViewItems(entity.GetConnections(), parentKey, itemCache, groupCache, level)
-			}, level, binkyNetObjectConnectionSet{entity}),
-		)
-		return result
-	case model.BinkyNetConnectionSet:
-		entity.ForEach(func(entity model.BinkyNetConnection) {
-			result = append(result,
-				itemCache.CreateItem(binkyNetConnectionEntity{entity}, parentKey, level),
-				groupCache.CreateItem("Pins", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
-					return buildTreeViewItems(entity.GetPins(), parentKey, itemCache, groupCache, level)
-				}, level+1, binkyNetObjectConnectionPinSet{entity}),
-			)
-		})
-		return result
-	case model.BinkyNetConnectionPinList:
-		i := 0
-		entity.ForEach(func(entity model.BinkyNetDevicePin) {
-			result = append(result,
-				itemCache.CreateItem(binkyNetDevicePinEntity{i, entity}, parentKey, level),
-			)
-			i++
+			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
 		return result
 	}
@@ -298,46 +266,3 @@ func (e binkyNetLocalWorkerObjectSet) GetID() string {
 	return "objects"
 }
 func (e binkyNetLocalWorkerObjectSet) Select() interface{} { return e.BinkyNetLocalWorker.GetObjects() }
-
-// Identifyable & Selectable implementation for BinkyNetConnectionSet
-type binkyNetObjectConnectionSet struct {
-	model.BinkyNetObject
-}
-
-func (e binkyNetObjectConnectionSet) GetID() string       { return "connections" }
-func (e binkyNetObjectConnectionSet) Select() interface{} { return e.BinkyNetObject.GetConnections() }
-
-// Identifyable & Selectable implementation for BinkyNetConnectionSet
-type binkyNetObjectConnectionPinSet struct {
-	model.BinkyNetConnection
-}
-
-func (e binkyNetObjectConnectionPinSet) GetID() string {
-	return "pins"
-}
-func (e binkyNetObjectConnectionPinSet) Select() interface{} { return e.BinkyNetConnection.GetPins() }
-
-// Entity implementation for BinkyNetConnection
-type binkyNetConnectionEntity struct {
-	model.BinkyNetConnection
-}
-
-func (e binkyNetConnectionEntity) GetID() string {
-	return string(e.GetKey())
-}
-func (e binkyNetConnectionEntity) GetDescription() string { return string(e.GetKey()) }
-func (e binkyNetConnectionEntity) Select() interface{}    { return e.BinkyNetConnection }
-
-// Entity implementation for BinkyNetDevicePin
-type binkyNetDevicePinEntity struct {
-	index int
-	model.BinkyNetDevicePin
-}
-
-func (e binkyNetDevicePinEntity) GetID() string {
-	return strconv.Itoa(e.index)
-}
-func (e binkyNetDevicePinEntity) GetDescription() string {
-	return fmt.Sprintf("%s[%d]", e.BinkyNetDevicePin.GetDeviceID(), e.BinkyNetDevicePin.GetIndex())
-}
-func (e binkyNetDevicePinEntity) Select() interface{} { return e.BinkyNetDevicePin }

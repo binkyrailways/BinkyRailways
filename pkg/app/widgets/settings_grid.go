@@ -43,9 +43,12 @@ type SettingsGrid struct {
 }
 
 type SettingsGridRow struct {
-	Title  string
-	Layout func(C) D
+	Title      string
+	TitleScale float32
+	Layout     func(C) D
 }
+
+const defaultTitleScale = 1.4
 
 func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
 	rowCount := len(sg.Rows)
@@ -56,7 +59,15 @@ func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
 	// Calculate largest label size
 	maxTextSize := fixed.Point26_6{}
 	for _, row := range sg.Rows {
-		fontSize := fixed.I(gtx.Px(th.TextSize))
+		thTextSize := th.TextSize
+		if row.Layout == nil {
+			scale := row.TitleScale
+			if scale == 0 {
+				scale = defaultTitleScale
+			}
+			thTextSize = thTextSize.Scale(scale)
+		}
+		fontSize := fixed.I(gtx.Px(thTextSize))
 		lines := th.Shaper.LayoutString(text.Font{}, fontSize, math.MaxInt16, row.Title)
 		b := lines[0].Bounds
 		textSize := b.Max.Sub(b.Min)
@@ -72,13 +83,27 @@ func (sg SettingsGrid) Layout(gtx C, th *material.Theme) D {
 	}
 	// Layout grid
 	return vGrid.Layout(gtx, rowCount*2, func(gtx C, i int) D {
+		row := sg.Rows[i/2]
+		layoutField := row.Layout
 		if i%2 == 0 {
+			thTextSize := th.TextSize
+			scale := row.TitleScale
+			if scale == 0 {
+				scale = defaultTitleScale
+			}
+			lb := material.Label(th, thTextSize, sg.Rows[i/2].Title)
+			if layoutField == nil {
+				lb.Font.Weight = text.Bold
+			}
 			layout.Inset{
 				Right: sg.Gutter,
-			}.Layout(gtx, material.Label(th, th.TextSize, sg.Rows[i/2].Title).Layout)
+			}.Layout(gtx, lb.Layout)
 			return textDim
 		}
-		dims := sg.Rows[i/2].Layout(gtx)
+		var dims D
+		if layoutField != nil {
+			dims = layoutField(gtx)
+		}
 		if dims.Size.X < textDim.Size.X {
 			dims.Size.X = textDim.Size.X
 		}

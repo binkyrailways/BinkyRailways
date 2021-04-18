@@ -50,22 +50,28 @@ type binkyNetObjectSettings struct {
 	id       w.Editor
 	otype    w.Enum
 	otypeSel *widgets.SimpleSelect
+	binkyNetConnectionSetSettings
 }
 
 // Handle events and draw the editor
 func (e *binkyNetObjectSettings) Layout(gtx C, th *material.Theme) D {
+	e.binkyNetConnectionSetSettings.Update(e.entity.GetConnections())
 	e.entity.SetObjectID(api.ObjectID(e.id.Text()))
 	e.entity.SetObjectType(api.ObjectType(e.otype.Value))
 
 	// Prepare settings grid
-	grid := widgets.NewSettingsGrid(
-		widgets.SettingsGridRow{Title: "Object ID", Layout: func(gtx C) D {
+	rows := []widgets.SettingsGridRow{
+		{Title: "Object"},
+		{Title: "Object ID", Layout: func(gtx C) D {
 			return material.Editor(th, &e.id, "Object ID").Layout(gtx)
 		}},
-		widgets.SettingsGridRow{Title: "Type", Layout: func(gtx C) D {
+		{Title: "Type", Layout: func(gtx C) D {
 			return e.otypeSel.Layout(gtx, th)
 		}},
-	)
+		{Title: "Connections"},
+	}
+	rows = append(rows, e.binkyNetConnectionSetSettings.Rows(th)...)
+	grid := widgets.NewSettingsGrid(rows...)
 
 	return grid.Layout(gtx, th)
 }

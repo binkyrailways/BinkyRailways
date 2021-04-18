@@ -18,23 +18,44 @@
 package settings
 
 import (
+	"fmt"
+
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// binkyNetConnectionSettings implements an settings grid for a BinkyNetConnection.
-type binkyNetConnectionSettings struct {
-	pins binkyNetDevicePinListSettings
+// binkyNetDevicePinListSettings implements an settings grid for a BinkyNetDevicePinList.
+type binkyNetDevicePinListSettings struct {
+	pins []*binkyNetDevicePinSettings
 }
 
 // Update the values in the given entity from the UI.
-func (e *binkyNetConnectionSettings) Update(entity model.BinkyNetConnection) {
-	e.pins.Update(entity.GetPins())
+func (e *binkyNetDevicePinListSettings) Update(entity model.BinkyNetConnectionPinList) {
+	cnt := entity.GetCount()
+	if len(e.pins) != cnt {
+		e.pins = make([]*binkyNetDevicePinSettings, cnt)
+	}
+	for i, p := range e.pins {
+		i, p := i, p // Bring into scope
+		pin, _ := entity.Get(i)
+		if p == nil || p.entity != pin {
+			e.pins[i] = newBinkyNetDevicePinSettings(pin)
+		}
+		e.pins[i].Update(pin)
+	}
 }
 
 // Rows generates rows for a settings grid.
-func (e *binkyNetConnectionSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
-	return e.pins.Rows(th)
+func (e *binkyNetDevicePinListSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
+	var rows []widgets.SettingsGridRow
+	for i, ps := range e.pins {
+		rows = append(rows, widgets.SettingsGridRow{
+			Title:      fmt.Sprintf("Pin %d", i),
+			TitleScale: 1,
+		})
+		rows = append(rows, ps.Rows(th)...)
+	}
+	return rows
 }

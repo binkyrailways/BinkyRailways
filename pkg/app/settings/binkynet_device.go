@@ -61,7 +61,8 @@ func (e *binkyNetDeviceSettings) Layout(gtx C, th *material.Theme) D {
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		widgets.SettingsGridRow{Title: "Device ID", Layout: func(gtx C) D {
+		widgets.SettingsGridRow{Title: "Device"},
+		widgets.SettingsGridRow{Title: "ID", Layout: func(gtx C) D {
 			return material.Editor(th, &e.id, "Device ID").Layout(gtx)
 		}},
 		widgets.SettingsGridRow{Title: "Type", Layout: func(gtx C) D {

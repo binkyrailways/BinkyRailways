@@ -50,6 +50,7 @@ func (e *binkyNetLocalWorkerSettings) Layout(gtx C, th *material.Theme) D {
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
+		widgets.SettingsGridRow{Title: "Local worker"},
 		widgets.SettingsGridRow{Title: "Hardware ID", Layout: func(gtx C) D {
 			return material.Editor(th, &e.hardwareID, "Hardware ID").Layout(gtx)
 		}},
