@@ -25,3 +25,8 @@ update-modules:
 		github.com/binkynet/NetManager@v0.2.1 \
 		github.com/binkynet/BinkyNet@v0.6.1
 	go mod tidy
+
+update-gioui:
+	go get -u \
+		gioui.org \
+		gioui.org/x
