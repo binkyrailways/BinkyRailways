@@ -18,6 +18,9 @@
 package settings
 
 import (
+	"sort"
+	"strings"
+
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -29,6 +32,31 @@ func NewBlockGroupSettings(entity model.BlockGroup) Settings {
 	s := &blockGroupSettings{
 		entity: entity,
 	}
+	module := entity.GetModule()
+	getChecked := func(id string) bool {
+		if b, ok := module.GetBlocks().Get(id); ok {
+			return b.GetBlockGroup() == entity
+		}
+		return false
+	}
+	setChecked := func(id string, checked bool) {
+		if b, ok := module.GetBlocks().Get(id); ok {
+			if checked {
+				b.SetBlockGroup(entity)
+			} else {
+				b.SetBlockGroup(nil)
+			}
+		}
+	}
+	lvs := make([]widgets.LabeledValue, 0, module.GetBlocks().GetCount())
+	module.GetBlocks().ForEach(func(b model.Block) {
+		lvs = append(lvs, widgets.LV(b.GetID(), b.GetDescription()))
+	})
+	sort.Slice(lvs, func(i, j int) bool {
+		x, y := lvs[i].Label, lvs[j].Label
+		return strings.Compare(x, y) < 0
+	})
+	s.blocks = widgets.NewCheckboxList(getChecked, setChecked, lvs...)
 	s.metaSettings.Initialize(entity)
 	return s
 }
@@ -38,6 +66,7 @@ type blockGroupSettings struct {
 	entity model.BlockGroup
 
 	metaSettings
+	blocks *widgets.CheckboxList
 }
 
 // Handle events and draw the editor
@@ -46,7 +75,14 @@ func (e *blockGroupSettings) Layout(gtx C, th *material.Theme) D {
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		e.metaSettings.Rows(th)...,
+		append(e.metaSettings.Rows(th),
+			widgets.SettingsGridRow{
+				Title: "Blocks",
+				Layout: func(gtx C) D {
+					return e.blocks.Layout(gtx, th)
+				},
+			},
+		)...,
 	)
 
 	return grid.Layout(gtx, th)

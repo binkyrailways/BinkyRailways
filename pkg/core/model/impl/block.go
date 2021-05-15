@@ -38,7 +38,7 @@ type blockFields struct {
 	ChangeDirection              *model.ChangeDirection
 	ChangeDirectionReversingLocs *bool
 	StationMode                  *model.StationMode
-	BlockGroupID                 string               `xml:"BlockGroup,omitempty"`
+	BlockGroupID                 *string              `xml:"BlockGroup,omitempty"`
 	WaitPermissions              locStandardPredicate `xml:"WaitPermissions"`
 }
 
@@ -178,10 +178,11 @@ func (b *block) GetIsStation() bool {
 
 // The block group that this block belongs to (if any).
 func (b *block) GetBlockGroup() model.BlockGroup {
-	if b.BlockGroupID == "" {
+	bgID := refs.StringValue(b.BlockGroupID, "")
+	if bgID == "" {
 		return nil
 	}
-	bg, _ := b.GetModule().GetBlockGroups().Get(b.BlockGroupID)
+	bg, _ := b.GetModule().GetBlockGroups().Get(bgID)
 	return bg
 }
 func (b *block) SetBlockGroup(value model.BlockGroup) error {
@@ -191,11 +192,11 @@ func (b *block) SetBlockGroup(value model.BlockGroup) error {
 		id = value.GetID()
 		module = value.GetModule()
 	}
-	if b.BlockGroupID != id {
-		if b.GetModule() != module {
+	if refs.StringValue(b.BlockGroupID, "") != id {
+		if b.GetModule() != module && module != nil {
 			return fmt.Errorf("Invalid module")
 		}
-		b.BlockGroupID = id
+		b.BlockGroupID = refs.NewString(id)
 		b.OnModified()
 	}
 	return nil
