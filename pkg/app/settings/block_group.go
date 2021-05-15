@@ -58,6 +58,8 @@ func NewBlockGroupSettings(entity model.BlockGroup) Settings {
 	})
 	s.blocks = widgets.NewCheckboxList(getChecked, setChecked, lvs...)
 	s.metaSettings.Initialize(entity)
+	s.minBlocksInGroup.SetValue(entity.GetMinimumLocsInGroup())
+	s.minLocsOnTrackForMinLocsInGroupStart.SetValue(entity.GetMinimumLocsOnTrackForMinimumLocsInGroupStart())
 	return s
 }
 
@@ -66,12 +68,20 @@ type blockGroupSettings struct {
 	entity model.BlockGroup
 
 	metaSettings
-	blocks *widgets.CheckboxList
+	blocks                               *widgets.CheckboxList
+	minBlocksInGroup                     widgets.IntEditor
+	minLocsOnTrackForMinLocsInGroupStart widgets.IntEditor
 }
 
 // Handle events and draw the editor
 func (e *blockGroupSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
+	if value, err := e.minBlocksInGroup.GetValue(); err == nil {
+		e.entity.SetMinimumLocsInGroup(value)
+	}
+	if value, err := e.minLocsOnTrackForMinLocsInGroupStart.GetValue(); err == nil {
+		e.entity.SetMinimumLocsOnTrackForMinimumLocsInGroupStart(value)
+	}
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
@@ -80,6 +90,18 @@ func (e *blockGroupSettings) Layout(gtx C, th *material.Theme) D {
 				Title: "Blocks",
 				Layout: func(gtx C) D {
 					return e.blocks.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Min. locs in block",
+				Layout: func(gtx C) D {
+					return material.Editor(th, &e.minBlocksInGroup.Editor, "").Layout(gtx)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Min. locs on track",
+				Layout: func(gtx C) D {
+					return material.Editor(th, &e.minLocsOnTrackForMinLocsInGroupStart.Editor, "").Layout(gtx)
 				},
 			},
 		)...,
