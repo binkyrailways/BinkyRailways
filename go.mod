@@ -3,8 +3,8 @@ module github.com/binkyrailways/BinkyRailways
 go 1.16
 
 require (
-	gioui.org v0.0.0-20210427144906-23a839a29d27
-	gioui.org/x v0.0.0-20210423015942-6eca3d6e9fe4
+	gioui.org v0.0.0-20210515134402-ccb9f98f3f89
+	gioui.org/x v0.0.0-20210506211151-1e327c958843
 	github.com/binkynet/BinkyNet v0.6.1
 	github.com/binkynet/NetManager v0.2.1
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
