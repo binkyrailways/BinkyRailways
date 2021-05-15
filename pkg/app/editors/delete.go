@@ -31,6 +31,17 @@ func createOnDelete(etx EditorContext, entity interface{}) func(context.Context)
 	}
 	return func(ctx context.Context) error {
 		switch entity := entity.(type) {
+		case model.Module:
+			pkg := entity.GetPackage()
+			railway := pkg.GetRailway()
+			if modRef, found := railway.GetModules().Get(entity.GetID()); found {
+				if !railway.GetModules().Remove(modRef) {
+					return fmt.Errorf("Failed to remove module")
+				}
+			}
+			if err := pkg.Remove(entity); err != nil {
+				return fmt.Errorf("Failed to remove module from package: %s", err)
+			}
 		case model.BinkyNetLocalWorker:
 			cs := entity.GetCommandStation()
 			if !cs.GetLocalWorkers().Remove(entity) {

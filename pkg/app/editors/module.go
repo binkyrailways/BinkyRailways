@@ -61,6 +61,7 @@ func newModuleEditor(module model.Module, etx EditorContext) ModuleEditor {
 		}
 	}
 	editor.settings = settings.NewModuleSettings(module)
+	editor.selection = module
 
 	return editor
 }
@@ -73,6 +74,7 @@ type moduleEditor struct {
 	canvas      *canvas.EntityCanvas
 	settings    settings.Settings
 	scaleSlider *widget.Float
+	selection   model.Entity
 }
 
 // Module returns the module we're editing
@@ -85,11 +87,14 @@ func (e *moduleEditor) OnSelect(entity model.ModuleEntity) {
 	if entity != nil {
 		if x, ok := entity.Accept(settings.NewBuilder()).(settings.Settings); ok {
 			e.settings = x
+			e.selection = entity
 		} else {
 			e.settings = settings.NewModuleSettings(e.module)
+			e.selection = e.module
 		}
 	} else {
 		e.settings = settings.NewModuleSettings(e.module)
+		e.selection = e.module
 	}
 	e.etx.Invalidate()
 }
@@ -127,10 +132,16 @@ func (e *moduleEditor) CreateAddButtons() []AddButton {
 
 // Can the currently selected item be deleted?
 func (e *moduleEditor) CanDelete() bool {
-	return false
+	onDelete := createOnDelete(e.etx, e.selection)
+	return onDelete != nil
 }
 
 // Delete the currently selected item
 func (e *moduleEditor) Delete(ctx context.Context) error {
+	if onDelete := createOnDelete(e.etx, e.selection); onDelete != nil {
+		if err := onDelete(ctx); err != nil {
+			return err
+		}
+	}
 	return nil
 }
