@@ -62,6 +62,10 @@ func (v *builder) VisitBlock(x model.Block) interface{} {
 	return NewBlockSettings(x)
 }
 
+func (v *builder) VisitBlockGroup(x model.BlockGroup) interface{} {
+	return NewBlockGroupSettings(x)
+}
+
 func (v *builder) VisitEdge(x model.Edge) interface{} {
 	return NewEdgeSettings(x)
 }
