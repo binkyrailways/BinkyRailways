@@ -24,12 +24,13 @@ import (
 type positionedEntityFields struct {
 	onModified      func()
 	positionChanged eventHandler
-	X               int  `xml:"X"`
-	Y               int  `xml:"Y"`
-	Width           int  `xml:"Width"`
-	Height          int  `xml:"Height"`
-	Rotation        int  `xml:"Rotation"`
-	Locked          bool `xml:"Locked"`
+	X               int    `xml:"X"`
+	Y               int    `xml:"Y"`
+	Width           int    `xml:"Width"`
+	Height          int    `xml:"Height"`
+	Rotation        int    `xml:"Rotation"`
+	Layer           string `xml:"Layer"`
+	Locked          bool   `xml:"Locked"`
 }
 
 // Initialize the default position & size.
@@ -114,6 +115,21 @@ func (pe *positionedEntityFields) GetRotation() int {
 func (pe *positionedEntityFields) SetRotation(value int) error {
 	if pe.Rotation != value {
 		pe.Rotation = value
+		pe.positionChanged.Invoke(pe)
+		pe.OnModified()
+	}
+	return nil
+}
+
+// Get the layer this entity is on (if any).
+func (pe *positionedEntityFields) GetLayer() string {
+	return pe.Layer
+}
+
+// Set the layer this entity is on (empty for no layer).
+func (pe *positionedEntityFields) SetLayer(value string) error {
+	if pe.Layer != value {
+		pe.Layer = value
 		pe.positionChanged.Invoke(pe)
 		pe.OnModified()
 	}

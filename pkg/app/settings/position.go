@@ -18,6 +18,7 @@
 package settings
 
 import (
+	w "gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -32,6 +33,7 @@ type positionSettings struct {
 	width       widgets.IntEditor
 	height      widgets.IntEditor
 	rotation    widgets.IntEditor
+	layer       w.Editor
 }
 
 // Initialize the UI from the given entity
@@ -42,6 +44,7 @@ func (e *positionSettings) Initialize(source model.PositionedEntity, excludeSize
 	e.width.SetValue(source.GetWidth())
 	e.height.SetValue(source.GetHeight())
 	e.rotation.SetValue(source.GetRotation())
+	e.layer.SetText(source.GetLayer())
 }
 
 // Update the values in the given entity from the UI.
@@ -63,6 +66,7 @@ func (e *positionSettings) Update(entity model.PositionedEntity) {
 	if value, err := e.rotation.GetValue(); err == nil {
 		entity.SetRotation(value)
 	}
+	entity.SetLayer(e.layer.Text())
 }
 
 // Rows generates rows for a settings grid.
@@ -88,6 +92,9 @@ func (e *positionSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
 	rows = append(rows,
 		widgets.SettingsGridRow{Title: "Rotation", Layout: func(gtx C) D {
 			return material.Editor(th, &e.rotation.Editor, "").Layout(gtx)
+		}},
+		widgets.SettingsGridRow{Title: "Layer", Layout: func(gtx C) D {
+			return material.Editor(th, &e.layer, "").Layout(gtx)
 		}},
 	)
 	return rows

@@ -49,6 +49,11 @@ type PositionedEntity interface {
 	// Set rotation in degrees of the content of this entity.
 	SetRotation(value int) error
 
+	// Get the layer this entity is on (if any).
+	GetLayer() string
+	// Set the layer this entity is on (empty for no layer).
+	SetLayer(value string) error
+
 	// Get locked. If set, the mouse will no longer move and/or resize this entity.
 	GetLocked() bool
 	// Set locked. If set, the mouse will no longer move and/or resize this entity.
