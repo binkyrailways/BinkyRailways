@@ -31,7 +31,9 @@ func NewRouteSettings(entity model.Route) Settings {
 	}
 	s.metaSettings.Initialize(entity)
 	s.fromBlockSideEditor.SetValue(entity.GetFromBlockSide())
+	s.fromBlockEditor.Initialize(entity.GetModule(), entity.GetFrom())
 	s.toBlockSideEditor.SetValue(entity.GetToBlockSide())
+	s.toBlockEditor.Initialize(entity.GetModule(), entity.GetTo())
 	return s
 }
 
@@ -41,7 +43,9 @@ type routeSettings struct {
 
 	metaSettings
 	fromBlockSideEditor widgets.BlockSideEditor
+	fromBlockEditor     widgets.EndpointEditor
 	toBlockSideEditor   widgets.BlockSideEditor
+	toBlockEditor       widgets.EndpointEditor
 }
 
 // Handle events and draw the editor
@@ -50,14 +54,33 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	if x, err := e.fromBlockSideEditor.GetValue(); err == nil {
 		e.entity.SetFromBlockSide(x)
 	}
+	module := e.entity.GetModule()
+	if x, err := e.fromBlockEditor.GetValue(module); err == nil {
+		e.entity.SetFrom(x)
+	}
 	if x, err := e.toBlockSideEditor.GetValue(); err == nil {
 		e.entity.SetToBlockSide(x)
+	}
+	if x, err := e.toBlockEditor.GetValue(module); err == nil {
+		e.entity.SetTo(x)
 	}
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
 		append(
 			e.metaSettings.Rows(th),
+			widgets.SettingsGridRow{
+				Title: "From endpoint",
+				Layout: func(gtx C) D {
+					return e.fromBlockEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "To endpoint",
+				Layout: func(gtx C) D {
+					return e.toBlockEditor.Layout(gtx, th)
+				},
+			},
 			widgets.SettingsGridRow{
 				Title: "From block side",
 				Layout: func(gtx C) D {

@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -75,6 +76,18 @@ func (r *route) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	}
 	r.routeFields.SetRoute(r)
 	return nil
+}
+
+// Description of this route
+func (r *route) GetDescription() string {
+	from, to := "?", "?"
+	if x := r.GetFrom(); x != nil {
+		from = x.GetDescription()
+	}
+	if x := r.GetTo(); x != nil {
+		to = x.GetDescription()
+	}
+	return fmt.Sprintf("%s -> %s", from, to)
 }
 
 // Starting point of the route
