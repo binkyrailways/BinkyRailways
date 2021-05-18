@@ -31,6 +31,7 @@ func NewSwitchSettings(entity model.Switch) Settings {
 	}
 	s.metaSettings.Initialize(entity)
 	s.positionSettings.Initialize(entity)
+	s.addressSettings.Initialize(entity)
 	return s
 }
 
@@ -40,17 +41,20 @@ type switchSettings struct {
 
 	metaSettings
 	positionSettings
+	addressSettings
 }
 
 // Handle events and draw the editor
 func (e *switchSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
 	e.positionSettings.Update(e.entity)
+	e.addressSettings.Update(e.entity)
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		append(
+		append(append(
 			e.metaSettings.Rows(th),
+			e.addressSettings.Rows(th)...),
 			e.positionSettings.Rows(th)...,
 		)...,
 	)
