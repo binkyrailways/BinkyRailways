@@ -19,6 +19,7 @@ package run
 
 import (
 	"context"
+	"fmt"
 	"image"
 
 	"gioui.org/f32"
@@ -43,6 +44,12 @@ func (b *stdSwitch) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
 func (b *stdSwitch) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
+	if state.Clicked {
+		dir := b.entity.GetDirection().GetRequested(ctx)
+		b.entity.GetDirection().SetRequested(ctx, dir.Invert())
+		fmt.Printf("Set switch direction to %s\n", dir.Invert())
+	}
+
 	bg := canvas.BlockBg
 	if state.Hovered {
 		bg = canvas.HoverBg
