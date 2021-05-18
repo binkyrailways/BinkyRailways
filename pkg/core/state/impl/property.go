@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -92,6 +93,33 @@ func (p *locDirectionProperty) GetRequested(ctx context.Context) state.LocDirect
 	return p.requested
 }
 func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.LocDirection) error {
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.requested != value {
+			p.requested = value
+			if p.OnRequestedChanged != nil {
+				p.OnRequestedChanged(ctx, value)
+			}
+			p.SendRequestedStateChanged(p)
+		}
+		return nil
+	})
+}
+
+// locDirectionProperty contains the value of a property in a state object.
+// The value contains a requested value and an actual value.
+type switchDirectionProperty struct {
+	actualSwitchDirectionProperty
+	requested          model.SwitchDirection
+	OnRequestedChanged func(context.Context, model.SwitchDirection)
+}
+
+func (p *switchDirectionProperty) IsConsistent(ctx context.Context) bool {
+	return p.GetActual(ctx) == p.GetRequested(ctx)
+}
+func (p *switchDirectionProperty) GetRequested(ctx context.Context) model.SwitchDirection {
+	return p.requested
+}
+func (p *switchDirectionProperty) SetRequested(ctx context.Context, value model.SwitchDirection) error {
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value

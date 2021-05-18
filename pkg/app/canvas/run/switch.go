@@ -51,5 +51,5 @@ func (b *stdSwitch) Layout(ctx context.Context, gtx C, size image.Point, th *mat
 	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
 	//lb.Alignment = text.Middle
 	//lb.Layout(gtx)
-	widgets.TextCenter(gtx, th, b.entity.GetDescription())
+	widgets.TextCenter(gtx, th, b.entity.GetDescription()+"-switch")
 }

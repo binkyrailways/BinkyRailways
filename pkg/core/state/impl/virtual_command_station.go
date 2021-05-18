@@ -85,7 +85,7 @@ func (cs *virtualCommandStation) SendOutputActive(ctx context.Context, bo state.
 
 // Send the direction of the given switch towards the railway.
 func (cs *virtualCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
-	sw.GetDirection().SetActual(ctx, sw.GetDirection().GetRequest(ctx))
+	sw.GetDirection().SetActual(ctx, sw.GetDirection().GetRequested(ctx))
 }
 
 // Send the position of the given turntable towards the railway.

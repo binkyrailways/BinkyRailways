@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -25,4 +26,33 @@ import (
 type Junction interface {
 	Entity
 	state.Junction
+}
+
+type junction struct {
+	entity
+	lockable
+}
+
+// Create a new entity
+func newJunction(en model.Junction, railway Railway) junction {
+	s := junction{
+		entity:   newEntity(en, railway),
+		lockable: newLockable(railway),
+	}
+	return s
+}
+
+// Unique ID of the module containing this entity
+func (s *junction) GetModuleID() string {
+	return s.getJunction().GetModule().GetID()
+}
+
+// getJunction returns the entity as Junction.
+func (s *junction) getJunction() model.Junction {
+	return s.GetEntity().(model.Junction)
+}
+
+// Gets the underlying model
+func (s *junction) GetModel() model.Junction {
+	return s.getJunction()
 }

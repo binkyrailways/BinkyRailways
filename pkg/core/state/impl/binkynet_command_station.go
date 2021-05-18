@@ -162,7 +162,7 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
 	addr := cs.createObjectAddress(sw.GetAddress())
 	var direction bn.SwitchDirection
-	switch sw.GetDirection().GetRequest(ctx) {
+	switch sw.GetDirection().GetRequested(ctx) {
 	case model.SwitchDirectionStraight:
 		direction = bn.SwitchDirection_STRAIGHT
 	case model.SwitchDirectionOff:

@@ -71,6 +71,6 @@ type SwitchDirectionProperty interface {
 	ActualSwitchDirectionProperty
 
 	// Gets / sets the requested value
-	GetRequest(context.Context) model.SwitchDirection
+	GetRequested(context.Context) model.SwitchDirection
 	SetRequested(context.Context, model.SwitchDirection) error
 }

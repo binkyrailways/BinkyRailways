@@ -181,6 +181,30 @@ func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.
 	})
 }
 
+// actualSwitchDirectionProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualSwitchDirectionProperty struct {
+	propertyBase
+	actual          model.SwitchDirection
+	OnActualChanged func(context.Context, model.SwitchDirection)
+}
+
+func (p *actualSwitchDirectionProperty) GetActual(ctx context.Context) model.SwitchDirection {
+	return p.actual
+}
+func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value model.SwitchDirection) error {
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if p.actual != value {
+			p.actual = value
+			if p.OnActualChanged != nil {
+				p.OnActualChanged(ctx, value)
+			}
+			p.SendActualStateChanged()
+		}
+		return nil
+	})
+}
+
 // actualBlockSideProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type actualBlockSideProperty struct {
