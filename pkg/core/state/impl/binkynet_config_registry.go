@@ -75,9 +75,9 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 						Index:    pm.GetIndex(),
 					})
 				})
-				conn.Configuration = make(map[string]string)
+				conn.Configuration = make(map[api.ConfigKey]string)
 				cm.GetConfiguration().ForEach(func(k, v string) {
-					conn.Configuration[k] = v
+					conn.Configuration[api.ConfigKey(k)] = v
 				})
 				o.Connections = append(o.Connections, conn)
 			})
