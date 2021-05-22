@@ -42,6 +42,8 @@ func newBinkyNetConnection(key api.ConnectionName) *binkyNetConnection {
 	c.Key = key
 	c.Pins.SetContainer(c)
 	c.Configuration.SetContainer(c)
+	req, opt := key.ExpectedConfigurations()
+	c.ensureConfiguration(append(req, opt...))
 	return c
 }
 
@@ -99,5 +101,31 @@ func (c *binkyNetConnection) GetConfiguration() model.BinkyNetConnectionConfigur
 func (c *binkyNetConnection) OnModified() {
 	if c.container != nil {
 		c.container.OnModified()
+	}
+}
+
+// ensureConfiguration ensures that a configuration entry exists for all of the given keys.
+// Also remove all other keys with a default value.
+func (c *binkyNetConnection) ensureConfiguration(keys []api.ConfigKey) {
+	// Ensure values
+	for _, key := range keys {
+		if _, found := c.Configuration.Get(string(key)); !found {
+			c.Configuration.Set(string(key), key.DefaultValue())
+		}
+	}
+	// Remove empty unexpected configurations
+	isExpected := func(key api.ConfigKey) bool {
+		for _, x := range keys {
+			if x == key {
+				return true
+			}
+		}
+		return false
+	}
+	for k, v := range c.Configuration.Data {
+		key := api.ConfigKey(k)
+		if !isExpected(key) && key.DefaultValue() == v {
+			c.Configuration.Remove(k)
+		}
 	}
 }
