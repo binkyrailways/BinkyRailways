@@ -91,3 +91,8 @@ func (cs *locoBufferCommandStation) TriggerDiscover(ctx context.Context, hardwar
 	// Do nothing
 	return nil
 }
+
+// Iterate over all hardware modules this command station is in control of.
+func (cs *locoBufferCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
+	// No modules
+}

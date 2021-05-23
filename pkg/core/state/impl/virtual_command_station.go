@@ -101,3 +101,8 @@ func (cs *virtualCommandStation) TriggerDiscover(ctx context.Context, hardwareID
 	// Do nothing
 	return nil
 }
+
+// Iterate over all hardware modules this command station is in control of.
+func (cs *virtualCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
+	// No modules
+}

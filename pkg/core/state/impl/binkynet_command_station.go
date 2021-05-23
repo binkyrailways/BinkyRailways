@@ -259,6 +259,14 @@ func (cs *binkyNetCommandStation) Close(ctx context.Context) {
 	// TODO
 }
 
+// Iterate over all hardware modules this command station is in control of.
+func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareModule)) {
+	// Return all local workers
+	for _, info := range cs.manager.GetAllLocalWorkers() {
+		cb(binkyNetLocalWorkerModule(info))
+	}
+}
+
 // createObjectAddress converts a model address into a BinkyNet object address.
 func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.ObjectAddress {
 	return bn.ObjectAddress(addr.Value)

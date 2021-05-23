@@ -20,10 +20,12 @@ package run
 import (
 	"context"
 	"fmt"
+	"image"
 	"log"
 
 	"gioui.org/layout"
 	"gioui.org/widget"
+	"gioui.org/widget/material"
 	"gioui.org/x/component"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
@@ -43,30 +45,34 @@ type (
 
 // View implements the view in which trains are being operated.
 type View struct {
-	vm             views.ViewManager
-	railway        state.Railway
-	setEditMode    setEditModeFunc
-	modal          *component.ModalLayer
-	appBar         *component.AppBar
-	buttonEdit     widget.Clickable
-	buttonAutoRun  widget.Clickable
-	buttonDiscover widget.Clickable
-	canvas         *canvas.EntityCanvas
-	power          *powerView
-	locs           *runLocsView
-	loc            *runLocView
+	vm                  views.ViewManager
+	railway             state.Railway
+	setEditMode         setEditModeFunc
+	modal               *component.ModalLayer
+	appBar              *component.AppBar
+	buttonEdit          widget.Clickable
+	buttonAutoRun       widget.Clickable
+	buttonDiscover      widget.Clickable
+	canvas              *canvas.EntityCanvas
+	power               *powerView
+	locs                *runLocsView
+	loc                 *runLocView
+	hardwareModules     *hardwareModulesView
+	showHardwareModules widget.Bool
+	leftContextArea     component.ContextArea
 }
 
 // New constructs a new railway view
 func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFunc) *View {
 	v := &View{
-		vm:          vm,
-		railway:     railway,
-		setEditMode: setEditMode,
-		modal:       component.NewModal(),
-		canvas:      canvas.RailwayStateCanvas(railway, run.NewBuilder()),
-		power:       newPowerView(vm, railway),
-		loc:         newRunLocView(vm),
+		vm:              vm,
+		railway:         railway,
+		setEditMode:     setEditMode,
+		modal:           component.NewModal(),
+		canvas:          canvas.RailwayStateCanvas(railway, run.NewBuilder()),
+		power:           newPowerView(vm, railway),
+		loc:             newRunLocView(vm),
+		hardwareModules: newHardwareModuleView(vm, railway),
 	}
 	v.locs = newRunLocsView(vm, railway, v.loc.Select)
 	v.appBar = component.NewAppBar(v.modal)
@@ -145,8 +151,10 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
 	canvas := func(gtx C) D { return v.canvas.Layout(gtx, th) }
+
+	// Prepare left side
 	vsLeft := func(gtx C) D {
-		return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
+		var children = []layout.FlexChild{
 			layout.Rigid(func(gtx C) D {
 				return widgets.WithBorder(gtx, th, v.power.Layout)
 			}),
@@ -164,10 +172,47 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 			layout.Rigid(func(gtx C) D {
 				return widgets.WithBorder(gtx, th, v.loc.Layout)
 			}),
-		)
+		}
+		if v.showHardwareModules.Value {
+			children = append(children,
+				layout.Flexed(1, func(gtx C) D {
+					return widgets.WithBorder(gtx, th, func(gtx C) D {
+						return widgets.WithPadding(gtx, v.hardwareModules.Layout)
+					})
+				}),
+			)
+		}
+		return layout.Flex{Axis: layout.Vertical}.Layout(gtx, children...)
 	}
+
+	// Prepare left menu
+	leftMenu := component.MenuState{
+		Options: []func(gtx C) D{
+			func(gtx C) D {
+				return material.CheckBox(th, &v.showHardwareModules, "Show hardware modules").Layout(gtx)
+			},
+		},
+	}
+
 	hs := widgets.HorizontalSplit(
-		func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
+		func(gtx C) D {
+			stack := layout.Stack{
+				Alignment: layout.Direction(layout.SE),
+			}
+			stack.Layout(gtx,
+				layout.Stacked(func(gtx C) D {
+					gtx.Constraints.Min = gtx.Constraints.Max
+					return widgets.WithPadding(gtx, vsLeft)
+				}),
+				layout.Expanded(func(gtx C) D {
+					return v.leftContextArea.Layout(gtx, func(gtx C) D {
+						gtx.Constraints.Min = image.Point{}
+						return component.Menu(th, &leftMenu).Layout(gtx)
+					})
+				}),
+			)
+			return layout.Dimensions{Size: gtx.Constraints.Max}
+		},
 		func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
 	)
 	hs.Start.Weight = 1

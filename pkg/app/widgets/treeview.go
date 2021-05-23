@@ -79,7 +79,9 @@ func (l TreeViewItems) Sort() {
 func (v *TreeView) onSelectWidget(index int, selection interface{}) {
 	// Save selection
 	v.Selected = selection
-	v.OnSelect(selection)
+	if v.OnSelect != nil {
+		v.OnSelect(selection)
+	}
 	// Scroll widget into view
 	if index < v.list.Position.First {
 		// We have to scroll up
@@ -228,7 +230,9 @@ func (v *TreeView) layout(ctx context.Context, gtx C, th *material.Theme) D {
 	}
 	if newSelection != v.Selected && newSelection != nil {
 		v.Selected = newSelection
-		v.OnSelect(newSelection)
+		if v.OnSelect != nil {
+			v.OnSelect(newSelection)
+		}
 	}
 
 	// Rebuild widgets

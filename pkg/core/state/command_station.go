@@ -69,4 +69,7 @@ type CommandStation interface {
 
 	// Trigger discovery of attached hardware with given ID.
 	TriggerDiscover(ctx context.Context, hardwareID string) error
+
+	// Iterate over all hardware modules this command station is in control of.
+	ForEachHardwareModule(func(HardwareModule))
 }
