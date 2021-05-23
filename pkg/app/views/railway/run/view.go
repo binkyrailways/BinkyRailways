@@ -20,7 +20,6 @@ package run
 import (
 	"context"
 	"fmt"
-	"image"
 	"log"
 
 	"gioui.org/layout"
@@ -33,7 +32,6 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
-	"github.com/gen2brain/dlgs"
 )
 
 type (
@@ -49,17 +47,19 @@ type View struct {
 	railway             state.Railway
 	setEditMode         setEditModeFunc
 	modal               *component.ModalLayer
+	navSheet            *component.ModalSheet
+	navSheetList        layout.List
 	appBar              *component.AppBar
 	buttonEdit          widget.Clickable
 	buttonAutoRun       widget.Clickable
-	buttonDiscover      widget.Clickable
 	canvas              *canvas.EntityCanvas
 	power               *powerView
 	locs                *runLocsView
 	loc                 *runLocView
 	hardwareModules     *hardwareModulesView
 	showHardwareModules widget.Bool
-	leftContextArea     component.ContextArea
+	discoverHardwareID  widget.Editor
+	buttonDiscover      widget.Clickable
 }
 
 // New constructs a new railway view
@@ -74,6 +74,8 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 		loc:             newRunLocView(vm),
 		hardwareModules: newHardwareModuleView(vm, railway),
 	}
+	v.navSheet = component.NewModalSheet(v.modal)
+	v.navSheetList.Axis = layout.Vertical
 	v.locs = newRunLocsView(vm, railway, v.loc.Select)
 	v.appBar = component.NewAppBar(v.modal)
 	railway.Subscribe(context.Background(), v.processEvent)
@@ -87,7 +89,7 @@ func (v *View) processEvent(evt state.Event) {
 }
 
 func (v *View) onDiscover() {
-	if id, ok, err := dlgs.Entry("Discover hardware", "Hardware ID", ""); err == nil && ok {
+	if id := v.discoverHardwareID.Text(); id != "" {
 		v.railway.ForEachCommandStation(func(cs state.CommandStation) {
 			cs.TriggerDiscover(context.Background(), id)
 		})
@@ -110,16 +112,14 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	if v.buttonDiscover.Clicked() {
 		v.onDiscover()
 	}
+	if v.showHardwareModules.Changed() {
+		v.navSheet.Disappear(gtx.Now)
+	}
 
 	for _, evt := range v.appBar.Events(gtx) {
 		switch event := evt.(type) {
 		case component.AppBarNavigationClicked:
-			/*if nonModalDrawer.Value {
-				navAnim.ToggleVisibility(gtx.Now)
-			} else {
-				modalNav.Appear(gtx.Now)
-				navAnim.Disappear(gtx.Now)
-			}*/
+			v.navSheet.Appear(gtx.Now)
 		case component.AppBarContextMenuDismissed:
 			log.Printf("Context menu dismissed: %v", event)
 		case component.AppBarOverflowActionClicked:
@@ -129,11 +129,12 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	}
 
 	// Configure appBar
+	v.appBar.NavigationIcon = views.IconMenu
 	v.appBar.Title = v.railway.GetDescription()
-	appBarActions := []component.AppBarAction{
-		component.SimpleIconAction(&v.buttonDiscover, views.IconSearch, component.OverflowAction{Name: "Discover", Tag: &v.buttonDiscover}),
+	var appBarActions []component.AppBarAction
+	appBarActions = append(appBarActions,
 		component.SimpleIconAction(&v.buttonEdit, views.IconEdit, component.OverflowAction{Name: "Edit", Tag: &v.buttonEdit}),
-	}
+	)
 	if vm.GetEnabled() {
 		if vm.GetAutoRun() {
 			appBarActions = append(appBarActions,
@@ -185,34 +186,8 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		return layout.Flex{Axis: layout.Vertical}.Layout(gtx, children...)
 	}
 
-	// Prepare left menu
-	leftMenu := component.MenuState{
-		Options: []func(gtx C) D{
-			func(gtx C) D {
-				return material.CheckBox(th, &v.showHardwareModules, "Show hardware modules").Layout(gtx)
-			},
-		},
-	}
-
 	hs := widgets.HorizontalSplit(
-		func(gtx C) D {
-			stack := layout.Stack{
-				Alignment: layout.Direction(layout.SE),
-			}
-			stack.Layout(gtx,
-				layout.Stacked(func(gtx C) D {
-					gtx.Constraints.Min = gtx.Constraints.Max
-					return widgets.WithPadding(gtx, vsLeft)
-				}),
-				layout.Expanded(func(gtx C) D {
-					return v.leftContextArea.Layout(gtx, func(gtx C) D {
-						gtx.Constraints.Min = image.Point{}
-						return component.Menu(th, &leftMenu).Layout(gtx)
-					})
-				}),
-			)
-			return layout.Dimensions{Size: gtx.Constraints.Max}
-		},
+		func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
 		func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
 	)
 	hs.Start.Weight = 1
@@ -224,9 +199,31 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	stack := layout.Stack{
 		Alignment: layout.Direction(layout.SE),
 	}
+	v.navSheet.LayoutModal(func(gtx C, th *material.Theme, anim *component.VisibilityAnimation) D {
+		return v.layoutNavSheet(gtx, th)
+	})
 	stack.Layout(gtx,
 		layout.Stacked(vs.Layout),
 		layout.Stacked(func(gtx C) D { return v.modal.Layout(gtx, th) }),
 	)
 	return layout.Dimensions{Size: gtx.Constraints.Max}
+}
+
+// Handle events and draw the navigation sheet
+func (v *View) layoutNavSheet(gtx layout.Context, th *material.Theme) layout.Dimensions {
+	options := []layout.Widget{
+		material.H5(th, "View").Layout,
+		material.CheckBox(th, &v.showHardwareModules, "Show hardware modules").Layout,
+
+		widgets.VerticalSpacer().Layout,
+		material.H5(th, "Discover hardware").Layout,
+		material.Editor(th, &v.discoverHardwareID, "12345678").Layout,
+		material.Button(th, &v.buttonDiscover, "Search").Layout,
+	}
+
+	return widgets.WithPadding(gtx, func(gtx C) D {
+		return v.navSheetList.Layout(gtx, len(options), func(gtx C, index int) D {
+			return options[index](gtx)
+		})
+	})
 }
