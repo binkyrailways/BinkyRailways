@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -43,7 +44,19 @@ func NewBinkyNetLogReceiver(log zerolog.Logger) *BinkyNetLogReceiver {
 // Run until the given context is canceled
 func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 	_, err := netlog.NewLogReceiver(func(m netlog.NetLogMessage) {
-		lr.log.WithLevel(m.Level).Str("address", m.Address).Msg(strings.TrimSpace(string(m.Message)))
+		evt := lr.log.WithLevel(m.Level).Str("address", m.Address)
+		var mm map[string]interface{}
+		if err := json.Unmarshal(m.Message, &mm); err == nil {
+			message := mm["message"].(string)
+			for k, v := range mm {
+				if k != "message" && k != "level" {
+					evt = evt.Interface(k, v)
+				}
+			}
+			evt.Msg(message)
+		} else {
+			evt.Msg(strings.TrimSpace(string(m.Message)))
+		}
 	})
 	if err != nil {
 		lr.log.Error().Err(err).Msg("Failed to receive log messages")
