@@ -42,7 +42,6 @@ type binkyNetCommandStation struct {
 	service          service.Service
 	server           server.Server
 	cancel           context.CancelFunc
-	logReceiver      *binkyNetLogReceiver
 }
 
 // Create a new entity
@@ -92,14 +91,12 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	if err != nil {
 		return err
 	}
-	cs.logReceiver = newBinkyNetLogReceiver(cs.log)
 	ctx, cancel := context.WithCancel(context.Background())
 	cs.cancel = cancel
 	g, ctx := errgroup.WithContext(ctx)
 	ctx = bn.WithServiceInfoHost(ctx, serverHost)
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
-	g.Go(func() error { cs.logReceiver.Run(ctx); return nil })
 	g.Go(func() error {
 		actuals, cancel := cs.manager.SubscribeOutputActuals()
 		defer cancel()

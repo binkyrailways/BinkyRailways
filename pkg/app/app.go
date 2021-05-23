@@ -18,6 +18,7 @@
 package app
 
 import (
+	"context"
 	"os"
 
 	gapp "gioui.org/app"
@@ -30,6 +31,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/start"
+	corelog "github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
 	"github.com/rs/zerolog"
@@ -58,6 +60,7 @@ type App struct {
 	railwayView   views.View
 	currentView   views.View
 	railwayChange chan model.Railway
+	logReceiver   *corelog.BinkyNetLogReceiver
 }
 
 // New creates a new, intialized App instance.
@@ -68,6 +71,7 @@ func New(cfg Config, deps Dependencies) *App {
 		theme:         material.NewTheme(gofont.Collection()),
 		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways"), gapp.Size(unit.Dp(2048), unit.Dp(1600))),
 		railwayChange: make(chan model.Railway),
+		logReceiver:   corelog.NewBinkyNetLogReceiver(deps.Logger),
 	}
 	a.startView = start.New(deps.Logger, a)
 	return a
@@ -76,6 +80,7 @@ func New(cfg Config, deps Dependencies) *App {
 // Run the application until it closes.
 func (a *App) Run() error {
 	log := a.Logger
+	go a.logReceiver.Run(context.Background())
 	go func() {
 		a.setCurrentView(a.startView)
 		go a.openRailwayFromConfig()

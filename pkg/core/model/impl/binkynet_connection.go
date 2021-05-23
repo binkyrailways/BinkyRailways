@@ -54,6 +54,8 @@ func (c *binkyNetConnection) UnmarshalXML(d *xml.Decoder, start xml.StartElement
 	}
 	c.Pins.SetContainer(c)
 	c.Configuration.SetContainer(c)
+	req, opt := c.Key.ExpectedConfigurations()
+	c.ensureConfiguration(append(req, opt...))
 	return nil
 }
 
@@ -122,10 +124,10 @@ func (c *binkyNetConnection) ensureConfiguration(keys []api.ConfigKey) {
 		}
 		return false
 	}
-	for k, v := range c.Configuration.Data {
-		key := api.ConfigKey(k)
-		if !isExpected(key) && key.DefaultValue() == v {
-			c.Configuration.Remove(k)
+	for _, e := range c.Configuration.Data {
+		key := api.ConfigKey(e.Key)
+		if !isExpected(key) && key.DefaultValue() == e.Value {
+			c.Configuration.Remove(e.Key)
 		}
 	}
 }

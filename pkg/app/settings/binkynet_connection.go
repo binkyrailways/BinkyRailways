@@ -26,15 +26,17 @@ import (
 
 // binkyNetConnectionSettings implements an settings grid for a BinkyNetConnection.
 type binkyNetConnectionSettings struct {
-	pins binkyNetDevicePinListSettings
+	pins   binkyNetDevicePinListSettings
+	config binkyNetConnectionConfigurationSettings
 }
 
 // Update the values in the given entity from the UI.
 func (e *binkyNetConnectionSettings) Update(entity model.BinkyNetConnection) {
 	e.pins.Update(entity.GetPins())
+	e.config.Update(entity.GetConfiguration())
 }
 
 // Rows generates rows for a settings grid.
 func (e *binkyNetConnectionSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
-	return e.pins.Rows(th)
+	return append(e.pins.Rows(th), e.config.Rows(th)...)
 }
