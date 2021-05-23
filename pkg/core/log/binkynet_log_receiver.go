@@ -47,7 +47,10 @@ func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 		evt := lr.log.WithLevel(m.Level).Str("address", m.Address)
 		var mm map[string]interface{}
 		if err := json.Unmarshal(m.Message, &mm); err == nil {
-			message := mm["message"].(string)
+			var message string
+			if messageRaw, ok := mm["message"]; ok {
+				message, _ = messageRaw.(string)
+			}
 			for k, v := range mm {
 				if k != "message" && k != "level" {
 					evt = evt.Interface(k, v)

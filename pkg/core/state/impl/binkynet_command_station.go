@@ -50,6 +50,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 		commandStation: newCommandStation(en, railway),
 	}
 	cs.power.Configure(cs, railway, railway)
+	cs.power.OnRequestedChanged = cs.sendPower
 	return cs
 }
 
@@ -98,6 +99,18 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error {
+		actuals, cancel := cs.manager.SubscribePowerActuals()
+		defer cancel()
+		for {
+			select {
+			case actual := <-actuals:
+				cs.onPowerActual(ctx, actual)
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
+	g.Go(func() error {
 		actuals, cancel := cs.manager.SubscribeOutputActuals()
 		defer cancel()
 		for {
@@ -121,6 +134,18 @@ func (cs *binkyNetCommandStation) GetPower() state.BoolProperty {
 // Has the command station not send or received anything for a while.
 func (cs *binkyNetCommandStation) GetIdle(context.Context) bool {
 	return true // TODO
+}
+
+// Send the requested power state.
+func (cs *binkyNetCommandStation) sendPower(ctx context.Context, enabled bool) {
+	cs.manager.SetPowerRequest(bn.PowerState{
+		Enabled: enabled,
+	})
+}
+
+// Send the state of the binary output towards the railway.
+func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.Power) {
+	cs.power.SetActual(ctx, actual.GetActual().GetEnabled())
 }
 
 // Send the speed and direction of the given loc towards the railway.
