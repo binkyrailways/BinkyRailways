@@ -99,6 +99,21 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error {
+		updates, cancel := cs.manager.SubscribeLocalWorkerUpdates()
+		defer cancel()
+		for {
+			select {
+			case update := <-updates:
+				cs.log.Debug().
+					Str("id", update.Id).
+					Int64("uptime", update.Uptime).
+					Msg("local worker update")
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
+	g.Go(func() error {
 		actuals, cancel := cs.manager.SubscribePowerActuals()
 		defer cancel()
 		for {
