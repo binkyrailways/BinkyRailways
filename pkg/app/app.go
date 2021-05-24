@@ -107,7 +107,9 @@ func (a *App) runEventLoop() error {
 			case system.DestroyEvent:
 				return e.Err
 			case system.FrameEvent:
-				gtx := layout.NewContext(&ops, e)
+				skipInset := e
+				skipInset.Insets = system.Insets{}
+				gtx := layout.NewContext(&ops, skipInset)
 				a.currentView.Layout(gtx)
 				e.Frame(gtx.Ops)
 			}
