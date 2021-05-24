@@ -32,6 +32,7 @@ func NewLocSettings(entity model.Loc) Settings {
 	}
 	s.description.SetText(entity.GetDescription())
 	s.owner.SetText(entity.GetOwner())
+	s.addressSettings.Initialize(entity)
 	return s
 }
 
@@ -41,21 +42,25 @@ type locSettings struct {
 
 	description w.Editor
 	owner       w.Editor
+	addressSettings
 }
 
 // Handle events and draw the editor
 func (e *locSettings) Layout(gtx C, th *material.Theme) D {
 	e.entity.SetDescription(e.description.Text())
 	e.entity.SetOwner(e.owner.Text())
+	e.addressSettings.Update(e.entity)
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		widgets.SettingsGridRow{Title: "Name", Layout: func(gtx C) D {
-			return material.Editor(th, &e.description, "Name").Layout(gtx)
-		}},
-		widgets.SettingsGridRow{Title: "Owner", Layout: func(gtx C) D {
-			return material.Editor(th, &e.owner, "Owner").Layout(gtx)
-		}},
+		append([]widgets.SettingsGridRow{
+			{Title: "Name", Layout: func(gtx C) D {
+				return material.Editor(th, &e.description, "Name").Layout(gtx)
+			}},
+			{Title: "Owner", Layout: func(gtx C) D {
+				return material.Editor(th, &e.owner, "Owner").Layout(gtx)
+			}},
+		}, e.addressSettings.Rows(th)...)...,
 	)
 
 	return grid.Layout(gtx, th)
