@@ -27,7 +27,8 @@ import (
 
 // addressSettings implements a part of settings grid for a address entities.
 type addressSettings struct {
-	address w.Editor
+	address    w.Editor
+	isNotValid bool
 }
 
 // Initialize the UI from the given entity
@@ -40,6 +41,9 @@ func (e *addressSettings) Initialize(source model.AddressEntity) {
 func (e *addressSettings) Update(entity model.AddressEntity) {
 	if addr, err := model.NewAddressFromString(e.address.Text()); err == nil {
 		entity.SetAddress(addr)
+		e.isNotValid = false
+	} else {
+		e.isNotValid = true
 	}
 }
 
@@ -47,7 +51,11 @@ func (e *addressSettings) Update(entity model.AddressEntity) {
 func (e *addressSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
 	return []widgets.SettingsGridRow{
 		{Title: "Name", Layout: func(gtx C) D {
-			return material.Editor(th, &e.address, "Address").Layout(gtx)
+			edt := material.Editor(th, &e.address, "Address")
+			if e.isNotValid {
+				edt.Color = widgets.ARGB(0xFFFF0000)
+			}
+			return edt.Layout(gtx)
 		}},
 	}
 }

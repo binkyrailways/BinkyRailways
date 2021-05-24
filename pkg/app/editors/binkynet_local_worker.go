@@ -63,7 +63,8 @@ type binkyNetLocalWorkerEditor struct {
 
 	devicesTable
 	objectsTable
-	settings settings.Settings
+	settings  settings.Settings
+	selection interface{}
 }
 
 // LocalWorker returns the local worker we're editing
@@ -73,6 +74,7 @@ func (e *binkyNetLocalWorkerEditor) LocalWorker() model.BinkyNetLocalWorker {
 
 // OnSelect is called when the currently selected entity has changed.
 func (e *binkyNetLocalWorkerEditor) OnSelect(entity interface{}) {
+	e.selection = entity
 	e.settings = settings.BuildSettings(entity)
 	if e.settings == nil {
 		e.settings = settings.BuildSettings(e.localWorker)
@@ -113,6 +115,9 @@ func (e *binkyNetLocalWorkerEditor) Layout(gtx C, th *material.Theme) D {
 
 // Create the buttons for the "Add resource sheet"
 func (e *binkyNetLocalWorkerEditor) CreateAddButtons() []AddButton {
+	if e.selection != nil {
+		return createAddButtonsFor(e.etx, e.selection)
+	}
 	return createAddButtonsFor(e.etx, e.localWorker)
 }
 

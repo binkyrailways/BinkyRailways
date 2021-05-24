@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	bn "github.com/binkynet/BinkyNet/apis/v1"
@@ -164,8 +165,22 @@ func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.P
 }
 
 // Send the speed and direction of the given loc towards the railway.
-func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(context.Context, state.Loc) {
-	// TODO
+func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
+	fmt.Println("SendLocSpeedAndDirection")
+	addr := cs.createObjectAddress(loc.GetAddress(ctx))
+	direction := bn.LocDirection_FORWARD
+	if loc.GetDirection().GetRequested(ctx) == state.LocDirectionReverse {
+		direction = bn.LocDirection_REVERSE
+	}
+	cs.manager.SetLocRequest(bn.Loc{
+		Address: addr,
+		Request: &bn.LocState{
+			Speed:      int32(loc.GetSpeedInSteps().GetRequested(ctx)),
+			SpeedSteps: int32(loc.GetSpeedSteps(ctx)),
+			Direction:  direction,
+			// TODO functions
+		},
+	})
 }
 
 // Send the state of the binary output towards the railway.

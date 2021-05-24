@@ -18,8 +18,12 @@
 package editors
 
 import (
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"fmt"
+
 	"github.com/gen2brain/dlgs"
+
+	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // createAddButtonsFor creates "Add" buttons for the given entity
@@ -103,7 +107,28 @@ func createAddButtonsFor(etx EditorContext, entity interface{}) []AddButton {
 			},
 		}
 	case model.BinkyNetDevice:
-		return createAddButtonsFor(etx, entity.GetLocalWorker())
+		fmt.Println("BinkyNetDevice...")
+		var prefix []AddButton
+		if entity.GetDeviceType() == api.DeviceTypeMCP23017 {
+			prefix = append(prefix, AddButton{
+				Title: "Add MGV95",
+				OnClick: func() {
+					lw := entity.GetLocalWorker()
+					for ioIndex := 1; ioIndex <= 8; ioIndex++ {
+						obj := lw.GetObjects().AddNew()
+						obj.SetObjectID(api.ObjectID(fmt.Sprintf("io%d", ioIndex)))
+						obj.SetObjectType(api.ObjectTypeBinarySensor)
+						if conn, ok := obj.GetConnections().Get(api.ConnectionNameSensor); ok {
+							if pin, ok := conn.GetPins().Get(0); ok {
+								pin.SetDeviceID(entity.GetDeviceID())
+								pin.SetIndex(api.DeviceIndex(ioIndex))
+							}
+						}
+					}
+				},
+			})
+		}
+		return append(prefix, createAddButtonsFor(etx, entity.GetLocalWorker())...)
 	case model.BinkyNetObject:
 		return createAddButtonsFor(etx, entity.GetLocalWorker())
 	case model.BinkyNetConnection:
