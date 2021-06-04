@@ -123,11 +123,17 @@ func (e *binkyNetLocalWorkerEditor) CreateAddButtons() []AddButton {
 
 // Can the currently selected item be deleted?
 func (e *binkyNetLocalWorkerEditor) CanDelete() bool {
-	return false
+	onDelete := createOnDelete(e.etx, e.selection)
+	return onDelete != nil
 }
 
 // Delete the currently selected item
 func (e *binkyNetLocalWorkerEditor) Delete(ctx context.Context) error {
+	if onDelete := createOnDelete(e.etx, e.selection); onDelete != nil {
+		if err := onDelete(ctx); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

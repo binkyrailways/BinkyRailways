@@ -207,14 +207,21 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	if v.railway.GetPackage().GetIsDirty() {
 		v.appBar.Title = v.appBar.Title + " *"
 	}
-	v.appBar.SetActions(
-		[]component.AppBarAction{
-			component.SimpleIconAction(&v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
-			component.SimpleIconAction(&v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+	var appBarActions = []component.AppBarAction{
+		component.SimpleIconAction(&v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
+		component.SimpleIconAction(&v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
+	}
+	if v.editor != nil && v.editor.CanDelete() {
+		appBarActions = append(appBarActions,
 			component.SimpleIconAction(&v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove", Tag: &v.buttonRemove}),
-			component.SimpleIconAction(&v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
-			component.SimpleIconAction(&v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
-		},
+		)
+	}
+	appBarActions = append(appBarActions,
+		component.SimpleIconAction(&v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),
+		component.SimpleIconAction(&v.buttonRunVirtual, views.IconRunVirtual, component.OverflowAction{Name: "Run virtual", Tag: &v.buttonRunVirtual}),
+	)
+	v.appBar.SetActions(
+		appBarActions,
 		[]component.OverflowAction{})
 
 	// Prepare content layout
