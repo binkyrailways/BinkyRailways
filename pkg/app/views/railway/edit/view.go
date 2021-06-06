@@ -217,7 +217,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	if v.editor != nil {
 		if descr, ok := v.editor.CanDelete(); ok {
 			action := component.SimpleIconAction(&v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove " + descr, Tag: &v.buttonRemove})
-			tooltip := component.PlatformTooltip(th, descr)
+			tooltip := component.PlatformTooltip(th, "Remove "+descr)
 			appBarActions = append(appBarActions, widgets.NewSimpleIconActionWithTooltip(action, &v.removeTipArea, tooltip).AppBarAction)
 		}
 	}

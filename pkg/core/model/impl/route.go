@@ -232,3 +232,8 @@ func (r *route) GetEnteringDestinationTrigger() model.ActionTrigger {
 func (r *route) GetDestinationReachedTrigger() model.ActionTrigger {
 	return &r.DestinationReachedTrigger
 }
+
+// Ensure implementation implements Route
+func (*route) ImplementsRoute() {
+	// Nothing here
+}

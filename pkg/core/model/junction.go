@@ -26,4 +26,7 @@ type Junction interface {
 	// When set, this junction is considered lock if the block is locked.
 	GetBlock() Block
 	SetBlock(value Block) error
+
+	// Ensure implementation implements Junction
+	ImplementsJunction()
 }

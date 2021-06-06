@@ -31,4 +31,7 @@ type Sensor interface {
 	// Shape used to visualize this sensor
 	GetShape() Shape
 	SetShape(value Shape) error
+
+	// Ensure implementation implements Sensor
+	ImplementsSensor()
 }

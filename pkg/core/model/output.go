@@ -21,4 +21,7 @@ package model
 type Output interface {
 	PositionedEntity
 	ModuleEntity
+
+	// Ensure implementation implements Output
+	ImplementsOutput()
 }

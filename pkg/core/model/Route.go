@@ -75,4 +75,7 @@ type Route interface {
 
 	// Trigger fired when a loc has reached the destination of this route.
 	GetDestinationReachedTrigger() ActionTrigger
+
+	// Ensure implementation implements Route
+	ImplementsRoute()
 }

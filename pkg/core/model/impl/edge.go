@@ -40,3 +40,8 @@ func newEdge() *edge {
 func (e *edge) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitEdge(e)
 }
+
+// Implement Edge
+func (e *edge) ImplementsEdge() {
+	// Nothing here
+}

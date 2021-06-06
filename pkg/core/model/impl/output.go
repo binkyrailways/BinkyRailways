@@ -37,3 +37,8 @@ var _ model.Output = &output{}
 func (j *output) Initialize() {
 	j.positionedModuleEntity.Initialize(12, 12)
 }
+
+// Ensure implementation implements Output
+func (*output) ImplementsOutput() {
+	// Nothing here
+}

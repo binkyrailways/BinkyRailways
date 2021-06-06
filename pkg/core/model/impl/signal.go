@@ -38,3 +38,8 @@ type signal struct {
 func (j *signal) Initialize() {
 	j.positionedModuleEntity.Initialize(16, 8)
 }
+
+// Ensure implementation implements Signal
+func (*signal) ImplementsSignal() {
+	// Nothing here
+}

@@ -201,3 +201,8 @@ func (b *block) SetBlockGroup(value model.BlockGroup) error {
 	}
 	return nil
 }
+
+// Ensure implementation implements Block
+func (*block) ImplementsBlock() {
+	// Nothing here
+}

@@ -20,4 +20,7 @@ package model
 // Edge is a connection point (track) of a module.
 type Edge interface {
 	EndPoint
+
+	// Ensure implementation implements Edge
+	ImplementsEdge()
 }

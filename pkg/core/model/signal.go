@@ -22,4 +22,7 @@ type Signal interface {
 	AddressEntity
 	PositionedEntity
 	ModuleEntity
+
+	// Ensure implementation implements Signal
+	ImplementsSignal()
 }

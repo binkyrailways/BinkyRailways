@@ -107,3 +107,8 @@ func (s *sensor) SetShape(value model.Shape) error {
 	}
 	return nil
 }
+
+// Ensure implementation implements Sensor
+func (*sensor) ImplementsSensor() {
+	// Nothing here
+}

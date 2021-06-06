@@ -68,3 +68,8 @@ func (j *junction) SetBlock(value model.Block) error {
 	}
 	return nil
 }
+
+// Ensure implementation implements Junction
+func (j *junction) ImplementsJunction() {
+	// Nothing here
+}

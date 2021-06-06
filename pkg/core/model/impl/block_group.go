@@ -72,3 +72,8 @@ func (bg *blockGroup) SetMinimumLocsOnTrackForMinimumLocsInGroupStart(value int)
 	return nil
 
 }
+
+// Ensure implementation implements BlockGroup
+func (*blockGroup) ImplementsBlockGroup() {
+	// Nothing here
+}

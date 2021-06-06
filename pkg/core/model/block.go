@@ -63,4 +63,7 @@ type Block interface {
 	// The block group that this block belongs to (if any).
 	GetBlockGroup() BlockGroup
 	SetBlockGroup(value BlockGroup) error
+
+	// Ensure implementation implements Block
+	ImplementsBlock()
 }

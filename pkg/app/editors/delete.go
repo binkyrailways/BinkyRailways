@@ -29,9 +29,9 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 	if entity == nil {
 		return "", nil
 	}
-	return "TODO", func(ctx context.Context) error {
-		switch entity := entity.(type) {
-		case model.Module:
+	switch entity := entity.(type) {
+	case model.Module:
+		return "Module: " + entity.GetDescription(), func(c context.Context) error {
 			pkg := entity.GetPackage()
 			railway := pkg.GetRailway()
 			if modRef, found := railway.GetModules().Get(entity.GetID()); found {
@@ -42,22 +42,106 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 			if err := pkg.Remove(entity); err != nil {
 				return fmt.Errorf("Failed to remove module from package: %s", err)
 			}
-		case model.BinkyNetLocalWorker:
+			return nil
+		}
+	case model.Block:
+		if module := entity.GetModule(); module != nil {
+			return "Block: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetBlocks().Remove(entity) {
+					return fmt.Errorf("Failed to remove block from module")
+				}
+				return nil
+			}
+		}
+	case model.BlockGroup:
+		if module := entity.GetModule(); module != nil {
+			return "Block group: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetBlockGroups().Remove(entity) {
+					return fmt.Errorf("Failed to remove block group from module")
+				}
+				return nil
+			}
+		}
+	case model.Edge:
+		if module := entity.GetModule(); module != nil {
+			return "Edge: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetEdges().Remove(entity) {
+					return fmt.Errorf("Failed to remove edge from module")
+				}
+				return nil
+			}
+		}
+	case model.Junction:
+		if module := entity.GetModule(); module != nil {
+			return "Junction: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetJunctions().Remove(entity) {
+					return fmt.Errorf("Failed to remove junction from module")
+				}
+				return nil
+			}
+		}
+	case model.Output:
+		if module := entity.GetModule(); module != nil {
+			return "Output: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetOutputs().Remove(entity) {
+					return fmt.Errorf("Failed to remove output from module")
+				}
+				return nil
+			}
+		}
+	case model.Route:
+		if module := entity.GetModule(); module != nil {
+			return "Route: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetRoutes().Remove(entity) {
+					return fmt.Errorf("Failed to remove route from module")
+				}
+				return nil
+			}
+		}
+	case model.Sensor:
+		if module := entity.GetModule(); module != nil {
+			return "Sensor: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetSensors().Remove(entity) {
+					return fmt.Errorf("Failed to remove sensor from module")
+				}
+				return nil
+			}
+		}
+	case model.Signal:
+		if module := entity.GetModule(); module != nil {
+			return "Signal: " + entity.GetDescription(), func(c context.Context) error {
+				if !module.GetSignals().Remove(entity) {
+					return fmt.Errorf("Failed to remove signal from module")
+				}
+				return nil
+			}
+		}
+	case model.BinkyNetLocalWorker:
+		return "BinkyNet local worker: " + entity.GetDescription(), func(c context.Context) error {
 			cs := entity.GetCommandStation()
 			if !cs.GetLocalWorkers().Remove(entity) {
 				return fmt.Errorf("Failed to remove local worker")
 			}
-		case model.BinkyNetDevice:
-			lw := entity.GetLocalWorker()
-			if !lw.GetDevices().Remove(entity) {
-				return fmt.Errorf("Failed to remove device")
-			}
-		case model.BinkyNetObject:
-			lw := entity.GetLocalWorker()
-			if !lw.GetObjects().Remove(entity) {
-				return fmt.Errorf("Failed to remove object")
+			return nil
+		}
+	case model.BinkyNetDevice:
+		if lw := entity.GetLocalWorker(); lw != nil {
+			return "BinkyNet device: " + entity.GetDescription(), func(c context.Context) error {
+				if !lw.GetDevices().Remove(entity) {
+					return fmt.Errorf("Failed to remove device")
+				}
+				return nil
 			}
 		}
-		return nil
+	case model.BinkyNetObject:
+		if lw := entity.GetLocalWorker(); lw != nil {
+			return "BinkyNet object: " + entity.GetDescription(), func(c context.Context) error {
+				if !lw.GetObjects().Remove(entity) {
+					return fmt.Errorf("Failed to remove object")
+				}
+				return nil
+			}
+		}
 	}
+	return "", nil
 }

@@ -29,4 +29,7 @@ type BlockGroup interface {
 	// The minimum number of locs that must be on the track before the <see cref="MinimumLocsInGroup"/> becomes active.
 	GetMinimumLocsOnTrackForMinimumLocsInGroupStart() int
 	SetMinimumLocsOnTrackForMinimumLocsInGroupStart(value int) error
+
+	// Ensure implementation implements BlockGroup
+	ImplementsBlockGroup()
 }
