@@ -21,20 +21,30 @@ import (
 	"strconv"
 
 	"gioui.org/widget"
+	"gioui.org/widget/material"
 )
 
 // IntEditor is an editor of integers
 type IntEditor struct {
-	widget.Editor
+	editor widget.Editor
 }
 
 // SetValue updates the editor to the current value
 func (e *IntEditor) SetValue(value int) {
-	e.SingleLine = true
-	e.SetText(strconv.Itoa(value))
+	e.editor.SingleLine = true
+	e.editor.SetText(strconv.Itoa(value))
 }
 
 // GetValue returns the current value
 func (e *IntEditor) GetValue() (int, error) {
-	return strconv.Atoi(e.Editor.Text())
+	return strconv.Atoi(e.editor.Text())
+}
+
+// Layout the editor
+func (e *IntEditor) Layout(gtx C, th *material.Theme) D {
+	edt := material.Editor(th, &e.editor, "")
+	if _, err := e.GetValue(); err != nil {
+		edt.Color = ARGB(0xFFFF0000)
+	}
+	return edt.Layout(gtx)
 }

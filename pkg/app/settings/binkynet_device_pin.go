@@ -77,7 +77,7 @@ func (e *binkyNetDevicePinSettings) Rows(th *material.Theme) []widgets.SettingsG
 			return e.devIDSel.Layout(gtx, th)
 		}},
 		widgets.SettingsGridRow{Title: "Index", Layout: func(gtx C) D {
-			return material.Editor(th, &e.index.Editor, "").Layout(gtx)
+			return e.index.Layout(gtx, th)
 		}},
 	}
 }

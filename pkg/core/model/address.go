@@ -48,8 +48,9 @@ func NewAddressFromString(value string) (Address, error) {
 			value = ""
 		}
 		if !haveType {
-			atype = AddressType(parts[0])
-			if err := atype.Validate(); err != nil {
+			var err error
+			atype, err = ParseAddressType(parts[0])
+			if err != nil {
 				return Address{}, err
 			}
 			haveType = true

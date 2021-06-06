@@ -95,13 +95,13 @@ func (e *blockGroupSettings) Layout(gtx C, th *material.Theme) D {
 			widgets.SettingsGridRow{
 				Title: "Min. locs in block",
 				Layout: func(gtx C) D {
-					return material.Editor(th, &e.minBlocksInGroup.Editor, "").Layout(gtx)
+					return e.minBlocksInGroup.Layout(gtx, th)
 				},
 			},
 			widgets.SettingsGridRow{
 				Title: "Min. locs on track",
 				Layout: func(gtx C) D {
-					return material.Editor(th, &e.minLocsOnTrackForMinLocsInGroupStart.Editor, "").Layout(gtx)
+					return e.minLocsOnTrackForMinLocsInGroupStart.Layout(gtx, th)
 				},
 			},
 		)...,

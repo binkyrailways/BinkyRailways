@@ -17,7 +17,10 @@
 
 package model
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // AddressType is a strongly typed type of address
 type AddressType string
@@ -30,6 +33,28 @@ const (
 	AddressTypeMfx      AddressType = "Mfx"
 	AddressTypeMqtt     AddressType = "Mqtt"
 )
+
+var (
+	allAddressTypes = []AddressType{
+		AddressTypeBinkyNet,
+		AddressTypeDcc,
+		AddressTypeLocoNet,
+		AddressTypeMotorola,
+		AddressTypeMfx,
+		AddressTypeMqtt,
+	}
+)
+
+// ParseAddressType parses the given input into an AddressType.
+func ParseAddressType(input string) (AddressType, error) {
+	upperInput := strings.ToUpper(input)
+	for _, x := range allAddressTypes {
+		if strings.ToUpper(string(x)) == upperInput {
+			return x, nil
+		}
+	}
+	return "", fmt.Errorf("Unknown address type '%s", input)
+}
 
 // Validate checks if the given address type is valid
 func (tp AddressType) Validate() error {

@@ -73,25 +73,25 @@ func (e *positionSettings) Update(entity model.PositionedEntity) {
 func (e *positionSettings) Rows(th *material.Theme) []widgets.SettingsGridRow {
 	rows := []widgets.SettingsGridRow{
 		{Title: "X", Layout: func(gtx C) D {
-			return material.Editor(th, &e.x.Editor, "").Layout(gtx)
+			return e.x.Layout(gtx, th)
 		}},
 		{Title: "Y", Layout: func(gtx C) D {
-			return material.Editor(th, &e.y.Editor, "").Layout(gtx)
+			return e.y.Layout(gtx, th)
 		}},
 	}
 	if !e.excludeSize {
 		rows = append(rows,
 			widgets.SettingsGridRow{Title: "Width", Layout: func(gtx C) D {
-				return material.Editor(th, &e.width.Editor, "").Layout(gtx)
+				return e.width.Layout(gtx, th)
 			}},
 			widgets.SettingsGridRow{Title: "Height", Layout: func(gtx C) D {
-				return material.Editor(th, &e.height.Editor, "").Layout(gtx)
+				return e.height.Layout(gtx, th)
 			}},
 		)
 	}
 	rows = append(rows,
 		widgets.SettingsGridRow{Title: "Rotation", Layout: func(gtx C) D {
-			return material.Editor(th, &e.rotation.Editor, "").Layout(gtx)
+			return e.rotation.Layout(gtx, th)
 		}},
 		widgets.SettingsGridRow{Title: "Layer", Layout: func(gtx C) D {
 			return material.Editor(th, &e.layer, "").Layout(gtx)
