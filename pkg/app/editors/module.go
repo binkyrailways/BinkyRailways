@@ -142,6 +142,7 @@ func (e *moduleEditor) Delete(ctx context.Context) error {
 		if err := onDelete(ctx); err != nil {
 			return err
 		}
+		e.OnSelect(nil)
 	}
 	return nil
 }
