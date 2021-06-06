@@ -50,6 +50,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetBlocks().Remove(entity) {
 					return fmt.Errorf("Failed to remove block from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -59,6 +60,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetBlockGroups().Remove(entity) {
 					return fmt.Errorf("Failed to remove block group from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -68,6 +70,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetEdges().Remove(entity) {
 					return fmt.Errorf("Failed to remove edge from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -77,6 +80,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetJunctions().Remove(entity) {
 					return fmt.Errorf("Failed to remove junction from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -86,6 +90,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetOutputs().Remove(entity) {
 					return fmt.Errorf("Failed to remove output from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -95,6 +100,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetRoutes().Remove(entity) {
 					return fmt.Errorf("Failed to remove route from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -104,6 +110,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetSensors().Remove(entity) {
 					return fmt.Errorf("Failed to remove sensor from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
@@ -113,16 +120,19 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !module.GetSignals().Remove(entity) {
 					return fmt.Errorf("Failed to remove signal from module")
 				}
+				etx.Select(module)
 				return nil
 			}
 		}
 	case model.BinkyNetLocalWorker:
-		return "BinkyNet local worker: " + entity.GetDescription(), func(c context.Context) error {
-			cs := entity.GetCommandStation()
-			if !cs.GetLocalWorkers().Remove(entity) {
-				return fmt.Errorf("Failed to remove local worker")
+		if cs := entity.GetCommandStation(); cs != nil {
+			return "BinkyNet local worker: " + entity.GetDescription(), func(c context.Context) error {
+				if !cs.GetLocalWorkers().Remove(entity) {
+					return fmt.Errorf("Failed to remove local worker")
+				}
+				etx.Select(cs)
+				return nil
 			}
-			return nil
 		}
 	case model.BinkyNetDevice:
 		if lw := entity.GetLocalWorker(); lw != nil {
@@ -130,6 +140,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !lw.GetDevices().Remove(entity) {
 					return fmt.Errorf("Failed to remove device")
 				}
+				etx.Select(lw)
 				return nil
 			}
 		}
@@ -139,6 +150,7 @@ func createOnDelete(etx EditorContext, entity interface{}) (string, func(context
 				if !lw.GetObjects().Remove(entity) {
 					return fmt.Errorf("Failed to remove object")
 				}
+				etx.Select(lw)
 				return nil
 			}
 		}

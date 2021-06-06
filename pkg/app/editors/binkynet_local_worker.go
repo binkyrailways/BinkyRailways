@@ -52,6 +52,7 @@ func newBinkyNetLocalWorkerEditor(localWorker model.BinkyNetLocalWorker, etx Edi
 		objectsTable: newObjectsTables(),
 	}
 	editor.settings = settings.BuildSettings(localWorker)
+	editor.OnSelect(localWorker)
 
 	return editor
 }
@@ -133,6 +134,7 @@ func (e *binkyNetLocalWorkerEditor) Delete(ctx context.Context) error {
 		if err := onDelete(ctx); err != nil {
 			return err
 		}
+		e.OnSelect(e.localWorker)
 	}
 	return nil
 }
