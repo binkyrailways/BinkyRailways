@@ -131,14 +131,14 @@ func (e *moduleEditor) CreateAddButtons() []AddButton {
 }
 
 // Can the currently selected item be deleted?
-func (e *moduleEditor) CanDelete() bool {
-	onDelete := createOnDelete(e.etx, e.selection)
-	return onDelete != nil
+func (e *moduleEditor) CanDelete() (string, bool) {
+	descr, onDelete := createOnDelete(e.etx, e.selection)
+	return descr, onDelete != nil
 }
 
 // Delete the currently selected item
 func (e *moduleEditor) Delete(ctx context.Context) error {
-	if onDelete := createOnDelete(e.etx, e.selection); onDelete != nil {
+	if _, onDelete := createOnDelete(e.etx, e.selection); onDelete != nil {
 		if err := onDelete(ctx); err != nil {
 			return err
 		}

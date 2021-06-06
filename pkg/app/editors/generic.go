@@ -27,22 +27,24 @@ import (
 )
 
 // newGenericEditor constructs an editor for an entity for which only settings are shown.
-func newGenericEditor(entity interface{}, onDelete func(context.Context) error, etx EditorContext) Editor {
+func newGenericEditor(entity interface{}, deleteDescr string, onDelete func(context.Context) error, etx EditorContext) Editor {
 	editor := &genericEditor{
-		entity:   entity,
-		settings: settings.BuildSettings(entity),
-		onDelete: onDelete,
-		etx:      etx,
+		entity:      entity,
+		settings:    settings.BuildSettings(entity),
+		onDelete:    onDelete,
+		deleteDescr: deleteDescr,
+		etx:         etx,
 	}
 	return editor
 }
 
 // genericEditor implements an editor for an entity for which only settings are shown.
 type genericEditor struct {
-	entity   interface{}
-	settings settings.Settings
-	onDelete func(context.Context) error
-	etx      EditorContext
+	entity      interface{}
+	settings    settings.Settings
+	onDelete    func(context.Context) error
+	deleteDescr string
+	etx         EditorContext
 }
 
 // Handle events and draw the editor
@@ -59,8 +61,8 @@ func (e *genericEditor) CreateAddButtons() []AddButton {
 }
 
 // Can the currently selected item be deleted?
-func (e *genericEditor) CanDelete() bool {
-	return e.onDelete != nil
+func (e *genericEditor) CanDelete() (string, bool) {
+	return e.deleteDescr, e.onDelete != nil
 }
 
 // Delete the currently selected item

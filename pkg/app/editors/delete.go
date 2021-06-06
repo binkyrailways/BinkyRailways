@@ -25,11 +25,11 @@ import (
 )
 
 // createOnDelete an onDelete helper for the given entity
-func createOnDelete(etx EditorContext, entity interface{}) func(context.Context) error {
+func createOnDelete(etx EditorContext, entity interface{}) (string, func(context.Context) error) {
 	if entity == nil {
-		return nil
+		return "", nil
 	}
-	return func(ctx context.Context) error {
+	return "TODO", func(ctx context.Context) error {
 		switch entity := entity.(type) {
 		case model.Module:
 			pkg := entity.GetPackage()

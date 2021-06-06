@@ -55,8 +55,8 @@ func (e *locEditor) CreateAddButtons() []AddButton {
 }
 
 // Can the currently selected item be deleted?
-func (e *locEditor) CanDelete() bool {
-	return true
+func (e *locEditor) CanDelete() (string, bool) {
+	return e.loc.GetDescription(), true
 }
 
 // Delete the currently selected item

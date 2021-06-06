@@ -55,7 +55,8 @@ func BuildEditor(selection interface{}, etx EditorContext, current Editor) Edito
 		lw := selection.GetLocalWorker()
 		return buildBinkyNetLocalWorkerEditor(lw, selection, etx, current)
 	default:
-		return newGenericEditor(selection, createOnDelete(etx, selection), etx)
+		descr, onDelete := createOnDelete(etx, selection)
+		return newGenericEditor(selection, descr, onDelete, etx)
 	}
 }
 

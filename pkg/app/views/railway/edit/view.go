@@ -56,6 +56,7 @@ type View struct {
 	buttonRunVirtual widget.Clickable
 	buttonAdd        widget.Clickable
 	buttonRemove     widget.Clickable
+	removeTipArea    component.TipArea
 	buttonSave       widget.Clickable
 	entityList       widgets.TreeView
 	editor           editors.Editor
@@ -148,9 +149,11 @@ func (v *View) onSelect(selection interface{}) {
 }
 
 func (v *View) onRemove() {
-	if v.editor != nil && v.editor.CanDelete() {
-		if err := v.editor.Delete(context.Background()); err != nil {
-			dlgs.Error("Remove", "Failed to remove item: "+err.Error())
+	if v.editor != nil {
+		if descr, ok := v.editor.CanDelete(); ok {
+			if err := v.editor.Delete(context.Background()); err != nil {
+				dlgs.Error("Remove "+descr, "Failed to remove item: "+err.Error())
+			}
 		}
 	}
 }
@@ -211,10 +214,12 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		component.SimpleIconAction(&v.buttonSave, views.IconSave, component.OverflowAction{Name: "Save", Tag: &v.buttonSave}),
 		component.SimpleIconAction(&v.buttonAdd, views.IconAdd, component.OverflowAction{Name: "Add", Tag: &v.buttonAdd}),
 	}
-	if v.editor != nil && v.editor.CanDelete() {
-		appBarActions = append(appBarActions,
-			component.SimpleIconAction(&v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove", Tag: &v.buttonRemove}),
-		)
+	if v.editor != nil {
+		if descr, ok := v.editor.CanDelete(); ok {
+			action := component.SimpleIconAction(&v.buttonRemove, views.IconRemove, component.OverflowAction{Name: "Remove " + descr, Tag: &v.buttonRemove})
+			tooltip := component.PlatformTooltip(th, descr)
+			appBarActions = append(appBarActions, widgets.NewSimpleIconActionWithTooltip(action, &v.removeTipArea, tooltip).AppBarAction)
+		}
 	}
 	appBarActions = append(appBarActions,
 		component.SimpleIconAction(&v.buttonRun, views.IconRun, component.OverflowAction{Name: "Run", Tag: &v.buttonRun}),

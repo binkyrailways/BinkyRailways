@@ -37,7 +37,7 @@ type Editor interface {
 	// Create the buttons for the "Add resource sheet"
 	CreateAddButtons() []AddButton
 	// Can the currently selected item be deleted?
-	CanDelete() bool
+	CanDelete() (string, bool)
 	// Delete the currently selected item
 	Delete(context.Context) error
 }

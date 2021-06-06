@@ -54,8 +54,8 @@ func (e *railwayEditor) CreateAddButtons() []AddButton {
 }
 
 // Can the currently selected item be deleted?
-func (e *railwayEditor) CanDelete() bool {
-	return false
+func (e *railwayEditor) CanDelete() (string, bool) {
+	return "", false
 }
 
 // Delete the currently selected item
