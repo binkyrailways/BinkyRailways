@@ -5,7 +5,7 @@ go 1.16
 require (
 	gioui.org v0.0.0-20210604153939-e68ee35c86cb
 	gioui.org/x v0.0.0-20210602142902-98819c83723b
-	github.com/binkynet/BinkyNet v0.9.1
+	github.com/binkynet/BinkyNet v0.9.2
 	github.com/binkynet/NetManager v0.4.0
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
 	github.com/gen2brain/dlgs v0.0.0-20201118155338-03fe7f81ad25
