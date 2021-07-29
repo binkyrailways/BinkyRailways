@@ -274,6 +274,7 @@ func (p *packageImpl) ForEachLoc(cb func(model.Loc)) {
 // Add a new module.
 func (p *packageImpl) AddNewModule() (model.Module, error) {
 	result := impl.NewModule()
+	result.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderModule, result.GetID())
 	p.loadedEntities[uri] = result
 	p.dirty = true
