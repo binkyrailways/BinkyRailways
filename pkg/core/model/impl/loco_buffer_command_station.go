@@ -32,10 +32,11 @@ type locoBufferCommandStation struct {
 var _ model.LocoBufferCommandStation = &locoBufferCommandStation{}
 
 // NewLocoBufferCommandStation creates a new LB type command station
-func NewLocoBufferCommandStation() LocoBufferCommandStation {
+func NewLocoBufferCommandStation(p model.Package) LocoBufferCommandStation {
 	cs := &locoBufferCommandStation{}
 	cs.Initialize()
 	cs.EnsureID()
+	cs.SetPackage(p)
 	cs.SetDescription("New Locobuffer command station")
 	return cs
 }

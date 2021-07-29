@@ -54,9 +54,10 @@ var (
 )
 
 // NewModule initialize a new module
-func NewModule() Module {
+func NewModule(p model.Package) Module {
 	m := &module{}
 	m.EnsureID()
+	m.SetPackage(p)
 	m.SetDescription("New module")
 	m.persistentEntity.Initialize(m.entity.OnModified)
 	m.Blocks.SetContainer(m)

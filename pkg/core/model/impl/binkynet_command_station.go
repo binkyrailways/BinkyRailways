@@ -45,10 +45,11 @@ type binkyNetCommandStation struct {
 var _ model.BinkyNetCommandStation = &binkyNetCommandStation{}
 
 // NewBinkyNetCommandStation creates a new BinkyNet type command station
-func NewBinkyNetCommandStation() BinkyNetCommandStation {
+func NewBinkyNetCommandStation(p model.Package) BinkyNetCommandStation {
 	cs := &binkyNetCommandStation{}
 	cs.Initialize()
 	cs.EnsureID()
+	cs.SetPackage(p)
 	cs.SetDescription("New BinkyNet command station")
 	cs.LocalWorkers.SetContainer(cs)
 	return cs

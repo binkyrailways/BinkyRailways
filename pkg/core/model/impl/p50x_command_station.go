@@ -32,10 +32,11 @@ type p50xCommandStation struct {
 var _ model.P50xCommandStation = &p50xCommandStation{}
 
 // NewP50xCommandStation creates a new P50X type command station
-func NewP50xCommandStation() P50xCommandStation {
+func NewP50xCommandStation(p model.Package) P50xCommandStation {
 	cs := &p50xCommandStation{}
 	cs.Initialize()
 	cs.EnsureID()
+	cs.SetPackage(p)
 	cs.SetDescription("New P50x command station")
 	return cs
 }

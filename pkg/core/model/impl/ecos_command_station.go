@@ -37,7 +37,7 @@ type ecosCommandStation struct {
 var _ model.EcosCommandStation = &ecosCommandStation{}
 
 // NewEcosCommandStation creates a new ECOS type command station
-func NewEcosCommandStation() EcosCommandStation {
+func NewEcosCommandStation(p model.Package) EcosCommandStation {
 	cs := &ecosCommandStation{}
 	cs.Initialize()
 	cs.EnsureID()

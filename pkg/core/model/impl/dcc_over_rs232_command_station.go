@@ -32,10 +32,11 @@ type dccOverRs232CommandStation struct {
 var _ model.DccOverRs232CommandStation = &dccOverRs232CommandStation{}
 
 // NewDccOverRs232CommandStation creates a new DCC-over-rs232 type command station
-func NewDccOverRs232CommandStation() DccOverRs232CommandStation {
+func NewDccOverRs232CommandStation(p model.Package) DccOverRs232CommandStation {
 	cs := &dccOverRs232CommandStation{}
 	cs.Initialize()
 	cs.EnsureID()
+	cs.SetPackage(p)
 	cs.SetDescription("New Dcc over RS232 command station")
 	return cs
 }

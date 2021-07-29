@@ -39,10 +39,11 @@ type mqttCommandStation struct {
 var _ model.MqttCommandStation = &mqttCommandStation{}
 
 // NewMqttCommandStation creates a new MQTT type command station
-func NewMqttCommandStation() MqttCommandStation {
+func NewMqttCommandStation(p model.Package) MqttCommandStation {
 	cs := &mqttCommandStation{}
 	cs.Initialize()
 	cs.EnsureID()
+	cs.SetPackage(p)
 	cs.SetDescription("New MQTT command station")
 	return cs
 }

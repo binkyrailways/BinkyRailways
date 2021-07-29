@@ -92,7 +92,7 @@ func (e *moduleEditor) OnSelect(entity model.ModuleEntity) {
 			e.settings = settings.NewModuleSettings(e.module)
 			e.selection = e.module
 		}
-	} else {
+	} else if e.module != nil {
 		e.settings = settings.NewModuleSettings(e.module)
 		e.selection = e.module
 	}
@@ -138,11 +138,14 @@ func (e *moduleEditor) CanDelete() (string, bool) {
 
 // Delete the currently selected item
 func (e *moduleEditor) Delete(ctx context.Context) error {
-	if _, onDelete := createOnDelete(e.etx, e.selection); onDelete != nil {
+	selection := e.selection
+	if _, onDelete := createOnDelete(e.etx, selection); onDelete != nil {
 		if err := onDelete(ctx); err != nil {
 			return err
 		}
-		e.OnSelect(nil)
+		if e.selection != e.module {
+			e.OnSelect(nil)
+		}
 	}
 	return nil
 }

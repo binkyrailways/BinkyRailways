@@ -143,7 +143,7 @@ func (p *packageImpl) Remove(model.PersistentEntity) error {
 
 // Add a new BinkyNet command station.
 func (p *packageImpl) AddNewBinkyNetCommandStation() (model.BinkyNetCommandStation, error) {
-	cs := impl.NewBinkyNetCommandStation()
+	cs := impl.NewBinkyNetCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -153,7 +153,7 @@ func (p *packageImpl) AddNewBinkyNetCommandStation() (model.BinkyNetCommandStati
 
 // Add a new LocoBuffer type command station.
 func (p *packageImpl) AddNewLocoBufferCommandStation() (model.LocoBufferCommandStation, error) {
-	cs := impl.NewLocoBufferCommandStation()
+	cs := impl.NewLocoBufferCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -163,7 +163,7 @@ func (p *packageImpl) AddNewLocoBufferCommandStation() (model.LocoBufferCommandS
 
 // Add a new DCC over RS232 type command station.
 func (p *packageImpl) AddNewDccOverRs232CommandStation() (model.DccOverRs232CommandStation, error) {
-	cs := impl.NewDccOverRs232CommandStation()
+	cs := impl.NewDccOverRs232CommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -173,7 +173,7 @@ func (p *packageImpl) AddNewDccOverRs232CommandStation() (model.DccOverRs232Comm
 
 // Add a new Ecos command station.
 func (p *packageImpl) AddNewEcosCommandStation() (model.EcosCommandStation, error) {
-	cs := impl.NewEcosCommandStation()
+	cs := impl.NewEcosCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -183,7 +183,7 @@ func (p *packageImpl) AddNewEcosCommandStation() (model.EcosCommandStation, erro
 
 // Add a new MQTT command station.
 func (p *packageImpl) AddNewMqttCommandStation() (model.MqttCommandStation, error) {
-	cs := impl.NewMqttCommandStation()
+	cs := impl.NewMqttCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -193,7 +193,7 @@ func (p *packageImpl) AddNewMqttCommandStation() (model.MqttCommandStation, erro
 
 // Add a new P50x command station.
 func (p *packageImpl) AddNewP50xCommandStation() (model.P50xCommandStation, error) {
-	cs := impl.NewP50xCommandStation()
+	cs := impl.NewP50xCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
 	p.loadedEntities[uri] = cs
@@ -234,7 +234,7 @@ func (p *packageImpl) ForEachCommandStation(cb func(model.CommandStation)) {
 
 // Add a new loc.
 func (p *packageImpl) AddNewLoc() (model.Loc, error) {
-	result := impl.NewLoc()
+	result := impl.NewLoc(p)
 	uri := createPartURI(impl.PackageFolderLoc, result.GetID())
 	p.loadedEntities[uri] = result
 	p.dirty = true
@@ -273,8 +273,7 @@ func (p *packageImpl) ForEachLoc(cb func(model.Loc)) {
 
 // Add a new module.
 func (p *packageImpl) AddNewModule() (model.Module, error) {
-	result := impl.NewModule()
-	result.SetPackage(p)
+	result := impl.NewModule(p)
 	uri := createPartURI(impl.PackageFolderModule, result.GetID())
 	p.loadedEntities[uri] = result
 	p.dirty = true

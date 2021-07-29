@@ -42,24 +42,24 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 	var entity model.PersistentEntity
 	switch a.Value {
 	case TypeLoc:
-		entity = NewLoc()
+		entity = NewLoc(nil)
 	case TypeModule:
-		entity = NewModule()
+		entity = NewModule(nil)
 	case TypeRailway:
 		// Railway must have been initialized before
 		entity = pec.PersistentEntity
 	case TypeBinkyNetCommandStation:
-		entity = NewBinkyNetCommandStation()
+		entity = NewBinkyNetCommandStation(nil)
 	case TypeLocoBufferCommandStation:
-		entity = NewLocoBufferCommandStation()
+		entity = NewLocoBufferCommandStation(nil)
 	case TypeDccOverRs232CommandStation:
-		entity = NewDccOverRs232CommandStation()
+		entity = NewDccOverRs232CommandStation(nil)
 	case TypeEcosCommandStation:
-		entity = NewEcosCommandStation()
+		entity = NewEcosCommandStation(nil)
 	case TypeMqttCommandStation:
-		entity = NewMqttCommandStation()
+		entity = NewMqttCommandStation(nil)
 	case TypeP50xCommandStation:
-		entity = NewP50xCommandStation()
+		entity = NewP50xCommandStation(nil)
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)
 	}

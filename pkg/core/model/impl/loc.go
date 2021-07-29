@@ -47,7 +47,7 @@ var (
 )
 
 // NewLoc initialize a new loc
-func NewLoc() Loc {
+func NewLoc(p model.Package) Loc {
 	l := &loc{
 		SlowSpeed:       model.DefaultLocSlowSpeed,
 		MediumSpeed:     model.DefaultLocMediumSpeed,
@@ -58,6 +58,7 @@ func NewLoc() Loc {
 		Remarks:         model.DefaultLocRemarks,
 	}
 	l.EnsureID()
+	l.SetPackage(p)
 	l.SetDescription("New loc")
 	l.persistentEntity.Initialize(l.entity.OnModified)
 	l.Functions.SetContainer(l)
