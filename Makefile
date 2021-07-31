@@ -23,7 +23,7 @@ test:
 update-modules:
 	go get \
 		github.com/binkynet/NetManager@v0.4.0 \
-		github.com/binkynet/BinkyNet@v0.9.2
+		github.com/binkynet/BinkyNet@v0.9.5
 	go mod tidy
 
 update-gioui:
