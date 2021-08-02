@@ -23,7 +23,6 @@ var (
 	HoverBg    = widgets.ARGB(0xC0333333)
 	BlockBg    = widgets.ARGB(0xA0CCCCCC)
 	BlockFront = widgets.ARGB(0xA000CCCC)
-	JunctionBg = widgets.ARGB(0xA081c784)
 
 	SensorBg         = widgets.ARGB(0xA0ffa726)
 	ActiveSensorBg   = widgets.ARGB(0xFFba000d)
@@ -34,4 +33,7 @@ var (
 	OutputOffBg = widgets.ARGB(0xFF6a1b9a)
 
 	InConsistentBorder = widgets.ARGB(0xFFffd740)
+
+	SwitchBg        = widgets.ARGB(0xFFFFFFFF)
+	SwitchIndicator = widgets.ARGB(0xFF0000CC)
 )
