@@ -22,41 +22,25 @@ import (
 	"fmt"
 	"image"
 
-	"gioui.org/f32"
-	"gioui.org/op/paint"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
-	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas/common"
 )
 
 type stdSwitch struct {
-	entity state.Switch
-}
-
-// Return a matrix for drawing the widget in its proper orientation and
-// the size of the area it is drawing into.
-func (b *stdSwitch) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
-	return canvas.GetPositionedEntityAffineAndSize(b.entity.GetModel())
+	common.StdSwitch
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
 func (b *stdSwitch) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
 	if state.Clicked {
-		dir := b.entity.GetDirection().GetRequested(ctx)
-		b.entity.GetDirection().SetRequested(ctx, dir.Invert())
+		dirProp := b.State.GetDirection()
+		dir := dirProp.GetRequested(ctx)
+		dirProp.SetRequested(ctx, dir.Invert())
 		fmt.Printf("Set switch direction to %s\n", dir.Invert())
 	}
 
-	bg := canvas.BlockBg
-	if state.Hovered {
-		bg = canvas.HoverBg
-	}
-	paint.Fill(gtx.Ops, bg)
-	//lb := material.Label(th, th.TextSize, b.entity.GetDescription())
-	//lb.Alignment = text.Middle
-	//lb.Layout(gtx)
-	widgets.TextCenter(gtx, th, b.entity.GetDescription()+"-switch")
+	b.StdSwitch.Layout(ctx, gtx, size, th, state)
 }

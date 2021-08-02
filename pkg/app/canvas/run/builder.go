@@ -19,6 +19,7 @@ package run
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas/common"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -36,7 +37,12 @@ func NewBuilder() canvas.WidgetBuilder {
 func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 	switch entity := x.(type) {
 	case state.Block:
-		return &block{entity: entity}
+		return &block{
+			Block: common.Block{
+				Model: entity.GetModel(),
+				State: entity,
+			},
+		}
 	case state.BinaryOutput:
 		return &binaryOutput{entity: entity}
 	case state.Output:
@@ -46,7 +52,12 @@ func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 	case state.Sensor:
 		return &sensor{entity: entity}
 	case state.Switch:
-		return &stdSwitch{entity: entity}
+		return &stdSwitch{
+			common.StdSwitch{
+				Model: entity.GetModel(),
+				State: entity,
+			},
+		}
 	default:
 		return nil
 	}

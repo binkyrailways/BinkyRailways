@@ -19,6 +19,7 @@ package edit
 
 import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas/common"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -44,8 +45,8 @@ func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 }
 
 func (v *builder) VisitBlock(x model.Block) interface{} {
-	return &block{
-		entity: x,
+	return &common.Block{
+		Model: x,
 	}
 }
 
@@ -68,7 +69,7 @@ func (v *builder) VisitSensor(x model.Sensor) interface{} {
 }
 
 func (v *builder) VisitSwitch(x model.Switch) interface{} {
-	return &stdSwitch{
-		entity: x,
+	return &common.StdSwitch{
+		Model: x,
 	}
 }

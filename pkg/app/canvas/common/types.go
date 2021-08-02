@@ -15,24 +15,13 @@
 // Author Ewout Prangsma
 //
 
-package run
+package common
 
 import (
-	"context"
-	"image"
-
-	"gioui.org/widget/material"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
-	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas/common"
+	"gioui.org/layout"
 )
 
-type block struct {
-	common.Block
-}
-
-// Layout must be initialized to a layout function to draw the widget
-// and process events.
-func (b *block) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
-	b.Block.Layout(ctx, gtx, size, th, state)
-}
+type (
+	C = layout.Context
+	D = layout.Dimensions
+)

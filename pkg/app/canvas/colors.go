@@ -34,6 +34,7 @@ var (
 
 	InConsistentBorder = widgets.ARGB(0xFFffd740)
 
-	SwitchBg        = widgets.ARGB(0xFFFFFFFF)
-	SwitchIndicator = widgets.ARGB(0xFF0000CC)
+	SwitchBg                    = widgets.ARGB(0xFFFFFFFF)
+	SwitchIndicator             = widgets.ARGB(0xFF0000CC)
+	SwitchIndicatorInconsistent = widgets.ARGB(0xFFFF7F00)
 )
