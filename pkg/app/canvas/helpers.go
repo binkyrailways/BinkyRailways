@@ -42,9 +42,12 @@ func GetPositionedEntityAffineAndSize(entity model.PositionedEntity) (f32.Affine
 	// Translate, scale & rotate
 	rot := entity.GetRotation()
 	rad := float32(rot%360) * (math.Pi / 180)
-	tr := f32.Affine2D{}.
-		Offset(bounds.Min).
-		Rotate(bounds.Min, rad)
+	tr := f32.Affine2D{}
+	if rot != 0 {
+		center := f32.Pt(bounds.Size().X/2, bounds.Size().Y/2)
+		tr = tr.Rotate(center, rad)
+	}
+	tr = tr.Offset(bounds.Min)
 	// Set clip rectangle
 	size := bounds.Size()
 	return tr, size, rad
