@@ -20,6 +20,7 @@ package common
 import (
 	"context"
 	"image"
+	"image/color"
 
 	"gioui.org/f32"
 	"gioui.org/layout"
@@ -48,9 +49,10 @@ func (b *Block) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
 func (b *Block) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
-	bg := canvas.BlockBg
+	// Get state
+	lbl, bg := b.getDescription(ctx)
 	if state.Hovered {
-		bg = canvas.HoverBg
+		bg.A = 0xFF
 	}
 
 	// Draw block background
@@ -69,5 +71,38 @@ func (b *Block) Layout(ctx context.Context, gtx C, size image.Point, th *materia
 	}
 	paint.FillShape(gtx.Ops, canvas.BlockFront, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
 
-	widgets.TextCenter(gtx, th, b.Model.GetDescription())
+	// Draw label
+	widgets.TextCenter(gtx, th, lbl)
+}
+
+// getDescription returns text to put in block.
+// Returns: label, bgColor
+func (b *Block) getDescription(ctx context.Context) (string, color.NRGBA) {
+	lbl := b.Model.GetDescription()
+	bg := canvas.BlockBg
+	if st := b.State; st != nil {
+		switch st.GetState(ctx) {
+		case state.BlockStateFree:
+			return lbl + ": Free", canvas.BlockFreeBg
+		case state.BlockStateOccupied:
+			return lbl + ": Occupied", canvas.BlockOccupiedBg
+		case state.BlockStateOccupiedUnexpected:
+			return lbl + ": Unexpected", bg
+		case state.BlockStateDestination:
+			if l := st.GetLockedBy(ctx); l != nil {
+				return lbl + ":" + l.GetDescription(), canvas.BlockDestinationBg
+			}
+		case state.BlockStateEntering:
+			if l := st.GetLockedBy(ctx); l != nil {
+				return lbl + ":" + l.GetDescription(), canvas.BlockEnteringBg
+			}
+		case state.BlockStateLocked:
+			if l := st.GetLockedBy(ctx); l != nil {
+				return lbl + ":" + l.GetDescription(), bg
+			}
+		case state.BlockStateClosed:
+			return lbl + ": Closed", bg
+		}
+	}
+	return lbl, bg
 }

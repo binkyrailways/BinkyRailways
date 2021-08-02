@@ -20,9 +20,14 @@ package canvas
 import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 
 var (
-	HoverBg    = widgets.ARGB(0xC0333333)
-	BlockBg    = widgets.ARGB(0xA0CCCCCC)
-	BlockFront = widgets.ARGB(0xA000CCCC)
+	HoverBg            = widgets.ARGB(0xC0333333)
+	BlockBg            = widgets.ARGB(0xA0CCCCCC)
+	BlockFreeBg        = widgets.ARGB(0xA0FFFFFF)
+	BlockOccupiedBg    = widgets.ARGB(0xA0FF7F00)
+	BlockDestinationBg = widgets.ARGB(0xA0FFFF00)
+	BlockEnteringBg    = widgets.ARGB(0xA099CC32)
+	BlockLockedBg      = widgets.ARGB(0xA000FFFF)
+	BlockFront         = widgets.ARGB(0xA000CCCC)
 
 	SensorBg         = widgets.ARGB(0xA0ffa726)
 	ActiveSensorBg   = widgets.ARGB(0xFFba000d)
