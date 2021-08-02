@@ -33,7 +33,7 @@ func NewModuleSettings(entity model.Module) Settings {
 		moduleRef: moduleRef,
 	}
 	s.description.SetText(entity.GetDescription())
-	s.positionSettings.Initialize(moduleRef, true)
+	s.positionSettings.Initialize(moduleRef, false)
 	return s
 }
 

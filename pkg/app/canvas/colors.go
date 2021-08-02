@@ -22,6 +22,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 var (
 	HoverBg    = widgets.ARGB(0xC0333333)
 	BlockBg    = widgets.ARGB(0xA0CCCCCC)
+	BlockFront = widgets.ARGB(0xA000CCCC)
 	JunctionBg = widgets.ARGB(0xA081c784)
 
 	SensorBg         = widgets.ARGB(0xA0ffa726)

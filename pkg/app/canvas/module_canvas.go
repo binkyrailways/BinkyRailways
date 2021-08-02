@@ -28,7 +28,12 @@ import (
 
 // ModuleCanvas creates an entity canvas for the given module.
 func ModuleCanvas(module model.Module, builder WidgetBuilder) *EntityCanvas {
-	bounds := f32.Rect(0, 0, float32(module.GetWidth()), float32(module.GetHeight()))
+	moduleRef, _ := module.GetPackage().GetRailway().GetModules().Get(module.GetID())
+	w, h := moduleRef.GetWidth(), moduleRef.GetHeight()
+	if w == 0 || h == 0 {
+		w, h = module.GetWidth(), module.GetHeight()
+	}
+	bounds := f32.Rect(0, 0, float32(w), float32(h))
 	ec := &EntityCanvas{
 		GetMaxSize: func() f32.Point {
 			return bounds.Size()

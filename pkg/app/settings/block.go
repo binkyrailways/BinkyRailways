@@ -18,6 +18,7 @@
 package settings
 
 import (
+	"gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -31,6 +32,7 @@ func NewBlockSettings(entity model.Block) Settings {
 	}
 	s.metaSettings.Initialize(entity)
 	s.positionSettings.Initialize(entity)
+	s.reverseSides.Value = entity.GetReverseSides()
 	return s
 }
 
@@ -40,18 +42,23 @@ type blockSettings struct {
 
 	metaSettings
 	positionSettings
+	reverseSides widget.Bool
 }
 
 // Handle events and draw the editor
 func (e *blockSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
 	e.positionSettings.Update(e.entity)
+	e.entity.SetReverseSides(e.reverseSides.Value)
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		append(
+		append(append(
 			e.metaSettings.Rows(th),
-			e.positionSettings.Rows(th)...,
+			e.positionSettings.Rows(th)...),
+			widgets.SettingsGridRow{Title: "Reverse sides", Layout: func(gtx C) D {
+				return material.CheckBox(th, &e.reverseSides, "").Layout(gtx)
+			}},
 		)...,
 	)
 

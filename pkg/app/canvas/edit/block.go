@@ -51,8 +51,21 @@ func (b *block) Layout(ctx context.Context, gtx C, size image.Point, th *materia
 		bg = canvas.HoverBg
 	}
 
+	// Draw block background
 	rect := f32.Rectangle{Max: layout.FPt(size)}
 	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
+
+	// Draw front of block
+	if b.entity.GetReverseSides() {
+		// Front "right" of block
+		rect.Max.X = rect.Max.X / 5
+	} else {
+		// Front "left" of block
+		w := rect.Max.X
+		rect.Max.X = rect.Max.X / 5
+		rect = rect.Add(f32.Pt(w-rect.Max.X, 0))
+	}
+	paint.FillShape(gtx.Ops, canvas.BlockFront, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
 
 	widgets.TextCenter(gtx, th, b.entity.GetDescription())
 }
