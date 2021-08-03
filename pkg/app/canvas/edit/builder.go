@@ -51,20 +51,20 @@ func (v *builder) VisitBlock(x model.Block) interface{} {
 }
 
 func (v *builder) VisitBinaryOutput(x model.BinaryOutput) interface{} {
-	return &output{
-		entity: x,
+	return &common.Output{
+		Model: x,
 	}
 }
 
 func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
-	return &sensor{
-		entity: x,
+	return &common.Sensor{
+		Model: x,
 	}
 }
 
 func (v *builder) VisitSensor(x model.Sensor) interface{} {
-	return &sensor{
-		entity: x,
+	return &common.Sensor{
+		Model: x,
 	}
 }
 

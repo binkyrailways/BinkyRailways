@@ -15,36 +15,61 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package common
 
 import (
 	"context"
 	"image"
+	"image/color"
 
 	"gioui.org/f32"
 	"gioui.org/layout"
+	"gioui.org/op/clip"
+	"gioui.org/op/paint"
+	"gioui.org/unit"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-type sensor struct {
-	entity model.Sensor
+type Output struct {
+	Model model.Output
+	State state.Output
 }
 
 // Return a matrix for drawing the widget in its proper orientation and
 // the size of the area it is drawing into.
-func (b *sensor) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
-	return canvas.GetPositionedEntityAffineAndSize(b.entity)
+func (b *Output) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
+	return canvas.GetPositionedEntityAffineAndSize(b.Model)
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *sensor) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
-	bg := canvas.SensorBg
+func (b *Output) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
+	bg := b.getBackgroundColor(ctx)
 	if state.Hovered {
 		bg = canvas.HoverBg
 	}
-	canvas.DrawSensorShape(gtx, b.entity.GetShape(), bg, layout.FPt(size))
+
+	rect := f32.Rectangle{Max: layout.FPt(size)}
+	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
+
+	widgets.TextCenter(gtx, th, b.Model.GetDescription())
+}
+
+// getBackgroundColor returns state desired background color
+func (b *Output) getBackgroundColor(ctx context.Context) color.NRGBA {
+	if b.State != nil {
+		switch st := b.State.(type) {
+		case state.BinaryOutput:
+			if st.GetActive().GetActual(ctx) {
+				return canvas.OutputOnBg
+			}
+			return canvas.OutputOffBg
+		}
+	}
+	return canvas.BlockBg
 }

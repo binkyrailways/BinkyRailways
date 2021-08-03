@@ -15,44 +15,53 @@
 // Author Ewout Prangsma
 //
 
-package edit
+package common
 
 import (
 	"context"
 	"image"
+	"image/color"
 
 	"gioui.org/f32"
 	"gioui.org/layout"
-	"gioui.org/op/clip"
-	"gioui.org/op/paint"
-	"gioui.org/unit"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
-	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-type output struct {
-	entity model.Output
+type Sensor struct {
+	Model model.Sensor
+	State state.Sensor
 }
 
 // Return a matrix for drawing the widget in its proper orientation and
 // the size of the area it is drawing into.
-func (b *output) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
-	return canvas.GetPositionedEntityAffineAndSize(b.entity)
+func (b *Sensor) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
+	return canvas.GetPositionedEntityAffineAndSize(b.Model)
 }
 
 // Layout must be initialized to a layout function to draw the widget
 // and process events.
-func (b *output) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
-	bg := canvas.BlockBg
+func (b *Sensor) Layout(ctx context.Context, gtx C, size image.Point, th *material.Theme, state canvas.WidgetState) {
+	bg := b.getBackgroundColor(ctx)
 	if state.Hovered {
-		bg = canvas.HoverBg
+		bg.A = 0xA0
 	}
 
-	rect := f32.Rectangle{Max: layout.FPt(size)}
-	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
+	canvas.DrawSensorShape(gtx, b.Model.GetShape(), bg, layout.FPt(size))
+}
 
-	widgets.TextCenter(gtx, th, b.entity.GetDescription())
+// getBackgroundColor returns the color for the sensor based on the current state
+func (b *Sensor) getBackgroundColor(ctx context.Context) color.NRGBA {
+	if b.State != nil {
+		switch st := b.State.(type) {
+		case state.BinarySensor:
+			if st.GetActive().GetActual(ctx) {
+				return canvas.ActiveSensorBg
+			}
+		}
+	}
+	return canvas.InactiveSensorBg
 }

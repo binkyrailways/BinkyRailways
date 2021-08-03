@@ -44,13 +44,31 @@ func (v *builder) CreateWidget(x canvas.Entity) canvas.Widget {
 			},
 		}
 	case state.BinaryOutput:
-		return &binaryOutput{entity: entity}
+		return &binaryOutput{
+			Output: common.Output{
+				Model: entity.GetModel(),
+				State: entity,
+			},
+		}
 	case state.Output:
-		return &output{entity: entity}
+		return &common.Output{
+			Model: entity.GetModel(),
+			State: entity,
+		}
 	case state.BinarySensor:
-		return &sensor{entity: entity}
+		return &sensor{
+			Sensor: common.Sensor{
+				Model: entity.GetModel(),
+				State: entity,
+			},
+		}
 	case state.Sensor:
-		return &sensor{entity: entity}
+		return &sensor{
+			Sensor: common.Sensor{
+				Model: entity.GetModel(),
+				State: entity,
+			},
+		}
 	case state.Switch:
 		return &stdSwitch{
 			common.StdSwitch{
