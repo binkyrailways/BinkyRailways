@@ -39,6 +39,9 @@ func ModuleCanvas(module model.Module, builder WidgetBuilder) *EntityCanvas {
 			return bounds.Size()
 		},
 		Entities: func(cb func(Entity)) {
+			module.GetRoutes().ForEach(func(x model.Route) {
+				cb(x)
+			})
 			module.ForEachPositionedEntity(func(x model.PositionedEntity) {
 				cb(x)
 			})

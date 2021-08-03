@@ -62,6 +62,12 @@ func (v *builder) VisitBinarySensor(x model.BinarySensor) interface{} {
 	}
 }
 
+func (v *builder) VisitRoute(x model.Route) interface{} {
+	return &common.Route{
+		Model: x,
+	}
+}
+
 func (v *builder) VisitSensor(x model.Sensor) interface{} {
 	return &common.Sensor{
 		Model: x,
