@@ -28,5 +28,5 @@ update-modules:
 
 update-gioui:
 	go get -u \
-		gioui.org@941aeaae910e011edf9707f2a9c40e1a32d06ac7 \
+		gioui.org \
 		gioui.org/x
