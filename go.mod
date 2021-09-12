@@ -5,13 +5,12 @@ go 1.16
 require (
 	gioui.org v0.0.0-20210904093349-1a435474119c
 	gioui.org/x v0.0.0-20210816192830-9ea938c228a0
-	github.com/binkynet/BinkyNet v0.9.5
-	github.com/binkynet/NetManager v0.4.0
+	github.com/binkynet/BinkyNet v0.9.6
+	github.com/binkynet/NetManager v0.4.1
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
 	github.com/gen2brain/dlgs v0.0.0-20201118155338-03fe7f81ad25
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/miekg/dns v1.1.40 // indirect
-	github.com/prometheus/common v0.19.0 // indirect
 	github.com/rs/zerolog v1.21.0
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.7.0
