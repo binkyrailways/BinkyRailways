@@ -138,6 +138,18 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 			}
 		}
 	})
+	g.Go(func() error {
+		actuals, cancel := cs.manager.SubscribeSwitchActuals()
+		defer cancel()
+		for {
+			select {
+			case actual := <-actuals:
+				cs.onSwitchActual(ctx, actual)
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
 
 	return nil
 }
@@ -205,6 +217,23 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 		if bo, ok := output.(state.BinaryOutput); ok {
 			if isAddressEqual(bo.GetAddress(), objAddr) {
 				bo.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
+			}
+		}
+	})
+}
+
+// Send the state of the binary switch towards the railway.
+func (cs *binkyNetCommandStation) onSwitchActual(ctx context.Context, actual bn.Switch) {
+	objAddr := actual.GetAddress()
+	cs.ForEachJunction(func(output state.Junction) {
+		if bo, ok := output.(state.Switch); ok {
+			if isAddressEqual(bo.GetAddress(), objAddr) {
+				switch actual.GetActual().GetDirection() {
+				case bn.SwitchDirection_STRAIGHT:
+					bo.GetDirection().SetActual(ctx, model.SwitchDirectionStraight)
+				case bn.SwitchDirection_OFF:
+					bo.GetDirection().SetActual(ctx, model.SwitchDirectionOff)
+				}
 			}
 		}
 	})
