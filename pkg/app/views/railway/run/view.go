@@ -60,6 +60,7 @@ type View struct {
 	showHardwareModules widget.Bool
 	discoverHardwareID  widget.Editor
 	buttonDiscover      widget.Clickable
+	resizer             component.Resize
 }
 
 // New constructs a new railway view
@@ -73,6 +74,7 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 		power:           newPowerView(vm, railway),
 		loc:             newRunLocView(vm),
 		hardwareModules: newHardwareModuleView(vm, railway),
+		resizer:         component.Resize{Axis: layout.Horizontal, Ratio: 0.2},
 	}
 	v.navSheet = component.NewModalSheet(v.modal)
 	v.navSheetList.Axis = layout.Vertical
@@ -186,13 +188,13 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		return layout.Flex{Axis: layout.Vertical}.Layout(gtx, children...)
 	}
 
-	hs := widgets.HorizontalSplit(
-		func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
-		func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
-	)
-	hs.Start.Weight = 1
-	hs.End.Weight = 5
-	vs := widgets.VerticalSplit(bar, hs.Layout)
+	vs := widgets.VerticalSplit(bar, func(gtx C) D {
+		return v.resizer.Layout(gtx,
+			func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
+			func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
+			widgets.HorizontalResizerHandle,
+		)
+	})
 	vs.Start.Rigid = true
 
 	// Draw layers

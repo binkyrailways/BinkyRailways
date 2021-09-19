@@ -60,6 +60,7 @@ type View struct {
 	buttonSave       widget.Clickable
 	entityList       widgets.TreeView
 	editor           editors.Editor
+	resizer          component.Resize
 }
 
 // New constructs a new editing railway view
@@ -71,6 +72,7 @@ func New(vm views.ViewManager, railway model.Railway, setRunMode setRunModeFunc)
 		railway:    railway,
 		setRunMode: setRunMode,
 		modal:      component.NewModal(),
+		resizer:    component.Resize{Axis: layout.Horizontal, Ratio: 0.2},
 		entityList: widgets.TreeView{
 			RootItems: []widgets.TreeViewItem{
 				itemCache.CreateItem(railway, "", 0),
@@ -237,12 +239,13 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		return layout.Dimensions{Size: gtx.Constraints.Max}
 	}
 	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
-	hs := widgets.HorizontalSplit(
-		func(gtx C) D { return widgets.WithPadding(gtx, func(gtx C) D { return v.entityList.Layout(gtx, th) }) },
-		func(gtx C) D { return widgets.WithPadding(gtx, content) },
-	)
-	hs.End.Weight = 6
-	vs := widgets.VerticalSplit(bar, hs.Layout)
+	vs := widgets.VerticalSplit(bar, func(gtx C) D {
+		return v.resizer.Layout(gtx,
+			func(gtx C) D { return widgets.WithPadding(gtx, func(gtx C) D { return v.entityList.Layout(gtx, th) }) },
+			func(gtx C) D { return widgets.WithPadding(gtx, content) },
+			widgets.HorizontalResizerHandle,
+		)
+	})
 	vs.Start.Rigid = true
 
 	// Draw layers
