@@ -28,17 +28,18 @@ import (
 
 // HorizontalResizerHandle draws a resize handle for a horizontal resizer.
 func HorizontalResizerHandle(gtx C) D {
-	return ResizerHandle(gtx, layout.Horizontal)
+	sz := image.Point{X: 10, Y: gtx.Constraints.Max.Y}
+	return resizerHandle(gtx, sz)
 }
 
 // VerticalResizerHandle draws a resize handle for a vertical resizer.
 func VerticalResizerHandle(gtx C) D {
-	return ResizerHandle(gtx, layout.Vertical)
+	sz := image.Point{X: gtx.Constraints.Max.X, Y: 10}
+	return resizerHandle(gtx, sz)
 }
 
-// ResizerHandle draws a resize handle for the given axis.
-func ResizerHandle(gtx C, axis layout.Axis) D {
-	sz := axis.Convert(image.Point{X: 10, Y: gtx.Constraints.Max.Y})
+// resizerHandle draws a resize handle for the given axis.
+func resizerHandle(gtx C, sz image.Point) D {
 	rect := clip.UniformRRect(f32.Rect(0, 0, float32(sz.X), float32(sz.Y)), 3)
 	paint.FillShape(gtx.Ops, BlueGrey, rect.Op(gtx.Ops))
 	return layout.Dimensions{Size: sz}
