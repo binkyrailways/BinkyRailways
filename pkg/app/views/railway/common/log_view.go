@@ -35,6 +35,9 @@ type LogView struct {
 func NewLogView(vm views.ViewManager) *LogView {
 	v := &LogView{
 		vm: vm,
+		list: layout.List{
+			Axis: layout.Vertical,
+		},
 	}
 	return v
 }
@@ -48,7 +51,8 @@ func (v *LogView) OnView(events []log.LogEvent) {
 func (v *LogView) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
 	events := v.events
-	return v.list.Layout(gtx, len(events), func(gtx layout.Context, index int) layout.Dimensions {
-		return material.Body1(th, events[index].Message).Layout(gtx)
+	l := len(events)
+	return v.list.Layout(gtx, l, func(gtx layout.Context, index int) layout.Dimensions {
+		return material.Body1(th, events[l-(1+index)].Message).Layout(gtx)
 	})
 }
