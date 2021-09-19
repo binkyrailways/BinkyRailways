@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"encoding/json"
+	"sort"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -30,6 +31,22 @@ import (
 // BinkyNetLogReceiver implements a receiver for log messages
 type BinkyNetLogReceiver struct {
 	log zerolog.Logger
+
+	events []LogEvent
+}
+
+// LogEvent contains all information of a single log message from a device.
+type LogEvent struct {
+	Address string
+	Level   zerolog.Level
+	Message string
+	Fields  []LogField
+}
+
+// LogField captures a single log event key-value pair
+type LogField struct {
+	Key   string
+	Value interface{}
 }
 
 // Create a new log receiver
@@ -44,7 +61,10 @@ func NewBinkyNetLogReceiver(log zerolog.Logger) *BinkyNetLogReceiver {
 // Run until the given context is canceled
 func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 	_, err := netlog.NewLogReceiver(func(m netlog.NetLogMessage) {
-		evt := lr.log.WithLevel(m.Level).Str("address", m.Address)
+		evt := LogEvent{
+			Address: m.Address,
+			Level:   m.Level,
+		}
 		var mm map[string]interface{}
 		if err := json.Unmarshal(m.Message, &mm); err == nil {
 			var message string
@@ -53,13 +73,21 @@ func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 			}
 			for k, v := range mm {
 				if k != "message" && k != "level" {
-					evt = evt.Interface(k, v)
+					evt.Fields = append(evt.Fields, LogField{
+						Key:   k,
+						Value: v,
+					})
 				}
 			}
-			evt.Msg(message)
+			evt.Message = message
+			sort.Slice(evt.Fields, func(i, j int) bool {
+				k1, k2 := evt.Fields[i].Key, evt.Fields[j].Key
+				return k1 < k2
+			})
 		} else {
-			evt.Msg(strings.TrimSpace(string(m.Message)))
+			evt.Message = strings.TrimSpace(string(m.Message))
 		}
+		lr.events = append(lr.events, evt)
 	})
 	if err != nil {
 		lr.log.Error().Err(err).Msg("Failed to receive log messages")

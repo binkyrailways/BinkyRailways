@@ -19,6 +19,7 @@ package edit
 
 import (
 	"context"
+	"sort"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -30,6 +31,15 @@ func buildTreeViewItems(entity interface{},
 	groupCache *widgets.EntityTreeGroupCache,
 	level int) []widgets.TreeViewItem {
 	var result []widgets.TreeViewItem
+
+	sortedResult := func() []widgets.TreeViewItem {
+		sort.Slice(result, func(i, j int) bool {
+			i1, i2 := result[i], result[j]
+			return i1.SortKey() < i2.SortKey()
+		})
+		return result
+	}
+
 	switch entity := entity.(type) {
 	case model.Railway:
 		return []widgets.TreeViewItem{
@@ -41,7 +51,6 @@ func buildTreeViewItems(entity interface{},
 				result = append(result, itemCache.CreateItem(x, parentKey, level))
 			}
 		})
-		return result
 	case model.ModuleRefSet:
 		entity.ForEach(func(c model.ModuleRef) {
 			if x := c.TryResolve(); x != nil {
@@ -52,7 +61,6 @@ func buildTreeViewItems(entity interface{},
 				)
 			}
 		})
-		return result
 	case model.Module:
 		result = append(result,
 			groupCache.CreateItem("Blocks", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
@@ -80,47 +88,38 @@ func buildTreeViewItems(entity interface{},
 				return buildTreeViewItems(entity.GetSignals(), parentKey, itemCache, groupCache, level)
 			}, level+1, moduleSignalSet{entity}),
 		)
-		return result
 	case model.BlockSet:
 		entity.ForEach(func(entity model.Block) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.BlockGroupSet:
 		entity.ForEach(func(entity model.BlockGroup) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.EdgeSet:
 		entity.ForEach(func(entity model.Edge) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.JunctionSet:
 		entity.ForEach(func(entity model.Junction) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.OutputSet:
 		entity.ForEach(func(entity model.Output) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.RouteSet:
 		entity.ForEach(func(entity model.Route) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.SensorSet:
 		entity.ForEach(func(entity model.Sensor) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.SignalSet:
 		entity.ForEach(func(entity model.Signal) {
 			result = append(result, itemCache.CreateItem(entity, parentKey, level))
 		})
-		return result
 	case model.CommandStationRefSet:
 		entity.ForEach(func(c model.CommandStationRef) {
 			if x := c.TryResolve(); x != nil {
@@ -130,23 +129,20 @@ func buildTreeViewItems(entity interface{},
 					})...)
 			}
 		})
-		return result
 	case model.BinkyNetCommandStation:
 		result = append(result,
 			groupCache.CreateItem("Local workers", parentKey, func(ctx context.Context, parentKey string, level int) []widgets.TreeViewItem {
 				return buildTreeViewItems(entity.GetLocalWorkers(), parentKey, itemCache, groupCache, level)
 			}, level+1, binkyNetCommandStationLocalWorkerSet{entity}),
 		)
-		return result
 	case model.BinkyNetLocalWorkerSet:
 		entity.ForEach(func(lw model.BinkyNetLocalWorker) {
 			result = append(result,
 				itemCache.CreateItem(lw, parentKey, level),
 			)
 		})
-		return result
 	}
-	return nil
+	return sortedResult()
 }
 
 // Identifyable & Selectable implementation for BlockSet
