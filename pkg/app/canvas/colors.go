@@ -20,6 +20,7 @@ package canvas
 import "github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 
 var (
+	Border             = widgets.ARGB(0xFFBBBBBB)
 	HoverBg            = widgets.ARGB(0xC0333333)
 	BlockBg            = widgets.ARGB(0xA0CCCCCC)
 	BlockFreeBg        = widgets.ARGB(0xA0FFFFFF)

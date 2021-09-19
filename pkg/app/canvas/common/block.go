@@ -21,6 +21,7 @@ import (
 	"context"
 	"image"
 	"image/color"
+	"math"
 
 	"gioui.org/f32"
 	"gioui.org/layout"
@@ -57,22 +58,34 @@ func (b *Block) Layout(ctx context.Context, gtx C, size image.Point, th *materia
 
 	// Draw block background
 	rect := f32.Rectangle{Max: layout.FPt(size)}
-	paint.FillShape(gtx.Ops, bg, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
+	sz := rect.Size()
+	borderWidth := math.Min(float64(sz.X), float64(sz.Y)) / 10
+	corner := math.Min(float64(sz.X), float64(sz.Y)) / 4
+	rrect := clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(float32(corner)))))
+	paint.FillShape(gtx.Ops, bg, rrect.Op(gtx.Ops))
 
 	// Draw front of block
+	frontRect := rect
 	if b.Model.GetReverseSides() {
 		// Front "right" of block
-		rect.Max.X = rect.Max.X / 5
+		frontRect.Max.X = frontRect.Max.X / 5
 	} else {
 		// Front "left" of block
 		w := rect.Max.X
-		rect.Max.X = rect.Max.X / 5
-		rect = rect.Add(f32.Pt(w-rect.Max.X, 0))
+		frontRect.Max.X = frontRect.Max.X / 5
+		frontRect = frontRect.Add(f32.Pt(w-frontRect.Max.X, 0))
 	}
-	paint.FillShape(gtx.Ops, canvas.BlockFront, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(4)))).Op(gtx.Ops))
+	paint.FillShape(gtx.Ops, canvas.BlockFront, clip.UniformRRect(frontRect, float32(gtx.Px(unit.Dp(float32(corner))))).Op(gtx.Ops))
 
 	// Draw label
 	widgets.TextCenter(gtx, th, lbl)
+
+	// Draw block border
+	clip.Stroke{
+		Path:  rrect.Path(gtx.Ops),
+		Style: clip.StrokeStyle{Width: float32(borderWidth)},
+	}.Op().Add(gtx.Ops)
+	paint.Fill(gtx.Ops, canvas.Border)
 }
 
 // getDescription returns text to put in block.
