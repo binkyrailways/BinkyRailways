@@ -20,7 +20,6 @@ package edit
 import (
 	"context"
 	"image/color"
-	"log"
 
 	"gioui.org/layout"
 	"gioui.org/unit"
@@ -32,6 +31,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/editors"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -132,6 +132,11 @@ func (v *View) Invalidate() {
 	v.vm.Invalidate()
 }
 
+// Update the log event records
+func (v *View) UpdateLogEvents(events []log.LogEvent) {
+	//TODO
+}
+
 // Save the railway
 func (v *View) Save() {
 	if err := v.railway.GetPackage().Save(); err != nil {
@@ -191,7 +196,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
-		switch event := evt.(type) {
+		switch evt.(type) {
 		case component.AppBarNavigationClicked:
 			/*if nonModalDrawer.Value {
 				navAnim.ToggleVisibility(gtx.Now)
@@ -200,10 +205,10 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 				navAnim.Disappear(gtx.Now)
 			}*/
 		case component.AppBarContextMenuDismissed:
-			log.Printf("Context menu dismissed: %v", event)
+			// log.Printf("Context menu dismissed: %v", event)
 		case component.AppBarOverflowActionClicked:
 			v.modal.Disappear(gtx.Now)
-			log.Printf("Overflow action selected: %v", event)
+			// log.Printf("Overflow action selected: %v", event)
 		}
 	}
 

@@ -17,7 +17,10 @@
 
 package views
 
-import "gioui.org/layout"
+import (
+	"gioui.org/layout"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
+)
 
 // View in the application
 type View interface {
@@ -25,4 +28,6 @@ type View interface {
 	Layout(gtx layout.Context) layout.Dimensions
 	// Return additional text to add to the window title
 	GetTitleExtension() string
+	// Update the log event records
+	UpdateLogEvents([]log.LogEvent)
 }

@@ -20,7 +20,6 @@ package run
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"gioui.org/layout"
 	"gioui.org/widget"
@@ -30,7 +29,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/canvas/run"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway/common"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -60,7 +61,9 @@ type View struct {
 	showHardwareModules widget.Bool
 	discoverHardwareID  widget.Editor
 	buttonDiscover      widget.Clickable
-	resizer             component.Resize
+	hresizer            component.Resize
+	vresizer            component.Resize
+	logs                *common.LogView
 }
 
 // New constructs a new railway view
@@ -74,7 +77,9 @@ func New(vm views.ViewManager, railway state.Railway, setEditMode setEditModeFun
 		power:           newPowerView(vm, railway),
 		loc:             newRunLocView(vm),
 		hardwareModules: newHardwareModuleView(vm, railway),
-		resizer:         component.Resize{Axis: layout.Horizontal, Ratio: 0.2},
+		hresizer:        component.Resize{Axis: layout.Horizontal, Ratio: 0.2},
+		vresizer:        component.Resize{Axis: layout.Vertical, Ratio: 0.95},
+		logs:            common.NewLogView(vm),
 	}
 	v.navSheet = component.NewModalSheet(v.modal)
 	v.navSheetList.Axis = layout.Vertical
@@ -98,6 +103,11 @@ func (v *View) onDiscover() {
 	}
 }
 
+// Update the logs view
+func (v *View) UpdateLogEvents(events []log.LogEvent) {
+	v.logs.OnView(events)
+}
+
 // Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
@@ -119,14 +129,14 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	}
 
 	for _, evt := range v.appBar.Events(gtx) {
-		switch event := evt.(type) {
+		switch evt.(type) {
 		case component.AppBarNavigationClicked:
 			v.navSheet.Appear(gtx.Now)
 		case component.AppBarContextMenuDismissed:
-			log.Printf("Context menu dismissed: %v", event)
+			// log.Printf("Context menu dismissed: %v", event)
 		case component.AppBarOverflowActionClicked:
 			v.modal.Disappear(gtx.Now)
-			log.Printf("Overflow action selected: %v", event)
+			// log.Printf("Overflow action selected: %v", event)
 		}
 	}
 
@@ -188,13 +198,21 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		return layout.Flex{Axis: layout.Vertical}.Layout(gtx, children...)
 	}
 
-	vs := widgets.VerticalSplit(bar, func(gtx C) D {
-		return v.resizer.Layout(gtx,
-			func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
-			func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
-			widgets.HorizontalResizerHandle,
-		)
-	})
+	vs := widgets.VerticalSplit(
+		bar,
+		func(gtx C) D {
+			return v.hresizer.Layout(gtx,
+				func(gtx C) D { return widgets.WithPadding(gtx, vsLeft) },
+				func(gtx C) D {
+					return v.vresizer.Layout(gtx,
+						func(gtx C) D { return widgets.WithPadding(gtx, canvas) },
+						v.logs.Layout,
+						widgets.VerticalResizerHandle,
+					)
+				},
+				widgets.HorizontalResizerHandle,
+			)
+		})
 	vs.Start.Rigid = true
 
 	// Draw layers

@@ -27,6 +27,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
+	clog "github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
 )
 
@@ -54,6 +55,11 @@ type startView struct {
 // Return additional text to add to the window title
 func (v *startView) GetTitleExtension() string {
 	return ""
+}
+
+// Update the log event records
+func (v *startView) UpdateLogEvents(events []clog.LogEvent) {
+	// Ignore
 }
 
 // Handle events and draw the view

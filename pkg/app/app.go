@@ -31,6 +31,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/start"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	corelog "github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
@@ -61,6 +62,7 @@ type App struct {
 	currentView   views.View
 	railwayChange chan model.Railway
 	logReceiver   *corelog.BinkyNetLogReceiver
+	logUpdates    chan []log.LogEvent
 }
 
 // New creates a new, intialized App instance.
@@ -72,6 +74,7 @@ func New(cfg Config, deps Dependencies) *App {
 		mainWindow:    gapp.NewWindow(gapp.Title("BinkyRailways"), gapp.Size(unit.Dp(2048), unit.Dp(1600))),
 		railwayChange: make(chan model.Railway),
 		logReceiver:   corelog.NewBinkyNetLogReceiver(deps.Logger),
+		logUpdates:    make(chan []corelog.LogEvent, 512),
 	}
 	a.startView = start.New(deps.Logger, a)
 	return a
@@ -81,6 +84,9 @@ func New(cfg Config, deps Dependencies) *App {
 func (a *App) Run() error {
 	log := a.Logger
 	go a.logReceiver.Run(context.Background())
+	a.logReceiver.Add(func(events []corelog.LogEvent) {
+		a.logUpdates <- events
+	})
 	go func() {
 		a.setCurrentView(a.startView)
 		go a.openRailwayFromConfig()
@@ -113,6 +119,8 @@ func (a *App) runEventLoop() error {
 				a.currentView.Layout(gtx)
 				e.Frame(gtx.Ops)
 			}
+		case events := <-a.logUpdates:
+			a.currentView.UpdateLogEvents(events)
 		}
 	}
 }

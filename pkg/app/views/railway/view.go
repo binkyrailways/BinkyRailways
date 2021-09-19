@@ -26,6 +26,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway/edit"
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views/railway/run"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/impl"
@@ -51,6 +52,8 @@ type railwayView struct {
 type childView interface {
 	// Layout the view
 	Layout(gtx C) D
+	// Update the log event records
+	UpdateLogEvents([]log.LogEvent)
 }
 
 // New constructs a new railway view
@@ -66,6 +69,11 @@ func New(vm views.ViewManager, railway model.Railway) views.View {
 // Return additional text to add to the window title
 func (v *railwayView) GetTitleExtension() string {
 	return v.railway.GetDescription()
+}
+
+// Update the log event records
+func (v *railwayView) UpdateLogEvents(events []log.LogEvent) {
+	v.currentView.UpdateLogEvents(events)
 }
 
 // Handle events and draw the view

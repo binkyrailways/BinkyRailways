@@ -33,7 +33,7 @@ func HorizontalResizerHandle(gtx C) D {
 
 // VerticalResizerHandle draws a resize handle for a vertical resizer.
 func VerticalResizerHandle(gtx C) D {
-	return ResizerHandle(gtx, layout.Horizontal)
+	return ResizerHandle(gtx, layout.Vertical)
 }
 
 // ResizerHandle draws a resize handle for the given axis.

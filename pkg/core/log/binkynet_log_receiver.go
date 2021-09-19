@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-package impl
+package log
 
 import (
 	"context"
@@ -32,6 +32,7 @@ import (
 type BinkyNetLogReceiver struct {
 	log zerolog.Logger
 
+	logViews
 	events []LogEvent
 }
 
@@ -55,7 +56,6 @@ func NewBinkyNetLogReceiver(log zerolog.Logger) *BinkyNetLogReceiver {
 		log: log,
 	}
 	return lr
-
 }
 
 // Run until the given context is canceled
@@ -88,6 +88,7 @@ func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 			evt.Message = strings.TrimSpace(string(m.Message))
 		}
 		lr.events = append(lr.events, evt)
+		lr.InvokeViews(lr.events)
 	})
 	if err != nil {
 		lr.log.Error().Err(err).Msg("Failed to receive log messages")
