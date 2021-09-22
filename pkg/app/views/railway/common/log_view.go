@@ -53,6 +53,7 @@ func (v *LogView) Layout(gtx layout.Context) layout.Dimensions {
 	events := v.events
 	l := len(events)
 	return v.list.Layout(gtx, l, func(gtx layout.Context, index int) layout.Dimensions {
-		return material.Body1(th, events[l-(1+index)].Message).Layout(gtx)
+		evt := events[l-(1+index)]
+		return material.Body1(th, evt.Address + "-" + evt.Message).Layout(gtx)
 	})
 }
