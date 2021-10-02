@@ -19,10 +19,9 @@ package log
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sort"
-	"strings"
+	"time"
 
 	"github.com/rs/zerolog"
 
@@ -39,10 +38,18 @@ type BinkyNetLogReceiver struct {
 
 // LogEvent contains all information of a single log message from a device.
 type LogEvent struct {
+	// Source address of the event
 	Address string
-	Level   zerolog.Level
+	// Level of the event
+	Level zerolog.Level
+	// Human readable message of the event
 	Message string
-	Fields  LogFields
+	// Error message (if any)
+	Error string
+	// Additional fields of the event
+	Fields LogFields
+	// Time of the event
+	Time time.Time
 }
 
 // LogField captures a single log event key-value pair
@@ -54,6 +61,20 @@ type LogField struct {
 // LogFields is a list of log fields
 type LogFields []LogField
 
+// Set a log field by its key
+func (lf LogFields) Set(key string, value interface{}) LogFields {
+	for idx, x := range lf {
+		if x.Key == key {
+			lf[idx].Value = value
+			return lf
+		}
+	}
+	return append(lf, LogField{
+		Key:   key,
+		Value: value,
+	})
+}
+
 // Get a log field by its key
 func (lf LogFields) Get(key string) (LogField, bool) {
 	for _, x := range lf {
@@ -64,6 +85,16 @@ func (lf LogFields) Get(key string) (LogField, bool) {
 	return LogField{}, false
 }
 
+// Find a log field by its key
+func (lf LogFields) Find(key string) interface{} {
+	for _, x := range lf {
+		if x.Key == key {
+			return x.Value
+		}
+	}
+	return nil
+}
+
 func (lf LogField) ValueAsString() string {
 	if lf.Value == nil {
 		return ""
@@ -71,7 +102,7 @@ func (lf LogField) ValueAsString() string {
 	if s, ok := lf.Value.(fmt.Stringer); ok {
 		return s.String()
 	}
-	return "?"
+	return fmt.Sprintf("%v", lf.Value)
 }
 
 // Create a new log receiver
@@ -89,28 +120,12 @@ func (lr *BinkyNetLogReceiver) Run(ctx context.Context) {
 			Address: m.Address,
 			Level:   m.Level,
 		}
-		var mm map[string]interface{}
-		if err := json.Unmarshal(m.Message, &mm); err == nil {
-			var message string
-			if messageRaw, ok := mm["message"]; ok {
-				message, _ = messageRaw.(string)
-			}
-			for k, v := range mm {
-				if k != "message" && k != "level" {
-					evt.Fields = append(evt.Fields, LogField{
-						Key:   k,
-						Value: v,
-					})
-				}
-			}
-			evt.Message = message
-			sort.Slice(evt.Fields, func(i, j int) bool {
-				k1, k2 := evt.Fields[i].Key, evt.Fields[j].Key
-				return k1 < k2
-			})
-		} else {
-			evt.Message = strings.TrimSpace(string(m.Message))
-		}
+		evt.parse(m.Message)
+		sort.Slice(evt.Fields, func(i, j int) bool {
+			k1, k2 := evt.Fields[i].Key, evt.Fields[j].Key
+			return k1 < k2
+		})
+
 		lr.events = append(lr.events, evt)
 		lr.InvokeViews(lr.events)
 	})

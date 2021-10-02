@@ -18,6 +18,9 @@
 package common
 
 import (
+	"fmt"
+	"strings"
+
 	"gioui.org/layout"
 	"gioui.org/widget/material"
 
@@ -56,12 +59,23 @@ func (v *LogView) Layout(gtx layout.Context) layout.Dimensions {
 	return v.list.Layout(gtx, l, func(gtx layout.Context, index int) layout.Dimensions {
 		evt := events[l-(1+index)]
 		addr := evt.Address
-		if lf, found := evt.Fields.Get("module-id"); found {
-			addr = lf.ValueAsString()
+		msg := evt.Message
+		if evt.Error != "" {
+			msg = msg + " [" + evt.Error + "]"
+		}
+		kvs := make([]string, 0, len(evt.Fields))
+		for _, lf := range evt.Fields {
+			kvs = append(kvs, fmt.Sprintf("%s=%v", lf.Key, lf.Value))
 		}
 		hs := widgets.HorizontalSplit(
 			material.Body1(th, addr).Layout,
-			material.Body1(th, evt.Message).Layout,
+			func(gtx layout.Context) layout.Dimensions {
+				lbl := material.Body1(th, msg+" "+strings.Join(kvs, " "))
+				if evt.Error != "" {
+					lbl.Color = widgets.ARGB(0xFF880000)
+				}
+				return lbl.Layout(gtx)
+			},
 		)
 		hs.Start.Weight = 1
 		hs.End.Weight = 8
