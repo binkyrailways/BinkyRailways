@@ -22,6 +22,7 @@ import (
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/views"
+	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/log"
 )
 
@@ -54,6 +55,16 @@ func (v *LogView) Layout(gtx layout.Context) layout.Dimensions {
 	l := len(events)
 	return v.list.Layout(gtx, l, func(gtx layout.Context, index int) layout.Dimensions {
 		evt := events[l-(1+index)]
-		return material.Body1(th, evt.Address + "-" + evt.Message).Layout(gtx)
+		addr := evt.Address
+		if lf, found := evt.Fields.Get("module-id"); found {
+			addr = lf.ValueAsString()
+		}
+		hs := widgets.HorizontalSplit(
+			material.Body1(th, addr).Layout,
+			material.Body1(th, evt.Message).Layout,
+		)
+		hs.Start.Weight = 1
+		hs.End.Weight = 8
+		return hs.Layout(gtx)
 	})
 }

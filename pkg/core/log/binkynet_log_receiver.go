@@ -20,6 +20,7 @@ package log
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"sort"
 	"strings"
 
@@ -41,13 +42,36 @@ type LogEvent struct {
 	Address string
 	Level   zerolog.Level
 	Message string
-	Fields  []LogField
+	Fields  LogFields
 }
 
 // LogField captures a single log event key-value pair
 type LogField struct {
 	Key   string
 	Value interface{}
+}
+
+// LogFields is a list of log fields
+type LogFields []LogField
+
+// Get a log field by its key
+func (lf LogFields) Get(key string) (LogField, bool) {
+	for _, x := range lf {
+		if x.Key == key {
+			return x, true
+		}
+	}
+	return LogField{}, false
+}
+
+func (lf LogField) ValueAsString() string {
+	if lf.Value == nil {
+		return ""
+	}
+	if s, ok := lf.Value.(fmt.Stringer); ok {
+		return s.String()
+	}
+	return "?"
 }
 
 // Create a new log receiver
