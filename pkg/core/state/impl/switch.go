@@ -46,6 +46,8 @@ func newSwitch(en model.Switch, railway Railway) Switch {
 		junction: newJunction(en, railway),
 	}
 	bo.direction.Configure(bo, railway, railway)
+	bo.direction.SetActual(context.Background(), model.SwitchDirectionStraight)
+	bo.direction.SetRequested(context.Background(), model.SwitchDirectionStraight)
 	bo.direction.OnRequestedChanged = func(ctx context.Context, value model.SwitchDirection) {
 		if bo.commandStation != nil {
 			bo.commandStation.SendSwitchDirection(ctx, bo)
