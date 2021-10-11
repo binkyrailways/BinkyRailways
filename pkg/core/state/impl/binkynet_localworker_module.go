@@ -20,23 +20,29 @@ package impl
 import (
 	"time"
 
-	bn "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkynet/NetManager/service/manager"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-type binkyNetLocalWorkerModule bn.LocalWorkerInfo
+type binkyNetLocalWorkerModule struct {
+	ID      string
+	Manager manager.Manager
+}
 
 var _ state.HardwareModule = &binkyNetLocalWorkerModule{}
 
 // Gets the ID of the module
 func (lw *binkyNetLocalWorkerModule) GetID() string {
-	return lw.Id
+	return lw.ID
 }
 
 // Gets the uptime of the module
 func (lw *binkyNetLocalWorkerModule) GetUptime() time.Duration {
-	return time.Duration(lw.Uptime) * time.Second
+	if info, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		return time.Duration(info.Uptime) * time.Second
+	}
+	return 0
 }
 
 // Does this module support uptime data?
@@ -46,7 +52,10 @@ func (lw *binkyNetLocalWorkerModule) HasUptime() bool {
 
 // Gets the version of the module
 func (lw *binkyNetLocalWorkerModule) GetVersion() string {
-	return lw.Version
+	if info, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		return info.Version
+	}
+	return ""
 }
 
 // Does this module support version data?
