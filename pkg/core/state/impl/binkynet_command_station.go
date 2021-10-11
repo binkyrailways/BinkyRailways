@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"net"
 	"time"
 
 	bn "github.com/binkynet/BinkyNet/apis/v1"
@@ -65,7 +66,10 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // returns an error otherwise.
 func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	var err error
-	serverHost := cs.getCommandStation().GetServerHost()
+	serverHost, err := findServerHostAddress(cs.getCommandStation().GetServerHost())
+	if err != nil {
+		return fmt.Errorf("failed to find server host: %w", err)
+	}
 	cs.reconfigureQueue = make(chan string, 64)
 	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(), cs.onUnknownLocalWorker)
 	cs.manager, err = manager.New(manager.Dependencies{
@@ -319,4 +323,50 @@ func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.Obj
 // isAddressEqual returns true if the given addresses are the same
 func isAddressEqual(modelAddr model.Address, objAddr bn.ObjectAddress) bool {
 	return modelAddr.Value == string(objAddr)
+}
+
+// findServerHostAddress tries to find the IP address of a network interface that
+// matches the given host address as best as possible.
+// E.g. If host == "1.2.3.0" and an interface with address "1.2.3.4" exists, that will be returned.
+func findServerHostAddress(host string) (string, error) {
+	// Parse host address
+	hostIP := net.ParseIP(host)
+	if hostIP == nil {
+		return "", fmt.Errorf("failed to parse host address: '%s'", host)
+	}
+
+	// Collect suitable interface addresses
+	intfs, err := net.Interfaces()
+	if err != nil {
+		return "", fmt.Errorf("failed to fetch network interfaces: %w", err)
+	}
+	var ipList []net.IP
+	for _, intf := range intfs {
+		if intf.Flags&net.FlagUp == 0 {
+			continue
+		}
+		if intf.Flags&net.FlagLoopback != 0 {
+			continue
+		}
+		if addrs, err := intf.Addrs(); err == nil {
+			for _, addr := range addrs {
+				if ip, _, err := net.ParseCIDR(addr.String()); err == nil && ip != nil && ip.To4() != nil {
+					ipList = append(ipList, ip)
+				}
+			}
+		}
+	}
+	// Find best address
+	for maskBits := 32; maskBits >= 0; maskBits-- {
+		mask := net.CIDRMask(maskBits, 32) // Assume IPv4
+		for _, ip := range ipList {
+			masked := ip.Mask(mask)
+			if masked.Equal(hostIP) {
+				// Found a good match
+				return ip.String(), nil
+			}
+		}
+	}
+
+	return "", fmt.Errorf("did not find a network interface matching address '%s'", host)
 }
