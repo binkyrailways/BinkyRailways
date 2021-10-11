@@ -27,29 +27,29 @@ import (
 
 type binkyNetLocalWorkerModule bn.LocalWorkerInfo
 
-var _ state.HardwareModule = binkyNetLocalWorkerModule{}
+var _ state.HardwareModule = &binkyNetLocalWorkerModule{}
 
 // Gets the ID of the module
-func (lw binkyNetLocalWorkerModule) GetID() string {
+func (lw *binkyNetLocalWorkerModule) GetID() string {
 	return lw.Id
 }
 
 // Gets the uptime of the module
-func (lw binkyNetLocalWorkerModule) GetUptime() time.Duration {
+func (lw *binkyNetLocalWorkerModule) GetUptime() time.Duration {
 	return time.Duration(lw.Uptime) * time.Second
 }
 
 // Does this module support uptime data?
-func (lw binkyNetLocalWorkerModule) HasUptime() bool {
+func (lw *binkyNetLocalWorkerModule) HasUptime() bool {
 	return true
 }
 
 // Gets the version of the module
-func (lw binkyNetLocalWorkerModule) GetVersion() string {
+func (lw *binkyNetLocalWorkerModule) GetVersion() string {
 	return lw.Version
 }
 
 // Does this module support version data?
-func (lw binkyNetLocalWorkerModule) HasVersion() bool {
+func (lw *binkyNetLocalWorkerModule) HasVersion() bool {
 	return true
 }

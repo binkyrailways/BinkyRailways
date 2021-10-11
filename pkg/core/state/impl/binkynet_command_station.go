@@ -312,7 +312,8 @@ func (cs *binkyNetCommandStation) Close(ctx context.Context) {
 func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareModule)) {
 	// Return all local workers
 	for _, info := range cs.manager.GetAllLocalWorkers() {
-		cb(binkyNetLocalWorkerModule(info))
+		lwm := binkyNetLocalWorkerModule(info)
+		cb(&lwm)
 	}
 }
 
