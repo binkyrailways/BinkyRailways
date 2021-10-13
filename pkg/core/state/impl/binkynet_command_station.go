@@ -217,8 +217,11 @@ func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, 
 
 // Update the state from the railway in our memory state
 func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc) {
+	fmt.Println("ocLocActual")
 	objAddr := actual.GetAddress()
+	cs.log.Debug().Interface("addr", objAddr).Msg("Got loc actual")
 	cs.ForEachLoc(func(loc state.Loc) {
+		cs.log.Debug().Interface("loc-addr", loc.GetAddress(ctx)).Msg("loc X")
 		if isAddressEqual(loc.GetAddress(ctx), objAddr) {
 			direction := state.LocDirectionForward
 			if actual.GetActual().GetDirection() == bn.LocDirection_REVERSE {
@@ -228,6 +231,8 @@ func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc
 			loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps()))
 			loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0])
 			// TODO other functions
+			cs.log.Debug().Interface("addr", objAddr).Msg("Updated loc actual")
+		} else {
 		}
 	})
 }

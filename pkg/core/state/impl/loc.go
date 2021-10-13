@@ -111,6 +111,10 @@ func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ sta
 	if err != nil {
 		return err
 	}
+	if l.commandStation == nil {
+		return fmt.Errorf("Loc does not have a commandstation attached.")
+	}
+	l.commandStation.RegisterLoc(l)
 	return nil
 }
 
