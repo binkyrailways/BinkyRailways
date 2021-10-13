@@ -131,6 +131,18 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
+		actuals, cancel := cs.manager.SubscribeLocActuals()
+		defer cancel()
+		for {
+			select {
+			case actual := <-actuals:
+				cs.onLocActual(ctx, actual)
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
+	g.Go(func() error {
 		actuals, cancel := cs.manager.SubscribeOutputActuals()
 		defer cancel()
 		for {
@@ -195,8 +207,28 @@ func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, 
 			Speed:      int32(loc.GetSpeedInSteps().GetRequested(ctx)),
 			SpeedSteps: int32(loc.GetSpeedSteps(ctx)),
 			Direction:  direction,
-			// TODO functions
+			Functions: map[int32]bool{
+				0: loc.GetF0().GetRequested(ctx),
+				// TODO other functions
+			},
 		},
+	})
+}
+
+// Update the state from the railway in our memory state
+func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc) {
+	objAddr := actual.GetAddress()
+	cs.ForEachLoc(func(loc state.Loc) {
+		if isAddressEqual(loc.GetAddress(ctx), objAddr) {
+			direction := state.LocDirectionForward
+			if actual.GetActual().GetDirection() == bn.LocDirection_REVERSE {
+				direction = state.LocDirectionReverse
+			}
+			loc.GetDirection().SetActual(ctx, direction)
+			loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps()))
+			loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0])
+			// TODO other functions
+		}
 	})
 }
 
