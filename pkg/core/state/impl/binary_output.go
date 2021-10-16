@@ -62,6 +62,11 @@ func (bo *binaryOutput) getBinaryOutput() model.BinaryOutput {
 	return bo.GetEntity().(model.BinaryOutput)
 }
 
+// Gets the type of binary output
+func (bo *binaryOutput) GetBinaryOutputType() model.BinaryOutputType {
+	return bo.getBinaryOutput().GetBinaryOutputType()
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.

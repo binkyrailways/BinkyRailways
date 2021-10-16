@@ -18,6 +18,7 @@
 package settings
 
 import (
+	w "gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -32,6 +33,15 @@ func NewBinaryOutputSettings(entity model.BinaryOutput) Settings {
 	s.metaSettings.Initialize(entity)
 	s.addressSettings.Initialize(entity)
 	s.positionSettings.Initialize(entity)
+
+	s.boType.Value = string(entity.GetBinaryOutputType())
+	var values []widgets.LabeledValue
+	for _, ot := range model.AllBinaryOutputTypes {
+		values = append(values, widgets.LV(string(ot)))
+	}
+	s.boTypeSel = widgets.NewSimpleSelect(&s.boType, values...)
+	s.boType.Value = string(entity.GetBinaryOutputType())
+
 	return s
 }
 
@@ -42,6 +52,8 @@ type binaryOutputSettings struct {
 	metaSettings
 	addressSettings
 	positionSettings
+	boType    w.Enum
+	boTypeSel *widgets.SimpleSelect
 }
 
 // Handle events and draw the editor
@@ -49,11 +61,18 @@ func (e *binaryOutputSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
 	e.addressSettings.Update(e.entity)
 	e.positionSettings.Update(e.entity)
+	e.entity.SetBinaryOutputType(model.BinaryOutputType(e.boType.Value))
 
 	// Prepare settings grid
+	typeRows := []widgets.SettingsGridRow{
+		{Title: "Output type", Layout: func(gtx C) D {
+			return e.boTypeSel.Layout(gtx, th)
+		}},
+	}
 	grid := widgets.NewSettingsGrid(
-		append(append(
+		append(append(append(
 			e.metaSettings.Rows(th),
+			typeRows...),
 			e.addressSettings.Rows(th)...),
 			e.positionSettings.Rows(th)...,
 		)...,

@@ -26,6 +26,9 @@ type BinaryOutput interface {
 	// Gets the address of the output
 	GetAddress() model.Address
 
+	// Gets the type of binary output
+	GetBinaryOutputType() model.BinaryOutputType
+
 	// Is this output in the 'active' state?
 	GetActive() BoolProperty
 }

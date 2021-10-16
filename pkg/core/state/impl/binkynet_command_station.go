@@ -240,16 +240,41 @@ func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc
 // Send the state of the binary output towards the railway.
 func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state.BinaryOutput) {
 	addr := cs.createObjectAddress(bo.GetAddress())
-	value := int32(0)
-	if bo.GetActive().GetRequested(ctx) {
-		value = 1
+
+	switch bo.GetBinaryOutputType() {
+	case model.BinaryOutputTypeDefault:
+		value := int32(0)
+		if bo.GetActive().GetRequested(ctx) {
+			value = 1
+		}
+		cs.manager.SetOutputRequest(bn.Output{
+			Address: addr,
+			Request: &bn.OutputState{
+				Value: value,
+			},
+		})
+	case model.BinaryOutputTypeTrackInverter:
+		// Disconnect first
+		cs.manager.SetOutputRequest(bn.Output{
+			Address: addr,
+			Request: &bn.OutputState{
+				Value: int32(bn.TrackInverterStateNotConnected),
+			},
+		})
+		// Wait a bit
+		time.Sleep(time.Millisecond * 10)
+		// Reconnect to selected value
+		value := bn.TrackInverterStateDefault
+		if !bo.GetActive().GetRequested(ctx) {
+			value = bn.TrackInverterStateReverse
+		}
+		cs.manager.SetOutputRequest(bn.Output{
+			Address: addr,
+			Request: &bn.OutputState{
+				Value: int32(value),
+			},
+		})
 	}
-	cs.manager.SetOutputRequest(bn.Output{
-		Address: addr,
-		Request: &bn.OutputState{
-			Value: value,
-		},
-	})
 }
 
 // Send the state of the binary output towards the railway.

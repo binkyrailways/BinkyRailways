@@ -30,7 +30,8 @@ type BinaryOutput interface {
 type binaryOutput struct {
 	output
 
-	Address model.Address `xml:"Address"`
+	Address          model.Address          `xml:"Address"`
+	BinaryOutputType model.BinaryOutputType `xml:BinaryOutputType"`
 }
 
 var _ BinaryOutput = &binaryOutput{}
@@ -62,6 +63,25 @@ func (bo *binaryOutput) GetAddress() model.Address {
 func (bo *binaryOutput) SetAddress(value model.Address) error {
 	if !bo.Address.Equals(value) {
 		bo.Address = value
+		bo.OnModified()
+	}
+	return nil
+}
+
+// Type of binary output
+func (bo *binaryOutput) GetBinaryOutputType() model.BinaryOutputType {
+	if bo.BinaryOutputType == "" {
+		return model.BinaryOutputTypeDefault
+	}
+	return bo.BinaryOutputType
+}
+
+func (bo *binaryOutput) SetBinaryOutputType(value model.BinaryOutputType) error {
+	if value == model.BinaryOutputTypeDefault {
+		value = ""
+	}
+	if value != bo.BinaryOutputType {
+		bo.BinaryOutputType = value
 		bo.OnModified()
 	}
 	return nil

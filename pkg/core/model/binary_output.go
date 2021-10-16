@@ -21,4 +21,8 @@ package model
 type BinaryOutput interface {
 	Output
 	AddressEntity
+
+	// Type of binary output
+	GetBinaryOutputType() BinaryOutputType
+	SetBinaryOutputType(value BinaryOutputType) error
 }
