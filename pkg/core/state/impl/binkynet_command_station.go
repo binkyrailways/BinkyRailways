@@ -263,12 +263,13 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 		// Wait a bit
-		time.Sleep(time.Millisecond * 10)
+		time.Sleep(time.Millisecond * 50)
 		// Reconnect to selected value
 		value := bn.TrackInverterStateDefault
 		if !bo.GetActive().GetRequested(ctx) {
 			value = bn.TrackInverterStateReverse
 		}
+		cs.log.Debug().Int32("value", int32(value)).Msg("Set track-inverter to power again")
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
 			Request: &bn.OutputState{
