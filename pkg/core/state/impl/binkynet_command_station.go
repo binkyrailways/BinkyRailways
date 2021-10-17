@@ -262,7 +262,7 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 		// Wait a bit
-		time.Sleep(time.Millisecond * 50)
+		time.Sleep(time.Millisecond * 100)
 		// Reconnect to selected value
 		value := bn.TrackInverterStateDefault
 		if !bo.GetActive().GetRequested(ctx) {
@@ -283,7 +283,19 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 	cs.ForEachOutput(func(output state.Output) {
 		if bo, ok := output.(state.BinaryOutput); ok {
 			if isAddressEqual(bo.GetAddress(), objAddr) {
-				bo.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
+				switch bo.GetBinaryOutputType() {
+				case model.BinaryOutputTypeDefault:
+					bo.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
+				case model.BinaryOutputTypeTrackInverter:
+					switch actual.GetActual().GetValue() {
+					case int32(bn.TrackInverterStateNotConnected):
+						// Do nothing, transition in progress
+					case int32(bn.TrackInverterStateDefault):
+						bo.GetActive().SetActual(ctx, true)
+					case int32(bn.TrackInverterStateReverse):
+						bo.GetActive().SetActual(ctx, false)
+					}
+				}
 			}
 		}
 	})
