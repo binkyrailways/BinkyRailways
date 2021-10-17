@@ -148,6 +148,9 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
+				cs.log.Debug().
+					Str("address", string(actual.Address)).
+					Msg("output actual update")
 				cs.onOutputActual(ctx, actual)
 			case <-ctx.Done():
 				return nil
@@ -280,6 +283,10 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 // Send the state of the binary output towards the railway.
 func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.Output) {
 	objAddr := actual.GetAddress()
+	cs.log.Debug().
+		Int32("value", actual.GetActual().GetValue()).
+		Str("addr", string(objAddr)).
+		Msg("Got output actual")
 	cs.ForEachOutput(func(output state.Output) {
 		if bo, ok := output.(state.BinaryOutput); ok {
 			if isAddressEqual(bo.GetAddress(), objAddr) {

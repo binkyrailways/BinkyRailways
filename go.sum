@@ -50,11 +50,10 @@ github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+Ce
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
-github.com/binkynet/BinkyNet v0.10.0/go.mod h1:6QAEMwQLhGZ2FUOZYp8qLcnX/Ec3Gj91T5pdBkehkDs=
 github.com/binkynet/BinkyNet v0.10.1 h1:WI7rtoQmFGqWuNUXq84s0e1xXsxYpT3F1GpK/OT0Pzw=
 github.com/binkynet/BinkyNet v0.10.1/go.mod h1:6QAEMwQLhGZ2FUOZYp8qLcnX/Ec3Gj91T5pdBkehkDs=
-github.com/binkynet/NetManager v0.5.5 h1:6VbqPURWu9l+DypHkzEQT8x7EloGz8JmcGIQFi2jxK4=
-github.com/binkynet/NetManager v0.5.5/go.mod h1:GWi0EUBuhAF7igbTCXGb+ME968M49QroT0LQEzh+vVQ=
+github.com/binkynet/NetManager v0.5.7 h1:gjXuQ6W6Ntofg9ww4T3C0aqBK0DW67EkIOYH1o13zmU=
+github.com/binkynet/NetManager v0.5.7/go.mod h1:grn/P//y+kwmBP9BDFHGt7dWeFwB7DcROIVldhdpdYs=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c/go.mod h1:MKsuJmJgSg28kpZDP6UIiPt0e0Oz0kqKNGyRaWEPv84=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
