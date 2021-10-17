@@ -53,6 +53,14 @@ func newSwitch(en model.Switch, railway Railway) Switch {
 			bo.commandStation.SendSwitchDirection(ctx, bo)
 		}
 	}
+	bo.direction.OnActualChanged = func(ctx context.Context, value model.SwitchDirection) {
+		if bo.commandStation != nil && value != bo.direction.GetRequested(ctx) {
+			// We got a different actual than what we requested.
+			// Send again
+			fmt.Println("Get unexpected switch actual")
+			bo.commandStation.SendSwitchDirection(ctx, bo)
+		}
+	}
 	return bo
 }
 
