@@ -287,6 +287,9 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 				case model.BinaryOutputTypeDefault:
 					bo.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
 				case model.BinaryOutputTypeTrackInverter:
+					cs.log.Debug().
+						Int32("value", actual.GetActual().GetValue()).
+						Msg("Got track-inverter actual")
 					switch actual.GetActual().GetValue() {
 					case int32(bn.TrackInverterStateNotConnected):
 						// Do nothing, transition in progress
