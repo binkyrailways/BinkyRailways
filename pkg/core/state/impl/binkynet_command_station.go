@@ -254,7 +254,6 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 	case model.BinaryOutputTypeTrackInverter:
-		cs.log.Debug().Msg("Change track-inverter state")
 		// Disconnect first
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
@@ -269,7 +268,6 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 		if !bo.GetActive().GetRequested(ctx) {
 			value = bn.TrackInverterStateReverse
 		}
-		cs.log.Debug().Int32("value", int32(value)).Msg("Set track-inverter to power again")
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
 			Request: &bn.OutputState{
@@ -391,7 +389,18 @@ func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.Obj
 
 // isAddressEqual returns true if the given addresses are the same
 func isAddressEqual(modelAddr model.Address, objAddr bn.ObjectAddress) bool {
-	return modelAddr.Value == string(objAddr)
+	// Try local addresses first
+	if modelAddr.Value == string(objAddr) {
+		return true
+	}
+	// Check global address
+	modelObjAddr := bn.ObjectAddress(modelAddr.Value)
+	if modelObjAddr.IsGlobal() {
+		_, modelLocalAddr, _ := bn.SplitAddress(modelObjAddr)
+		_, objLocalAddr, _ := bn.SplitAddress(objAddr)
+		return modelLocalAddr == objLocalAddr
+	}
+	return false
 }
 
 // findServerHostAddress tries to find the IP address of a network interface that
