@@ -254,6 +254,7 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 	case model.BinaryOutputTypeTrackInverter:
+		cs.log.Debug().Msg("Change track-inverter state")
 		// Disconnect first
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
