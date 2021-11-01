@@ -35,6 +35,7 @@ func NewBinarySensorSettings(entity model.BinarySensor) Settings {
 	s.addressSettings.Initialize(entity)
 	s.shapeValue.Value = string(entity.GetShape())
 	s.shapeEditor = widgets.NewShapeEditor(&s.shapeValue)
+	s.blockEditor.Initialize(entity.GetModule(), entity.GetBlock())
 	return s
 }
 
@@ -47,6 +48,7 @@ type binarySensorSettings struct {
 	addressSettings
 	shapeValue  widget.Enum
 	shapeEditor *widgets.SimpleSelect
+	blockEditor widgets.BlockEditor
 }
 
 // Handle events and draw the editor
@@ -54,6 +56,10 @@ func (e *binarySensorSettings) Layout(gtx C, th *material.Theme) D {
 	e.metaSettings.Update(e.entity)
 	e.positionSettings.Update(e.entity)
 	e.addressSettings.Update(e.entity)
+	e.entity.SetShape(model.Shape(e.shapeValue.Value))
+	if x, err := e.blockEditor.GetValue(e.entity.GetModule()); err == nil {
+		e.entity.SetBlock(x)
+	}
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
@@ -61,6 +67,12 @@ func (e *binarySensorSettings) Layout(gtx C, th *material.Theme) D {
 			e.metaSettings.Rows(th),
 			e.positionSettings.Rows(th)...),
 			e.addressSettings.Rows(th)...),
+			widgets.SettingsGridRow{
+				Title: "Block",
+				Layout: func(gtx C) D {
+					return e.blockEditor.Layout(gtx, th)
+				},
+			},
 			widgets.SettingsGridRow{
 				Title: "Shape",
 				Layout: func(gtx C) D {
