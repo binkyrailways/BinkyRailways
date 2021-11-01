@@ -38,6 +38,9 @@ func NewRouteSettings(entity model.Route) Settings {
 	s.speedEditor.SetValue(entity.GetSpeed())
 	s.chooseProbabilityEditor.Validator = widgets.MinMaxIntValidator(0, 100)
 	s.chooseProbabilityEditor.SetValue(entity.GetChooseProbability())
+	s.closedEditor.SetValue(entity.GetClosed())
+	s.maxDurationEditor.Validator = widgets.MinMaxIntValidator(0, 3600)
+	s.maxDurationEditor.SetValue(entity.GetMaxDuration())
 	return s
 }
 
@@ -52,6 +55,8 @@ type routeSettings struct {
 	toBlockEditor           widgets.EndpointEditor
 	speedEditor             widgets.IntEditor
 	chooseProbabilityEditor widgets.IntEditor
+	closedEditor            widgets.BoolEditor
+	maxDurationEditor       widgets.IntEditor
 }
 
 // Handle events and draw the editor
@@ -75,6 +80,12 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	}
 	if x, err := e.chooseProbabilityEditor.GetValue(); err == nil {
 		e.entity.SetChooseProbability(x)
+	}
+	if x, err := e.closedEditor.GetValue(); err == nil {
+		e.entity.SetClosed(x)
+	}
+	if x, err := e.maxDurationEditor.GetValue(); err == nil {
+		e.entity.SetMaxDuration(x)
 	}
 
 	// Prepare settings grid
@@ -115,6 +126,18 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 				Title: "Choose probability",
 				Layout: func(gtx C) D {
 					return e.chooseProbabilityEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Max duration (sec)",
+				Layout: func(gtx C) D {
+					return e.maxDurationEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Closed",
+				Layout: func(gtx C) D {
+					return e.closedEditor.Layout(gtx, th)
 				},
 			},
 		)...,
