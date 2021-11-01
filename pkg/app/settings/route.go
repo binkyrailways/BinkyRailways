@@ -34,6 +34,10 @@ func NewRouteSettings(entity model.Route) Settings {
 	s.fromBlockEditor.Initialize(entity.GetModule(), entity.GetFrom())
 	s.toBlockSideEditor.SetValue(entity.GetToBlockSide())
 	s.toBlockEditor.Initialize(entity.GetModule(), entity.GetTo())
+	s.speedEditor.Validator = widgets.MinMaxIntValidator(0, 100)
+	s.speedEditor.SetValue(entity.GetSpeed())
+	s.chooseProbabilityEditor.Validator = widgets.MinMaxIntValidator(0, 100)
+	s.chooseProbabilityEditor.SetValue(entity.GetChooseProbability())
 	return s
 }
 
@@ -42,10 +46,12 @@ type routeSettings struct {
 	entity model.Route
 
 	metaSettings
-	fromBlockSideEditor widgets.BlockSideEditor
-	fromBlockEditor     widgets.EndpointEditor
-	toBlockSideEditor   widgets.BlockSideEditor
-	toBlockEditor       widgets.EndpointEditor
+	fromBlockSideEditor     widgets.BlockSideEditor
+	fromBlockEditor         widgets.EndpointEditor
+	toBlockSideEditor       widgets.BlockSideEditor
+	toBlockEditor           widgets.EndpointEditor
+	speedEditor             widgets.IntEditor
+	chooseProbabilityEditor widgets.IntEditor
 }
 
 // Handle events and draw the editor
@@ -63,6 +69,12 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	}
 	if x, err := e.toBlockEditor.GetValue(module); err == nil {
 		e.entity.SetTo(x)
+	}
+	if x, err := e.speedEditor.GetValue(); err == nil {
+		e.entity.SetSpeed(x)
+	}
+	if x, err := e.chooseProbabilityEditor.GetValue(); err == nil {
+		e.entity.SetChooseProbability(x)
 	}
 
 	// Prepare settings grid
@@ -91,6 +103,18 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 				Title: "To block side",
 				Layout: func(gtx C) D {
 					return e.toBlockSideEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Speed",
+				Layout: func(gtx C) D {
+					return e.speedEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Choose probability",
+				Layout: func(gtx C) D {
+					return e.chooseProbabilityEditor.Layout(gtx, th)
 				},
 			},
 		)...,

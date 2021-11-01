@@ -18,6 +18,7 @@
 package widgets
 
 import (
+	"fmt"
 	"strconv"
 
 	"gioui.org/widget"
@@ -26,18 +27,44 @@ import (
 
 // IntEditor is an editor of integers
 type IntEditor struct {
-	editor widget.Editor
+	editor    widget.Editor
+	Validator func(int) error
+}
+
+// MinMaxIntValidator creates a validator function for given min/max value
+func MinMaxIntValidator(min, max int) func(int) error {
+	return func(x int) error {
+		if x < min || x > max {
+			return fmt.Errorf("value must be between %d and %d", min, max)
+		}
+		return nil
+	}
 }
 
 // SetValue updates the editor to the current value
-func (e *IntEditor) SetValue(value int) {
+func (e *IntEditor) SetValue(value int) error {
 	e.editor.SingleLine = true
+	if e.Validator != nil {
+		if err := e.Validator(value); err != nil {
+			return err
+		}
+	}
 	e.editor.SetText(strconv.Itoa(value))
+	return nil
 }
 
 // GetValue returns the current value
 func (e *IntEditor) GetValue() (int, error) {
-	return strconv.Atoi(e.editor.Text())
+	x, err := strconv.Atoi(e.editor.Text())
+	if err != nil {
+		return 0, err
+	}
+	if e.Validator != nil {
+		if err := e.Validator(x); err != nil {
+			return 0, err
+		}
+	}
+	return x, nil
 }
 
 // Layout the editor
