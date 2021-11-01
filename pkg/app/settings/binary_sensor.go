@@ -18,6 +18,7 @@
 package settings
 
 import (
+	"gioui.org/widget"
 	"gioui.org/widget/material"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
@@ -32,6 +33,8 @@ func NewBinarySensorSettings(entity model.BinarySensor) Settings {
 	s.metaSettings.Initialize(entity)
 	s.positionSettings.Initialize(entity)
 	s.addressSettings.Initialize(entity)
+	s.shapeValue.Value = string(entity.GetShape())
+	s.shapeEditor = widgets.NewShapeEditor(&s.shapeValue)
 	return s
 }
 
@@ -42,6 +45,8 @@ type binarySensorSettings struct {
 	metaSettings
 	positionSettings
 	addressSettings
+	shapeValue  widget.Enum
+	shapeEditor *widgets.SimpleSelect
 }
 
 // Handle events and draw the editor
@@ -52,10 +57,16 @@ func (e *binarySensorSettings) Layout(gtx C, th *material.Theme) D {
 
 	// Prepare settings grid
 	grid := widgets.NewSettingsGrid(
-		append(append(
+		append(append(append(
 			e.metaSettings.Rows(th),
 			e.positionSettings.Rows(th)...),
-			e.addressSettings.Rows(th)...,
+			e.addressSettings.Rows(th)...),
+			widgets.SettingsGridRow{
+				Title: "Shape",
+				Layout: func(gtx C) D {
+					return e.shapeEditor.Layout(gtx, th)
+				},
+			},
 		)...,
 	)
 
