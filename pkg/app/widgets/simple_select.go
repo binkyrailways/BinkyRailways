@@ -64,6 +64,23 @@ type SimpleSelect struct {
 	focused      bool
 }
 
+// SetValues changes the possible values.
+// If the current value in the enum is no longer possible,
+// it is set to an empty string.
+func (ssel *SimpleSelect) SetValues(value ...LabeledValue) {
+	ssel.values = value
+	current := ssel.enum.Value
+	if current != "" {
+		for _, lv := range value {
+			if lv.Value == current {
+				return
+			}
+		}
+		// Current value no longer possible
+		ssel.enum.Value = ""
+	}
+}
+
 // Layout renders the select
 func (ssel *SimpleSelect) Layout(gtx C, th *material.Theme) D {
 	// Handle events

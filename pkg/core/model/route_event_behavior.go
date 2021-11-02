@@ -21,10 +21,8 @@ package model
 type RouteEventBehavior interface {
 	ModuleEntity
 
-	/// <summary>
-	/// Predicate used to select the locs to which this event applies.
-	/// </summary>
-	//ILocPredicate AppliesTo { get; }
+	// Predicate used to select the locs to which this event applies.
+	GetAppliesTo() LocPredicate
 
 	// How is the state of the route changed.
 	GetStateBehavior() RouteStateBehavior

@@ -21,7 +21,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // LocCanChangeDirectionPredicate extends implementation methods to model.LocCanChangeDirectionPredicate
 type LocCanChangeDirectionPredicate interface {
-	ModuleEntity
+	LocPredicate
 	model.LocCanChangeDirectionPredicate
 }
 

@@ -31,6 +31,7 @@ type RouteEventBehavior interface {
 type routeEventBehavior struct {
 	moduleEntity
 
+	AppliesTo     LocPredicateContainer     `xml:"AppliesTo"`
 	StateBehavior *model.RouteStateBehavior `xml:"StateBehavior,omitempty"`
 	SpeedBehavior *model.LocSpeedBehavior   `xml:"SpeedBehavior,omitempty"`
 }
@@ -38,8 +39,9 @@ type routeEventBehavior struct {
 var _ RouteEventBehavior = &routeEventBehavior{}
 
 // newRouteEventBehavior creates a new newRouteEventBehavior instance.
-func newRouteEventBehavior() *routeEventBehavior {
+func newRouteEventBehavior(appliesTo LocPredicate) *routeEventBehavior {
 	reb := &routeEventBehavior{}
+	reb.AppliesTo.LocPredicate = appliesTo
 	return reb
 }
 
@@ -48,10 +50,10 @@ func (s *routeEventBehavior) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitRouteEventBehavior(s)
 }
 
-/// <summary>
-/// Predicate used to select the locs to which this event applies.
-/// </summary>
-//ILocPredicate AppliesTo { get; }
+// Predicate used to select the locs to which this event applies.
+func (s *routeEventBehavior) GetAppliesTo() model.LocPredicate {
+	return s.AppliesTo.LocPredicate
+}
 
 // How is the state of the route changed.
 func (s *routeEventBehavior) GetStateBehavior() model.RouteStateBehavior {

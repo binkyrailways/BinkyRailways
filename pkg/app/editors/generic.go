@@ -30,7 +30,7 @@ import (
 func newGenericEditor(entity interface{}, deleteDescr string, onDelete func(context.Context) error, etx EditorContext) Editor {
 	editor := &genericEditor{
 		entity:      entity,
-		settings:    settings.BuildSettings(entity),
+		settings:    settings.BuildSettings(entity, etx.GetModalLayer()),
 		onDelete:    onDelete,
 		deleteDescr: deleteDescr,
 		etx:         etx,

@@ -18,22 +18,26 @@
 package settings
 
 import (
+	"gioui.org/x/component"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // builder implements an entity visitor to create settings components.
 type builder struct {
 	model.DefaultEntityVisitor
+	modal *component.ModalLayer
 }
 
 // BuildSettings tries to build a settings implementation for the given entity.
-func BuildSettings(x interface{}) Settings {
+func BuildSettings(x interface{}, modal *component.ModalLayer) Settings {
 	if x == nil {
 		return nil
 	}
 	switch x := x.(type) {
 	case model.Entity:
-		b := &builder{}
+		b := &builder{
+			modal: modal,
+		}
 		if result, ok := x.Accept(b).(Settings); ok {
 			return result
 		}
@@ -42,8 +46,10 @@ func BuildSettings(x interface{}) Settings {
 }
 
 // NewBuilder creates an entity visitor to create settings components.
-func NewBuilder() model.EntityVisitor {
-	return &builder{}
+func NewBuilder(modal *component.ModalLayer) model.EntityVisitor {
+	return &builder{
+		modal: modal,
+	}
 }
 
 func (v *builder) VisitBinaryOutput(x model.BinaryOutput) interface{} {
@@ -87,7 +93,7 @@ func (v *builder) VisitRailway(x model.Railway) interface{} {
 }
 
 func (v *builder) VisitRoute(x model.Route) interface{} {
-	return NewRouteSettings(x)
+	return NewRouteSettings(x, v.modal)
 }
 
 func (v *builder) VisitSwitch(x model.Switch) interface{} {

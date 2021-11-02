@@ -21,7 +21,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // LocGroupEqualsPredicate extends implementation methods to model.LocGroupEqualsPredicate
 type LocGroupEqualsPredicate interface {
-	ModuleEntity
+	LocPredicate
 	model.LocGroupEqualsPredicate
 }
 

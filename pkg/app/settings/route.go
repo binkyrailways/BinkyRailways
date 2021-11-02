@@ -18,17 +18,24 @@
 package settings
 
 import (
+	"gioui.org/unit"
+	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"gioui.org/x/component"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/app/widgets"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // NewRouteSettings constructs a settings component for a Route.
-func NewRouteSettings(entity model.Route) Settings {
+func NewRouteSettings(entity model.Route, modal *component.ModalLayer) Settings {
 	s := &routeSettings{
-		entity: entity,
+		entity:           entity,
+		modal:            modal,
+		eventEditorSheet: component.NewModalSheet(modal),
+		eventEditor:      NewRouteEventSetSettings(entity.GetEvents(), entity.GetModule()),
 	}
+	s.eventEditorSheet.MaxWidth = unit.Dp(600)
 	s.metaSettings.Initialize(entity)
 	s.fromBlockSideEditor.SetValue(entity.GetFromBlockSide())
 	s.fromBlockEditor.Initialize(entity.GetModule(), entity.GetFrom())
@@ -47,6 +54,7 @@ func NewRouteSettings(entity model.Route) Settings {
 // routeSettings implements an settings grid for a Route.
 type routeSettings struct {
 	entity model.Route
+	modal  *component.ModalLayer
 
 	metaSettings
 	fromBlockSideEditor     widgets.BlockSideEditor
@@ -57,6 +65,9 @@ type routeSettings struct {
 	chooseProbabilityEditor widgets.IntEditor
 	closedEditor            widgets.BoolEditor
 	maxDurationEditor       widgets.IntEditor
+	editEvents              widget.Clickable
+	eventEditorSheet        *component.ModalSheet
+	eventEditor             Settings
 }
 
 // Handle events and draw the editor
@@ -86,6 +97,12 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 	}
 	if x, err := e.maxDurationEditor.GetValue(); err == nil {
 		e.entity.SetMaxDuration(x)
+	}
+	if e.editEvents.Clicked() {
+		e.eventEditorSheet.LayoutModal(func(gtx C, th *material.Theme, anim *component.VisibilityAnimation) D {
+			return e.eventEditor.Layout(gtx, th)
+		})
+		e.eventEditorSheet.Appear(gtx.Now)
 	}
 
 	// Prepare settings grid
@@ -138,6 +155,12 @@ func (e *routeSettings) Layout(gtx C, th *material.Theme) D {
 				Title: "Closed",
 				Layout: func(gtx C) D {
 					return e.closedEditor.Layout(gtx, th)
+				},
+			},
+			widgets.SettingsGridRow{
+				Title: "Events",
+				Layout: func(gtx C) D {
+					return material.Button(th, &e.editEvents, "...").Layout(gtx)
 				},
 			},
 		)...,

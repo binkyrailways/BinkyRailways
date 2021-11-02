@@ -51,7 +51,7 @@ func newBinkyNetLocalWorkerEditor(localWorker model.BinkyNetLocalWorker, etx Edi
 		devicesTable: newDevicesTables(),
 		objectsTable: newObjectsTables(),
 	}
-	editor.settings = settings.BuildSettings(localWorker)
+	editor.settings = settings.BuildSettings(localWorker, etx.GetModalLayer())
 	editor.OnSelect(localWorker)
 
 	return editor
@@ -76,9 +76,9 @@ func (e *binkyNetLocalWorkerEditor) LocalWorker() model.BinkyNetLocalWorker {
 // OnSelect is called when the currently selected entity has changed.
 func (e *binkyNetLocalWorkerEditor) OnSelect(entity interface{}) {
 	e.selection = entity
-	e.settings = settings.BuildSettings(entity)
+	e.settings = settings.BuildSettings(entity, e.etx.GetModalLayer())
 	if e.settings == nil {
-		e.settings = settings.BuildSettings(e.localWorker)
+		e.settings = settings.BuildSettings(e.localWorker, e.etx.GetModalLayer())
 	}
 	e.etx.Invalidate()
 }

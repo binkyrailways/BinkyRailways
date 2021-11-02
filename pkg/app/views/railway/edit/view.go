@@ -165,6 +165,11 @@ func (v *View) onRemove() {
 	}
 }
 
+// Return the modal layer
+func (v *View) GetModalLayer() *component.ModalLayer {
+	return v.modal
+}
+
 // Layout handles events and draw the view
 func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	th := v.vm.GetTheme()
@@ -179,6 +184,9 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		v.setRunMode(true)
 	}
 	if v.buttonAdd.Clicked() {
+		v.addSheet.LayoutModal(func(gtx C, th *material.Theme, anim *component.VisibilityAnimation) D {
+			return v.layoutAddSheet(gtx, th)
+		})
 		v.addSheet.Appear(gtx.Now)
 	}
 	if v.buttonRemove.Clicked() {
@@ -257,9 +265,6 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 	stack := layout.Stack{
 		Alignment: layout.Direction(layout.SE),
 	}
-	v.addSheet.LayoutModal(func(gtx C, th *material.Theme, anim *component.VisibilityAnimation) D {
-		return v.layoutAddSheet(gtx, th)
-	})
 	stack.Layout(gtx,
 		layout.Stacked(vs.Layout),
 		layout.Stacked(func(gtx C) D { return v.modal.Layout(gtx, th) }),

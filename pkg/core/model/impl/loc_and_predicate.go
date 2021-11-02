@@ -21,7 +21,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // LocAndPredicate extends implementation methods to model.LocAndPredicate
 type LocAndPredicate interface {
-	ModuleEntity
+	LocPredicate
 	model.LocAndPredicate
 }
 

@@ -21,7 +21,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // LocOrPredicate extends implementation methods to model.LocOrPredicate
 type LocOrPredicate interface {
-	ModuleEntity
+	LocPredicate
 	model.LocOrPredicate
 }
 

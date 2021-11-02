@@ -85,7 +85,7 @@ func (e *moduleEditor) Module() model.Module {
 // OnSelect is called when the currently selected entity has changed.
 func (e *moduleEditor) OnSelect(entity model.ModuleEntity) {
 	if entity != nil {
-		if x, ok := entity.Accept(settings.NewBuilder()).(settings.Settings); ok {
+		if x, ok := entity.Accept(settings.NewBuilder(e.etx.GetModalLayer())).(settings.Settings); ok {
 			e.settings = x
 			e.selection = entity
 		} else {

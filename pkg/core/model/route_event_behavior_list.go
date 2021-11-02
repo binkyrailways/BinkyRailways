@@ -34,10 +34,5 @@ type RouteEventBehaviorList interface {
 	Clear() bool
 
 	// Add a blank route behavior to the list
-	AddNew() RouteEventBehavior
-
-	/// <summary>
-	/// Add the given item to this set
-	/// </summary>
-	//IRouteEventBehavior Add(ILocPredicate appliesTo);
+	AddNew(appliesTo LocPredicate) RouteEventBehavior
 }

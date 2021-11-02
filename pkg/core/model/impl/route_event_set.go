@@ -50,6 +50,16 @@ func (rs *routeEventSet) GetCount() int {
 	return len(rs.Items)
 }
 
+// Get event in this set by ID of the sensor
+func (rs *routeEventSet) Get(sensorID string) (model.RouteEvent, bool) {
+	for _, x := range rs.Items {
+		if x.GetSensor().GetID() == sensorID {
+			return x, true
+		}
+	}
+	return nil, false
+}
+
 // Invoke the callback for each item
 func (rs *routeEventSet) ForEach(cb func(model.RouteEvent)) {
 	for _, x := range rs.Items {

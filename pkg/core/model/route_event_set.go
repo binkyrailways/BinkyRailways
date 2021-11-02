@@ -22,6 +22,9 @@ type RouteEventSet interface {
 	// Get number of entries
 	GetCount() int
 
+	// Get event in this set by ID of the sensor
+	Get(sensorID string) (RouteEvent, bool)
+
 	// Invoke the callback for each item
 	ForEach(cb func(RouteEvent))
 

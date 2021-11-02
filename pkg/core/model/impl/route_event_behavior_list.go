@@ -80,15 +80,10 @@ func (rs *routeEventBehaviorList) Clear() bool {
 }
 
 // Add a blank route behavior to the list
-func (rs *routeEventBehaviorList) AddNew() model.RouteEventBehavior {
-	reb := newRouteEventBehavior()
+func (rs *routeEventBehaviorList) AddNew(appliesTo model.LocPredicate) model.RouteEventBehavior {
+	reb := newRouteEventBehavior(appliesTo.(LocPredicate))
 	reb.SetContainer(rs)
 	rs.Items = append(rs.Items, reb)
 	rs.OnModified()
 	return reb
 }
-
-/// <summary>
-/// Add the given item to this set
-/// </summary>
-//IRouteEventBehavior Add(ILocPredicate appliesTo);

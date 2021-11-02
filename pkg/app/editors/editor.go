@@ -23,6 +23,7 @@ import (
 	"gioui.org/layout"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"gioui.org/x/component"
 )
 
 type (
@@ -46,6 +47,8 @@ type Editor interface {
 type EditorContext interface {
 	// Select the given entity in the view
 	Select(entity interface{})
+	// Return the modal layer of the app
+	GetModalLayer() *component.ModalLayer
 	// Invalidate the UI
 	Invalidate()
 }
