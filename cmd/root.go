@@ -18,10 +18,14 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
+	"golang.org/x/sync/errgroup"
 
-	"github.com/binkyrailways/BinkyRailways/pkg/app"
+	"github.com/binkyrailways/BinkyRailways/pkg/server"
+	"github.com/binkyrailways/BinkyRailways/pkg/service"
 )
 
 var (
@@ -32,13 +36,18 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app app.Config
+		app    service.Config
+		server server.Config
 	}
 	cliLog = zerolog.New(zerolog.NewConsoleWriter())
 )
 
 func init() {
 	f := RootCmd.Flags()
+	// Server arguments
+	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
+	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 8034, "Port number to serve GRPC on")
+	// Service arguments
 	f.StringVarP(&rootArgs.app.RailwayPath, "railway", "r", "", "Path of railway file")
 }
 
@@ -50,13 +59,39 @@ func SetVersionAndBuild(version, build string) {
 
 // Run the service
 func runRootCmd(cmd *cobra.Command, args []string) {
+	ctx := context.Background()
 	if len(args) == 1 && rootArgs.app.RailwayPath == "" {
 		rootArgs.app.RailwayPath = args[0]
 	}
-	a := app.New(rootArgs.app, app.Dependencies{
+
+	// Construct the service
+	svc := service.New(rootArgs.app, service.Dependencies{
 		Logger: cliLog,
 	})
-	if err := a.Run(); err != nil {
+
+	// Construct the server
+	svr, err := server.New(rootArgs.server, cliLog, svc)
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("Server construction failed")
+	}
+
+	// Run the server & service
+	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		if err := svc.Run(ctx); err != nil {
+			cliLog.Error().Err(err).Msg("Service run failed")
+			return err
+		}
+		return nil
+	})
+	g.Go(func() error {
+		if err := svr.Run(ctx); err != nil {
+			cliLog.Error().Err(err).Msg("Server run failed")
+			return err
+		}
+		return nil
+	})
+	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}
 }

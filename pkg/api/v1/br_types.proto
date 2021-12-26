@@ -1,0 +1,139 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// Author Ewout Prangsma
+// 
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+// Empty message
+message Empty {}
+
+// Railway contrains a description of a single model railway.
+message Railway {
+  // Unique ID of the railway
+  string id = 1;
+  // Human readable description of the railway
+  string description = 2;
+  // Modules visible on this railway
+  repeated ModuleRef modules = 100;
+}
+
+// Module of a railway
+message Module {
+  // Unique ID of the module
+  string id = 1;
+  // Human readable description of the module
+  string description = 2;
+}
+
+// Reference to a module
+message ModuleRef {
+  // ID of the module
+  string id = 1;
+  // Position of the module
+  Position position = 2;
+  // Zoom factor of the module (100 == 100%)
+  int32 zoom_factor = 3;
+  // If locked, the module cannot be moved.
+  bool locked = 4;
+}
+
+// Visual position on a grid
+message Position {
+	// Horizontal offset from left of the screen (in pixels).
+  int32 x = 1;
+	// Vertical offset from top of the screen (in pixels).
+  int32 y = 2;
+	// Horizontal size (in pixels).
+  int32 width = 3;
+	// Vertical size (in pixels).
+  int32 height = 4;
+	// Rotation in degrees.
+  int32 rotation = 5;
+  // Optional layer.
+  string layer = 6;
+}
+
+// AddressType is a strongly typed type of address
+enum AddressType {
+  BINKYNET = 0;
+	DCC = 1;
+	LOCONET = 2;
+	MOTOROLA = 3;
+	MFX = 4;
+	MQTT = 5;
+}
+
+message Address {
+  // Type of address
+  AddressType type = 1;
+  // Address space
+  string space = 2;
+  // Address value
+  string value = 3;
+}
+
+// ChangeDirection specifies if it is allowed / should be avoided to change direction in a block,
+// or is it allowed / should is be avoided that a loc changes direction?
+enum ChangeDirection {
+	// ALLOW indicates that changing direction is allowed
+	ALLOW = 0;
+	// AVOID indicates that changing direction should be avoided
+  AVOID = 1;
+}
+
+// Information of a locomotive
+message Loc {
+  // Unique ID of the loc
+  string id = 1;
+  // Description of the loc 
+  string description = 2;
+	// Name of the person that owns this loc.
+  string owner = 3;
+	// Remarks (free text) about this loc.
+  string remarks = 4;
+  // Address of the loc.
+  Address address = 5;
+
+  // Percentage of speed steps for the slowest speed of this loc.
+	// Value between 1 and 100.
+  int32 slow_speed = 100;
+	// Percentage of speed steps for the medium speed of this loc.
+	// Value between 1 and 100.
+  int32 medium_speed = 101;
+	// Percentage of speed steps for the maximum speed of this loc.
+	// Value between 1 and 100.
+  int32 maximum_speed = 102;
+
+	// Number of speed steps supported by this loc.
+  int32 speed_steps = 110;
+
+	/// <summary>
+	/// Gets/sets the image of the given loc.
+	/// </summary>
+	/// <value>Null if there is no image.</value>
+	/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+	//Stream Image { get; set; }
+
+	// Is it allowed for this loc to change direction?
+  ChangeDirection change_direction = 120;
+
+	// Gets the names of all functions supported by this loc.
+//	GetFunctions() LocFunctions
+}

@@ -1,0 +1,44 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// Author Ewout Prangsma
+// 
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+import "br_types.proto";
+
+// EditorService is used to edit the current railway.
+service EditorService {
+    // Gets the current railway
+    rpc GetRailway(Empty) returns (Railway);
+    // Update the current railway
+    rpc UpdateRailway(Railway) returns (Railway);
+    // Save changes to disk
+    rpc Save(Empty) returns (Empty);
+
+    // Gets a module by ID. 
+    rpc GetModule(IDRequest) returns (Module);
+    // Update a module by ID. 
+    rpc UpdateModule(Module) returns (Module);
+}
+
+// Request by ID
+message IDRequest {
+    string id = 1;
+}
