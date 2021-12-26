@@ -251,7 +251,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		}
 		return layout.Dimensions{Size: gtx.Constraints.Max}
 	}
-	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
+	bar := func(gtx C) D { return v.appBar.Layout(gtx, th, "", "") }
 	vs := widgets.VerticalSplit(bar, func(gtx C) D {
 		return v.resizer.Layout(gtx,
 			func(gtx C) D { return widgets.WithPadding(gtx, func(gtx C) D { return v.entityList.Layout(gtx, th) }) },

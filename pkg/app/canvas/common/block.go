@@ -83,8 +83,8 @@ func (b *Block) Layout(ctx context.Context, gtx C, size image.Point, th *materia
 	// Draw block border
 	clip.Stroke{
 		Path:  rrect.Path(gtx.Ops),
-		Style: clip.StrokeStyle{Width: float32(borderWidth)},
-	}.Op().Add(gtx.Ops)
+		Width: float32(borderWidth),
+	}.Op().Push(gtx.Ops).Pop()
 	paint.Fill(gtx.Ops, canvas.Border)
 }
 

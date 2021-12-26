@@ -78,27 +78,28 @@ func (b *StdSwitch) Layout(ctx context.Context, gtx C, size image.Point, th *mat
 	} else {
 		// Off
 		// Clip area
-		st := op.Save(gtx.Ops)
-		bgShape.Op(gtx.Ops).Add(gtx.Ops)
+		//st := op.Save(gtx.Ops)
+		stC := bgShape.Op(gtx.Ops).Push(gtx.Ops)
 		// Rotate
 		tr := f32.Affine2D{}.Rotate(center, 60.0/180.0)
-		op.Affine(tr).Add(gtx.Ops)
+		stA := op.Affine(tr).Push(gtx.Ops)
 		h := rect.Max.Y
 		rect.Max.Y = h / 5
 		rect = rect.Add(f32.Pt(0, 2*(h/5)))
 		paint.FillShape(gtx.Ops, indicatorColor, clip.UniformRRect(rect, float32(gtx.Px(unit.Dp(0)))).Op(gtx.Ops))
 		// Retore previous state
-		st.Load()
+		stA.Pop()
+		stC.Pop()
 	}
 
 	// Draw label below switch
-	st := op.Save(gtx.Ops)
+	//st := op.Save(gtx.Ops)
 	gtx.Constraints.Max.Y = gtx.Constraints.Max.Y / 2
 	tr := f32.Affine2D{}.Offset(f32.Pt(0, float32(size.Y/2)))
-	op.Affine(tr).Add(gtx.Ops)
+	st := op.Affine(tr).Push(gtx.Ops)
 	widgets.TextCenter(gtx, th, b.Model.GetDescription())
 	// Retore previous state
-	st.Load()
+	st.Pop()
 }
 
 // getDirection returns the direction of the switch to draw.

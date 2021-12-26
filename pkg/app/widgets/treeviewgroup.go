@@ -149,7 +149,7 @@ func (v *TreeViewGroup) Layout(ctx context.Context, gtx C, th *material.Theme, s
 				lb.Color = fg
 				clip.Rect{
 					Max: gtx.Constraints.Max,
-				}.Add(gtx.Ops)
+				}.Push(gtx.Ops).Pop()
 				paint.Fill(gtx.Ops, bg)
 			}
 			return lb.Layout(gtx)

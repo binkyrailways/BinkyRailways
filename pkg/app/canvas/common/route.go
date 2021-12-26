@@ -70,8 +70,8 @@ func (b *Route) Layout(ctx context.Context, gtx C, size image.Point, th *materia
 	paint.ColorOp{Color: canvas.BlockDestinationBg}.Add(gtx.Ops)
 	clip.Stroke{
 		Path:  p.End(),
-		Style: clip.StrokeStyle{Width: 1},
-	}.Op().Add(gtx.Ops)
+		Width: 1,
+	}.Op().Push(gtx.Ops).Pop()
 	paint.PaintOp{}.Add(gtx.Ops)
 }
 

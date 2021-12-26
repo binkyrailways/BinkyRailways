@@ -162,7 +162,7 @@ func (v *View) Layout(gtx layout.Context) layout.Dimensions {
 		appBarActions,
 		[]component.OverflowAction{})
 
-	bar := func(gtx C) D { return v.appBar.Layout(gtx, th) }
+	bar := func(gtx C) D { return v.appBar.Layout(gtx, th, "", "") }
 	canvas := func(gtx C) D { return v.canvas.Layout(gtx, th) }
 
 	// Prepare left side

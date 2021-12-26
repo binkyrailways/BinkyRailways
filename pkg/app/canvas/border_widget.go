@@ -24,7 +24,6 @@ import (
 
 	"gioui.org/f32"
 	"gioui.org/layout"
-	"gioui.org/op"
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/widget/material"
@@ -56,10 +55,10 @@ func (w *BorderWidget) GetAffineAndSize() (f32.Affine2D, f32.Point, float32) {
 
 // Layout draws the widget and process events.
 func (w *BorderWidget) Layout(ctx context.Context, gtx layout.Context, size image.Point, th *material.Theme, state WidgetState) {
-	defer op.Save(gtx.Ops).Load()
+	//defer op.Save(gtx.Ops).Load()
 	paint.ColorOp{Color: w.color}.Add(gtx.Ops)
 	clip.Stroke{
 		Path:  clip.UniformRRect(f32.Rectangle{Max: layout.FPt(size)}, 0).Path(gtx.Ops),
-		Style: clip.StrokeStyle{Width: 1},
-	}.Op().Add(gtx.Ops)
+		Width: 1,
+	}.Op().Push(gtx.Ops).Pop()
 }

@@ -78,13 +78,13 @@ func (t *SimpleTable) Layout(gtx C, rows int, cell func(gtx C, x, y int) D) D {
 	for y := 0; y < rows; y++ {
 		xOffset = 0
 		for x := 0; x < nCols; x++ {
-			stack := op.Save(gtx.Ops)
-			op.Offset(layout.FPt(image.Pt(xOffset, yOffset))).Add(gtx.Ops)
+			//stack := op.Save(gtx.Ops)
+			state := op.Offset(layout.FPt(image.Pt(xOffset, yOffset))).Push(gtx.Ops)
 			sz := image.Pt(t.colWidths[x], t.rowHeights[y])
 			gtx.Constraints.Max = sz
 			gtx.Constraints.Min = sz
 			cell(gtx, x, y)
-			stack.Load()
+			state.Pop()
 			xOffset += sz.X + t.CellSpacing.X
 		}
 		yOffset += t.rowHeights[y] + t.CellSpacing.Y

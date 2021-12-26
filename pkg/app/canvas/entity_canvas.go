@@ -178,13 +178,13 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	gtx.Constraints.Max = size
 
 	// Add clicking & hover detection
-	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
+	clip.Rect(image.Rectangle{Max: size}).Push(gtx.Ops)
 	cw.Click.Add(gtx.Ops)
-	pointer.PassOp{Pass: true}.Add(gtx.Ops)
+	pointer.PassOp{}.Push(gtx.Ops).Pop()
 	// Add dragging
-	pointer.Rect(image.Rectangle{Max: size}).Add(gtx.Ops)
+	clip.Rect(image.Rectangle{Max: size}).Push(gtx.Ops)
 	cw.Drag.Add(gtx.Ops)
-	pointer.PassOp{Pass: true}.Add(gtx.Ops)
+	pointer.PassOp{}.Push(gtx.Ops).Pop()
 
 	// Now layout actual widget
 	wState := WidgetState{
@@ -194,19 +194,19 @@ func (cw *canvasWidget) layout(ctx context.Context, gtx layout.Context, th *mate
 	}
 
 	// Layout actual widget
-	state := op.Save(gtx.Ops)
-	clip.Rect{
+	//state := op.Save(gtx.Ops)
+	state := clip.Rect{
 		Max: size,
-	}.Add(gtx.Ops)
+	}.Push(gtx.Ops)
 	cw.widget.Layout(ctx, gtx, size, th, wState)
-	state.Load()
+	state.Pop()
 
 	// Draw selection overlay (if needed)
 	if wState.Hovered {
 		clip.Stroke{
 			Path:  clip.UniformRRect(f32.Rectangle{Max: layout.FPt(size)}, 0).Path(gtx.Ops),
-			Style: clip.StrokeStyle{Width: 1},
-		}.Op().Add(gtx.Ops)
+			Width: 1,
+		}.Op().Push(gtx.Ops).Pop()
 	}
 }
 
@@ -309,7 +309,7 @@ func (ec *EntityCanvas) Layout(gtx layout.Context, th *material.Theme) layout.Di
 
 // Layout generates the UI and processes events.
 func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *material.Theme) layout.Dimensions {
-	defer op.Save(gtx.Ops).Load()
+	//defer op.Save(gtx.Ops).Load()
 
 	// Process events
 	if ec.Clickable.Clicked() {
@@ -322,10 +322,12 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 	}
 
 	// Add background click
-	ec.Clickable.Layout(gtx)
+	ec.Clickable.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+		return layout.Dimensions{Size: gtx.Constraints.Max}
+	})
 	// Ensure we have all widgets
 	max := gtx.Constraints.Max
-	clip.Rect{Max: max}.Add(gtx.Ops)
+	clip.Rect{Max: max}.Push(gtx.Ops)
 	transformer := ec.Transformer
 	if transformer == nil {
 		transformer = func(entity Entity, tx f32.Affine2D) f32.Affine2D {
@@ -348,12 +350,12 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 	// Layout all widgets
 	for _, w := range widgets {
 		// Save state
-		state := op.Save(gtx.Ops)
+		//state := op.Save(gtx.Ops)
 		// Prepare transformation & size
 		tr, size, rad := w.widget.GetAffineAndSize()
 		tr = transformer(w.entity, tr)
 		tr = tr.Scale(f32.Point{}, f32.Point{X: scale, Y: scale})
-		op.Affine(tr).Add(gtx.Ops)
+		state := op.Affine(tr).Push(gtx.Ops)
 		// Layout widget
 		sz := image.Point{
 			X: int(math.Ceil(float64(size.X))),
@@ -361,7 +363,7 @@ func (ec *EntityCanvas) layout(ctx context.Context, gtx layout.Context, th *mate
 		}
 		w.layout(ctx, gtx, th, sz, rad)
 		// Retore previous state
-		state.Load()
+		state.Pop()
 	}
 	return layout.Dimensions{Size: max}
 }

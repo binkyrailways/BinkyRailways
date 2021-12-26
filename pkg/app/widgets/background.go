@@ -36,7 +36,7 @@ func WithBackground(gtx C, color color.NRGBA, w func(C) D) D {
 			clip.UniformRRect(f32.Rectangle{Max: f32.Point{
 				X: float32(gtx.Constraints.Min.X),
 				Y: float32(gtx.Constraints.Min.Y),
-			}}, rr).Add(gtx.Ops)
+			}}, rr).Push(gtx.Ops).Pop()
 			paint.Fill(gtx.Ops, color)
 			return layout.Dimensions{Size: gtx.Constraints.Min}
 		}),

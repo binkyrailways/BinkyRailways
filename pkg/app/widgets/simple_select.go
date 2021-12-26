@@ -124,7 +124,7 @@ func (ssel *SimpleSelect) Layout(gtx C, th *material.Theme) D {
 			lb.Color = fg
 			clip.Rect{
 				Max: gtx.Constraints.Max,
-			}.Add(gtx.Ops)
+			}.Push(gtx.Ops).Pop()
 			paint.Fill(gtx.Ops, bg)
 		}
 		return lb.Layout(gtx)

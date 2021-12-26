@@ -8,7 +8,7 @@ clean:
 
 binaries:
 	gox \
-		-osarch="darwin/amd64" \
+		-osarch="darwin/amd64 darwin/arm64" \
 		-ldflags="-X main.projectVersion=${VERSION} -X main.projectBuild=${COMMIT}" \
 		-output="bin/{{.OS}}/{{.Arch}}/$(PROJECT)" \
 		-tags="netgo" \

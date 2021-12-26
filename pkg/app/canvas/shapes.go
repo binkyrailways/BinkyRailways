@@ -44,7 +44,7 @@ func DrawSensorShape(gtx layout.Context, shape model.Shape, color color.NRGBA, s
 		// Bottom half
 		p.MoveTo(f32.Pt(dx, dy+sz/2)) // Left middle
 		p.Cube(f32.Pt(dx, dy+sz), f32.Pt(dx+sz, dy+sz), f32.Pt(dx+sz, dy+sz/2))
-		clip.Outline{Path: p.End()}.Op().Add(gtx.Ops)
+		clip.Outline{Path: p.End()}.Op().Push(gtx.Ops).Pop()
 		paint.Fill(gtx.Ops, color)
 	case model.ShapeSquare:
 		p.Begin(gtx.Ops)
@@ -53,7 +53,7 @@ func DrawSensorShape(gtx layout.Context, shape model.Shape, color color.NRGBA, s
 		p.LineTo(f32.Pt(dx+sz, dy+sz)) // Right Bottom
 		p.LineTo(f32.Pt(dx, dy+sz))    // Left Bottom
 		p.Close()
-		clip.Outline{Path: p.End()}.Op().Add(gtx.Ops)
+		clip.Outline{Path: p.End()}.Op().Push(gtx.Ops).Pop()
 		paint.Fill(gtx.Ops, color)
 	case model.ShapeTriangle:
 		p.Begin(gtx.Ops)
@@ -61,7 +61,7 @@ func DrawSensorShape(gtx layout.Context, shape model.Shape, color color.NRGBA, s
 		p.LineTo(f32.Pt(dx+sz/2, dy))  // Top middle
 		p.LineTo(f32.Pt(dx+sz, dy+sz)) // Bottom right
 		p.Close()
-		clip.Outline{Path: p.End()}.Op().Add(gtx.Ops)
+		clip.Outline{Path: p.End()}.Op().Push(gtx.Ops).Pop()
 		paint.Fill(gtx.Ops, color)
 	case model.ShapeDiamond:
 		mx := dx + sz/2 // middle X
@@ -72,7 +72,7 @@ func DrawSensorShape(gtx layout.Context, shape model.Shape, color color.NRGBA, s
 		p.LineTo(f32.Pt(dx+sz, my)) // Right middle
 		p.LineTo(f32.Pt(mx, dy+sz)) // Bottom middle
 		p.Close()
-		clip.Outline{Path: p.End()}.Op().Add(gtx.Ops)
+		clip.Outline{Path: p.End()}.Op().Push(gtx.Ops).Pop()
 		paint.Fill(gtx.Ops, color)
 	default:
 		return
