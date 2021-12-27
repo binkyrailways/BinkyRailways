@@ -23,26 +23,21 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts a model railway to an API railway
-func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
-	dst.Id = src.GetID()
-	dst.Description = src.GetDescription()
-	// Module refs
-	src.GetModules().ForEach(func(mr model.ModuleRef) {
-		p := &Position{}
-		p.FromModel(ctx, mr)
-		dst.Modules = append(dst.Modules, &ModuleRef{
-			Id:         mr.GetID(),
-			Position:   p,
-			ZoomFactor: int32(mr.GetZoomFactor()),
-			Locked:     mr.GetLocked(),
-		})
-	})
-	// Loc refs
-	src.GetLocs().ForEach(func(lr model.LocRef) {
-		dst.Locs = append(dst.Locs, &LocRef{
-			Id: lr.GetID(),
-		})
-	})
+// FromModel converts an address type entity to an API structure
+func (dst *AddressType) FromModel(ctx context.Context, src model.AddressType) error {
+	switch src {
+	case model.AddressTypeBinkyNet:
+		*dst = AddressType_BINKYNET
+	case model.AddressTypeDcc:
+		*dst = AddressType_DCC
+	case model.AddressTypeLocoNet:
+		*dst = AddressType_LOCONET
+	case model.AddressTypeMotorola:
+		*dst = AddressType_MOTOROLA
+	case model.AddressTypeMfx:
+		*dst = AddressType_MFX
+	case model.AddressTypeMqtt:
+		*dst = AddressType_MQTT
+	}
 	return nil
 }

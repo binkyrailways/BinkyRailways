@@ -22,9 +22,14 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/editor_model.dart';
 
 class RailwayTree extends StatelessWidget {
+  final EditorContext _context;
   final ContextSetter _contextSetter;
-  const RailwayTree({Key? key, required ContextSetter contextSetter})
-      : _contextSetter = contextSetter,
+  const RailwayTree(
+      {Key? key,
+      required EditorContext context,
+      required ContextSetter contextSetter})
+      : _context = context,
+        _contextSetter = contextSetter,
         super(key: key);
 
   @override
@@ -37,30 +42,35 @@ class RailwayTree extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.book),
               title: const Text("Railway"),
+              selected: _context.entityType == EntityType.railway,
               onTap: () =>
                   _contextSetter(EditorContext.railway(EntityType.railway)),
             ),
             ListTile(
               leading: const Icon(Icons.view_module_sharp),
               title: Text("Modules (${rw.modules.length})"),
+              selected: _context.entityType == EntityType.modules,
               onTap: () =>
                   _contextSetter(EditorContext.railway(EntityType.modules)),
             ),
             ListTile(
               leading: const Icon(Icons.train_sharp),
-              title: const Text("Locs"),
+              title: Text("Locs (${rw.locs.length})"),
+              selected: _context.entityType == EntityType.locs,
               onTap: () =>
                   _contextSetter(EditorContext.railway(EntityType.locs)),
             ),
             ListTile(
               leading: const Icon(Icons.info_outline),
               title: const Text("Loc groups"),
+              selected: _context.entityType == EntityType.locgroups,
               onTap: () =>
                   _contextSetter(EditorContext.railway(EntityType.locgroups)),
             ),
             ListTile(
               leading: const Icon(Icons.computer),
               title: const Text("Command stations"),
+              selected: _context.entityType == EntityType.commandstations,
               onTap: () => _contextSetter(
                   EditorContext.railway(EntityType.commandstations)),
             ),

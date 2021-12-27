@@ -46,6 +46,14 @@ class EditorContext {
 
   EditorContext back() {
     switch (entityType) {
+      case EntityType.module:
+        return EditorContext.railway(EntityType.modules);
+      case EntityType.loc:
+        return EditorContext.railway(EntityType.locs);
+      case EntityType.locgroup:
+        return EditorContext.railway(EntityType.locgroups);
+      case EntityType.commandstation:
+        return EditorContext.railway(EntityType.commandstations);
       case EntityType.modules:
       case EntityType.locs:
       case EntityType.locgroups:

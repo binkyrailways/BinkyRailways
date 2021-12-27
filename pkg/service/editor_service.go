@@ -55,10 +55,52 @@ func (s *service) Save(ctx context.Context, req *api.Empty) (*api.Empty, error) 
 
 // Gets a module by ID.
 func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
-	return nil, api.Unknown("Not implemented")
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	modRef, ok := rw.GetModules().Get(req.GetId())
+	if !ok {
+		return nil, api.NotFound(req.GetId())
+	}
+	mod := modRef.TryResolve()
+	if mod == nil {
+		return nil, api.NotFound(req.GetId())
+	}
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }
 
 // Update a module by ID.
 func (s *service) UpdateModule(ctx context.Context, req *api.Module) (*api.Module, error) {
+	return nil, api.Unknown("Not implemented")
+}
+
+// Gets a loc by ID.
+func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	locRef, ok := rw.GetLocs().Get(req.GetId())
+	if !ok {
+		return nil, api.NotFound(req.GetId())
+	}
+	loc := locRef.TryResolve()
+	if loc == nil {
+		return nil, api.NotFound(req.GetId())
+	}
+	var result api.Loc
+	if err := result.FromModel(ctx, loc); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Update a loc by ID.
+func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error) {
 	return nil, api.Unknown("Not implemented")
 }

@@ -69,7 +69,12 @@ func (s *service) Run(ctx context.Context) error {
 
 // Open a new railway
 func (s *service) openRailway(path string) error {
-	pkg := storage.NewPackage(path)
+	s.Logger.Info().Str("path", path).Msg("Loading railway")
+	pkg, err := storage.NewPackageFromFile(path)
+	if err != nil {
+		s.Logger.Error().Err(err).Str("path", path).Msg("Failed to load railway")
+		return err
+	}
 	s.railway = pkg.GetRailway()
 	return nil
 }

@@ -47,6 +47,7 @@ class Railway extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..pc<ModuleRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modules', $pb.PbFieldType.PM, subBuilder: ModuleRef.create)
+    ..pc<LocRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: LocRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -55,6 +56,7 @@ class Railway extends $pb.GeneratedMessage {
     $core.String? id,
     $core.String? description,
     $core.Iterable<ModuleRef>? modules,
+    $core.Iterable<LocRef>? locs,
   }) {
     final _result = create();
     if (id != null) {
@@ -65,6 +67,9 @@ class Railway extends $pb.GeneratedMessage {
     }
     if (modules != null) {
       _result.modules.addAll(modules);
+    }
+    if (locs != null) {
+      _result.locs.addAll(locs);
     }
     return _result;
   }
@@ -109,6 +114,9 @@ class Railway extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(100)
   $core.List<ModuleRef> get modules => $_getList(2);
+
+  @$pb.TagNumber(101)
+  $core.List<LocRef> get locs => $_getList(3);
 }
 
 class Module extends $pb.GeneratedMessage {
@@ -628,5 +636,52 @@ class Loc extends $pb.GeneratedMessage {
   $core.bool hasChangeDirection() => $_has(9);
   @$pb.TagNumber(120)
   void clearChangeDirection() => clearField(120);
+}
+
+class LocRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  LocRef._() : super();
+  factory LocRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory LocRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocRef clone() => LocRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocRef copyWith(void Function(LocRef) updates) => super.copyWith((message) => updates(message as LocRef)) as LocRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocRef create() => LocRef._();
+  LocRef createEmptyInstance() => create();
+  static $pb.PbList<LocRef> createRepeated() => $pb.PbList<LocRef>();
+  @$core.pragma('dart2js:noInline')
+  static LocRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocRef>(create);
+  static LocRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
 }
 

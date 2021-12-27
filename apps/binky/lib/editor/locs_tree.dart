@@ -22,9 +22,9 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/editor_model.dart';
 import '../api/generated/br_types.pb.dart';
 
-class ModulesTree extends StatelessWidget {
+class LocsTree extends StatelessWidget {
   final ContextSetter _contextSetter;
-  const ModulesTree({Key? key, required ContextSetter contextSetter})
+  const LocsTree({Key? key, required ContextSetter contextSetter})
       : _contextSetter = contextSetter,
         super(key: key);
 
@@ -32,18 +32,18 @@ class ModulesTree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<EditorModel>(
       builder: (context, editor, child) {
-        var modules = editor.railway().modules;
+        var locs = editor.railway().locs;
         return ListView.builder(
-            itemCount: modules.length,
+            itemCount: locs.length,
             itemBuilder: (context, index) {
-              return FutureBuilder<Module>(
-                  future: editor.getModule(modules[index].id),
+              return FutureBuilder<Loc>(
+                  future: editor.getLoc(locs[index].id),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListTile(
                         title: Text(snapshot.data?.description ?? "?"),
                         onTap: () => _contextSetter(EditorContext.module(
-                            EntityType.module, modules[index].id)),
+                            EntityType.loc, locs[index].id)),
                       );
                     } else if (snapshot.hasError) {
                       return ListTile(

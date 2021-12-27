@@ -23,26 +23,18 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts a model railway to an API railway
-func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
+// FromModel converts a loc module to an API loc
+func (dst *Loc) FromModel(ctx context.Context, src model.Loc) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
-	// Module refs
-	src.GetModules().ForEach(func(mr model.ModuleRef) {
-		p := &Position{}
-		p.FromModel(ctx, mr)
-		dst.Modules = append(dst.Modules, &ModuleRef{
-			Id:         mr.GetID(),
-			Position:   p,
-			ZoomFactor: int32(mr.GetZoomFactor()),
-			Locked:     mr.GetLocked(),
-		})
-	})
-	// Loc refs
-	src.GetLocs().ForEach(func(lr model.LocRef) {
-		dst.Locs = append(dst.Locs, &LocRef{
-			Id: lr.GetID(),
-		})
-	})
+	dst.Owner = src.GetOwner()
+	dst.Remarks = src.GetRemarks()
+	dst.Address = &Address{}
+	dst.Address.FromModel(ctx, src.GetAddress())
+	dst.SlowSpeed = int32(src.GetSlowSpeed())
+	dst.MediumSpeed = int32(src.GetMediumSpeed())
+	dst.MaximumSpeed = int32(src.GetMaximumSpeed())
+	dst.SpeedSteps = int32(src.GetSpeedSteps())
+	dst.ChangeDirection.FromModel(ctx, src.GetChangeDirection())
 	return nil
 }

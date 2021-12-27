@@ -23,26 +23,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts a model railway to an API railway
-func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
+// FromModel converts a model module to an API module
+func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
-	// Module refs
-	src.GetModules().ForEach(func(mr model.ModuleRef) {
-		p := &Position{}
-		p.FromModel(ctx, mr)
-		dst.Modules = append(dst.Modules, &ModuleRef{
-			Id:         mr.GetID(),
-			Position:   p,
-			ZoomFactor: int32(mr.GetZoomFactor()),
-			Locked:     mr.GetLocked(),
-		})
-	})
-	// Loc refs
-	src.GetLocs().ForEach(func(lr model.LocRef) {
-		dst.Locs = append(dst.Locs, &LocRef{
-			Id: lr.GetID(),
-		})
-	})
 	return nil
 }

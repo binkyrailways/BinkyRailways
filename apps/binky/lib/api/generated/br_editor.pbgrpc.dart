@@ -35,6 +35,14 @@ class EditorServiceClient extends $grpc.Client {
       '/binkyrailways.v1.EditorService/UpdateModule',
       ($0.Module value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
+  static final _$getLoc = $grpc.ClientMethod<$1.IDRequest, $0.Loc>(
+      '/binkyrailways.v1.EditorService/GetLoc',
+      ($1.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Loc.fromBuffer(value));
+  static final _$updateLoc = $grpc.ClientMethod<$0.Loc, $0.Loc>(
+      '/binkyrailways.v1.EditorService/UpdateLoc',
+      ($0.Loc value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Loc.fromBuffer(value));
 
   EditorServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -64,6 +72,16 @@ class EditorServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Module> updateModule($0.Module request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateModule, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Loc> getLoc($1.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getLoc, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Loc> updateLoc($0.Loc request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateLoc, request, options: options);
   }
 }
 
@@ -106,6 +124,20 @@ abstract class EditorServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Module.fromBuffer(value),
         ($0.Module value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.IDRequest, $0.Loc>(
+        'GetLoc',
+        getLoc_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.IDRequest.fromBuffer(value),
+        ($0.Loc value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Loc, $0.Loc>(
+        'UpdateLoc',
+        updateLoc_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Loc.fromBuffer(value),
+        ($0.Loc value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.Railway> getRailway_Pre(
@@ -133,6 +165,16 @@ abstract class EditorServiceBase extends $grpc.Service {
     return updateModule(call, await request);
   }
 
+  $async.Future<$0.Loc> getLoc_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.IDRequest> request) async {
+    return getLoc(call, await request);
+  }
+
+  $async.Future<$0.Loc> updateLoc_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Loc> request) async {
+    return updateLoc(call, await request);
+  }
+
   $async.Future<$0.Railway> getRailway(
       $grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.Railway> updateRailway(
@@ -142,4 +184,6 @@ abstract class EditorServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.IDRequest request);
   $async.Future<$0.Module> updateModule(
       $grpc.ServiceCall call, $0.Module request);
+  $async.Future<$0.Loc> getLoc($grpc.ServiceCall call, $1.IDRequest request);
+  $async.Future<$0.Loc> updateLoc($grpc.ServiceCall call, $0.Loc request);
 }

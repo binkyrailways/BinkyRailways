@@ -17,12 +17,15 @@
 //
 
 import 'package:binky/api/api_client.dart';
+import 'package:binky/api/generated/br_editor.pbgrpc.dart';
 import 'package:flutter/material.dart';
 
 import '../api/generated/br_types.pb.dart';
 
 class EditorModel extends ChangeNotifier {
   Railway? _railway;
+  final Map<String, Module> _modules = {};
+  final Map<String, Loc> _locs = {};
 
   EditorModel() {
     _loadRailway();
@@ -41,4 +44,32 @@ class EditorModel extends ChangeNotifier {
 
   // Gets the title of the currently loaded railway
   String title() => _railway?.description ?? '<no railway loaded>';
+
+  // Gets a module by ID
+  Future<Module> getModule(String id) async {
+    var result = _modules[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var editorClient = APIClient().editor();
+    result = await editorClient.getModule(IDRequest(id: id));
+    _modules[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Gets a loc by ID
+  Future<Loc> getLoc(String id) async {
+    var result = _locs[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var editorClient = APIClient().editor();
+    result = await editorClient.getLoc(IDRequest(id: id));
+    _locs[id] = result;
+    notifyListeners();
+    return result;
+  }
 }

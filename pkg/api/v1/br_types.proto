@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 // Author Ewout Prangsma
-// 
+//
 
 syntax = "proto3";
 
@@ -32,6 +32,8 @@ message Railway {
   string description = 2;
   // Modules visible on this railway
   repeated ModuleRef modules = 100;
+  // Locs visible on this railway
+  repeated LocRef locs = 101;
 }
 
 // Module of a railway
@@ -56,15 +58,15 @@ message ModuleRef {
 
 // Visual position on a grid
 message Position {
-	// Horizontal offset from left of the screen (in pixels).
+  // Horizontal offset from left of the screen (in pixels).
   int32 x = 1;
-	// Vertical offset from top of the screen (in pixels).
+  // Vertical offset from top of the screen (in pixels).
   int32 y = 2;
-	// Horizontal size (in pixels).
+  // Horizontal size (in pixels).
   int32 width = 3;
-	// Vertical size (in pixels).
+  // Vertical size (in pixels).
   int32 height = 4;
-	// Rotation in degrees.
+  // Rotation in degrees.
   int32 rotation = 5;
   // Optional layer.
   string layer = 6;
@@ -73,11 +75,11 @@ message Position {
 // AddressType is a strongly typed type of address
 enum AddressType {
   BINKYNET = 0;
-	DCC = 1;
-	LOCONET = 2;
-	MOTOROLA = 3;
-	MFX = 4;
-	MQTT = 5;
+  DCC = 1;
+  LOCONET = 2;
+  MOTOROLA = 3;
+  MFX = 4;
+  MQTT = 5;
 }
 
 message Address {
@@ -89,12 +91,13 @@ message Address {
   string value = 3;
 }
 
-// ChangeDirection specifies if it is allowed / should be avoided to change direction in a block,
-// or is it allowed / should is be avoided that a loc changes direction?
+// ChangeDirection specifies if it is allowed / should be avoided to change
+// direction in a block, or is it allowed / should is be avoided that a loc
+// changes direction?
 enum ChangeDirection {
-	// ALLOW indicates that changing direction is allowed
-	ALLOW = 0;
-	// AVOID indicates that changing direction should be avoided
+  // ALLOW indicates that changing direction is allowed
+  ALLOW = 0;
+  // AVOID indicates that changing direction should be avoided
   AVOID = 1;
 }
 
@@ -102,38 +105,44 @@ enum ChangeDirection {
 message Loc {
   // Unique ID of the loc
   string id = 1;
-  // Description of the loc 
+  // Description of the loc
   string description = 2;
-	// Name of the person that owns this loc.
+  // Name of the person that owns this loc.
   string owner = 3;
-	// Remarks (free text) about this loc.
+  // Remarks (free text) about this loc.
   string remarks = 4;
   // Address of the loc.
   Address address = 5;
 
   // Percentage of speed steps for the slowest speed of this loc.
-	// Value between 1 and 100.
+  // Value between 1 and 100.
   int32 slow_speed = 100;
-	// Percentage of speed steps for the medium speed of this loc.
-	// Value between 1 and 100.
+  // Percentage of speed steps for the medium speed of this loc.
+  // Value between 1 and 100.
   int32 medium_speed = 101;
-	// Percentage of speed steps for the maximum speed of this loc.
-	// Value between 1 and 100.
+  // Percentage of speed steps for the maximum speed of this loc.
+  // Value between 1 and 100.
   int32 maximum_speed = 102;
 
-	// Number of speed steps supported by this loc.
+  // Number of speed steps supported by this loc.
   int32 speed_steps = 110;
 
-	/// <summary>
-	/// Gets/sets the image of the given loc.
-	/// </summary>
-	/// <value>Null if there is no image.</value>
-	/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
-	//Stream Image { get; set; }
+  /// <summary>
+  /// Gets/sets the image of the given loc.
+  /// </summary>
+  /// <value>Null if there is no image.</value>
+  /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+  // Stream Image { get; set; }
 
-	// Is it allowed for this loc to change direction?
+  // Is it allowed for this loc to change direction?
   ChangeDirection change_direction = 120;
 
-	// Gets the names of all functions supported by this loc.
-//	GetFunctions() LocFunctions
+  // Gets the names of all functions supported by this loc.
+  //	GetFunctions() LocFunctions
+}
+
+// Reference to a loc
+message LocRef {
+  // ID of the loc
+  string id = 1;
 }

@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 // Author Ewout Prangsma
-// 
+//
 
 syntax = "proto3";
 
@@ -25,20 +25,23 @@ import "br_types.proto";
 
 // EditorService is used to edit the current railway.
 service EditorService {
-    // Gets the current railway
-    rpc GetRailway(Empty) returns (Railway);
-    // Update the current railway
-    rpc UpdateRailway(Railway) returns (Railway);
-    // Save changes to disk
-    rpc Save(Empty) returns (Empty);
+  // Gets the current railway
+  rpc GetRailway(Empty) returns (Railway);
+  // Update the current railway
+  rpc UpdateRailway(Railway) returns (Railway);
+  // Save changes to disk
+  rpc Save(Empty) returns (Empty);
 
-    // Gets a module by ID. 
-    rpc GetModule(IDRequest) returns (Module);
-    // Update a module by ID. 
-    rpc UpdateModule(Module) returns (Module);
+  // Gets a module by ID.
+  rpc GetModule(IDRequest) returns (Module);
+  // Update a module by ID.
+  rpc UpdateModule(Module) returns (Module);
+
+  // Gets a loc by ID.
+  rpc GetLoc(IDRequest) returns (Loc);
+  // Update a loc by ID.
+  rpc UpdateLoc(Loc) returns (Loc);
 }
 
 // Request by ID
-message IDRequest {
-    string id = 1;
-}
+message IDRequest { string id = 1; }

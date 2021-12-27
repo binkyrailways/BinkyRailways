@@ -48,11 +48,12 @@ const Railway$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'modules', '3': 100, '4': 3, '5': 11, '6': '.binkyrailways.v1.ModuleRef', '10': 'modules'},
+    const {'1': 'locs', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'locs'},
   ],
 };
 
 /// Descriptor for `Railway`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SNQoHbW9kdWxlcxhkIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuTW9kdWxlUmVmUgdtb2R1bGVz');
+final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SNQoHbW9kdWxlcxhkIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuTW9kdWxlUmVmUgdtb2R1bGVzEiwKBGxvY3MYZSADKAsyGC5iaW5reXJhaWx3YXlzLnYxLkxvY1JlZlIEbG9jcw==');
 @$core.Deprecated('Use moduleDescriptor instead')
 const Module$json = const {
   '1': 'Module',
@@ -123,3 +124,13 @@ const Loc$json = const {
 
 /// Descriptor for `Loc`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List locDescriptor = $convert.base64Decode('CgNMb2MSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgVvd25lchgDIAEoCVIFb3duZXISGAoHcmVtYXJrcxgEIAEoCVIHcmVtYXJrcxIzCgdhZGRyZXNzGAUgASgLMhkuYmlua3lyYWlsd2F5cy52MS5BZGRyZXNzUgdhZGRyZXNzEh0KCnNsb3dfc3BlZWQYZCABKAVSCXNsb3dTcGVlZBIhCgxtZWRpdW1fc3BlZWQYZSABKAVSC21lZGl1bVNwZWVkEiMKDW1heGltdW1fc3BlZWQYZiABKAVSDG1heGltdW1TcGVlZBIfCgtzcGVlZF9zdGVwcxhuIAEoBVIKc3BlZWRTdGVwcxJMChBjaGFuZ2VfZGlyZWN0aW9uGHggASgOMiEuYmlua3lyYWlsd2F5cy52MS5DaGFuZ2VEaXJlY3Rpb25SD2NoYW5nZURpcmVjdGlvbg==');
+@$core.Deprecated('Use locRefDescriptor instead')
+const LocRef$json = const {
+  '1': 'LocRef',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `LocRef`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locRefDescriptor = $convert.base64Decode('CgZMb2NSZWYSDgoCaWQYASABKAlSAmlk');

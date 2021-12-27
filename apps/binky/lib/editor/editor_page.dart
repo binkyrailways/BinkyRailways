@@ -15,12 +15,15 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/components/split_view.dart';
+import 'package:binky/editor/railway_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:binky/models/editor_model.dart';
 
 import './editor_context.dart';
+import './locs_tree.dart';
 import './modules_tree.dart';
 import './railway_tree.dart';
 
@@ -85,9 +88,20 @@ class _EditorPageState extends State<EditorPage> {
     }
     switch (_context.entityType) {
       case EntityType.railway:
-        return RailwayTree(contextSetter: _setContext);
+        return SplitView(
+          menu: RailwayTree(context: _context, contextSetter: _setContext),
+          content: const RailwaySettings(),
+        );
       case EntityType.modules:
-        return ModulesTree(contextSetter: _setContext);
+        return SplitView(
+          menu: RailwayTree(context: _context, contextSetter: _setContext),
+          content: ModulesTree(contextSetter: _setContext),
+        );
+      case EntityType.locs:
+        return SplitView(
+          menu: RailwayTree(context: _context, contextSetter: _setContext),
+          content: LocsTree(contextSetter: _setContext),
+        );
       default:
         return const Center(child: Text("No selection"));
     }
@@ -95,14 +109,36 @@ class _EditorPageState extends State<EditorPage> {
 
   Widget? _buildLeading(BuildContext context, EditorModel editor) {
     switch (_context.entityType) {
-      case EntityType.modules:
-      case EntityType.locs:
       case EntityType.locgroups:
       case EntityType.commandstations:
         return IconButton(
           onPressed: () => _setContext(_context.back()),
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Back to railway',
+        );
+      case EntityType.module:
+        return IconButton(
+          onPressed: () => _setContext(_context.back()),
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Back to modules',
+        );
+      case EntityType.loc:
+        return IconButton(
+          onPressed: () => _setContext(_context.back()),
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Back to locs',
+        );
+      case EntityType.locgroup:
+        return IconButton(
+          onPressed: () => _setContext(_context.back()),
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Back to loc groups',
+        );
+      case EntityType.commandstation:
+        return IconButton(
+          onPressed: () => _setContext(_context.back()),
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Back to command stations',
         );
       default:
         return null;
