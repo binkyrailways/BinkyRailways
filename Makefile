@@ -20,7 +20,7 @@ DOCKERARGS := run -t --rm \
 	-u $(shell id -u):$(shell id -g) \
 	-v $(ROOTDIR):/go/src/$(REPOPATH):ro \
 	-v $(ROOTDIR)/pkg:/go/src/$(REPOPATH)/pkg \
-	-v $(ROOTDIR)/dart:/go/src/$(REPOPATH)/dart \
+	-v $(ROOTDIR)/apps/binky/lib:/go/src/$(REPOPATH)/apps/binky/lib \
 	-v $(CACHEVOL):/usr/gocache \
 	-v $(MODVOL):/go/pkg/mod \
 	-e GOCACHE=/usr/gocache \

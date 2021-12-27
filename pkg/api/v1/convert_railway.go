@@ -19,6 +19,7 @@ package v1
 
 import (
 	context "context"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -27,6 +28,15 @@ import (
 func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+
+	src.GetModules().ForEach(func(mr model.ModuleRef) {
+		dst.Modules = append(dst.Modules, &ModuleRef{
+			Id: mr.GetID(),
+			// TODO position, zoomfactor, locked
+		})
+	})
+
+	fmt.Println(*dst)
 
 	return nil
 }

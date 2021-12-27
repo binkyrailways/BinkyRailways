@@ -24,7 +24,6 @@ import (
 	"net/http"
 	"strconv"
 
-	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -73,8 +72,8 @@ func (s *Server) Run(ctx context.Context) error {
 
 	// Prepare GRPC server
 	grpcSrv := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
-		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+	//grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+	//grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
 	api.RegisterEditorServiceServer(grpcSrv, s.service)
 	// Register reflection service on gRPC server.
@@ -85,6 +84,7 @@ func (s *Server) Run(ctx context.Context) error {
 	if err := grpcSrv.Serve(grpcLis); err != nil {
 		log.Fatal().Err(err).Msg("failed to serve GRPC server")
 	}
+	log.Debug().Str("address", grpcAddr).Msg("Done Serving gRPC")
 
 	// Wait until context closed
 	<-ctx.Done()

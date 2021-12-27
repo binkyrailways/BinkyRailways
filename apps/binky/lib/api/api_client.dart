@@ -15,7 +15,30 @@
 // Author Ewout Prangsma
 //
 
-package v1
+import 'package:grpc/grpc.dart';
 
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/  --gofast_out=Mgithub.com/golang/protobuf/ptypes/timestamp/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:. ./br_types.proto ./br_editor.proto
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/ --dart_out=grpc:../../../apps/binky/lib/api/generated/ ./br_editor.proto ./br_types.proto
+import "generated/br_editor.pbgrpc.dart";
+
+class APIClient {
+  final ClientChannel _channel;
+
+  final EditorServiceClient _client;
+
+  APIClient._initialize(ClientChannel channel)
+      : _channel = channel,
+        _client = EditorServiceClient(channel);
+
+  static final _instance = APIClient._initialize(ClientChannel('192.168.140.155',
+      port: 18034,
+      options: const ChannelOptions(
+        credentials: ChannelCredentials.insecure(),
+      )));
+
+  factory APIClient() => _instance;
+
+  EditorServiceClient editor() => _client;
+
+  void shutdown() {
+    _channel.shutdown();
+  }
+}

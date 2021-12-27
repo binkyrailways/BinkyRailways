@@ -15,7 +15,27 @@
 // Author Ewout Prangsma
 //
 
-package v1
+package main
 
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/  --gofast_out=Mgithub.com/golang/protobuf/ptypes/timestamp/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:. ./br_types.proto ./br_editor.proto
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/ --dart_out=grpc:../../../apps/binky/lib/api/generated/ ./br_editor.proto ./br_types.proto
+import (
+	"context"
+
+	"github.com/rs/zerolog"
+	"google.golang.org/grpc"
+
+	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+)
+
+func main() {
+	log := zerolog.New(zerolog.NewConsoleWriter())
+	conn, err := grpc.Dial("127.0.0.1:18034", grpc.WithInsecure())
+	if err != nil {
+		log.Fatal().Err(err).Msg("Dial failed")
+	}
+	editorClient := api.NewEditorServiceClient(conn)
+	rw, err := editorClient.GetRailway(context.Background(), &api.Empty{})
+	if err != nil {
+		log.Fatal().Err(err).Msg("GetRailway failed")
+	}
+	log.Info().Str("description", rw.GetDescription()).Msg("GetRailway succeeded")
+}

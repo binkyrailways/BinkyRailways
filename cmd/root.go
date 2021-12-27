@@ -46,7 +46,7 @@ func init() {
 	f := RootCmd.Flags()
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
-	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 8034, "Port number to serve GRPC on")
+	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	// Service arguments
 	f.StringVarP(&rootArgs.app.RailwayPath, "railway", "r", "", "Path of railway file")
 }
