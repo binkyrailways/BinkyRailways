@@ -30,6 +30,8 @@ message Railway {
   string id = 1;
   // Human readable description of the railway
   string description = 2;
+  // Does the railway have unsaved changed?
+  bool dirty = 3;
   // Modules visible on this railway
   repeated ModuleRef modules = 100;
   // Locs visible on this railway

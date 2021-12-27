@@ -43,7 +43,29 @@ class EditorModel extends ChangeNotifier {
   Railway railway() => _railway ?? Railway();
 
   // Gets the title of the currently loaded railway
-  String title() => _railway?.description ?? '<no railway loaded>';
+  String title() {
+    return "${_railway?.description ?? '<no railway loaded>'}${_railway?.dirty ?? false ? "*" : ""}";
+  }
+
+  Future<void> save() async {
+    if (!isRailwayLoaded()) {
+      throw Exception("Railwai is not loaded");
+    }
+    var editorClient = APIClient().editor();
+    await editorClient.save(Empty());
+    _railway = await editorClient.getRailway(Empty());
+    notifyListeners();
+  }
+
+  Future<void> updateRailwayDescription(String value) async {
+    if (!isRailwayLoaded()) {
+      throw Exception("Railwai is not loaded");
+    }
+    _railway?.description = value;
+    var editorClient = APIClient().editor();
+    _railway = await editorClient.updateRailway(_railway!);
+    notifyListeners();
+  }
 
   // Gets a module by ID
   Future<Module> getModule(String id) async {

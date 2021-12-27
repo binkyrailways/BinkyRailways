@@ -90,7 +90,7 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.railway:
         return SplitView(
           menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: const RailwaySettings(),
+          content: RailwaySettings(editor: editor),
         );
       case EntityType.modules:
         return SplitView(
@@ -148,7 +148,14 @@ class _EditorPageState extends State<EditorPage> {
   List<Widget>? _buildActions(BuildContext context, EditorModel editor) {
     switch (_context.entityType) {
       default:
-        return null;
+        return [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              editor.save();
+            },
+          ),
+        ];
     }
   }
 }

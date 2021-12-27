@@ -46,6 +46,7 @@ class Railway extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Railway', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dirty')
     ..pc<ModuleRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modules', $pb.PbFieldType.PM, subBuilder: ModuleRef.create)
     ..pc<LocRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: LocRef.create)
     ..hasRequiredFields = false
@@ -55,6 +56,7 @@ class Railway extends $pb.GeneratedMessage {
   factory Railway({
     $core.String? id,
     $core.String? description,
+    $core.bool? dirty,
     $core.Iterable<ModuleRef>? modules,
     $core.Iterable<LocRef>? locs,
   }) {
@@ -64,6 +66,9 @@ class Railway extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (dirty != null) {
+      _result.dirty = dirty;
     }
     if (modules != null) {
       _result.modules.addAll(modules);
@@ -112,11 +117,20 @@ class Railway extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
 
+  @$pb.TagNumber(3)
+  $core.bool get dirty => $_getBF(2);
+  @$pb.TagNumber(3)
+  set dirty($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDirty() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDirty() => clearField(3);
+
   @$pb.TagNumber(100)
-  $core.List<ModuleRef> get modules => $_getList(2);
+  $core.List<ModuleRef> get modules => $_getList(3);
 
   @$pb.TagNumber(101)
-  $core.List<LocRef> get locs => $_getList(3);
+  $core.List<LocRef> get locs => $_getList(4);
 }
 
 class Module extends $pb.GeneratedMessage {

@@ -38,7 +38,18 @@ func (s *service) GetRailway(ctx context.Context, req *api.Empty) (*api.Railway,
 
 // Update the current railway
 func (s *service) UpdateRailway(ctx context.Context, req *api.Railway) (*api.Railway, error) {
-	return nil, api.Unknown("Not implemented")
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	if err := req.ToModel(ctx, rw); err != nil {
+		return nil, err
+	}
+	var result api.Railway
+	if err := result.FromModel(ctx, rw); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }
 
 // Save changes to disk

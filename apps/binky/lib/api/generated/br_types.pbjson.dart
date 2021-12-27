@@ -47,13 +47,14 @@ const Railway$json = const {
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'dirty', '3': 3, '4': 1, '5': 8, '10': 'dirty'},
     const {'1': 'modules', '3': 100, '4': 3, '5': 11, '6': '.binkyrailways.v1.ModuleRef', '10': 'modules'},
     const {'1': 'locs', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'locs'},
   ],
 };
 
 /// Descriptor for `Railway`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SNQoHbW9kdWxlcxhkIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuTW9kdWxlUmVmUgdtb2R1bGVzEiwKBGxvY3MYZSADKAsyGC5iaW5reXJhaWx3YXlzLnYxLkxvY1JlZlIEbG9jcw==');
+final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SFAoFZGlydHkYAyABKAhSBWRpcnR5EjUKB21vZHVsZXMYZCADKAsyGy5iaW5reXJhaWx3YXlzLnYxLk1vZHVsZVJlZlIHbW9kdWxlcxIsCgRsb2NzGGUgAygLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSBGxvY3M=');
 @$core.Deprecated('Use moduleDescriptor instead')
 const Module$json = const {
   '1': 'Module',

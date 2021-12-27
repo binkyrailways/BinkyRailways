@@ -27,6 +27,7 @@ import (
 func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	dst.Dirty = src.GetPackage().GetIsDirty()
 	// Module refs
 	src.GetModules().ForEach(func(mr model.ModuleRef) {
 		p := &Position{}
@@ -44,5 +45,11 @@ func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
 			Id: lr.GetID(),
 		})
 	})
+	return nil
+}
+
+// ToModel converts an API railway to a model railway
+func (src *Railway) ToModel(ctx context.Context, dst model.Railway) error {
+	dst.SetDescription(src.GetDescription())
 	return nil
 }

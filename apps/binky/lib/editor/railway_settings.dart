@@ -16,35 +16,50 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:binky/models/editor_model.dart';
 
-class RailwaySettings extends StatelessWidget {
-  const RailwaySettings({Key? key}) : super(key: key);
+class RailwaySettings extends StatefulWidget {
+  final EditorModel editor;
+  const RailwaySettings({Key? key, required this.editor}) : super(key: key);
+
+  @override
+  State<RailwaySettings> createState() => _RailwaySettingsState();
+}
+
+class _RailwaySettingsState extends State<RailwaySettings> {
+  final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    var rw = widget.editor.railway();
+    _descriptionController.text = rw.description;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EditorModel>(
-      builder: (context, editor, child) {
-        var rw = editor.railway();
-        return Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: TextField(
-                  controller: TextEditingController(text: rw.description),
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    label: Text("Name"),
-                  ),
-                  onChanged: (String value) {
-                    // TODO
-                  }),
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Focus(
+            child: TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                label: Text("Name"),
+              ),
             ),
-          ],
-        );
-      },
+            onFocusChange: (bool hasFocus) {
+              if (!hasFocus) {
+                widget.editor
+                    .updateRailwayDescription(_descriptionController.text);
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }
