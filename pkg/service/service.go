@@ -19,9 +19,11 @@ package service
 
 import (
 	"context"
+	"sync"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
 	"github.com/rs/zerolog"
 )
@@ -58,7 +60,9 @@ type service struct {
 	Config
 	Dependencies
 
-	railway model.Railway
+	mutex        sync.Mutex
+	railway      model.Railway
+	railwayState state.Railway
 }
 
 // Run the service

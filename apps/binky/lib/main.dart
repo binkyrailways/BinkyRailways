@@ -19,13 +19,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/model_model.dart';
-import "editor/editor_page.dart";
+import 'models/state_model.dart';
+import "app/app_page.dart";
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ModelModel()),
+        ChangeNotifierProvider(create: (context) => StateModel()),
       ],
       child: const BinkyApp(),
     ),
@@ -37,16 +39,12 @@ class BinkyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ModelModel>(
-      builder: (context, editor, child) {
-        return MaterialApp(
-          title: 'Binky Railways',
-          theme: ThemeData(
-            primarySwatch: Colors.indigo,
-          ),
-          home: const EditorPage(),
-        );
-      },
+    return MaterialApp(
+      title: 'Binky Railways',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
+      home: const AppPage(),
     );
   }
 }

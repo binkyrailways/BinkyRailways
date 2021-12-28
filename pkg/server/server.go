@@ -49,6 +49,7 @@ type Server struct {
 // Service expected by this server
 type Service interface {
 	api.ModelServiceServer
+	api.StateServiceServer
 }
 
 // New configures a new Server.
@@ -76,6 +77,7 @@ func (s *Server) Run(ctx context.Context) error {
 	//grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
 	api.RegisterModelServiceServer(grpcSrv, s.service)
+	api.RegisterStateServiceServer(grpcSrv, s.service)
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcSrv)
 

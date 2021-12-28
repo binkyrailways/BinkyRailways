@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/api/generated/br_state_service.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 
 import "generated/br_model_service.pbgrpc.dart";
@@ -23,10 +24,12 @@ class APIClient {
   final ClientChannel _channel;
 
   final ModelServiceClient _modelClient;
+  final StateServiceClient _stateClient;
 
   APIClient._initialize(ClientChannel channel)
       : _channel = channel,
-        _modelClient = ModelServiceClient(channel);
+        _modelClient = ModelServiceClient(channel),
+        _stateClient = StateServiceClient(channel);
 
   static final _instance =
       APIClient._initialize(ClientChannel('192.168.140.155',
@@ -38,6 +41,8 @@ class APIClient {
   factory APIClient() => _instance;
 
   ModelServiceClient modelClient() => _modelClient;
+
+  StateServiceClient stateClient() => _stateClient;
 
   void shutdown() {
     _channel.shutdown();

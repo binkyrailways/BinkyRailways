@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:binky/models/model_model.dart';
+import 'package:binky/models/state_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';
@@ -162,6 +163,22 @@ class _EditorPageState extends State<EditorPage> {
             icon: const Icon(Icons.save),
             onPressed: () {
               model.save();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.play_arrow_rounded),
+            tooltip: "Run",
+            onPressed: () async {
+              final state = Provider.of<StateModel>(context, listen: false);
+              await state.enableRunMode();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.play_circle_outline_rounded),
+            tooltip: "Run Virtual",
+            onPressed: () async {
+              final state = Provider.of<StateModel>(context, listen: false);
+              await state.enableRunMode(virtual: true);
             },
           ),
         ];
