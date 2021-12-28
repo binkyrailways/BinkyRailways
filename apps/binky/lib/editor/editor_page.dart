@@ -33,6 +33,7 @@ import './module_tree.dart';
 import './modules_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
+import '../components/dialogs.dart';
 
 class EditorPage extends StatefulWidget {
   const EditorPage({Key? key}) : super(key: key);
@@ -161,8 +162,15 @@ class _EditorPageState extends State<EditorPage> {
         return [
           IconButton(
             icon: const Icon(Icons.save),
-            onPressed: () {
-              model.save();
+            onPressed: () async {
+              try {
+                await model.save();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to save changes",
+                    content: Text("$err"));
+              }
             },
           ),
           IconButton(
@@ -170,7 +178,14 @@ class _EditorPageState extends State<EditorPage> {
             tooltip: "Run",
             onPressed: () async {
               final state = Provider.of<StateModel>(context, listen: false);
-              await state.enableRunMode();
+              try {
+                await state.enableRunMode();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to enable run mode",
+                    content: Text("$err"));
+              }
             },
           ),
           IconButton(
@@ -178,7 +193,14 @@ class _EditorPageState extends State<EditorPage> {
             tooltip: "Run Virtual",
             onPressed: () async {
               final state = Provider.of<StateModel>(context, listen: false);
-              await state.enableRunMode(virtual: true);
+              try {
+                await state.enableRunMode(virtual: true);
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to enable virtual run mode",
+                    content: Text("$err"));
+              }
             },
           ),
         ];
