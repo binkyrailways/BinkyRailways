@@ -22,12 +22,12 @@ import 'package:flutter/material.dart';
 
 import '../api/generated/br_model_types.pb.dart';
 
-class EditorModel extends ChangeNotifier {
+class ModelModel extends ChangeNotifier {
   Railway? _railway;
   final Map<String, Module> _modules = {};
   final Map<String, Loc> _locs = {};
 
-  EditorModel() {
+  ModelModel() {
     _loadRailway();
   }
 

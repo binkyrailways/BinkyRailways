@@ -19,7 +19,7 @@ import 'package:binky/editor/editor_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/editor_model.dart';
+import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 class LocsTree extends StatelessWidget {
@@ -30,7 +30,7 @@ class LocsTree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EditorModel>(
+    return Consumer<ModelModel>(
       builder: (context, editor, child) {
         var locs = editor.railway().locs;
         return ListView.builder(

@@ -17,10 +17,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:binky/models/editor_model.dart';
+import 'package:binky/models/model_model.dart';
 
 class RailwaySettings extends StatefulWidget {
-  final EditorModel editor;
+  final ModelModel editor;
   const RailwaySettings({Key? key, required this.editor}) : super(key: key);
 
   @override

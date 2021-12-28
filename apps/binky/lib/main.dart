@@ -18,14 +18,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'models/editor_model.dart';
+import 'models/model_model.dart';
 import "editor/editor_page.dart";
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => EditorModel()),
+        ChangeNotifierProvider(create: (context) => ModelModel()),
       ],
       child: const BinkyApp(),
     ),
@@ -37,7 +37,7 @@ class BinkyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EditorModel>(
+    return Consumer<ModelModel>(
       builder: (context, editor, child) {
         return MaterialApp(
           title: 'Binky Railways',

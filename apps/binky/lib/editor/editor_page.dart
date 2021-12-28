@@ -20,7 +20,7 @@ import 'package:binky/editor/railway_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/editor_model.dart';
+import 'package:binky/models/model_model.dart';
 
 import './editor_context.dart';
 import './locs_tree.dart';
@@ -45,8 +45,8 @@ class _EditorPageState extends State<EditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EditorModel>(builder: (context, editor, child) {
-      if (!editor.isRailwayLoaded()) {
+    return Consumer<ModelModel>(builder: (context, model, child) {
+      if (!model.isRailwayLoaded()) {
         return Scaffold(
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
@@ -67,11 +67,11 @@ class _EditorPageState extends State<EditorPage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(editor.title()),
-          leading: _buildLeading(context, editor),
-          actions: _buildActions(context, editor),
+          title: Text(model.title()),
+          leading: _buildLeading(context, model),
+          actions: _buildActions(context, model),
         ),
-        body: _buildContent(context, editor),
+        body: _buildContent(context, model),
         floatingActionButton: FloatingActionButton(
           onPressed: () => {},
           tooltip: 'Increment',
@@ -81,16 +81,16 @@ class _EditorPageState extends State<EditorPage> {
     });
   }
 
-  Widget _buildContent(BuildContext context, EditorModel editor) {
+  Widget _buildContent(BuildContext context, ModelModel model) {
     if ((_context.entityType == EntityType.unknown) &&
-        editor.isRailwayLoaded()) {
+        model.isRailwayLoaded()) {
       _context = EditorContext.railway(EntityType.railway);
     }
     switch (_context.entityType) {
       case EntityType.railway:
         return SplitView(
           menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: RailwaySettings(editor: editor),
+          content: RailwaySettings(editor: model),
         );
       case EntityType.modules:
         return SplitView(
@@ -107,52 +107,27 @@ class _EditorPageState extends State<EditorPage> {
     }
   }
 
-  Widget? _buildLeading(BuildContext context, EditorModel editor) {
-    switch (_context.entityType) {
-      case EntityType.locgroups:
-      case EntityType.commandstations:
-        return IconButton(
-          onPressed: () => _setContext(_context.back()),
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back to railway',
-        );
-      case EntityType.module:
-        return IconButton(
-          onPressed: () => _setContext(_context.back()),
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back to modules',
-        );
-      case EntityType.loc:
-        return IconButton(
-          onPressed: () => _setContext(_context.back()),
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back to locs',
-        );
-      case EntityType.locgroup:
-        return IconButton(
-          onPressed: () => _setContext(_context.back()),
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back to loc groups',
-        );
-      case EntityType.commandstation:
-        return IconButton(
-          onPressed: () => _setContext(_context.back()),
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back to command stations',
-        );
-      default:
-        return null;
+  Widget? _buildLeading(BuildContext context, ModelModel model) {
+    var prev = _context.back();
+    if (prev.entityType == _context.entityType) {
+      // No reason for back button
+      return null;
     }
+    return IconButton(
+      onPressed: () => _setContext(_context.back()),
+      icon: const Icon(Icons.arrow_back),
+      tooltip: 'Back',
+    );
   }
 
-  List<Widget>? _buildActions(BuildContext context, EditorModel editor) {
+  List<Widget>? _buildActions(BuildContext context, ModelModel model) {
     switch (_context.entityType) {
       default:
         return [
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () {
-              editor.save();
+              model.save();
             },
           ),
         ];
