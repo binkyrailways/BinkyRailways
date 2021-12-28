@@ -23,6 +23,7 @@ import 'package:binky/models/model_model.dart';
 import 'package:binky/models/state_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 import '../api/generated/br_state_types.pb.dart';
+import '../components/dialogs.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -83,7 +84,14 @@ class _RunPageState extends State<RunPage> {
         tooltip: "Edit",
         onPressed: () async {
           final state = Provider.of<StateModel>(context, listen: false);
-          await state.disableRunMode();
+          try {
+            await state.disableRunMode();
+          } catch (err) {
+            showErrorDialog(
+                context: context,
+                title: "Failed to close run mode",
+                content: Text("$err"));
+          }
         },
       ),
     ];
