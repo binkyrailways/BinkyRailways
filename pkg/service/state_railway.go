@@ -27,23 +27,11 @@ import (
 
 // Gets the current railway state
 func (s *service) GetRailwayState(ctx context.Context, req *api.Empty) (*api.RailwayState, error) {
-	rwState := s.railwayState
-	rw := &api.Railway{}
-	if err := rw.FromModel(ctx, s.railway); err != nil {
+	var result api.RailwayState
+	if err := result.FromState(ctx, s.railwayState); err != nil {
 		return nil, err
 	}
-	if rwState == nil {
-		return &api.RailwayState{
-			Model:                rw,
-			IsRunModeEnabled:     false,
-			IsVirtualModeEnabled: false,
-		}, nil
-	}
-	return &api.RailwayState{
-		Model:                rw,
-		IsRunModeEnabled:     true,
-		IsVirtualModeEnabled: rwState.GetVirtualMode().GetEnabled(),
-	}, nil
+	return &result, nil
 }
 
 // Enable the run mode of the process.
@@ -58,14 +46,15 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 		if err != nil {
 			return nil, err
 		}
-		s.cancelEventSubscription = s.railwayState.Subscribe(context.Background(), func(e state.Event) {
+		ctx := context.Background()
+		s.cancelEventSubscription = s.railwayState.Subscribe(ctx, func(e state.Event) {
 			switch evt := e.(type) {
 			case state.ActualStateChangedEvent:
-				if change := s.stateChangeBuilder(evt.Subject); change != nil {
+				if change := s.stateChangeBuilder(ctx, evt.Subject); change != nil {
 					s.stateChanges.Pub(change)
 				}
 			case state.RequestedStateChangedEvent:
-				if change := s.stateChangeBuilder(evt.Subject); change != nil {
+				if change := s.stateChangeBuilder(ctx, evt.Subject); change != nil {
 					s.stateChanges.Pub(change)
 				}
 			}

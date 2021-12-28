@@ -46,8 +46,16 @@ message EnableRunModeRequest {
 }
 
 // Request arguments for GetStateChanges.
-message GetStateChangesRequest {}
+message GetStateChangesRequest {
+  // If set, all state objects will be send to the stream before state changes
+  // are passed.
+  bool bootstrap = 1;
+}
 
 // State change of a single object.
 // Only one of the fields is set;
-message StateChange { RailwayState railway = 1; }
+message StateChange {
+  RailwayState railway = 1;
+  BlockState block = 2;
+  LocState loc = 3;
+}

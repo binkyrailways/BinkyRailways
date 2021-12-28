@@ -43,7 +43,7 @@ class BinkyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Binky Railways',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.blueGrey,
       ),
       home: const AppPage(),
     );

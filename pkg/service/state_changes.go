@@ -26,16 +26,49 @@ import (
 
 // Fetch state changes when they happen
 func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.StateService_GetStateChangesServer) error {
+	rwState := s.railwayState
+	if rwState == nil {
+		return api.PreconditionFailed("Railway not in run mode")
+	}
 	ctx := server.Context()
-	changes := make(chan *api.StateChange)
+	changes := make(chan *api.StateChange, 64)
 	defer close(changes)
 
+	// Listen for state changes
 	cb := func(stateChange *api.StateChange) {
 		changes <- stateChange
 	}
 	s.stateChanges.Sub(cb)
 	defer s.stateChanges.Leave(cb)
 
+	// If requested, send all state objects
+	if req.GetBootstrap() {
+		go func() {
+			ctx := context.Background()
+			send := func(sc *api.StateChange) bool {
+				if sc == nil {
+					return true
+				}
+				select {
+				case changes <- sc:
+					// Change put in channel
+					return true
+				case <-ctx.Done():
+					// Context canceled
+					return false
+				}
+			}
+			send(s.stateChangeBuilder(ctx, rwState))
+			rwState.ForEachBlock(func(b state.Block) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+			rwState.ForEachLoc(func(b state.Loc) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+		}()
+	}
+
+	// Send messages
 	for {
 		var msg *api.StateChange
 		var ok bool
@@ -56,11 +89,23 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 
 // stateChangeBuilder constructs a StateChange for the given event.
 // Can result nil.
-func (s *service) stateChangeBuilder(entity state.Entity) *api.StateChange {
-	switch entity.(type) {
+func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *api.StateChange {
+	switch x := entity.(type) {
 	case state.Railway:
-		rs, _ := s.GetRailwayState(context.Background(), nil)
+		rs, _ := s.GetRailwayState(ctx, nil)
 		return &api.StateChange{Railway: rs}
+	case state.Block:
+		var rs api.BlockState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Block: &rs}
+	case state.Loc:
+		var rs api.LocState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Loc: &rs}
 	default:
 		return nil
 	}

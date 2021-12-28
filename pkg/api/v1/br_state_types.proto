@@ -31,4 +31,39 @@ message RailwayState {
   bool is_run_mode_enabled = 2;
   // Set when the server is in run mode with virtual mode enabled
   bool is_virtual_mode_enabled = 3;
+  // Set when the server is in run mode with virtual auto run enabled
+  bool is_virtual_autorun_enabled = 4;
+  // Is the actual power status on?
+  bool power_actual = 10;
+  // Is the requested power status on?
+  bool power_requested = 11;
+}
+
+// State of a single block
+message BlockState {
+  // Model of the block
+  Block model = 1;
+  // Gets all sensors that are either an "entering" or a "reached" sensor for a
+  // route that leads to this block.
+  // ForEachSensor(context.Context, func(Sensor))
+
+  // Gets the current state of this block
+  // GetState(context.Context) BlockState
+
+  // Is this block closed for traffic?
+  bool closed_actual = 10;
+  bool closed_requested = 11;
+
+  // Can a loc only leave this block at the same side it got in?
+  bool is_deadend = 20;
+  // Is this block considered a station?
+  bool is_station = 21;
+  // Is there a loc waiting in this block?
+  bool has_waiting_loc = 22;
+}
+
+// State of a single loc
+message LocState {
+  // Model of the loc
+  Loc model = 1;
 }

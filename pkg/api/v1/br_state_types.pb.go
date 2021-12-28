@@ -29,7 +29,13 @@ type RailwayState struct {
 	// Set when the server is in run mode (otherwise editing mode)
 	IsRunModeEnabled bool `protobuf:"varint,2,opt,name=is_run_mode_enabled,json=isRunModeEnabled,proto3" json:"is_run_mode_enabled,omitempty"`
 	// Set when the server is in run mode with virtual mode enabled
-	IsVirtualModeEnabled bool     `protobuf:"varint,3,opt,name=is_virtual_mode_enabled,json=isVirtualModeEnabled,proto3" json:"is_virtual_mode_enabled,omitempty"`
+	IsVirtualModeEnabled bool `protobuf:"varint,3,opt,name=is_virtual_mode_enabled,json=isVirtualModeEnabled,proto3" json:"is_virtual_mode_enabled,omitempty"`
+	// Set when the server is in run mode with virtual auto run enabled
+	IsVirtualAutorunEnabled bool `protobuf:"varint,4,opt,name=is_virtual_autorun_enabled,json=isVirtualAutorunEnabled,proto3" json:"is_virtual_autorun_enabled,omitempty"`
+	// Is the actual power status on?
+	PowerActual bool `protobuf:"varint,10,opt,name=power_actual,json=powerActual,proto3" json:"power_actual,omitempty"`
+	// Is the requested power status on?
+	PowerRequested       bool     `protobuf:"varint,11,opt,name=power_requested,json=powerRequested,proto3" json:"power_requested,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -89,29 +95,206 @@ func (m *RailwayState) GetIsVirtualModeEnabled() bool {
 	return false
 }
 
+func (m *RailwayState) GetIsVirtualAutorunEnabled() bool {
+	if m != nil {
+		return m.IsVirtualAutorunEnabled
+	}
+	return false
+}
+
+func (m *RailwayState) GetPowerActual() bool {
+	if m != nil {
+		return m.PowerActual
+	}
+	return false
+}
+
+func (m *RailwayState) GetPowerRequested() bool {
+	if m != nil {
+		return m.PowerRequested
+	}
+	return false
+}
+
+// State of a single block
+type BlockState struct {
+	// Model of the block
+	Model *Block `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	// Is this block closed for traffic?
+	ClosedActual    bool `protobuf:"varint,10,opt,name=closed_actual,json=closedActual,proto3" json:"closed_actual,omitempty"`
+	ClosedRequested bool `protobuf:"varint,11,opt,name=closed_requested,json=closedRequested,proto3" json:"closed_requested,omitempty"`
+	// Can a loc only leave this block at the same side it got in?
+	IsDeadend bool `protobuf:"varint,20,opt,name=is_deadend,json=isDeadend,proto3" json:"is_deadend,omitempty"`
+	// Is this block considered a station?
+	IsStation bool `protobuf:"varint,21,opt,name=is_station,json=isStation,proto3" json:"is_station,omitempty"`
+	// Is there a loc waiting in this block?
+	HasWaitingLoc        bool     `protobuf:"varint,22,opt,name=has_waiting_loc,json=hasWaitingLoc,proto3" json:"has_waiting_loc,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *BlockState) Reset()         { *m = BlockState{} }
+func (m *BlockState) String() string { return proto.CompactTextString(m) }
+func (*BlockState) ProtoMessage()    {}
+func (*BlockState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{1}
+}
+func (m *BlockState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *BlockState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_BlockState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *BlockState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BlockState.Merge(m, src)
+}
+func (m *BlockState) XXX_Size() int {
+	return m.Size()
+}
+func (m *BlockState) XXX_DiscardUnknown() {
+	xxx_messageInfo_BlockState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_BlockState proto.InternalMessageInfo
+
+func (m *BlockState) GetModel() *Block {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+func (m *BlockState) GetClosedActual() bool {
+	if m != nil {
+		return m.ClosedActual
+	}
+	return false
+}
+
+func (m *BlockState) GetClosedRequested() bool {
+	if m != nil {
+		return m.ClosedRequested
+	}
+	return false
+}
+
+func (m *BlockState) GetIsDeadend() bool {
+	if m != nil {
+		return m.IsDeadend
+	}
+	return false
+}
+
+func (m *BlockState) GetIsStation() bool {
+	if m != nil {
+		return m.IsStation
+	}
+	return false
+}
+
+func (m *BlockState) GetHasWaitingLoc() bool {
+	if m != nil {
+		return m.HasWaitingLoc
+	}
+	return false
+}
+
+// State of a single loc
+type LocState struct {
+	// Model of the loc
+	Model                *Loc     `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LocState) Reset()         { *m = LocState{} }
+func (m *LocState) String() string { return proto.CompactTextString(m) }
+func (*LocState) ProtoMessage()    {}
+func (*LocState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{2}
+}
+func (m *LocState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *LocState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_LocState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *LocState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LocState.Merge(m, src)
+}
+func (m *LocState) XXX_Size() int {
+	return m.Size()
+}
+func (m *LocState) XXX_DiscardUnknown() {
+	xxx_messageInfo_LocState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LocState proto.InternalMessageInfo
+
+func (m *LocState) GetModel() *Loc {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*RailwayState)(nil), "binkyrailways.v1.RailwayState")
+	proto.RegisterType((*BlockState)(nil), "binkyrailways.v1.BlockState")
+	proto.RegisterType((*LocState)(nil), "binkyrailways.v1.LocState")
 }
 
 func init() { proto.RegisterFile("br_state_types.proto", fileDescriptor_7ba3d7758196798e) }
 
 var fileDescriptor_7ba3d7758196798e = []byte{
-	// 232 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x49, 0x2a, 0x8a, 0x2f,
-	0x2e, 0x49, 0x2c, 0x49, 0x8d, 0x2f, 0xa9, 0x2c, 0x48, 0x2d, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
-	0x17, 0x12, 0x48, 0xca, 0xcc, 0xcb, 0xae, 0x2c, 0x4a, 0xcc, 0xcc, 0x29, 0x4f, 0xac, 0x2c, 0xd6,
-	0x2b, 0x33, 0x94, 0x02, 0xa9, 0xcb, 0xcd, 0x4f, 0x49, 0xcd, 0x41, 0x56, 0xa7, 0xb4, 0x94, 0x91,
-	0x8b, 0x27, 0x08, 0xa2, 0x2a, 0x18, 0x64, 0x88, 0x90, 0x3e, 0x17, 0x2b, 0x58, 0x95, 0x04, 0xa3,
-	0x02, 0xa3, 0x06, 0xb7, 0x91, 0xa4, 0x1e, 0xba, 0x41, 0x7a, 0x50, 0xe5, 0x41, 0x10, 0x75, 0x42,
-	0xba, 0x5c, 0xc2, 0x99, 0xc5, 0xf1, 0x45, 0xa5, 0x79, 0x60, 0xd3, 0xe3, 0x53, 0xf3, 0x12, 0x93,
-	0x72, 0x52, 0x53, 0x24, 0x98, 0x14, 0x18, 0x35, 0x38, 0x82, 0x04, 0x32, 0x8b, 0x83, 0x4a, 0xf3,
-	0x7c, 0xf3, 0x53, 0x52, 0x5d, 0x21, 0xe2, 0x42, 0xa6, 0x5c, 0xe2, 0x99, 0xc5, 0xf1, 0x65, 0x99,
-	0x45, 0x25, 0xa5, 0x89, 0x39, 0xa8, 0x5a, 0x98, 0xc1, 0x5a, 0x44, 0x32, 0x8b, 0xc3, 0x20, 0xb2,
-	0x48, 0xda, 0x9c, 0x9c, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39,
-	0xc6, 0x19, 0x8f, 0xe5, 0x18, 0xa2, 0x0c, 0xd3, 0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3,
-	0x73, 0xf5, 0x51, 0xdc, 0xa8, 0xef, 0x04, 0xe2, 0x05, 0xc1, 0x78, 0x05, 0xd9, 0xe9, 0xfa, 0x89,
-	0x05, 0x99, 0xfa, 0x65, 0x86, 0x49, 0x6c, 0x60, 0x3f, 0x1b, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff,
-	0x0c, 0x68, 0x4f, 0x73, 0x33, 0x01, 0x00, 0x00,
+	// 425 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x92, 0x4f, 0xee, 0xd2, 0x40,
+	0x14, 0xc7, 0x2d, 0xfe, 0x09, 0x3e, 0x40, 0x48, 0x05, 0xa9, 0x24, 0x36, 0x88, 0x89, 0x62, 0x0c,
+	0x6d, 0xd0, 0x18, 0x17, 0xae, 0x40, 0xdd, 0xe1, 0xa6, 0x24, 0x9a, 0xb8, 0x99, 0x4c, 0x67, 0x26,
+	0x30, 0xa1, 0x74, 0x6a, 0x67, 0x0a, 0xe1, 0x26, 0x9e, 0xc2, 0x73, 0xb8, 0xf4, 0x08, 0x06, 0x4f,
+	0xf0, 0xbb, 0xc1, 0x2f, 0x9d, 0x69, 0x09, 0x85, 0x65, 0x3f, 0xef, 0xf3, 0x7d, 0x7d, 0xef, 0x65,
+	0xa0, 0x1b, 0xa6, 0x48, 0x2a, 0xac, 0x18, 0x52, 0x87, 0x84, 0x49, 0x2f, 0x49, 0x85, 0x12, 0x76,
+	0x27, 0xe4, 0xf1, 0xe6, 0x90, 0x62, 0x1e, 0xed, 0xf1, 0x41, 0x7a, 0xbb, 0xe9, 0x20, 0xf7, 0xb6,
+	0x82, 0xb2, 0xe8, 0xdc, 0x1b, 0xfd, 0xae, 0x41, 0x33, 0x30, 0xd6, 0x32, 0x6f, 0x62, 0xfb, 0x70,
+	0x5f, 0x5b, 0x8e, 0x35, 0xb4, 0xc6, 0x8d, 0xb7, 0x4f, 0xbd, 0xcb, 0x46, 0x5e, 0xa1, 0x07, 0xc6,
+	0xb3, 0x27, 0xf0, 0x98, 0x4b, 0x94, 0x66, 0xb1, 0xee, 0x8e, 0x58, 0x8c, 0xc3, 0x88, 0x51, 0xa7,
+	0x36, 0xb4, 0xc6, 0xf5, 0xa0, 0xc3, 0x65, 0x90, 0xc5, 0x5f, 0x05, 0x65, 0x5f, 0x0c, 0xb7, 0xdf,
+	0x43, 0x9f, 0x4b, 0xb4, 0xe3, 0xa9, 0xca, 0x70, 0x54, 0x8d, 0xdc, 0xd5, 0x91, 0x2e, 0x97, 0xdf,
+	0x4c, 0xf5, 0x3c, 0xf6, 0x11, 0x06, 0x67, 0x31, 0x9c, 0x29, 0x91, 0xff, 0xb1, 0x4c, 0xde, 0xd3,
+	0xc9, 0xfe, 0x29, 0x39, 0x33, 0xf5, 0x32, 0xfc, 0x1c, 0x9a, 0x89, 0xd8, 0xb3, 0x14, 0x61, 0x92,
+	0x57, 0x1d, 0xd0, 0x7a, 0x43, 0xb3, 0x99, 0x46, 0xf6, 0x2b, 0x68, 0x1b, 0x25, 0x65, 0x3f, 0x33,
+	0x26, 0x15, 0xa3, 0x4e, 0x43, 0x5b, 0x8f, 0x34, 0x0e, 0x4a, 0x3a, 0xba, 0xb1, 0x00, 0xe6, 0x91,
+	0x20, 0x1b, 0x73, 0xae, 0x49, 0xf5, 0x5c, 0xfd, 0xeb, 0x73, 0x69, 0xb9, 0x3c, 0xd6, 0x0b, 0x68,
+	0x91, 0x48, 0x48, 0x46, 0xab, 0xa3, 0x34, 0x0d, 0x2c, 0x66, 0x79, 0x0d, 0x9d, 0x42, 0xba, 0x1c,
+	0xa6, 0x6d, 0xf8, 0x69, 0x1a, 0xfb, 0x19, 0x00, 0x97, 0x88, 0x32, 0x4c, 0x59, 0x4c, 0x9d, 0xae,
+	0x96, 0x1e, 0x72, 0xf9, 0xd9, 0x80, 0xa2, 0x9c, 0xbf, 0x0e, 0x2e, 0x62, 0xa7, 0x57, 0x96, 0x97,
+	0x06, 0xd8, 0x2f, 0xa1, 0xbd, 0xc6, 0x12, 0xed, 0x31, 0x57, 0x3c, 0x5e, 0xa1, 0x48, 0x10, 0xe7,
+	0x89, 0x76, 0x5a, 0x6b, 0x2c, 0xbf, 0x1b, 0xba, 0x10, 0x64, 0xf4, 0x01, 0xea, 0x0b, 0x41, 0xcc,
+	0xc2, 0x6f, 0xaa, 0x0b, 0xf7, 0xae, 0x17, 0x5e, 0x08, 0x52, 0xac, 0x3b, 0xff, 0xf4, 0xe7, 0xe8,
+	0x5a, 0x7f, 0x8f, 0xae, 0xf5, 0xef, 0xe8, 0x5a, 0xbf, 0xfe, 0xbb, 0x77, 0x7e, 0x4c, 0x57, 0x5c,
+	0xad, 0xb3, 0xd0, 0x23, 0x62, 0xeb, 0x57, 0x92, 0xfe, 0x3c, 0xff, 0x0a, 0xca, 0xaf, 0x64, 0xb3,
+	0xf2, 0x71, 0xc2, 0xfd, 0xdd, 0x34, 0x7c, 0xa0, 0x5f, 0xea, 0xbb, 0xdb, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0x52, 0xe7, 0xb5, 0xd3, 0xe9, 0x02, 0x00, 0x00,
 }
 
 func (m *RailwayState) Marshal() (dAtA []byte, err error) {
@@ -138,6 +321,36 @@ func (m *RailwayState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.PowerRequested {
+		i--
+		if m.PowerRequested {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.PowerActual {
+		i--
+		if m.PowerActual {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x50
+	}
+	if m.IsVirtualAutorunEnabled {
+		i--
+		if m.IsVirtualAutorunEnabled {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x20
+	}
 	if m.IsVirtualModeEnabled {
 		i--
 		if m.IsVirtualModeEnabled {
@@ -157,6 +370,140 @@ func (m *RailwayState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x10
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BlockState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BlockState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *BlockState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.HasWaitingLoc {
+		i--
+		if m.HasWaitingLoc {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.IsStation {
+		i--
+		if m.IsStation {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.IsDeadend {
+		i--
+		if m.IsDeadend {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.ClosedRequested {
+		i--
+		if m.ClosedRequested {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.ClosedActual {
+		i--
+		if m.ClosedActual {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x50
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *LocState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *LocState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LocState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
 	}
 	if m.Model != nil {
 		{
@@ -199,6 +546,62 @@ func (m *RailwayState) Size() (n int) {
 	}
 	if m.IsVirtualModeEnabled {
 		n += 2
+	}
+	if m.IsVirtualAutorunEnabled {
+		n += 2
+	}
+	if m.PowerActual {
+		n += 2
+	}
+	if m.PowerRequested {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *BlockState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.ClosedActual {
+		n += 2
+	}
+	if m.ClosedRequested {
+		n += 2
+	}
+	if m.IsDeadend {
+		n += 3
+	}
+	if m.IsStation {
+		n += 3
+	}
+	if m.HasWaitingLoc {
+		n += 3
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *LocState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -317,6 +720,340 @@ func (m *RailwayState) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.IsVirtualModeEnabled = bool(v != 0)
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsVirtualAutorunEnabled", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsVirtualAutorunEnabled = bool(v != 0)
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PowerActual", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.PowerActual = bool(v != 0)
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PowerRequested", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.PowerRequested = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *BlockState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: BlockState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: BlockState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Block{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClosedActual", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.ClosedActual = bool(v != 0)
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClosedRequested", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.ClosedRequested = bool(v != 0)
+		case 20:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsDeadend", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsDeadend = bool(v != 0)
+		case 21:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsStation", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsStation = bool(v != 0)
+		case 22:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HasWaitingLoc", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.HasWaitingLoc = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *LocState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: LocState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: LocState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Loc{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBrStateTypes(dAtA[iNdEx:])

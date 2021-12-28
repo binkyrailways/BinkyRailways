@@ -60,11 +60,20 @@ class EnableRunModeRequest extends $pb.GeneratedMessage {
 
 class GetStateChangesRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetStateChangesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrap')
     ..hasRequiredFields = false
   ;
 
   GetStateChangesRequest._() : super();
-  factory GetStateChangesRequest() => create();
+  factory GetStateChangesRequest({
+    $core.bool? bootstrap,
+  }) {
+    final _result = create();
+    if (bootstrap != null) {
+      _result.bootstrap = bootstrap;
+    }
+    return _result;
+  }
   factory GetStateChangesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory GetStateChangesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -85,21 +94,40 @@ class GetStateChangesRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static GetStateChangesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetStateChangesRequest>(create);
   static GetStateChangesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get bootstrap => $_getBF(0);
+  @$pb.TagNumber(1)
+  set bootstrap($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBootstrap() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBootstrap() => clearField(1);
 }
 
 class StateChange extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StateChange', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$2.RailwayState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railway', subBuilder: $2.RailwayState.create)
+    ..aOM<$2.BlockState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'block', subBuilder: $2.BlockState.create)
+    ..aOM<$2.LocState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'loc', subBuilder: $2.LocState.create)
     ..hasRequiredFields = false
   ;
 
   StateChange._() : super();
   factory StateChange({
     $2.RailwayState? railway,
+    $2.BlockState? block,
+    $2.LocState? loc,
   }) {
     final _result = create();
     if (railway != null) {
       _result.railway = railway;
+    }
+    if (block != null) {
+      _result.block = block;
+    }
+    if (loc != null) {
+      _result.loc = loc;
     }
     return _result;
   }
@@ -134,5 +162,27 @@ class StateChange extends $pb.GeneratedMessage {
   void clearRailway() => clearField(1);
   @$pb.TagNumber(1)
   $2.RailwayState ensureRailway() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $2.BlockState get block => $_getN(1);
+  @$pb.TagNumber(2)
+  set block($2.BlockState v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBlock() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBlock() => clearField(2);
+  @$pb.TagNumber(2)
+  $2.BlockState ensureBlock() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $2.LocState get loc => $_getN(2);
+  @$pb.TagNumber(3)
+  set loc($2.LocState v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLoc() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLoc() => clearField(3);
+  @$pb.TagNumber(3)
+  $2.LocState ensureLoc() => $_ensure(2);
 }
 
