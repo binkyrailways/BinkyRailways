@@ -24,46 +24,39 @@ import '../api/generated/br_model_types.pb.dart';
 
 class ModulesTree extends StatelessWidget {
   final ContextSetter _contextSetter;
-  final Railway _railway;
-  const ModulesTree(
-      {Key? key,
-      required ContextSetter contextSetter,
-      required Railway railway})
+  const ModulesTree({Key? key, required ContextSetter contextSetter})
       : _contextSetter = contextSetter,
-        _railway = railway,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        var modules = _railway.modules;
-        return ListView.builder(
-            itemCount: modules.length,
-            itemBuilder: (context, index) {
-              return FutureBuilder<Module>(
-                  future: model.getModule(modules[index].id),
-                  initialData: model.getCachedModule(modules[index].id),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListTile(
-                        title: Text(snapshot.data?.description ?? "?"),
-                        onTap: () => _contextSetter(EditorContext.module(
-                            EntityType.module, modules[index].id)),
-                      );
-                    } else if (snapshot.hasError) {
-                      return ListTile(
-                        leading: const Icon(Icons.error),
-                        title: Text("Error: ${snapshot.error}"),
-                      );
-                    } else {
-                      return const ListTile(
-                        title: Text("Loading ..."),
-                      );
-                    }
+        return FutureBuilder<List<Module>>(
+            future: getModules(model),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text("Loading...");
+              }
+              var modules = snapshot.data!;
+              return ListView.builder(
+                  itemCount: modules.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(modules[index].description),
+                      onTap: () => _contextSetter(EditorContext.module(
+                          EntityType.module, modules[index].id)),
+                    );
                   });
             });
       },
     );
+  }
+
+  Future<List<Module>> getModules(ModelModel model) async {
+    var rw = await model.getRailway();
+    return await Future.wait([
+      for (var x in rw.modules) model.getModule(x.id),
+    ]);
   }
 }

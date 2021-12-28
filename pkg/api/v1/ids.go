@@ -18,26 +18,20 @@
 package v1
 
 import (
-	context "context"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"strings"
 )
 
-// FromModel converts an address type entity to an API structure
-func (dst *AddressType) FromModel(ctx context.Context, src model.AddressType) error {
-	switch src {
-	case model.AddressTypeBinkyNet:
-		*dst = AddressType_BINKYNET
-	case model.AddressTypeDcc:
-		*dst = AddressType_DCC
-	case model.AddressTypeLocoNet:
-		*dst = AddressType_LOCONET
-	case model.AddressTypeMotorola:
-		*dst = AddressType_MOTOROLA
-	case model.AddressTypeMfx:
-		*dst = AddressType_MFX
-	case model.AddressTypeMqtt:
-		*dst = AddressType_MQTT
+// JoinModuleEntityID creates a single ID by joining the module ID and the entity ID
+func JoinModuleEntityID(moduleID, entityID string) string {
+	return moduleID + "/" + entityID
+}
+
+// SplitModuleEntityID split a single ID into a module ID and an entity ID.
+// Returns: moduleID, entityID, error
+func SplitModuleEntityID(id string) (string, string, error) {
+	parts := strings.Split(id, "/")
+	if len(parts) != 2 {
+		return "", "", InvalidArgument("Invalid id: '%s'", id)
 	}
-	return nil
+	return parts[0], parts[1], nil
 }

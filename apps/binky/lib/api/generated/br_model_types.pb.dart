@@ -137,6 +137,7 @@ class Module extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Module', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..pc<BlockRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: BlockRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -144,6 +145,7 @@ class Module extends $pb.GeneratedMessage {
   factory Module({
     $core.String? id,
     $core.String? description,
+    $core.Iterable<BlockRef>? blocks,
   }) {
     final _result = create();
     if (id != null) {
@@ -151,6 +153,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (blocks != null) {
+      _result.blocks.addAll(blocks);
     }
     return _result;
   }
@@ -192,6 +197,9 @@ class Module extends $pb.GeneratedMessage {
   $core.bool hasDescription() => $_has(1);
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(100)
+  $core.List<BlockRef> get blocks => $_getList(2);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -402,88 +410,13 @@ class Position extends $pb.GeneratedMessage {
   void clearLayer() => clearField(6);
 }
 
-class Address extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Address', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..e<AddressType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: AddressType.BINKYNET, valueOf: AddressType.valueOf, enumValues: AddressType.values)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'space')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
-    ..hasRequiredFields = false
-  ;
-
-  Address._() : super();
-  factory Address({
-    AddressType? type,
-    $core.String? space,
-    $core.String? value,
-  }) {
-    final _result = create();
-    if (type != null) {
-      _result.type = type;
-    }
-    if (space != null) {
-      _result.space = space;
-    }
-    if (value != null) {
-      _result.value = value;
-    }
-    return _result;
-  }
-  factory Address.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Address.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  Address clone() => Address()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  Address copyWith(void Function(Address) updates) => super.copyWith((message) => updates(message as Address)) as Address; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Address create() => Address._();
-  Address createEmptyInstance() => create();
-  static $pb.PbList<Address> createRepeated() => $pb.PbList<Address>();
-  @$core.pragma('dart2js:noInline')
-  static Address getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Address>(create);
-  static Address? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  AddressType get type => $_getN(0);
-  @$pb.TagNumber(1)
-  set type(AddressType v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasType() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearType() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get space => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set space($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSpace() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSpace() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get value => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set value($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasValue() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearValue() => clearField(3);
-}
-
 class Loc extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Loc', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'owner')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'remarks')
-    ..aOM<Address>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address', subBuilder: Address.create)
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..a<$core.int>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'slowSpeed', $pb.PbFieldType.O3)
     ..a<$core.int>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mediumSpeed', $pb.PbFieldType.O3)
     ..a<$core.int>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maximumSpeed', $pb.PbFieldType.O3)
@@ -498,7 +431,7 @@ class Loc extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? owner,
     $core.String? remarks,
-    Address? address,
+    $core.String? address,
     $core.int? slowSpeed,
     $core.int? mediumSpeed,
     $core.int? maximumSpeed,
@@ -596,15 +529,13 @@ class Loc extends $pb.GeneratedMessage {
   void clearRemarks() => clearField(4);
 
   @$pb.TagNumber(5)
-  Address get address => $_getN(4);
+  $core.String get address => $_getSZ(4);
   @$pb.TagNumber(5)
-  set address(Address v) { setField(5, v); }
+  set address($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
   $core.bool hasAddress() => $_has(4);
   @$pb.TagNumber(5)
   void clearAddress() => clearField(5);
-  @$pb.TagNumber(5)
-  Address ensureAddress() => $_ensure(4);
 
   @$pb.TagNumber(100)
   $core.int get slowSpeed => $_getIZ(5);
@@ -688,6 +619,114 @@ class LocRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static LocRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocRef>(create);
   static LocRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class Block extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Block', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..hasRequiredFields = false
+  ;
+
+  Block._() : super();
+  factory Block({
+    $core.String? id,
+    $core.String? description,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    return _result;
+  }
+  factory Block.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Block.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Block clone() => Block()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Block copyWith(void Function(Block) updates) => super.copyWith((message) => updates(message as Block)) as Block; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Block create() => Block._();
+  Block createEmptyInstance() => create();
+  static $pb.PbList<Block> createRepeated() => $pb.PbList<Block>();
+  @$core.pragma('dart2js:noInline')
+  static Block getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Block>(create);
+  static Block? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+}
+
+class BlockRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  BlockRef._() : super();
+  factory BlockRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory BlockRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BlockRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BlockRef clone() => BlockRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BlockRef copyWith(void Function(BlockRef) updates) => super.copyWith((message) => updates(message as BlockRef)) as BlockRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BlockRef create() => BlockRef._();
+  BlockRef createEmptyInstance() => create();
+  static $pb.PbList<BlockRef> createRepeated() => $pb.PbList<BlockRef>();
+  @$core.pragma('dart2js:noInline')
+  static BlockRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockRef>(create);
+  static BlockRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

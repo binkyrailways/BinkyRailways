@@ -43,6 +43,14 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateLoc',
       ($0.Loc value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Loc.fromBuffer(value));
+  static final _$getBlock = $grpc.ClientMethod<$1.IDRequest, $0.Block>(
+      '/binkyrailways.v1.ModelService/GetBlock',
+      ($1.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Block.fromBuffer(value));
+  static final _$updateBlock = $grpc.ClientMethod<$0.Block, $0.Block>(
+      '/binkyrailways.v1.ModelService/UpdateBlock',
+      ($0.Block value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Block.fromBuffer(value));
 
   ModelServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -82,6 +90,16 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Loc> updateLoc($0.Loc request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateLoc, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Block> getBlock($1.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getBlock, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Block> updateBlock($0.Block request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateBlock, request, options: options);
   }
 }
 
@@ -138,6 +156,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Loc.fromBuffer(value),
         ($0.Loc value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.IDRequest, $0.Block>(
+        'GetBlock',
+        getBlock_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.IDRequest.fromBuffer(value),
+        ($0.Block value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Block, $0.Block>(
+        'UpdateBlock',
+        updateBlock_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Block.fromBuffer(value),
+        ($0.Block value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.Railway> getRailway_Pre(
@@ -175,6 +207,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateLoc(call, await request);
   }
 
+  $async.Future<$0.Block> getBlock_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.IDRequest> request) async {
+    return getBlock(call, await request);
+  }
+
+  $async.Future<$0.Block> updateBlock_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Block> request) async {
+    return updateBlock(call, await request);
+  }
+
   $async.Future<$0.Railway> getRailway(
       $grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.Railway> updateRailway(
@@ -186,4 +228,7 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Module request);
   $async.Future<$0.Loc> getLoc($grpc.ServiceCall call, $1.IDRequest request);
   $async.Future<$0.Loc> updateLoc($grpc.ServiceCall call, $0.Loc request);
+  $async.Future<$0.Block> getBlock(
+      $grpc.ServiceCall call, $1.IDRequest request);
+  $async.Future<$0.Block> updateBlock($grpc.ServiceCall call, $0.Block request);
 }

@@ -44,6 +44,9 @@ message Module {
   string id = 1;
   // Human readable description of the module
   string description = 2;
+
+  // Blocks of this module
+  repeated BlockRef blocks = 100;
 }
 
 // Reference to a module
@@ -74,25 +77,6 @@ message Position {
   string layer = 6;
 }
 
-// AddressType is a strongly typed type of address
-enum AddressType {
-  BINKYNET = 0;
-  DCC = 1;
-  LOCONET = 2;
-  MOTOROLA = 3;
-  MFX = 4;
-  MQTT = 5;
-}
-
-message Address {
-  // Type of address
-  AddressType type = 1;
-  // Address space
-  string space = 2;
-  // Address value
-  string value = 3;
-}
-
 // ChangeDirection specifies if it is allowed / should be avoided to change
 // direction in a block, or is it allowed / should is be avoided that a loc
 // changes direction?
@@ -114,7 +98,7 @@ message Loc {
   // Remarks (free text) about this loc.
   string remarks = 4;
   // Address of the loc.
-  Address address = 5;
+  string address = 5;
 
   // Percentage of speed steps for the slowest speed of this loc.
   // Value between 1 and 100.
@@ -146,5 +130,19 @@ message Loc {
 // Reference to a loc
 message LocRef {
   // ID of the loc
+  string id = 1;
+}
+
+// Block on the track
+message Block {
+  // ID of the block
+  string id = 1;
+  // Description of the block
+  string description = 2;
+}
+
+// Reference to a Block
+message BlockRef {
+  // ID of the block
   string id = 1;
 }

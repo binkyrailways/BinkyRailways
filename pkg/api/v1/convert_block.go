@@ -23,10 +23,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts an address to an API structure
-func (dst *Address) FromModel(ctx context.Context, src model.Address) error {
-	dst.Type.FromModel(ctx, src.Network.Type)
-	dst.Space = src.Network.AddressSpace
-	dst.Value = src.Value
+// FromModel converts a model block to an API block
+func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
+	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Description = src.GetDescription()
 	return nil
 }

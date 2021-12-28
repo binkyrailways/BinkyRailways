@@ -32,40 +32,31 @@ class LocsTree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        return FutureBuilder<Railway>(
-            future: model.getRailway(),
+        return FutureBuilder<List<Loc>>(
+            future: getLocs(model),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return const Text("Loading...");
               }
-              var locs = snapshot.data!.locs;
+              var locs = snapshot.data!;
               return ListView.builder(
                   itemCount: locs.length,
                   itemBuilder: (context, index) {
-                    return FutureBuilder<Loc>(
-                        future: model.getLoc(locs[index].id),
-                        initialData: model.getCachedLoc(locs[index].id),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListTile(
-                              title: Text(snapshot.data?.description ?? "?"),
-                              onTap: () => _contextSetter(EditorContext.module(
-                                  EntityType.loc, locs[index].id)),
-                            );
-                          } else if (snapshot.hasError) {
-                            return ListTile(
-                              leading: const Icon(Icons.error),
-                              title: Text("Error: ${snapshot.error}"),
-                            );
-                          } else {
-                            return const ListTile(
-                              title: Text("Loading ..."),
-                            );
-                          }
-                        });
+                    return ListTile(
+                      title: Text(locs[index].description),
+                      onTap: () => _contextSetter(
+                          EditorContext.module(EntityType.loc, locs[index].id)),
+                    );
                   });
             });
       },
     );
+  }
+
+  Future<List<Loc>> getLocs(ModelModel model) async {
+    var rw = await model.getRailway();
+    return await Future.wait([
+      for (var x in rw.locs) model.getLoc(x.id),
+    ]);
   }
 }

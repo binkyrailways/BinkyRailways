@@ -26,11 +26,18 @@ class ModelModel extends ChangeNotifier {
   Railway? _railway;
   final Map<String, Module> _modules = {};
   final Map<String, Loc> _locs = {};
+  final Map<String, Block> _blocks = {};
 
   ModelModel();
 
   // Is a railway already loaded?
   bool isRailwayLoaded() => _railway != null;
+
+  void requireRailwayLoaded() {
+    if (!isRailwayLoaded()) {
+      throw Exception("Railway is not loaded");
+    }
+  }
 
   // Gets the title of the currently loaded railway
   String title() {
@@ -39,9 +46,7 @@ class ModelModel extends ChangeNotifier {
 
   // Save changes made in the model
   Future<void> save() async {
-    if (!isRailwayLoaded()) {
-      throw Exception("Railwai is not loaded");
-    }
+    requireRailwayLoaded();
     var modelClient = APIClient().modelClient();
     await modelClient.save(Empty());
     _railway = await modelClient.getRailway(Empty());
@@ -57,10 +62,9 @@ class ModelModel extends ChangeNotifier {
     return _railway!;
   }
 
+  // Update the given railway
   Future<void> updateRailway(Railway value) async {
-    if (!isRailwayLoaded()) {
-      throw Exception("Railwai is not loaded");
-    }
+    requireRailwayLoaded();
     var modelClient = APIClient().modelClient();
     _railway = await modelClient.updateRailway(value);
     notifyListeners();
@@ -83,6 +87,14 @@ class ModelModel extends ChangeNotifier {
     return result;
   }
 
+  // Update the given module
+  Future<void> updateModule(Module value) async {
+    var modelClient = APIClient().modelClient();
+    var updated = await modelClient.updateModule(value);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Gets a loc by ID from cache
   Loc? getCachedLoc(String id) => _locs[id];
 
@@ -98,5 +110,38 @@ class ModelModel extends ChangeNotifier {
     _locs[id] = result;
     notifyListeners();
     return result;
+  }
+
+  // Update the given loc
+  Future<void> updateLoc(Loc value) async {
+    var modelClient = APIClient().modelClient();
+    var updated = await modelClient.updateLoc(value);
+    _locs[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a block by ID from cache
+  Block? getCachedBlock(String id) => _blocks[id];
+
+  // Gets a block by ID
+  Future<Block> getBlock(String id) async {
+    var result = _blocks[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = APIClient().modelClient();
+    result = await modelClient.getBlock(IDRequest(id: id));
+    _blocks[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given block
+  Future<void> updateBlock(Block value) async {
+    var modelClient = APIClient().modelClient();
+    var updated = await modelClient.updateBlock(value);
+    _blocks[updated.id] = updated;
+    notifyListeners();
   }
 }

@@ -29,8 +29,7 @@ func (dst *Loc) FromModel(ctx context.Context, src model.Loc) error {
 	dst.Description = src.GetDescription()
 	dst.Owner = src.GetOwner()
 	dst.Remarks = src.GetRemarks()
-	dst.Address = &Address{}
-	dst.Address.FromModel(ctx, src.GetAddress())
+	dst.Address = src.GetAddress().String()
 	dst.SlowSpeed = int32(src.GetSlowSpeed())
 	dst.MediumSpeed = int32(src.GetMediumSpeed())
 	dst.MaximumSpeed = int32(src.GetMaximumSpeed())

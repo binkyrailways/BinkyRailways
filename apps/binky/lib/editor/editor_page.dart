@@ -103,7 +103,7 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.modules:
         return SplitView(
           menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: ModulesTree(contextSetter: _setContext, railway: railway),
+          content: ModulesTree(contextSetter: _setContext),
         );
       case EntityType.locs:
         return SplitView(

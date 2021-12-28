@@ -27,5 +27,10 @@ import (
 func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	src.GetBlocks().ForEach(func(x model.Block) {
+		dst.Blocks = append(dst.Blocks, &BlockRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
 	return nil
 }
