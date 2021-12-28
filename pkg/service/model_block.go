@@ -25,21 +25,13 @@ import (
 
 // Gets a block by ID.
 func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block, error) {
-	rw, err := s.getRailway()
-	if err != nil {
-		return nil, err
-	}
 	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	modRef, ok := rw.GetModules().Get(moduleID)
-	if !ok {
-		return nil, api.NotFound(moduleID)
-	}
-	mod := modRef.TryResolve()
-	if mod == nil {
-		return nil, api.NotFound(moduleID)
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
 	}
 	block, ok := mod.GetBlocks().Get(blockID)
 	if !ok {
@@ -54,5 +46,24 @@ func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 
 // Update a loc by ID.
 func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, error) {
-	return nil, api.Unknown("Not implemented")
+	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	block, ok := mod.GetBlocks().Get(blockID)
+	if !ok {
+		return nil, api.NotFound(blockID)
+	}
+	if err := req.ToModel(ctx, block); err != nil {
+		return nil, err
+	}
+	var result api.Block
+	if err := result.FromModel(ctx, block); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

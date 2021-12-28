@@ -15,29 +15,54 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
+import 'package:provider/provider.dart';
 
 import 'package:binky/models/model_model.dart';
+import 'package:binky/api/generated/br_model_types.pb.dart';
+import 'package:binky/editor/editor_context.dart';
 
-class RailwaySettings extends StatefulWidget {
+class ModuleSettings extends StatelessWidget {
+  const ModuleSettings({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
+    return Consumer<ModelModel>(builder: (context, model, child) {
+      final moduleId = selector.moduleId ?? "";
+      return FutureBuilder<Module>(
+          future: model.getModule(moduleId),
+          initialData: model.getCachedModule(moduleId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            var module = snapshot.data!;
+            return _ModuleSettings(model: model, module: module);
+          });
+    });
+  }
+}
+
+class _ModuleSettings extends StatefulWidget {
   final ModelModel model;
-  final Railway railway;
-  const RailwaySettings({Key? key, required this.model, required this.railway})
+  final Module module;
+  const _ModuleSettings({Key? key, required this.model, required this.module})
       : super(key: key);
 
   @override
-  State<RailwaySettings> createState() => _RailwaySettingsState();
+  State<_ModuleSettings> createState() => _ModuleSettingsState();
 }
 
-class _RailwaySettingsState extends State<RailwaySettings> {
+class _ModuleSettingsState extends State<_ModuleSettings> {
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _descriptionController.text = widget.railway.description;
+    _descriptionController.text = widget.module.description;
   }
 
   @override
@@ -56,10 +81,10 @@ class _RailwaySettingsState extends State<RailwaySettings> {
             ),
             onFocusChange: (bool hasFocus) async {
               if (!hasFocus) {
-                var rw = await widget.model.getRailway();
-                var update = rw.deepCopy()
+                final module = await widget.model.getModule(widget.module.id);
+                var update = module.deepCopy()
                   ..description = _descriptionController.text;
-                widget.model.updateRailway(update);
+                widget.model.updateModule(update);
               }
             },
           ),

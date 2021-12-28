@@ -16,7 +16,6 @@
 //
 
 import 'package:binky/components/split_view.dart';
-import 'package:binky/editor/railway_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +24,12 @@ import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';
 import './blocks_tree.dart';
+import './loc_settings.dart';
 import './locs_tree.dart';
+import './module_settings.dart';
 import './module_tree.dart';
 import './modules_tree.dart';
+import './railway_settings.dart';
 import './railway_tree.dart';
 
 class EditorPage extends StatefulWidget {
@@ -108,12 +110,17 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.module:
         return const SplitView(
           menu: ModuleTree(),
-          content: Text("TODO"),
+          content: ModuleSettings(),
         );
       case EntityType.locs:
         return const SplitView(
           menu: RailwayTree(),
           content: LocsTree(),
+        );
+      case EntityType.loc:
+        return const SplitView(
+          menu: LocsTree(),
+          content: LocSettings(),
         );
       case EntityType.blocks:
         return const SplitView(

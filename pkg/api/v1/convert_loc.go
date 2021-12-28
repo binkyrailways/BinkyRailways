@@ -23,7 +23,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts a loc module to an API loc
+// FromModel converts a model loc to an API loc
 func (dst *Loc) FromModel(ctx context.Context, src model.Loc) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
@@ -34,6 +34,33 @@ func (dst *Loc) FromModel(ctx context.Context, src model.Loc) error {
 	dst.MediumSpeed = int32(src.GetMediumSpeed())
 	dst.MaximumSpeed = int32(src.GetMaximumSpeed())
 	dst.SpeedSteps = int32(src.GetSpeedSteps())
-	dst.ChangeDirection.FromModel(ctx, src.GetChangeDirection())
+	if err := dst.ChangeDirection.FromModel(ctx, src.GetChangeDirection()); err != nil {
+		return err
+	}
+	return nil
+}
+
+// ToModel converts an API loc to a model loc
+func (src *Loc) ToModel(ctx context.Context, dst model.Loc) error {
+	if src.GetId() != dst.GetID() {
+		return InvalidArgument("Unexpected loc ID: '%s'", src.GetId())
+	}
+	dst.SetDescription(src.GetDescription())
+	dst.SetOwner(src.GetOwner())
+	dst.SetRemarks(src.GetRemarks())
+	addr, err := model.NewAddressFromString(src.GetAddress())
+	if err != nil {
+		return err
+	}
+	dst.SetAddress(addr)
+	dst.SetSlowSpeed(int(src.GetSlowSpeed()))
+	dst.SetMediumSpeed(int(src.GetMediumSpeed()))
+	dst.SetMaximumSpeed(int(src.GetMaximumSpeed()))
+	dst.SetSpeedSteps(int(src.GetSpeedSteps()))
+	cd, err := src.GetChangeDirection().ToModel(ctx)
+	if err != nil {
+		return err
+	}
+	dst.SetChangeDirection(cd)
 	return nil
 }

@@ -35,20 +35,30 @@ enum EntityType {
 class EntitySelector {
   final EntityType entityType;
   final String? moduleId;
+  final String? locId;
   final String? blockId;
 
   EntitySelector.initial()
       : entityType = EntityType.unknown,
         moduleId = null,
+        locId = null,
         blockId = null;
 
   EntitySelector.railway(this.entityType)
       : moduleId = null,
+        locId = null,
         blockId = null;
 
-  EntitySelector.module(this.entityType, this.moduleId) : blockId = null;
+  EntitySelector.module(this.entityType, this.moduleId)
+      : locId = null,
+        blockId = null;
 
-  EntitySelector.block(this.entityType, this.moduleId, this.blockId);
+  EntitySelector.loc(this.entityType, this.locId)
+      : moduleId = null,
+        blockId = null;
+
+  EntitySelector.block(this.entityType, this.moduleId, this.blockId)
+      : locId = null;
 
   EntitySelector back() {
     switch (entityType) {
@@ -83,5 +93,3 @@ class EditorContext extends ChangeNotifier {
     }
   }
 }
-
-typedef ContextSetter = void Function(EntitySelector newContext);

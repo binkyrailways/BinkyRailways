@@ -34,3 +34,12 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	})
 	return nil
 }
+
+// ToModel converts an API module to a model module
+func (src *Module) ToModel(ctx context.Context, dst model.Module) error {
+	if src.GetId() != dst.GetID() {
+		return InvalidArgument("Unexpected module ID: '%s'", src.GetId())
+	}
+	dst.SetDescription(src.GetDescription())
+	return nil
+}

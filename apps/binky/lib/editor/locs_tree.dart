@@ -42,8 +42,8 @@ class LocsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(locs[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.module(
-                          EntityType.loc, locs[index].id)),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.loc(EntityType.loc, locs[index].id)),
                     );
                   });
             });

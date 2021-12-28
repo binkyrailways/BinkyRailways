@@ -29,3 +29,13 @@ func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 	dst.Description = src.GetDescription()
 	return nil
 }
+
+// ToModel converts an API block to a model block
+func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
+	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	if src.GetId() != expectedID {
+		return InvalidArgument("Unexpected block ID: '%s'", src.GetId())
+	}
+	dst.SetDescription(src.GetDescription())
+	return nil
+}

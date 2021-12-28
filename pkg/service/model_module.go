@@ -21,21 +21,31 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Gets a module by ID.
-func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+func (s *service) getModule(ctx context.Context, moduleID string) (model.Module, error) {
 	rw, err := s.getRailway()
 	if err != nil {
 		return nil, err
 	}
-	modRef, ok := rw.GetModules().Get(req.GetId())
+	modRef, ok := rw.GetModules().Get(moduleID)
 	if !ok {
-		return nil, api.NotFound(req.GetId())
+		return nil, api.NotFound("Module: %s", moduleID)
 	}
 	mod := modRef.TryResolve()
 	if mod == nil {
-		return nil, api.NotFound(req.GetId())
+		return nil, api.NotFound("Failed to resolve module: %s", moduleID)
+	}
+	return mod, nil
+}
+
+// Gets a module by ID.
+func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.Module
 	if err := result.FromModel(ctx, mod); err != nil {
@@ -46,5 +56,16 @@ func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Modul
 
 // Update a module by ID.
 func (s *service) UpdateModule(ctx context.Context, req *api.Module) (*api.Module, error) {
-	return nil, api.Unknown("Not implemented")
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	if err := req.ToModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

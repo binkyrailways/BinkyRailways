@@ -23,7 +23,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// FromModel converts an address type entity to an API structure
+// FromModel converts a change direction to an API type
 func (dst *ChangeDirection) FromModel(ctx context.Context, src model.ChangeDirection) error {
 	switch src {
 	case model.ChangeDirectionAllow:
@@ -32,4 +32,15 @@ func (dst *ChangeDirection) FromModel(ctx context.Context, src model.ChangeDirec
 		*dst = ChangeDirection_AVOID
 	}
 	return nil
+}
+
+// ToModel converts a change direction from an API type
+func (src ChangeDirection) ToModel(ctx context.Context) (model.ChangeDirection, error) {
+	switch src {
+	case ChangeDirection_ALLOW:
+		return model.ChangeDirectionAllow, nil
+	case ChangeDirection_AVOID:
+		return model.ChangeDirectionAvoid, nil
+	}
+	return model.ChangeDirectionAllow, InvalidArgument("Unknown ChangeDirection: %s", src)
 }

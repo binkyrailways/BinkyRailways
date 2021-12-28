@@ -21,21 +21,31 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Gets a loc by ID.
-func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, error) {
+func (s *service) getLoc(ctx context.Context, locID string) (model.Loc, error) {
 	rw, err := s.getRailway()
 	if err != nil {
 		return nil, err
 	}
-	locRef, ok := rw.GetLocs().Get(req.GetId())
+	locRef, ok := rw.GetLocs().Get(locID)
 	if !ok {
-		return nil, api.NotFound(req.GetId())
+		return nil, api.NotFound("Loc: %s", locID)
 	}
 	loc := locRef.TryResolve()
 	if loc == nil {
-		return nil, api.NotFound(req.GetId())
+		return nil, api.NotFound("Failed to resolve loc: %s", locID)
+	}
+	return loc, nil
+}
+
+// Gets a loc by ID.
+func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, error) {
+	loc, err := s.getLoc(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.Loc
 	if err := result.FromModel(ctx, loc); err != nil {
@@ -46,5 +56,16 @@ func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, err
 
 // Update a loc by ID.
 func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error) {
-	return nil, api.Unknown("Not implemented")
+	loc, err := s.getLoc(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	if err := req.ToModel(ctx, loc); err != nil {
+		return nil, err
+	}
+	var result api.Loc
+	if err := result.FromModel(ctx, loc); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }
