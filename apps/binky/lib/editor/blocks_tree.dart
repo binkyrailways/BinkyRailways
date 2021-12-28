@@ -22,28 +22,30 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
-class ModulesTree extends StatelessWidget {
-  const ModulesTree({Key? key}) : super(key: key);
+class BlocksTree extends StatelessWidget {
+  const BlocksTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        return FutureBuilder<List<Module>>(
-            future: getModules(model),
+        final moduleId = selector.moduleId ?? "";
+        return FutureBuilder<List<Block>>(
+            future: getBlocks(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var modules = snapshot.data!;
+              var blocks = snapshot.data!;
               return ListView.builder(
-                  itemCount: modules.length,
+                  itemCount: blocks.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(modules[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.module(
-                          EntityType.module, modules[index].id)),
+                      title: Text(blocks[index].description),
+                      onTap: () => editorCtx.select(EntitySelector.block(
+                          EntityType.block, moduleId, blocks[index].id)),
                     );
                   });
             });
@@ -51,10 +53,10 @@ class ModulesTree extends StatelessWidget {
     );
   }
 
-  Future<List<Module>> getModules(ModelModel model) async {
-    var rw = await model.getRailway();
+  Future<List<Block>> getBlocks(ModelModel model, String moduleId) async {
+    var rw = await model.getModule(moduleId);
     return await Future.wait([
-      for (var x in rw.modules) model.getModule(x.id),
+      for (var x in rw.blocks) model.getBlock(x.id),
     ]);
   }
 }

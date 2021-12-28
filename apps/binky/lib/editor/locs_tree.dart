@@ -23,13 +23,11 @@ import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 class LocsTree extends StatelessWidget {
-  final ContextSetter _contextSetter;
-  const LocsTree({Key? key, required ContextSetter contextSetter})
-      : _contextSetter = contextSetter,
-        super(key: key);
+  const LocsTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final editorCtx = Provider.of<EditorContext>(context);
     return Consumer<ModelModel>(
       builder: (context, model, child) {
         return FutureBuilder<List<Loc>>(
@@ -44,8 +42,8 @@ class LocsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(locs[index].description),
-                      onTap: () => _contextSetter(
-                          EditorContext.module(EntityType.loc, locs[index].id)),
+                      onTap: () => editorCtx.select(EntitySelector.module(
+                          EntityType.loc, locs[index].id)),
                     );
                   });
             });

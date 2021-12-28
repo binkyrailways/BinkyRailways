@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flutter/material.dart';
+
 enum EntityType {
   unknown,
   railway,
@@ -26,39 +28,60 @@ enum EntityType {
   locgroup,
   commandstations,
   commandstation,
+  block,
+  blocks,
 }
 
-class EditorContext {
+class EntitySelector {
   final EntityType entityType;
   final String? moduleId;
+  final String? blockId;
 
-  EditorContext.initial()
+  EntitySelector.initial()
       : entityType = EntityType.unknown,
-        moduleId = null;
+        moduleId = null,
+        blockId = null;
 
-  EditorContext.railway(this.entityType) : moduleId = null;
+  EntitySelector.railway(this.entityType)
+      : moduleId = null,
+        blockId = null;
 
-  EditorContext.module(this.entityType, this.moduleId);
+  EntitySelector.module(this.entityType, this.moduleId) : blockId = null;
 
-  EditorContext back() {
+  EntitySelector.block(this.entityType, this.moduleId, this.blockId);
+
+  EntitySelector back() {
     switch (entityType) {
       case EntityType.module:
-        return EditorContext.railway(EntityType.modules);
+        return EntitySelector.railway(EntityType.modules);
       case EntityType.loc:
-        return EditorContext.railway(EntityType.locs);
+        return EntitySelector.railway(EntityType.locs);
       case EntityType.locgroup:
-        return EditorContext.railway(EntityType.locgroups);
+        return EntitySelector.railway(EntityType.locgroups);
       case EntityType.commandstation:
-        return EditorContext.railway(EntityType.commandstations);
+        return EntitySelector.railway(EntityType.commandstations);
       case EntityType.modules:
       case EntityType.locs:
       case EntityType.locgroups:
       case EntityType.commandstations:
-        return EditorContext.railway(EntityType.railway);
+        return EntitySelector.railway(EntityType.railway);
+      case EntityType.blocks:
+        return EntitySelector.module(EntityType.module, moduleId);
       default:
         return this;
     }
   }
 }
 
-typedef ContextSetter = void Function(EditorContext newContext);
+class EditorContext extends ChangeNotifier {
+  EntitySelector selector = EntitySelector.initial();
+
+  void select(EntitySelector value, {bool notify = true}) {
+    selector = value;
+    if (notify) {
+      notifyListeners();
+    }
+  }
+}
+
+typedef ContextSetter = void Function(EntitySelector newContext);

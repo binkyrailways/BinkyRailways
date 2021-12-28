@@ -24,7 +24,9 @@ import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';
+import './blocks_tree.dart';
 import './locs_tree.dart';
+import './module_tree.dart';
 import './modules_tree.dart';
 import './railway_tree.dart';
 
@@ -36,100 +38,111 @@ class EditorPage extends StatefulWidget {
 }
 
 class _EditorPageState extends State<EditorPage> {
-  EditorContext _context = EditorContext.initial();
-
-  void _setContext(EditorContext newContext) {
-    setState(() {
-      _context = newContext;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Consumer<ModelModel>(builder: (context, model, child) {
-      return FutureBuilder<Railway>(
-          future: model.getRailway(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Scaffold(
-                appBar: AppBar(
-                  // Here we take the value from the MyHomePage object that was created by
-                  // the App.build method, and use it to set our appbar title.
-                  title: const Text("Binky Railways"),
-                ),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Text('Loading railway...'),
-                      CircularProgressIndicator(value: null),
-                    ],
-                  ),
-                ),
-              );
-            }
-            var rw = snapshot.data!;
-            return Scaffold(
-              appBar: AppBar(
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
-                title: Text(model.title()),
-                leading: _buildLeading(context, model),
-                actions: _buildActions(context, model),
-              ),
-              body: _buildContent(context, model, rw),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => {},
-                tooltip: 'Increment',
-                child: const Icon(Icons.add),
-              ), // This trailing comma makes auto-formatting nicer for build methods.
-            );
-          });
-    });
+    return ChangeNotifierProvider<EditorContext>(
+        create: (context) => EditorContext(),
+        child: Consumer<ModelModel>(builder: (context, model, child) {
+          return FutureBuilder<Railway>(
+              future: model.getRailway(),
+              builder: (context, snapshot) {
+                return Consumer<EditorContext>(
+                    builder: (context, editorCtx, child) {
+                  if (!snapshot.hasData) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        // Here we take the value from the MyHomePage object that was created by
+                        // the App.build method, and use it to set our appbar title.
+                        title: const Text("Binky Railways"),
+                      ),
+                      body: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Text('Loading railway...'),
+                            CircularProgressIndicator(value: null),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  var rw = snapshot.data!;
+                  return Scaffold(
+                    appBar: AppBar(
+                      // Here we take the value from the MyHomePage object that was created by
+                      // the App.build method, and use it to set our appbar title.
+                      title: Text(model.title()),
+                      leading: _buildLeading(context, editorCtx, model),
+                      actions: _buildActions(context, editorCtx, model),
+                    ),
+                    body: _buildContent(context, editorCtx, model, rw),
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () => {},
+                      tooltip: 'Increment',
+                      child: const Icon(Icons.add),
+                    ), // This trailing comma makes auto-formatting nicer for build methods.
+                  );
+                });
+              });
+        }));
   }
 
-  Widget _buildContent(
-      BuildContext context, ModelModel model, Railway railway) {
-    if ((_context.entityType == EntityType.unknown) &&
+  Widget _buildContent(BuildContext context, EditorContext editorCtx,
+      ModelModel model, Railway railway) {
+    if ((editorCtx.selector.entityType == EntityType.unknown) &&
         model.isRailwayLoaded()) {
-      _context = EditorContext.railway(EntityType.railway);
+      editorCtx.select(EntitySelector.railway(EntityType.railway),
+          notify: false);
     }
-    switch (_context.entityType) {
+    switch (editorCtx.selector.entityType) {
       case EntityType.railway:
         return SplitView(
-          menu: RailwayTree(context: _context, contextSetter: _setContext),
+          menu: const RailwayTree(),
           content: RailwaySettings(model: model, railway: railway),
         );
       case EntityType.modules:
-        return SplitView(
-          menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: ModulesTree(contextSetter: _setContext),
+        return const SplitView(
+          menu: RailwayTree(),
+          content: ModulesTree(),
+        );
+      case EntityType.module:
+        return const SplitView(
+          menu: ModuleTree(),
+          content: Text("TODO"),
         );
       case EntityType.locs:
-        return SplitView(
-          menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: LocsTree(contextSetter: _setContext),
+        return const SplitView(
+          menu: RailwayTree(),
+          content: LocsTree(),
+        );
+      case EntityType.blocks:
+        return const SplitView(
+          menu: BlocksTree(),
+          content: Text("TODO"),
         );
       default:
         return const Center(child: Text("No selection"));
     }
   }
 
-  Widget? _buildLeading(BuildContext context, ModelModel model) {
-    var prev = _context.back();
-    if (prev.entityType == _context.entityType) {
+  Widget? _buildLeading(
+      BuildContext context, EditorContext editorCtx, ModelModel model) {
+    final selector = editorCtx.selector;
+    final prev = selector.back();
+    if (prev.entityType == selector.entityType) {
       // No reason for back button
       return null;
     }
     return IconButton(
-      onPressed: () => _setContext(_context.back()),
+      onPressed: () => editorCtx.select(prev),
       icon: const Icon(Icons.arrow_back),
       tooltip: 'Back',
     );
   }
 
-  List<Widget>? _buildActions(BuildContext context, ModelModel model) {
-    switch (_context.entityType) {
+  List<Widget>? _buildActions(
+      BuildContext context, EditorContext editorCtx, ModelModel model) {
+    switch (editorCtx.selector.entityType) {
       default:
         return [
           IconButton(

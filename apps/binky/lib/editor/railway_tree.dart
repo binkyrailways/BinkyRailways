@@ -23,18 +23,12 @@ import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 class RailwayTree extends StatelessWidget {
-  final EditorContext _context;
-  final ContextSetter _contextSetter;
-  const RailwayTree(
-      {Key? key,
-      required EditorContext context,
-      required ContextSetter contextSetter})
-      : _context = context,
-        _contextSetter = contextSetter,
-        super(key: key);
+  const RailwayTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
         return FutureBuilder<Railway>(
@@ -49,37 +43,37 @@ class RailwayTree extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.book),
                     title: const Text("Railway"),
-                    selected: _context.entityType == EntityType.railway,
-                    onTap: () => _contextSetter(
-                        EditorContext.railway(EntityType.railway)),
+                    selected: selector.entityType == EntityType.railway,
+                    onTap: () => editorCtx
+                        .select(EntitySelector.railway(EntityType.railway)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.view_module_sharp),
                     title: Text("Modules (${rw.modules.length})"),
-                    selected: _context.entityType == EntityType.modules,
-                    onTap: () => _contextSetter(
-                        EditorContext.railway(EntityType.modules)),
+                    selected: selector.entityType == EntityType.modules,
+                    onTap: () => editorCtx
+                        .select(EntitySelector.railway(EntityType.modules)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.train_sharp),
                     title: Text("Locs (${rw.locs.length})"),
-                    selected: _context.entityType == EntityType.locs,
-                    onTap: () =>
-                        _contextSetter(EditorContext.railway(EntityType.locs)),
+                    selected: selector.entityType == EntityType.locs,
+                    onTap: () => editorCtx
+                        .select(EntitySelector.railway(EntityType.locs)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.info_outline),
                     title: const Text("Loc groups"),
-                    selected: _context.entityType == EntityType.locgroups,
-                    onTap: () => _contextSetter(
-                        EditorContext.railway(EntityType.locgroups)),
+                    selected: selector.entityType == EntityType.locgroups,
+                    onTap: () => editorCtx
+                        .select(EntitySelector.railway(EntityType.locgroups)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.computer),
                     title: const Text("Command stations"),
-                    selected: _context.entityType == EntityType.commandstations,
-                    onTap: () => _contextSetter(
-                        EditorContext.railway(EntityType.commandstations)),
+                    selected: selector.entityType == EntityType.commandstations,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.railway(EntityType.commandstations)),
                   ),
                 ],
               );
