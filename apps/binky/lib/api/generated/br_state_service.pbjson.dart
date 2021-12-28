@@ -18,3 +18,20 @@ const EnableRunModeRequest$json = const {
 
 /// Descriptor for `EnableRunModeRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List enableRunModeRequestDescriptor = $convert.base64Decode('ChRFbmFibGVSdW5Nb2RlUmVxdWVzdBIYCgd2aXJ0dWFsGAEgASgIUgd2aXJ0dWFs');
+@$core.Deprecated('Use getStateChangesRequestDescriptor instead')
+const GetStateChangesRequest$json = const {
+  '1': 'GetStateChangesRequest',
+};
+
+/// Descriptor for `GetStateChangesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getStateChangesRequestDescriptor = $convert.base64Decode('ChZHZXRTdGF0ZUNoYW5nZXNSZXF1ZXN0');
+@$core.Deprecated('Use stateChangeDescriptor instead')
+const StateChange$json = const {
+  '1': 'StateChange',
+  '2': const [
+    const {'1': 'railway', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.RailwayState', '10': 'railway'},
+  ],
+};
+
+/// Descriptor for `StateChange`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stateChangeDescriptor = $convert.base64Decode('CgtTdGF0ZUNoYW5nZRI4CgdyYWlsd2F5GAEgASgLMh4uYmlua3lyYWlsd2F5cy52MS5SYWlsd2F5U3RhdGVSB3JhaWx3YXk=');

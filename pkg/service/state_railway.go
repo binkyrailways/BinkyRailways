@@ -21,6 +21,7 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/impl"
 )
 
@@ -57,6 +58,18 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 		if err != nil {
 			return nil, err
 		}
+		s.cancelEventSubscription = s.railwayState.Subscribe(context.Background(), func(e state.Event) {
+			switch evt := e.(type) {
+			case state.ActualStateChangedEvent:
+				if change := s.stateChangeBuilder(evt.Subject); change != nil {
+					s.stateChanges.Pub(change)
+				}
+			case state.RequestedStateChangedEvent:
+				if change := s.stateChangeBuilder(evt.Subject); change != nil {
+					s.stateChanges.Pub(change)
+				}
+			}
+		})
 	}
 	return s.GetRailwayState(ctx, &api.Empty{})
 }
@@ -70,6 +83,10 @@ func (s *service) DisableRunMode(ctx context.Context, req *api.Empty) (*api.Rail
 		// Disable run state
 		s.railwayState = nil
 		rwState.Close(ctx)
+	}
+	if cf := s.cancelEventSubscription; cf != nil {
+		s.cancelEventSubscription = nil
+		cf()
 	}
 	return s.GetRailwayState(ctx, &api.Empty{})
 }

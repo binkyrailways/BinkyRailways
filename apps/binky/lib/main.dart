@@ -40,6 +40,7 @@ class BinkyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Binky Railways',
       theme: ThemeData(
         primarySwatch: Colors.indigo,

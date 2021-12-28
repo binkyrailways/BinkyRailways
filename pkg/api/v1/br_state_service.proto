@@ -34,6 +34,9 @@ service StateService {
   rpc EnableRunMode(EnableRunModeRequest) returns (RailwayState);
   // Disable the run mode of the process, switching back to edit mode.
   rpc DisableRunMode(Empty) returns (RailwayState);
+
+  // Fetch state changes when they happen
+  rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
 }
 
 // Request arguments for EnableRunMode.
@@ -41,3 +44,10 @@ message EnableRunModeRequest {
   // If set, run in virtual mode, otherwise live mode.
   bool virtual = 1;
 }
+
+// Request arguments for GetStateChanges.
+message GetStateChangesRequest {}
+
+// State change of a single object.
+// Only one of the fields is set;
+message StateChange { RailwayState railway = 1; }

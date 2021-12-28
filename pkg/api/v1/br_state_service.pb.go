@@ -75,14 +75,105 @@ func (m *EnableRunModeRequest) GetVirtual() bool {
 	return false
 }
 
+// Request arguments for GetStateChanges.
+type GetStateChangesRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetStateChangesRequest) Reset()         { *m = GetStateChangesRequest{} }
+func (m *GetStateChangesRequest) String() string { return proto.CompactTextString(m) }
+func (*GetStateChangesRequest) ProtoMessage()    {}
+func (*GetStateChangesRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a476a990e66ccc93, []int{1}
+}
+func (m *GetStateChangesRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetStateChangesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetStateChangesRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetStateChangesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetStateChangesRequest.Merge(m, src)
+}
+func (m *GetStateChangesRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetStateChangesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetStateChangesRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetStateChangesRequest proto.InternalMessageInfo
+
+// State change of a single object.
+// Only one of the fields is set;
+type StateChange struct {
+	Railway              *RailwayState `protobuf:"bytes,1,opt,name=railway,proto3" json:"railway,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *StateChange) Reset()         { *m = StateChange{} }
+func (m *StateChange) String() string { return proto.CompactTextString(m) }
+func (*StateChange) ProtoMessage()    {}
+func (*StateChange) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a476a990e66ccc93, []int{2}
+}
+func (m *StateChange) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *StateChange) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_StateChange.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *StateChange) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StateChange.Merge(m, src)
+}
+func (m *StateChange) XXX_Size() int {
+	return m.Size()
+}
+func (m *StateChange) XXX_DiscardUnknown() {
+	xxx_messageInfo_StateChange.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StateChange proto.InternalMessageInfo
+
+func (m *StateChange) GetRailway() *RailwayState {
+	if m != nil {
+		return m.Railway
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*EnableRunModeRequest)(nil), "binkyrailways.v1.EnableRunModeRequest")
+	proto.RegisterType((*GetStateChangesRequest)(nil), "binkyrailways.v1.GetStateChangesRequest")
+	proto.RegisterType((*StateChange)(nil), "binkyrailways.v1.StateChange")
 }
 
 func init() { proto.RegisterFile("br_state_service.proto", fileDescriptor_a476a990e66ccc93) }
 
 var fileDescriptor_a476a990e66ccc93 = []byte{
-	// 252 bytes of a gzipped FileDescriptorProto
+	// 314 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4b, 0x2a, 0x8a, 0x2f,
 	0x2e, 0x49, 0x2c, 0x49, 0x8d, 0x2f, 0x4e, 0x2d, 0x2a, 0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca,
 	0x2f, 0xc9, 0x17, 0x12, 0x48, 0xca, 0xcc, 0xcb, 0xae, 0x2c, 0x4a, 0xcc, 0xcc, 0x29, 0x4f, 0xac,
@@ -90,15 +181,19 @@ var fileDescriptor_a476a990e66ccc93 = []byte{
 	0x8b, 0xe6, 0xe6, 0xa7, 0xa4, 0xe6, 0x20, 0x8b, 0x2a, 0x19, 0x70, 0x89, 0xb8, 0xe6, 0x25, 0x26,
 	0xe5, 0xa4, 0x06, 0x95, 0xe6, 0xf9, 0xe6, 0xa7, 0xa4, 0x06, 0xa5, 0x16, 0x96, 0xa6, 0x16, 0x97,
 	0x08, 0x49, 0x70, 0xb1, 0x97, 0x65, 0x16, 0x95, 0x94, 0x26, 0xe6, 0x48, 0x30, 0x2a, 0x30, 0x6a,
-	0x70, 0x04, 0xc1, 0xb8, 0x46, 0xff, 0x18, 0xb9, 0x78, 0x82, 0x41, 0xa6, 0x07, 0x43, 0x9c, 0x21,
-	0xe4, 0xc5, 0xc5, 0xef, 0x9e, 0x5a, 0x12, 0x04, 0x71, 0x00, 0x58, 0x46, 0x48, 0x5c, 0x0f, 0xdd,
-	0x51, 0x7a, 0xae, 0xb9, 0x05, 0x25, 0x95, 0x52, 0x72, 0x98, 0x12, 0x28, 0x1a, 0xc3, 0xb9, 0x78,
-	0x51, 0x9c, 0x23, 0xa4, 0x86, 0xc5, 0x24, 0x2c, 0xee, 0x25, 0x68, 0xb0, 0x27, 0x17, 0x9f, 0x4b,
-	0x66, 0x31, 0xb2, 0xc9, 0xe4, 0xba, 0xd1, 0xc9, 0xf9, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4,
-	0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x30, 0x3d, 0xb3, 0x24, 0xa3,
-	0x34, 0x49, 0x2f, 0x39, 0x3f, 0x57, 0x1f, 0x45, 0xaf, 0xbe, 0x13, 0x88, 0x17, 0x04, 0xe3, 0x15,
-	0x64, 0xa7, 0xeb, 0x27, 0x16, 0x64, 0xea, 0x97, 0x19, 0x26, 0xb1, 0x81, 0x83, 0xdf, 0x18, 0x10,
-	0x00, 0x00, 0xff, 0xff, 0x6f, 0xa3, 0x80, 0xc2, 0xd6, 0x01, 0x00, 0x00,
+	0x70, 0x04, 0xc1, 0xb8, 0x4a, 0x12, 0x5c, 0x62, 0xee, 0xa9, 0x25, 0xc1, 0x20, 0xf3, 0x9d, 0x33,
+	0x12, 0xf3, 0xd2, 0x53, 0x8b, 0xa1, 0x7a, 0x94, 0xdc, 0xb9, 0xb8, 0x91, 0x84, 0x85, 0x2c, 0xb8,
+	0xd8, 0xa1, 0xae, 0x02, 0x1b, 0xc1, 0x6d, 0x24, 0xa7, 0x87, 0xee, 0x54, 0xbd, 0x20, 0x08, 0x1b,
+	0xac, 0x2d, 0x08, 0xa6, 0xdc, 0xe8, 0x0e, 0x13, 0x17, 0x0f, 0x58, 0x28, 0x18, 0xe2, 0x53, 0x21,
+	0x2f, 0x2e, 0x7e, 0xf7, 0xd4, 0x12, 0x64, 0xc5, 0x42, 0xe2, 0x98, 0x86, 0xb9, 0xe6, 0x16, 0x94,
+	0x54, 0x4a, 0x11, 0xb0, 0x45, 0x28, 0x9c, 0x8b, 0x17, 0xc5, 0xc7, 0x42, 0x6a, 0x58, 0x4c, 0xc2,
+	0x12, 0x24, 0x04, 0x0d, 0xf6, 0xe4, 0xe2, 0x73, 0xc9, 0x2c, 0x46, 0x36, 0x99, 0x6c, 0x37, 0xc6,
+	0x80, 0xfd, 0x8b, 0x1c, 0xc6, 0x42, 0x1a, 0x98, 0x5a, 0xb0, 0x47, 0x83, 0x94, 0x2c, 0xa6, 0x4a,
+	0x24, 0x65, 0x06, 0x8c, 0x4e, 0xce, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0,
+	0x91, 0x1c, 0xe3, 0x8c, 0xc7, 0x72, 0x0c, 0x51, 0x86, 0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x7a,
+	0xc9, 0xf9, 0xb9, 0xfa, 0x28, 0x9a, 0xf5, 0x9d, 0x40, 0xbc, 0x20, 0x18, 0xaf, 0x20, 0x3b, 0x5d,
+	0x3f, 0xb1, 0x20, 0x53, 0xbf, 0xcc, 0x30, 0x89, 0x0d, 0x9c, 0x7e, 0x8c, 0x01, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0x2a, 0x9a, 0x4f, 0xb8, 0x97, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -119,6 +214,8 @@ type StateServiceClient interface {
 	EnableRunMode(ctx context.Context, in *EnableRunModeRequest, opts ...grpc.CallOption) (*RailwayState, error)
 	// Disable the run mode of the process, switching back to edit mode.
 	DisableRunMode(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*RailwayState, error)
+	// Fetch state changes when they happen
+	GetStateChanges(ctx context.Context, in *GetStateChangesRequest, opts ...grpc.CallOption) (StateService_GetStateChangesClient, error)
 }
 
 type stateServiceClient struct {
@@ -156,6 +253,38 @@ func (c *stateServiceClient) DisableRunMode(ctx context.Context, in *Empty, opts
 	return out, nil
 }
 
+func (c *stateServiceClient) GetStateChanges(ctx context.Context, in *GetStateChangesRequest, opts ...grpc.CallOption) (StateService_GetStateChangesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_StateService_serviceDesc.Streams[0], "/binkyrailways.v1.StateService/GetStateChanges", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &stateServiceGetStateChangesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type StateService_GetStateChangesClient interface {
+	Recv() (*StateChange, error)
+	grpc.ClientStream
+}
+
+type stateServiceGetStateChangesClient struct {
+	grpc.ClientStream
+}
+
+func (x *stateServiceGetStateChangesClient) Recv() (*StateChange, error) {
+	m := new(StateChange)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // StateServiceServer is the server API for StateService service.
 type StateServiceServer interface {
 	// Gets the current railway state
@@ -164,6 +293,8 @@ type StateServiceServer interface {
 	EnableRunMode(context.Context, *EnableRunModeRequest) (*RailwayState, error)
 	// Disable the run mode of the process, switching back to edit mode.
 	DisableRunMode(context.Context, *Empty) (*RailwayState, error)
+	// Fetch state changes when they happen
+	GetStateChanges(*GetStateChangesRequest, StateService_GetStateChangesServer) error
 }
 
 // UnimplementedStateServiceServer can be embedded to have forward compatible implementations.
@@ -178,6 +309,9 @@ func (*UnimplementedStateServiceServer) EnableRunMode(ctx context.Context, req *
 }
 func (*UnimplementedStateServiceServer) DisableRunMode(ctx context.Context, req *Empty) (*RailwayState, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableRunMode not implemented")
+}
+func (*UnimplementedStateServiceServer) GetStateChanges(req *GetStateChangesRequest, srv StateService_GetStateChangesServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetStateChanges not implemented")
 }
 
 func RegisterStateServiceServer(s *grpc.Server, srv StateServiceServer) {
@@ -238,6 +372,27 @@ func _StateService_DisableRunMode_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StateService_GetStateChanges_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetStateChangesRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(StateServiceServer).GetStateChanges(m, &stateServiceGetStateChangesServer{stream})
+}
+
+type StateService_GetStateChangesServer interface {
+	Send(*StateChange) error
+	grpc.ServerStream
+}
+
+type stateServiceGetStateChangesServer struct {
+	grpc.ServerStream
+}
+
+func (x *stateServiceGetStateChangesServer) Send(m *StateChange) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 var _StateService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "binkyrailways.v1.StateService",
 	HandlerType: (*StateServiceServer)(nil),
@@ -255,7 +410,13 @@ var _StateService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _StateService_DisableRunMode_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetStateChanges",
+			Handler:       _StateService_GetStateChanges_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "br_state_service.proto",
 }
 
@@ -296,6 +457,72 @@ func (m *EnableRunModeRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *GetStateChangesRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetStateChangesRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetStateChangesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StateChange) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StateChange) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *StateChange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Railway != nil {
+		{
+			size, err := m.Railway.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintBrStateService(dAtA []byte, offset int, v uint64) int {
 	offset -= sovBrStateService(v)
 	base := offset
@@ -315,6 +542,34 @@ func (m *EnableRunModeRequest) Size() (n int) {
 	_ = l
 	if m.Virtual {
 		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetStateChangesRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *StateChange) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Railway != nil {
+		l = m.Railway.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -377,6 +632,144 @@ func (m *EnableRunModeRequest) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Virtual = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateService(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetStateChangesRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateService
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetStateChangesRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetStateChangesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateService(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StateChange) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateService
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StateChange: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StateChange: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Railway", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Railway == nil {
+				m.Railway = &RailwayState{}
+			}
+			if err := m.Railway.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBrStateService(dAtA[iNdEx:])

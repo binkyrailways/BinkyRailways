@@ -25,6 +25,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
+	"github.com/mattn/go-pubsub"
 	"github.com/rs/zerolog"
 )
 
@@ -47,6 +48,7 @@ func New(cfg Config, deps Dependencies) *service {
 	s := &service{
 		Config:       cfg,
 		Dependencies: deps,
+		stateChanges: pubsub.New(),
 	}
 
 	if cfg.RailwayPath != "" {
@@ -60,9 +62,11 @@ type service struct {
 	Config
 	Dependencies
 
-	mutex        sync.Mutex
-	railway      model.Railway
-	railwayState state.Railway
+	mutex                   sync.Mutex
+	railway                 model.Railway
+	railwayState            state.Railway
+	cancelEventSubscription context.CancelFunc
+	stateChanges            *pubsub.PubSub
 }
 
 // Run the service
