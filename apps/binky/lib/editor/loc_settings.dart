@@ -61,11 +61,21 @@ class _LocSettingsState extends State<_LocSettings> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ownerController = TextEditingController();
 
+  _initControllers() {
+    _descriptionController.text = widget.loc.description;
+    _ownerController.text = widget.loc.owner;
+  }
+
   @override
   void initState() {
     super.initState();
-    _descriptionController.text = widget.loc.description;
-    _ownerController.text = widget.loc.owner;
+    _initControllers();
+  }
+
+  @override
+  void didUpdateWidget(covariant _LocSettings oldWidget) {
+    _initControllers();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

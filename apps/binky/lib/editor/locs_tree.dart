@@ -28,6 +28,7 @@ class LocsTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
         return FutureBuilder<List<Loc>>(
@@ -40,10 +41,12 @@ class LocsTree extends StatelessWidget {
               return ListView.builder(
                   itemCount: locs.length,
                   itemBuilder: (context, index) {
+                    final id = locs[index].id;
                     return ListTile(
                       title: Text(locs[index].description),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.loc(EntityType.loc, locs[index].id)),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.loc(EntityType.loc, id)),
+                      selected: selector.locId == id,
                     );
                   });
             });

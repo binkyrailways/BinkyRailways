@@ -60,10 +60,20 @@ class _ModuleSettings extends StatefulWidget {
 class _ModuleSettingsState extends State<_ModuleSettings> {
   final TextEditingController _descriptionController = TextEditingController();
 
+  _initControllers() {
+    _descriptionController.text = widget.module.description;
+  }
+
   @override
   void initState() {
     super.initState();
-    _descriptionController.text = widget.module.description;
+    _initControllers();
+  }
+
+  @override
+  void didUpdateWidget(covariant _ModuleSettings oldWidget) {
+    _initControllers();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
