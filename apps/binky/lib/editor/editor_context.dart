@@ -77,6 +77,8 @@ class EntitySelector {
         return EntitySelector.railway(EntityType.railway);
       case EntityType.blocks:
         return EntitySelector.module(EntityType.module, moduleId);
+      case EntityType.block:
+        return EntitySelector.module(EntityType.blocks, moduleId);
       default:
         return this;
     }

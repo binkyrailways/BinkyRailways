@@ -15,11 +15,12 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 
 import 'package:binky/models/model_model.dart';
+import 'package:binky/api/generated/br_model_types.pb.dart';
+import '../components/settings_textfield.dart';
 
 class RailwaySettings extends StatefulWidget {
   final ModelModel model;
@@ -44,26 +45,15 @@ class _RailwaySettingsState extends State<RailwaySettings> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Focus(
-            child: TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                label: Text("Description"),
-              ),
-            ),
-            onFocusChange: (bool hasFocus) async {
-              if (!hasFocus) {
-                var rw = await widget.model.getRailway();
-                var update = rw.deepCopy()
-                  ..description = _descriptionController.text;
-                widget.model.updateRailway(update);
-              }
-            },
-          ),
-        ),
+        SettingsTextField(
+            controller: _descriptionController,
+            label: "Description",
+            firstChild: true,
+            onLostFocus: (value) async {
+              var rw = await widget.model.getRailway();
+              var update = rw.deepCopy()..description = value;
+              widget.model.updateRailway(update);
+            }),
       ],
     );
   }

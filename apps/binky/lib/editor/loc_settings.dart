@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/model_model.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:binky/editor/editor_context.dart';
+import '../components/settings_textfield.dart';
 
 class LocSettings extends StatelessWidget {
   const LocSettings({Key? key}) : super(key: key);
@@ -58,37 +59,36 @@ class _LocSettings extends StatefulWidget {
 
 class _LocSettingsState extends State<_LocSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _ownerController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _descriptionController.text = widget.loc.description;
+    _ownerController.text = widget.loc.owner;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Focus(
-            child: TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                label: Text("Description"),
-              ),
-            ),
-            onFocusChange: (bool hasFocus) async {
-              if (!hasFocus) {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()
-                  ..description = _descriptionController.text;
-                widget.model.updateLoc(update);
-              }
-            },
-          ),
-        ),
+        SettingsTextField(
+            controller: _descriptionController,
+            label: "Description",
+            firstChild: true,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..description = value;
+              widget.model.updateLoc(update);
+            }),
+        SettingsTextField(
+            controller: _ownerController,
+            label: "Owner",
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..owner = value;
+              widget.model.updateLoc(update);
+            }),
       ],
     );
   }

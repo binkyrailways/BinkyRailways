@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/model_model.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:binky/editor/editor_context.dart';
+import '../components/settings_textfield.dart';
 
 class ModuleSettings extends StatelessWidget {
   const ModuleSettings({Key? key}) : super(key: key);
@@ -69,26 +70,15 @@ class _ModuleSettingsState extends State<_ModuleSettings> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Focus(
-            child: TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                label: Text("Description"),
-              ),
-            ),
-            onFocusChange: (bool hasFocus) async {
-              if (!hasFocus) {
-                final module = await widget.model.getModule(widget.module.id);
-                var update = module.deepCopy()
-                  ..description = _descriptionController.text;
-                widget.model.updateModule(update);
-              }
-            },
-          ),
-        ),
+        SettingsTextField(
+            controller: _descriptionController,
+            label: "Description",
+            firstChild: true,
+            onLostFocus: (value) async {
+              final module = await widget.model.getModule(widget.module.id);
+              var update = module.deepCopy()..description = value;
+              widget.model.updateModule(update);
+            }),
       ],
     );
   }

@@ -42,10 +42,12 @@ class BlocksTree extends StatelessWidget {
               return ListView.builder(
                   itemCount: blocks.length,
                   itemBuilder: (context, index) {
+                    final id = blocks[index].id;
                     return ListTile(
                       title: Text(blocks[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.block(
-                          EntityType.block, moduleId, blocks[index].id)),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.block(EntityType.block, moduleId, id)),
+                      selected: selector.blockId == id,
                     );
                   });
             });

@@ -23,6 +23,7 @@ import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';
+import './block_settings.dart';
 import './blocks_tree.dart';
 import './loc_settings.dart';
 import './locs_tree.dart';
@@ -124,8 +125,13 @@ class _EditorPageState extends State<EditorPage> {
         );
       case EntityType.blocks:
         return const SplitView(
+          menu: ModuleTree(),
+          content: BlocksTree(),
+        );
+      case EntityType.block:
+        return const SplitView(
           menu: BlocksTree(),
-          content: Text("TODO"),
+          content: BlockSettings(),
         );
       default:
         return const Center(child: Text("No selection"));
