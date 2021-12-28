@@ -15,10 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'package:grpc/grpc.dart';
-
-import '../api/generated/br_types.pb.dart';
-
 enum EntityType {
   unknown,
   railway,

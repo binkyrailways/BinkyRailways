@@ -17,10 +17,10 @@
 //
 
 import 'package:binky/api/api_client.dart';
-import 'package:binky/api/generated/br_editor.pbgrpc.dart';
+import 'package:binky/api/generated/br_model_service.pbgrpc.dart';
 import 'package:flutter/material.dart';
 
-import '../api/generated/br_types.pb.dart';
+import '../api/generated/br_model_types.pb.dart';
 
 class EditorModel extends ChangeNotifier {
   Railway? _railway;
@@ -32,8 +32,8 @@ class EditorModel extends ChangeNotifier {
   }
 
   _loadRailway() async {
-    var editorClient = APIClient().editor();
-    _railway = await editorClient.getRailway(Empty());
+    var modelClient = APIClient().modelClient();
+    _railway = await modelClient.getRailway(Empty());
     notifyListeners();
   }
 
@@ -51,9 +51,9 @@ class EditorModel extends ChangeNotifier {
     if (!isRailwayLoaded()) {
       throw Exception("Railwai is not loaded");
     }
-    var editorClient = APIClient().editor();
-    await editorClient.save(Empty());
-    _railway = await editorClient.getRailway(Empty());
+    var modelClient = APIClient().modelClient();
+    await modelClient.save(Empty());
+    _railway = await modelClient.getRailway(Empty());
     notifyListeners();
   }
 
@@ -62,8 +62,8 @@ class EditorModel extends ChangeNotifier {
       throw Exception("Railwai is not loaded");
     }
     _railway?.description = value;
-    var editorClient = APIClient().editor();
-    _railway = await editorClient.updateRailway(_railway!);
+    var modelClient = APIClient().modelClient();
+    _railway = await modelClient.updateRailway(_railway!);
     notifyListeners();
   }
 
@@ -74,8 +74,8 @@ class EditorModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var editorClient = APIClient().editor();
-    result = await editorClient.getModule(IDRequest(id: id));
+    var modelClient = APIClient().modelClient();
+    result = await modelClient.getModule(IDRequest(id: id));
     _modules[id] = result;
     notifyListeners();
     return result;
@@ -88,8 +88,8 @@ class EditorModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var editorClient = APIClient().editor();
-    result = await editorClient.getLoc(IDRequest(id: id));
+    var modelClient = APIClient().modelClient();
+    result = await modelClient.getLoc(IDRequest(id: id));
     _locs[id] = result;
     notifyListeners();
     return result;

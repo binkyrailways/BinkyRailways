@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:binky/models/editor_model.dart';
-import '../api/generated/br_types.pb.dart';
+import '../api/generated/br_model_types.pb.dart';
 
 class LocsTree extends StatelessWidget {
   final ContextSetter _contextSetter;

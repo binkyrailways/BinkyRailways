@@ -17,26 +17,27 @@
 
 import 'package:grpc/grpc.dart';
 
-import "generated/br_editor.pbgrpc.dart";
+import "generated/br_model_service.pbgrpc.dart";
 
 class APIClient {
   final ClientChannel _channel;
 
-  final EditorServiceClient _client;
+  final ModelServiceClient _modelClient;
 
   APIClient._initialize(ClientChannel channel)
       : _channel = channel,
-        _client = EditorServiceClient(channel);
+        _modelClient = ModelServiceClient(channel);
 
-  static final _instance = APIClient._initialize(ClientChannel('192.168.140.155',
-      port: 18034,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-      )));
+  static final _instance =
+      APIClient._initialize(ClientChannel('192.168.140.155',
+          port: 18034,
+          options: const ChannelOptions(
+            credentials: ChannelCredentials.insecure(),
+          )));
 
   factory APIClient() => _instance;
 
-  EditorServiceClient editor() => _client;
+  ModelServiceClient modelClient() => _modelClient;
 
   void shutdown() {
     _channel.shutdown();

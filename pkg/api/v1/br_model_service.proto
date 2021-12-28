@@ -21,10 +21,10 @@ package binkyrailways.v1;
 
 option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
 
-import "br_types.proto";
+import "br_model_types.proto";
 
-// EditorService is used to edit the current railway.
-service EditorService {
+// ModelService is used to get & modify the model of the current railway.
+service ModelService {
   // Gets the current railway
   rpc GetRailway(Empty) returns (Railway);
   // Update the current railway

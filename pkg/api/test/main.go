@@ -32,8 +32,8 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Dial failed")
 	}
-	editorClient := api.NewEditorServiceClient(conn)
-	rw, err := editorClient.GetRailway(context.Background(), &api.Empty{})
+	modelClient := api.NewModelServiceClient(conn)
+	rw, err := modelClient.GetRailway(context.Background(), &api.Empty{})
 	if err != nil {
 		log.Fatal().Err(err).Msg("GetRailway failed")
 	}

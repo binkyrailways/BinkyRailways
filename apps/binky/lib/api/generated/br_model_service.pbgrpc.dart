@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: br_editor.proto
+//  source: br_model_service.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
@@ -10,41 +10,41 @@ import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
-import 'br_types.pb.dart' as $0;
-import 'br_editor.pb.dart' as $1;
-export 'br_editor.pb.dart';
+import 'br_model_types.pb.dart' as $0;
+import 'br_model_service.pb.dart' as $1;
+export 'br_model_service.pb.dart';
 
-class EditorServiceClient extends $grpc.Client {
+class ModelServiceClient extends $grpc.Client {
   static final _$getRailway = $grpc.ClientMethod<$0.Empty, $0.Railway>(
-      '/binkyrailways.v1.EditorService/GetRailway',
+      '/binkyrailways.v1.ModelService/GetRailway',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Railway.fromBuffer(value));
   static final _$updateRailway = $grpc.ClientMethod<$0.Railway, $0.Railway>(
-      '/binkyrailways.v1.EditorService/UpdateRailway',
+      '/binkyrailways.v1.ModelService/UpdateRailway',
       ($0.Railway value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Railway.fromBuffer(value));
   static final _$save = $grpc.ClientMethod<$0.Empty, $0.Empty>(
-      '/binkyrailways.v1.EditorService/Save',
+      '/binkyrailways.v1.ModelService/Save',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$getModule = $grpc.ClientMethod<$1.IDRequest, $0.Module>(
-      '/binkyrailways.v1.EditorService/GetModule',
+      '/binkyrailways.v1.ModelService/GetModule',
       ($1.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
   static final _$updateModule = $grpc.ClientMethod<$0.Module, $0.Module>(
-      '/binkyrailways.v1.EditorService/UpdateModule',
+      '/binkyrailways.v1.ModelService/UpdateModule',
       ($0.Module value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
   static final _$getLoc = $grpc.ClientMethod<$1.IDRequest, $0.Loc>(
-      '/binkyrailways.v1.EditorService/GetLoc',
+      '/binkyrailways.v1.ModelService/GetLoc',
       ($1.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Loc.fromBuffer(value));
   static final _$updateLoc = $grpc.ClientMethod<$0.Loc, $0.Loc>(
-      '/binkyrailways.v1.EditorService/UpdateLoc',
+      '/binkyrailways.v1.ModelService/UpdateLoc',
       ($0.Loc value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Loc.fromBuffer(value));
 
-  EditorServiceClient($grpc.ClientChannel channel,
+  ModelServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
@@ -85,10 +85,10 @@ class EditorServiceClient extends $grpc.Client {
   }
 }
 
-abstract class EditorServiceBase extends $grpc.Service {
-  $core.String get $name => 'binkyrailways.v1.EditorService';
+abstract class ModelServiceBase extends $grpc.Service {
+  $core.String get $name => 'binkyrailways.v1.ModelService';
 
-  EditorServiceBase() {
+  ModelServiceBase() {
     $addMethod($grpc.ServiceMethod<$0.Empty, $0.Railway>(
         'GetRailway',
         getRailway_Pre,
