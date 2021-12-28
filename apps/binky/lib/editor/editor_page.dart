@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:binky/models/model_model.dart';
+import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';
 import './locs_tree.dart';
@@ -46,42 +47,49 @@ class _EditorPageState extends State<EditorPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(builder: (context, model, child) {
-      if (!model.isRailwayLoaded()) {
-        return Scaffold(
-          appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: const Text("Loading..."),
-          ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
-                Text('Loading railway...'),
-              ],
-            ),
-          ),
-        );
-      }
-      return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(model.title()),
-          leading: _buildLeading(context, model),
-          actions: _buildActions(context, model),
-        ),
-        body: _buildContent(context, model),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      );
+      return FutureBuilder<Railway>(
+          future: model.getRailway(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Scaffold(
+                appBar: AppBar(
+                  // Here we take the value from the MyHomePage object that was created by
+                  // the App.build method, and use it to set our appbar title.
+                  title: const Text("Binky Railways"),
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Text('Loading railway...'),
+                      CircularProgressIndicator(value: null),
+                    ],
+                  ),
+                ),
+              );
+            }
+            var rw = snapshot.data!;
+            return Scaffold(
+              appBar: AppBar(
+                // Here we take the value from the MyHomePage object that was created by
+                // the App.build method, and use it to set our appbar title.
+                title: Text(model.title()),
+                leading: _buildLeading(context, model),
+                actions: _buildActions(context, model),
+              ),
+              body: _buildContent(context, model, rw),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () => {},
+                tooltip: 'Increment',
+                child: const Icon(Icons.add),
+              ), // This trailing comma makes auto-formatting nicer for build methods.
+            );
+          });
     });
   }
 
-  Widget _buildContent(BuildContext context, ModelModel model) {
+  Widget _buildContent(
+      BuildContext context, ModelModel model, Railway railway) {
     if ((_context.entityType == EntityType.unknown) &&
         model.isRailwayLoaded()) {
       _context = EditorContext.railway(EntityType.railway);
@@ -90,12 +98,12 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.railway:
         return SplitView(
           menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: RailwaySettings(editor: model),
+          content: RailwaySettings(model: model, railway: railway),
         );
       case EntityType.modules:
         return SplitView(
           menu: RailwayTree(context: _context, contextSetter: _setContext),
-          content: ModulesTree(contextSetter: _setContext),
+          content: ModulesTree(contextSetter: _setContext, railway: railway),
         );
       case EntityType.locs:
         return SplitView(

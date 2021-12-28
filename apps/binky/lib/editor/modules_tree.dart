@@ -24,20 +24,26 @@ import '../api/generated/br_model_types.pb.dart';
 
 class ModulesTree extends StatelessWidget {
   final ContextSetter _contextSetter;
-  const ModulesTree({Key? key, required ContextSetter contextSetter})
+  final Railway _railway;
+  const ModulesTree(
+      {Key? key,
+      required ContextSetter contextSetter,
+      required Railway railway})
       : _contextSetter = contextSetter,
+        _railway = railway,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(
-      builder: (context, editor, child) {
-        var modules = editor.railway().modules;
+      builder: (context, model, child) {
+        var modules = _railway.modules;
         return ListView.builder(
             itemCount: modules.length,
             itemBuilder: (context, index) {
               return FutureBuilder<Module>(
-                  future: editor.getModule(modules[index].id),
+                  future: model.getModule(modules[index].id),
+                  initialData: model.getCachedModule(modules[index].id),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListTile(
@@ -52,7 +58,7 @@ class ModulesTree extends StatelessWidget {
                       );
                     } else {
                       return const ListTile(
-                        leading: CircularProgressIndicator(),
+                        title: Text("Loading ..."),
                       );
                     }
                   });

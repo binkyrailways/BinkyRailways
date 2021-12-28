@@ -15,13 +15,17 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 
 import 'package:binky/models/model_model.dart';
 
 class RailwaySettings extends StatefulWidget {
-  final ModelModel editor;
-  const RailwaySettings({Key? key, required this.editor}) : super(key: key);
+  final ModelModel model;
+  final Railway railway;
+  const RailwaySettings({Key? key, required this.model, required this.railway})
+      : super(key: key);
 
   @override
   State<RailwaySettings> createState() => _RailwaySettingsState();
@@ -33,8 +37,7 @@ class _RailwaySettingsState extends State<RailwaySettings> {
   @override
   void initState() {
     super.initState();
-    var rw = widget.editor.railway();
-    _descriptionController.text = rw.description;
+    _descriptionController.text = widget.railway.description;
   }
 
   @override
@@ -51,10 +54,12 @@ class _RailwaySettingsState extends State<RailwaySettings> {
                 label: Text("Name"),
               ),
             ),
-            onFocusChange: (bool hasFocus) {
+            onFocusChange: (bool hasFocus) async {
               if (!hasFocus) {
-                widget.editor
-                    .updateRailwayDescription(_descriptionController.text);
+                var rw = await widget.model.getRailway();
+                var update = rw.deepCopy()
+                  ..description = _descriptionController.text;
+                widget.model.updateRailway(update);
               }
             },
           ),

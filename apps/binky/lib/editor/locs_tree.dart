@@ -31,30 +31,38 @@ class LocsTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(
-      builder: (context, editor, child) {
-        var locs = editor.railway().locs;
-        return ListView.builder(
-            itemCount: locs.length,
-            itemBuilder: (context, index) {
-              return FutureBuilder<Loc>(
-                  future: editor.getLoc(locs[index].id),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListTile(
-                        title: Text(snapshot.data?.description ?? "?"),
-                        onTap: () => _contextSetter(EditorContext.module(
-                            EntityType.loc, locs[index].id)),
-                      );
-                    } else if (snapshot.hasError) {
-                      return ListTile(
-                        leading: const Icon(Icons.error),
-                        title: Text("Error: ${snapshot.error}"),
-                      );
-                    } else {
-                      return const ListTile(
-                        leading: CircularProgressIndicator(),
-                      );
-                    }
+      builder: (context, model, child) {
+        return FutureBuilder<Railway>(
+            future: model.getRailway(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              var locs = snapshot.data!.locs;
+              return ListView.builder(
+                  itemCount: locs.length,
+                  itemBuilder: (context, index) {
+                    return FutureBuilder<Loc>(
+                        future: model.getLoc(locs[index].id),
+                        initialData: model.getCachedLoc(locs[index].id),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListTile(
+                              title: Text(snapshot.data?.description ?? "?"),
+                              onTap: () => _contextSetter(EditorContext.module(
+                                  EntityType.loc, locs[index].id)),
+                            );
+                          } else if (snapshot.hasError) {
+                            return ListTile(
+                              leading: const Icon(Icons.error),
+                              title: Text("Error: ${snapshot.error}"),
+                            );
+                          } else {
+                            return const ListTile(
+                              title: Text("Loading ..."),
+                            );
+                          }
+                        });
                   });
             });
       },

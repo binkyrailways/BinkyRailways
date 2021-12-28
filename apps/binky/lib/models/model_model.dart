@@ -27,26 +27,17 @@ class ModelModel extends ChangeNotifier {
   final Map<String, Module> _modules = {};
   final Map<String, Loc> _locs = {};
 
-  ModelModel() {
-    _loadRailway();
-  }
-
-  _loadRailway() async {
-    var modelClient = APIClient().modelClient();
-    _railway = await modelClient.getRailway(Empty());
-    notifyListeners();
-  }
+  ModelModel();
 
   // Is a railway already loaded?
   bool isRailwayLoaded() => _railway != null;
-
-  Railway railway() => _railway ?? Railway();
 
   // Gets the title of the currently loaded railway
   String title() {
     return "${_railway?.description ?? '<no railway loaded>'}${_railway?.dirty ?? false ? "*" : ""}";
   }
 
+  // Save changes made in the model
   Future<void> save() async {
     if (!isRailwayLoaded()) {
       throw Exception("Railwai is not loaded");
@@ -57,15 +48,26 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateRailwayDescription(String value) async {
+  Future<Railway> getRailway() async {
+    if (_railway == null) {
+      var modelClient = APIClient().modelClient();
+      _railway = await modelClient.getRailway(Empty());
+      notifyListeners();
+    }
+    return _railway!;
+  }
+
+  Future<void> updateRailway(Railway value) async {
     if (!isRailwayLoaded()) {
       throw Exception("Railwai is not loaded");
     }
-    _railway?.description = value;
     var modelClient = APIClient().modelClient();
-    _railway = await modelClient.updateRailway(_railway!);
+    _railway = await modelClient.updateRailway(value);
     notifyListeners();
   }
+
+  // Gets a module by ID from cache
+  Module? getCachedModule(String id) => _modules[id];
 
   // Gets a module by ID
   Future<Module> getModule(String id) async {
@@ -80,6 +82,9 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  // Gets a loc by ID from cache
+  Loc? getCachedLoc(String id) => _locs[id];
 
   // Gets a loc by ID
   Future<Loc> getLoc(String id) async {
