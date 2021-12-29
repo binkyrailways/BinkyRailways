@@ -19,6 +19,29 @@ import 'package:flutter/material.dart';
 
 typedef SettingsTextFieldLostFocus = void Function(String value);
 
+class SettingsHeader extends StatelessWidget {
+  final String title;
+
+  const SettingsHeader({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+        child:
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)));
+  }
+}
+
+class SettingsDivider extends StatelessWidget {
+  const SettingsDivider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(height: 50, thickness: 3);
+  }
+}
+
 class SettingsTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;

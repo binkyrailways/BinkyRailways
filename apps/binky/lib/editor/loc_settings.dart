@@ -70,8 +70,11 @@ class _LocSettingsState extends State<_LocSettings> {
   final TextEditingController _slowSpeedController = TextEditingController();
   final TextEditingController _mediumSpeedController = TextEditingController();
   final TextEditingController _maximumSpeedController = TextEditingController();
+  final TextEditingController _speedStepsController = TextEditingController();
   final NumericValidator _speedValidator =
       NumericValidator(minimum: 0, maximum: 100);
+  final NumericValidator _speedStepsValidator =
+      NumericValidator(values: [14, 28, 128]);
   final AddressValidator _addressValidator = AddressValidator();
 
   _initControllers() {
@@ -84,6 +87,7 @@ class _LocSettingsState extends State<_LocSettings> {
     _slowSpeedController.text = widget.loc.slowSpeed.toString();
     _mediumSpeedController.text = widget.loc.mediumSpeed.toString();
     _maximumSpeedController.text = widget.loc.maximumSpeed.toString();
+    _speedStepsController.text = widget.loc.speedSteps.toString();
   }
 
   @override
@@ -101,7 +105,9 @@ class _LocSettingsState extends State<_LocSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        const SettingsHeader(title: "General"),
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
@@ -119,6 +125,7 @@ class _LocSettingsState extends State<_LocSettings> {
               var update = loc.deepCopy()..owner = value;
               widget.model.updateLoc(update);
             }),
+        const SettingsHeader(title: "Controller"),
         SettingsTextField(
             controller: _addressController,
             label: "Address",
@@ -128,7 +135,17 @@ class _LocSettingsState extends State<_LocSettings> {
               var update = loc.deepCopy()..address = value;
               widget.model.updateLoc(update);
             }),
-        const Divider(height: 50, indent: 50, endIndent: 50),
+        SettingsTextField(
+            controller: _speedStepsController,
+            label: "Speed steps",
+            keyboardType: TextInputType.number,
+            validator: _speedStepsValidator.validate,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..speedSteps = int.parse(value);
+              widget.model.updateLoc(update);
+            }),
+        const SettingsHeader(title: "Behavior"),
         SettingsTextField(
             controller: _slowSpeedController,
             label: "Slow speed",

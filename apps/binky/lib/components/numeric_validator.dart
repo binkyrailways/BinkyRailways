@@ -18,8 +18,9 @@
 class NumericValidator {
   final int? minimum;
   final int? maximum;
+  final List<int>? values;
 
-  NumericValidator({this.minimum, this.maximum});
+  NumericValidator({this.minimum, this.maximum, this.values});
 
   String? validate(String? input) {
     final s = input ?? "";
@@ -35,6 +36,14 @@ class NumericValidator {
     }
     if ((maximum != null) && (x > maximum!)) {
       return "Number must be less or equal then $maximum";
+    }
+    if (values != null) {
+      for (var v in values!) {
+        if (x == v) {
+          return null;
+        }
+      }
+      return "Number must be one of $values";
     }
     return null;
   }
