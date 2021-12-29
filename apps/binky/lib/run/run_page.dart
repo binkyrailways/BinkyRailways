@@ -74,11 +74,6 @@ class _RunPageState extends State<RunPage> {
                   menu: ControlPane(),
                   content: RailwayCanvas(),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => {},
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                ), // This trailing comma makes auto-formatting nicer for build methods.
               );
             });
       }),

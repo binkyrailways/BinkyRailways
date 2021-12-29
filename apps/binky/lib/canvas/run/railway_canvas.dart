@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/editor/railway_tree.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +32,36 @@ class RailwayCanvas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(builder: (context, model, child) {
       return Consumer<StateModel>(builder: (context, state, child) {
-        return GameWidget(
-            game: RailwayGame(modelModel: model, stateModel: state));
+        return _RailwayCanvas(modelModel: model, stateModel: state);
       });
     });
+  }
+}
+
+class _RailwayCanvas extends StatefulWidget {
+  final ModelModel modelModel;
+  final StateModel stateModel;
+
+  const _RailwayCanvas(
+      {Key? key, required this.modelModel, required this.stateModel})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _RailwayCanvasState();
+}
+
+class _RailwayCanvasState extends State<_RailwayCanvas> {
+  RailwayGame? _game;
+
+  @override
+  void initState() {
+    super.initState();
+    _game = RailwayGame(
+        modelModel: widget.modelModel, stateModel: widget.stateModel);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GameWidget(game: _game!);
   }
 }

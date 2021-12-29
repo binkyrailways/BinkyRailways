@@ -15,10 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
 
 import '../../models/model_model.dart';
 import '../../models/state_model.dart';

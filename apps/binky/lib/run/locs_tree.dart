@@ -36,6 +36,10 @@ class LocsTree extends StatelessWidget {
             itemBuilder: (context, index) {
               final loc = locs[index];
               return ListTile(
+                leading: Checkbox(
+                  onChanged: (bool? value) {},
+                  value: false,
+                ),
                 title: Text(loc.model.description),
                 selected: selectedLocId == loc.model.id,
               );
