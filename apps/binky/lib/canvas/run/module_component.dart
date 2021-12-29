@@ -15,9 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
-
 import '../module_component.dart' as common;
 import '../../api/generated/br_model_types.pb.dart' as mapi;
 import '../../models/model_model.dart';
@@ -34,6 +31,7 @@ class ModuleComponent extends common.ModuleComponent {
 
   Future<void> loadChildren(
       ModelModel modelModel, StateModel stateModel) async {
+    await loadBackgroundImage(modelModel);
     for (var blockRef in model.blocks) {
       final blockState = await stateModel.getBlockState(blockRef.id);
       add(BlockComponent(state: blockState));

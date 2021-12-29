@@ -19,6 +19,7 @@ package service
 
 import (
 	"context"
+	"encoding/base64"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -57,6 +58,20 @@ func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Modul
 	var result api.Module
 	if err := result.FromModel(ctx, mod); err != nil {
 		return nil, err
+	}
+	return &result, nil
+}
+
+// Gets the background image of a module by ID.
+func (s *service) GetModuleBackgroundImage(ctx context.Context, req *api.IDRequest) (*api.Image, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var result api.Image
+	bytes := mod.GetBackgroundImage()
+	if len(bytes) > 0 {
+		result.ContentBase64 = base64.StdEncoding.EncodeToString(bytes)
 	}
 	return &result, nil
 }

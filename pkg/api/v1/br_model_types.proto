@@ -24,6 +24,12 @@ option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
 // Empty message
 message Empty {}
 
+// Raw image content
+message Image {
+  // Base64 encoded image data
+  string content_base64 = 1;
+}
+
 // Railway contrains a description of a single model railway.
 message Railway {
   // Unique ID of the railway
@@ -48,6 +54,8 @@ message Module {
   int32 width = 3;
   // Vertical size (in pixels).
   int32 height = 4;
+  // Does this module have a background image
+  bool has_background_image = 5;
 
   // Blocks of this module
   repeated BlockRef blocks = 100;

@@ -16,17 +16,22 @@
 //
 //
 
+import 'dart:convert';
+import 'dart:ui' as ui;
+
 import 'package:binky/api/api_client.dart';
 import 'package:binky/api/generated/br_model_service.pbgrpc.dart';
 import 'package:flutter/material.dart';
 
-import '../api/generated/br_model_types.pb.dart';
+import '../api/generated/br_model_types.pb.dart' as mapi;
 
 class ModelModel extends ChangeNotifier {
-  Railway? _railway;
-  final Map<String, Module> _modules = {};
-  final Map<String, Loc> _locs = {};
-  final Map<String, Block> _blocks = {};
+  mapi.Railway? _railway;
+  final Map<String, mapi.Module> _modules = {};
+  final Map<int, ui.Image> _images = {};
+  final Map<String, ui.Image> _moduleBackgroundImages = {};
+  final Map<String, mapi.Loc> _locs = {};
+  final Map<String, mapi.Block> _blocks = {};
 
   ModelModel();
 
@@ -48,33 +53,45 @@ class ModelModel extends ChangeNotifier {
   Future<void> save() async {
     requireRailwayLoaded();
     var modelClient = APIClient().modelClient();
-    await modelClient.save(Empty());
-    _railway = await modelClient.getRailway(Empty());
+    await modelClient.save(mapi.Empty());
+    _railway = await modelClient.getRailway(mapi.Empty());
     notifyListeners();
   }
 
-  Future<Railway> getRailway() async {
+  Future<mapi.Railway> getRailway() async {
     if (_railway == null) {
       var modelClient = APIClient().modelClient();
-      _railway = await modelClient.getRailway(Empty());
+      _railway = await modelClient.getRailway(mapi.Empty());
       notifyListeners();
     }
     return _railway!;
   }
 
   // Update the given railway
-  Future<void> updateRailway(Railway value) async {
+  Future<void> updateRailway(mapi.Railway value) async {
     requireRailwayLoaded();
     var modelClient = APIClient().modelClient();
     _railway = await modelClient.updateRailway(value);
     notifyListeners();
   }
 
+  // Decode an image, using the cache if possible.
+  Future<ui.Image> _getImage(String base64Encoded) async {
+    final key = base64Encoded.hashCode;
+    var result = _images[key];
+    if (result != null) {
+      return result;
+    }
+    final decoded = await decodeImageFromList(base64Decode(base64Encoded));
+    _images[key] = decoded;
+    return decoded;
+  }
+
   // Gets a module by ID from cache
-  Module? getCachedModule(String id) => _modules[id];
+  mapi.Module? getCachedModule(String id) => _modules[id];
 
   // Gets a module by ID
-  Future<Module> getModule(String id) async {
+  Future<mapi.Module> getModule(String id) async {
     var result = _modules[id];
     if (result != null) {
       return result;
@@ -87,8 +104,27 @@ class ModelModel extends ChangeNotifier {
     return result;
   }
 
+  // Gets the background image of a module by ID
+  Future<ui.Image?> getModuleBackgroundImage(String id) async {
+    final mod = await getModule(id);
+    if (!mod.hasBackgroundImage) {
+      return null;
+    }
+    // Load from cache
+    final cached = _moduleBackgroundImages[id];
+    if (cached != null) {
+      return cached;
+    }
+    // Load from API
+    var modelClient = APIClient().modelClient();
+    final image = await modelClient.getModuleBackgroundImage(IDRequest(id: id));
+    final decoded = await _getImage(image.contentBase64);
+    _moduleBackgroundImages[id] = decoded;
+    return decoded;
+  }
+
   // Update the given module
-  Future<void> updateModule(Module value) async {
+  Future<void> updateModule(mapi.Module value) async {
     var modelClient = APIClient().modelClient();
     var updated = await modelClient.updateModule(value);
     _modules[updated.id] = updated;
@@ -96,10 +132,10 @@ class ModelModel extends ChangeNotifier {
   }
 
   // Gets a loc by ID from cache
-  Loc? getCachedLoc(String id) => _locs[id];
+  mapi.Loc? getCachedLoc(String id) => _locs[id];
 
   // Gets a loc by ID
-  Future<Loc> getLoc(String id) async {
+  Future<mapi.Loc> getLoc(String id) async {
     var result = _locs[id];
     if (result != null) {
       return result;
@@ -113,7 +149,7 @@ class ModelModel extends ChangeNotifier {
   }
 
   // Update the given loc
-  Future<void> updateLoc(Loc value) async {
+  Future<void> updateLoc(mapi.Loc value) async {
     var modelClient = APIClient().modelClient();
     var updated = await modelClient.updateLoc(value);
     _locs[updated.id] = updated;
@@ -121,10 +157,10 @@ class ModelModel extends ChangeNotifier {
   }
 
   // Gets a block by ID from cache
-  Block? getCachedBlock(String id) => _blocks[id];
+  mapi.Block? getCachedBlock(String id) => _blocks[id];
 
   // Gets a block by ID
-  Future<Block> getBlock(String id) async {
+  Future<mapi.Block> getBlock(String id) async {
     var result = _blocks[id];
     if (result != null) {
       return result;
@@ -138,7 +174,7 @@ class ModelModel extends ChangeNotifier {
   }
 
   // Update the given block
-  Future<void> updateBlock(Block value) async {
+  Future<void> updateBlock(mapi.Block value) async {
     var modelClient = APIClient().modelClient();
     var updated = await modelClient.updateBlock(value);
     _blocks[updated.id] = updated;

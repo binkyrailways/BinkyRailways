@@ -29,6 +29,7 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	dst.Description = src.GetDescription()
 	dst.Width = int32(src.GetWidth())
 	dst.Height = int32(src.GetHeight())
+	dst.HasBackgroundImage = len(src.GetBackgroundImage()) > 0
 
 	src.GetBlocks().ForEach(func(x model.Block) {
 		dst.Blocks = append(dst.Blocks, &BlockRef{

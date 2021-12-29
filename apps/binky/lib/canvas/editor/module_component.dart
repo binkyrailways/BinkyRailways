@@ -26,6 +26,9 @@ class ModuleComponent extends common.ModuleComponent {
 
   Future<void> loadChildren(
       EditorContext editorCtx, ModelModel modelModel) async {
+    // Load background image (if any)
+    await loadBackgroundImage(modelModel);
+    // Load blocks
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
       add(BlockComponent(editorCtx: editorCtx, model: block));

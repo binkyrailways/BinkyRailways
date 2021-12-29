@@ -34,6 +34,8 @@ service ModelService {
 
   // Gets a module by ID.
   rpc GetModule(IDRequest) returns (Module);
+  // Get the background image of a module by ID.
+  rpc GetModuleBackgroundImage(IDRequest) returns (Image);
   // Update a module by ID.
   rpc UpdateModule(Module) returns (Module);
 

@@ -31,6 +31,11 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/GetModule',
       ($1.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
+  static final _$getModuleBackgroundImage =
+      $grpc.ClientMethod<$1.IDRequest, $0.Image>(
+          '/binkyrailways.v1.ModelService/GetModuleBackgroundImage',
+          ($1.IDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Image.fromBuffer(value));
   static final _$updateModule = $grpc.ClientMethod<$0.Module, $0.Module>(
       '/binkyrailways.v1.ModelService/UpdateModule',
       ($0.Module value) => value.writeToBuffer(),
@@ -75,6 +80,12 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Module> getModule($1.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getModule, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Image> getModuleBackgroundImage($1.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getModuleBackgroundImage, request,
+        options: options);
   }
 
   $grpc.ResponseFuture<$0.Module> updateModule($0.Module request,
@@ -135,6 +146,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.IDRequest.fromBuffer(value),
         ($0.Module value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.IDRequest, $0.Image>(
+        'GetModuleBackgroundImage',
+        getModuleBackgroundImage_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.IDRequest.fromBuffer(value),
+        ($0.Image value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Module, $0.Module>(
         'UpdateModule',
         updateModule_Pre,
@@ -192,6 +210,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return getModule(call, await request);
   }
 
+  $async.Future<$0.Image> getModuleBackgroundImage_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.IDRequest> request) async {
+    return getModuleBackgroundImage(call, await request);
+  }
+
   $async.Future<$0.Module> updateModule_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Module> request) async {
     return updateModule(call, await request);
@@ -223,6 +246,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Railway request);
   $async.Future<$0.Empty> save($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.Module> getModule(
+      $grpc.ServiceCall call, $1.IDRequest request);
+  $async.Future<$0.Image> getModuleBackgroundImage(
       $grpc.ServiceCall call, $1.IDRequest request);
   $async.Future<$0.Module> updateModule(
       $grpc.ServiceCall call, $0.Module request);
