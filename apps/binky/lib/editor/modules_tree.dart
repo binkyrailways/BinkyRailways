@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
+import '../components/error_message.dart';
 
 class ModulesTree extends StatelessWidget {
   const ModulesTree({Key? key}) : super(key: key);
@@ -33,8 +34,11 @@ class ModulesTree extends StatelessWidget {
         return FutureBuilder<List<Module>>(
             future: getModules(model),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Text("Loading...");
+              if (snapshot.hasError) {
+                return ErrorMessage(
+                    title: "Failed to load module", error: snapshot.error);
+              } else if (!snapshot.hasData) {
+                return const Text("Loading module ...");
               }
               var modules = snapshot.data!;
               return ListView.builder(
