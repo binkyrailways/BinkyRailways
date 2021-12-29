@@ -25,6 +25,9 @@ import "br_model_types.proto";
 
 // ModelService is used to get & modify the model of the current railway.
 service ModelService {
+  // Try to parse an address
+  rpc ParseAddress(ParseAddressRequest) returns (ParseAddressResult);
+
   // Gets the current railway
   rpc GetRailway(Empty) returns (Railway);
   // Update the current railway
@@ -52,3 +55,17 @@ service ModelService {
 
 // Request by ID
 message IDRequest { string id = 1; }
+
+message ParseAddressRequest {
+  // Address to parse
+  string value = 1;
+}
+
+message ParseAddressResult {
+  // Was the input a valid address?
+  bool valid = 1;
+  // Error message in case of non-valid input
+  string message = 2;
+  // Formatted address in case of valid input
+  string formatted_value = 3;
+}

@@ -9,11 +9,11 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_model_types.pb.dart' as $0;
+import 'br_model_types.pb.dart' as $1;
 
 class RailwayState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RailwayState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$0.Railway>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Railway.create)
+    ..aOM<$1.Railway>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Railway.create)
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRunModeEnabled')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualModeEnabled')
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
@@ -24,7 +24,7 @@ class RailwayState extends $pb.GeneratedMessage {
 
   RailwayState._() : super();
   factory RailwayState({
-    $0.Railway? model,
+    $1.Railway? model,
     $core.bool? isRunModeEnabled,
     $core.bool? isVirtualModeEnabled,
     $core.bool? isVirtualAutorunEnabled,
@@ -74,15 +74,15 @@ class RailwayState extends $pb.GeneratedMessage {
   static RailwayState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $0.Railway get model => $_getN(0);
+  $1.Railway get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($0.Railway v) { setField(1, v); }
+  set model($1.Railway v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $0.Railway ensureModel() => $_ensure(0);
+  $1.Railway ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.bool get isRunModeEnabled => $_getBF(1);
@@ -132,7 +132,7 @@ class RailwayState extends $pb.GeneratedMessage {
 
 class BlockState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$0.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Block.create)
+    ..aOM<$1.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Block.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedRequested')
     ..aOB(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isDeadend')
@@ -143,7 +143,7 @@ class BlockState extends $pb.GeneratedMessage {
 
   BlockState._() : super();
   factory BlockState({
-    $0.Block? model,
+    $1.Block? model,
     $core.bool? closedActual,
     $core.bool? closedRequested,
     $core.bool? isDeadend,
@@ -193,15 +193,15 @@ class BlockState extends $pb.GeneratedMessage {
   static BlockState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $0.Block get model => $_getN(0);
+  $1.Block get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($0.Block v) { setField(1, v); }
+  set model($1.Block v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $0.Block ensureModel() => $_ensure(0);
+  $1.Block ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(10)
   $core.bool get closedActual => $_getBF(1);
@@ -251,13 +251,13 @@ class BlockState extends $pb.GeneratedMessage {
 
 class LocState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$0.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Loc.create)
+    ..aOM<$1.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Loc.create)
     ..hasRequiredFields = false
   ;
 
   LocState._() : super();
   factory LocState({
-    $0.Loc? model,
+    $1.Loc? model,
   }) {
     final _result = create();
     if (model != null) {
@@ -287,14 +287,14 @@ class LocState extends $pb.GeneratedMessage {
   static LocState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $0.Loc get model => $_getN(0);
+  $1.Loc get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($0.Loc v) { setField(1, v); }
+  set model($1.Loc v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $0.Loc ensureModel() => $_ensure(0);
+  $1.Loc ensureModel() => $_ensure(0);
 }
 

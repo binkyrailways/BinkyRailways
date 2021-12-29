@@ -15,6 +15,9 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/components/address_validator.dart';
+import 'package:binky/components/error_message.dart';
+import 'package:binky/components/numeric_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +40,10 @@ class LocSettings extends StatelessWidget {
           future: model.getLoc(locId),
           initialData: model.getCachedLoc(locId),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.hasError) {
+              return ErrorMessage(
+                  title: "Failed to load Loc", error: snapshot.error);
+            } else if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
             var loc = snapshot.data!;
@@ -60,10 +66,24 @@ class _LocSettings extends StatefulWidget {
 class _LocSettingsState extends State<_LocSettings> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ownerController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _slowSpeedController = TextEditingController();
+  final TextEditingController _mediumSpeedController = TextEditingController();
+  final TextEditingController _maximumSpeedController = TextEditingController();
+  final NumericValidator _speedValidator =
+      NumericValidator(minimum: 0, maximum: 100);
+  final AddressValidator _addressValidator = AddressValidator();
 
   _initControllers() {
+    _addressValidator.setState = () {
+      setState(() {});
+    };
     _descriptionController.text = widget.loc.description;
     _ownerController.text = widget.loc.owner;
+    _addressController.text = widget.loc.address;
+    _slowSpeedController.text = widget.loc.slowSpeed.toString();
+    _mediumSpeedController.text = widget.loc.mediumSpeed.toString();
+    _maximumSpeedController.text = widget.loc.maximumSpeed.toString();
   }
 
   @override
@@ -97,6 +117,46 @@ class _LocSettingsState extends State<_LocSettings> {
             onLostFocus: (value) async {
               final loc = await widget.model.getLoc(widget.loc.id);
               var update = loc.deepCopy()..owner = value;
+              widget.model.updateLoc(update);
+            }),
+        SettingsTextField(
+            controller: _addressController,
+            label: "Address",
+            validator: _addressValidator.validate,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..address = value;
+              widget.model.updateLoc(update);
+            }),
+        const Divider(height: 50, indent: 50, endIndent: 50),
+        SettingsTextField(
+            controller: _slowSpeedController,
+            label: "Slow speed",
+            keyboardType: TextInputType.number,
+            validator: _speedValidator.validate,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..slowSpeed = int.parse(value);
+              widget.model.updateLoc(update);
+            }),
+        SettingsTextField(
+            controller: _mediumSpeedController,
+            label: "Medium speed",
+            keyboardType: TextInputType.number,
+            validator: _speedValidator.validate,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..mediumSpeed = int.parse(value);
+              widget.model.updateLoc(update);
+            }),
+        SettingsTextField(
+            controller: _maximumSpeedController,
+            label: "Maximum speed",
+            keyboardType: TextInputType.number,
+            validator: _speedValidator.validate,
+            onLostFocus: (value) async {
+              final loc = await widget.model.getLoc(widget.loc.id);
+              var update = loc.deepCopy()..maximumSpeed = int.parse(value);
               widget.model.updateLoc(update);
             }),
       ],

@@ -24,14 +24,20 @@ class SettingsTextField extends StatelessWidget {
   final String label;
   final SettingsTextFieldLostFocus onLostFocus;
   final bool firstChild;
+  final TextInputType keyboardType;
+  final bool autocorrect;
+  final String? Function(String?)? validator;
 
-  const SettingsTextField(
-      {Key? key,
-      required this.controller,
-      required this.label,
-      required this.onLostFocus,
-      this.firstChild = false})
-      : super(key: key);
+  const SettingsTextField({
+    Key? key,
+    required this.controller,
+    required this.label,
+    required this.onLostFocus,
+    this.firstChild = false,
+    this.keyboardType = TextInputType.text,
+    this.autocorrect = true,
+    this.validator,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +46,12 @@ class SettingsTextField extends StatelessWidget {
           ? const EdgeInsets.all(8)
           : const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: Focus(
-        child: TextField(
+        child: TextFormField(
           controller: controller,
+          keyboardType: keyboardType,
+          autocorrect: autocorrect,
+          validator: validator,
+          autovalidateMode: AutovalidateMode.always,
           decoration: InputDecoration(
             border: const UnderlineInputBorder(),
             label: Text(label),
