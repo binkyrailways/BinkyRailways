@@ -37,6 +37,9 @@ service StateService {
 
   // Fetch state changes when they happen
   rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
+
+  // Change the requested power state
+  rpc SetPower(SetPowerRequest) returns (RailwayState);
 }
 
 // Request arguments for EnableRunMode.
@@ -58,4 +61,9 @@ message StateChange {
   RailwayState railway = 1;
   BlockState block = 2;
   LocState loc = 3;
+}
+
+message SetPowerRequest {
+  // Is set, power will be turned on, otherwise power will be turned off.
+  bool enabled = 1;
 }

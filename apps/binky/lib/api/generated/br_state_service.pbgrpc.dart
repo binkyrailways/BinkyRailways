@@ -35,6 +35,11 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/GetStateChanges',
           ($3.GetStateChangesRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $3.StateChange.fromBuffer(value));
+  static final _$setPower =
+      $grpc.ClientMethod<$3.SetPowerRequest, $2.RailwayState>(
+          '/binkyrailways.v1.StateService/SetPower',
+          ($3.SetPowerRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.RailwayState.fromBuffer(value));
 
   StateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -63,6 +68,11 @@ class StateServiceClient extends $grpc.Client {
     return $createStreamingCall(
         _$getStateChanges, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$2.RailwayState> setPower($3.SetPowerRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$setPower, request, options: options);
   }
 }
 
@@ -100,6 +110,13 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $3.GetStateChangesRequest.fromBuffer(value),
         ($3.StateChange value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.SetPowerRequest, $2.RailwayState>(
+        'SetPower',
+        setPower_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $3.SetPowerRequest.fromBuffer(value),
+        ($2.RailwayState value) => value.writeToBuffer()));
   }
 
   $async.Future<$2.RailwayState> getRailwayState_Pre(
@@ -122,6 +139,11 @@ abstract class StateServiceBase extends $grpc.Service {
     yield* getStateChanges(call, await request);
   }
 
+  $async.Future<$2.RailwayState> setPower_Pre(
+      $grpc.ServiceCall call, $async.Future<$3.SetPowerRequest> request) async {
+    return setPower(call, await request);
+  }
+
   $async.Future<$2.RailwayState> getRailwayState(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.RailwayState> enableRunMode(
@@ -130,4 +152,6 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Empty request);
   $async.Stream<$3.StateChange> getStateChanges(
       $grpc.ServiceCall call, $3.GetStateChangesRequest request);
+  $async.Future<$2.RailwayState> setPower(
+      $grpc.ServiceCall call, $3.SetPowerRequest request);
 }

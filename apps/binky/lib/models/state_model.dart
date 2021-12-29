@@ -34,6 +34,9 @@ class StateModel extends ChangeNotifier {
   // Is a railway already loaded?
   bool isRailwayStateLoaded() => _railwayState != null;
 
+  // Gets the railway state we have in cache.
+  RailwayState? getCachedRailwayState() => _railwayState;
+
   // Get the last known railway state.
   // Fetch if needed.
   Future<RailwayState> getRailwayState() async {
@@ -54,13 +57,14 @@ class StateModel extends ChangeNotifier {
     }
     // Enable run mode
     var stateClient = APIClient().stateClient();
-    _railwayState =
+    final result =
         await stateClient.enableRunMode(EnableRunModeRequest(virtual: virtual));
+    _railwayState = result;
     // Start fetching state changes
     _getStateChanges(true);
     // Notify listeners
     notifyListeners();
-    return _railwayState!;
+    return result;
   }
 
   // Disable run mode
@@ -72,9 +76,19 @@ class StateModel extends ChangeNotifier {
     }
     // Disable run mode
     var stateClient = APIClient().stateClient();
-    _railwayState = await stateClient.disableRunMode(Empty());
+    final result = await stateClient.disableRunMode(Empty());
+    _railwayState = result;
     notifyListeners();
-    return _railwayState!;
+    return result;
+  }
+
+  Future<RailwayState> setPower(bool enabled) async {
+    var stateClient = APIClient().stateClient();
+    final result =
+        await stateClient.setPower(SetPowerRequest(enabled: enabled));
+    _railwayState = result;
+    notifyListeners();
+    return result;
   }
 
   // Get all known blocks

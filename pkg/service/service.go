@@ -98,3 +98,12 @@ func (s *service) getRailway() (model.Railway, error) {
 	}
 	return result, nil
 }
+
+// Gets the current railway state
+func (s *service) getRailwayState() (state.Railway, error) {
+	result := s.railwayState
+	if result == nil {
+		return nil, api.PreconditionFailed("Railway not in run mode")
+	}
+	return result, nil
+}

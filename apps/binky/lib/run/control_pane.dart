@@ -15,8 +15,10 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/components/settings_textfield.dart';
 import 'package:flutter/material.dart';
 
+import './power_pane.dart';
 import './locs_tree.dart';
 
 class ControlPane extends StatelessWidget {
@@ -26,6 +28,8 @@ class ControlPane extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
+        PowerPane(),
+        SettingsDivider(),
         Text("Locs"),
         Expanded(child: LocsTree()),
       ],

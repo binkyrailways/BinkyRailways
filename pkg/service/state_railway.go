@@ -79,3 +79,15 @@ func (s *service) DisableRunMode(ctx context.Context, req *api.Empty) (*api.Rail
 	}
 	return s.GetRailwayState(ctx, &api.Empty{})
 }
+
+// Set the requested power state
+func (s *service) SetPower(ctx context.Context, req *api.SetPowerRequest) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetPower().SetRequested(ctx, req.GetEnabled()); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
+}

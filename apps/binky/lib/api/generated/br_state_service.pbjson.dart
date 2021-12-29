@@ -40,3 +40,13 @@ const StateChange$json = const {
 
 /// Descriptor for `StateChange`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List stateChangeDescriptor = $convert.base64Decode('CgtTdGF0ZUNoYW5nZRI4CgdyYWlsd2F5GAEgASgLMh4uYmlua3lyYWlsd2F5cy52MS5SYWlsd2F5U3RhdGVSB3JhaWx3YXkSMgoFYmxvY2sYAiABKAsyHC5iaW5reXJhaWx3YXlzLnYxLkJsb2NrU3RhdGVSBWJsb2NrEiwKA2xvYxgDIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuTG9jU3RhdGVSA2xvYw==');
+@$core.Deprecated('Use setPowerRequestDescriptor instead')
+const SetPowerRequest$json = const {
+  '1': 'SetPowerRequest',
+  '2': const [
+    const {'1': 'enabled', '3': 1, '4': 1, '5': 8, '10': 'enabled'},
+  ],
+};
+
+/// Descriptor for `SetPowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setPowerRequestDescriptor = $convert.base64Decode('Cg9TZXRQb3dlclJlcXVlc3QSGAoHZW5hYmxlZBgBIAEoCFIHZW5hYmxlZA==');

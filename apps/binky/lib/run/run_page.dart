@@ -41,6 +41,7 @@ class _RunPageState extends State<RunPage> {
       child: Consumer<StateModel>(builder: (context, state, child) {
         return FutureBuilder<RailwayState>(
             future: state.getRailwayState(),
+            initialData: state.getCachedRailwayState(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Scaffold(
