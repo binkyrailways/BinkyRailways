@@ -15,20 +15,27 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flame/components.dart' as fc;
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
+import 'package:provider/provider.dart';
 
-import 'entity_component.dart';
-import '../api/generated/br_model_types.pb.dart' as mapi;
+import '../../models/model_model.dart';
+import '../../editor/editor_context.dart';
 
-class ModuleComponent extends EntityComponent {
-  final mapi.Module model;
+import 'module_game.dart';
 
-  ModuleComponent({required this.model});
+class ModuleCanvas extends StatelessWidget {
+  const ModuleCanvas({Key? key}) : super(key: key);
 
   @override
-  void render(Canvas canvas) {
-    canvas.drawRect(size.toRect(), Paint()..color = Colors.grey.shade100);
+  Widget build(BuildContext context) {
+    final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
+    final moduleId = selector.moduleId ?? "";
+    return Consumer<ModelModel>(builder: (context, model, child) {
+      return GameWidget(
+          game: ModuleGame(
+              editorCtx: editorCtx, modelModel: model, moduleId: moduleId));
+    });
   }
 }

@@ -15,13 +15,10 @@
 // Author Ewout Prangsma
 //
 
-import 'dart:ui';
-
 import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
 import 'dart:math';
-import 'package:flutter/painting.dart';
 
 import 'entity_component.dart';
 import '../api/generated/br_model_types.pb.dart' as mapi;

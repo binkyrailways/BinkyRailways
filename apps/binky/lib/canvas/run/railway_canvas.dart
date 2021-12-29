@@ -24,8 +24,8 @@ import '../../models/state_model.dart';
 
 import 'railway_game.dart';
 
-class RailwayWidget extends StatelessWidget {
-  const RailwayWidget({Key? key}) : super(key: key);
+class RailwayCanvas extends StatelessWidget {
+  const RailwayCanvas({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -34,6 +34,7 @@ import './modules_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
 import '../components/dialogs.dart';
+import '../canvas/editor/module_canvas.dart';
 
 class EditorPage extends StatefulWidget {
   const EditorPage({Key? key}) : super(key: key);
@@ -113,7 +114,8 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.module:
         return const SplitView(
           menu: ModuleTree(),
-          content: ModuleSettings(),
+          content: ModuleCanvas(),
+          endMenu: ModuleSettings(),
         );
       case EntityType.locs:
         return const SplitView(
@@ -127,13 +129,14 @@ class _EditorPageState extends State<EditorPage> {
         );
       case EntityType.blocks:
         return const SplitView(
-          menu: ModuleTree(),
-          content: BlocksTree(),
+          menu: BlocksTree(),
+          content: ModuleCanvas(),
         );
       case EntityType.block:
         return const SplitView(
           menu: BlocksTree(),
-          content: BlockSettings(),
+          content: ModuleCanvas(),
+          endMenu: BlockSettings(),
         );
       default:
         return const Center(child: Text("No selection"));

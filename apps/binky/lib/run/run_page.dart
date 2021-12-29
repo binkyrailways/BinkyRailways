@@ -24,7 +24,7 @@ import '../api/generated/br_state_types.pb.dart';
 import '../components/dialogs.dart';
 import './control_pane.dart';
 import './run_context.dart';
-import '../canvas/run/railway_widget.dart';
+import '../canvas/run/railway_canvas.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -71,7 +71,7 @@ class _RunPageState extends State<RunPage> {
                 ),
                 body: const SplitView(
                   menu: ControlPane(),
-                  content: RailwayWidget(),
+                  content: RailwayCanvas(),
                 ),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () => {},

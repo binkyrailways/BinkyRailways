@@ -15,20 +15,20 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flame/components.dart' as fc;
-import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
+import '../module_component.dart' as common;
+import '../../api/generated/br_model_types.pb.dart' as mapi;
+import '../../models/model_model.dart';
+import '../../editor/editor_context.dart';
+import './block_component.dart';
 
-import 'entity_component.dart';
-import '../api/generated/br_model_types.pb.dart' as mapi;
+class ModuleComponent extends common.ModuleComponent {
+  ModuleComponent({required mapi.Module model}) : super(model: model);
 
-class ModuleComponent extends EntityComponent {
-  final mapi.Module model;
-
-  ModuleComponent({required this.model});
-
-  @override
-  void render(Canvas canvas) {
-    canvas.drawRect(size.toRect(), Paint()..color = Colors.grey.shade100);
+  Future<void> loadChildren(
+      EditorContext editorCtx, ModelModel modelModel) async {
+    for (var blockRef in model.blocks) {
+      final block = await modelModel.getBlock(blockRef.id);
+      add(BlockComponent(editorCtx: editorCtx, model: block));
+    }
   }
 }

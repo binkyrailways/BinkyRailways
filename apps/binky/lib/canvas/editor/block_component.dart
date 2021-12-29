@@ -15,20 +15,22 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
 
-import 'entity_component.dart';
-import '../api/generated/br_model_types.pb.dart' as mapi;
+import '../block_component.dart' as common;
+import '../../api/generated/br_model_types.pb.dart' as mapi;
+import '../../editor/editor_context.dart';
 
-class ModuleComponent extends EntityComponent {
-  final mapi.Module model;
+class BlockComponent extends common.BlockComponent {
+  final EditorContext editorCtx;
 
-  ModuleComponent({required this.model});
+  BlockComponent({required this.editorCtx, required mapi.Block model})
+      : super(model: model);
+
+  _isSelected() =>
+      editorCtx.selector.entityType == EntityType.block &&
+      editorCtx.selector.blockId == model.id;
 
   @override
-  void render(Canvas canvas) {
-    canvas.drawRect(size.toRect(), Paint()..color = Colors.grey.shade100);
-  }
+  backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();
 }

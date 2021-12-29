@@ -25,9 +25,12 @@ import '../../models/state_model.dart';
 import './block_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {
-  ModuleComponent(
-      {required mapi.Module model, required mapi.ModuleRef moduleRef})
-      : super(model: model, moduleRef: moduleRef);
+  final mapi.ModuleRef moduleRef;
+
+  ModuleComponent({required mapi.Module model, required this.moduleRef})
+      : super(model: model) {
+    loadPosition(moduleRef.position);
+  }
 
   Future<void> loadChildren(
       ModelModel modelModel, StateModel stateModel) async {
