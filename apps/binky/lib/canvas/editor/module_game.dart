@@ -42,9 +42,7 @@ class ModuleGame extends FlameGame {
     await super.onLoad();
 
     final module = await modelModel.getModule(moduleId);
-    var size = Vector2.all(2000);
-    //size.x = size.x > maxX ? size.x : maxX;
-    //size.y = size.y > maxY ? size.y : maxY;
+    final size = Vector2(module.width.toDouble(), module.height.toDouble());
     final modComp = ModuleComponent(model: module);
     await modComp.loadChildren(editorCtx, modelModel);
     add(modComp);

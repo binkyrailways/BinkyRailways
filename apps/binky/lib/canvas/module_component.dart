@@ -25,10 +25,13 @@ import '../api/generated/br_model_types.pb.dart' as mapi;
 class ModuleComponent extends EntityComponent {
   final mapi.Module model;
 
-  ModuleComponent({required this.model});
+  ModuleComponent({required this.model}) {
+    size.x = model.width.toDouble();
+    size.y = model.height.toDouble();
+  }
 
   @override
   void render(Canvas canvas) {
-    canvas.drawRect(size.toRect(), Paint()..color = Colors.grey.shade100);
+    canvas.drawRect(size.toRect(), Paint()..color = Colors.yellow.shade50);
   }
 }
