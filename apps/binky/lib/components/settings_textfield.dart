@@ -42,9 +42,9 @@ class SettingsTextField extends StatelessWidget {
       child: Focus(
         child: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            label: Text("Description"),
+          decoration: InputDecoration(
+            border: const UnderlineInputBorder(),
+            label: Text(label),
           ),
         ),
         onFocusChange: (bool hasFocus) async {
