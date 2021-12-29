@@ -27,6 +27,11 @@ import (
 func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
+	dst.ModuleId = src.GetModule().GetID()
+	dst.Position = &Position{}
+	if err := dst.Position.FromModel(ctx, src); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -37,5 +42,8 @@ func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
 		return InvalidArgument("Unexpected block ID: '%s'", src.GetId())
 	}
 	dst.SetDescription(src.GetDescription())
+	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
+		return err
+	}
 	return nil
 }

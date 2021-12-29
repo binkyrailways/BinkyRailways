@@ -19,11 +19,12 @@ import 'package:binky/components/split_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/model_model.dart';
 import 'package:binky/models/state_model.dart';
-import '../api/generated/br_model_types.pb.dart';
 import '../api/generated/br_state_types.pb.dart';
 import '../components/dialogs.dart';
+import './control_pane.dart';
+import './run_context.dart';
+import '../canvas/run/railway_widget.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -35,46 +36,52 @@ class RunPage extends StatefulWidget {
 class _RunPageState extends State<RunPage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<StateModel>(builder: (context, state, child) {
-      return FutureBuilder<RailwayState>(
-          future: state.getRailwayState(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+    return ChangeNotifierProvider<RunContext>(
+      create: (context) => RunContext(),
+      child: Consumer<StateModel>(builder: (context, state, child) {
+        return FutureBuilder<RailwayState>(
+            future: state.getRailwayState(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Scaffold(
+                  appBar: AppBar(
+                    // Here we take the value from the MyHomePage object that was created by
+                    // the App.build method, and use it to set our appbar title.
+                    title: const Text("Binky Railways"),
+                  ),
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Text('Loading railway...'),
+                        CircularProgressIndicator(value: null),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              var rwState = snapshot.data!;
               return Scaffold(
                 appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
                   // the App.build method, and use it to set our appbar title.
-                  title: const Text("Binky Railways"),
+                  title: Text(
+                      "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
+                  actions: _buildActions(context),
                 ),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Text('Loading railway...'),
-                      CircularProgressIndicator(value: null),
-                    ],
-                  ),
+                body: const SplitView(
+                  menu: ControlPane(),
+                  content: RailwayWidget(),
                 ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () => {},
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
+                ), // This trailing comma makes auto-formatting nicer for build methods.
               );
-            }
-            var rwState = snapshot.data!;
-            return Scaffold(
-              appBar: AppBar(
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
-                title: Text(
-                    "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
-                actions: _buildActions(context),
-              ),
-              body: Text("TODO"),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => {},
-                tooltip: 'Increment',
-                child: const Icon(Icons.add),
-              ), // This trailing comma makes auto-formatting nicer for build methods.
-            );
-          });
-    });
+            });
+      }),
+    );
   }
 
   List<Widget>? _buildActions(BuildContext context) {

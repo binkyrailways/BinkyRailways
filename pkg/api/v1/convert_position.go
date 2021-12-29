@@ -33,3 +33,14 @@ func (dst *Position) FromModel(ctx context.Context, src model.PositionedEntity) 
 	dst.Layer = src.GetLayer()
 	return nil
 }
+
+// ToModel converts an API position to a positioned entity
+func (src *Position) ToModel(ctx context.Context, dst model.PositionedEntity) error {
+	dst.SetX(int(src.GetX()))
+	dst.SetY(int(src.GetY()))
+	dst.SetWidth(int(src.GetWidth()))
+	dst.SetHeight(int(src.GetHeight()))
+	dst.SetRotation(int(src.GetRotation()))
+	dst.SetLayer(src.GetLayer())
+	return nil
+}

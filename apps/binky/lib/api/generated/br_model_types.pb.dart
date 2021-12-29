@@ -634,6 +634,8 @@ class Block extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Block', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
     ..hasRequiredFields = false
   ;
 
@@ -641,6 +643,8 @@ class Block extends $pb.GeneratedMessage {
   factory Block({
     $core.String? id,
     $core.String? description,
+    $core.String? moduleId,
+    Position? position,
   }) {
     final _result = create();
     if (id != null) {
@@ -648,6 +652,12 @@ class Block extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    if (position != null) {
+      _result.position = position;
     }
     return _result;
   }
@@ -689,6 +699,26 @@ class Block extends $pb.GeneratedMessage {
   $core.bool hasDescription() => $_has(1);
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get moduleId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set moduleId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasModuleId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearModuleId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Position get position => $_getN(3);
+  @$pb.TagNumber(4)
+  set position(Position v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPosition() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPosition() => clearField(4);
+  @$pb.TagNumber(4)
+  Position ensurePosition() => $_ensure(3);
 }
 
 class BlockRef extends $pb.GeneratedMessage {

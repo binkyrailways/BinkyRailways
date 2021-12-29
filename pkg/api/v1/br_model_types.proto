@@ -139,6 +139,10 @@ message Block {
   string id = 1;
   // Description of the block
   string description = 2;
+  // ID of the module containing the block
+  string module_id = 3;
+  // Position of the block
+  Position position = 4;
 }
 
 // Reference to a Block

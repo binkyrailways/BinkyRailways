@@ -19,6 +19,7 @@
 import 'package:binky/api/api_client.dart';
 import 'package:binky/api/generated/br_state_service.pb.dart';
 import 'package:flutter/material.dart';
+import 'package:retry/retry.dart';
 
 import '../api/generated/br_model_types.pb.dart';
 import '../api/generated/br_state_types.pb.dart';
@@ -33,12 +34,8 @@ class StateModel extends ChangeNotifier {
   // Is a railway already loaded?
   bool isRailwayStateLoaded() => _railwayState != null;
 
-  void requireRailwayLoaded() {
-    if (!isRailwayStateLoaded()) {
-      throw Exception("RailwayState is not loaded");
-    }
-  }
-
+  // Get the last known railway state.
+  // Fetch if needed.
   Future<RailwayState> getRailwayState() async {
     if (_railwayState == null) {
       var stateClient = APIClient().stateClient();
@@ -48,6 +45,7 @@ class StateModel extends ChangeNotifier {
     return _railwayState!;
   }
 
+  // Enable run mode
   Future<RailwayState> enableRunMode({bool virtual = false}) async {
     final current = await getRailwayState();
     if (current.isRunModeEnabled) {
@@ -78,6 +76,21 @@ class StateModel extends ChangeNotifier {
     notifyListeners();
     return _railwayState!;
   }
+
+  // Get all known blocks
+  Iterable<BlockState> blocks() => _blocks.values;
+  Future<BlockState> getBlockState(String id) async {
+    return retry(() {
+      final result = _blocks[id];
+      if (result == null) {
+        throw Exception("Block not found");
+      }
+      return result;
+    });
+  }
+
+  // Get all known locs
+  Iterable<LocState> locs() => _locs.values;
 
   // Collect state changes from the server, until the
   Future<void> _getStateChanges(bool bootstrap) async {
