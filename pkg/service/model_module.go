@@ -26,16 +26,23 @@ import (
 
 // Gets a module by ID.
 func (s *service) getModule(ctx context.Context, moduleID string) (model.Module, error) {
+	log := s.Logger.With().Str("module_id", moduleID).Logger()
 	rw, err := s.getRailway()
 	if err != nil {
+		log.Debug().Err(err).Msg("Failed to load railway")
 		return nil, err
 	}
 	modRef, ok := rw.GetModules().Get(moduleID)
 	if !ok {
+		log.Debug().Err(err).Msg("Module not found")
 		return nil, api.NotFound("Module: %s", moduleID)
 	}
-	mod := modRef.TryResolve()
+	mod, err := modRef.TryResolve()
+	if err != nil {
+		return nil, api.NotFound("Failed to resolve module '%s': %s", moduleID, err)
+	}
 	if mod == nil {
+		log.Debug().Err(err).Msg("Failed to resolve module")
 		return nil, api.NotFound("Failed to resolve module: %s", moduleID)
 	}
 	return mod, nil

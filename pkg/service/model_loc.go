@@ -34,7 +34,10 @@ func (s *service) getLoc(ctx context.Context, locID string) (model.Loc, error) {
 	if !ok {
 		return nil, api.NotFound("Loc: %s", locID)
 	}
-	loc := locRef.TryResolve()
+	loc, err := locRef.TryResolve()
+	if err != nil {
+		return nil, err
+	}
 	if loc == nil {
 		return nil, api.NotFound("Failed to resolve loc: %s", locID)
 	}

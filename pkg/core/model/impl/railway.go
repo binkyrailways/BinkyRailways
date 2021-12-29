@@ -132,7 +132,7 @@ func (r *railway) GetPredicateBuilder() model.LocPredicateBuilder {
 }
 
 // Preferred command station for BinkyNet addresses.
-func (r *railway) GetPreferredBinkyNetCommandStation() model.CommandStation {
+func (r *railway) GetPreferredBinkyNetCommandStation() (model.CommandStation, error) {
 	return r.PreferredBinkyNetCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredBinkyNetCommandStation(value model.CommandStation) error {
@@ -140,7 +140,7 @@ func (r *railway) SetPreferredBinkyNetCommandStation(value model.CommandStation)
 }
 
 // Preferred command station for DCC addresses.
-func (r *railway) GetPreferredDccCommandStation() model.CommandStation {
+func (r *railway) GetPreferredDccCommandStation() (model.CommandStation, error) {
 	return r.PreferredDccCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredDccCommandStation(value model.CommandStation) error {
@@ -148,7 +148,7 @@ func (r *railway) SetPreferredDccCommandStation(value model.CommandStation) erro
 }
 
 // Preferred command station for LocoNet addresses.
-func (r *railway) GetPreferredLocoNetCommandStation() model.CommandStation {
+func (r *railway) GetPreferredLocoNetCommandStation() (model.CommandStation, error) {
 	return r.PreferredLocoNetCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredLocoNetCommandStation(value model.CommandStation) error {
@@ -156,7 +156,7 @@ func (r *railway) SetPreferredLocoNetCommandStation(value model.CommandStation) 
 }
 
 // Preferred command station for Motorola addresses.
-func (r *railway) GetPreferredMotorolaCommandStation() model.CommandStation {
+func (r *railway) GetPreferredMotorolaCommandStation() (model.CommandStation, error) {
 	return r.PreferredMotorolaCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredMotorolaCommandStation(value model.CommandStation) error {
@@ -164,7 +164,7 @@ func (r *railway) SetPreferredMotorolaCommandStation(value model.CommandStation)
 }
 
 // Preferred command station for MFX addresses.
-func (r *railway) GetPreferredMfxCommandStation() model.CommandStation {
+func (r *railway) GetPreferredMfxCommandStation() (model.CommandStation, error) {
 	return r.PreferredMfxCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredMfxCommandStation(value model.CommandStation) error {
@@ -172,7 +172,7 @@ func (r *railway) SetPreferredMfxCommandStation(value model.CommandStation) erro
 }
 
 // Preferred command station for Mqtt addresses.
-func (r *railway) GetPreferredMqttCommandStation() model.CommandStation {
+func (r *railway) GetPreferredMqttCommandStation() (model.CommandStation, error) {
 	return r.PreferredMqttCommandStationID.TryResolve()
 }
 func (r *railway) SetPreferredMqttCommandStation(value model.CommandStation) error {

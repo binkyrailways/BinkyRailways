@@ -23,16 +23,16 @@ type ModuleConnection interface {
 	RailwayEntity
 
 	// The first module in the connection
-	GetModuleA() Module
+	GetModuleA() (Module, error)
 
 	// Edge of module A
-	GetEdgeA() Edge
+	GetEdgeA() (Edge, error)
 	SetEdgeA(value Edge) error
 
 	// The second module in the connection
-	GetModuleB() Module
+	GetModuleB() (Module, error)
 
 	// Edge of module B
-	GetEdgeB() Edge
+	GetEdgeB() (Edge, error)
 	SetEdgeB(value Edge) error
 }

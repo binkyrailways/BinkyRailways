@@ -33,7 +33,7 @@ func (jc *ActionContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	// Find xsi:Type attribute
 	a, found := FindAttr(start.Attr, "type", nsSchemaInstance)
 	if !found {
-		return fmt.Errorf("Type attribute not found in %#v", start.Attr)
+		return fmt.Errorf("Type attribute (action) not found in %#v", start.Attr)
 	}
 
 	// Create correct entity based on type

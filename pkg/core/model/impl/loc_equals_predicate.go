@@ -17,7 +17,11 @@
 
 package impl
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"fmt"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // LocEqualsPredicate extends implementation methods to model.LocEqualsPredicate
 type LocEqualsPredicate interface {
@@ -55,17 +59,20 @@ func (p *locEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 }
 
 // Gets/Sets the loc to compare to.
-func (p *locEqualsPredicate) GetLoc() model.Loc {
+func (p *locEqualsPredicate) GetLoc() (model.Loc, error) {
 	if p.LocID == "" {
-		return nil
+		return nil, nil
 	}
 	m, ok := p.GetModule().(Module)
-	if !ok || m == nil {
-		return nil
+	if !ok {
+		return nil, fmt.Errorf("module is not of type Module")
+	}
+	if m == nil {
+		return nil, fmt.Errorf("module is nil")
 	}
 	pkg := m.GetPackage()
 	if pkg == nil {
-		return nil
+		return nil, fmt.Errorf("package is nil")
 	}
 	return pkg.GetLoc(p.LocID)
 }

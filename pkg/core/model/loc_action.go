@@ -23,6 +23,6 @@ type LocAction interface {
 
 	// Gets/sets the specific loc to use.
 	// When no loc is set, the loc is taken from the context.
-	GetLoc() Loc
+	GetLoc() (Loc, error)
 	SetLoc(value Loc) error
 }

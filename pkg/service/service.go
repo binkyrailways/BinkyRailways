@@ -83,6 +83,9 @@ func (s *service) openRailway(path string) error {
 		s.Logger.Error().Err(err).Str("path", path).Msg("Failed to load railway")
 		return err
 	}
+	pkg.OnError().Add(func(i interface{}) {
+		s.Logger.Error().Msgf("%v", i)
+	})
 	s.railway = pkg.GetRailway()
 	return nil
 }

@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -133,13 +134,16 @@ func (bs *groupLocRefSet) CopyTo(destination model.LocRefSet) {
 }
 
 // Try to resolve the given id into a loc.
-func (bs *groupLocRefSet) tryResolve(id string) model.Loc {
+func (bs *groupLocRefSet) tryResolve(id string) (model.Loc, error) {
+	if id == "" {
+		return nil, nil
+	}
 	rw := bs.GetRailway()
 	if rw == nil {
-		return nil
+		return nil, fmt.Errorf("railway is nil")
 	}
 	if lr, ok := rw.GetLocs().Get(id); ok {
 		return lr.TryResolve()
 	}
-	return nil
+	return nil, fmt.Errorf("Loc '%s' not found", id)
 }

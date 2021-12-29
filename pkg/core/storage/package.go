@@ -203,33 +203,35 @@ func (p *packageImpl) AddNewP50xCommandStation() (model.P50xCommandStation, erro
 
 // Load a command station by it's id.
 // <returns>Null if not found</returns>
-func (p *packageImpl) GetCommandStation(id string) model.CommandStation {
+func (p *packageImpl) GetCommandStation(id string) (model.CommandStation, error) {
 	entity, err := p.ReadEntity(impl.PackageFolderCommandStation, id)
 	if err != nil {
 		p.onError.Invoke(err)
-		return nil
+		return nil, err
 	}
 	if entity == nil {
-		return nil
+		return nil, fmt.Errorf("entity is nil")
 	}
 	if result, ok := entity.(model.CommandStation); ok {
-		return result
+		return result, nil
 	}
 	p.onError.Invoke("Entity is not of type CommandStation")
-	return nil
+	return nil, fmt.Errorf("Entity is not of type CommandStation")
 
 }
 
 // Get all command stations
-func (p *packageImpl) ForEachCommandStation(cb func(model.CommandStation)) {
+func (p *packageImpl) ForEachCommandStation(cb func(model.CommandStation)) error {
 	for uri := range p.parts {
 		if result, id := uriHasFolder(uri, impl.PackageFolderCommandStation); result {
-			cs := p.GetCommandStation(id)
-			if cs != nil {
+			if cs, err := p.GetCommandStation(id); err != nil {
+				return err
+			} else if cs != nil {
 				cb(cs)
 			}
 		}
 	}
+	return nil
 }
 
 // Add a new loc.
@@ -243,32 +245,35 @@ func (p *packageImpl) AddNewLoc() (model.Loc, error) {
 
 // Load a loc by it's id.
 // <returns>Null if not found</returns>
-func (p *packageImpl) GetLoc(id string) model.Loc {
+func (p *packageImpl) GetLoc(id string) (model.Loc, error) {
 	entity, err := p.ReadEntity(impl.PackageFolderLoc, id)
 	if err != nil {
 		p.onError.Invoke(err)
-		return nil
+		return nil, err
 	}
 	if entity == nil {
-		return nil
+		return nil, fmt.Errorf("entity is nil")
 	}
 	if result, ok := entity.(model.Loc); ok {
-		return result
+		return result, nil
 	}
 	p.onError.Invoke("Entity is not of type Loc")
-	return nil
+	return nil, fmt.Errorf("Entity is not of type Loc")
 }
 
 // Get all locs
-func (p *packageImpl) ForEachLoc(cb func(model.Loc)) {
+func (p *packageImpl) ForEachLoc(cb func(model.Loc)) error {
 	for uri := range p.parts {
 		if result, id := uriHasFolder(uri, impl.PackageFolderLoc); result {
-			loc := p.GetLoc(id)
-			if loc != nil {
+			loc, err := p.GetLoc(id)
+			if err != nil {
+				return err
+			} else if loc != nil {
 				cb(loc)
 			}
 		}
 	}
+	return nil
 }
 
 // Add a new module.
@@ -282,32 +287,34 @@ func (p *packageImpl) AddNewModule() (model.Module, error) {
 
 // Load a module by it's id.
 // <returns>Null if not found</returns>
-func (p *packageImpl) GetModule(id string) model.Module {
+func (p *packageImpl) GetModule(id string) (model.Module, error) {
 	entity, err := p.ReadEntity(impl.PackageFolderModule, id)
 	if err != nil {
 		p.onError.Invoke(fmt.Sprintf("ReadEntity: %v", err))
-		return nil
+		return nil, err
 	}
 	if entity == nil {
-		return nil
+		return nil, fmt.Errorf("Entity not found")
 	}
 	if result, ok := entity.(model.Module); ok {
-		return result
+		return result, nil
 	}
 	p.onError.Invoke("Entity is not of type Module")
-	return nil
+	return nil, fmt.Errorf("Entity not of type Module")
 }
 
 // Get all modules
-func (p *packageImpl) ForEachModule(cb func(model.Module)) {
+func (p *packageImpl) ForEachModule(cb func(model.Module)) error {
 	for uri := range p.parts {
 		if result, id := uriHasFolder(uri, impl.PackageFolderModule); result {
-			module := p.GetModule(id)
-			if module != nil {
+			if module, err := p.GetModule(id); err != nil {
+				return err
+			} else if module != nil {
 				cb(module)
 			}
 		}
 	}
+	return nil
 }
 
 // Gets the ID's of all generic parts that belong to the given entity.

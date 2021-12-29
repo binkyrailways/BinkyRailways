@@ -50,30 +50,30 @@ type Package interface {
 
 	// Load a command station by it's id.
 	// <returns>Null if not found</returns>
-	GetCommandStation(id string) CommandStation
+	GetCommandStation(id string) (CommandStation, error)
 
 	// Get all command stations
-	ForEachCommandStation(func(CommandStation))
+	ForEachCommandStation(func(CommandStation)) error
 
 	// Add a new loc.
 	AddNewLoc() (Loc, error)
 
 	// Load a loc by it's id.
 	// <returns>Null if not found</returns>
-	GetLoc(id string) Loc
+	GetLoc(id string) (Loc, error)
 
 	// Get all locs
-	ForEachLoc(func(Loc))
+	ForEachLoc(func(Loc)) error
 
 	// Add a new module.
 	AddNewModule() (Module, error)
 
 	// Load a module by it's id.
 	// <returns>Null if not found</returns>
-	GetModule(id string) Module
+	GetModule(id string) (Module, error)
 
 	// Get all modules
-	ForEachModule(func(Module))
+	ForEachModule(func(Module)) error
 
 	// Gets the ID's of all generic parts that belong to the given entity.
 	GetGenericPartIDs(entity PersistentEntity) []string

@@ -22,10 +22,11 @@ import '../api/generated/br_model_types.pb.dart' as mapi;
 class EntityComponent extends PositionComponent {
   // Load the given position into this component
   void loadPosition(mapi.Position position) {
-    x = position.x.toDouble();
-    y = position.y.toDouble();
+    anchor = Anchor.center;
     width = position.width.toDouble();
     height = position.height.toDouble();
+    x = position.x.toDouble() + width / 2;
+    y = position.y.toDouble() + height / 2;
     angle = radians(position.rotation.toDouble());
   }
 }

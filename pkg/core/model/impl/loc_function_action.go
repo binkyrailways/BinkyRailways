@@ -54,7 +54,8 @@ func (a *locFunctionAction) Accept(v model.EntityVisitor) interface{} {
 
 func (a *locFunctionAction) Clone() model.Action {
 	c := newLocFunctionAction()
-	c.SetLoc(a.GetLoc())
+	l, _ := a.GetLoc()
+	c.SetLoc(l)
 	c.Function = a.GetFunction()
 	c.Command = a.GetCommand()
 	return c

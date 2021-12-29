@@ -31,5 +31,5 @@ type ModuleRef interface {
 
 	// Try to resolve the module reference.
 	// Returns non-nil Module or nil if not found.
-	TryResolve() Module
+	TryResolve() (Module, error)
 }

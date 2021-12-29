@@ -56,15 +56,19 @@ func (mc *moduleConnection) Accept(v model.EntityVisitor) interface{} {
 }
 
 // The first module in the connection
-func (mc *moduleConnection) GetModuleA() model.Module {
+func (mc *moduleConnection) GetModuleA() (model.Module, error) {
 	id := refs.StringValue(mc.ModuleIDA, "")
 	return mc.tryResolveModule(id)
 }
 
 // Edge of module A
-func (mc *moduleConnection) GetEdgeA() model.Edge {
+func (mc *moduleConnection) GetEdgeA() (model.Edge, error) {
 	id := refs.StringValue(mc.EdgeIDA, "")
-	return mc.tryResolveEdge(id, mc.GetModuleA())
+	mod, err := mc.GetModuleA()
+	if err != nil {
+		return nil, err
+	}
+	return mc.tryResolveEdge(id, mod)
 }
 func (mc *moduleConnection) SetEdgeA(value model.Edge) error {
 	id := ""
@@ -85,15 +89,19 @@ func (mc *moduleConnection) SetEdgeA(value model.Edge) error {
 }
 
 // The second module in the connection
-func (mc *moduleConnection) GetModuleB() model.Module {
+func (mc *moduleConnection) GetModuleB() (model.Module, error) {
 	id := refs.StringValue(mc.ModuleIDB, "")
 	return mc.tryResolveModule(id)
 }
 
 // Edge of module B
-func (mc *moduleConnection) GetEdgeB() model.Edge {
+func (mc *moduleConnection) GetEdgeB() (model.Edge, error) {
 	id := refs.StringValue(mc.EdgeIDB, "")
-	return mc.tryResolveEdge(id, mc.GetModuleB())
+	mod, err := mc.GetModuleB()
+	if err != nil {
+		return nil, err
+	}
+	return mc.tryResolveEdge(id, mod)
 }
 func (mc *moduleConnection) SetEdgeB(value model.Edge) error {
 	id := ""
@@ -114,27 +122,30 @@ func (mc *moduleConnection) SetEdgeB(value model.Edge) error {
 }
 
 // Try to resolve a module ID into a module
-func (mc *moduleConnection) tryResolveModule(id string) model.Module {
+func (mc *moduleConnection) tryResolveModule(id string) (model.Module, error) {
 	if id == "" {
-		return nil
+		return nil, fmt.Errorf("empty module id")
 	}
 	rw := mc.GetRailway()
 	if rw == nil {
-		return nil
+		return nil, fmt.Errorf("railway is nil")
 	}
 	if mr, ok := rw.GetModules().Get(id); ok {
 		return mr.TryResolve()
 	}
-	return nil
+	return nil, fmt.Errorf("module '%s' not found", id)
 }
 
 // Try to resolve an edge ID in the context of a module into an edge
-func (mc *moduleConnection) tryResolveEdge(id string, module model.Module) model.Edge {
-	if id == "" || module == nil {
-		return nil
+func (mc *moduleConnection) tryResolveEdge(id string, module model.Module) (model.Edge, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id empty")
+	}
+	if module == nil {
+		return nil, fmt.Errorf("module nil")
 	}
 	if e, ok := module.GetEdges().Get(id); ok {
-		return e
+		return e, nil
 	}
-	return nil
+	return nil, fmt.Errorf("edge '%s' not found", id)
 }

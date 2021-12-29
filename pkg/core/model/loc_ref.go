@@ -24,5 +24,5 @@ type LocRef interface {
 
 	// Try to resolve the loc reference.
 	// Returns non-nil Loc or nil if not found.
-	TryResolve() Loc
+	TryResolve() (Loc, error)
 }

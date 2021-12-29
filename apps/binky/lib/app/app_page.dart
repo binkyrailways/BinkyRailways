@@ -23,6 +23,7 @@ import '../api/generated/br_state_types.pb.dart';
 
 import '../editor/editor_page.dart';
 import '../run/run_page.dart';
+import '../components/error_message.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({Key? key}) : super(key: key);
@@ -39,6 +40,16 @@ class _AppPageState extends State<AppPage> {
           future: state.getRailwayState(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
+              final List<Widget> children = snapshot.hasError
+                  ? [
+                      ErrorMessage(
+                          title: "Failed to load railway state",
+                          error: snapshot.error)
+                    ]
+                  : [
+                      const Text('Loading railway state...'),
+                      const CircularProgressIndicator(value: null)
+                    ];
               return Scaffold(
                 appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
@@ -48,10 +59,7 @@ class _AppPageState extends State<AppPage> {
                 body: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Text('Loading railway state...'),
-                      CircularProgressIndicator(value: null),
-                    ],
+                    children: children,
                   ),
                 ),
               );

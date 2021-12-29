@@ -58,7 +58,8 @@ func tzlTests(t *testing.T, p model.Package) {
 
 	// Load Loc
 	t.Run("Load loc", func(t *testing.T) {
-		l := p.GetLoc("79881cff-da67-4422-bf03-8d593984bdac")
+		l, err := p.GetLoc("79881cff-da67-4422-bf03-8d593984bdac")
+		require.NoError(t, err)
 		require.NotNil(t, l)
 		assert.Equal(t, model.AddressTypeDcc, l.GetAddress().Network.Type)
 		assert.Equal(t, "62", l.GetAddress().Value)
@@ -77,7 +78,8 @@ func tzlTests(t *testing.T, p model.Package) {
 	})
 
 	// Load module
-	m := p.GetModule("cfd620a5-a5e8-40f1-baa4-fd6efb2b8907")
+	m, err := p.GetModule("cfd620a5-a5e8-40f1-baa4-fd6efb2b8907")
+	require.NoError(t, err)
 	require.NotNil(t, m, "Module")
 	t.Run("Load module", func(t *testing.T) {
 		assert.Equal(t, "De baan", m.GetDescription())
@@ -314,7 +316,8 @@ func tzlTests(t *testing.T, p model.Package) {
 
 	// Load command station
 	t.Run("Test CommandStation", func(t *testing.T) {
-		cs := p.GetCommandStation("bbd872a1-2a81-4539-b9ed-f7ce0ac2cede")
+		cs, err := p.GetCommandStation("bbd872a1-2a81-4539-b9ed-f7ce0ac2cede")
+		require.NoError(t, err)
 		require.NotNil(t, cs)
 		lbcs, ok := cs.(model.LocoBufferCommandStation)
 		assert.True(t, ok)
@@ -327,7 +330,8 @@ func tzlTests(t *testing.T, p model.Package) {
 	t.Run("Foreach CommandStation", func(t *testing.T) {
 		p.GetRailway().GetCommandStations().ForEach(func(r model.CommandStationRef) {
 			assert.NotEmpty(t, r.GetID())
-			cs := r.TryResolve()
+			cs, err := r.TryResolve()
+			require.NoError(t, err)
 			require.NotNil(t, cs, r.GetID())
 		})
 	})
@@ -336,7 +340,8 @@ func tzlTests(t *testing.T, p model.Package) {
 	t.Run("Foreach module in railway", func(t *testing.T) {
 		p.GetRailway().GetModules().ForEach(func(mr model.ModuleRef) {
 			assert.NotEmpty(t, r.GetID())
-			m := mr.TryResolve()
+			m, err := mr.TryResolve()
+			require.NoError(t, err)
 			require.NotNil(t, m)
 			assert.Equal(t, mr.GetID(), m.GetID())
 		})
@@ -350,7 +355,8 @@ func tzlTests(t *testing.T, p model.Package) {
 		require.NotNil(t, mr)
 		assert.Equal(t, 16, mr.GetX())
 		assert.Equal(t, 17, mr.GetY())
-		m = mr.TryResolve()
+		m, err = mr.TryResolve()
+		require.NoError(t, err)
 		require.NotNil(t, m)
 		assert.Equal(t, "De baan", m.GetDescription())
 		assert.Equal(t, 30, m.GetBlocks().GetCount())
@@ -364,7 +370,8 @@ func tzlTests(t *testing.T, p model.Package) {
 	})
 
 	// Test loc functions
-	l := p.GetLoc("4ccbb1c1-9d52-4bac-995f-fadae3fa6759")
+	l, err := p.GetLoc("4ccbb1c1-9d52-4bac-995f-fadae3fa6759")
+	require.NoError(t, err)
 	t.Run("Test loc functions", func(t *testing.T) {
 		require.NotNil(t, l)
 		assert.Equal(t, 1, l.GetFunctions().GetCount())
