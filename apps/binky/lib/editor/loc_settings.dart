@@ -26,6 +26,7 @@ import 'package:binky/models/model_model.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:binky/editor/editor_context.dart';
 import '../components/settings_textfield.dart';
+import '../components/scrollable_form.dart';
 
 class LocSettings extends StatelessWidget {
   const LocSettings({Key? key}) : super(key: key);
@@ -105,8 +106,7 @@ class _LocSettingsState extends State<_LocSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _scrollController,
+    return ScrollableForm(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
