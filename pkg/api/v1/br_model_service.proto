@@ -47,6 +47,11 @@ service ModelService {
   // Update a loc by ID.
   rpc UpdateLoc(Loc) returns (Loc);
 
+  // Gets a command station by ID.
+  rpc GetCommandStation(IDRequest) returns (CommandStation);
+  // Update a command station  by ID.
+  rpc UpdateCommandStation(CommandStation) returns (CommandStation);
+
   // Gets a block by ID.
   rpc GetBlock(IDRequest) returns (Block);
   // Update a block by ID.

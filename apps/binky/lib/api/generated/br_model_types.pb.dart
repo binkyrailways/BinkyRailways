@@ -96,6 +96,7 @@ class Railway extends $pb.GeneratedMessage {
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dirty')
     ..pc<ModuleRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modules', $pb.PbFieldType.PM, subBuilder: ModuleRef.create)
     ..pc<LocRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: LocRef.create)
+    ..pc<CommandStationRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, protoName: 'commandStations', subBuilder: CommandStationRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -106,6 +107,7 @@ class Railway extends $pb.GeneratedMessage {
     $core.bool? dirty,
     $core.Iterable<ModuleRef>? modules,
     $core.Iterable<LocRef>? locs,
+    $core.Iterable<CommandStationRef>? commandStations,
   }) {
     final _result = create();
     if (id != null) {
@@ -122,6 +124,9 @@ class Railway extends $pb.GeneratedMessage {
     }
     if (locs != null) {
       _result.locs.addAll(locs);
+    }
+    if (commandStations != null) {
+      _result.commandStations.addAll(commandStations);
     }
     return _result;
   }
@@ -178,6 +183,9 @@ class Railway extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(101)
   $core.List<LocRef> get locs => $_getList(4);
+
+  @$pb.TagNumber(102)
+  $core.List<CommandStationRef> get commandStations => $_getList(5);
 }
 
 class Module extends $pb.GeneratedMessage {
@@ -708,6 +716,114 @@ class LocRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static LocRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocRef>(create);
   static LocRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class CommandStation extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..hasRequiredFields = false
+  ;
+
+  CommandStation._() : super();
+  factory CommandStation({
+    $core.String? id,
+    $core.String? description,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    return _result;
+  }
+  factory CommandStation.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CommandStation.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CommandStation clone() => CommandStation()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CommandStation copyWith(void Function(CommandStation) updates) => super.copyWith((message) => updates(message as CommandStation)) as CommandStation; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CommandStation create() => CommandStation._();
+  CommandStation createEmptyInstance() => create();
+  static $pb.PbList<CommandStation> createRepeated() => $pb.PbList<CommandStation>();
+  @$core.pragma('dart2js:noInline')
+  static CommandStation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandStation>(create);
+  static CommandStation? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+}
+
+class CommandStationRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStationRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  CommandStationRef._() : super();
+  factory CommandStationRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory CommandStationRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CommandStationRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CommandStationRef clone() => CommandStationRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CommandStationRef copyWith(void Function(CommandStationRef) updates) => super.copyWith((message) => updates(message as CommandStationRef)) as CommandStationRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CommandStationRef create() => CommandStationRef._();
+  CommandStationRef createEmptyInstance() => create();
+  static $pb.PbList<CommandStationRef> createRepeated() => $pb.PbList<CommandStationRef>();
+  @$core.pragma('dart2js:noInline')
+  static CommandStationRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandStationRef>(create);
+  static CommandStationRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

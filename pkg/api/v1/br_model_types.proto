@@ -42,6 +42,8 @@ message Railway {
   repeated ModuleRef modules = 100;
   // Locs visible on this railway
   repeated LocRef locs = 101;
+  // Command stations visible on this railway;
+  repeated CommandStationRef commandStations = 102;
 }
 
 // Module of a railway
@@ -142,6 +144,18 @@ message Loc {
 // Reference to a loc
 message LocRef {
   // ID of the loc
+  string id = 1;
+}
+
+message CommandStation {
+  // ID of the command station
+  string id = 1;
+  // Description of the command station
+  string description = 2;
+}
+
+message CommandStationRef {
+  // ID of the command station
   string id = 1;
 }
 

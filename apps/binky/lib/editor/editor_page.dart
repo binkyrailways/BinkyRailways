@@ -26,6 +26,8 @@ import '../api/generated/br_model_types.pb.dart';
 import './editor_context.dart';
 import './block_settings.dart';
 import './blocks_tree.dart';
+import './command_station_settings.dart';
+import './command_stations_tree.dart';
 import './loc_settings.dart';
 import './locs_tree.dart';
 import './module_settings.dart';
@@ -126,6 +128,16 @@ class _EditorPageState extends State<EditorPage> {
         return const SplitView(
           menu: LocsTree(),
           content: LocSettings(),
+        );
+      case EntityType.commandstations:
+        return const SplitView(
+          menu: RailwayTree(),
+          content: CommandStationsTree(),
+        );
+      case EntityType.commandstation:
+        return const SplitView(
+          menu: CommandStationsTree(),
+          content: CommandStationSettings(),
         );
       case EntityType.blocks:
         return const SplitView(

@@ -70,7 +70,8 @@ class RailwayTree extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.computer),
-                    title: const Text("Command stations"),
+                    title:
+                        Text("Command stations (${rw.commandStations.length})"),
                     selected: selector.entityType == EntityType.commandstations,
                     onTap: () => editorCtx.select(
                         EntitySelector.railway(EntityType.commandstations)),

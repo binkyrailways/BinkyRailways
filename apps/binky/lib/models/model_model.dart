@@ -31,6 +31,7 @@ class ModelModel extends ChangeNotifier {
   final Map<int, ui.Image> _images = {};
   final Map<String, ui.Image> _moduleBackgroundImages = {};
   final Map<String, mapi.Loc> _locs = {};
+  final Map<String, mapi.CommandStation> _commandStations = {};
   final Map<String, mapi.Block> _blocks = {};
 
   ModelModel();
@@ -153,6 +154,32 @@ class ModelModel extends ChangeNotifier {
     var modelClient = APIClient().modelClient();
     var updated = await modelClient.updateLoc(value);
     _locs[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a CommandStation by ID from cache
+  mapi.CommandStation? getCachedCommandStation(String id) =>
+      _commandStations[id];
+
+  // Gets a CommandStation by ID
+  Future<mapi.CommandStation> getCommandStation(String id) async {
+    var result = _commandStations[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = APIClient().modelClient();
+    result = await modelClient.getCommandStation(IDRequest(id: id));
+    _commandStations[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given CommandStation
+  Future<void> updateCommandStation(mapi.CommandStation value) async {
+    var modelClient = APIClient().modelClient();
+    var updated = await modelClient.updateCommandStation(value);
+    _commandStations[updated.id] = updated;
     notifyListeners();
   }
 

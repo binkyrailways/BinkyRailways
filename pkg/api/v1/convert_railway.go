@@ -45,6 +45,12 @@ func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
 			Id: lr.GetID(),
 		})
 	})
+	// CommandStation refs
+	src.GetCommandStations().ForEach(func(csr model.CommandStationRef) {
+		dst.CommandStations = append(dst.CommandStations, &CommandStationRef{
+			Id: csr.GetID(),
+		})
+	})
 	return nil
 }
 
