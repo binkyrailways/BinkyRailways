@@ -15,13 +15,11 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/editor/railway_tree.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/model_model.dart';
-import '../../models/state_model.dart';
+import '../../models.dart';
 
 import 'railway_game.dart';
 

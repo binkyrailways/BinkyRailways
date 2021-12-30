@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../components.dart';
-import 'package:binky/models/model_model.dart';
+import '../models.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 
 class RailwaySettings extends StatefulWidget {

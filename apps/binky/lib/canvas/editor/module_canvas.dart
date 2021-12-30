@@ -19,7 +19,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/model_model.dart';
+import '../../models.dart';
 import '../../editor/editor_context.dart';
 
 import 'module_game.dart';

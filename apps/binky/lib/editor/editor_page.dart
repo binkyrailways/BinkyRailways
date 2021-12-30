@@ -19,8 +19,7 @@ import '../components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/model_model.dart';
-import 'package:binky/models/state_model.dart';
+import '../models.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 import './editor_context.dart';

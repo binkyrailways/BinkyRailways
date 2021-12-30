@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components.dart';
-import 'package:binky/models/model_model.dart';
+import '../models.dart';
 import '../api/generated/br_model_types.pb.dart';
 
 class ModulesTree extends StatelessWidget {

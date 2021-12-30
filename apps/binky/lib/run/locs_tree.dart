@@ -19,7 +19,7 @@ import 'package:binky/run/run_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/state_model.dart';
+import '../models.dart';
 
 class LocsTree extends StatelessWidget {
   const LocsTree({Key? key}) : super(key: key);

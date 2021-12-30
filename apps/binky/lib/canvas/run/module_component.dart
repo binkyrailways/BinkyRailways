@@ -17,8 +17,7 @@
 
 import '../module_component.dart' as common;
 import '../../api/generated/br_model_types.pb.dart' as mapi;
-import '../../models/model_model.dart';
-import '../../models/state_model.dart';
+import '../../models.dart';
 import './block_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {

@@ -18,7 +18,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/state_model.dart';
+import '../models.dart';
 import '../api/generated/br_state_types.pb.dart';
 
 class PowerPane extends StatelessWidget {

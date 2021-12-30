@@ -15,7 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:flame/components.dart' as fc;
@@ -23,8 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
 
 import 'entity_component.dart';
+import '../models.dart';
 import '../api/generated/br_model_types.pb.dart' as mapi;
-import '../../models/model_model.dart';
 
 class ModuleComponent extends EntityComponent {
   final mapi.Module model;

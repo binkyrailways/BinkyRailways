@@ -18,8 +18,7 @@
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 
-import '../../models/model_model.dart';
-import '../../models/state_model.dart';
+import '../../models.dart';
 
 import 'module_component.dart';
 

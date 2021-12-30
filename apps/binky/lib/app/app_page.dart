@@ -18,10 +18,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:binky/models/state_model.dart';
 import '../api/generated/br_state_types.pb.dart';
 
 import '../components.dart';
+import '../models.dart';
 import '../editor/editor_page.dart';
 import '../run/run_page.dart';
 

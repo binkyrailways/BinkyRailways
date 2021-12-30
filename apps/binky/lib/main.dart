@@ -18,8 +18,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'models/model_model.dart';
-import 'models/state_model.dart';
+import '../models.dart';
 import "app/app_page.dart";
 
 void main() {
