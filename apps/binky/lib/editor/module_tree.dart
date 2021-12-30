@@ -64,6 +64,28 @@ class ModuleTree extends StatelessWidget {
                     onTap: () => editorCtx.select(
                         EntitySelector.module(EntityType.blocks, moduleId)),
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.alt_route),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Junctions (${rw.junctions.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.junctions,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.module(EntityType.junctions, moduleId)),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.check_box),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Outputs (${rw.outputs.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.outputs,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.module(EntityType.outputs, moduleId)),
+                  ),
                 ],
               );
             });

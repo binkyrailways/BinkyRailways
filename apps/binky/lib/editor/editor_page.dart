@@ -27,6 +27,8 @@ import './block_settings.dart';
 import './blocks_tree.dart';
 import './command_station_settings.dart';
 import './command_stations_tree.dart';
+import './junction_settings.dart';
+import './junctions_tree.dart';
 import './loc_settings.dart';
 import './locs_tree.dart';
 import './loc_group_settings.dart';
@@ -34,6 +36,8 @@ import './loc_groups_tree.dart';
 import './module_settings.dart';
 import './module_tree.dart';
 import './modules_tree.dart';
+import './output_settings.dart';
+import './outputs_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
 import '../canvas/editor/module_canvas.dart';
@@ -159,6 +163,28 @@ class _EditorPageState extends State<EditorPage> {
           menu: BlocksTree(),
           content: ModuleCanvas(),
           endMenu: BlockSettings(),
+        );
+      case EntityType.junctions:
+        return const SplitView(
+          menu: JunctionsTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.junction:
+        return const SplitView(
+          menu: JunctionsTree(),
+          content: ModuleCanvas(),
+          endMenu: JunctionSettings(),
+        );
+      case EntityType.outputs:
+        return const SplitView(
+          menu: OutputsTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.output:
+        return const SplitView(
+          menu: OutputsTree(),
+          content: ModuleCanvas(),
+          endMenu: OutputSettings(),
         );
       default:
         return const Center(child: Text("No selection"));

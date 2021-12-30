@@ -63,6 +63,10 @@ message Module {
 
   // Blocks of this module
   repeated BlockRef blocks = 100;
+  // Junctions of this module
+  repeated JunctionRef junctions = 101;
+  // Outputs of this module
+  repeated OutputRef outputs = 102;
 }
 
 // Reference to a module
@@ -188,5 +192,41 @@ message Block {
 // Reference to a Block
 message BlockRef {
   // ID of the block
+  string id = 1;
+}
+
+// Junction on the track
+message Junction {
+  // ID of the Junction
+  string id = 1;
+  // Description of the Junction
+  string description = 2;
+  // ID of the module containing the Junction
+  string module_id = 3;
+  // Position of the Junction
+  Position position = 4;
+}
+
+// Reference to a Junction
+message JunctionRef {
+  // ID of the Junction
+  string id = 1;
+}
+
+// Output on the track
+message Output {
+  // ID of the Output
+  string id = 1;
+  // Description of the Output
+  string description = 2;
+  // ID of the module containing the Output
+  string module_id = 3;
+  // Position of the Output
+  Position position = 4;
+}
+
+// Reference to a Output
+message OutputRef {
+  // ID of the Output
   string id = 1;
 }

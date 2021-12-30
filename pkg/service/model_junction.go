@@ -23,9 +23,9 @@ import (
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 )
 
-// Gets a block by ID.
-func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+// Gets a Junction by ID.
+func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Junction, error) {
+	moduleID, junctionID, err := api.SplitModuleEntityID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -33,20 +33,20 @@ func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 	if err != nil {
 		return nil, err
 	}
-	block, ok := mod.GetBlocks().Get(blockID)
+	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound(junctionID)
 	}
-	var result api.Block
-	if err := result.FromModel(ctx, block); err != nil {
+	var result api.Junction
+	if err := result.FromModel(ctx, junction); err != nil {
 		return nil, err
 	}
 	return &result, nil
 }
 
-// Update a block by ID.
-func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+// Update a loc by ID.
+func (s *service) UpdateJunction(ctx context.Context, req *api.Junction) (*api.Junction, error) {
+	moduleID, junctionID, err := api.SplitModuleEntityID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -54,15 +54,15 @@ func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, 
 	if err != nil {
 		return nil, err
 	}
-	block, ok := mod.GetBlocks().Get(blockID)
+	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound(junctionID)
 	}
-	if err := req.ToModel(ctx, block); err != nil {
+	if err := req.ToModel(ctx, junction); err != nil {
 		return nil, err
 	}
-	var result api.Block
-	if err := result.FromModel(ctx, block); err != nil {
+	var result api.Junction
+	if err := result.FromModel(ctx, junction); err != nil {
 		return nil, err
 	}
 	return &result, nil

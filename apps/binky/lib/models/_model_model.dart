@@ -31,6 +31,8 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.LocGroup> _locGroups = {};
   final Map<String, mapi.CommandStation> _commandStations = {};
   final Map<String, mapi.Block> _blocks = {};
+  final Map<String, mapi.Junction> _junctions = {};
+  final Map<String, mapi.Output> _outputs = {};
 
   ModelModel();
 
@@ -229,6 +231,56 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlock(value);
     _blocks[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a Junction by ID from cache
+  mapi.Junction? getCachedJunction(String id) => _junctions[id];
+
+  // Gets a Junction by ID
+  Future<mapi.Junction> getJunction(String id) async {
+    var result = _junctions[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getJunction(mapi.IDRequest(id: id));
+    _junctions[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given Junction
+  Future<void> updateJunction(mapi.Junction value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateJunction(value);
+    _junctions[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a Output by ID from cache
+  mapi.Output? getCachedOutput(String id) => _outputs[id];
+
+  // Gets a Output by ID
+  Future<mapi.Output> getOutput(String id) async {
+    var result = _outputs[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getOutput(mapi.IDRequest(id: id));
+    _outputs[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given Output
+  Future<void> updateOutput(mapi.Output value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateOutput(value);
+    _outputs[updated.id] = updated;
     notifyListeners();
   }
 }

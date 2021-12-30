@@ -23,9 +23,9 @@ import (
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 )
 
-// Gets a block by ID.
-func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+// Gets a Output by ID.
+func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Output, error) {
+	moduleID, outputID, err := api.SplitModuleEntityID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -33,20 +33,20 @@ func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 	if err != nil {
 		return nil, err
 	}
-	block, ok := mod.GetBlocks().Get(blockID)
+	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound(outputID)
 	}
-	var result api.Block
-	if err := result.FromModel(ctx, block); err != nil {
+	var result api.Output
+	if err := result.FromModel(ctx, output); err != nil {
 		return nil, err
 	}
 	return &result, nil
 }
 
-// Update a block by ID.
-func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+// Update a Output by ID.
+func (s *service) UpdateOutput(ctx context.Context, req *api.Output) (*api.Output, error) {
+	moduleID, outputID, err := api.SplitModuleEntityID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -54,15 +54,15 @@ func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, 
 	if err != nil {
 		return nil, err
 	}
-	block, ok := mod.GetBlocks().Get(blockID)
+	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound(outputID)
 	}
-	if err := req.ToModel(ctx, block); err != nil {
+	if err := req.ToModel(ctx, output); err != nil {
 		return nil, err
 	}
-	var result api.Block
-	if err := result.FromModel(ctx, block); err != nil {
+	var result api.Output
+	if err := result.FromModel(ctx, output); err != nil {
 		return nil, err
 	}
 	return &result, nil

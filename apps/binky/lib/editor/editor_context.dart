@@ -30,6 +30,10 @@ enum EntityType {
   commandstation,
   block,
   blocks,
+  junction,
+  junctions,
+  output,
+  outputs,
 }
 
 class EntitySelector {
@@ -39,6 +43,8 @@ class EntitySelector {
   final String? locGroupId;
   final String? commandStationId;
   final String? blockId;
+  final String? junctionId;
+  final String? outputId;
 
   EntitySelector.initial()
       : entityType = EntityType.unknown,
@@ -46,43 +52,71 @@ class EntitySelector {
         locId = null,
         locGroupId = null,
         commandStationId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.railway(this.entityType)
       : moduleId = null,
         locId = null,
         locGroupId = null,
         commandStationId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.module(this.entityType, this.moduleId)
       : locId = null,
         locGroupId = null,
         commandStationId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.loc(this.entityType, this.locId)
       : moduleId = null,
         locGroupId = null,
         commandStationId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.locGroup(this.entityType, this.locGroupId)
       : moduleId = null,
         locId = null,
         commandStationId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.commandStation(this.entityType, this.commandStationId)
       : moduleId = null,
         locId = null,
         locGroupId = null,
-        blockId = null;
+        blockId = null,
+        junctionId = null,
+        outputId = null;
 
   EntitySelector.block(this.entityType, this.moduleId, this.blockId)
       : locId = null,
         locGroupId = null,
-        commandStationId = null;
+        commandStationId = null,
+        junctionId = null,
+        outputId = null;
+
+  EntitySelector.junction(this.entityType, this.moduleId, this.junctionId)
+      : locId = null,
+        locGroupId = null,
+        commandStationId = null,
+        blockId = null,
+        outputId = null;
+
+  EntitySelector.output(this.entityType, this.moduleId, this.outputId)
+      : locId = null,
+        locGroupId = null,
+        commandStationId = null,
+        blockId = null,
+        junctionId = null;
 
   EntitySelector back() {
     switch (entityType) {
@@ -103,6 +137,14 @@ class EntitySelector {
         return EntitySelector.module(EntityType.module, moduleId);
       case EntityType.block:
         return EntitySelector.module(EntityType.blocks, moduleId);
+      case EntityType.junctions:
+        return EntitySelector.module(EntityType.module, moduleId);
+      case EntityType.junction:
+        return EntitySelector.module(EntityType.junctions, moduleId);
+      case EntityType.outputs:
+        return EntitySelector.module(EntityType.module, moduleId);
+      case EntityType.output:
+        return EntitySelector.module(EntityType.outputs, moduleId);
       default:
         return this;
     }

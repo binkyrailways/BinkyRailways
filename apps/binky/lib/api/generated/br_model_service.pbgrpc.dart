@@ -80,6 +80,22 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateBlock',
       ($1.Block value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Block.fromBuffer(value));
+  static final _$getJunction = $grpc.ClientMethod<$0.IDRequest, $1.Junction>(
+      '/binkyrailways.v1.ModelService/GetJunction',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Junction.fromBuffer(value));
+  static final _$updateJunction = $grpc.ClientMethod<$1.Junction, $1.Junction>(
+      '/binkyrailways.v1.ModelService/UpdateJunction',
+      ($1.Junction value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Junction.fromBuffer(value));
+  static final _$getOutput = $grpc.ClientMethod<$0.IDRequest, $1.Output>(
+      '/binkyrailways.v1.ModelService/GetOutput',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
+  static final _$updateOutput = $grpc.ClientMethod<$1.Output, $1.Output>(
+      '/binkyrailways.v1.ModelService/UpdateOutput',
+      ($1.Output value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
 
   ModelServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -163,6 +179,26 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Block> updateBlock($1.Block request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateBlock, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Junction> getJunction($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getJunction, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Junction> updateJunction($1.Junction request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateJunction, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Output> getOutput($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getOutput, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Output> updateOutput($1.Output request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateOutput, request, options: options);
   }
 }
 
@@ -277,6 +313,34 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Block.fromBuffer(value),
         ($1.Block value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Junction>(
+        'GetJunction',
+        getJunction_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Junction value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Junction, $1.Junction>(
+        'UpdateJunction',
+        updateJunction_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Junction.fromBuffer(value),
+        ($1.Junction value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Output>(
+        'GetOutput',
+        getOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Output value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Output, $1.Output>(
+        'UpdateOutput',
+        updateOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Output.fromBuffer(value),
+        ($1.Output value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ParseAddressResult> parseAddress_Pre($grpc.ServiceCall call,
@@ -354,6 +418,26 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateBlock(call, await request);
   }
 
+  $async.Future<$1.Junction> getJunction_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getJunction(call, await request);
+  }
+
+  $async.Future<$1.Junction> updateJunction_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Junction> request) async {
+    return updateJunction(call, await request);
+  }
+
+  $async.Future<$1.Output> getOutput_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getOutput(call, await request);
+  }
+
+  $async.Future<$1.Output> updateOutput_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Output> request) async {
+    return updateOutput(call, await request);
+  }
+
   $async.Future<$0.ParseAddressResult> parseAddress(
       $grpc.ServiceCall call, $0.ParseAddressRequest request);
   $async.Future<$1.Railway> getRailway(
@@ -380,4 +464,12 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Block> getBlock(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Block> updateBlock($grpc.ServiceCall call, $1.Block request);
+  $async.Future<$1.Junction> getJunction(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Junction> updateJunction(
+      $grpc.ServiceCall call, $1.Junction request);
+  $async.Future<$1.Output> getOutput(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Output> updateOutput(
+      $grpc.ServiceCall call, $1.Output request);
 }
