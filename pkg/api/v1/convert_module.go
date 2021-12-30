@@ -41,6 +41,11 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
 		})
 	})
+	src.GetEdges().ForEach(func(x model.Edge) {
+		dst.Edges = append(dst.Edges, &EdgeRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
 	src.GetJunctions().ForEach(func(x model.Junction) {
 		dst.Junctions = append(dst.Junctions, &JunctionRef{
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
@@ -48,6 +53,16 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	})
 	src.GetOutputs().ForEach(func(x model.Output) {
 		dst.Outputs = append(dst.Outputs, &OutputRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
+	src.GetRoutes().ForEach(func(x model.Route) {
+		dst.Routes = append(dst.Routes, &RouteRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
+	src.GetSensors().ForEach(func(x model.Sensor) {
+		dst.Sensors = append(dst.Sensors, &SensorRef{
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
 		})
 	})

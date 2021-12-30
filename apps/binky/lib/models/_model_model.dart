@@ -35,6 +35,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.Edge> _edges = {};
   final Map<String, mapi.Junction> _junctions = {};
   final Map<String, mapi.Output> _outputs = {};
+  final Map<String, mapi.Route> _routes = {};
   final Map<String, mapi.Sensor> _sensors = {};
 
   ModelModel();
@@ -334,6 +335,31 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateOutput(value);
     _outputs[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a Route by ID from cache
+  mapi.Route? getCachedRoute(String id) => _routes[id];
+
+  // Gets a Route by ID
+  Future<mapi.Route> getRoute(String id) async {
+    var result = _routes[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getRoute(mapi.IDRequest(id: id));
+    _routes[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given Route
+  Future<void> updateRoute(mapi.Route value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateRoute(value);
+    _routes[updated.id] = updated;
     notifyListeners();
   }
 

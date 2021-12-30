@@ -16,7 +16,7 @@
 //
 
 import '../components.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RouteSettings;
 import 'package:provider/provider.dart';
 
 import '../models.dart';
@@ -44,6 +44,8 @@ import './output_settings.dart';
 import './outputs_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
+import './route_settings.dart';
+import './routes_tree.dart';
 import './sensor_settings.dart';
 import './sensors_tree.dart';
 import '../canvas/editor/module_canvas.dart';
@@ -213,6 +215,17 @@ class _EditorPageState extends State<EditorPage> {
           menu: OutputsTree(),
           content: ModuleCanvas(),
           endMenu: OutputSettings(),
+        );
+      case EntityType.routes:
+        return const SplitView(
+          menu: RoutesTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.route:
+        return const SplitView(
+          menu: RoutesTree(),
+          content: ModuleCanvas(),
+          endMenu: RouteSettings(),
         );
       case EntityType.sensors:
         return const SplitView(

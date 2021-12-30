@@ -114,6 +114,14 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateOutput',
       ($1.Output value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
+  static final _$getRoute = $grpc.ClientMethod<$0.IDRequest, $1.Route>(
+      '/binkyrailways.v1.ModelService/GetRoute',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$updateRoute = $grpc.ClientMethod<$1.Route, $1.Route>(
+      '/binkyrailways.v1.ModelService/UpdateRoute',
+      ($1.Route value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
   static final _$getSensor = $grpc.ClientMethod<$0.IDRequest, $1.Sensor>(
       '/binkyrailways.v1.ModelService/GetSensor',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -245,6 +253,16 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Output> updateOutput($1.Output request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOutput, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> getRoute($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getRoute, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> updateRoute($1.Route request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateRoute, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Sensor> getSensor($0.IDRequest request,
@@ -425,6 +443,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Output.fromBuffer(value),
         ($1.Output value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Route>(
+        'GetRoute',
+        getRoute_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Route, $1.Route>(
+        'UpdateRoute',
+        updateRoute_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Route.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Sensor>(
         'GetSensor',
         getSensor_Pre,
@@ -556,6 +588,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateOutput(call, await request);
   }
 
+  $async.Future<$1.Route> getRoute_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getRoute(call, await request);
+  }
+
+  $async.Future<$1.Route> updateRoute_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Route> request) async {
+    return updateRoute(call, await request);
+  }
+
   $async.Future<$1.Sensor> getSensor_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getSensor(call, await request);
@@ -606,6 +648,9 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Output> updateOutput(
       $grpc.ServiceCall call, $1.Output request);
+  $async.Future<$1.Route> getRoute(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Route> updateRoute($grpc.ServiceCall call, $1.Route request);
   $async.Future<$1.Sensor> getSensor(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Sensor> updateSensor(

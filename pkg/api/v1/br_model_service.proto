@@ -82,6 +82,11 @@ service ModelService {
   // Update a Output by ID.
   rpc UpdateOutput(Output) returns (Output);
 
+  // Gets a Route by ID.
+  rpc GetRoute(IDRequest) returns (Route);
+  // Update a Route by ID.
+  rpc UpdateRoute(Route) returns (Route);
+
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);
   // Update a Sensor by ID.

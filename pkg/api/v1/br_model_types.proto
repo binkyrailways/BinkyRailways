@@ -71,8 +71,10 @@ message Module {
   repeated JunctionRef junctions = 103;
   // Outputs of this module
   repeated OutputRef outputs = 104;
+  // Routes of this module
+  repeated RouteRef routes = 105;
   // Sensors of this module
-  repeated SensorRef sensors = 105;
+  repeated SensorRef sensors = 106;
 }
 
 // Reference to a module
@@ -268,6 +270,22 @@ message Output {
 // Reference to a Output
 message OutputRef {
   // ID of the Output
+  string id = 1;
+}
+
+// Route on the track
+message Route {
+  // ID of the Route
+  string id = 1;
+  // Description of the Route
+  string description = 2;
+  // ID of the module containing the Route
+  string module_id = 3;
+}
+
+// Reference to a Route
+message RouteRef {
+  // ID of the Route
   string id = 1;
 }
 

@@ -109,6 +109,17 @@ class ModuleTree extends StatelessWidget {
                         EntitySelector.module(EntityType.outputs, moduleId)),
                   ),
                   ListTile(
+                    leading: const Icon(Icons.arrow_right_alt),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Routes (${rw.routes.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.routes,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.module(EntityType.routes, moduleId)),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.sensors),
                     minLeadingWidth: 20,
                     title: Text(

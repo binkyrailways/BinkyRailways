@@ -38,6 +38,8 @@ enum EntityType {
   junctions,
   output,
   outputs,
+  route,
+  routes,
   sensor,
   sensors,
 }
@@ -73,6 +75,8 @@ class EntitySelector {
   EntitySelector.junction(this.entityType, this.parentId, this.id);
 
   EntitySelector.output(this.entityType, this.parentId, this.id);
+
+  EntitySelector.route(this.entityType, this.parentId, this.id);
 
   EntitySelector.sensor(this.entityType, this.parentId, this.id);
 
@@ -111,6 +115,10 @@ class EntitySelector {
         return EntitySelector.module(EntityType.module, id);
       case EntityType.output:
         return EntitySelector.module(EntityType.outputs, parentId);
+      case EntityType.routes:
+        return EntitySelector.module(EntityType.module, id);
+      case EntityType.route:
+        return EntitySelector.module(EntityType.routes, parentId);
       case EntityType.sensors:
         return EntitySelector.module(EntityType.module, id);
       case EntityType.sensor:
