@@ -17,8 +17,7 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../api/generated/br_model_service.pbgrpc.dart';
-import '../api/api_client.dart';
+import '../api.dart';
 
 class AddressValidator {
   VoidCallback? setState;

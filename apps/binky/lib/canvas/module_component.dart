@@ -23,7 +23,7 @@ import 'package:flame/extensions.dart';
 
 import 'entity_component.dart';
 import '../models.dart';
-import '../api/generated/br_model_types.pb.dart' as mapi;
+import '../api.dart' as mapi;
 
 class ModuleComponent extends EntityComponent {
   final mapi.Module model;

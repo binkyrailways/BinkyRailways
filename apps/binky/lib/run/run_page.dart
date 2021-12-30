@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 import '../components.dart';
 import '../models.dart';
-import '../api/generated/br_state_types.pb.dart';
+import '../api.dart';
 import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';

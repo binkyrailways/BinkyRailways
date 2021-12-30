@@ -15,11 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
-
 import '../block_component.dart' as common;
-import '../../api/generated/br_state_types.pb.dart' as sapi;
+import '../../api.dart' as sapi;
 
 class BlockComponent extends common.BlockComponent {
   final sapi.BlockState state;

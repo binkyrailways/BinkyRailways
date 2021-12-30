@@ -17,7 +17,7 @@
 
 import 'package:flame/components.dart';
 
-import '../api/generated/br_model_types.pb.dart' as mapi;
+import '../api.dart' as mapi;
 
 class EntityComponent extends PositionComponent {
   // Load the given position into this component

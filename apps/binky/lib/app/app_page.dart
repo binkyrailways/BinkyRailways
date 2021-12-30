@@ -18,7 +18,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../api/generated/br_state_types.pb.dart';
+import '../api.dart';
 
 import '../components.dart';
 import '../models.dart';

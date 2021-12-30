@@ -16,13 +16,9 @@
 //
 //
 
-import 'package:binky/api/api_client.dart';
-import 'package:binky/api/generated/br_state_service.pb.dart';
+import '../api.dart';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
-
-import '../api/generated/br_model_types.pb.dart';
-import '../api/generated/br_state_types.pb.dart';
 
 class StateModel extends ChangeNotifier {
   RailwayState? _railwayState;

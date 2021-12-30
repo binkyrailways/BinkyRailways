@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
-import '../api/generated/br_model_types.pb.dart';
+import '../api.dart';
 
 class BlocksTree extends StatelessWidget {
   const BlocksTree({Key? key}) : super(key: key);

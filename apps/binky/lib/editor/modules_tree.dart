@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../components.dart';
 import '../models.dart';
-import '../api/generated/br_model_types.pb.dart';
+import '../api.dart';
 
 class ModulesTree extends StatelessWidget {
   const ModulesTree({Key? key}) : super(key: key);

@@ -15,10 +15,10 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/api/generated/br_state_service.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 
-import "generated/br_model_service.pbgrpc.dart";
+import "./generated/br_model_service.pbgrpc.dart";
+import './generated/br_state_service.pbgrpc.dart';
 
 class APIClient {
   final ClientChannel _channel;

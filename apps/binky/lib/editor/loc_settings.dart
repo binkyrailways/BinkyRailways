@@ -21,7 +21,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
-import 'package:binky/api/generated/br_model_types.pb.dart';
+import '../api.dart';
 import 'package:binky/editor/editor_context.dart';
 
 class LocSettings extends StatelessWidget {

@@ -21,7 +21,7 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
-import '../api/generated/br_model_types.pb.dart' as mapi;
+import '../api.dart' as mapi;
 
 class BlockComponent extends EntityComponent {
   final mapi.Block model;

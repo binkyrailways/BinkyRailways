@@ -16,7 +16,7 @@
 //
 
 import '../module_component.dart' as common;
-import '../../api/generated/br_model_types.pb.dart' as mapi;
+import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './block_component.dart';

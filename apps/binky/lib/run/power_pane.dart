@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
-import '../api/generated/br_state_types.pb.dart';
+import '../api.dart';
 
 class PowerPane extends StatelessWidget {
   const PowerPane({Key? key}) : super(key: key);

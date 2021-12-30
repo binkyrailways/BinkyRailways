@@ -19,11 +19,8 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 
-import 'package:binky/api/api_client.dart';
-import 'package:binky/api/generated/br_model_service.pbgrpc.dart';
+import '../api.dart' as mapi;
 import 'package:flutter/material.dart';
-
-import '../api/generated/br_model_types.pb.dart' as mapi;
 
 class ModelModel extends ChangeNotifier {
   mapi.Railway? _railway;
@@ -54,7 +51,7 @@ class ModelModel extends ChangeNotifier {
   // Save changes made in the model
   Future<void> save() async {
     requireRailwayLoaded();
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     await modelClient.save(mapi.Empty());
     _railway = await modelClient.getRailway(mapi.Empty());
     notifyListeners();
@@ -62,7 +59,7 @@ class ModelModel extends ChangeNotifier {
 
   Future<mapi.Railway> getRailway() async {
     if (_railway == null) {
-      var modelClient = APIClient().modelClient();
+      var modelClient = mapi.APIClient().modelClient();
       _railway = await modelClient.getRailway(mapi.Empty());
       notifyListeners();
     }
@@ -72,7 +69,7 @@ class ModelModel extends ChangeNotifier {
   // Update the given railway
   Future<void> updateRailway(mapi.Railway value) async {
     requireRailwayLoaded();
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     _railway = await modelClient.updateRailway(value);
     notifyListeners();
   }
@@ -99,8 +96,8 @@ class ModelModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    result = await modelClient.getModule(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getModule(mapi.IDRequest(id: id));
     _modules[id] = result;
     notifyListeners();
     return result;
@@ -118,8 +115,9 @@ class ModelModel extends ChangeNotifier {
       return cached;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    final image = await modelClient.getModuleBackgroundImage(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    final image =
+        await modelClient.getModuleBackgroundImage(mapi.IDRequest(id: id));
     final decoded = await _getImage(image.contentBase64);
     _moduleBackgroundImages[id] = decoded;
     return decoded;
@@ -127,7 +125,7 @@ class ModelModel extends ChangeNotifier {
 
   // Update the given module
   Future<void> updateModule(mapi.Module value) async {
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateModule(value);
     _modules[updated.id] = updated;
     notifyListeners();
@@ -143,8 +141,8 @@ class ModelModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    result = await modelClient.getLoc(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getLoc(mapi.IDRequest(id: id));
     _locs[id] = result;
     notifyListeners();
     return result;
@@ -152,7 +150,7 @@ class ModelModel extends ChangeNotifier {
 
   // Update the given loc
   Future<void> updateLoc(mapi.Loc value) async {
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateLoc(value);
     _locs[updated.id] = updated;
     notifyListeners();
@@ -168,8 +166,8 @@ class ModelModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    result = await modelClient.getLocGroup(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getLocGroup(mapi.IDRequest(id: id));
     _locGroups[id] = result;
     notifyListeners();
     return result;
@@ -177,7 +175,7 @@ class ModelModel extends ChangeNotifier {
 
   // Update the given loc group
   Future<void> updateLocGroup(mapi.LocGroup value) async {
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateLocGroup(value);
     _locGroups[updated.id] = updated;
     notifyListeners();
@@ -194,8 +192,8 @@ class ModelModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    result = await modelClient.getCommandStation(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getCommandStation(mapi.IDRequest(id: id));
     _commandStations[id] = result;
     notifyListeners();
     return result;
@@ -203,7 +201,7 @@ class ModelModel extends ChangeNotifier {
 
   // Update the given CommandStation
   Future<void> updateCommandStation(mapi.CommandStation value) async {
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateCommandStation(value);
     _commandStations[updated.id] = updated;
     notifyListeners();
@@ -219,8 +217,8 @@ class ModelModel extends ChangeNotifier {
       return result;
     }
     // Load from API
-    var modelClient = APIClient().modelClient();
-    result = await modelClient.getBlock(IDRequest(id: id));
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getBlock(mapi.IDRequest(id: id));
     _blocks[id] = result;
     notifyListeners();
     return result;
@@ -228,7 +226,7 @@ class ModelModel extends ChangeNotifier {
 
   // Update the given block
   Future<void> updateBlock(mapi.Block value) async {
-    var modelClient = APIClient().modelClient();
+    var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlock(value);
     _blocks[updated.id] = updated;
     notifyListeners();

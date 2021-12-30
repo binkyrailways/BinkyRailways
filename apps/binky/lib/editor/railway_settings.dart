@@ -20,7 +20,7 @@ import 'package:protobuf/protobuf.dart';
 
 import '../components.dart';
 import '../models.dart';
-import 'package:binky/api/generated/br_model_types.pb.dart';
+import '../api.dart';
 
 class RailwaySettings extends StatefulWidget {
   final ModelModel model;

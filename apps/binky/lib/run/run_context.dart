@@ -17,7 +17,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../api/generated/br_state_types.pb.dart';
+import '../api.dart';
 
 class RunContext extends ChangeNotifier {
   LocState? selectedLoc = null;
