@@ -32,7 +32,7 @@ class OutputSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final outputId = selector.outputId ?? "";
+        final outputId = selector.id ?? "";
         return FutureBuilder<Output>(
             future: model.getOutput(outputId),
             initialData: model.getCachedOutput(outputId),

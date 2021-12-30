@@ -31,7 +31,7 @@ class JunctionsTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.moduleId ?? "";
+        final moduleId = selector.parentId ?? selector.id ?? "";
         return FutureBuilder<List<Junction>>(
             future: getJunctions(model, moduleId),
             builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class JunctionsTree extends StatelessWidget {
                       title: Text(junctions[index].description),
                       onTap: () => editorCtx.select(EntitySelector.junction(
                           EntityType.junction, moduleId, id)),
-                      selected: selector.junctionId == id,
+                      selected: selector.id == id,
                     );
                   });
             });

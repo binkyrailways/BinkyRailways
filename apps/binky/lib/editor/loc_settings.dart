@@ -32,7 +32,7 @@ class LocSettings extends StatelessWidget {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(builder: (context, model, child) {
-      final locId = selector.locId ?? "";
+      final locId = selector.id ?? "";
       return FutureBuilder<Loc>(
           future: model.getLoc(locId),
           initialData: model.getCachedLoc(locId),

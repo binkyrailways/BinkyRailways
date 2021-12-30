@@ -31,7 +31,7 @@ class OutputsTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.moduleId ?? "";
+        final moduleId = selector.parentId ?? selector.id ?? "";
         return FutureBuilder<List<Output>>(
             future: getOutputs(model, moduleId),
             builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class OutputsTree extends StatelessWidget {
                       title: Text(outputs[index].description),
                       onTap: () => editorCtx.select(EntitySelector.output(
                           EntityType.output, moduleId, id)),
-                      selected: selector.outputId == id,
+                      selected: selector.id == id,
                     );
                   });
             });

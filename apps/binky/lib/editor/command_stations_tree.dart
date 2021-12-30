@@ -47,7 +47,7 @@ class CommandStationsTree extends StatelessWidget {
                       onTap: () => editorCtx.select(
                           EntitySelector.commandStation(
                               EntityType.commandstation, id)),
-                      selected: selector.commandStationId == id,
+                      selected: selector.id == id,
                     );
                   });
             });

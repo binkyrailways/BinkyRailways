@@ -31,7 +31,7 @@ class BlocksTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.moduleId ?? "";
+        final moduleId = selector.parentId ?? selector.id ?? "";
         return FutureBuilder<List<Block>>(
             future: getBlocks(model, moduleId),
             builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class BlocksTree extends StatelessWidget {
                       title: Text(blocks[index].description),
                       onTap: () => editorCtx.select(
                           EntitySelector.block(EntityType.block, moduleId, id)),
-                      selected: selector.blockId == id,
+                      selected: selector.id == id,
                     );
                   });
             });

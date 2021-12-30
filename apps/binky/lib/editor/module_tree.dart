@@ -31,7 +31,7 @@ class ModuleTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.moduleId ?? "";
+        final moduleId = selector.id ?? "";
         return FutureBuilder<Module>(
             future: model.getModule(moduleId),
             initialData: model.getCachedModule(moduleId),

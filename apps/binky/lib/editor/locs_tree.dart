@@ -46,7 +46,7 @@ class LocsTree extends StatelessWidget {
                       title: Text(locs[index].description),
                       onTap: () => editorCtx
                           .select(EntitySelector.loc(EntityType.loc, id)),
-                      selected: selector.locId == id,
+                      selected: selector.id == id,
                     );
                   });
             });

@@ -29,7 +29,7 @@ class BlockComponent extends common.BlockComponent {
 
   _isSelected() =>
       editorCtx.selector.entityType == EntityType.block &&
-      editorCtx.selector.blockId == model.id;
+      editorCtx.selector.id == model.id;
 
   @override
   backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();
