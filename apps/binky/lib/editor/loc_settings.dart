@@ -64,6 +64,7 @@ class _LocSettings extends StatefulWidget {
 }
 
 class _LocSettingsState extends State<_LocSettings> {
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ownerController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -104,79 +105,82 @@ class _LocSettingsState extends State<_LocSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
-        SettingsTextField(
-            controller: _descriptionController,
-            label: "Description",
-            firstChild: true,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..description = value;
-              widget.model.updateLoc(update);
-            }),
-        SettingsTextField(
-            controller: _ownerController,
-            label: "Owner",
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..owner = value;
-              widget.model.updateLoc(update);
-            }),
-        const SettingsHeader(title: "Controller"),
-        SettingsTextField(
-            controller: _addressController,
-            label: "Address",
-            validator: _addressValidator.validate,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..address = value;
-              widget.model.updateLoc(update);
-            }),
-        SettingsTextField(
-            controller: _speedStepsController,
-            label: "Speed steps",
-            keyboardType: TextInputType.number,
-            validator: _speedStepsValidator.validate,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..speedSteps = int.parse(value);
-              widget.model.updateLoc(update);
-            }),
-        const SettingsHeader(title: "Behavior"),
-        SettingsTextField(
-            controller: _slowSpeedController,
-            label: "Slow speed",
-            keyboardType: TextInputType.number,
-            validator: _speedValidator.validate,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..slowSpeed = int.parse(value);
-              widget.model.updateLoc(update);
-            }),
-        SettingsTextField(
-            controller: _mediumSpeedController,
-            label: "Medium speed",
-            keyboardType: TextInputType.number,
-            validator: _speedValidator.validate,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..mediumSpeed = int.parse(value);
-              widget.model.updateLoc(update);
-            }),
-        SettingsTextField(
-            controller: _maximumSpeedController,
-            label: "Maximum speed",
-            keyboardType: TextInputType.number,
-            validator: _speedValidator.validate,
-            onLostFocus: (value) async {
-              final loc = await widget.model.getLoc(widget.loc.id);
-              var update = loc.deepCopy()..maximumSpeed = int.parse(value);
-              widget.model.updateLoc(update);
-            }),
-      ],
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SettingsHeader(title: "General"),
+          SettingsTextField(
+              controller: _descriptionController,
+              label: "Description",
+              firstChild: true,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..description = value;
+                widget.model.updateLoc(update);
+              }),
+          SettingsTextField(
+              controller: _ownerController,
+              label: "Owner",
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..owner = value;
+                widget.model.updateLoc(update);
+              }),
+          const SettingsHeader(title: "Controller"),
+          SettingsTextField(
+              controller: _addressController,
+              label: "Address",
+              validator: _addressValidator.validate,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..address = value;
+                widget.model.updateLoc(update);
+              }),
+          SettingsTextField(
+              controller: _speedStepsController,
+              label: "Speed steps",
+              keyboardType: TextInputType.number,
+              validator: _speedStepsValidator.validate,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..speedSteps = int.parse(value);
+                widget.model.updateLoc(update);
+              }),
+          const SettingsHeader(title: "Behavior"),
+          SettingsTextField(
+              controller: _slowSpeedController,
+              label: "Slow speed",
+              keyboardType: TextInputType.number,
+              validator: _speedValidator.validate,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..slowSpeed = int.parse(value);
+                widget.model.updateLoc(update);
+              }),
+          SettingsTextField(
+              controller: _mediumSpeedController,
+              label: "Medium speed",
+              keyboardType: TextInputType.number,
+              validator: _speedValidator.validate,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..mediumSpeed = int.parse(value);
+                widget.model.updateLoc(update);
+              }),
+          SettingsTextField(
+              controller: _maximumSpeedController,
+              label: "Maximum speed",
+              keyboardType: TextInputType.number,
+              validator: _speedValidator.validate,
+              onLostFocus: (value) async {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..maximumSpeed = int.parse(value);
+                widget.model.updateLoc(update);
+              }),
+        ],
+      ),
     );
   }
 }

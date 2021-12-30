@@ -45,12 +45,13 @@ const Railway$json = const {
     const {'1': 'dirty', '3': 3, '4': 1, '5': 8, '10': 'dirty'},
     const {'1': 'modules', '3': 100, '4': 3, '5': 11, '6': '.binkyrailways.v1.ModuleRef', '10': 'modules'},
     const {'1': 'locs', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'locs'},
-    const {'1': 'commandStations', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.CommandStationRef', '10': 'commandStations'},
+    const {'1': 'locGroups', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocGroupRef', '10': 'locGroups'},
+    const {'1': 'commandStations', '3': 103, '4': 3, '5': 11, '6': '.binkyrailways.v1.CommandStationRef', '10': 'commandStations'},
   ],
 };
 
 /// Descriptor for `Railway`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SFAoFZGlydHkYAyABKAhSBWRpcnR5EjUKB21vZHVsZXMYZCADKAsyGy5iaW5reXJhaWx3YXlzLnYxLk1vZHVsZVJlZlIHbW9kdWxlcxIsCgRsb2NzGGUgAygLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSBGxvY3MSTQoPY29tbWFuZFN0YXRpb25zGGYgAygLMiMuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblJlZlIPY29tbWFuZFN0YXRpb25z');
+final $typed_data.Uint8List railwayDescriptor = $convert.base64Decode('CgdSYWlsd2F5Eg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SFAoFZGlydHkYAyABKAhSBWRpcnR5EjUKB21vZHVsZXMYZCADKAsyGy5iaW5reXJhaWx3YXlzLnYxLk1vZHVsZVJlZlIHbW9kdWxlcxIsCgRsb2NzGGUgAygLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSBGxvY3MSOwoJbG9jR3JvdXBzGGYgAygLMh0uYmlua3lyYWlsd2F5cy52MS5Mb2NHcm91cFJlZlIJbG9jR3JvdXBzEk0KD2NvbW1hbmRTdGF0aW9ucxhnIAMoCzIjLmJpbmt5cmFpbHdheXMudjEuQ29tbWFuZFN0YXRpb25SZWZSD2NvbW1hbmRTdGF0aW9ucw==');
 @$core.Deprecated('Use moduleDescriptor instead')
 const Module$json = const {
   '1': 'Module',
@@ -123,6 +124,27 @@ const LocRef$json = const {
 
 /// Descriptor for `LocRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List locRefDescriptor = $convert.base64Decode('CgZMb2NSZWYSDgoCaWQYASABKAlSAmlk');
+@$core.Deprecated('Use locGroupDescriptor instead')
+const LocGroup$json = const {
+  '1': 'LocGroup',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+  ],
+};
+
+/// Descriptor for `LocGroup`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locGroupDescriptor = $convert.base64Decode('CghMb2NHcm91cBIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9u');
+@$core.Deprecated('Use locGroupRefDescriptor instead')
+const LocGroupRef$json = const {
+  '1': 'LocGroupRef',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `LocGroupRef`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locGroupRefDescriptor = $convert.base64Decode('CgtMb2NHcm91cFJlZhIOCgJpZBgBIAEoCVICaWQ=');
 @$core.Deprecated('Use commandStationDescriptor instead')
 const CommandStation$json = const {
   '1': 'CommandStation',

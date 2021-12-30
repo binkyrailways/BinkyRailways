@@ -31,6 +31,7 @@ class ModelModel extends ChangeNotifier {
   final Map<int, ui.Image> _images = {};
   final Map<String, ui.Image> _moduleBackgroundImages = {};
   final Map<String, mapi.Loc> _locs = {};
+  final Map<String, mapi.LocGroup> _locGroups = {};
   final Map<String, mapi.CommandStation> _commandStations = {};
   final Map<String, mapi.Block> _blocks = {};
 
@@ -154,6 +155,31 @@ class ModelModel extends ChangeNotifier {
     var modelClient = APIClient().modelClient();
     var updated = await modelClient.updateLoc(value);
     _locs[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a loc group by ID from cache
+  mapi.LocGroup? getCachedLocGroup(String id) => _locGroups[id];
+
+  // Gets a loc group by ID
+  Future<mapi.LocGroup> getLocGroup(String id) async {
+    var result = _locGroups[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = APIClient().modelClient();
+    result = await modelClient.getLocGroup(IDRequest(id: id));
+    _locGroups[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given loc group
+  Future<void> updateLocGroup(mapi.LocGroup value) async {
+    var modelClient = APIClient().modelClient();
+    var updated = await modelClient.updateLocGroup(value);
+    _locGroups[updated.id] = updated;
     notifyListeners();
   }
 

@@ -96,7 +96,8 @@ class Railway extends $pb.GeneratedMessage {
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dirty')
     ..pc<ModuleRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modules', $pb.PbFieldType.PM, subBuilder: ModuleRef.create)
     ..pc<LocRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: LocRef.create)
-    ..pc<CommandStationRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, protoName: 'commandStations', subBuilder: CommandStationRef.create)
+    ..pc<LocGroupRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locGroups', $pb.PbFieldType.PM, protoName: 'locGroups', subBuilder: LocGroupRef.create)
+    ..pc<CommandStationRef>(103, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, protoName: 'commandStations', subBuilder: CommandStationRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -107,6 +108,7 @@ class Railway extends $pb.GeneratedMessage {
     $core.bool? dirty,
     $core.Iterable<ModuleRef>? modules,
     $core.Iterable<LocRef>? locs,
+    $core.Iterable<LocGroupRef>? locGroups,
     $core.Iterable<CommandStationRef>? commandStations,
   }) {
     final _result = create();
@@ -124,6 +126,9 @@ class Railway extends $pb.GeneratedMessage {
     }
     if (locs != null) {
       _result.locs.addAll(locs);
+    }
+    if (locGroups != null) {
+      _result.locGroups.addAll(locGroups);
     }
     if (commandStations != null) {
       _result.commandStations.addAll(commandStations);
@@ -185,7 +190,10 @@ class Railway extends $pb.GeneratedMessage {
   $core.List<LocRef> get locs => $_getList(4);
 
   @$pb.TagNumber(102)
-  $core.List<CommandStationRef> get commandStations => $_getList(5);
+  $core.List<LocGroupRef> get locGroups => $_getList(5);
+
+  @$pb.TagNumber(103)
+  $core.List<CommandStationRef> get commandStations => $_getList(6);
 }
 
 class Module extends $pb.GeneratedMessage {
@@ -716,6 +724,114 @@ class LocRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static LocRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocRef>(create);
   static LocRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class LocGroup extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocGroup', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..hasRequiredFields = false
+  ;
+
+  LocGroup._() : super();
+  factory LocGroup({
+    $core.String? id,
+    $core.String? description,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    return _result;
+  }
+  factory LocGroup.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocGroup.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocGroup clone() => LocGroup()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocGroup copyWith(void Function(LocGroup) updates) => super.copyWith((message) => updates(message as LocGroup)) as LocGroup; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocGroup create() => LocGroup._();
+  LocGroup createEmptyInstance() => create();
+  static $pb.PbList<LocGroup> createRepeated() => $pb.PbList<LocGroup>();
+  @$core.pragma('dart2js:noInline')
+  static LocGroup getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocGroup>(create);
+  static LocGroup? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+}
+
+class LocGroupRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocGroupRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  LocGroupRef._() : super();
+  factory LocGroupRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory LocGroupRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocGroupRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocGroupRef clone() => LocGroupRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocGroupRef copyWith(void Function(LocGroupRef) updates) => super.copyWith((message) => updates(message as LocGroupRef)) as LocGroupRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocGroupRef create() => LocGroupRef._();
+  LocGroupRef createEmptyInstance() => create();
+  static $pb.PbList<LocGroupRef> createRepeated() => $pb.PbList<LocGroupRef>();
+  @$core.pragma('dart2js:noInline')
+  static LocGroupRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocGroupRef>(create);
+  static LocGroupRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

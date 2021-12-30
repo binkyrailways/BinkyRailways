@@ -30,6 +30,8 @@ import './command_station_settings.dart';
 import './command_stations_tree.dart';
 import './loc_settings.dart';
 import './locs_tree.dart';
+import './loc_group_settings.dart';
+import './loc_groups_tree.dart';
 import './module_settings.dart';
 import './module_tree.dart';
 import './modules_tree.dart';
@@ -128,6 +130,16 @@ class _EditorPageState extends State<EditorPage> {
         return const SplitView(
           menu: LocsTree(),
           content: LocSettings(),
+        );
+      case EntityType.locgroups:
+        return const SplitView(
+          menu: RailwayTree(),
+          content: LocGroupsTree(),
+        );
+      case EntityType.locgroup:
+        return const SplitView(
+          menu: LocGroupsTree(),
+          content: LocGroupSettings(),
         );
       case EntityType.commandstations:
         return const SplitView(

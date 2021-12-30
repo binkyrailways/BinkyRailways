@@ -42,36 +42,55 @@ class RailwayTree extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.book),
-                    title: const Text("Railway"),
+                    minLeadingWidth: 20,
+                    title: const Text(
+                      "Railway",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.railway,
                     onTap: () => editorCtx
                         .select(EntitySelector.railway(EntityType.railway)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.view_module_sharp),
-                    title: Text("Modules (${rw.modules.length})"),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Modules (${rw.modules.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.modules,
                     onTap: () => editorCtx
                         .select(EntitySelector.railway(EntityType.modules)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.train_sharp),
-                    title: Text("Locs (${rw.locs.length})"),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Locs (${rw.locs.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.locs,
                     onTap: () => editorCtx
                         .select(EntitySelector.railway(EntityType.locs)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.info_outline),
-                    title: const Text("Loc groups"),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Loc groups (${rw.locGroups.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.locgroups,
                     onTap: () => editorCtx
                         .select(EntitySelector.railway(EntityType.locgroups)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.computer),
-                    title:
-                        Text("Command stations (${rw.commandStations.length})"),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Command stations (${rw.commandStations.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.commandstations,
                     onTap: () => editorCtx.select(
                         EntitySelector.railway(EntityType.commandstations)),

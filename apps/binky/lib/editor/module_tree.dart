@@ -44,14 +44,22 @@ class ModuleTree extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.book),
-                    title: const Text("Module"),
+                    minLeadingWidth: 20,
+                    title: const Text(
+                      "Module",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.module,
                     onTap: () => editorCtx.select(
                         EntitySelector.module(EntityType.module, moduleId)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.stop),
-                    title: Text("Blocks (${rw.blocks.length})"),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Blocks (${rw.blocks.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     selected: selector.entityType == EntityType.blocks,
                     onTap: () => editorCtx.select(
                         EntitySelector.module(EntityType.blocks, moduleId)),

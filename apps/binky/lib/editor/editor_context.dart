@@ -36,6 +36,7 @@ class EntitySelector {
   final EntityType entityType;
   final String? moduleId;
   final String? locId;
+  final String? locGroupId;
   final String? commandStationId;
   final String? blockId;
 
@@ -43,32 +44,44 @@ class EntitySelector {
       : entityType = EntityType.unknown,
         moduleId = null,
         locId = null,
+        locGroupId = null,
         commandStationId = null,
         blockId = null;
 
   EntitySelector.railway(this.entityType)
       : moduleId = null,
         locId = null,
+        locGroupId = null,
         commandStationId = null,
         blockId = null;
 
   EntitySelector.module(this.entityType, this.moduleId)
       : locId = null,
+        locGroupId = null,
         commandStationId = null,
         blockId = null;
 
   EntitySelector.loc(this.entityType, this.locId)
       : moduleId = null,
+        locGroupId = null,
+        commandStationId = null,
+        blockId = null;
+
+  EntitySelector.locGroup(this.entityType, this.locGroupId)
+      : moduleId = null,
+        locId = null,
         commandStationId = null,
         blockId = null;
 
   EntitySelector.commandStation(this.entityType, this.commandStationId)
       : moduleId = null,
         locId = null,
+        locGroupId = null,
         blockId = null;
 
   EntitySelector.block(this.entityType, this.moduleId, this.blockId)
       : locId = null,
+        locGroupId = null,
         commandStationId = null;
 
   EntitySelector back() {

@@ -54,6 +54,14 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateLoc',
       ($1.Loc value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Loc.fromBuffer(value));
+  static final _$getLocGroup = $grpc.ClientMethod<$0.IDRequest, $1.LocGroup>(
+      '/binkyrailways.v1.ModelService/GetLocGroup',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value));
+  static final _$updateLocGroup = $grpc.ClientMethod<$1.LocGroup, $1.LocGroup>(
+      '/binkyrailways.v1.ModelService/UpdateLocGroup',
+      ($1.LocGroup value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value));
   static final _$getCommandStation =
       $grpc.ClientMethod<$0.IDRequest, $1.CommandStation>(
           '/binkyrailways.v1.ModelService/GetCommandStation',
@@ -123,6 +131,16 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Loc> updateLoc($1.Loc request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateLoc, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.LocGroup> getLocGroup($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getLocGroup, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.LocGroup> updateLocGroup($1.LocGroup request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateLocGroup, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.CommandStation> getCommandStation(
@@ -217,6 +235,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Loc.fromBuffer(value),
         ($1.Loc value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.LocGroup>(
+        'GetLocGroup',
+        getLocGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.LocGroup value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.LocGroup, $1.LocGroup>(
+        'UpdateLocGroup',
+        updateLocGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value),
+        ($1.LocGroup value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.CommandStation>(
         'GetCommandStation',
         getCommandStation_Pre,
@@ -292,6 +324,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateLoc(call, await request);
   }
 
+  $async.Future<$1.LocGroup> getLocGroup_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getLocGroup(call, await request);
+  }
+
+  $async.Future<$1.LocGroup> updateLocGroup_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.LocGroup> request) async {
+    return updateLocGroup(call, await request);
+  }
+
   $async.Future<$1.CommandStation> getCommandStation_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getCommandStation(call, await request);
@@ -327,6 +369,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Module request);
   $async.Future<$1.Loc> getLoc($grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Loc> updateLoc($grpc.ServiceCall call, $1.Loc request);
+  $async.Future<$1.LocGroup> getLocGroup(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.LocGroup> updateLocGroup(
+      $grpc.ServiceCall call, $1.LocGroup request);
   $async.Future<$1.CommandStation> getCommandStation(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.CommandStation> updateCommandStation(

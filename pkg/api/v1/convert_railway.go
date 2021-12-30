@@ -45,6 +45,12 @@ func (dst *Railway) FromModel(ctx context.Context, src model.Railway) error {
 			Id: lr.GetID(),
 		})
 	})
+	// Loc group refs
+	src.GetLocGroups().ForEach(func(lg model.LocGroup) {
+		dst.LocGroups = append(dst.LocGroups, &LocGroupRef{
+			Id: lg.GetID(),
+		})
+	})
 	// CommandStation refs
 	src.GetCommandStations().ForEach(func(csr model.CommandStationRef) {
 		dst.CommandStations = append(dst.CommandStations, &CommandStationRef{
