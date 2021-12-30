@@ -42,6 +42,8 @@ enum EntityType {
   routes,
   sensor,
   sensors,
+  signal,
+  signals,
 }
 
 class EntitySelector {
@@ -79,6 +81,8 @@ class EntitySelector {
   EntitySelector.route(this.entityType, this.parentId, this.id);
 
   EntitySelector.sensor(this.entityType, this.parentId, this.id);
+
+  EntitySelector.signal(this.entityType, this.parentId, this.id);
 
   EntitySelector back() {
     switch (entityType) {
@@ -123,6 +127,10 @@ class EntitySelector {
         return EntitySelector.module(EntityType.module, id);
       case EntityType.sensor:
         return EntitySelector.module(EntityType.sensors, parentId);
+      case EntityType.signals:
+        return EntitySelector.module(EntityType.module, id);
+      case EntityType.signal:
+        return EntitySelector.module(EntityType.signals, parentId);
       default:
         return this;
     }

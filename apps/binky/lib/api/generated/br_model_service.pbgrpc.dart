@@ -130,6 +130,14 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateSensor',
       ($1.Sensor value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value));
+  static final _$getSignal = $grpc.ClientMethod<$0.IDRequest, $1.Signal>(
+      '/binkyrailways.v1.ModelService/GetSignal',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Signal.fromBuffer(value));
+  static final _$updateSignal = $grpc.ClientMethod<$1.Signal, $1.Signal>(
+      '/binkyrailways.v1.ModelService/UpdateSignal',
+      ($1.Signal value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Signal.fromBuffer(value));
 
   ModelServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -273,6 +281,16 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Sensor> updateSensor($1.Sensor request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateSensor, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Signal> getSignal($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getSignal, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Signal> updateSignal($1.Signal request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateSignal, request, options: options);
   }
 }
 
@@ -471,6 +489,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value),
         ($1.Sensor value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Signal>(
+        'GetSignal',
+        getSignal_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Signal value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Signal, $1.Signal>(
+        'UpdateSignal',
+        updateSignal_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Signal.fromBuffer(value),
+        ($1.Signal value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ParseAddressResult> parseAddress_Pre($grpc.ServiceCall call,
@@ -608,6 +640,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateSensor(call, await request);
   }
 
+  $async.Future<$1.Signal> getSignal_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getSignal(call, await request);
+  }
+
+  $async.Future<$1.Signal> updateSignal_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Signal> request) async {
+    return updateSignal(call, await request);
+  }
+
   $async.Future<$0.ParseAddressResult> parseAddress(
       $grpc.ServiceCall call, $0.ParseAddressRequest request);
   $async.Future<$1.Railway> getRailway(
@@ -655,4 +697,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Sensor> updateSensor(
       $grpc.ServiceCall call, $1.Sensor request);
+  $async.Future<$1.Signal> getSignal(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Signal> updateSignal(
+      $grpc.ServiceCall call, $1.Signal request);
 }

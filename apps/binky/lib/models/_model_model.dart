@@ -37,6 +37,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.Output> _outputs = {};
   final Map<String, mapi.Route> _routes = {};
   final Map<String, mapi.Sensor> _sensors = {};
+  final Map<String, mapi.Signal> _signals = {};
 
   ModelModel();
 
@@ -385,6 +386,31 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateSensor(value);
     _sensors[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a Signal by ID from cache
+  mapi.Signal? getCachedSignal(String id) => _signals[id];
+
+  // Gets a Signal by ID
+  Future<mapi.Signal> getSignal(String id) async {
+    var result = _signals[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getSignal(mapi.IDRequest(id: id));
+    _signals[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given Signal
+  Future<void> updateSignal(mapi.Signal value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateSignal(value);
+    _signals[updated.id] = updated;
     notifyListeners();
   }
 }

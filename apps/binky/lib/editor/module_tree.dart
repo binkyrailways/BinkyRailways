@@ -130,6 +130,17 @@ class ModuleTree extends StatelessWidget {
                     onTap: () => editorCtx.select(
                         EntitySelector.module(EntityType.sensors, moduleId)),
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.traffic),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Signals (${rw.signals.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.signals,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.module(EntityType.signals, moduleId)),
+                  ),
                 ],
               );
             });

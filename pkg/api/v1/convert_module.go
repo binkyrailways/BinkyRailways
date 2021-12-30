@@ -66,6 +66,11 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
 		})
 	})
+	src.GetSignals().ForEach(func(x model.Signal) {
+		dst.Signals = append(dst.Signals, &SignalRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
 	return nil
 }
 

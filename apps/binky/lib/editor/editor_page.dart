@@ -48,6 +48,8 @@ import './route_settings.dart';
 import './routes_tree.dart';
 import './sensor_settings.dart';
 import './sensors_tree.dart';
+import './signal_settings.dart';
+import './signals_tree.dart';
 import '../canvas/editor/module_canvas.dart';
 
 class EditorPage extends StatefulWidget {
@@ -237,6 +239,17 @@ class _EditorPageState extends State<EditorPage> {
           menu: SensorsTree(),
           content: ModuleCanvas(),
           endMenu: SensorSettings(),
+        );
+      case EntityType.signals:
+        return const SplitView(
+          menu: SignalsTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.signal:
+        return const SplitView(
+          menu: SignalsTree(),
+          content: ModuleCanvas(),
+          endMenu: SignalSettings(),
         );
       default:
         return const Center(child: Text("No selection"));

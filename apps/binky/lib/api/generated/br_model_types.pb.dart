@@ -210,6 +210,7 @@ class Module extends $pb.GeneratedMessage {
     ..pc<OutputRef>(104, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
     ..pc<RouteRef>(105, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: RouteRef.create)
     ..pc<SensorRef>(106, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: SensorRef.create)
+    ..pc<SignalRef>(107, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: SignalRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -227,6 +228,7 @@ class Module extends $pb.GeneratedMessage {
     $core.Iterable<OutputRef>? outputs,
     $core.Iterable<RouteRef>? routes,
     $core.Iterable<SensorRef>? sensors,
+    $core.Iterable<SignalRef>? signals,
   }) {
     final _result = create();
     if (id != null) {
@@ -264,6 +266,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (sensors != null) {
       _result.sensors.addAll(sensors);
+    }
+    if (signals != null) {
+      _result.signals.addAll(signals);
     }
     return _result;
   }
@@ -353,6 +358,9 @@ class Module extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(106)
   $core.List<SensorRef> get sensors => $_getList(11);
+
+  @$pb.TagNumber(107)
+  $core.List<SignalRef> get signals => $_getList(12);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -1922,6 +1930,144 @@ class SensorRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static SensorRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SensorRef>(create);
   static SensorRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class Signal extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Signal', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..hasRequiredFields = false
+  ;
+
+  Signal._() : super();
+  factory Signal({
+    $core.String? id,
+    $core.String? description,
+    $core.String? moduleId,
+    Position? position,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    return _result;
+  }
+  factory Signal.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Signal.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Signal clone() => Signal()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Signal copyWith(void Function(Signal) updates) => super.copyWith((message) => updates(message as Signal)) as Signal; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Signal create() => Signal._();
+  Signal createEmptyInstance() => create();
+  static $pb.PbList<Signal> createRepeated() => $pb.PbList<Signal>();
+  @$core.pragma('dart2js:noInline')
+  static Signal getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Signal>(create);
+  static Signal? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get moduleId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set moduleId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasModuleId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearModuleId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Position get position => $_getN(3);
+  @$pb.TagNumber(4)
+  set position(Position v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPosition() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPosition() => clearField(4);
+  @$pb.TagNumber(4)
+  Position ensurePosition() => $_ensure(3);
+}
+
+class SignalRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SignalRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  SignalRef._() : super();
+  factory SignalRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory SignalRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SignalRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SignalRef clone() => SignalRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SignalRef copyWith(void Function(SignalRef) updates) => super.copyWith((message) => updates(message as SignalRef)) as SignalRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SignalRef create() => SignalRef._();
+  SignalRef createEmptyInstance() => create();
+  static $pb.PbList<SignalRef> createRepeated() => $pb.PbList<SignalRef>();
+  @$core.pragma('dart2js:noInline')
+  static SignalRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SignalRef>(create);
+  static SignalRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);
