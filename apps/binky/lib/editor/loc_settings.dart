@@ -15,9 +15,7 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/components/address_validator.dart';
-import 'package:binky/components/error_message.dart';
-import 'package:binky/components/numeric_validator.dart';
+import '../components.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +23,6 @@ import 'package:provider/provider.dart';
 import 'package:binky/models/model_model.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:binky/editor/editor_context.dart';
-import '../components/settings_textfield.dart';
-import '../components/scrollable_form.dart';
 
 class LocSettings extends StatelessWidget {
   const LocSettings({Key? key}) : super(key: key);

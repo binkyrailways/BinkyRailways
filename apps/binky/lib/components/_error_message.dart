@@ -17,8 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-typedef SettingsTextFieldLostFocus = void Function(String value);
-
 class ErrorMessage extends StatelessWidget {
   final String title;
   final Object? error;

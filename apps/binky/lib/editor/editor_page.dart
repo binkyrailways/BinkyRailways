@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/components/split_view.dart';
+import '../components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +37,6 @@ import './module_tree.dart';
 import './modules_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
-import '../components/dialogs.dart';
 import '../canvas/editor/module_canvas.dart';
 
 class EditorPage extends StatefulWidget {

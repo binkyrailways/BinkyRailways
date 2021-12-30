@@ -19,9 +19,9 @@ import 'package:binky/editor/editor_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components.dart';
 import 'package:binky/models/model_model.dart';
 import '../api/generated/br_model_types.pb.dart';
-import '../components/error_message.dart';
 
 class ModulesTree extends StatelessWidget {
   const ModulesTree({Key? key}) : super(key: key);

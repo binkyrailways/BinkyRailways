@@ -15,15 +15,14 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/components/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
+import '../components.dart';
 import 'package:binky/models/model_model.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 import 'package:binky/editor/editor_context.dart';
-import '../components/settings_textfield.dart';
 
 class CommandStationSettings extends StatelessWidget {
   const CommandStationSettings({Key? key}) : super(key: key);

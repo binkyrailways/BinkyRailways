@@ -15,13 +15,12 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/components/split_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components.dart';
 import 'package:binky/models/state_model.dart';
 import '../api/generated/br_state_types.pb.dart';
-import '../components/dialogs.dart';
 import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';

@@ -15,24 +15,10 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
-
-import '../components.dart';
-import './power_pane.dart';
-import './locs_tree.dart';
-
-class ControlPane extends StatelessWidget {
-  const ControlPane({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        PowerPane(),
-        SettingsDivider(),
-        Text("Locs"),
-        Expanded(child: LocsTree()),
-      ],
-    );
-  }
-}
+export 'components/_address_validator.dart';
+export 'components/_dialogs.dart';
+export 'components/_error_message.dart';
+export 'components/_numeric_validator.dart';
+export 'components/_scrollable_form.dart';
+export 'components/_settings_textfield.dart';
+export 'components/_split_view.dart';
