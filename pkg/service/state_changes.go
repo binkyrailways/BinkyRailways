@@ -94,18 +94,60 @@ func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *
 	case state.Railway:
 		rs, _ := s.GetRailwayState(ctx, nil)
 		return &api.StateChange{Railway: rs}
-	case state.Block:
-		var rs api.BlockState
+	case state.CommandStation:
+		var rs api.CommandStationState
 		if err := rs.FromState(ctx, x); err != nil {
 			return nil
 		}
-		return &api.StateChange{Block: &rs}
+		return &api.StateChange{CommandStation: &rs}
 	case state.Loc:
 		var rs api.LocState
 		if err := rs.FromState(ctx, x); err != nil {
 			return nil
 		}
 		return &api.StateChange{Loc: &rs}
+	case state.Block:
+		var rs api.BlockState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Block: &rs}
+	case state.BlockGroup:
+		var rs api.BlockGroupState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{BlockGroup: &rs}
+	case state.Junction:
+		var rs api.JunctionState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Junction: &rs}
+	case state.Output:
+		var rs api.OutputState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Output: &rs}
+	case state.Route:
+		var rs api.RouteState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Route: &rs}
+	case state.Sensor:
+		var rs api.SensorState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Sensor: &rs}
+	case state.Signal:
+		var rs api.SignalState
+		if err := rs.FromState(ctx, x); err != nil {
+			return nil
+		}
+		return &api.StateChange{Signal: &rs}
 	default:
 		return nil
 	}

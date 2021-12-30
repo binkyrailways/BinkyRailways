@@ -128,12 +128,19 @@ func (m *GetStateChangesRequest) GetBootstrap() bool {
 // State change of a single object.
 // Only one of the fields is set;
 type StateChange struct {
-	Railway              *RailwayState `protobuf:"bytes,1,opt,name=railway,proto3" json:"railway,omitempty"`
-	Block                *BlockState   `protobuf:"bytes,2,opt,name=block,proto3" json:"block,omitempty"`
-	Loc                  *LocState     `protobuf:"bytes,3,opt,name=loc,proto3" json:"loc,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
+	Railway              *RailwayState        `protobuf:"bytes,1,opt,name=railway,proto3" json:"railway,omitempty"`
+	Loc                  *LocState            `protobuf:"bytes,2,opt,name=loc,proto3" json:"loc,omitempty"`
+	CommandStation       *CommandStationState `protobuf:"bytes,3,opt,name=commandStation,proto3" json:"commandStation,omitempty"`
+	Block                *BlockState          `protobuf:"bytes,4,opt,name=block,proto3" json:"block,omitempty"`
+	BlockGroup           *BlockGroupState     `protobuf:"bytes,5,opt,name=blockGroup,proto3" json:"blockGroup,omitempty"`
+	Junction             *JunctionState       `protobuf:"bytes,6,opt,name=junction,proto3" json:"junction,omitempty"`
+	Output               *OutputState         `protobuf:"bytes,7,opt,name=output,proto3" json:"output,omitempty"`
+	Route                *RouteState          `protobuf:"bytes,8,opt,name=route,proto3" json:"route,omitempty"`
+	Sensor               *SensorState         `protobuf:"bytes,9,opt,name=sensor,proto3" json:"sensor,omitempty"`
+	Signal               *SignalState         `protobuf:"bytes,10,opt,name=signal,proto3" json:"signal,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
 }
 
 func (m *StateChange) Reset()         { *m = StateChange{} }
@@ -176,6 +183,20 @@ func (m *StateChange) GetRailway() *RailwayState {
 	return nil
 }
 
+func (m *StateChange) GetLoc() *LocState {
+	if m != nil {
+		return m.Loc
+	}
+	return nil
+}
+
+func (m *StateChange) GetCommandStation() *CommandStationState {
+	if m != nil {
+		return m.CommandStation
+	}
+	return nil
+}
+
 func (m *StateChange) GetBlock() *BlockState {
 	if m != nil {
 		return m.Block
@@ -183,9 +204,44 @@ func (m *StateChange) GetBlock() *BlockState {
 	return nil
 }
 
-func (m *StateChange) GetLoc() *LocState {
+func (m *StateChange) GetBlockGroup() *BlockGroupState {
 	if m != nil {
-		return m.Loc
+		return m.BlockGroup
+	}
+	return nil
+}
+
+func (m *StateChange) GetJunction() *JunctionState {
+	if m != nil {
+		return m.Junction
+	}
+	return nil
+}
+
+func (m *StateChange) GetOutput() *OutputState {
+	if m != nil {
+		return m.Output
+	}
+	return nil
+}
+
+func (m *StateChange) GetRoute() *RouteState {
+	if m != nil {
+		return m.Route
+	}
+	return nil
+}
+
+func (m *StateChange) GetSensor() *SensorState {
+	if m != nil {
+		return m.Sensor
+	}
+	return nil
+}
+
+func (m *StateChange) GetSignal() *SignalState {
+	if m != nil {
+		return m.Signal
 	}
 	return nil
 }
@@ -248,33 +304,41 @@ func init() {
 func init() { proto.RegisterFile("br_state_service.proto", fileDescriptor_a476a990e66ccc93) }
 
 var fileDescriptor_a476a990e66ccc93 = []byte{
-	// 407 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0x5d, 0x4a, 0xeb, 0x40,
-	0x14, 0x80, 0x6f, 0x6e, 0xb9, 0xb7, 0x75, 0xaa, 0x56, 0x86, 0x52, 0x43, 0xa8, 0x41, 0xf3, 0x20,
-	0x05, 0x25, 0x69, 0x2b, 0x88, 0xcf, 0xad, 0xa5, 0x28, 0x16, 0x24, 0x7d, 0x10, 0x44, 0x28, 0x93,
-	0x74, 0x68, 0x43, 0xd3, 0x4c, 0xcc, 0x4c, 0x52, 0xb2, 0x13, 0xb7, 0x20, 0x6e, 0xc4, 0x47, 0x97,
-	0x20, 0x75, 0x23, 0x92, 0x49, 0xa3, 0xa9, 0x09, 0x14, 0x7c, 0xcb, 0x99, 0x7c, 0xdf, 0xc9, 0xf9,
-	0x99, 0x80, 0x9a, 0xe1, 0x8d, 0x28, 0x43, 0x0c, 0x8f, 0x28, 0xf6, 0x02, 0xcb, 0xc4, 0xaa, 0xeb,
-	0x11, 0x46, 0xe0, 0x9e, 0x61, 0x39, 0xb3, 0xd0, 0x43, 0x96, 0xbd, 0x40, 0x21, 0x55, 0x83, 0x96,
-	0x54, 0xfd, 0x22, 0x59, 0xe8, 0x62, 0x1a, 0x73, 0xfc, 0x74, 0x4e, 0xc6, 0xd8, 0x4e, 0x9f, 0x2a,
-	0x4d, 0x50, 0xed, 0x39, 0xc8, 0xb0, 0xb1, 0xee, 0x3b, 0x03, 0x32, 0xc6, 0x3a, 0x7e, 0xf4, 0x31,
-	0x65, 0x50, 0x04, 0xc5, 0xc0, 0xf2, 0x98, 0x8f, 0x6c, 0x51, 0x38, 0x14, 0x1a, 0x25, 0x3d, 0x09,
-	0x95, 0x73, 0x50, 0xeb, 0x63, 0x36, 0x8c, 0xf2, 0x77, 0xa7, 0xc8, 0x99, 0x60, 0x9a, 0x38, 0x75,
-	0xb0, 0x65, 0x10, 0xc2, 0x28, 0xf3, 0x90, 0xbb, 0xb2, 0xbe, 0x0f, 0x94, 0x67, 0x01, 0x94, 0x53,
-	0x16, 0xbc, 0x00, 0xc5, 0x55, 0xd1, 0x9c, 0x2d, 0xb7, 0x65, 0xf5, 0x67, 0x27, 0xaa, 0x1e, 0x3f,
-	0x73, 0x4d, 0x4f, 0x70, 0xd8, 0x06, 0xff, 0x0c, 0x9b, 0x98, 0x33, 0xf1, 0x2f, 0xf7, 0xea, 0x59,
-	0xaf, 0x13, 0xbd, 0x8e, 0xad, 0x18, 0x85, 0xa7, 0xa0, 0x60, 0x13, 0x53, 0x2c, 0x70, 0x43, 0xca,
-	0x1a, 0x37, 0xc4, 0x8c, 0xf9, 0x08, 0x53, 0x4e, 0x40, 0x65, 0x88, 0xd9, 0x2d, 0x59, 0x60, 0x2f,
-	0x35, 0x10, 0xcc, 0x07, 0x35, 0x4e, 0x06, 0xb2, 0x0a, 0xdb, 0x2f, 0x05, 0xb0, 0xcd, 0xdd, 0x61,
-	0xbc, 0x17, 0x78, 0x0d, 0x2a, 0x7d, 0xcc, 0xd2, 0xb5, 0xc3, 0xfd, 0xec, 0x17, 0x7b, 0x73, 0x97,
-	0x85, 0xd2, 0x86, 0xa6, 0xe1, 0x1d, 0xd8, 0x59, 0xdb, 0x0f, 0x3c, 0xce, 0xc9, 0x94, 0xb3, 0xc0,
-	0x8d, 0x89, 0xaf, 0xc0, 0xee, 0xa5, 0x45, 0xd3, 0x99, 0x7f, 0x5d, 0xe3, 0x03, 0xef, 0x37, 0x7d,
-	0x23, 0x60, 0x23, 0xab, 0xe4, 0x5f, 0x1a, 0xe9, 0x20, 0x4b, 0xa6, 0xb0, 0xa6, 0x00, 0x07, 0xa0,
-	0x94, 0xec, 0x02, 0x1e, 0xe5, 0xc0, 0xeb, 0x7b, 0xda, 0x54, 0x6c, 0xa7, 0xfb, 0xba, 0x94, 0x85,
-	0xb7, 0xa5, 0x2c, 0xbc, 0x2f, 0x65, 0xe1, 0xe9, 0x43, 0xfe, 0x73, 0xdf, 0x9a, 0x58, 0x6c, 0xea,
-	0x1b, 0xaa, 0x49, 0xe6, 0xda, 0x9a, 0xab, 0x75, 0xa2, 0x48, 0x4f, 0x22, 0x77, 0x36, 0xd1, 0x90,
-	0x6b, 0x69, 0x41, 0xcb, 0xf8, 0xcf, 0x7f, 0x9e, 0xb3, 0xcf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x7b,
-	0xd0, 0x1f, 0x9d, 0x94, 0x03, 0x00, 0x00,
+	// 541 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xe1, 0x6a, 0x13, 0x41,
+	0x10, 0xc7, 0x3d, 0xdb, 0x26, 0xe9, 0x54, 0x5b, 0x59, 0x4a, 0x5d, 0x42, 0x8d, 0x36, 0xa0, 0x14,
+	0x94, 0xa4, 0x89, 0x28, 0x82, 0x9f, 0x4c, 0x2c, 0xc1, 0x62, 0x50, 0x2e, 0x1f, 0x04, 0x11, 0xca,
+	0xde, 0x65, 0x49, 0xcf, 0xdc, 0xdd, 0x9e, 0xbb, 0x7b, 0x29, 0x79, 0x13, 0xdf, 0xc1, 0x17, 0xf1,
+	0xa3, 0xbe, 0x81, 0xc4, 0x17, 0x91, 0x9b, 0xbd, 0x6b, 0x2f, 0xbd, 0x0b, 0x01, 0xbf, 0xdd, 0xec,
+	0xfc, 0x7f, 0xff, 0xdd, 0x61, 0x66, 0x0e, 0x0e, 0x1c, 0x79, 0xae, 0x34, 0xd3, 0xfc, 0x5c, 0x71,
+	0x39, 0xf3, 0x5c, 0xde, 0x8a, 0xa4, 0xd0, 0x82, 0xdc, 0x73, 0xbc, 0x70, 0x3a, 0x97, 0xcc, 0xf3,
+	0x2f, 0xd9, 0x5c, 0xb5, 0x66, 0x9d, 0xfa, 0xfe, 0x95, 0x52, 0xcf, 0x23, 0xae, 0x8c, 0x0e, 0x4f,
+	0x03, 0x31, 0xe6, 0x7e, 0xfe, 0xb4, 0x79, 0x02, 0xfb, 0xa7, 0x21, 0x73, 0x7c, 0x6e, 0xc7, 0xe1,
+	0x50, 0x8c, 0xb9, 0xcd, 0xbf, 0xc5, 0x5c, 0x69, 0x42, 0xa1, 0x3a, 0xf3, 0xa4, 0x8e, 0x99, 0x4f,
+	0xad, 0x47, 0xd6, 0x71, 0xcd, 0xce, 0xc2, 0xe6, 0x4b, 0x38, 0x18, 0x70, 0x3d, 0x4a, 0xfc, 0xfb,
+	0x17, 0x2c, 0x9c, 0x70, 0x95, 0x31, 0x87, 0xb0, 0xed, 0x08, 0xa1, 0x95, 0x96, 0x2c, 0x4a, 0xa9,
+	0xeb, 0x83, 0xe6, 0xef, 0x4d, 0xd8, 0xc9, 0x51, 0xe4, 0x15, 0x54, 0xd3, 0x47, 0xa3, 0x76, 0xa7,
+	0xdb, 0x68, 0xdd, 0xac, 0xa4, 0x65, 0x9b, 0x6f, 0xc4, 0xec, 0x4c, 0x4e, 0x9e, 0xc1, 0x86, 0x2f,
+	0x5c, 0x7a, 0x1b, 0xa9, 0x7a, 0x91, 0x7a, 0x2f, 0x5c, 0x43, 0x24, 0x32, 0x32, 0x84, 0x5d, 0x57,
+	0x04, 0x01, 0x0b, 0xc7, 0xc9, 0xa1, 0x27, 0x42, 0xba, 0x81, 0xe0, 0xe3, 0x22, 0xd8, 0x5f, 0xd2,
+	0x19, 0x8f, 0x1b, 0x30, 0xe9, 0xc2, 0x96, 0xe3, 0x0b, 0x77, 0x4a, 0x37, 0xd1, 0xe5, 0xb0, 0xe8,
+	0xd2, 0x4b, 0xd2, 0x06, 0x36, 0x52, 0xf2, 0x06, 0x00, 0x3f, 0x06, 0x52, 0xc4, 0x11, 0xdd, 0x42,
+	0xf0, 0x68, 0x05, 0x88, 0x1a, 0x43, 0xe7, 0x20, 0xf2, 0x1a, 0x6a, 0x5f, 0xe3, 0xd0, 0xc5, 0xf7,
+	0x57, 0xd0, 0xe0, 0x61, 0xd1, 0xe0, 0x2c, 0x55, 0x18, 0xfc, 0x0a, 0x20, 0x2f, 0xa0, 0x22, 0x62,
+	0x1d, 0xc5, 0x9a, 0x56, 0x11, 0x7d, 0x50, 0x44, 0x3f, 0x60, 0xde, 0x80, 0xa9, 0x38, 0x29, 0x55,
+	0x8a, 0x58, 0x73, 0x5a, 0x5b, 0x55, 0xaa, 0x9d, 0xa4, 0xd3, 0x52, 0x51, 0x9a, 0x5c, 0xa5, 0x78,
+	0xa8, 0x84, 0xa4, 0xdb, 0xab, 0xae, 0x1a, 0x61, 0x3e, 0xbd, 0xca, 0x88, 0x11, 0xf3, 0x26, 0x21,
+	0xf3, 0x29, 0xac, 0xc4, 0x30, 0x9f, 0x61, 0x18, 0x34, 0x9f, 0xc2, 0xde, 0x88, 0xeb, 0x8f, 0xe2,
+	0x92, 0xcb, 0xdc, 0xe0, 0x72, 0x1c, 0xe8, 0x71, 0x36, 0xb8, 0x69, 0xd8, 0xfd, 0xb1, 0x01, 0x77,
+	0x10, 0x1f, 0x99, 0xfd, 0x21, 0x67, 0xb0, 0x37, 0xe0, 0x3a, 0x3f, 0x63, 0xe4, 0x7e, 0xf1, 0xde,
+	0xd3, 0x20, 0xd2, 0xf3, 0xfa, 0x9a, 0xe1, 0x24, 0x9f, 0xe0, 0xee, 0xd2, 0x1e, 0x91, 0x27, 0x25,
+	0x4e, 0x25, 0x8b, 0xb6, 0xd6, 0xf8, 0x1d, 0xec, 0xbe, 0xf5, 0x54, 0xde, 0xf9, 0xbf, 0xdf, 0xf8,
+	0x05, 0xeb, 0xcd, 0x6f, 0x2e, 0x39, 0x2e, 0x22, 0xe5, 0xcb, 0x5d, 0x2f, 0xeb, 0xc8, 0xb5, 0xec,
+	0xc4, 0x22, 0x43, 0xa8, 0x65, 0xbd, 0x20, 0x47, 0x65, 0x5d, 0x5f, 0xea, 0xd3, 0xba, 0xc7, 0xf6,
+	0xfa, 0x3f, 0x17, 0x0d, 0xeb, 0xd7, 0xa2, 0x61, 0xfd, 0x59, 0x34, 0xac, 0xef, 0x7f, 0x1b, 0xb7,
+	0x3e, 0x77, 0x26, 0x9e, 0xbe, 0x88, 0x9d, 0x96, 0x2b, 0x82, 0xf6, 0x12, 0xdb, 0xee, 0x25, 0x91,
+	0x9d, 0x45, 0xd1, 0x74, 0xd2, 0x66, 0x91, 0xd7, 0x9e, 0x75, 0x9c, 0x0a, 0xfe, 0xe4, 0x9e, 0xff,
+	0x0b, 0x00, 0x00, 0xff, 0xff, 0x0c, 0x68, 0x2a, 0x04, 0x3c, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -637,9 +701,93 @@ func (m *StateChange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if m.Loc != nil {
+	if m.Signal != nil {
 		{
-			size, err := m.Loc.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Signal.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.Sensor != nil {
+		{
+			size, err := m.Sensor.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
+	}
+	if m.Route != nil {
+		{
+			size, err := m.Route.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x42
+	}
+	if m.Output != nil {
+		{
+			size, err := m.Output.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
+	if m.Junction != nil {
+		{
+			size, err := m.Junction.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.BlockGroup != nil {
+		{
+			size, err := m.BlockGroup.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.Block != nil {
+		{
+			size, err := m.Block.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateService(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.CommandStation != nil {
+		{
+			size, err := m.CommandStation.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -649,9 +797,9 @@ func (m *StateChange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1a
 	}
-	if m.Block != nil {
+	if m.Loc != nil {
 		{
-			size, err := m.Block.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Loc.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -764,12 +912,40 @@ func (m *StateChange) Size() (n int) {
 		l = m.Railway.Size()
 		n += 1 + l + sovBrStateService(uint64(l))
 	}
+	if m.Loc != nil {
+		l = m.Loc.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.CommandStation != nil {
+		l = m.CommandStation.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
 	if m.Block != nil {
 		l = m.Block.Size()
 		n += 1 + l + sovBrStateService(uint64(l))
 	}
-	if m.Loc != nil {
-		l = m.Loc.Size()
+	if m.BlockGroup != nil {
+		l = m.BlockGroup.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.Junction != nil {
+		l = m.Junction.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.Output != nil {
+		l = m.Output.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.Route != nil {
+		l = m.Route.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.Sensor != nil {
+		l = m.Sensor.Size()
+		n += 1 + l + sovBrStateService(uint64(l))
+	}
+	if m.Signal != nil {
+		l = m.Signal.Size()
 		n += 1 + l + sovBrStateService(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -1008,6 +1184,78 @@ func (m *StateChange) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Loc", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Loc == nil {
+				m.Loc = &LocState{}
+			}
+			if err := m.Loc.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CommandStation", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CommandStation == nil {
+				m.CommandStation = &CommandStationState{}
+			}
+			if err := m.CommandStation.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
 			}
 			var msglen int
@@ -1042,9 +1290,9 @@ func (m *StateChange) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 3:
+		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Loc", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockGroup", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1071,10 +1319,190 @@ func (m *StateChange) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Loc == nil {
-				m.Loc = &LocState{}
+			if m.BlockGroup == nil {
+				m.BlockGroup = &BlockGroupState{}
 			}
-			if err := m.Loc.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.BlockGroup.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Junction", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Junction == nil {
+				m.Junction = &JunctionState{}
+			}
+			if err := m.Junction.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Output == nil {
+				m.Output = &OutputState{}
+			}
+			if err := m.Output.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Route", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Route == nil {
+				m.Route = &RouteState{}
+			}
+			if err := m.Route.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Sensor", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Sensor == nil {
+				m.Sensor = &SensorState{}
+			}
+			if err := m.Sensor.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Signal", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Signal == nil {
+				m.Signal = &SignalState{}
+			}
+			if err := m.Signal.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

@@ -24,6 +24,9 @@ type Route interface {
 	ModuleEntity
 	Lockable
 
+	// Gets the underlying model
+	GetModel() model.Route
+
 	// Speed of locs when going this route.
 	// This value is a percentage of the maximum / medium speed of the loc.
 	// <value>0..100</value>

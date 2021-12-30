@@ -39,6 +39,18 @@ message RailwayState {
   bool power_requested = 11;
 }
 
+// State of a single loc
+message LocState {
+  // Model of the loc
+  Loc model = 1;
+}
+
+// State of a single command station
+message CommandStationState {
+  // Model of the command station
+  CommandStation model = 1;
+}
+
 // State of a single block
 message BlockState {
   // Model of the block
@@ -62,8 +74,38 @@ message BlockState {
   bool has_waiting_loc = 22;
 }
 
-// State of a single loc
-message LocState {
-  // Model of the loc
-  Loc model = 1;
+// State of a single block group
+message BlockGroupState {
+  // Model of the block group
+  BlockGroup model = 1;
+}
+
+// State of a single junction
+message JunctionState {
+  // Model of the junction
+  Junction model = 1;
+}
+
+// State of a single output
+message OutputState {
+  // Model of the output
+  Output model = 1;
+}
+
+// State of a single route
+message RouteState {
+  // Model of the route
+  Route model = 1;
+}
+
+// State of a single sensor
+message SensorState {
+  // Model of the sensor
+  Sensor model = 1;
+}
+
+// State of a single signal
+message SignalState {
+  // Model of the route
+  Signal model = 1;
 }

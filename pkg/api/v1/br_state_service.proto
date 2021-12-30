@@ -59,8 +59,15 @@ message GetStateChangesRequest {
 // Only one of the fields is set;
 message StateChange {
   RailwayState railway = 1;
-  BlockState block = 2;
-  LocState loc = 3;
+  LocState loc = 2;
+  CommandStationState commandStation = 3;
+  BlockState block = 4;
+  BlockGroupState blockGroup = 5;
+  JunctionState junction = 6;
+  OutputState output = 7;
+  RouteState route = 8;
+  SensorState sensor = 9;
+  SignalState signal = 10;
 }
 
 message SetPowerRequest {

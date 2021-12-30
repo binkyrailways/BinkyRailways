@@ -15,17 +15,19 @@
 // Author Ewout Prangsma
 //
 
-package state
+package v1
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	context "context"
 
-// Signal specifies the state of a single signal
-type Signal interface {
-	Entity
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+)
 
-	// Gets the underlying model
-	GetModel() model.Signal
-
-	// Update the output of this signal
-	Update()
+// FromState converts a state block group to an API block group
+func (dst *BlockGroupState) FromState(ctx context.Context, src state.BlockGroup) error {
+	dst.Model = &BlockGroup{}
+	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
+		return err
+	}
+	return nil
 }

@@ -27,6 +27,9 @@ import (
 type CommandStation interface {
 	Entity
 
+	// Gets the underlying model
+	GetModel() model.CommandStation
+
 	// Junctions driven by this command station
 	ForEachJunction(func(Junction))
 

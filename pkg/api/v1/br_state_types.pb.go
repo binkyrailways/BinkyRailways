@@ -116,6 +116,104 @@ func (m *RailwayState) GetPowerRequested() bool {
 	return false
 }
 
+// State of a single loc
+type LocState struct {
+	// Model of the loc
+	Model                *Loc     `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LocState) Reset()         { *m = LocState{} }
+func (m *LocState) String() string { return proto.CompactTextString(m) }
+func (*LocState) ProtoMessage()    {}
+func (*LocState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{1}
+}
+func (m *LocState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *LocState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_LocState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *LocState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LocState.Merge(m, src)
+}
+func (m *LocState) XXX_Size() int {
+	return m.Size()
+}
+func (m *LocState) XXX_DiscardUnknown() {
+	xxx_messageInfo_LocState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LocState proto.InternalMessageInfo
+
+func (m *LocState) GetModel() *Loc {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single command station
+type CommandStationState struct {
+	// Model of the command station
+	Model                *CommandStation `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *CommandStationState) Reset()         { *m = CommandStationState{} }
+func (m *CommandStationState) String() string { return proto.CompactTextString(m) }
+func (*CommandStationState) ProtoMessage()    {}
+func (*CommandStationState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{2}
+}
+func (m *CommandStationState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CommandStationState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CommandStationState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CommandStationState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommandStationState.Merge(m, src)
+}
+func (m *CommandStationState) XXX_Size() int {
+	return m.Size()
+}
+func (m *CommandStationState) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommandStationState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommandStationState proto.InternalMessageInfo
+
+func (m *CommandStationState) GetModel() *CommandStation {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
 // State of a single block
 type BlockState struct {
 	// Model of the block
@@ -138,7 +236,7 @@ func (m *BlockState) Reset()         { *m = BlockState{} }
 func (m *BlockState) String() string { return proto.CompactTextString(m) }
 func (*BlockState) ProtoMessage()    {}
 func (*BlockState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7ba3d7758196798e, []int{1}
+	return fileDescriptor_7ba3d7758196798e, []int{3}
 }
 func (m *BlockState) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -209,27 +307,27 @@ func (m *BlockState) GetHasWaitingLoc() bool {
 	return false
 }
 
-// State of a single loc
-type LocState struct {
-	// Model of the loc
-	Model                *Loc     `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+// State of a single block group
+type BlockGroupState struct {
+	// Model of the block group
+	Model                *BlockGroup `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
-func (m *LocState) Reset()         { *m = LocState{} }
-func (m *LocState) String() string { return proto.CompactTextString(m) }
-func (*LocState) ProtoMessage()    {}
-func (*LocState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7ba3d7758196798e, []int{2}
+func (m *BlockGroupState) Reset()         { *m = BlockGroupState{} }
+func (m *BlockGroupState) String() string { return proto.CompactTextString(m) }
+func (*BlockGroupState) ProtoMessage()    {}
+func (*BlockGroupState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{4}
 }
-func (m *LocState) XXX_Unmarshal(b []byte) error {
+func (m *BlockGroupState) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LocState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *BlockGroupState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LocState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_BlockGroupState.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -239,19 +337,264 @@ func (m *LocState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *LocState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LocState.Merge(m, src)
+func (m *BlockGroupState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BlockGroupState.Merge(m, src)
 }
-func (m *LocState) XXX_Size() int {
+func (m *BlockGroupState) XXX_Size() int {
 	return m.Size()
 }
-func (m *LocState) XXX_DiscardUnknown() {
-	xxx_messageInfo_LocState.DiscardUnknown(m)
+func (m *BlockGroupState) XXX_DiscardUnknown() {
+	xxx_messageInfo_BlockGroupState.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LocState proto.InternalMessageInfo
+var xxx_messageInfo_BlockGroupState proto.InternalMessageInfo
 
-func (m *LocState) GetModel() *Loc {
+func (m *BlockGroupState) GetModel() *BlockGroup {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single junction
+type JunctionState struct {
+	// Model of the junction
+	Model                *Junction `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *JunctionState) Reset()         { *m = JunctionState{} }
+func (m *JunctionState) String() string { return proto.CompactTextString(m) }
+func (*JunctionState) ProtoMessage()    {}
+func (*JunctionState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{5}
+}
+func (m *JunctionState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *JunctionState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_JunctionState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *JunctionState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_JunctionState.Merge(m, src)
+}
+func (m *JunctionState) XXX_Size() int {
+	return m.Size()
+}
+func (m *JunctionState) XXX_DiscardUnknown() {
+	xxx_messageInfo_JunctionState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_JunctionState proto.InternalMessageInfo
+
+func (m *JunctionState) GetModel() *Junction {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single output
+type OutputState struct {
+	// Model of the output
+	Model                *Output  `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *OutputState) Reset()         { *m = OutputState{} }
+func (m *OutputState) String() string { return proto.CompactTextString(m) }
+func (*OutputState) ProtoMessage()    {}
+func (*OutputState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{6}
+}
+func (m *OutputState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OutputState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OutputState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OutputState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OutputState.Merge(m, src)
+}
+func (m *OutputState) XXX_Size() int {
+	return m.Size()
+}
+func (m *OutputState) XXX_DiscardUnknown() {
+	xxx_messageInfo_OutputState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OutputState proto.InternalMessageInfo
+
+func (m *OutputState) GetModel() *Output {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single route
+type RouteState struct {
+	// Model of the route
+	Model                *Route   `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RouteState) Reset()         { *m = RouteState{} }
+func (m *RouteState) String() string { return proto.CompactTextString(m) }
+func (*RouteState) ProtoMessage()    {}
+func (*RouteState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{7}
+}
+func (m *RouteState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RouteState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RouteState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RouteState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RouteState.Merge(m, src)
+}
+func (m *RouteState) XXX_Size() int {
+	return m.Size()
+}
+func (m *RouteState) XXX_DiscardUnknown() {
+	xxx_messageInfo_RouteState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RouteState proto.InternalMessageInfo
+
+func (m *RouteState) GetModel() *Route {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single sensor
+type SensorState struct {
+	// Model of the sensor
+	Model                *Sensor  `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SensorState) Reset()         { *m = SensorState{} }
+func (m *SensorState) String() string { return proto.CompactTextString(m) }
+func (*SensorState) ProtoMessage()    {}
+func (*SensorState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{8}
+}
+func (m *SensorState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SensorState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SensorState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SensorState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SensorState.Merge(m, src)
+}
+func (m *SensorState) XXX_Size() int {
+	return m.Size()
+}
+func (m *SensorState) XXX_DiscardUnknown() {
+	xxx_messageInfo_SensorState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SensorState proto.InternalMessageInfo
+
+func (m *SensorState) GetModel() *Sensor {
+	if m != nil {
+		return m.Model
+	}
+	return nil
+}
+
+// State of a single signal
+type SignalState struct {
+	// Model of the route
+	Model                *Signal  `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SignalState) Reset()         { *m = SignalState{} }
+func (m *SignalState) String() string { return proto.CompactTextString(m) }
+func (*SignalState) ProtoMessage()    {}
+func (*SignalState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{9}
+}
+func (m *SignalState) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SignalState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SignalState.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SignalState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SignalState.Merge(m, src)
+}
+func (m *SignalState) XXX_Size() int {
+	return m.Size()
+}
+func (m *SignalState) XXX_DiscardUnknown() {
+	xxx_messageInfo_SignalState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SignalState proto.InternalMessageInfo
+
+func (m *SignalState) GetModel() *Signal {
 	if m != nil {
 		return m.Model
 	}
@@ -260,41 +603,55 @@ func (m *LocState) GetModel() *Loc {
 
 func init() {
 	proto.RegisterType((*RailwayState)(nil), "binkyrailways.v1.RailwayState")
-	proto.RegisterType((*BlockState)(nil), "binkyrailways.v1.BlockState")
 	proto.RegisterType((*LocState)(nil), "binkyrailways.v1.LocState")
+	proto.RegisterType((*CommandStationState)(nil), "binkyrailways.v1.CommandStationState")
+	proto.RegisterType((*BlockState)(nil), "binkyrailways.v1.BlockState")
+	proto.RegisterType((*BlockGroupState)(nil), "binkyrailways.v1.BlockGroupState")
+	proto.RegisterType((*JunctionState)(nil), "binkyrailways.v1.JunctionState")
+	proto.RegisterType((*OutputState)(nil), "binkyrailways.v1.OutputState")
+	proto.RegisterType((*RouteState)(nil), "binkyrailways.v1.RouteState")
+	proto.RegisterType((*SensorState)(nil), "binkyrailways.v1.SensorState")
+	proto.RegisterType((*SignalState)(nil), "binkyrailways.v1.SignalState")
 }
 
 func init() { proto.RegisterFile("br_state_types.proto", fileDescriptor_7ba3d7758196798e) }
 
 var fileDescriptor_7ba3d7758196798e = []byte{
-	// 425 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x92, 0x4f, 0xee, 0xd2, 0x40,
-	0x14, 0xc7, 0x2d, 0xfe, 0x09, 0x3e, 0x40, 0x48, 0x05, 0xa9, 0x24, 0x36, 0x88, 0x89, 0x62, 0x0c,
-	0x6d, 0xd0, 0x18, 0x17, 0xae, 0x40, 0xdd, 0xe1, 0xa6, 0x24, 0x9a, 0xb8, 0x99, 0x4c, 0x67, 0x26,
-	0x30, 0xa1, 0x74, 0x6a, 0x67, 0x0a, 0xe1, 0x26, 0x9e, 0xc2, 0x73, 0xb8, 0xf4, 0x08, 0x06, 0x4f,
-	0xf0, 0xbb, 0xc1, 0x2f, 0x9d, 0x69, 0x09, 0x85, 0x65, 0x3f, 0xef, 0xf3, 0x7d, 0x7d, 0xef, 0x65,
-	0xa0, 0x1b, 0xa6, 0x48, 0x2a, 0xac, 0x18, 0x52, 0x87, 0x84, 0x49, 0x2f, 0x49, 0x85, 0x12, 0x76,
-	0x27, 0xe4, 0xf1, 0xe6, 0x90, 0x62, 0x1e, 0xed, 0xf1, 0x41, 0x7a, 0xbb, 0xe9, 0x20, 0xf7, 0xb6,
-	0x82, 0xb2, 0xe8, 0xdc, 0x1b, 0xfd, 0xae, 0x41, 0x33, 0x30, 0xd6, 0x32, 0x6f, 0x62, 0xfb, 0x70,
-	0x5f, 0x5b, 0x8e, 0x35, 0xb4, 0xc6, 0x8d, 0xb7, 0x4f, 0xbd, 0xcb, 0x46, 0x5e, 0xa1, 0x07, 0xc6,
-	0xb3, 0x27, 0xf0, 0x98, 0x4b, 0x94, 0x66, 0xb1, 0xee, 0x8e, 0x58, 0x8c, 0xc3, 0x88, 0x51, 0xa7,
-	0x36, 0xb4, 0xc6, 0xf5, 0xa0, 0xc3, 0x65, 0x90, 0xc5, 0x5f, 0x05, 0x65, 0x5f, 0x0c, 0xb7, 0xdf,
-	0x43, 0x9f, 0x4b, 0xb4, 0xe3, 0xa9, 0xca, 0x70, 0x54, 0x8d, 0xdc, 0xd5, 0x91, 0x2e, 0x97, 0xdf,
-	0x4c, 0xf5, 0x3c, 0xf6, 0x11, 0x06, 0x67, 0x31, 0x9c, 0x29, 0x91, 0xff, 0xb1, 0x4c, 0xde, 0xd3,
-	0xc9, 0xfe, 0x29, 0x39, 0x33, 0xf5, 0x32, 0xfc, 0x1c, 0x9a, 0x89, 0xd8, 0xb3, 0x14, 0x61, 0x92,
-	0x57, 0x1d, 0xd0, 0x7a, 0x43, 0xb3, 0x99, 0x46, 0xf6, 0x2b, 0x68, 0x1b, 0x25, 0x65, 0x3f, 0x33,
-	0x26, 0x15, 0xa3, 0x4e, 0x43, 0x5b, 0x8f, 0x34, 0x0e, 0x4a, 0x3a, 0xba, 0xb1, 0x00, 0xe6, 0x91,
-	0x20, 0x1b, 0x73, 0xae, 0x49, 0xf5, 0x5c, 0xfd, 0xeb, 0x73, 0x69, 0xb9, 0x3c, 0xd6, 0x0b, 0x68,
-	0x91, 0x48, 0x48, 0x46, 0xab, 0xa3, 0x34, 0x0d, 0x2c, 0x66, 0x79, 0x0d, 0x9d, 0x42, 0xba, 0x1c,
-	0xa6, 0x6d, 0xf8, 0x69, 0x1a, 0xfb, 0x19, 0x00, 0x97, 0x88, 0x32, 0x4c, 0x59, 0x4c, 0x9d, 0xae,
-	0x96, 0x1e, 0x72, 0xf9, 0xd9, 0x80, 0xa2, 0x9c, 0xbf, 0x0e, 0x2e, 0x62, 0xa7, 0x57, 0x96, 0x97,
-	0x06, 0xd8, 0x2f, 0xa1, 0xbd, 0xc6, 0x12, 0xed, 0x31, 0x57, 0x3c, 0x5e, 0xa1, 0x48, 0x10, 0xe7,
-	0x89, 0x76, 0x5a, 0x6b, 0x2c, 0xbf, 0x1b, 0xba, 0x10, 0x64, 0xf4, 0x01, 0xea, 0x0b, 0x41, 0xcc,
-	0xc2, 0x6f, 0xaa, 0x0b, 0xf7, 0xae, 0x17, 0x5e, 0x08, 0x52, 0xac, 0x3b, 0xff, 0xf4, 0xe7, 0xe8,
-	0x5a, 0x7f, 0x8f, 0xae, 0xf5, 0xef, 0xe8, 0x5a, 0xbf, 0xfe, 0xbb, 0x77, 0x7e, 0x4c, 0x57, 0x5c,
-	0xad, 0xb3, 0xd0, 0x23, 0x62, 0xeb, 0x57, 0x92, 0xfe, 0x3c, 0xff, 0x0a, 0xca, 0xaf, 0x64, 0xb3,
-	0xf2, 0x71, 0xc2, 0xfd, 0xdd, 0x34, 0x7c, 0xa0, 0x5f, 0xea, 0xbb, 0xdb, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x52, 0xe7, 0xb5, 0xd3, 0xe9, 0x02, 0x00, 0x00,
+	// 540 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0xd1, 0x8a, 0xd3, 0x4e,
+	0x14, 0xc6, 0xff, 0xd9, 0xbf, 0xca, 0x7a, 0xda, 0xda, 0x92, 0xed, 0xda, 0x58, 0xb4, 0xd4, 0x0a,
+	0xba, 0x22, 0x9b, 0xda, 0x15, 0xf5, 0x62, 0xf1, 0xa2, 0x5d, 0x17, 0x41, 0xba, 0x08, 0x59, 0x50,
+	0xf0, 0x26, 0x4c, 0x93, 0xa1, 0x1d, 0x9a, 0xce, 0xc4, 0xcc, 0x4c, 0x4b, 0xdf, 0xc4, 0xa7, 0xf0,
+	0x39, 0xbc, 0xf4, 0x11, 0xa4, 0x3e, 0x81, 0x6f, 0x20, 0x99, 0xc9, 0xac, 0x9d, 0x0d, 0x42, 0x2f,
+	0xf3, 0x9d, 0xdf, 0xf7, 0x0d, 0xe7, 0x3b, 0x10, 0x68, 0x4e, 0xb2, 0x90, 0x0b, 0x24, 0x70, 0x28,
+	0xd6, 0x29, 0xe6, 0x7e, 0x9a, 0x31, 0xc1, 0xdc, 0xc6, 0x84, 0xd0, 0xf9, 0x3a, 0x43, 0x24, 0x59,
+	0xa1, 0x35, 0xf7, 0x97, 0x83, 0x76, 0xce, 0x2d, 0x58, 0x8c, 0x93, 0x6d, 0xae, 0xf7, 0x6d, 0x0f,
+	0xaa, 0x81, 0xa6, 0x2e, 0xf3, 0x10, 0xb7, 0x0f, 0x37, 0x15, 0xe5, 0x39, 0x5d, 0xe7, 0xa8, 0x72,
+	0x72, 0xcf, 0xbf, 0x1e, 0xe4, 0x17, 0x78, 0xa0, 0x39, 0xf7, 0x18, 0x0e, 0x08, 0x0f, 0x33, 0x49,
+	0x55, 0x7a, 0x88, 0x29, 0x9a, 0x24, 0x38, 0xf6, 0xf6, 0xba, 0xce, 0xd1, 0x7e, 0xd0, 0x20, 0x3c,
+	0x90, 0xf4, 0x82, 0xc5, 0xf8, 0x5c, 0xeb, 0xee, 0x4b, 0x68, 0x11, 0x1e, 0x2e, 0x49, 0x26, 0x24,
+	0x4a, 0x6c, 0xcb, 0xff, 0xca, 0xd2, 0x24, 0xfc, 0xa3, 0x9e, 0x6e, 0xdb, 0x4e, 0xa1, 0xbd, 0x65,
+	0x43, 0x52, 0xb0, 0xfc, 0x45, 0xe3, 0xbc, 0xa1, 0x9c, 0xad, 0x2b, 0xe7, 0x50, 0xcf, 0x8d, 0xf9,
+	0x21, 0x54, 0x53, 0xb6, 0xc2, 0x59, 0x88, 0xa2, 0x7c, 0xea, 0x81, 0xc2, 0x2b, 0x4a, 0x1b, 0x2a,
+	0xc9, 0x7d, 0x02, 0x75, 0x8d, 0x64, 0xf8, 0x8b, 0xc4, 0x5c, 0xe0, 0xd8, 0xab, 0x28, 0xea, 0x8e,
+	0x92, 0x03, 0xa3, 0xf6, 0x5e, 0xc3, 0xfe, 0x98, 0x45, 0xba, 0xab, 0x67, 0x76, 0x57, 0x87, 0xe5,
+	0xae, 0xc6, 0x2c, 0x2a, 0x7a, 0xea, 0x5d, 0xc0, 0xc1, 0x19, 0x5b, 0x2c, 0x10, 0x8d, 0x73, 0x33,
+	0x61, 0x54, 0x67, 0xbc, 0xb2, 0x33, 0xba, 0xe5, 0x0c, 0xdb, 0x65, 0xe2, 0x7e, 0x3b, 0x00, 0xa3,
+	0x84, 0x45, 0x73, 0x1d, 0x73, 0x6c, 0xc7, 0xb4, 0xca, 0x31, 0x0a, 0x36, 0x47, 0x7b, 0x04, 0xb5,
+	0x28, 0x61, 0x1c, 0xc7, 0x76, 0x25, 0x55, 0x2d, 0x16, 0x9d, 0x3c, 0x85, 0x46, 0x01, 0x5d, 0x2f,
+	0xa5, 0xae, 0xf5, 0xab, 0x56, 0xdc, 0x07, 0x00, 0x84, 0x87, 0x31, 0x46, 0x31, 0xa6, 0xb1, 0xd7,
+	0x54, 0xd0, 0x6d, 0xc2, 0xdf, 0x6a, 0xa1, 0x18, 0x73, 0xbd, 0x81, 0x77, 0x68, 0xc6, 0xc5, 0x4a,
+	0xee, 0x63, 0xa8, 0xcf, 0x10, 0x0f, 0x57, 0x88, 0x08, 0x42, 0xa7, 0x61, 0xc2, 0x22, 0xef, 0xae,
+	0x62, 0x6a, 0x33, 0xc4, 0x3f, 0x69, 0x75, 0xcc, 0xa2, 0xde, 0x39, 0xd4, 0xd5, 0x16, 0xef, 0x32,
+	0x26, 0x53, 0xbd, 0xf7, 0x89, 0xbd, 0xf7, 0xfd, 0x7f, 0xec, 0xad, 0x1c, 0xa6, 0xba, 0x21, 0xd4,
+	0xde, 0x4b, 0x1a, 0xfd, 0xbd, 0xc1, 0x73, 0x3b, 0xa4, 0x5d, 0x0e, 0x31, 0xbc, 0x89, 0x78, 0x03,
+	0x95, 0x0f, 0x52, 0xa4, 0x52, 0xe8, 0x00, 0xdf, 0x0e, 0xf0, 0xca, 0x01, 0x9a, 0x36, 0xf6, 0x53,
+	0x80, 0x80, 0x49, 0x81, 0x77, 0xbd, 0x9d, 0x82, 0xb7, 0xde, 0xbe, 0xc4, 0x94, 0xb3, 0x6c, 0xd7,
+	0xb7, 0x35, 0xbd, 0x6d, 0x27, 0x53, 0x8a, 0x92, 0x9d, 0xed, 0x8a, 0x2e, 0xec, 0xa3, 0xb3, 0xef,
+	0x9b, 0x8e, 0xf3, 0x63, 0xd3, 0x71, 0x7e, 0x6e, 0x3a, 0xce, 0xd7, 0x5f, 0x9d, 0xff, 0x3e, 0x0f,
+	0xa6, 0x44, 0xcc, 0xe4, 0xc4, 0x8f, 0xd8, 0xa2, 0x6f, 0x99, 0xfb, 0xa3, 0xfc, 0x2b, 0x30, 0x5f,
+	0xe9, 0x7c, 0xda, 0x47, 0x29, 0xe9, 0x2f, 0x07, 0x93, 0x5b, 0xea, 0xe7, 0xf3, 0xe2, 0x4f, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0xd1, 0x62, 0xa9, 0x8a, 0xbc, 0x04, 0x00, 0x00,
 }
 
 func (m *RailwayState) Marshal() (dAtA []byte, err error) {
@@ -370,6 +727,84 @@ func (m *RailwayState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x10
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *LocState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *LocState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LocState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CommandStationState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CommandStationState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CommandStationState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
 	}
 	if m.Model != nil {
 		{
@@ -481,7 +916,7 @@ func (m *BlockState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LocState) Marshal() (dAtA []byte, err error) {
+func (m *BlockGroupState) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -491,12 +926,207 @@ func (m *LocState) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LocState) MarshalTo(dAtA []byte) (int, error) {
+func (m *BlockGroupState) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LocState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *BlockGroupState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *JunctionState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *JunctionState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *JunctionState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *OutputState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OutputState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *OutputState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RouteState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RouteState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RouteState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SensorState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SensorState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SensorState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Model != nil {
+		{
+			size, err := m.Model.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SignalState) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SignalState) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SignalState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -562,6 +1192,38 @@ func (m *RailwayState) Size() (n int) {
 	return n
 }
 
+func (m *LocState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *CommandStationState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *BlockState) Size() (n int) {
 	if m == nil {
 		return 0
@@ -593,7 +1255,87 @@ func (m *BlockState) Size() (n int) {
 	return n
 }
 
-func (m *LocState) Size() (n int) {
+func (m *BlockGroupState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *JunctionState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *OutputState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *RouteState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *SensorState) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Model != nil {
+		l = m.Model.Size()
+		n += 1 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *SignalState) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -780,6 +1522,180 @@ func (m *RailwayState) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.PowerRequested = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *LocState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: LocState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: LocState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Loc{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CommandStationState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CommandStationState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CommandStationState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &CommandStation{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
@@ -989,7 +1905,7 @@ func (m *BlockState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LocState) Unmarshal(dAtA []byte) error {
+func (m *BlockGroupState) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1012,10 +1928,10 @@ func (m *LocState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LocState: wiretype end group for non-group")
+			return fmt.Errorf("proto: BlockGroupState: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LocState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: BlockGroupState: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1048,7 +1964,442 @@ func (m *LocState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Model == nil {
-				m.Model = &Loc{}
+				m.Model = &BlockGroup{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *JunctionState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: JunctionState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: JunctionState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Junction{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *OutputState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: OutputState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: OutputState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Output{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RouteState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RouteState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RouteState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Route{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SensorState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SensorState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SensorState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Sensor{}
+			}
+			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBrStateTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SignalState) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBrStateTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SignalState: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SignalState: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Model", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Model == nil {
+				m.Model = &Signal{}
 			}
 			if err := m.Model.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

@@ -130,6 +130,104 @@ class RailwayState extends $pb.GeneratedMessage {
   void clearPowerRequested() => clearField(11);
 }
 
+class LocState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Loc.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocState._() : super();
+  factory LocState({
+    $1.Loc? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory LocState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocState clone() => LocState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocState copyWith(void Function(LocState) updates) => super.copyWith((message) => updates(message as LocState)) as LocState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocState create() => LocState._();
+  LocState createEmptyInstance() => create();
+  static $pb.PbList<LocState> createRepeated() => $pb.PbList<LocState>();
+  @$core.pragma('dart2js:noInline')
+  static LocState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocState>(create);
+  static LocState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Loc get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Loc v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Loc ensureModel() => $_ensure(0);
+}
+
+class CommandStationState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStationState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.CommandStation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.CommandStation.create)
+    ..hasRequiredFields = false
+  ;
+
+  CommandStationState._() : super();
+  factory CommandStationState({
+    $1.CommandStation? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory CommandStationState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CommandStationState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CommandStationState clone() => CommandStationState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CommandStationState copyWith(void Function(CommandStationState) updates) => super.copyWith((message) => updates(message as CommandStationState)) as CommandStationState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CommandStationState create() => CommandStationState._();
+  CommandStationState createEmptyInstance() => create();
+  static $pb.PbList<CommandStationState> createRepeated() => $pb.PbList<CommandStationState>();
+  @$core.pragma('dart2js:noInline')
+  static CommandStationState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandStationState>(create);
+  static CommandStationState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.CommandStation get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.CommandStation v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.CommandStation ensureModel() => $_ensure(0);
+}
+
 class BlockState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Block.create)
@@ -249,15 +347,15 @@ class BlockState extends $pb.GeneratedMessage {
   void clearHasWaitingLoc() => clearField(22);
 }
 
-class LocState extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Loc.create)
+class BlockGroupState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockGroupState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.BlockGroup>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.BlockGroup.create)
     ..hasRequiredFields = false
   ;
 
-  LocState._() : super();
-  factory LocState({
-    $1.Loc? model,
+  BlockGroupState._() : super();
+  factory BlockGroupState({
+    $1.BlockGroup? model,
   }) {
     final _result = create();
     if (model != null) {
@@ -265,36 +363,281 @@ class LocState extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory LocState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LocState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory BlockGroupState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BlockGroupState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  LocState clone() => LocState()..mergeFromMessage(this);
+  BlockGroupState clone() => BlockGroupState()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  LocState copyWith(void Function(LocState) updates) => super.copyWith((message) => updates(message as LocState)) as LocState; // ignore: deprecated_member_use
+  BlockGroupState copyWith(void Function(BlockGroupState) updates) => super.copyWith((message) => updates(message as BlockGroupState)) as BlockGroupState; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static LocState create() => LocState._();
-  LocState createEmptyInstance() => create();
-  static $pb.PbList<LocState> createRepeated() => $pb.PbList<LocState>();
+  static BlockGroupState create() => BlockGroupState._();
+  BlockGroupState createEmptyInstance() => create();
+  static $pb.PbList<BlockGroupState> createRepeated() => $pb.PbList<BlockGroupState>();
   @$core.pragma('dart2js:noInline')
-  static LocState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocState>(create);
-  static LocState? _defaultInstance;
+  static BlockGroupState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockGroupState>(create);
+  static BlockGroupState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Loc get model => $_getN(0);
+  $1.BlockGroup get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Loc v) { setField(1, v); }
+  set model($1.BlockGroup v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Loc ensureModel() => $_ensure(0);
+  $1.BlockGroup ensureModel() => $_ensure(0);
+}
+
+class JunctionState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JunctionState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Junction>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Junction.create)
+    ..hasRequiredFields = false
+  ;
+
+  JunctionState._() : super();
+  factory JunctionState({
+    $1.Junction? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory JunctionState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory JunctionState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  JunctionState clone() => JunctionState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  JunctionState copyWith(void Function(JunctionState) updates) => super.copyWith((message) => updates(message as JunctionState)) as JunctionState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static JunctionState create() => JunctionState._();
+  JunctionState createEmptyInstance() => create();
+  static $pb.PbList<JunctionState> createRepeated() => $pb.PbList<JunctionState>();
+  @$core.pragma('dart2js:noInline')
+  static JunctionState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JunctionState>(create);
+  static JunctionState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Junction get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Junction v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Junction ensureModel() => $_ensure(0);
+}
+
+class OutputState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OutputState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Output>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Output.create)
+    ..hasRequiredFields = false
+  ;
+
+  OutputState._() : super();
+  factory OutputState({
+    $1.Output? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory OutputState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory OutputState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  OutputState clone() => OutputState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  OutputState copyWith(void Function(OutputState) updates) => super.copyWith((message) => updates(message as OutputState)) as OutputState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static OutputState create() => OutputState._();
+  OutputState createEmptyInstance() => create();
+  static $pb.PbList<OutputState> createRepeated() => $pb.PbList<OutputState>();
+  @$core.pragma('dart2js:noInline')
+  static OutputState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OutputState>(create);
+  static OutputState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Output get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Output v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Output ensureModel() => $_ensure(0);
+}
+
+class RouteState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Route>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Route.create)
+    ..hasRequiredFields = false
+  ;
+
+  RouteState._() : super();
+  factory RouteState({
+    $1.Route? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory RouteState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RouteState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RouteState clone() => RouteState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RouteState copyWith(void Function(RouteState) updates) => super.copyWith((message) => updates(message as RouteState)) as RouteState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RouteState create() => RouteState._();
+  RouteState createEmptyInstance() => create();
+  static $pb.PbList<RouteState> createRepeated() => $pb.PbList<RouteState>();
+  @$core.pragma('dart2js:noInline')
+  static RouteState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RouteState>(create);
+  static RouteState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Route get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Route v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Route ensureModel() => $_ensure(0);
+}
+
+class SensorState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SensorState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Sensor>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Sensor.create)
+    ..hasRequiredFields = false
+  ;
+
+  SensorState._() : super();
+  factory SensorState({
+    $1.Sensor? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory SensorState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SensorState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SensorState clone() => SensorState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SensorState copyWith(void Function(SensorState) updates) => super.copyWith((message) => updates(message as SensorState)) as SensorState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SensorState create() => SensorState._();
+  SensorState createEmptyInstance() => create();
+  static $pb.PbList<SensorState> createRepeated() => $pb.PbList<SensorState>();
+  @$core.pragma('dart2js:noInline')
+  static SensorState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SensorState>(create);
+  static SensorState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Sensor get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Sensor v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Sensor ensureModel() => $_ensure(0);
+}
+
+class SignalState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SignalState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<$1.Signal>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Signal.create)
+    ..hasRequiredFields = false
+  ;
+
+  SignalState._() : super();
+  factory SignalState({
+    $1.Signal? model,
+  }) {
+    final _result = create();
+    if (model != null) {
+      _result.model = model;
+    }
+    return _result;
+  }
+  factory SignalState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SignalState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SignalState clone() => SignalState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SignalState copyWith(void Function(SignalState) updates) => super.copyWith((message) => updates(message as SignalState)) as SignalState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SignalState create() => SignalState._();
+  SignalState createEmptyInstance() => create();
+  static $pb.PbList<SignalState> createRepeated() => $pb.PbList<SignalState>();
+  @$core.pragma('dart2js:noInline')
+  static SignalState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SignalState>(create);
+  static SignalState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.Signal get model => $_getN(0);
+  @$pb.TagNumber(1)
+  set model($1.Signal v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasModel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearModel() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Signal ensureModel() => $_ensure(0);
 }
 

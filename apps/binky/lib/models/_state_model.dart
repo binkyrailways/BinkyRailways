@@ -22,8 +22,15 @@ import 'package:retry/retry.dart';
 
 class StateModel extends ChangeNotifier {
   RailwayState? _railwayState;
-  final Map<String, BlockState> _blocks = {};
+  final Map<String, CommandStationState> _commandStations = {};
   final Map<String, LocState> _locs = {};
+  final Map<String, BlockState> _blocks = {};
+  final Map<String, BlockGroupState> _blockGroups = {};
+  final Map<String, JunctionState> _junctions = {};
+  final Map<String, OutputState> _outputs = {};
+  final Map<String, RouteState> _routes = {};
+  final Map<String, SensorState> _sensors = {};
+  final Map<String, SignalState> _signals = {};
 
   StateModel();
 
@@ -87,20 +94,57 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
-  // Get all known blocks
-  Iterable<BlockState> blocks() => _blocks.values;
-  Future<BlockState> getBlockState(String id) async {
+  Future<T> _getState<T>(String id, Map<String, T> state) async {
     return retry(() {
-      final result = _blocks[id];
+      final result = state[id];
       if (result == null) {
-        throw Exception("Block not found");
+        throw Exception("${T.toString()} not found");
       }
       return result;
     });
   }
 
+  // Get all known command stations
+  Iterable<CommandStationState> commandStations() => _commandStations.values;
+  Future<CommandStationState> getCommandStationState(String id) async =>
+      _getState(id, _commandStations);
+
   // Get all known locs
   Iterable<LocState> locs() => _locs.values;
+  Future<LocState> getLocState(String id) async => _getState(id, _locs);
+
+  // Get all known blocks
+  Iterable<BlockState> blocks() => _blocks.values;
+  Future<BlockState> getBlockState(String id) async => _getState(id, _blocks);
+
+  // Get all known blocks groups
+  Iterable<BlockGroupState> blockGroups() => _blockGroups.values;
+  Future<BlockGroupState> getBlockGroupState(String id) async =>
+      _getState(id, _blockGroups);
+
+  // Get all known junctions
+  Iterable<JunctionState> junctions() => _junctions.values;
+  Future<JunctionState> getJunctionState(String id) async =>
+      _getState(id, _junctions);
+
+  // Get all known outputs
+  Iterable<OutputState> outputs() => _outputs.values;
+  Future<OutputState> getOutputState(String id) async =>
+      _getState(id, _outputs);
+
+  // Get all known routes
+  Iterable<RouteState> routes() => _routes.values;
+  Future<RouteState> getRouteState(String id) async => _getState(id, _routes);
+
+  // Get all known sensors
+  Iterable<SensorState> sensors() => _sensors.values;
+  Future<SensorState> getSensorState(String id) async =>
+      _getState(id, _sensors);
+
+  // Get all known signals
+  Iterable<SignalState> signals() => _signals.values;
+  Future<SignalState> getSignalState(String id) async =>
+      _getState(id, _signals);
 
   // Collect state changes from the server, until the
   Future<void> _getStateChanges(bool bootstrap) async {
@@ -116,11 +160,33 @@ class StateModel extends ChangeNotifier {
           if (change.hasRailway()) {
             _railwayState = change.railway;
           }
-          if (change.hasBlock()) {
-            _blocks[change.block.model.id] = change.block;
+          if (change.hasCommandStation()) {
+            _commandStations[change.commandStation.model.id] =
+                change.commandStation;
           }
           if (change.hasLoc()) {
             _locs[change.loc.model.id] = change.loc;
+          }
+          if (change.hasBlock()) {
+            _blocks[change.block.model.id] = change.block;
+          }
+          if (change.hasBlockGroup()) {
+            _blockGroups[change.blockGroup.model.id] = change.blockGroup;
+          }
+          if (change.hasJunction()) {
+            _junctions[change.junction.model.id] = change.junction;
+          }
+          if (change.hasOutput()) {
+            _outputs[change.output.model.id] = change.output;
+          }
+          if (change.hasRoute()) {
+            _routes[change.route.model.id] = change.route;
+          }
+          if (change.hasSensor()) {
+            _sensors[change.sensor.model.id] = change.sensor;
+          }
+          if (change.hasSignal()) {
+            _signals[change.signal.model.id] = change.signal;
           }
           notifyListeners();
         }

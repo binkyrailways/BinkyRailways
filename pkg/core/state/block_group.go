@@ -17,6 +17,10 @@
 
 package state
 
+import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+
 // BlockGroup specifies the state of a single block group.
 type BlockGroup interface {
+	// Gets the underlying model
+	GetModel() model.BlockGroup
 }
