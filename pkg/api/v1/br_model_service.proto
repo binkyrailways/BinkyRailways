@@ -81,6 +81,11 @@ service ModelService {
   rpc GetOutput(IDRequest) returns (Output);
   // Update a Output by ID.
   rpc UpdateOutput(Output) returns (Output);
+
+  // Gets a Sensor by ID.
+  rpc GetSensor(IDRequest) returns (Sensor);
+  // Update a Sensor by ID.
+  rpc UpdateSensor(Sensor) returns (Sensor);
 }
 
 // Request by ID

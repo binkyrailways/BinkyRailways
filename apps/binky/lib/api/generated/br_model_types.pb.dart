@@ -208,6 +208,7 @@ class Module extends $pb.GeneratedMessage {
     ..pc<EdgeRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'edges', $pb.PbFieldType.PM, subBuilder: EdgeRef.create)
     ..pc<JunctionRef>(103, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: JunctionRef.create)
     ..pc<OutputRef>(104, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
+    ..pc<SensorRef>(105, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: SensorRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -223,6 +224,7 @@ class Module extends $pb.GeneratedMessage {
     $core.Iterable<EdgeRef>? edges,
     $core.Iterable<JunctionRef>? junctions,
     $core.Iterable<OutputRef>? outputs,
+    $core.Iterable<SensorRef>? sensors,
   }) {
     final _result = create();
     if (id != null) {
@@ -254,6 +256,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (outputs != null) {
       _result.outputs.addAll(outputs);
+    }
+    if (sensors != null) {
+      _result.sensors.addAll(sensors);
     }
     return _result;
   }
@@ -337,6 +342,9 @@ class Module extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(104)
   $core.List<OutputRef> get outputs => $_getList(9);
+
+  @$pb.TagNumber(105)
+  $core.List<SensorRef> get sensors => $_getList(10);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -1646,6 +1654,144 @@ class OutputRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static OutputRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OutputRef>(create);
   static OutputRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class Sensor extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Sensor', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..hasRequiredFields = false
+  ;
+
+  Sensor._() : super();
+  factory Sensor({
+    $core.String? id,
+    $core.String? description,
+    $core.String? moduleId,
+    Position? position,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    return _result;
+  }
+  factory Sensor.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Sensor.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Sensor clone() => Sensor()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Sensor copyWith(void Function(Sensor) updates) => super.copyWith((message) => updates(message as Sensor)) as Sensor; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Sensor create() => Sensor._();
+  Sensor createEmptyInstance() => create();
+  static $pb.PbList<Sensor> createRepeated() => $pb.PbList<Sensor>();
+  @$core.pragma('dart2js:noInline')
+  static Sensor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Sensor>(create);
+  static Sensor? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get moduleId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set moduleId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasModuleId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearModuleId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Position get position => $_getN(3);
+  @$pb.TagNumber(4)
+  set position(Position v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPosition() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPosition() => clearField(4);
+  @$pb.TagNumber(4)
+  Position ensurePosition() => $_ensure(3);
+}
+
+class SensorRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SensorRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  SensorRef._() : super();
+  factory SensorRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory SensorRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SensorRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SensorRef clone() => SensorRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SensorRef copyWith(void Function(SensorRef) updates) => super.copyWith((message) => updates(message as SensorRef)) as SensorRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SensorRef create() => SensorRef._();
+  SensorRef createEmptyInstance() => create();
+  static $pb.PbList<SensorRef> createRepeated() => $pb.PbList<SensorRef>();
+  @$core.pragma('dart2js:noInline')
+  static SensorRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SensorRef>(create);
+  static SensorRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

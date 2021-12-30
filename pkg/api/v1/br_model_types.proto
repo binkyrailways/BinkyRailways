@@ -71,6 +71,8 @@ message Module {
   repeated JunctionRef junctions = 103;
   // Outputs of this module
   repeated OutputRef outputs = 104;
+  // Sensors of this module
+  repeated SensorRef sensors = 105;
 }
 
 // Reference to a module
@@ -266,5 +268,23 @@ message Output {
 // Reference to a Output
 message OutputRef {
   // ID of the Output
+  string id = 1;
+}
+
+// Sensor on the track
+message Sensor {
+  // ID of the Sensor
+  string id = 1;
+  // Description of the Sensor
+  string description = 2;
+  // ID of the module containing the Sensor
+  string module_id = 3;
+  // Position of the Sensor
+  Position position = 4;
+}
+
+// Reference to a Sensor
+message SensorRef {
+  // ID of the Sensor
   string id = 1;
 }

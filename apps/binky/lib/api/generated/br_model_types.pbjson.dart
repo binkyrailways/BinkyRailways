@@ -66,11 +66,12 @@ const Module$json = const {
     const {'1': 'edges', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.EdgeRef', '10': 'edges'},
     const {'1': 'junctions', '3': 103, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionRef', '10': 'junctions'},
     const {'1': 'outputs', '3': 104, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputRef', '10': 'outputs'},
+    const {'1': 'sensors', '3': 105, '4': 3, '5': 11, '6': '.binkyrailways.v1.SensorRef', '10': 'sensors'},
   ],
 };
 
 /// Descriptor for `Module`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIyCgZibG9ja3MYZCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSQQoLYmxvY2tHcm91cHMYZSADKAsyHy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrR3JvdXBSZWZSC2Jsb2NrR3JvdXBzEi8KBWVkZ2VzGGYgAygLMhkuYmlua3lyYWlsd2F5cy52MS5FZGdlUmVmUgVlZGdlcxI7CglqdW5jdGlvbnMYZyADKAsyHS5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uUmVmUglqdW5jdGlvbnMSNQoHb3V0cHV0cxhoIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UmVmUgdvdXRwdXRz');
+final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIyCgZibG9ja3MYZCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSQQoLYmxvY2tHcm91cHMYZSADKAsyHy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrR3JvdXBSZWZSC2Jsb2NrR3JvdXBzEi8KBWVkZ2VzGGYgAygLMhkuYmlua3lyYWlsd2F5cy52MS5FZGdlUmVmUgVlZGdlcxI7CglqdW5jdGlvbnMYZyADKAsyHS5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uUmVmUglqdW5jdGlvbnMSNQoHb3V0cHV0cxhoIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UmVmUgdvdXRwdXRzEjUKB3NlbnNvcnMYaSADKAsyGy5iaW5reXJhaWx3YXlzLnYxLlNlbnNvclJlZlIHc2Vuc29ycw==');
 @$core.Deprecated('Use moduleRefDescriptor instead')
 const ModuleRef$json = const {
   '1': 'ModuleRef',
@@ -284,3 +285,26 @@ const OutputRef$json = const {
 
 /// Descriptor for `OutputRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List outputRefDescriptor = $convert.base64Decode('CglPdXRwdXRSZWYSDgoCaWQYASABKAlSAmlk');
+@$core.Deprecated('Use sensorDescriptor instead')
+const Sensor$json = const {
+  '1': 'Sensor',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
+    const {'1': 'position', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
+  ],
+};
+
+/// Descriptor for `Sensor`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sensorDescriptor = $convert.base64Decode('CgZTZW5zb3ISDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAyABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAQgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24=');
+@$core.Deprecated('Use sensorRefDescriptor instead')
+const SensorRef$json = const {
+  '1': 'SensorRef',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `SensorRef`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sensorRefDescriptor = $convert.base64Decode('CglTZW5zb3JSZWYSDgoCaWQYASABKAlSAmlk');

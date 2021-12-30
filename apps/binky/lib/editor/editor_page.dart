@@ -44,6 +44,8 @@ import './output_settings.dart';
 import './outputs_tree.dart';
 import './railway_settings.dart';
 import './railway_tree.dart';
+import './sensor_settings.dart';
+import './sensors_tree.dart';
 import '../canvas/editor/module_canvas.dart';
 
 class EditorPage extends StatefulWidget {
@@ -211,6 +213,17 @@ class _EditorPageState extends State<EditorPage> {
           menu: OutputsTree(),
           content: ModuleCanvas(),
           endMenu: OutputSettings(),
+        );
+      case EntityType.sensors:
+        return const SplitView(
+          menu: SensorsTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.sensor:
+        return const SplitView(
+          menu: SensorsTree(),
+          content: ModuleCanvas(),
+          endMenu: SensorSettings(),
         );
       default:
         return const Center(child: Text("No selection"));
