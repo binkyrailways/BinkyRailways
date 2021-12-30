@@ -31,6 +31,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.LocGroup> _locGroups = {};
   final Map<String, mapi.CommandStation> _commandStations = {};
   final Map<String, mapi.Block> _blocks = {};
+  final Map<String, mapi.BlockGroup> _blockGroups = {};
   final Map<String, mapi.Junction> _junctions = {};
   final Map<String, mapi.Output> _outputs = {};
 
@@ -231,6 +232,31 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlock(value);
     _blocks[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a block group by ID from cache
+  mapi.BlockGroup? getCachedBlockGroup(String id) => _blockGroups[id];
+
+  // Gets a block group by ID
+  Future<mapi.BlockGroup> getBlockGroup(String id) async {
+    var result = _blockGroups[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getBlockGroup(mapi.IDRequest(id: id));
+    _blockGroups[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given block group
+  Future<void> updateBlockGroup(mapi.BlockGroup value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateBlockGroup(value);
+    _blockGroups[updated.id] = updated;
     notifyListeners();
   }
 

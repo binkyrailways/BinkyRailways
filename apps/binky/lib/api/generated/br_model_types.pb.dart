@@ -204,8 +204,9 @@ class Module extends $pb.GeneratedMessage {
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'height', $pb.PbFieldType.O3)
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hasBackgroundImage')
     ..pc<BlockRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: BlockRef.create)
-    ..pc<JunctionRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: JunctionRef.create)
-    ..pc<OutputRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
+    ..pc<BlockGroupRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, protoName: 'blockGroups', subBuilder: BlockGroupRef.create)
+    ..pc<JunctionRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: JunctionRef.create)
+    ..pc<OutputRef>(103, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -217,6 +218,7 @@ class Module extends $pb.GeneratedMessage {
     $core.int? height,
     $core.bool? hasBackgroundImage,
     $core.Iterable<BlockRef>? blocks,
+    $core.Iterable<BlockGroupRef>? blockGroups,
     $core.Iterable<JunctionRef>? junctions,
     $core.Iterable<OutputRef>? outputs,
   }) {
@@ -238,6 +240,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (blocks != null) {
       _result.blocks.addAll(blocks);
+    }
+    if (blockGroups != null) {
+      _result.blockGroups.addAll(blockGroups);
     }
     if (junctions != null) {
       _result.junctions.addAll(junctions);
@@ -317,10 +322,13 @@ class Module extends $pb.GeneratedMessage {
   $core.List<BlockRef> get blocks => $_getList(5);
 
   @$pb.TagNumber(101)
-  $core.List<JunctionRef> get junctions => $_getList(6);
+  $core.List<BlockGroupRef> get blockGroups => $_getList(6);
 
   @$pb.TagNumber(102)
-  $core.List<OutputRef> get outputs => $_getList(7);
+  $core.List<JunctionRef> get junctions => $_getList(7);
+
+  @$pb.TagNumber(103)
+  $core.List<OutputRef> get outputs => $_getList(8);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -1094,6 +1102,128 @@ class BlockRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static BlockRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockRef>(create);
   static BlockRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class BlockGroup extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockGroup', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..hasRequiredFields = false
+  ;
+
+  BlockGroup._() : super();
+  factory BlockGroup({
+    $core.String? id,
+    $core.String? description,
+    $core.String? moduleId,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    return _result;
+  }
+  factory BlockGroup.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BlockGroup.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BlockGroup clone() => BlockGroup()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BlockGroup copyWith(void Function(BlockGroup) updates) => super.copyWith((message) => updates(message as BlockGroup)) as BlockGroup; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BlockGroup create() => BlockGroup._();
+  BlockGroup createEmptyInstance() => create();
+  static $pb.PbList<BlockGroup> createRepeated() => $pb.PbList<BlockGroup>();
+  @$core.pragma('dart2js:noInline')
+  static BlockGroup getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockGroup>(create);
+  static BlockGroup? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get moduleId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set moduleId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasModuleId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearModuleId() => clearField(3);
+}
+
+class BlockGroupRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockGroupRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  BlockGroupRef._() : super();
+  factory BlockGroupRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory BlockGroupRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BlockGroupRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BlockGroupRef clone() => BlockGroupRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BlockGroupRef copyWith(void Function(BlockGroupRef) updates) => super.copyWith((message) => updates(message as BlockGroupRef)) as BlockGroupRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BlockGroupRef create() => BlockGroupRef._();
+  BlockGroupRef createEmptyInstance() => create();
+  static $pb.PbList<BlockGroupRef> createRepeated() => $pb.PbList<BlockGroupRef>();
+  @$core.pragma('dart2js:noInline')
+  static BlockGroupRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockGroupRef>(create);
+  static BlockGroupRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

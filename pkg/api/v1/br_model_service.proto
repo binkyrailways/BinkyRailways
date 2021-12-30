@@ -62,6 +62,11 @@ service ModelService {
   // Update a block by ID.
   rpc UpdateBlock(Block) returns (Block);
 
+  // Gets a block group by ID.
+  rpc GetBlockGroup(IDRequest) returns (BlockGroup);
+  // Update a block group by ID.
+  rpc UpdateBlockGroup(BlockGroup) returns (BlockGroup);
+
   // Gets a Junction by ID.
   rpc GetJunction(IDRequest) returns (Junction);
   // Update a Junction by ID.

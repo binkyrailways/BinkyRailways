@@ -30,6 +30,8 @@ enum EntityType {
   commandstation,
   block,
   blocks,
+  blockgroup,
+  blockgroups,
   junction,
   junctions,
   output,
@@ -60,6 +62,8 @@ class EntitySelector {
 
   EntitySelector.block(this.entityType, this.parentId, this.id);
 
+  EntitySelector.blockgroup(this.entityType, this.parentId, this.id);
+
   EntitySelector.junction(this.entityType, this.parentId, this.id);
 
   EntitySelector.output(this.entityType, this.parentId, this.id);
@@ -83,6 +87,10 @@ class EntitySelector {
         return EntitySelector.module(EntityType.module, id);
       case EntityType.block:
         return EntitySelector.module(EntityType.blocks, parentId);
+      case EntityType.blockgroups:
+        return EntitySelector.module(EntityType.module, id);
+      case EntityType.blockgroup:
+        return EntitySelector.module(EntityType.blockgroups, parentId);
       case EntityType.junctions:
         return EntitySelector.module(EntityType.module, id);
       case EntityType.junction:

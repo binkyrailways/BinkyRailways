@@ -62,13 +62,14 @@ const Module$json = const {
     const {'1': 'height', '3': 4, '4': 1, '5': 5, '10': 'height'},
     const {'1': 'has_background_image', '3': 5, '4': 1, '5': 8, '10': 'hasBackgroundImage'},
     const {'1': 'blocks', '3': 100, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'blocks'},
-    const {'1': 'junctions', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionRef', '10': 'junctions'},
-    const {'1': 'outputs', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputRef', '10': 'outputs'},
+    const {'1': 'blockGroups', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockGroupRef', '10': 'blockGroups'},
+    const {'1': 'junctions', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionRef', '10': 'junctions'},
+    const {'1': 'outputs', '3': 103, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputRef', '10': 'outputs'},
   ],
 };
 
 /// Descriptor for `Module`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIyCgZibG9ja3MYZCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSOwoJanVuY3Rpb25zGGUgAygLMh0uYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblJlZlIJanVuY3Rpb25zEjUKB291dHB1dHMYZiADKAsyGy5iaW5reXJhaWx3YXlzLnYxLk91dHB1dFJlZlIHb3V0cHV0cw==');
+final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIyCgZibG9ja3MYZCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSQQoLYmxvY2tHcm91cHMYZSADKAsyHy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrR3JvdXBSZWZSC2Jsb2NrR3JvdXBzEjsKCWp1bmN0aW9ucxhmIAMoCzIdLmJpbmt5cmFpbHdheXMudjEuSnVuY3Rpb25SZWZSCWp1bmN0aW9ucxI1CgdvdXRwdXRzGGcgAygLMhsuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRSZWZSB291dHB1dHM=');
 @$core.Deprecated('Use moduleRefDescriptor instead')
 const ModuleRef$json = const {
   '1': 'ModuleRef',
@@ -191,6 +192,28 @@ const BlockRef$json = const {
 
 /// Descriptor for `BlockRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List blockRefDescriptor = $convert.base64Decode('CghCbG9ja1JlZhIOCgJpZBgBIAEoCVICaWQ=');
+@$core.Deprecated('Use blockGroupDescriptor instead')
+const BlockGroup$json = const {
+  '1': 'BlockGroup',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
+  ],
+};
+
+/// Descriptor for `BlockGroup`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List blockGroupDescriptor = $convert.base64Decode('CgpCbG9ja0dyb3VwEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SGwoJbW9kdWxlX2lkGAMgASgJUghtb2R1bGVJZA==');
+@$core.Deprecated('Use blockGroupRefDescriptor instead')
+const BlockGroupRef$json = const {
+  '1': 'BlockGroupRef',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `BlockGroupRef`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List blockGroupRefDescriptor = $convert.base64Decode('Cg1CbG9ja0dyb3VwUmVmEg4KAmlkGAEgASgJUgJpZA==');
 @$core.Deprecated('Use junctionDescriptor instead')
 const Junction$json = const {
   '1': 'Junction',

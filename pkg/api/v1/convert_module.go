@@ -36,6 +36,11 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
 		})
 	})
+	src.GetBlockGroups().ForEach(func(x model.BlockGroup) {
+		dst.BlockGroups = append(dst.BlockGroups, &BlockGroupRef{
+			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
+		})
+	})
 	src.GetJunctions().ForEach(func(x model.Junction) {
 		dst.Junctions = append(dst.Junctions, &JunctionRef{
 			Id: JoinModuleEntityID(src.GetID(), x.GetID()),
