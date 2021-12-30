@@ -205,8 +205,9 @@ class Module extends $pb.GeneratedMessage {
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hasBackgroundImage')
     ..pc<BlockRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: BlockRef.create)
     ..pc<BlockGroupRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, protoName: 'blockGroups', subBuilder: BlockGroupRef.create)
-    ..pc<JunctionRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: JunctionRef.create)
-    ..pc<OutputRef>(103, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
+    ..pc<EdgeRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'edges', $pb.PbFieldType.PM, subBuilder: EdgeRef.create)
+    ..pc<JunctionRef>(103, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: JunctionRef.create)
+    ..pc<OutputRef>(104, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -219,6 +220,7 @@ class Module extends $pb.GeneratedMessage {
     $core.bool? hasBackgroundImage,
     $core.Iterable<BlockRef>? blocks,
     $core.Iterable<BlockGroupRef>? blockGroups,
+    $core.Iterable<EdgeRef>? edges,
     $core.Iterable<JunctionRef>? junctions,
     $core.Iterable<OutputRef>? outputs,
   }) {
@@ -243,6 +245,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (blockGroups != null) {
       _result.blockGroups.addAll(blockGroups);
+    }
+    if (edges != null) {
+      _result.edges.addAll(edges);
     }
     if (junctions != null) {
       _result.junctions.addAll(junctions);
@@ -325,10 +330,13 @@ class Module extends $pb.GeneratedMessage {
   $core.List<BlockGroupRef> get blockGroups => $_getList(6);
 
   @$pb.TagNumber(102)
-  $core.List<JunctionRef> get junctions => $_getList(7);
+  $core.List<EdgeRef> get edges => $_getList(7);
 
   @$pb.TagNumber(103)
-  $core.List<OutputRef> get outputs => $_getList(8);
+  $core.List<JunctionRef> get junctions => $_getList(8);
+
+  @$pb.TagNumber(104)
+  $core.List<OutputRef> get outputs => $_getList(9);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -1224,6 +1232,144 @@ class BlockGroupRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static BlockGroupRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockGroupRef>(create);
   static BlockGroupRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class Edge extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Edge', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..hasRequiredFields = false
+  ;
+
+  Edge._() : super();
+  factory Edge({
+    $core.String? id,
+    $core.String? description,
+    $core.String? moduleId,
+    Position? position,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    return _result;
+  }
+  factory Edge.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Edge.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Edge clone() => Edge()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Edge copyWith(void Function(Edge) updates) => super.copyWith((message) => updates(message as Edge)) as Edge; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Edge create() => Edge._();
+  Edge createEmptyInstance() => create();
+  static $pb.PbList<Edge> createRepeated() => $pb.PbList<Edge>();
+  @$core.pragma('dart2js:noInline')
+  static Edge getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Edge>(create);
+  static Edge? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get moduleId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set moduleId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasModuleId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearModuleId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Position get position => $_getN(3);
+  @$pb.TagNumber(4)
+  set position(Position v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPosition() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPosition() => clearField(4);
+  @$pb.TagNumber(4)
+  Position ensurePosition() => $_ensure(3);
+}
+
+class EdgeRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EdgeRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  EdgeRef._() : super();
+  factory EdgeRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory EdgeRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EdgeRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EdgeRef clone() => EdgeRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EdgeRef copyWith(void Function(EdgeRef) updates) => super.copyWith((message) => updates(message as EdgeRef)) as EdgeRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static EdgeRef create() => EdgeRef._();
+  EdgeRef createEmptyInstance() => create();
+  static $pb.PbList<EdgeRef> createRepeated() => $pb.PbList<EdgeRef>();
+  @$core.pragma('dart2js:noInline')
+  static EdgeRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EdgeRef>(create);
+  static EdgeRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

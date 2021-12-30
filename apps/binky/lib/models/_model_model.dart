@@ -32,6 +32,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.CommandStation> _commandStations = {};
   final Map<String, mapi.Block> _blocks = {};
   final Map<String, mapi.BlockGroup> _blockGroups = {};
+  final Map<String, mapi.Edge> _edges = {};
   final Map<String, mapi.Junction> _junctions = {};
   final Map<String, mapi.Output> _outputs = {};
 
@@ -257,6 +258,31 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlockGroup(value);
     _blockGroups[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets an edge by ID from cache
+  mapi.Edge? getCachedEdge(String id) => _edges[id];
+
+  // Gets an edge by ID
+  Future<mapi.Edge> getEdge(String id) async {
+    var result = _edges[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getEdge(mapi.IDRequest(id: id));
+    _edges[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given edge
+  Future<void> updateEdge(mapi.Edge value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateEdge(value);
+    _edges[updated.id] = updated;
     notifyListeners();
   }
 

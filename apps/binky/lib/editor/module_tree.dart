@@ -76,6 +76,17 @@ class ModuleTree extends StatelessWidget {
                         EntityType.blockgroups, moduleId)),
                   ),
                   ListTile(
+                    leading: const Icon(Icons.close_fullscreen),
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Edges (${rw.edges.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.edges,
+                    onTap: () => editorCtx.select(
+                        EntitySelector.module(EntityType.edges, moduleId)),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.alt_route),
                     minLeadingWidth: 20,
                     title: Text(

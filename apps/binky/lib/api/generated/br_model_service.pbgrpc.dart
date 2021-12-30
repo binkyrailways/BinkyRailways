@@ -90,6 +90,14 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/UpdateBlockGroup',
           ($1.BlockGroup value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.BlockGroup.fromBuffer(value));
+  static final _$getEdge = $grpc.ClientMethod<$0.IDRequest, $1.Edge>(
+      '/binkyrailways.v1.ModelService/GetEdge',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Edge.fromBuffer(value));
+  static final _$updateEdge = $grpc.ClientMethod<$1.Edge, $1.Edge>(
+      '/binkyrailways.v1.ModelService/UpdateEdge',
+      ($1.Edge value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Edge.fromBuffer(value));
   static final _$getJunction = $grpc.ClientMethod<$0.IDRequest, $1.Junction>(
       '/binkyrailways.v1.ModelService/GetJunction',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -199,6 +207,16 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.BlockGroup> updateBlockGroup($1.BlockGroup request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateBlockGroup, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Edge> getEdge($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getEdge, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Edge> updateEdge($1.Edge request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateEdge, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Junction> getJunction($0.IDRequest request,
@@ -347,6 +365,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.BlockGroup.fromBuffer(value),
         ($1.BlockGroup value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Edge>(
+        'GetEdge',
+        getEdge_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Edge value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Edge, $1.Edge>(
+        'UpdateEdge',
+        updateEdge_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Edge.fromBuffer(value),
+        ($1.Edge value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Junction>(
         'GetJunction',
         getJunction_Pre,
@@ -462,6 +494,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateBlockGroup(call, await request);
   }
 
+  $async.Future<$1.Edge> getEdge_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return getEdge(call, await request);
+  }
+
+  $async.Future<$1.Edge> updateEdge_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Edge> request) async {
+    return updateEdge(call, await request);
+  }
+
   $async.Future<$1.Junction> getJunction_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getJunction(call, await request);
@@ -512,6 +554,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BlockGroup> updateBlockGroup(
       $grpc.ServiceCall call, $1.BlockGroup request);
+  $async.Future<$1.Edge> getEdge($grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Edge> updateEdge($grpc.ServiceCall call, $1.Edge request);
   $async.Future<$1.Junction> getJunction(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Junction> updateJunction(

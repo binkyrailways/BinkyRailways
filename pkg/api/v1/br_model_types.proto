@@ -65,10 +65,12 @@ message Module {
   repeated BlockRef blocks = 100;
   // Blocks of this module
   repeated BlockGroupRef blockGroups = 101;
+  // Edges of this module
+  repeated EdgeRef edges = 102;
   // Junctions of this module
-  repeated JunctionRef junctions = 102;
+  repeated JunctionRef junctions = 103;
   // Outputs of this module
-  repeated OutputRef outputs = 103;
+  repeated OutputRef outputs = 104;
 }
 
 // Reference to a module
@@ -210,6 +212,24 @@ message BlockGroup {
 // Reference to a BlockGroup
 message BlockGroupRef {
   // ID of the block group
+  string id = 1;
+}
+
+// Edge of a module on the track
+message Edge {
+  // ID of the edge
+  string id = 1;
+  // Description of the edge
+  string description = 2;
+  // ID of the module containing the edge
+  string module_id = 3;
+  // Position of the edge
+  Position position = 4;
+}
+
+// Reference to an Edge
+message EdgeRef {
+  // ID of the edge
   string id = 1;
 }
 

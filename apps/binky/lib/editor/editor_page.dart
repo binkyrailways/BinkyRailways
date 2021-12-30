@@ -29,6 +29,8 @@ import './block_group_settings.dart';
 import './block_groups_tree.dart';
 import './command_station_settings.dart';
 import './command_stations_tree.dart';
+import './edge_settings.dart';
+import './edges_tree.dart';
 import './junction_settings.dart';
 import './junctions_tree.dart';
 import './loc_settings.dart';
@@ -176,6 +178,17 @@ class _EditorPageState extends State<EditorPage> {
           menu: BlockGroupsTree(),
           content: ModuleCanvas(),
           endMenu: BlockGroupSettings(),
+        );
+      case EntityType.edges:
+        return const SplitView(
+          menu: EdgesTree(),
+          content: ModuleCanvas(),
+        );
+      case EntityType.edge:
+        return const SplitView(
+          menu: EdgesTree(),
+          content: ModuleCanvas(),
+          endMenu: EdgeSettings(),
         );
       case EntityType.junctions:
         return const SplitView(
