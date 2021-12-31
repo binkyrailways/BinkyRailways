@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flame/components.dart' as fc;
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
 import 'dart:math';
@@ -23,7 +23,7 @@ import 'dart:math';
 import 'entity_component.dart';
 import '../api.dart' as mapi;
 
-class BlockComponent extends EntityComponent {
+class BlockComponent extends EntityComponent with Tappable {
   final mapi.Block model;
 
   BlockComponent({required this.model}) {
@@ -33,10 +33,11 @@ class BlockComponent extends EntityComponent {
   @override
   void render(Canvas canvas) {
     final minDim = min(size.x, size.y);
-    final fc.TextPaint textPaint = fc.TextPaint(
+    final TextPaint textPaint = TextPaint(
       style: TextStyle(
         fontSize: minDim * 0.8,
         color: textColor(),
+        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
       ),
     );
 
@@ -51,7 +52,7 @@ class BlockComponent extends EntityComponent {
         Rect.fromLTRB(0, 0, minDim, minDim), Paint()..color = frontColor());
     // Draw description
     textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
-        anchor: fc.Anchor.center);
+        anchor: Anchor.center);
 
     canvas.restore();
   }

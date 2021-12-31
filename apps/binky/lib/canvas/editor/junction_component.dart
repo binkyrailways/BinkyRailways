@@ -15,17 +15,26 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flame/input.dart';
 
 import '../junction_component.dart' as common;
 import '../../api.dart' as mapi;
 import '../../editor/editor_context.dart';
 
-class JunctionComponent extends common.JunctionComponent {
+class JunctionComponent extends common.JunctionComponent with Tappable {
   final EditorContext editorCtx;
 
   JunctionComponent({required this.editorCtx, required mapi.Junction model})
       : super(model: model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    editorCtx.select(
+        EntitySelector.junction(EntityType.junction, model.moduleId, model.id));
+    return true;
+  }
 
   _isSelected() =>
       editorCtx.selector.entityType == EntityType.junction &&

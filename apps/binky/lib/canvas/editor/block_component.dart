@@ -16,6 +16,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:flame/input.dart';
 
 import '../block_component.dart' as common;
 import '../../api.dart' as mapi;
@@ -26,6 +27,13 @@ class BlockComponent extends common.BlockComponent {
 
   BlockComponent({required this.editorCtx, required mapi.Block model})
       : super(model: model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    editorCtx.select(
+        EntitySelector.block(EntityType.block, model.moduleId, model.id));
+    return true;
+  }
 
   _isSelected() =>
       editorCtx.selector.entityType == EntityType.block &&

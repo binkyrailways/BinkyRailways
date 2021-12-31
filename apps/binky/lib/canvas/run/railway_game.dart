@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 
@@ -22,7 +23,7 @@ import '../../models.dart';
 
 import 'module_component.dart';
 
-class RailwayGame extends FlameGame {
+class RailwayGame extends FlameGame with HasHoverables, HasTappables {
   final ModelModel modelModel;
   final StateModel stateModel;
 

@@ -37,6 +37,7 @@ class JunctionComponent extends EntityComponent {
       style: TextStyle(
         fontSize: minDim * 0.8,
         color: textColor(),
+        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
       ),
     );
     canvas.save();

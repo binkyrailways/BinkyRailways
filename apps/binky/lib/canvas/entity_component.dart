@@ -19,7 +19,7 @@ import 'package:flame/components.dart';
 
 import '../api.dart' as mapi;
 
-class EntityComponent extends PositionComponent {
+class EntityComponent extends PositionComponent with Hoverable {
   // Load the given position into this component
   void loadPosition(mapi.Position position) {
     anchor = Anchor.center;

@@ -38,7 +38,8 @@ class BlocksTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var blocks = snapshot.data!;
+              var blocks = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
                   itemCount: blocks.length,
                   itemBuilder: (context, index) {
