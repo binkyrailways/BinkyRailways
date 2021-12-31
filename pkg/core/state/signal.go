@@ -17,9 +17,14 @@
 
 package state
 
+import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+
 // Signal specifies the state of a single signal
 type Signal interface {
 	Entity
+
+	// Gets the underlying model
+	GetModel() model.Signal
 
 	// Update the output of this signal
 	Update()

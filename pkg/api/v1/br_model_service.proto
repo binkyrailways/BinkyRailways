@@ -1,0 +1,116 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+import "br_model_types.proto";
+
+// ModelService is used to get & modify the model of the current railway.
+service ModelService {
+  // Try to parse an address
+  rpc ParseAddress(ParseAddressRequest) returns (ParseAddressResult);
+
+  // Gets the current railway
+  rpc GetRailway(Empty) returns (Railway);
+  // Update the current railway
+  rpc UpdateRailway(Railway) returns (Railway);
+  // Save changes to disk
+  rpc Save(Empty) returns (Empty);
+
+  // Gets a module by ID.
+  rpc GetModule(IDRequest) returns (Module);
+  // Get the background image of a module by ID.
+  rpc GetModuleBackgroundImage(IDRequest) returns (Image);
+  // Update a module by ID.
+  rpc UpdateModule(Module) returns (Module);
+
+  // Gets a loc by ID.
+  rpc GetLoc(IDRequest) returns (Loc);
+  // Update a loc by ID.
+  rpc UpdateLoc(Loc) returns (Loc);
+
+  // Gets a loc group by ID.
+  rpc GetLocGroup(IDRequest) returns (LocGroup);
+  // Update a loc group by ID.
+  rpc UpdateLocGroup(LocGroup) returns (LocGroup);
+
+  // Gets a command station by ID.
+  rpc GetCommandStation(IDRequest) returns (CommandStation);
+  // Update a command station  by ID.
+  rpc UpdateCommandStation(CommandStation) returns (CommandStation);
+
+  // Gets a block by ID.
+  rpc GetBlock(IDRequest) returns (Block);
+  // Update a block by ID.
+  rpc UpdateBlock(Block) returns (Block);
+
+  // Gets a block group by ID.
+  rpc GetBlockGroup(IDRequest) returns (BlockGroup);
+  // Update a block group by ID.
+  rpc UpdateBlockGroup(BlockGroup) returns (BlockGroup);
+
+  // Gets an edge by ID.
+  rpc GetEdge(IDRequest) returns (Edge);
+  // Update an edge by ID.
+  rpc UpdateEdge(Edge) returns (Edge);
+
+  // Gets a Junction by ID.
+  rpc GetJunction(IDRequest) returns (Junction);
+  // Update a Junction by ID.
+  rpc UpdateJunction(Junction) returns (Junction);
+
+  // Gets a Output by ID.
+  rpc GetOutput(IDRequest) returns (Output);
+  // Update a Output by ID.
+  rpc UpdateOutput(Output) returns (Output);
+
+  // Gets a Route by ID.
+  rpc GetRoute(IDRequest) returns (Route);
+  // Update a Route by ID.
+  rpc UpdateRoute(Route) returns (Route);
+
+  // Gets a Sensor by ID.
+  rpc GetSensor(IDRequest) returns (Sensor);
+  // Update a Sensor by ID.
+  rpc UpdateSensor(Sensor) returns (Sensor);
+
+  // Gets a Signal by ID.
+  rpc GetSignal(IDRequest) returns (Signal);
+  // Update a Signal by ID.
+  rpc UpdateSignal(Signal) returns (Signal);
+}
+
+// Request by ID
+message IDRequest { string id = 1; }
+
+message ParseAddressRequest {
+  // Address to parse
+  string value = 1;
+}
+
+message ParseAddressResult {
+  // Was the input a valid address?
+  bool valid = 1;
+  // Error message in case of non-valid input
+  string message = 2;
+  // Formatted address in case of valid input
+  string formatted_value = 3;
+}

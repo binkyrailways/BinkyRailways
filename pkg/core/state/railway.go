@@ -79,6 +79,10 @@ type Railway interface {
 	// Gets the states of all locomotives in this railway
 	ForEachLoc(func(Loc))
 
+	// Gets the state of the loc with given ID.
+	// Returns nil if not found
+	GetLoc(id string) (Loc, error)
+
 	// Gets the states of all routes in this railway
 	ForEachRoute(func(Route))
 

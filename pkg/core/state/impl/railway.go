@@ -88,7 +88,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 	builder := &builder{Railway: r}
 	// Create module entities
 	entity.GetModules().ForEach(func(modRef model.ModuleRef) {
-		if module := modRef.TryResolve(); module != nil {
+		if module, _ := modRef.TryResolve(); module != nil {
 			// Create blocks
 			module.GetBlocks().ForEach(func(me model.Block) {
 				if st, ok := me.Accept(builder).(Block); ok {
@@ -139,7 +139,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 		r.commandStations = append(r.commandStations, st)
 	} else {
 		entity.GetCommandStations().ForEach(func(csRef model.CommandStationRef) {
-			if cs := csRef.TryResolve(); cs != nil {
+			if cs, _ := csRef.TryResolve(); cs != nil {
 				if st, ok := cs.Accept(builder).(CommandStation); ok {
 					st.SetAddressSpaces(csRef.GetAddressSpaces())
 					r.commandStations = append(r.commandStations, st)
@@ -149,7 +149,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 	}
 	// Create locs
 	entity.GetLocs().ForEach(func(locRef model.LocRef) {
-		if loc := locRef.TryResolve(); loc != nil {
+		if loc, _ := locRef.TryResolve(); loc != nil {
 			if st, ok := loc.Accept(builder).(Loc); ok {
 				r.locs = append(r.locs, st)
 			}
@@ -276,21 +276,25 @@ func (r *railway) SelectCommandStation(ctx context.Context, entity model.Address
 	}
 	// Lookup preferred command station
 	var prefCS model.CommandStation
+	var err error
 	switch addr.Network.Type {
 	case model.AddressTypeBinkyNet:
-		prefCS = r.GetModel().GetPreferredBinkyNetCommandStation()
+		prefCS, err = r.GetModel().GetPreferredBinkyNetCommandStation()
 	case model.AddressTypeDcc:
-		prefCS = r.GetModel().GetPreferredDccCommandStation()
+		prefCS, err = r.GetModel().GetPreferredDccCommandStation()
 	case model.AddressTypeLocoNet:
-		prefCS = r.GetModel().GetPreferredLocoNetCommandStation()
+		prefCS, err = r.GetModel().GetPreferredLocoNetCommandStation()
 	case model.AddressTypeMotorola:
-		prefCS = r.GetModel().GetPreferredMotorolaCommandStation()
+		prefCS, err = r.GetModel().GetPreferredMotorolaCommandStation()
 	case model.AddressTypeMfx:
-		prefCS = r.GetModel().GetPreferredMfxCommandStation()
+		prefCS, err = r.GetModel().GetPreferredMfxCommandStation()
 	case model.AddressTypeMqtt:
-		prefCS = r.GetModel().GetPreferredMqttCommandStation()
+		prefCS, err = r.GetModel().GetPreferredMqttCommandStation()
 	default:
 		return nil, fmt.Errorf("Unknown network type: '%s'", addr.Network.Type)
+	}
+	if err != nil {
+		return nil, err
 	}
 	if prefCS != nil {
 		if cs, err := r.ResolveCommandStation(ctx, prefCS); err == nil {
@@ -403,6 +407,17 @@ func (r *railway) ForEachLoc(cb func(state.Loc)) {
 	for _, x := range r.locs {
 		cb(x)
 	}
+}
+
+// Gets the state of the loc with given ID.
+// Returns nil if not found
+func (r *railway) GetLoc(id string) (state.Loc, error) {
+	for _, x := range r.locs {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
 }
 
 // Gets the states of all routes in this railway

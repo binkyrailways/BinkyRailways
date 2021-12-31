@@ -23,6 +23,6 @@ type LocEqualsPredicate interface {
 	LocPredicate
 
 	// Gets/Sets the loc to compare to.
-	GetLoc() Loc
+	GetLoc() (Loc, error)
 	SetLoc(value Loc) error
 }

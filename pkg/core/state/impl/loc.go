@@ -102,6 +102,11 @@ func (l *loc) getLoc() model.Loc {
 	return l.GetEntity().(model.Loc)
 }
 
+// Gets the model of this loc
+func (l *loc) GetModel() model.Loc {
+	return l.getLoc()
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.

@@ -28,7 +28,7 @@ import (
 func TestDefaultEntityVisitor(t *testing.T) {
 	v := &testEntityVisitor{}
 	v.SetDefaultVisitor(v)
-	cs := NewLocoBufferCommandStation()
+	cs := NewLocoBufferCommandStation(nil)
 	result := cs.Accept(v)
 	assert.Equal(t, "foo", result)
 }

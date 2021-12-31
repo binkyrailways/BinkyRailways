@@ -28,6 +28,9 @@ import (
 type Loc interface {
 	Entity
 
+	// Gets the model of this loc
+	GetModel() model.Loc
+
 	// All settings of this loc will be reset, because the loc is taken of the track.
 	//BeforeReset() model.EventHandler
 

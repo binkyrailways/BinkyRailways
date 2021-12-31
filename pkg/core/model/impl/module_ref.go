@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"fmt"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -29,7 +31,7 @@ type ModuleRef interface {
 
 type moduleRef struct {
 	positionedRailwayEntity
-	onTryResolve func(id string) model.Module
+	onTryResolve func(id string) (model.Module, error)
 
 	ZoomFactor *int `xml:"ZoomFactor,omitempty"`
 }
@@ -37,7 +39,7 @@ type moduleRef struct {
 var _ ModuleRef = &moduleRef{}
 
 // newCommandStationRef creates a new cs ref
-func newModuleRef(id string, onTryResolve func(id string) model.Module) moduleRef {
+func newModuleRef(id string, onTryResolve func(id string) (model.Module, error)) moduleRef {
 	mr := moduleRef{
 		onTryResolve: onTryResolve,
 	}
@@ -50,7 +52,7 @@ func (lr *moduleRef) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitModuleRef(lr)
 }
 
-func (lr *moduleRef) SetResolver(onTryResolve func(id string) model.Module) {
+func (lr *moduleRef) SetResolver(onTryResolve func(id string) (model.Module, error)) {
 	lr.onTryResolve = onTryResolve
 }
 
@@ -96,9 +98,9 @@ func (lr *moduleRef) IsReferenceTo(module model.Module) bool {
 
 // Try to resolve the loc reference.
 // Returns non-nil CommandStation or nil if not found.
-func (lr *moduleRef) TryResolve() model.Module {
+func (lr *moduleRef) TryResolve() (model.Module, error) {
 	if lr.onTryResolve == nil {
-		return nil
+		return nil, fmt.Errorf("onTryResolve is nil")
 	}
 	return lr.onTryResolve(lr.ID)
 }

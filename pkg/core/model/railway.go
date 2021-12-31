@@ -50,26 +50,26 @@ type Railway interface {
 	GetPredicateBuilder() LocPredicateBuilder
 
 	// Preferred command station for BinkyNet addresses.
-	GetPreferredBinkyNetCommandStation() CommandStation
+	GetPreferredBinkyNetCommandStation() (CommandStation, error)
 	SetPreferredBinkyNetCommandStation(value CommandStation) error
 
 	// Preferred command station for DCC addresses.
-	GetPreferredDccCommandStation() CommandStation
+	GetPreferredDccCommandStation() (CommandStation, error)
 	SetPreferredDccCommandStation(value CommandStation) error
 
 	// Preferred command station for LocoNet addresses.
-	GetPreferredLocoNetCommandStation() CommandStation
+	GetPreferredLocoNetCommandStation() (CommandStation, error)
 	SetPreferredLocoNetCommandStation(value CommandStation) error
 
 	// Preferred command station for Motorola addresses.
-	GetPreferredMotorolaCommandStation() CommandStation
+	GetPreferredMotorolaCommandStation() (CommandStation, error)
 	SetPreferredMotorolaCommandStation(value CommandStation) error
 
 	// Preferred command station for MFX addresses.
-	GetPreferredMfxCommandStation() CommandStation
+	GetPreferredMfxCommandStation() (CommandStation, error)
 	SetPreferredMfxCommandStation(value CommandStation) error
 
 	// Preferred command station for Mqtt addresses.
-	GetPreferredMqttCommandStation() CommandStation
+	GetPreferredMqttCommandStation() (CommandStation, error)
 	SetPreferredMqttCommandStation(value CommandStation) error
 }

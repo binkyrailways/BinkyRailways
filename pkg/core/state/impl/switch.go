@@ -65,7 +65,7 @@ func newSwitch(en model.Switch, railway Railway) Switch {
 }
 
 // GetModel returns the entity as Switch.
-func (bo *stdSwitch) GetModel() model.Switch {
+func (bo *stdSwitch) GetSwitchModel() model.Switch {
 	return bo.getSwitch()
 }
 

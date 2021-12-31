@@ -59,6 +59,11 @@ func (r *route) getRoute() model.Route {
 	return r.GetEntity().(model.Route)
 }
 
+// Gets the underlying model
+func (r *route) GetModel() model.Route {
+	return r.getRoute()
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.

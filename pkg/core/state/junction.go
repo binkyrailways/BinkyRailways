@@ -17,8 +17,13 @@
 
 package state
 
+import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+
 // Junction specifies the state of a single junction
 type Junction interface {
 	ModuleEntity
 	Lockable
+
+	// Gets the underlying model
+	GetModel() model.Junction
 }

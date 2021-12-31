@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -133,14 +134,17 @@ func (bs *railwayCommandStationRefSet) CopyTo(destination model.CommandStationRe
 }
 
 // Try to resolve the given id into a CommandStation.
-func (bs *railwayCommandStationRefSet) tryResolve(id string) model.CommandStation {
+func (bs *railwayCommandStationRefSet) tryResolve(id string) (model.CommandStation, error) {
 	rw, ok := bs.GetRailway().(Railway)
-	if !ok || rw == nil {
-		return nil
+	if !ok {
+		return nil, fmt.Errorf("railway is not of type Railway")
+	}
+	if rw == nil {
+		return nil, fmt.Errorf("railway is nil")
 	}
 	pkg := rw.GetPackage()
 	if pkg == nil {
-		return nil
+		return nil, fmt.Errorf("package is nil")
 	}
 	return pkg.GetCommandStation(id)
 }

@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -32,20 +33,20 @@ type CommandStationRef interface {
 type commandStationRef struct {
 	ID            string    `xml:"Id"`
 	AddressSpaces *[]string `xml:"AddressSpaces,omitempty"`
-	onTryResolve  func(id string) model.CommandStation
+	onTryResolve  func(id string) (model.CommandStation, error)
 }
 
 var _ CommandStationRef = &commandStationRef{}
 
 // newCommandStationRef creates a new cs ref
-func newCommandStationRef(id string, onTryResolve func(id string) model.CommandStation) commandStationRef {
+func newCommandStationRef(id string, onTryResolve func(id string) (model.CommandStation, error)) commandStationRef {
 	return commandStationRef{
 		ID:           id,
 		onTryResolve: onTryResolve,
 	}
 }
 
-func (lr *commandStationRef) SetResolver(onTryResolve func(id string) model.CommandStation) {
+func (lr *commandStationRef) SetResolver(onTryResolve func(id string) (model.CommandStation, error)) {
 	lr.onTryResolve = onTryResolve
 }
 
@@ -80,9 +81,12 @@ func (lr *commandStationRef) Set(value model.CommandStation, onModified func()) 
 
 // Try to resolve the loc reference.
 // Returns non-nil CommandStation or nil if not found.
-func (lr *commandStationRef) TryResolve() model.CommandStation {
+func (lr *commandStationRef) TryResolve() (model.CommandStation, error) {
+	if lr.ID == "" {
+		return nil, nil
+	}
 	if lr.onTryResolve == nil {
-		return nil
+		return nil, fmt.Errorf("onTryResolve is nil")
 	}
 	return lr.onTryResolve(lr.ID)
 }

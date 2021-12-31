@@ -32,13 +32,17 @@ type LocPredicateContainer struct {
 func (jc *LocPredicateContainer) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	// Find xsi:Type attribute
 	a, found := FindAttr(start.Attr, "type", nsSchemaInstance)
-	if !found {
-		return fmt.Errorf("Type attribute not found in %#v", start.Attr)
+	var typeAttr string
+	if found {
+		typeAttr = a.Value
+	} else {
+		typeAttr = TypeLocStandardPredicate
+		//return fmt.Errorf("Type attribute (loc predicate) not found in %#v %#v", start.Attr, start)
 	}
 
 	// Create correct entity based on type
 	var predicate LocPredicate
-	switch a.Value {
+	switch typeAttr {
 	case TypeLocAndPredicate:
 		predicate = newLocAndPredicate()
 	case TypeLocOrPredicate:

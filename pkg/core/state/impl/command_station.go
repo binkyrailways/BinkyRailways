@@ -77,6 +77,11 @@ func (cs *commandStation) getCommandStation() model.CommandStation {
 	return cs.GetEntity().(model.CommandStation)
 }
 
+// Gets the underlying model
+func (cs *commandStation) GetModel() model.CommandStation {
+	return cs.getCommandStation()
+}
+
 // Can this command station be used to serve the given network?
 // <param name="entity">The entity being search for.</param>
 // <param name="network">The network in question</param>

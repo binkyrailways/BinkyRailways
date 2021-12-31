@@ -28,5 +28,5 @@ type CommandStationRef interface {
 
 	// Try to resolve the command station reference.
 	// Returns non-nil CommandStation or nil if not found.
-	TryResolve() CommandStation
+	TryResolve() (CommandStation, error)
 }

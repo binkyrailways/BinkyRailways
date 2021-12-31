@@ -33,7 +33,7 @@ type locAction struct {
 	Loc railwayLocRef `xml:"Loc,omitempty"`
 }
 
-func (a *locAction) GetLoc() model.Loc {
+func (a *locAction) GetLoc() (model.Loc, error) {
 	return a.Loc.TryResolve()
 }
 func (a *locAction) SetLoc(value model.Loc) error {

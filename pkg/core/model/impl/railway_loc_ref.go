@@ -18,25 +18,27 @@
 package impl
 
 import (
+	"fmt"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 type railwayLocRef struct {
 	ID           string `xml:"Id"`
-	onTryResolve func(id string) model.Loc
+	onTryResolve func(id string) (model.Loc, error)
 }
 
 var _ model.LocRef = railwayLocRef{}
 
 // newRailwayLocRef creates a new loc ref
-func newRailwayLocRef(id string, onTryResolve func(id string) model.Loc) railwayLocRef {
+func newRailwayLocRef(id string, onTryResolve func(id string) (model.Loc, error)) railwayLocRef {
 	return railwayLocRef{
 		ID:           id,
 		onTryResolve: onTryResolve,
 	}
 }
 
-func (lr *railwayLocRef) SetResolver(onTryResolve func(id string) model.Loc) {
+func (lr *railwayLocRef) SetResolver(onTryResolve func(id string) (model.Loc, error)) {
 	lr.onTryResolve = onTryResolve
 }
 
@@ -47,9 +49,12 @@ func (lr railwayLocRef) GetID() string {
 
 // Try to resolve the loc reference.
 // Returns non-nil Loc or nil if not found.
-func (lr railwayLocRef) TryResolve() model.Loc {
+func (lr railwayLocRef) TryResolve() (model.Loc, error) {
+	if lr.ID == "" {
+		return nil, nil
+	}
 	if lr.onTryResolve == nil {
-		return nil
+		return nil, fmt.Errorf("onTryResolve is nil")
 	}
 	return lr.onTryResolve(lr.ID)
 }

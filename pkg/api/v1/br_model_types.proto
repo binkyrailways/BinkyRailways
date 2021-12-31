@@ -1,0 +1,328 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+// Empty message
+message Empty {}
+
+// Raw image content
+message Image {
+  // Base64 encoded image data
+  string content_base64 = 1;
+}
+
+// Railway contrains a description of a single model railway.
+message Railway {
+  // Unique ID of the railway
+  string id = 1;
+  // Human readable description of the railway
+  string description = 2;
+  // Does the railway have unsaved changed?
+  bool dirty = 3;
+  // Modules visible on this railway
+  repeated ModuleRef modules = 100;
+  // Locs visible on this railway
+  repeated LocRef locs = 101;
+  // Loc groups visible on this railway
+  repeated LocGroupRef locGroups = 102;
+  // Command stations visible on this railway;
+  repeated CommandStationRef commandStations = 103;
+}
+
+// Module of a railway
+message Module {
+  // Unique ID of the module
+  string id = 1;
+  // Human readable description of the module
+  string description = 2;
+  // Horizontal size (in pixels).
+  int32 width = 3;
+  // Vertical size (in pixels).
+  int32 height = 4;
+  // Does this module have a background image
+  bool has_background_image = 5;
+
+  // Blocks of this module
+  repeated BlockRef blocks = 100;
+  // Blocks of this module
+  repeated BlockGroupRef blockGroups = 101;
+  // Edges of this module
+  repeated EdgeRef edges = 102;
+  // Junctions of this module
+  repeated JunctionRef junctions = 103;
+  // Outputs of this module
+  repeated OutputRef outputs = 104;
+  // Routes of this module
+  repeated RouteRef routes = 105;
+  // Sensors of this module
+  repeated SensorRef sensors = 106;
+  // Signals of this module
+  repeated SignalRef signals = 107;
+}
+
+// Reference to a module
+message ModuleRef {
+  // ID of the module
+  string id = 1;
+  // Position of the module
+  Position position = 2;
+  // Zoom factor of the module (100 == 100%)
+  int32 zoom_factor = 3;
+  // If locked, the module cannot be moved.
+  bool locked = 4;
+}
+
+// Visual position on a grid
+message Position {
+  // Horizontal offset from left of the screen (in pixels).
+  int32 x = 1;
+  // Vertical offset from top of the screen (in pixels).
+  int32 y = 2;
+  // Horizontal size (in pixels).
+  int32 width = 3;
+  // Vertical size (in pixels).
+  int32 height = 4;
+  // Rotation in degrees.
+  int32 rotation = 5;
+  // Optional layer.
+  string layer = 6;
+}
+
+// ChangeDirection specifies if it is allowed / should be avoided to change
+// direction in a block, or is it allowed / should is be avoided that a loc
+// changes direction?
+enum ChangeDirection {
+  // ALLOW indicates that changing direction is allowed
+  ALLOW = 0;
+  // AVOID indicates that changing direction should be avoided
+  AVOID = 1;
+}
+
+// Information of a locomotive
+message Loc {
+  // Unique ID of the loc
+  string id = 1;
+  // Description of the loc
+  string description = 2;
+  // Name of the person that owns this loc.
+  string owner = 3;
+  // Remarks (free text) about this loc.
+  string remarks = 4;
+  // Address of the loc.
+  string address = 5;
+
+  // Percentage of speed steps for the slowest speed of this loc.
+  // Value between 1 and 100.
+  int32 slow_speed = 100;
+  // Percentage of speed steps for the medium speed of this loc.
+  // Value between 1 and 100.
+  int32 medium_speed = 101;
+  // Percentage of speed steps for the maximum speed of this loc.
+  // Value between 1 and 100.
+  int32 maximum_speed = 102;
+
+  // Number of speed steps supported by this loc.
+  int32 speed_steps = 110;
+
+  /// <summary>
+  /// Gets/sets the image of the given loc.
+  /// </summary>
+  /// <value>Null if there is no image.</value>
+  /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+  // Stream Image { get; set; }
+
+  // Is it allowed for this loc to change direction?
+  ChangeDirection change_direction = 120;
+
+  // Gets the names of all functions supported by this loc.
+  //	GetFunctions() LocFunctions
+}
+
+// Reference to a loc
+message LocRef {
+  // ID of the loc
+  string id = 1;
+}
+
+message LocGroup {
+  // ID of the loc group
+  string id = 1;
+  // Description of the loc group
+  string description = 2;
+}
+
+message LocGroupRef {
+  // ID of the loc group
+  string id = 1;
+}
+
+message CommandStation {
+  // ID of the command station
+  string id = 1;
+  // Description of the command station
+  string description = 2;
+}
+
+message CommandStationRef {
+  // ID of the command station
+  string id = 1;
+}
+
+// Block on the track
+message Block {
+  // ID of the block
+  string id = 1;
+  // Description of the block
+  string description = 2;
+  // ID of the module containing the block
+  string module_id = 3;
+  // Position of the block
+  Position position = 4;
+}
+
+// Reference to a Block
+message BlockRef {
+  // ID of the block
+  string id = 1;
+}
+
+// Group of blocks on the track
+message BlockGroup {
+  // ID of the block group
+  string id = 1;
+  // Description of the block group
+  string description = 2;
+  // ID of the module containing the block group
+  string module_id = 3;
+}
+
+// Reference to a BlockGroup
+message BlockGroupRef {
+  // ID of the block group
+  string id = 1;
+}
+
+// Edge of a module on the track
+message Edge {
+  // ID of the edge
+  string id = 1;
+  // Description of the edge
+  string description = 2;
+  // ID of the module containing the edge
+  string module_id = 3;
+  // Position of the edge
+  Position position = 4;
+}
+
+// Reference to an Edge
+message EdgeRef {
+  // ID of the edge
+  string id = 1;
+}
+
+// Junction on the track
+message Junction {
+  // ID of the Junction
+  string id = 1;
+  // Description of the Junction
+  string description = 2;
+  // ID of the module containing the Junction
+  string module_id = 3;
+  // Position of the Junction
+  Position position = 4;
+}
+
+// Reference to a Junction
+message JunctionRef {
+  // ID of the Junction
+  string id = 1;
+}
+
+// Output on the track
+message Output {
+  // ID of the Output
+  string id = 1;
+  // Description of the Output
+  string description = 2;
+  // ID of the module containing the Output
+  string module_id = 3;
+  // Position of the Output
+  Position position = 4;
+}
+
+// Reference to a Output
+message OutputRef {
+  // ID of the Output
+  string id = 1;
+}
+
+// Route on the track
+message Route {
+  // ID of the Route
+  string id = 1;
+  // Description of the Route
+  string description = 2;
+  // ID of the module containing the Route
+  string module_id = 3;
+}
+
+// Reference to a Route
+message RouteRef {
+  // ID of the Route
+  string id = 1;
+}
+
+// Sensor on the track
+message Sensor {
+  // ID of the Sensor
+  string id = 1;
+  // Description of the Sensor
+  string description = 2;
+  // ID of the module containing the Sensor
+  string module_id = 3;
+  // Position of the Sensor
+  Position position = 4;
+}
+
+// Reference to a Sensor
+message SensorRef {
+  // ID of the Sensor
+  string id = 1;
+}
+
+// Signal on the track
+message Signal {
+  // ID of the Signal
+  string id = 1;
+  // Description of the Signal
+  string description = 2;
+  // ID of the module containing the Signal
+  string module_id = 3;
+  // Position of the Signal
+  Position position = 4;
+}
+
+// Reference to a Signal
+message SignalRef {
+  // ID of the Signal
+  string id = 1;
+}

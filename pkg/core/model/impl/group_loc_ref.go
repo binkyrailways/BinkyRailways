@@ -18,25 +18,27 @@
 package impl
 
 import (
+	"fmt"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 type groupLocRef struct {
 	ID           string `xml:",chardata"`
-	onTryResolve func(id string) model.Loc
+	onTryResolve func(id string) (model.Loc, error)
 }
 
 var _ model.LocRef = groupLocRef{}
 
 // newLocRef creates a new loc ref
-func newGroupLocRef(id string, onTryResolve func(id string) model.Loc) groupLocRef {
+func newGroupLocRef(id string, onTryResolve func(id string) (model.Loc, error)) groupLocRef {
 	return groupLocRef{
 		ID:           id,
 		onTryResolve: onTryResolve,
 	}
 }
 
-func (lr *groupLocRef) SetResolver(onTryResolve func(id string) model.Loc) {
+func (lr *groupLocRef) SetResolver(onTryResolve func(id string) (model.Loc, error)) {
 	lr.onTryResolve = onTryResolve
 }
 
@@ -47,9 +49,12 @@ func (lr groupLocRef) GetID() string {
 
 // Try to resolve the loc reference.
 // Returns non-nil Loc or nil if not found.
-func (lr groupLocRef) TryResolve() model.Loc {
+func (lr groupLocRef) TryResolve() (model.Loc, error) {
+	if lr.ID == "" {
+		return nil, nil
+	}
 	if lr.onTryResolve == nil {
-		return nil
+		return nil, fmt.Errorf("onTryResolve is nil")
 	}
 	return lr.onTryResolve(lr.ID)
 }
