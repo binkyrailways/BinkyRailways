@@ -66,7 +66,7 @@ class LocsTree extends StatelessWidget {
                           onChanged: (bool? value) {},
                           value: loc.controlledAutomaticallyActual,
                         )
-                      : null,
+                      : const Icon(Icons.indeterminate_check_box_outlined),
                   title: Text(loc.model.description),
                   subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
                   selected: selectedLocId == loc.model.id,
