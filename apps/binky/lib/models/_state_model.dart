@@ -108,6 +108,19 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<JunctionState> setSwitchDirection(
+      String id, SwitchDirection direction) async {
+    var stateClient = APIClient().stateClient();
+    final result =
+        await stateClient.setSwitchDirection(SetSwitchDirectionRequest(
+      id: id,
+      direction: direction,
+    ));
+    _junctions[id] = result;
+    notifyListeners();
+    return result;
+  }
+
   Future<T> _getState<T>(String id, Map<String, T> state) async {
     return retry(() {
       final result = state[id];

@@ -402,6 +402,17 @@ func (r *railway) ForEachJunction(cb func(state.Junction)) {
 	}
 }
 
+// Gets the state of the junction with given ID.
+// Returns nil if not found
+func (r *railway) GetJunction(id string) (state.Junction, error) {
+	for _, x := range r.junctions {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Gets the states of all locomotives in this railway
 func (r *railway) ForEachLoc(cb func(state.Loc)) {
 	for _, x := range r.locs {

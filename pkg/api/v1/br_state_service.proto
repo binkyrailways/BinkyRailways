@@ -44,6 +44,9 @@ service StateService {
   // Change the speed and direction of a loc
   rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
       returns (LocState);
+
+  // Change the of a junction of type switch
+  rpc SetSwitchDirection(SetSwitchDirectionRequest) returns (JunctionState);
 }
 
 // Request arguments for EnableRunMode.
@@ -86,4 +89,11 @@ message SetLocSpeedAndDirectionRequest {
   int32 speed = 2;
   // New direction of the loc
   LocDirection direction = 3;
+}
+
+message SetSwitchDirectionRequest {
+  // ID of the junction (of type switch)
+  string id = 1;
+  // New direction of the switch
+  SwitchDirection direction = 2;
 }

@@ -12,6 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'br_state_types.pb.dart' as $2;
 
 import 'br_state_types.pbenum.dart' as $2;
+import 'br_model_types.pbenum.dart' as $1;
 
 class EnableRunModeRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EnableRunModeRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
@@ -420,5 +421,66 @@ class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   $core.bool hasDirection() => $_has(2);
   @$pb.TagNumber(3)
   void clearDirection() => clearField(3);
+}
+
+class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetSwitchDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..e<$1.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..hasRequiredFields = false
+  ;
+
+  SetSwitchDirectionRequest._() : super();
+  factory SetSwitchDirectionRequest({
+    $core.String? id,
+    $1.SwitchDirection? direction,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (direction != null) {
+      _result.direction = direction;
+    }
+    return _result;
+  }
+  factory SetSwitchDirectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetSwitchDirectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetSwitchDirectionRequest clone() => SetSwitchDirectionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetSwitchDirectionRequest copyWith(void Function(SetSwitchDirectionRequest) updates) => super.copyWith((message) => updates(message as SetSwitchDirectionRequest)) as SetSwitchDirectionRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetSwitchDirectionRequest create() => SetSwitchDirectionRequest._();
+  SetSwitchDirectionRequest createEmptyInstance() => create();
+  static $pb.PbList<SetSwitchDirectionRequest> createRepeated() => $pb.PbList<SetSwitchDirectionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetSwitchDirectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetSwitchDirectionRequest>(create);
+  static SetSwitchDirectionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $1.SwitchDirection get direction => $_getN(1);
+  @$pb.TagNumber(2)
+  set direction($1.SwitchDirection v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDirection() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDirection() => clearField(2);
 }
 

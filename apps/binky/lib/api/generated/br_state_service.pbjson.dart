@@ -69,3 +69,14 @@ const SetLocSpeedAndDirectionRequest$json = const {
 
 /// Descriptor for `SetLocSpeedAndDirectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setLocSpeedAndDirectionRequestDescriptor = $convert.base64Decode('Ch5TZXRMb2NTcGVlZEFuZERpcmVjdGlvblJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhQKBXNwZWVkGAIgASgFUgVzcGVlZBI8CglkaXJlY3Rpb24YAyABKA4yHi5iaW5reXJhaWx3YXlzLnYxLkxvY0RpcmVjdGlvblIJZGlyZWN0aW9u');
+@$core.Deprecated('Use setSwitchDirectionRequestDescriptor instead')
+const SetSwitchDirectionRequest$json = const {
+  '1': 'SetSwitchDirectionRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'direction', '3': 2, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'direction'},
+  ],
+};
+
+/// Descriptor for `SetSwitchDirectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setSwitchDirectionRequestDescriptor = $convert.base64Decode('ChlTZXRTd2l0Y2hEaXJlY3Rpb25SZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBI/CglkaXJlY3Rpb24YAiABKA4yIS5iaW5reXJhaWx3YXlzLnYxLlN3aXRjaERpcmVjdGlvblIJZGlyZWN0aW9u');

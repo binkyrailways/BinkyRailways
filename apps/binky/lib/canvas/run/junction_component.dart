@@ -15,13 +15,41 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/models/_state_model.dart';
+import 'package:flame/components.dart';
+import 'package:flame/input.dart';
+import 'package:flutter/material.dart';
+
 import '../junction_component.dart' as common;
 import '../../api.dart' as api;
 
-class JunctionComponent extends common.JunctionComponent {
-  final api.JunctionState state;
+class JunctionComponent extends common.JunctionComponent with Tappable {
+  api.JunctionState state;
+  final StateModel stateModel;
 
-  JunctionComponent({required this.state}) : super(model: state.model);
+  JunctionComponent({required this.state, required this.stateModel})
+      : super(model: state.model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    if (state.hasSwitch_2()) {
+      stateModel
+          .setSwitchDirection(
+              model.id, state.switch_2.directionRequested.invert())
+          .then((x) {
+        state = x;
+      });
+    }
+    return true;
+  }
+
+  @override
+  Color switchColor() {
+    if (state.switch_2.directionActual == state.switch_2.directionRequested) {
+      return super.switchColor();
+    }
+    return Colors.orangeAccent;
+  }
 
   @override
   api.SwitchDirection switchDirection() => state.switch_2.directionActual;

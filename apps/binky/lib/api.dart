@@ -16,6 +16,7 @@
 //
 
 export 'api/api_client.dart';
+export 'api/api_extensions.dart';
 export 'api/generated/br_model_service.pb.dart';
 export 'api/generated/br_model_service.pbenum.dart';
 export 'api/generated/br_model_service.pbjson.dart';

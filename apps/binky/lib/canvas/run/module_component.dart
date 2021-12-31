@@ -38,7 +38,7 @@ class ModuleComponent extends common.ModuleComponent {
     }
     for (var junctionRef in model.junctions) {
       final junctionState = await stateModel.getJunctionState(junctionRef.id);
-      add(JunctionComponent(state: junctionState));
+      add(JunctionComponent(state: junctionState, stateModel: stateModel));
     }
   }
 }
