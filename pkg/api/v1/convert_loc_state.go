@@ -29,5 +29,37 @@ func (dst *LocState) FromState(ctx context.Context, src state.Loc) error {
 	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
 		return err
 	}
+	dst.ControlledAutomaticallyActual = src.GetControlledAutomatically().GetActual(ctx)
+	dst.ControlledAutomaticallyRequested = src.GetControlledAutomatically().GetRequested(ctx)
+	dst.CanBeControlledAutomatically = src.GetCanSetAutomaticControl(ctx)
+	dst.AutomaticState.FromState(ctx, src.GetAutomaticState().GetActual(ctx))
+	if x := src.GetCurrentRoute().GetActual(ctx); x != nil {
+		dst.CurrentRoute = &RouteRef{
+			Id: x.GetRoute().GetID(),
+		}
+	}
+	dst.WaitAfterCurrentRoute = src.GetWaitAfterCurrentRoute().GetActual(ctx)
+	dst.IsCurrentRouteDurationExceeded = src.GetIsCurrentRouteDurationExceeded(ctx)
+	if x := src.GetNextRoute().GetActual(ctx); x != nil {
+		dst.NextRoute = &RouteRef{
+			Id: x.GetID(),
+		}
+	}
+	if x := src.GetCurrentBlock().GetActual(ctx); x != nil {
+		dst.CurrentBlock = &BlockRef{
+			Id: x.GetID(),
+		}
+	}
+	dst.SpeedActual = int32(src.GetSpeed().GetActual(ctx))
+	dst.SpeedRequested = int32(src.GetSpeed().GetRequested(ctx))
+	dst.SpeedText = src.GetSpeedText(ctx)
+	dst.StateText = src.GetStateText(ctx)
+	dst.SpeedInStepsActual = int32(src.GetSpeedInSteps().GetActual(ctx))
+	dst.SpeedInStepsRequested = int32(src.GetSpeedInSteps().GetRequested(ctx))
+	dst.DirectionActual.FromState(ctx, src.GetDirection().GetActual(ctx))
+	dst.DirectionRequested.FromState(ctx, src.GetDirection().GetRequested(ctx))
+	dst.IsReversing = src.GetReversing().GetActual(ctx)
+	dst.F0Actual = src.GetF0().GetActual(ctx)
+	dst.F0Requested = src.GetF0().GetRequested(ctx)
 	return nil
 }

@@ -409,6 +409,17 @@ func (r *railway) ForEachLoc(cb func(state.Loc)) {
 	}
 }
 
+// Gets the state of the loc with given ID.
+// Returns nil if not found
+func (r *railway) GetLoc(id string) (state.Loc, error) {
+	for _, x := range r.locs {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Gets the states of all routes in this railway
 func (r *railway) ForEachRoute(cb func(state.Route)) {
 	for _, x := range r.routes {

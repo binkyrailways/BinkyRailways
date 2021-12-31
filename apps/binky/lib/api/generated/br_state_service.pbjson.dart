@@ -57,3 +57,15 @@ const SetPowerRequest$json = const {
 
 /// Descriptor for `SetPowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setPowerRequestDescriptor = $convert.base64Decode('Cg9TZXRQb3dlclJlcXVlc3QSGAoHZW5hYmxlZBgBIAEoCFIHZW5hYmxlZA==');
+@$core.Deprecated('Use setLocSpeedAndDirectionRequestDescriptor instead')
+const SetLocSpeedAndDirectionRequest$json = const {
+  '1': 'SetLocSpeedAndDirectionRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'speed', '3': 2, '4': 1, '5': 5, '10': 'speed'},
+    const {'1': 'direction', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.LocDirection', '10': 'direction'},
+  ],
+};
+
+/// Descriptor for `SetLocSpeedAndDirectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setLocSpeedAndDirectionRequestDescriptor = $convert.base64Decode('Ch5TZXRMb2NTcGVlZEFuZERpcmVjdGlvblJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhQKBXNwZWVkGAIgASgFUgVzcGVlZBI8CglkaXJlY3Rpb24YAyABKA4yHi5iaW5reXJhaWx3YXlzLnYxLkxvY0RpcmVjdGlvblIJZGlyZWN0aW9u');

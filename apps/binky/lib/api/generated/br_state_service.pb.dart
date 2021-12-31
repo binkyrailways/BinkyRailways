@@ -11,6 +11,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'br_state_types.pb.dart' as $2;
 
+import 'br_state_types.pbenum.dart' as $2;
+
 class EnableRunModeRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EnableRunModeRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'virtual')
@@ -343,5 +345,80 @@ class SetPowerRequest extends $pb.GeneratedMessage {
   $core.bool hasEnabled() => $_has(0);
   @$pb.TagNumber(1)
   void clearEnabled() => clearField(1);
+}
+
+class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetLocSpeedAndDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
+    ..e<$2.LocDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $2.LocDirection.FORWARD, valueOf: $2.LocDirection.valueOf, enumValues: $2.LocDirection.values)
+    ..hasRequiredFields = false
+  ;
+
+  SetLocSpeedAndDirectionRequest._() : super();
+  factory SetLocSpeedAndDirectionRequest({
+    $core.String? id,
+    $core.int? speed,
+    $2.LocDirection? direction,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (speed != null) {
+      _result.speed = speed;
+    }
+    if (direction != null) {
+      _result.direction = direction;
+    }
+    return _result;
+  }
+  factory SetLocSpeedAndDirectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetLocSpeedAndDirectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetLocSpeedAndDirectionRequest clone() => SetLocSpeedAndDirectionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetLocSpeedAndDirectionRequest copyWith(void Function(SetLocSpeedAndDirectionRequest) updates) => super.copyWith((message) => updates(message as SetLocSpeedAndDirectionRequest)) as SetLocSpeedAndDirectionRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetLocSpeedAndDirectionRequest create() => SetLocSpeedAndDirectionRequest._();
+  SetLocSpeedAndDirectionRequest createEmptyInstance() => create();
+  static $pb.PbList<SetLocSpeedAndDirectionRequest> createRepeated() => $pb.PbList<SetLocSpeedAndDirectionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetLocSpeedAndDirectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetLocSpeedAndDirectionRequest>(create);
+  static SetLocSpeedAndDirectionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get speed => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set speed($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSpeed() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSpeed() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $2.LocDirection get direction => $_getN(2);
+  @$pb.TagNumber(3)
+  set direction($2.LocDirection v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDirection() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDirection() => clearField(3);
 }
 

@@ -22,6 +22,116 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+// Direction of a loc
+type LocDirection int32
+
+const (
+	LocDirection_FORWARD LocDirection = 0
+	LocDirection_REVERSE LocDirection = 1
+)
+
+var LocDirection_name = map[int32]string{
+	0: "FORWARD",
+	1: "REVERSE",
+}
+
+var LocDirection_value = map[string]int32{
+	"FORWARD": 0,
+	"REVERSE": 1,
+}
+
+func (x LocDirection) String() string {
+	return proto.EnumName(LocDirection_name, int32(x))
+}
+
+func (LocDirection) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{0}
+}
+
+type AutoLocState int32
+
+const (
+	// Loc has not been assigned a route, but is ready to be assigned and run that
+	// route. If the loc is no longer is automatic mode, it will be removed from
+	// the automatic loc controller. If no suitable route can be found, the loc
+	// will stay in this state. When the loc has been assigned a route, the route
+	// will be prepared and the state will change to <see
+	// cref="WaitingForAssignedRouteReady"/>.
+	AutoLocState_ASSIGNROUTE AutoLocState = 0
+	// The loc that was reversing is changing direction back to normal.
+	// Once the direction is consistent, the state will change to <see
+	// cref="AssignRoute"/>.
+	AutoLocState_REVERSINGWAITINGFORDIRECTIONCHANGE AutoLocState = 1
+	// The loc has been assigned a route and it waiting for this route to
+	// become ready. Typically all junctions in the route will be set in the
+	// correct position now. When the route is ready, the state will change to
+	// <see cref="Running"/>.
+	AutoLocState_WAITINGFORASSIGNEDROUTEREADY AutoLocState = 2
+	// The loc is running the assigned route.
+	// The state of the loc will not change until a sensor trigger is
+	// received.
+	AutoLocState_RUNNING AutoLocState = 3
+	// The loc has triggered one of the 'entering destination' sensors of the
+	// assigned route. No changes are made to the loc state when switching to
+	// this state.
+	AutoLocState_ENTERSENSORACTIVATED AutoLocState = 4
+	// The loc has triggered one of the 'entering destination' sensors of the
+	// assigned route. The state of the loc will not change until a 'reached
+	// destination' sensor trigger is received.
+	AutoLocState_ENTERINGDESTINATION AutoLocState = 5
+	// The loc has triggered one of the 'reached destination' sensors of the
+	// assigned route. No changes are made to the loc state when switching to
+	// this state.
+	AutoLocState_REACHEDSENSORACTIVATED AutoLocState = 6
+	// The loc has triggered one of the 'reached destination' sensors of the
+	// assigned route. If the destination let's the loc wait, a timeout is
+	// started and the state is changed to <see
+	// cref="WaitingForDestinationTimeout"/>. Otherwise the state will change
+	// to <see cref="AssignRoute"/>. If the loc is no longer is automatic
+	// mode, it will be removed from the automatic loc controller.
+	AutoLocState_REACHEDDESTINATION AutoLocState = 7
+	// The loc has stopped at the destination and is waiting for a timeout
+	// until it can be assigned a new route.
+	AutoLocState_WAITINGFORDESTINATIONTIMEOUT AutoLocState = 8
+	// The loc has stopped at the destination and is waiting for a requirement
+	// on the group that contains the destination block.
+	AutoLocState_WAITINGFORDESTINATIONGROUPMINIMUM AutoLocState = 9
+)
+
+var AutoLocState_name = map[int32]string{
+	0: "ASSIGNROUTE",
+	1: "REVERSINGWAITINGFORDIRECTIONCHANGE",
+	2: "WAITINGFORASSIGNEDROUTEREADY",
+	3: "RUNNING",
+	4: "ENTERSENSORACTIVATED",
+	5: "ENTERINGDESTINATION",
+	6: "REACHEDSENSORACTIVATED",
+	7: "REACHEDDESTINATION",
+	8: "WAITINGFORDESTINATIONTIMEOUT",
+	9: "WAITINGFORDESTINATIONGROUPMINIMUM",
+}
+
+var AutoLocState_value = map[string]int32{
+	"ASSIGNROUTE":                        0,
+	"REVERSINGWAITINGFORDIRECTIONCHANGE": 1,
+	"WAITINGFORASSIGNEDROUTEREADY":       2,
+	"RUNNING":                            3,
+	"ENTERSENSORACTIVATED":               4,
+	"ENTERINGDESTINATION":                5,
+	"REACHEDSENSORACTIVATED":             6,
+	"REACHEDDESTINATION":                 7,
+	"WAITINGFORDESTINATIONTIMEOUT":       8,
+	"WAITINGFORDESTINATIONGROUPMINIMUM":  9,
+}
+
+func (x AutoLocState) String() string {
+	return proto.EnumName(AutoLocState_name, int32(x))
+}
+
+func (AutoLocState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_7ba3d7758196798e, []int{1}
+}
+
 // Railway contrains a description of a single model railway.
 type RailwayState struct {
 	// Model of the railway
@@ -119,7 +229,57 @@ func (m *RailwayState) GetPowerRequested() bool {
 // State of a single loc
 type LocState struct {
 	// Model of the loc
-	Model                *Loc     `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	Model *Loc `protobuf:"bytes,1,opt,name=model,proto3" json:"model,omitempty"`
+	// If set, this loc is currently controlled automatically.
+	ControlledAutomaticallyActual bool `protobuf:"varint,10,opt,name=controlled_automatically_actual,json=controlledAutomaticallyActual,proto3" json:"controlled_automatically_actual,omitempty"`
+	// If set, this loc wants to be controlled automatically.
+	ControlledAutomaticallyRequested bool `protobuf:"varint,11,opt,name=controlled_automatically_requested,json=controlledAutomaticallyRequested,proto3" json:"controlled_automatically_requested,omitempty"`
+	// Is it allowed to set the ControlledAutomatically property to true?
+	CanBeControlledAutomatically bool `protobuf:"varint,12,opt,name=can_be_controlled_automatically,json=canBeControlledAutomatically,proto3" json:"can_be_controlled_automatically,omitempty"`
+	// The current state of this loc in the automatic loc controller.
+	AutomaticState AutoLocState `protobuf:"varint,13,opt,name=automatic_state,json=automaticState,proto3,enum=binkyrailways.v1.AutoLocState" json:"automatic_state,omitempty"`
+	// Gets the route that this loc is currently taking.
+	// Do not assign this property directly, instead use the assign methods.
+	CurrentRoute *RouteRef `protobuf:"bytes,18,opt,name=current_route,json=currentRoute,proto3" json:"current_route,omitempty"`
+	// Should the loc wait when the current route has finished?
+	WaitAfterCurrentRoute bool `protobuf:"varint,20,opt,name=wait_after_current_route,json=waitAfterCurrentRoute,proto3" json:"wait_after_current_route,omitempty"`
+	// Is the maximum duration of the current route this loc is taken exceeded?
+	IsCurrentRouteDurationExceeded bool `protobuf:"varint,22,opt,name=is_current_route_duration_exceeded,json=isCurrentRouteDurationExceeded,proto3" json:"is_current_route_duration_exceeded,omitempty"`
+	// Gets the route that this loc will take when the current route has finished.
+	// This property is only set by the automatic loc controller.
+	NextRoute *RouteRef `protobuf:"bytes,23,opt,name=next_route,json=nextRoute,proto3" json:"next_route,omitempty"`
+	// Gets the block that the loc is currently in.
+	CurrentBlock *BlockRef `protobuf:"bytes,24,opt,name=current_block,json=currentBlock,proto3" json:"current_block,omitempty"`
+	// Current speed of this loc as percentage of the speed steps of the loc.
+	// Value between 0 and 100.
+	// Setting this value will result in a request to its command station to alter
+	// the speed.
+	SpeedActual    int32 `protobuf:"varint,50,opt,name=speed_actual,json=speedActual,proto3" json:"speed_actual,omitempty"`
+	SpeedRequested int32 `protobuf:"varint,51,opt,name=speed_requested,json=speedRequested,proto3" json:"speed_requested,omitempty"`
+	// Gets a human readable representation of the speed of the loc.
+	SpeedText string `protobuf:"bytes,52,opt,name=speed_text,json=speedText,proto3" json:"speed_text,omitempty"`
+	// Gets a human readable representation of the state of the loc.
+	StateText string `protobuf:"bytes,53,opt,name=state_text,json=stateText,proto3" json:"state_text,omitempty"`
+	// Gets the actual speed of the loc in speed steps
+	// Value between 0 and the maximum number of speed steps supported by this
+	// loc. Setting this value will result in a request to its command station to
+	// alter the speed.
+	SpeedInStepsActual    int32 `protobuf:"varint,54,opt,name=speed_in_steps_actual,json=speedInStepsActual,proto3" json:"speed_in_steps_actual,omitempty"`
+	SpeedInStepsRequested int32 `protobuf:"varint,55,opt,name=speed_in_steps_requested,json=speedInStepsRequested,proto3" json:"speed_in_steps_requested,omitempty"`
+	// Current direction of this loc.
+	// Setting this value will result in a request to its command station to alter
+	// the direction.
+	DirectionActual    LocDirection `protobuf:"varint,56,opt,name=direction_actual,json=directionActual,proto3,enum=binkyrailways.v1.LocDirection" json:"direction_actual,omitempty"`
+	DirectionRequested LocDirection `protobuf:"varint,57,opt,name=direction_requested,json=directionRequested,proto3,enum=binkyrailways.v1.LocDirection" json:"direction_requested,omitempty"`
+	// Is this loc reversing out of a dead end?
+	// This can only be true for locs that are not allowed to change
+	// direction.
+	IsReversing bool `protobuf:"varint,60,opt,name=is_reversing,json=isReversing,proto3" json:"is_reversing,omitempty"`
+	// Directional lighting of the loc.
+	// Setting this value will result in a request to its command station to alter
+	// the value.
+	F0Actual             bool     `protobuf:"varint,70,opt,name=f0_actual,json=f0Actual,proto3" json:"f0_actual,omitempty"`
+	F0Requested          bool     `protobuf:"varint,71,opt,name=f0_requested,json=f0Requested,proto3" json:"f0_requested,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -163,6 +323,146 @@ func (m *LocState) GetModel() *Loc {
 		return m.Model
 	}
 	return nil
+}
+
+func (m *LocState) GetControlledAutomaticallyActual() bool {
+	if m != nil {
+		return m.ControlledAutomaticallyActual
+	}
+	return false
+}
+
+func (m *LocState) GetControlledAutomaticallyRequested() bool {
+	if m != nil {
+		return m.ControlledAutomaticallyRequested
+	}
+	return false
+}
+
+func (m *LocState) GetCanBeControlledAutomatically() bool {
+	if m != nil {
+		return m.CanBeControlledAutomatically
+	}
+	return false
+}
+
+func (m *LocState) GetAutomaticState() AutoLocState {
+	if m != nil {
+		return m.AutomaticState
+	}
+	return AutoLocState_ASSIGNROUTE
+}
+
+func (m *LocState) GetCurrentRoute() *RouteRef {
+	if m != nil {
+		return m.CurrentRoute
+	}
+	return nil
+}
+
+func (m *LocState) GetWaitAfterCurrentRoute() bool {
+	if m != nil {
+		return m.WaitAfterCurrentRoute
+	}
+	return false
+}
+
+func (m *LocState) GetIsCurrentRouteDurationExceeded() bool {
+	if m != nil {
+		return m.IsCurrentRouteDurationExceeded
+	}
+	return false
+}
+
+func (m *LocState) GetNextRoute() *RouteRef {
+	if m != nil {
+		return m.NextRoute
+	}
+	return nil
+}
+
+func (m *LocState) GetCurrentBlock() *BlockRef {
+	if m != nil {
+		return m.CurrentBlock
+	}
+	return nil
+}
+
+func (m *LocState) GetSpeedActual() int32 {
+	if m != nil {
+		return m.SpeedActual
+	}
+	return 0
+}
+
+func (m *LocState) GetSpeedRequested() int32 {
+	if m != nil {
+		return m.SpeedRequested
+	}
+	return 0
+}
+
+func (m *LocState) GetSpeedText() string {
+	if m != nil {
+		return m.SpeedText
+	}
+	return ""
+}
+
+func (m *LocState) GetStateText() string {
+	if m != nil {
+		return m.StateText
+	}
+	return ""
+}
+
+func (m *LocState) GetSpeedInStepsActual() int32 {
+	if m != nil {
+		return m.SpeedInStepsActual
+	}
+	return 0
+}
+
+func (m *LocState) GetSpeedInStepsRequested() int32 {
+	if m != nil {
+		return m.SpeedInStepsRequested
+	}
+	return 0
+}
+
+func (m *LocState) GetDirectionActual() LocDirection {
+	if m != nil {
+		return m.DirectionActual
+	}
+	return LocDirection_FORWARD
+}
+
+func (m *LocState) GetDirectionRequested() LocDirection {
+	if m != nil {
+		return m.DirectionRequested
+	}
+	return LocDirection_FORWARD
+}
+
+func (m *LocState) GetIsReversing() bool {
+	if m != nil {
+		return m.IsReversing
+	}
+	return false
+}
+
+func (m *LocState) GetF0Actual() bool {
+	if m != nil {
+		return m.F0Actual
+	}
+	return false
+}
+
+func (m *LocState) GetF0Requested() bool {
+	if m != nil {
+		return m.F0Requested
+	}
+	return false
 }
 
 // State of a single command station
@@ -602,6 +902,8 @@ func (m *SignalState) GetModel() *Signal {
 }
 
 func init() {
+	proto.RegisterEnum("binkyrailways.v1.LocDirection", LocDirection_name, LocDirection_value)
+	proto.RegisterEnum("binkyrailways.v1.AutoLocState", AutoLocState_name, AutoLocState_value)
 	proto.RegisterType((*RailwayState)(nil), "binkyrailways.v1.RailwayState")
 	proto.RegisterType((*LocState)(nil), "binkyrailways.v1.LocState")
 	proto.RegisterType((*CommandStationState)(nil), "binkyrailways.v1.CommandStationState")
@@ -617,41 +919,78 @@ func init() {
 func init() { proto.RegisterFile("br_state_types.proto", fileDescriptor_7ba3d7758196798e) }
 
 var fileDescriptor_7ba3d7758196798e = []byte{
-	// 540 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0xd1, 0x8a, 0xd3, 0x4e,
-	0x14, 0xc6, 0xff, 0xd9, 0xbf, 0xca, 0x7a, 0xda, 0xda, 0x92, 0xed, 0xda, 0x58, 0xb4, 0xd4, 0x0a,
-	0xba, 0x22, 0x9b, 0xda, 0x15, 0xf5, 0x62, 0xf1, 0xa2, 0x5d, 0x17, 0x41, 0xba, 0x08, 0x59, 0x50,
-	0xf0, 0x26, 0x4c, 0x93, 0xa1, 0x1d, 0x9a, 0xce, 0xc4, 0xcc, 0x4c, 0x4b, 0xdf, 0xc4, 0xa7, 0xf0,
-	0x39, 0xbc, 0xf4, 0x11, 0xa4, 0x3e, 0x81, 0x6f, 0x20, 0x99, 0xc9, 0xac, 0x9d, 0x0d, 0x42, 0x2f,
-	0xf3, 0x9d, 0xdf, 0xf7, 0x0d, 0xe7, 0x3b, 0x10, 0x68, 0x4e, 0xb2, 0x90, 0x0b, 0x24, 0x70, 0x28,
-	0xd6, 0x29, 0xe6, 0x7e, 0x9a, 0x31, 0xc1, 0xdc, 0xc6, 0x84, 0xd0, 0xf9, 0x3a, 0x43, 0x24, 0x59,
-	0xa1, 0x35, 0xf7, 0x97, 0x83, 0x76, 0xce, 0x2d, 0x58, 0x8c, 0x93, 0x6d, 0xae, 0xf7, 0x6d, 0x0f,
-	0xaa, 0x81, 0xa6, 0x2e, 0xf3, 0x10, 0xb7, 0x0f, 0x37, 0x15, 0xe5, 0x39, 0x5d, 0xe7, 0xa8, 0x72,
-	0x72, 0xcf, 0xbf, 0x1e, 0xe4, 0x17, 0x78, 0xa0, 0x39, 0xf7, 0x18, 0x0e, 0x08, 0x0f, 0x33, 0x49,
-	0x55, 0x7a, 0x88, 0x29, 0x9a, 0x24, 0x38, 0xf6, 0xf6, 0xba, 0xce, 0xd1, 0x7e, 0xd0, 0x20, 0x3c,
-	0x90, 0xf4, 0x82, 0xc5, 0xf8, 0x5c, 0xeb, 0xee, 0x4b, 0x68, 0x11, 0x1e, 0x2e, 0x49, 0x26, 0x24,
-	0x4a, 0x6c, 0xcb, 0xff, 0xca, 0xd2, 0x24, 0xfc, 0xa3, 0x9e, 0x6e, 0xdb, 0x4e, 0xa1, 0xbd, 0x65,
-	0x43, 0x52, 0xb0, 0xfc, 0x45, 0xe3, 0xbc, 0xa1, 0x9c, 0xad, 0x2b, 0xe7, 0x50, 0xcf, 0x8d, 0xf9,
-	0x21, 0x54, 0x53, 0xb6, 0xc2, 0x59, 0x88, 0xa2, 0x7c, 0xea, 0x81, 0xc2, 0x2b, 0x4a, 0x1b, 0x2a,
-	0xc9, 0x7d, 0x02, 0x75, 0x8d, 0x64, 0xf8, 0x8b, 0xc4, 0x5c, 0xe0, 0xd8, 0xab, 0x28, 0xea, 0x8e,
-	0x92, 0x03, 0xa3, 0xf6, 0x5e, 0xc3, 0xfe, 0x98, 0x45, 0xba, 0xab, 0x67, 0x76, 0x57, 0x87, 0xe5,
-	0xae, 0xc6, 0x2c, 0x2a, 0x7a, 0xea, 0x5d, 0xc0, 0xc1, 0x19, 0x5b, 0x2c, 0x10, 0x8d, 0x73, 0x33,
-	0x61, 0x54, 0x67, 0xbc, 0xb2, 0x33, 0xba, 0xe5, 0x0c, 0xdb, 0x65, 0xe2, 0x7e, 0x3b, 0x00, 0xa3,
-	0x84, 0x45, 0x73, 0x1d, 0x73, 0x6c, 0xc7, 0xb4, 0xca, 0x31, 0x0a, 0x36, 0x47, 0x7b, 0x04, 0xb5,
-	0x28, 0x61, 0x1c, 0xc7, 0x76, 0x25, 0x55, 0x2d, 0x16, 0x9d, 0x3c, 0x85, 0x46, 0x01, 0x5d, 0x2f,
-	0xa5, 0xae, 0xf5, 0xab, 0x56, 0xdc, 0x07, 0x00, 0x84, 0x87, 0x31, 0x46, 0x31, 0xa6, 0xb1, 0xd7,
-	0x54, 0xd0, 0x6d, 0xc2, 0xdf, 0x6a, 0xa1, 0x18, 0x73, 0xbd, 0x81, 0x77, 0x68, 0xc6, 0xc5, 0x4a,
-	0xee, 0x63, 0xa8, 0xcf, 0x10, 0x0f, 0x57, 0x88, 0x08, 0x42, 0xa7, 0x61, 0xc2, 0x22, 0xef, 0xae,
-	0x62, 0x6a, 0x33, 0xc4, 0x3f, 0x69, 0x75, 0xcc, 0xa2, 0xde, 0x39, 0xd4, 0xd5, 0x16, 0xef, 0x32,
-	0x26, 0x53, 0xbd, 0xf7, 0x89, 0xbd, 0xf7, 0xfd, 0x7f, 0xec, 0xad, 0x1c, 0xa6, 0xba, 0x21, 0xd4,
-	0xde, 0x4b, 0x1a, 0xfd, 0xbd, 0xc1, 0x73, 0x3b, 0xa4, 0x5d, 0x0e, 0x31, 0xbc, 0x89, 0x78, 0x03,
-	0x95, 0x0f, 0x52, 0xa4, 0x52, 0xe8, 0x00, 0xdf, 0x0e, 0xf0, 0xca, 0x01, 0x9a, 0x36, 0xf6, 0x53,
-	0x80, 0x80, 0x49, 0x81, 0x77, 0xbd, 0x9d, 0x82, 0xb7, 0xde, 0xbe, 0xc4, 0x94, 0xb3, 0x6c, 0xd7,
-	0xb7, 0x35, 0xbd, 0x6d, 0x27, 0x53, 0x8a, 0x92, 0x9d, 0xed, 0x8a, 0x2e, 0xec, 0xa3, 0xb3, 0xef,
-	0x9b, 0x8e, 0xf3, 0x63, 0xd3, 0x71, 0x7e, 0x6e, 0x3a, 0xce, 0xd7, 0x5f, 0x9d, 0xff, 0x3e, 0x0f,
-	0xa6, 0x44, 0xcc, 0xe4, 0xc4, 0x8f, 0xd8, 0xa2, 0x6f, 0x99, 0xfb, 0xa3, 0xfc, 0x2b, 0x30, 0x5f,
-	0xe9, 0x7c, 0xda, 0x47, 0x29, 0xe9, 0x2f, 0x07, 0x93, 0x5b, 0xea, 0xe7, 0xf3, 0xe2, 0x4f, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0xd1, 0x62, 0xa9, 0x8a, 0xbc, 0x04, 0x00, 0x00,
+	// 1126 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x56, 0xdd, 0x52, 0xdb, 0x46,
+	0x14, 0x46, 0x24, 0x24, 0xf8, 0xd8, 0x60, 0xcd, 0xf2, 0xa7, 0x52, 0xe2, 0x18, 0x77, 0x9a, 0xba,
+	0xe9, 0xc4, 0xfc, 0xa4, 0x09, 0xcd, 0xa4, 0x9d, 0x8e, 0xb0, 0x85, 0xa3, 0x0c, 0x96, 0x3b, 0x6b,
+	0x03, 0xd3, 0xde, 0x68, 0x64, 0x69, 0x0d, 0x3b, 0x08, 0xc9, 0xd5, 0x0f, 0x3f, 0xef, 0xd1, 0x8b,
+	0x3e, 0x41, 0x2f, 0xfb, 0x1c, 0xbd, 0xec, 0x23, 0x74, 0xe8, 0x13, 0xf4, 0x0d, 0x3a, 0xda, 0x95,
+	0x2c, 0xc9, 0xe0, 0x09, 0x97, 0x3a, 0xdf, 0xcf, 0x9e, 0x73, 0xf6, 0xec, 0xb1, 0x61, 0x79, 0xe0,
+	0xe9, 0x7e, 0x60, 0x04, 0x44, 0x0f, 0x6e, 0x46, 0xc4, 0x6f, 0x8c, 0x3c, 0x37, 0x70, 0x91, 0x38,
+	0xa0, 0xce, 0xf9, 0x8d, 0x67, 0x50, 0xfb, 0xca, 0xb8, 0xf1, 0x1b, 0x97, 0x3b, 0xeb, 0x11, 0xef,
+	0xc2, 0xb5, 0x88, 0x9d, 0xe5, 0xd5, 0xfe, 0x9c, 0x85, 0x12, 0xe6, 0xac, 0x5e, 0x64, 0x82, 0xb6,
+	0x60, 0x8e, 0xb1, 0x24, 0xa1, 0x2a, 0xd4, 0x8b, 0xbb, 0x9f, 0x35, 0x26, 0x8d, 0x1a, 0x31, 0x1d,
+	0x73, 0x1e, 0x7a, 0x05, 0x4b, 0xd4, 0xd7, 0xbd, 0xd0, 0x61, 0xee, 0x3a, 0x71, 0x8c, 0x81, 0x4d,
+	0x2c, 0x69, 0xb6, 0x2a, 0xd4, 0xe7, 0xb1, 0x48, 0x7d, 0x1c, 0x3a, 0x1d, 0xd7, 0x22, 0x0a, 0x8f,
+	0xa3, 0x37, 0xb0, 0x46, 0x7d, 0xfd, 0x92, 0x7a, 0x41, 0x68, 0xd8, 0x79, 0xc9, 0x23, 0x26, 0x59,
+	0xa6, 0xfe, 0x31, 0x47, 0xb3, 0xb2, 0xf7, 0xb0, 0x9e, 0x91, 0x19, 0x61, 0xe0, 0x46, 0x27, 0x26,
+	0xca, 0xc7, 0x4c, 0xb9, 0x36, 0x56, 0xca, 0x1c, 0x4f, 0xc4, 0x9b, 0x50, 0x1a, 0xb9, 0x57, 0xc4,
+	0xd3, 0x0d, 0x33, 0x42, 0x25, 0x60, 0xf4, 0x22, 0x8b, 0xc9, 0x2c, 0x84, 0xbe, 0x82, 0x32, 0xa7,
+	0x78, 0xe4, 0xd7, 0x90, 0xf8, 0x01, 0xb1, 0xa4, 0x22, 0x63, 0x2d, 0xb2, 0x30, 0x4e, 0xa2, 0xb5,
+	0xdf, 0x0a, 0x30, 0x7f, 0xe8, 0x9a, 0xbc, 0x59, 0xdf, 0xe4, 0x9b, 0xb5, 0x72, 0xb7, 0x59, 0x87,
+	0xae, 0x99, 0x34, 0xea, 0x00, 0x9e, 0x9b, 0xae, 0x13, 0x78, 0xae, 0x6d, 0x13, 0x8b, 0x95, 0x70,
+	0x61, 0x04, 0xd4, 0x34, 0x6c, 0xfb, 0x26, 0x9f, 0xd8, 0xb3, 0x94, 0x26, 0x67, 0x59, 0x71, 0xaa,
+	0x87, 0x50, 0x9b, 0xea, 0x33, 0x99, 0x7d, 0x75, 0x8a, 0xd5, 0xb8, 0x1e, 0xa4, 0xc0, 0x73, 0xd3,
+	0x70, 0xf4, 0x01, 0xd1, 0xa7, 0x99, 0x4a, 0x25, 0x66, 0xb5, 0x61, 0x1a, 0xce, 0x3e, 0x69, 0xde,
+	0xef, 0x87, 0xda, 0x50, 0x1e, 0x8b, 0xf8, 0x38, 0x4a, 0x0b, 0x55, 0xa1, 0xbe, 0xb8, 0x5b, 0xb9,
+	0xdb, 0x93, 0x48, 0x99, 0xb4, 0x10, 0x2f, 0x8e, 0x65, 0xbc, 0xa5, 0x3f, 0xc2, 0x82, 0x19, 0x7a,
+	0x1e, 0x71, 0x02, 0xdd, 0x73, 0xc3, 0x80, 0x48, 0x88, 0xb5, 0x76, 0xfd, 0x9e, 0x39, 0x8c, 0x60,
+	0x4c, 0x86, 0xb8, 0x14, 0x0b, 0x58, 0x00, 0xed, 0x81, 0x74, 0x65, 0xd0, 0x40, 0x37, 0x86, 0x01,
+	0xf1, 0xf4, 0xbc, 0xd7, 0x32, 0xab, 0x64, 0x25, 0xc2, 0xe5, 0x08, 0x6e, 0x66, 0x85, 0x1f, 0xa1,
+	0x46, 0xfd, 0xbc, 0x40, 0xb7, 0x42, 0xcf, 0x08, 0xa8, 0xeb, 0xe8, 0xe4, 0xda, 0x24, 0xc4, 0x22,
+	0x96, 0xb4, 0xca, 0x2c, 0x2a, 0xd4, 0xcf, 0x6a, 0x5b, 0x31, 0x4d, 0x89, 0x59, 0xe8, 0x1d, 0x80,
+	0x43, 0xae, 0x93, 0x63, 0xd7, 0x3e, 0x59, 0x42, 0x21, 0x62, 0xf3, 0x34, 0x32, 0x0d, 0x18, 0xd8,
+	0xae, 0x79, 0x2e, 0x49, 0xd3, 0xd4, 0xfb, 0x11, 0x9c, 0x6d, 0x00, 0x0b, 0x44, 0xd3, 0xee, 0x8f,
+	0x48, 0x74, 0x8b, 0x7c, 0xa8, 0x76, 0xab, 0x42, 0x7d, 0x0e, 0x17, 0x59, 0x2c, 0x9d, 0x76, 0x4e,
+	0x49, 0xe7, 0xe5, 0x35, 0x63, 0x2d, 0xb2, 0x70, 0x3a, 0x1d, 0xcf, 0x00, 0x38, 0x31, 0x20, 0xd7,
+	0x81, 0xf4, 0x6d, 0x55, 0xa8, 0x17, 0x70, 0x81, 0x45, 0xfa, 0xe4, 0x3a, 0x60, 0x30, 0x5f, 0x3d,
+	0x11, 0xfc, 0x26, 0x86, 0xa3, 0x08, 0x83, 0x77, 0x60, 0x85, 0xab, 0xa9, 0xa3, 0xfb, 0x01, 0x19,
+	0xf9, 0x49, 0x4a, 0x6f, 0xd9, 0x61, 0x88, 0x81, 0xaa, 0xd3, 0x8b, 0xa0, 0x38, 0xb3, 0x3d, 0x90,
+	0x26, 0x24, 0x69, 0x8a, 0x7b, 0x4c, 0xb5, 0x92, 0x55, 0xa5, 0x99, 0xaa, 0x20, 0x5a, 0xd4, 0x23,
+	0x26, 0xbb, 0xad, 0xf8, 0x98, 0xef, 0xa6, 0x4d, 0xe0, 0xa1, 0x6b, 0xb6, 0x12, 0x32, 0x2e, 0x8f,
+	0x75, 0x71, 0x0e, 0x5d, 0x58, 0x4a, 0xad, 0xd2, 0xe3, 0xdf, 0x3d, 0xc8, 0x0d, 0x8d, 0xa5, 0x69,
+	0x6e, 0x9b, 0x50, 0x8a, 0x56, 0x24, 0xb9, 0x24, 0x9e, 0x4f, 0x9d, 0x53, 0xe9, 0x7b, 0xbe, 0x7f,
+	0xa8, 0x8f, 0x93, 0x10, 0xfa, 0x1c, 0x0a, 0xc3, 0xed, 0x24, 0xef, 0x03, 0x86, 0xcf, 0x0f, 0xb7,
+	0xe3, 0x84, 0x36, 0xa1, 0x34, 0xdc, 0xce, 0x64, 0xd2, 0xe6, 0xfa, 0xe1, 0x76, 0xba, 0x96, 0x3a,
+	0xb0, 0xd4, 0x74, 0x2f, 0x2e, 0x0c, 0xc7, 0x8a, 0x9e, 0x11, 0x75, 0x1d, 0xfe, 0x9a, 0xde, 0xe6,
+	0x17, 0x54, 0xf5, 0x6e, 0xf2, 0x79, 0x55, 0xbc, 0xab, 0x6a, 0xff, 0x09, 0x00, 0x6c, 0x9a, 0xb8,
+	0xcd, 0xab, 0xbc, 0xcd, 0xda, 0xb4, 0x59, 0x8c, 0x37, 0xdd, 0x17, 0xb0, 0x60, 0xda, 0xae, 0x9f,
+	0x8e, 0x20, 0xdf, 0x6b, 0x25, 0x1e, 0x8c, 0x8b, 0xfa, 0x1a, 0xc4, 0x98, 0x34, 0xb9, 0xb4, 0xca,
+	0x3c, 0x9e, 0x9b, 0x42, 0xea, 0xeb, 0x16, 0x31, 0x2c, 0xe2, 0x58, 0xf1, 0x23, 0x2e, 0x50, 0xbf,
+	0xc5, 0x03, 0x31, 0xec, 0xf3, 0x0a, 0xa4, 0x95, 0x04, 0x8e, 0x4b, 0x42, 0x2f, 0xa0, 0x7c, 0x66,
+	0xf8, 0x7a, 0xf4, 0xe8, 0xa9, 0x73, 0xaa, 0xdb, 0xae, 0x19, 0x3f, 0xe2, 0x85, 0x33, 0xc3, 0x3f,
+	0xe1, 0xd1, 0x43, 0xd7, 0xac, 0x29, 0x50, 0x66, 0x55, 0xb4, 0x3d, 0x37, 0x1c, 0xf1, 0xba, 0x77,
+	0xf3, 0x75, 0x6f, 0x4c, 0xa9, 0x9b, 0x29, 0x92, 0xd6, 0xc9, 0xb0, 0xf0, 0x31, 0x74, 0xcc, 0xf4,
+	0x0e, 0xb6, 0xf3, 0x26, 0xf7, 0x3c, 0xe4, 0x84, 0x9f, 0x58, 0xfc, 0x00, 0xc5, 0x6e, 0x18, 0x8c,
+	0xc2, 0x80, 0x1b, 0x34, 0xf2, 0x06, 0xd2, 0x5d, 0x03, 0xce, 0x4e, 0xe4, 0xef, 0x01, 0xd8, 0x2a,
+	0x79, 0xe8, 0xdd, 0xf1, 0x2d, 0x94, 0x9e, 0xdd, 0x23, 0x8e, 0xef, 0x7a, 0x0f, 0x3d, 0x9b, 0xb3,
+	0xb3, 0x72, 0x7a, 0xea, 0x18, 0xf6, 0x83, 0xe5, 0x8c, 0x1d, 0xcb, 0x5f, 0xd6, 0xa1, 0x94, 0x7d,
+	0x4d, 0xa8, 0x08, 0x4f, 0x0f, 0xba, 0xf8, 0x44, 0xc6, 0x2d, 0x71, 0x26, 0xfa, 0xc0, 0xca, 0xb1,
+	0x82, 0x7b, 0x8a, 0x28, 0xbc, 0xfc, 0x63, 0x16, 0x4a, 0xd9, 0x1f, 0x12, 0x54, 0x86, 0xa2, 0xdc,
+	0xeb, 0xa9, 0x6d, 0x0d, 0x77, 0x8f, 0xfa, 0x8a, 0x38, 0x83, 0x5e, 0x40, 0x8d, 0xd3, 0x55, 0xad,
+	0x7d, 0x22, 0xab, 0x7d, 0x55, 0x6b, 0x1f, 0x74, 0x71, 0x4b, 0xc5, 0x4a, 0xb3, 0xaf, 0x76, 0xb5,
+	0xe6, 0x07, 0x59, 0x6b, 0x2b, 0xa2, 0x80, 0xaa, 0xb0, 0x91, 0xc2, 0xdc, 0x42, 0x69, 0x31, 0x13,
+	0xac, 0xc8, 0xad, 0x9f, 0xc5, 0x59, 0x76, 0xf0, 0x91, 0xa6, 0xa9, 0x5a, 0x5b, 0x7c, 0x84, 0x24,
+	0x58, 0x56, 0xb4, 0x7e, 0x94, 0x85, 0xd6, 0xeb, 0x62, 0xb9, 0xd9, 0x57, 0x8f, 0xe5, 0xbe, 0xd2,
+	0x12, 0x1f, 0xa3, 0x35, 0x58, 0x62, 0x88, 0xaa, 0xb5, 0x5b, 0x4a, 0xaf, 0xaf, 0x6a, 0x72, 0x74,
+	0x8e, 0x38, 0x87, 0xd6, 0x61, 0x15, 0x2b, 0x72, 0xf3, 0x83, 0xd2, 0x9a, 0x14, 0x3d, 0x41, 0xab,
+	0x80, 0x62, 0x2c, 0xab, 0x79, 0x9a, 0xcf, 0x2a, 0x03, 0xf5, 0xd5, 0x8e, 0xd2, 0x3d, 0xea, 0x8b,
+	0xf3, 0xe8, 0x4b, 0xd8, 0xbc, 0x97, 0xd1, 0xc6, 0xdd, 0xa3, 0x9f, 0x3a, 0xaa, 0xa6, 0x76, 0x8e,
+	0x3a, 0x62, 0x61, 0xbf, 0xf9, 0xd7, 0x6d, 0x45, 0xf8, 0xfb, 0xb6, 0x22, 0xfc, 0x73, 0x5b, 0x11,
+	0x7e, 0xff, 0xb7, 0x32, 0xf3, 0xcb, 0xce, 0x29, 0x0d, 0xce, 0xc2, 0x41, 0xc3, 0x74, 0x2f, 0xb6,
+	0x72, 0xf7, 0xb1, 0xb5, 0x1f, 0x7d, 0xe1, 0xe4, 0x6b, 0x74, 0x7e, 0xba, 0x65, 0x8c, 0xe8, 0xd6,
+	0xe5, 0xce, 0xe0, 0x09, 0xfb, 0xb7, 0xf8, 0xfa, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x7f, 0x4f,
+	0x08, 0x51, 0x6d, 0x0a, 0x00, 0x00,
 }
 
 func (m *RailwayState) Marshal() (dAtA []byte, err error) {
@@ -766,6 +1105,203 @@ func (m *LocState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.F0Requested {
+		i--
+		if m.F0Requested {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.F0Actual {
+		i--
+		if m.F0Actual {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.IsReversing {
+		i--
+		if m.IsReversing {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xe0
+	}
+	if m.DirectionRequested != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.DirectionRequested))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xc8
+	}
+	if m.DirectionActual != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.DirectionActual))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xc0
+	}
+	if m.SpeedInStepsRequested != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.SpeedInStepsRequested))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.SpeedInStepsActual != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.SpeedInStepsActual))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xb0
+	}
+	if len(m.StateText) > 0 {
+		i -= len(m.StateText)
+		copy(dAtA[i:], m.StateText)
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(len(m.StateText)))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.SpeedText) > 0 {
+		i -= len(m.SpeedText)
+		copy(dAtA[i:], m.SpeedText)
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(len(m.SpeedText)))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xa2
+	}
+	if m.SpeedRequested != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.SpeedRequested))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.SpeedActual != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.SpeedActual))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.CurrentBlock != nil {
+		{
+			size, err := m.CurrentBlock.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.NextRoute != nil {
+		{
+			size, err := m.NextRoute.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xba
+	}
+	if m.IsCurrentRouteDurationExceeded {
+		i--
+		if m.IsCurrentRouteDurationExceeded {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.WaitAfterCurrentRoute {
+		i--
+		if m.WaitAfterCurrentRoute {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.CurrentRoute != nil {
+		{
+			size, err := m.CurrentRoute.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintBrStateTypes(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x92
+	}
+	if m.AutomaticState != 0 {
+		i = encodeVarintBrStateTypes(dAtA, i, uint64(m.AutomaticState))
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.CanBeControlledAutomatically {
+		i--
+		if m.CanBeControlledAutomatically {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x60
+	}
+	if m.ControlledAutomaticallyRequested {
+		i--
+		if m.ControlledAutomaticallyRequested {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.ControlledAutomaticallyActual {
+		i--
+		if m.ControlledAutomaticallyActual {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x50
 	}
 	if m.Model != nil {
 		{
@@ -1202,6 +1738,71 @@ func (m *LocState) Size() (n int) {
 		l = m.Model.Size()
 		n += 1 + l + sovBrStateTypes(uint64(l))
 	}
+	if m.ControlledAutomaticallyActual {
+		n += 2
+	}
+	if m.ControlledAutomaticallyRequested {
+		n += 2
+	}
+	if m.CanBeControlledAutomatically {
+		n += 2
+	}
+	if m.AutomaticState != 0 {
+		n += 1 + sovBrStateTypes(uint64(m.AutomaticState))
+	}
+	if m.CurrentRoute != nil {
+		l = m.CurrentRoute.Size()
+		n += 2 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.WaitAfterCurrentRoute {
+		n += 3
+	}
+	if m.IsCurrentRouteDurationExceeded {
+		n += 3
+	}
+	if m.NextRoute != nil {
+		l = m.NextRoute.Size()
+		n += 2 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.CurrentBlock != nil {
+		l = m.CurrentBlock.Size()
+		n += 2 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.SpeedActual != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.SpeedActual))
+	}
+	if m.SpeedRequested != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.SpeedRequested))
+	}
+	l = len(m.SpeedText)
+	if l > 0 {
+		n += 2 + l + sovBrStateTypes(uint64(l))
+	}
+	l = len(m.StateText)
+	if l > 0 {
+		n += 2 + l + sovBrStateTypes(uint64(l))
+	}
+	if m.SpeedInStepsActual != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.SpeedInStepsActual))
+	}
+	if m.SpeedInStepsRequested != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.SpeedInStepsRequested))
+	}
+	if m.DirectionActual != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.DirectionActual))
+	}
+	if m.DirectionRequested != 0 {
+		n += 2 + sovBrStateTypes(uint64(m.DirectionRequested))
+	}
+	if m.IsReversing {
+		n += 3
+	}
+	if m.F0Actual {
+		n += 3
+	}
+	if m.F0Requested {
+		n += 3
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1609,6 +2210,471 @@ func (m *LocState) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ControlledAutomaticallyActual", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.ControlledAutomaticallyActual = bool(v != 0)
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ControlledAutomaticallyRequested", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.ControlledAutomaticallyRequested = bool(v != 0)
+		case 12:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CanBeControlledAutomatically", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.CanBeControlledAutomatically = bool(v != 0)
+		case 13:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AutomaticState", wireType)
+			}
+			m.AutomaticState = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.AutomaticState |= AutoLocState(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 18:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentRoute", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CurrentRoute == nil {
+				m.CurrentRoute = &RouteRef{}
+			}
+			if err := m.CurrentRoute.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 20:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WaitAfterCurrentRoute", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.WaitAfterCurrentRoute = bool(v != 0)
+		case 22:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsCurrentRouteDurationExceeded", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsCurrentRouteDurationExceeded = bool(v != 0)
+		case 23:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NextRoute", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.NextRoute == nil {
+				m.NextRoute = &RouteRef{}
+			}
+			if err := m.NextRoute.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 24:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentBlock", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CurrentBlock == nil {
+				m.CurrentBlock = &BlockRef{}
+			}
+			if err := m.CurrentBlock.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 50:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SpeedActual", wireType)
+			}
+			m.SpeedActual = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SpeedActual |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 51:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SpeedRequested", wireType)
+			}
+			m.SpeedRequested = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SpeedRequested |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 52:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SpeedText", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SpeedText = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 53:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StateText", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBrStateTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StateText = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 54:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SpeedInStepsActual", wireType)
+			}
+			m.SpeedInStepsActual = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SpeedInStepsActual |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 55:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SpeedInStepsRequested", wireType)
+			}
+			m.SpeedInStepsRequested = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SpeedInStepsRequested |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 56:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DirectionActual", wireType)
+			}
+			m.DirectionActual = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DirectionActual |= LocDirection(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 57:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DirectionRequested", wireType)
+			}
+			m.DirectionRequested = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DirectionRequested |= LocDirection(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 60:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsReversing", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsReversing = bool(v != 0)
+		case 70:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field F0Actual", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.F0Actual = bool(v != 0)
+		case 71:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field F0Requested", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBrStateTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.F0Requested = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBrStateTypes(dAtA[iNdEx:])

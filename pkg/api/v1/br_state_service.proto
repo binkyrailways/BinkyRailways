@@ -40,6 +40,10 @@ service StateService {
 
   // Change the requested power state
   rpc SetPower(SetPowerRequest) returns (RailwayState);
+
+  // Change the speed and direction of a loc
+  rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
+      returns (LocState);
 }
 
 // Request arguments for EnableRunMode.
@@ -73,4 +77,13 @@ message StateChange {
 message SetPowerRequest {
   // Is set, power will be turned on, otherwise power will be turned off.
   bool enabled = 1;
+}
+
+message SetLocSpeedAndDirectionRequest {
+  // ID of the loc
+  string id = 1;
+  // New speed of the loc
+  int32 speed = 2;
+  // New direction of the loc
+  LocDirection direction = 3;
 }
