@@ -113,6 +113,6 @@ class LocPane extends StatelessWidget {
       }
       return Colors.green[400];
     }
-    return null;
+    return Colors.grey;
   }
 }

@@ -33,7 +33,6 @@ class ControlPane extends StatelessWidget {
       final List<Widget> children = [
         const PowerPane(),
         const SettingsDivider(),
-        const Text("Locs"),
         const Expanded(child: LocsTree()),
       ];
       final selectedLocId = runCtx.selectedLocId;

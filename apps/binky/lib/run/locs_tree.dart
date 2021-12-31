@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
+import '../api.dart';
 
 class LocsTree extends StatelessWidget {
   const LocsTree({Key? key}) : super(key: key);
@@ -30,28 +31,50 @@ class LocsTree extends StatelessWidget {
     final selectedLocId = runCtx.selectedLocId;
     return Consumer<StateModel>(
       builder: (context, state, child) {
-        final locs = state.locs().toList();
+        final allLocs = state.locs().toList()
+          ..sort((a, b) => a.model.description.compareTo(b.model.description));
+        final assignedLocs =
+            allLocs.where((x) => x.canBeControlledAutomatically).toList();
+        final unassignedLocs =
+            allLocs.where((x) => !x.canBeControlledAutomatically).toList();
         return ListView.builder(
-            itemCount: locs.length,
+            itemCount: allLocs.length + 2,
             itemBuilder: (context, index) {
-              final loc = locs[index];
-              final stateText = loc.stateText;
-              final canBeControlledAutomatically =
-                  loc.canBeControlledAutomatically;
-              return ListTile(
-                leading: canBeControlledAutomatically
-                    ? Checkbox(
-                        onChanged: (bool? value) {},
-                        value: loc.controlledAutomaticallyActual,
-                      )
-                    : null,
-                title: Text(loc.model.description),
-                subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
-                selected: selectedLocId == loc.model.id,
-                onTap: () {
-                  runCtx.selectLoc(loc.model.id);
-                },
-              );
+              if (index == 0) {
+                return Expanded(
+                    child: Text(
+                  "Assigned locs (${assignedLocs.length})",
+                  textAlign: TextAlign.center,
+                ));
+              } else if (index == 1 + assignedLocs.length) {
+                return Expanded(
+                    child: Text(
+                  "Unassigned locs (${unassignedLocs.length})",
+                  textAlign: TextAlign.center,
+                ));
+              } else {
+                index = index - 1;
+                final loc = (index < assignedLocs.length)
+                    ? assignedLocs[index]
+                    : unassignedLocs[index - (assignedLocs.length + 1)];
+                final stateText = loc.stateText;
+                final canBeControlledAutomatically =
+                    loc.canBeControlledAutomatically;
+                return ListTile(
+                  leading: canBeControlledAutomatically
+                      ? Checkbox(
+                          onChanged: (bool? value) {},
+                          value: loc.controlledAutomaticallyActual,
+                        )
+                      : null,
+                  title: Text(loc.model.description),
+                  subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
+                  selected: selectedLocId == loc.model.id,
+                  onTap: () {
+                    runCtx.selectLoc(loc.model.id);
+                  },
+                );
+              }
             });
       },
     );
