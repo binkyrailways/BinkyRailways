@@ -12,6 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'br_model_types.pb.dart' as $1;
 
 import 'br_state_types.pbenum.dart';
+import 'br_model_types.pbenum.dart' as $1;
 
 export 'br_state_types.pbenum.dart';
 
@@ -689,16 +690,21 @@ class BlockGroupState extends $pb.GeneratedMessage {
 class JunctionState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JunctionState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Junction>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Junction.create)
+    ..aOM<SwitchState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'switch', subBuilder: SwitchState.create)
     ..hasRequiredFields = false
   ;
 
   JunctionState._() : super();
   factory JunctionState({
     $1.Junction? model,
+    SwitchState? switch_2,
   }) {
     final _result = create();
     if (model != null) {
       _result.model = model;
+    }
+    if (switch_2 != null) {
+      _result.switch_2 = switch_2;
     }
     return _result;
   }
@@ -733,6 +739,78 @@ class JunctionState extends $pb.GeneratedMessage {
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
   $1.Junction ensureModel() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  SwitchState get switch_2 => $_getN(1);
+  @$pb.TagNumber(2)
+  set switch_2(SwitchState v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSwitch_2() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSwitch_2() => clearField(2);
+  @$pb.TagNumber(2)
+  SwitchState ensureSwitch_2() => $_ensure(1);
+}
+
+class SwitchState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SwitchState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..e<$1.SwitchDirection>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionActual', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..e<$1.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionRequested', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..hasRequiredFields = false
+  ;
+
+  SwitchState._() : super();
+  factory SwitchState({
+    $1.SwitchDirection? directionActual,
+    $1.SwitchDirection? directionRequested,
+  }) {
+    final _result = create();
+    if (directionActual != null) {
+      _result.directionActual = directionActual;
+    }
+    if (directionRequested != null) {
+      _result.directionRequested = directionRequested;
+    }
+    return _result;
+  }
+  factory SwitchState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SwitchState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SwitchState clone() => SwitchState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SwitchState copyWith(void Function(SwitchState) updates) => super.copyWith((message) => updates(message as SwitchState)) as SwitchState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SwitchState create() => SwitchState._();
+  SwitchState createEmptyInstance() => create();
+  static $pb.PbList<SwitchState> createRepeated() => $pb.PbList<SwitchState>();
+  @$core.pragma('dart2js:noInline')
+  static SwitchState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SwitchState>(create);
+  static SwitchState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.SwitchDirection get directionActual => $_getN(0);
+  @$pb.TagNumber(1)
+  set directionActual($1.SwitchDirection v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasDirectionActual() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDirectionActual() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $1.SwitchDirection get directionRequested => $_getN(1);
+  @$pb.TagNumber(2)
+  set directionRequested($1.SwitchDirection v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDirectionRequested() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDirectionRequested() => clearField(2);
 }
 
 class OutputState extends $pb.GeneratedMessage {

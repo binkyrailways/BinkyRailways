@@ -59,10 +59,28 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 				}
 			}
 			send(s.stateChangeBuilder(ctx, rwState))
+			rwState.ForEachLoc(func(b state.Loc) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
 			rwState.ForEachBlock(func(b state.Block) {
 				send(s.stateChangeBuilder(ctx, b))
 			})
-			rwState.ForEachLoc(func(b state.Loc) {
+			/*rwState.ForEachBlockGroup(func(b state.BlockGroup) {
+				send(s.stateChangeBuilder(ctx, b))
+			})*/
+			rwState.ForEachJunction(func(b state.Junction) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+			rwState.ForEachOutput(func(b state.Output) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+			rwState.ForEachRoute(func(b state.Route) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+			rwState.ForEachSensor(func(b state.Sensor) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
+			rwState.ForEachSignal(func(b state.Signal) {
 				send(s.stateChangeBuilder(ctx, b))
 			})
 		}()

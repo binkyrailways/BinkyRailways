@@ -40,17 +40,19 @@ class LocPane extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [
                     Container(
-                      child: Row(children: [
-                        Text(
-                          locState.model.description,
-                          textAlign: TextAlign.start,
-                        ),
-                        Expanded(
-                            child: Text(
-                          "[${locState.speedText}]",
-                          textAlign: TextAlign.end,
-                        )),
-                      ]),
+                      child: Row(
+                        children: [
+                          Text(
+                            locState.model.description,
+                            textAlign: TextAlign.start,
+                          ),
+                          Expanded(
+                              child: Text(
+                            "[${locState.speedText}]",
+                            textAlign: TextAlign.end,
+                          )),
+                        ],
+                      ),
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     ),
                     Slider(
@@ -63,40 +65,44 @@ class LocPane extends StatelessWidget {
                             id, value.toInt(), locState.directionRequested);
                       },
                     ),
-                    Row(children: [
-                      IconButton(
-                        icon: const Icon(Icons.keyboard_arrow_left),
-                        tooltip: "Reverse",
-                        color: _directionColor(locState, LocDirection.REVERSE),
-                        onPressed: () async {
-                          await state.setLocSpeedAndDirection(id,
-                              locState.speedRequested, LocDirection.REVERSE);
-                        },
-                      ),
-                      Expanded(
-                        child: TextButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.black)),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.keyboard_arrow_left),
+                          tooltip: "Reverse",
+                          color:
+                              _directionColor(locState, LocDirection.REVERSE),
                           onPressed: () async {
-                            await state.setLocSpeedAndDirection(
-                                id, 0, locState.directionRequested);
+                            await state.setLocSpeedAndDirection(id,
+                                locState.speedRequested, LocDirection.REVERSE);
                           },
-                          child: const Text("Stop"),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.keyboard_arrow_right),
-                        tooltip: "Forward",
-                        color: _directionColor(locState, LocDirection.FORWARD),
-                        onPressed: () async {
-                          await state.setLocSpeedAndDirection(id,
-                              locState.speedRequested, LocDirection.FORWARD);
-                        },
-                      ),
-                    ]),
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.orange[400]),
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.black)),
+                            onPressed: () async {
+                              await state.setLocSpeedAndDirection(
+                                  id, 0, locState.directionRequested);
+                            },
+                            child: const Text("Stop"),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.keyboard_arrow_right),
+                          tooltip: "Forward",
+                          color:
+                              _directionColor(locState, LocDirection.FORWARD),
+                          onPressed: () async {
+                            await state.setLocSpeedAndDirection(id,
+                                locState.speedRequested, LocDirection.FORWARD);
+                          },
+                        ),
+                      ],
+                    ),
                   ]));
             });
       },

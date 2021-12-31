@@ -41,17 +41,15 @@ class LocsTree extends StatelessWidget {
             itemCount: allLocs.length + 2,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return Expanded(
-                    child: Text(
+                return Text(
                   "Assigned locs (${assignedLocs.length})",
                   textAlign: TextAlign.center,
-                ));
+                );
               } else if (index == 1 + assignedLocs.length) {
-                return Expanded(
-                    child: Text(
+                return Text(
                   "Unassigned locs (${unassignedLocs.length})",
                   textAlign: TextAlign.center,
-                ));
+                );
               } else {
                 index = index - 1;
                 final loc = (index < assignedLocs.length)

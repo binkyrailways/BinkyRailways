@@ -38,20 +38,23 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
     await super.onLoad();
 
     var size = Vector2.all(20);
-    final rwModel = await modelModel.getRailway();
-    for (var modRef in rwModel.modules) {
-      final p = modRef.position;
-      final zoomFactor = modRef.zoomFactor.toDouble() / 100.0;
-      final maxX = p.x.toDouble() + (p.width.toDouble() * zoomFactor);
-      final maxY = p.y.toDouble() + (p.height.toDouble() * zoomFactor);
-      size.x = size.x > maxX ? size.x : maxX;
-      size.y = size.y > maxY ? size.y : maxY;
-      final module = await modelModel.getModule(modRef.id);
-      final modComp = ModuleComponent(model: module, moduleRef: modRef);
-      await modComp.loadChildren(modelModel, stateModel);
-      add(modComp);
+    try {
+      final rwModel = await modelModel.getRailway();
+      for (var modRef in rwModel.modules) {
+        final p = modRef.position;
+        final zoomFactor = modRef.zoomFactor.toDouble() / 100.0;
+        final maxX = p.x.toDouble() + (p.width.toDouble() * zoomFactor);
+        final maxY = p.y.toDouble() + (p.height.toDouble() * zoomFactor);
+        size.x = size.x > maxX ? size.x : maxX;
+        size.y = size.y > maxY ? size.y : maxY;
+        final module = await modelModel.getModule(modRef.id);
+        final modComp = ModuleComponent(model: module, moduleRef: modRef);
+        await modComp.loadChildren(modelModel, stateModel);
+        add(modComp);
+      }
+    } catch (err) {
+      print(err);
     }
-
     camera.viewport = FixedResolutionViewport(size);
   }
 }

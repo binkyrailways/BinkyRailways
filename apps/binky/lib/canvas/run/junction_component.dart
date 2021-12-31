@@ -16,10 +16,13 @@
 //
 
 import '../junction_component.dart' as common;
-import '../../api.dart' as sapi;
+import '../../api.dart' as api;
 
 class JunctionComponent extends common.JunctionComponent {
-  final sapi.JunctionState state;
+  final api.JunctionState state;
 
   JunctionComponent({required this.state}) : super(model: state.model);
+
+  @override
+  api.SwitchDirection switchDirection() => state.switch_2.directionActual;
 }

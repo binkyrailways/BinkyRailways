@@ -123,11 +123,23 @@ const JunctionState$json = const {
   '1': 'JunctionState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.Junction', '10': 'model'},
+    const {'1': 'switch', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.SwitchState', '10': 'switch'},
   ],
 };
 
 /// Descriptor for `JunctionState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List junctionStateDescriptor = $convert.base64Decode('Cg1KdW5jdGlvblN0YXRlEjAKBW1vZGVsGAEgASgLMhouYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblIFbW9kZWw=');
+final $typed_data.Uint8List junctionStateDescriptor = $convert.base64Decode('Cg1KdW5jdGlvblN0YXRlEjAKBW1vZGVsGAEgASgLMhouYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblIFbW9kZWwSNQoGc3dpdGNoGAIgASgLMh0uYmlua3lyYWlsd2F5cy52MS5Td2l0Y2hTdGF0ZVIGc3dpdGNo');
+@$core.Deprecated('Use switchStateDescriptor instead')
+const SwitchState$json = const {
+  '1': 'SwitchState',
+  '2': const [
+    const {'1': 'direction_actual', '3': 1, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'directionActual'},
+    const {'1': 'direction_requested', '3': 2, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'directionRequested'},
+  ],
+};
+
+/// Descriptor for `SwitchState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List switchStateDescriptor = $convert.base64Decode('CgtTd2l0Y2hTdGF0ZRJMChBkaXJlY3Rpb25fYWN0dWFsGAEgASgOMiEuYmlua3lyYWlsd2F5cy52MS5Td2l0Y2hEaXJlY3Rpb25SD2RpcmVjdGlvbkFjdHVhbBJSChNkaXJlY3Rpb25fcmVxdWVzdGVkGAIgASgOMiEuYmlua3lyYWlsd2F5cy52MS5Td2l0Y2hEaXJlY3Rpb25SEmRpcmVjdGlvblJlcXVlc3RlZA==');
 @$core.Deprecated('Use outputStateDescriptor instead')
 const OutputState$json = const {
   '1': 'OutputState',

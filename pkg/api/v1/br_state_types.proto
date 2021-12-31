@@ -227,6 +227,16 @@ message BlockGroupState {
 message JunctionState {
   // Model of the junction
   Junction model = 1;
+  // Set if junction is a switch
+  SwitchState switch = 2;
+}
+
+// Switch specialization of junction
+message SwitchState {
+  // Actual direction of switch
+  SwitchDirection direction_actual = 1;
+  // Requested direction of switch
+  SwitchDirection direction_requested = 2;
 }
 
 // State of a single output

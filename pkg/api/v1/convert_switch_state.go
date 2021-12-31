@@ -23,17 +23,13 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// FromState converts a state junction to an API junction
-func (dst *JunctionState) FromState(ctx context.Context, src state.Junction) error {
-	dst.Model = &Junction{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
+// FromState converts a state switch to an API switch
+func (dst *SwitchState) FromState(ctx context.Context, src state.Switch) error {
+	if err := dst.DirectionActual.FromModel(ctx, src.GetDirection().GetActual(ctx)); err != nil {
 		return err
 	}
-	if sw, ok := src.(state.Switch); ok {
-		dst.Switch = &SwitchState{}
-		if err := dst.Switch.FromState(ctx, sw); err != nil {
-			return err
-		}
+	if err := dst.DirectionRequested.FromModel(ctx, src.GetDirection().GetRequested(ctx)); err != nil {
+		return err
 	}
 	return nil
 }
