@@ -1013,6 +1013,14 @@ class Block extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
     ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waitProbability', $pb.PbFieldType.O3)
+    ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minimumWaitTime', $pb.PbFieldType.O3)
+    ..a<$core.int>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maximumWaitTime', $pb.PbFieldType.O3)
+    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'reverseSides')
+    ..e<ChangeDirection>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'changeDirection', $pb.PbFieldType.OE, defaultOrMaker: ChangeDirection.ALLOW, valueOf: ChangeDirection.valueOf, enumValues: ChangeDirection.values)
+    ..aOB(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'changeDirectionReversingLocs')
+    ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStation')
+    ..aOM<BlockGroupRef>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroup', subBuilder: BlockGroupRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -1022,6 +1030,14 @@ class Block extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? moduleId,
     Position? position,
+    $core.int? waitProbability,
+    $core.int? minimumWaitTime,
+    $core.int? maximumWaitTime,
+    $core.bool? reverseSides,
+    ChangeDirection? changeDirection,
+    $core.bool? changeDirectionReversingLocs,
+    $core.bool? isStation,
+    BlockGroupRef? blockGroup,
   }) {
     final _result = create();
     if (id != null) {
@@ -1035,6 +1051,30 @@ class Block extends $pb.GeneratedMessage {
     }
     if (position != null) {
       _result.position = position;
+    }
+    if (waitProbability != null) {
+      _result.waitProbability = waitProbability;
+    }
+    if (minimumWaitTime != null) {
+      _result.minimumWaitTime = minimumWaitTime;
+    }
+    if (maximumWaitTime != null) {
+      _result.maximumWaitTime = maximumWaitTime;
+    }
+    if (reverseSides != null) {
+      _result.reverseSides = reverseSides;
+    }
+    if (changeDirection != null) {
+      _result.changeDirection = changeDirection;
+    }
+    if (changeDirectionReversingLocs != null) {
+      _result.changeDirectionReversingLocs = changeDirectionReversingLocs;
+    }
+    if (isStation != null) {
+      _result.isStation = isStation;
+    }
+    if (blockGroup != null) {
+      _result.blockGroup = blockGroup;
     }
     return _result;
   }
@@ -1096,6 +1136,80 @@ class Block extends $pb.GeneratedMessage {
   void clearPosition() => clearField(4);
   @$pb.TagNumber(4)
   Position ensurePosition() => $_ensure(3);
+
+  @$pb.TagNumber(10)
+  $core.int get waitProbability => $_getIZ(4);
+  @$pb.TagNumber(10)
+  set waitProbability($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasWaitProbability() => $_has(4);
+  @$pb.TagNumber(10)
+  void clearWaitProbability() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.int get minimumWaitTime => $_getIZ(5);
+  @$pb.TagNumber(11)
+  set minimumWaitTime($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasMinimumWaitTime() => $_has(5);
+  @$pb.TagNumber(11)
+  void clearMinimumWaitTime() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.int get maximumWaitTime => $_getIZ(6);
+  @$pb.TagNumber(12)
+  set maximumWaitTime($core.int v) { $_setSignedInt32(6, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasMaximumWaitTime() => $_has(6);
+  @$pb.TagNumber(12)
+  void clearMaximumWaitTime() => clearField(12);
+
+  @$pb.TagNumber(14)
+  $core.bool get reverseSides => $_getBF(7);
+  @$pb.TagNumber(14)
+  set reverseSides($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasReverseSides() => $_has(7);
+  @$pb.TagNumber(14)
+  void clearReverseSides() => clearField(14);
+
+  @$pb.TagNumber(15)
+  ChangeDirection get changeDirection => $_getN(8);
+  @$pb.TagNumber(15)
+  set changeDirection(ChangeDirection v) { setField(15, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasChangeDirection() => $_has(8);
+  @$pb.TagNumber(15)
+  void clearChangeDirection() => clearField(15);
+
+  @$pb.TagNumber(16)
+  $core.bool get changeDirectionReversingLocs => $_getBF(9);
+  @$pb.TagNumber(16)
+  set changeDirectionReversingLocs($core.bool v) { $_setBool(9, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasChangeDirectionReversingLocs() => $_has(9);
+  @$pb.TagNumber(16)
+  void clearChangeDirectionReversingLocs() => clearField(16);
+
+  @$pb.TagNumber(18)
+  $core.bool get isStation => $_getBF(10);
+  @$pb.TagNumber(18)
+  set isStation($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(18)
+  $core.bool hasIsStation() => $_has(10);
+  @$pb.TagNumber(18)
+  void clearIsStation() => clearField(18);
+
+  @$pb.TagNumber(19)
+  BlockGroupRef get blockGroup => $_getN(11);
+  @$pb.TagNumber(19)
+  set blockGroup(BlockGroupRef v) { setField(19, v); }
+  @$pb.TagNumber(19)
+  $core.bool hasBlockGroup() => $_has(11);
+  @$pb.TagNumber(19)
+  void clearBlockGroup() => clearField(19);
+  @$pb.TagNumber(19)
+  BlockGroupRef ensureBlockGroup() => $_ensure(11);
 }
 
 class BlockRef extends $pb.GeneratedMessage {

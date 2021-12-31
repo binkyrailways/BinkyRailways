@@ -197,6 +197,44 @@ message Block {
   string module_id = 3;
   // Position of the block
   Position position = 4;
+
+  // Probability (in percentage) that a loc that is allowed to wait in this
+  // block will actually wait. When set to 0, no locs will wait (unless there is
+  // no route available). When set to 100, all locs (that are allowed) will
+  // wait.
+  int32 wait_probability = 10;
+
+  // Minimum amount of time to wait (if <see cref="WaitProbability"/> is set) in
+  // seconds.
+  int32 minimum_wait_time = 11;
+
+  // Maximum amount of time to wait (if <see cref="WaitProbability"/> is set) in
+  // seconds.
+  int32 maximum_wait_time = 12;
+
+  // Gets the predicate used to decide which locs are allowed to wait in this
+  // block.
+  // GetWaitPermissions() LocStandardPredicate
+
+  // By default the front of the block is on the right of the block.
+  // When this property is set, that is reversed to the left of the block.
+  // Setting this property will only alter the display behavior of the block.
+  bool reverse_sides = 14;
+
+  // Is it allowed for locs to change direction in this block?
+  ChangeDirection change_direction = 15;
+
+  // Must reversing locs change direction (back to normal) in this block?
+  bool change_direction_reversing_locs = 16;
+
+  // Determines how the system decides if this block is part of a station
+  // StationMode station_mode = 17;
+
+  // Is this block considered a station?
+  bool is_station = 18;
+
+  // The block group that this block belongs to (if any).
+  BlockGroupRef block_group = 19;
 }
 
 // Reference to a Block

@@ -192,11 +192,19 @@ const Block$json = const {
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
+    const {'1': 'wait_probability', '3': 10, '4': 1, '5': 5, '10': 'waitProbability'},
+    const {'1': 'minimum_wait_time', '3': 11, '4': 1, '5': 5, '10': 'minimumWaitTime'},
+    const {'1': 'maximum_wait_time', '3': 12, '4': 1, '5': 5, '10': 'maximumWaitTime'},
+    const {'1': 'reverse_sides', '3': 14, '4': 1, '5': 8, '10': 'reverseSides'},
+    const {'1': 'change_direction', '3': 15, '4': 1, '5': 14, '6': '.binkyrailways.v1.ChangeDirection', '10': 'changeDirection'},
+    const {'1': 'change_direction_reversing_locs', '3': 16, '4': 1, '5': 8, '10': 'changeDirectionReversingLocs'},
+    const {'1': 'is_station', '3': 18, '4': 1, '5': 8, '10': 'isStation'},
+    const {'1': 'block_group', '3': 19, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockGroupRef', '10': 'blockGroup'},
   ],
 };
 
 /// Descriptor for `Block`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List blockDescriptor = $convert.base64Decode('CgVCbG9jaxIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YBCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbg==');
+final $typed_data.Uint8List blockDescriptor = $convert.base64Decode('CgVCbG9jaxIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YBCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbhIpChB3YWl0X3Byb2JhYmlsaXR5GAogASgFUg93YWl0UHJvYmFiaWxpdHkSKgoRbWluaW11bV93YWl0X3RpbWUYCyABKAVSD21pbmltdW1XYWl0VGltZRIqChFtYXhpbXVtX3dhaXRfdGltZRgMIAEoBVIPbWF4aW11bVdhaXRUaW1lEiMKDXJldmVyc2Vfc2lkZXMYDiABKAhSDHJldmVyc2VTaWRlcxJMChBjaGFuZ2VfZGlyZWN0aW9uGA8gASgOMiEuYmlua3lyYWlsd2F5cy52MS5DaGFuZ2VEaXJlY3Rpb25SD2NoYW5nZURpcmVjdGlvbhJFCh9jaGFuZ2VfZGlyZWN0aW9uX3JldmVyc2luZ19sb2NzGBAgASgIUhxjaGFuZ2VEaXJlY3Rpb25SZXZlcnNpbmdMb2NzEh0KCmlzX3N0YXRpb24YEiABKAhSCWlzU3RhdGlvbhJACgtibG9ja19ncm91cBgTIAEoCzIfLmJpbmt5cmFpbHdheXMudjEuQmxvY2tHcm91cFJlZlIKYmxvY2tHcm91cA==');
 @$core.Deprecated('Use blockRefDescriptor instead')
 const BlockRef$json = const {
   '1': 'BlockRef',

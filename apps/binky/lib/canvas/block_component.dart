@@ -48,7 +48,9 @@ class BlockComponent extends EntityComponent with Tappable {
         RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
     canvas.drawPaint(Paint()..color = backgroundColor());
     // Draw front
-    final frontRect = Rect.fromLTRB(0, 0, minDim, minDim);
+    final frontRect = model.reverseSides
+        ? Rect.fromLTRB(0, 0, minDim, minDim)
+        : Rect.fromLTRB(size.x - minDim, 0, size.x, minDim);
     canvas.drawRect(frontRect, Paint()..color = frontColor());
     // Draw description
     textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),

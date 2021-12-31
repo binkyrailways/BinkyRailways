@@ -32,6 +32,20 @@ func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 	if err := dst.Position.FromModel(ctx, src); err != nil {
 		return err
 	}
+	dst.WaitProbability = int32(src.GetWaitProbability())
+	dst.MinimumWaitTime = int32(src.GetMinimumWaitTime())
+	dst.MaximumWaitTime = int32(src.GetMaximumWaitTime())
+	//	GetWaitPermissions() LocStandardPredicate
+	dst.ReverseSides = src.GetReverseSides()
+	dst.ChangeDirection.FromModel(ctx, src.GetChangeDirection())
+	dst.ChangeDirectionReversingLocs = src.GetChangeDirectionReversingLocs()
+	//	GetStationMode() StationMode
+	dst.IsStation = src.GetIsStation()
+	if x := src.GetBlockGroup(); x != nil {
+		dst.BlockGroup = &BlockGroupRef{
+			Id: x.GetID(),
+		}
+	}
 	return nil
 }
 
@@ -41,9 +55,45 @@ func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected block ID: '%s'", src.GetId())
 	}
-	dst.SetDescription(src.GetDescription())
+	if err := dst.SetDescription(src.GetDescription()); err != nil {
+		return err
+	}
 	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
 		return err
 	}
+	if err := dst.SetWaitProbability(int(src.GetWaitProbability())); err != nil {
+		return err
+	}
+	if err := dst.SetMinimumWaitTime(int(src.GetMinimumWaitTime())); err != nil {
+		return err
+	}
+	if err := dst.SetMaximumWaitTime(int(src.GetMaximumWaitTime())); err != nil {
+		return err
+	}
+	//	GetWaitPermissions() LocStandardPredicate
+	dst.SetReverseSides(src.GetReverseSides())
+	cd, err := src.GetChangeDirection().ToModel(ctx)
+	if err != nil {
+		return err
+	}
+	if err := dst.SetChangeDirection(cd); err != nil {
+		return err
+	}
+	if err := dst.SetChangeDirectionReversingLocs(src.GetChangeDirectionReversingLocs()); err != nil {
+		return err
+	}
+	//	GetStationMode() StationMode
+	var bg model.BlockGroup
+	if id := src.GetBlockGroup().GetId(); id != "" {
+		var ok bool
+		bg, ok = dst.GetModule().GetBlockGroups().Get(id)
+		if !ok {
+			return InvalidArgument("Unknown block group '%s'", id)
+		}
+	}
+	if err := dst.SetBlockGroup(bg); err != nil {
+		return err
+	}
+
 	return nil
 }
