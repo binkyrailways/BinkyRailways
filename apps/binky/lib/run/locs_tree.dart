@@ -27,7 +27,7 @@ class LocsTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final runCtx = Provider.of<RunContext>(context);
-    final selectedLocId = runCtx.selectedLoc?.model.id;
+    final selectedLocId = runCtx.selectedLocId;
     return Consumer<StateModel>(
       builder: (context, state, child) {
         final locs = state.locs().toList();
@@ -35,13 +35,22 @@ class LocsTree extends StatelessWidget {
             itemCount: locs.length,
             itemBuilder: (context, index) {
               final loc = locs[index];
+              final stateText = loc.stateText;
+              final canBeControlledAutomatically =
+                  loc.canBeControlledAutomatically;
               return ListTile(
-                leading: Checkbox(
-                  onChanged: (bool? value) {},
-                  value: false,
-                ),
+                leading: canBeControlledAutomatically
+                    ? Checkbox(
+                        onChanged: (bool? value) {},
+                        value: loc.controlledAutomaticallyActual,
+                      )
+                    : null,
                 title: Text(loc.model.description),
+                subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
                 selected: selectedLocId == loc.model.id,
+                onTap: () {
+                  runCtx.selectLoc(loc.model.id);
+                },
               );
             });
       },

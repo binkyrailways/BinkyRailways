@@ -17,13 +17,11 @@
 
 import 'package:flutter/material.dart';
 
-import '../api.dart';
-
 class RunContext extends ChangeNotifier {
-  LocState? selectedLoc = null;
+  String? selectedLocId = null;
 
-  void selectLoc(LocState? value) {
-    selectedLoc = value;
+  void selectLoc(String? value) {
+    selectedLocId = value;
     notifyListeners();
   }
 }

@@ -94,6 +94,20 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<LocState> setLocSpeedAndDirection(
+      String id, int speed, LocDirection direction) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient
+        .setLocSpeedAndDirection(SetLocSpeedAndDirectionRequest(
+      id: id,
+      speed: speed,
+      direction: direction,
+    ));
+    _locs[id] = result;
+    notifyListeners();
+    return result;
+  }
+
   Future<T> _getState<T>(String id, Map<String, T> state) async {
     return retry(() {
       final result = state[id];
