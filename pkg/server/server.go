@@ -83,10 +83,12 @@ func (s *Server) Run(ctx context.Context) error {
 
 	// Serve apis
 	log.Debug().Str("address", grpcAddr).Msg("Serving gRPC")
-	if err := grpcSrv.Serve(grpcLis); err != nil {
-		log.Fatal().Err(err).Msg("failed to serve GRPC server")
-	}
-	log.Debug().Str("address", grpcAddr).Msg("Done Serving gRPC")
+	go func() {
+		if err := grpcSrv.Serve(grpcLis); err != nil {
+			log.Fatal().Err(err).Msg("failed to serve GRPC server")
+		}
+		log.Debug().Str("address", grpcAddr).Msg("Done Serving gRPC")
+	}()
 
 	// Wait until context closed
 	<-ctx.Done()

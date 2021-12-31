@@ -45,9 +45,9 @@ binaries: generate
 		-mod=readonly \
 		-osarch="darwin/amd64 darwin/arm64" \
 		-ldflags="-X main.projectVersion=${VERSION} -X main.projectBuild=${COMMIT}" \
-		-output="bin/{{.OS}}/{{.Arch}}/$(PROJECT)" \
+		-output="bin/{{.OS}}/{{.Arch}}/binky-server" \
 		-tags="netgo" \
-		./...
+		github.com/binkyrailways/BinkyRailways
 
 bootstrap:
 	go get github.com/mitchellh/gox
