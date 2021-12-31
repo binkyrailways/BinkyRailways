@@ -17,9 +17,10 @@
 
 import '../block_component.dart' as common;
 import '../../api.dart' as sapi;
+import '../../models.dart';
 
 class BlockComponent extends common.BlockComponent {
-  final sapi.BlockState state;
+  final Holder<sapi.BlockState> state;
 
-  BlockComponent({required this.state}) : super(model: state.model);
+  BlockComponent({required this.state}) : super(model: state.last.model);
 }

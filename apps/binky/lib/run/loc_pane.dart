@@ -29,13 +29,13 @@ class LocPane extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<StateModel>(
       builder: (context, state, child) {
-        return FutureBuilder<LocState>(
+        return FutureBuilder<Holder<LocState>>(
             future: state.getLocState(id),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              final locState = snapshot.data!;
+              final locState = snapshot.data!.last;
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [

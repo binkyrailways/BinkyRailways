@@ -22,15 +22,15 @@ import 'package:retry/retry.dart';
 
 class StateModel extends ChangeNotifier {
   RailwayState? _railwayState;
-  final Map<String, CommandStationState> _commandStations = {};
-  final Map<String, LocState> _locs = {};
-  final Map<String, BlockState> _blocks = {};
-  final Map<String, BlockGroupState> _blockGroups = {};
-  final Map<String, JunctionState> _junctions = {};
-  final Map<String, OutputState> _outputs = {};
-  final Map<String, RouteState> _routes = {};
-  final Map<String, SensorState> _sensors = {};
-  final Map<String, SignalState> _signals = {};
+  final HolderMap<CommandStationState> _commandStations = HolderMap();
+  final HolderMap<LocState> _locs = HolderMap();
+  final HolderMap<BlockState> _blocks = HolderMap();
+  final HolderMap<BlockGroupState> _blockGroups = HolderMap();
+  final HolderMap<JunctionState> _junctions = HolderMap();
+  final HolderMap<OutputState> _outputs = HolderMap();
+  final HolderMap<RouteState> _routes = HolderMap();
+  final HolderMap<SensorState> _sensors = HolderMap();
+  final HolderMap<SignalState> _signals = HolderMap();
 
   StateModel();
 
@@ -103,8 +103,9 @@ class StateModel extends ChangeNotifier {
       speed: speed,
       direction: direction,
     ));
-    _locs[id] = result;
-    notifyListeners();
+    if (_locs.set(id, result)) {
+      notifyListeners();
+    }
     return result;
   }
 
@@ -116,14 +117,15 @@ class StateModel extends ChangeNotifier {
       id: id,
       direction: direction,
     ));
-    _junctions[id] = result;
-    notifyListeners();
+    if (_junctions.set(id, result)) {
+      notifyListeners();
+    }
     return result;
   }
 
-  Future<T> _getState<T>(String id, Map<String, T> state) async {
+  Future<Holder<T>> _getState<T>(String id, HolderMap<T> state) async {
     return retry(() {
-      final result = state[id];
+      final result = state.get(id);
       if (result == null) {
         throw Exception("${T.toString()} not found");
       }
@@ -132,51 +134,62 @@ class StateModel extends ChangeNotifier {
   }
 
   // Get all known command stations
-  Iterable<CommandStationState> commandStations() => _commandStations.values;
-  Future<CommandStationState> getCommandStationState(String id) async =>
+  Iterable<Holder<CommandStationState>> commandStations() =>
+      _commandStations.values;
+  Future<Holder<CommandStationState>> getCommandStationState(String id) async =>
       _getState(id, _commandStations);
 
   // Get all known locs
-  Iterable<LocState> locs() => _locs.values;
-  Future<LocState> getLocState(String id) async => _getState(id, _locs);
+  Iterable<Holder<LocState>> locs() => _locs.values;
+  Future<Holder<LocState>> getLocState(String id) async => _getState(id, _locs);
 
   // Get all known blocks
-  Iterable<BlockState> blocks() => _blocks.values;
-  Future<BlockState> getBlockState(String id) async => _getState(id, _blocks);
+  Iterable<Holder<BlockState>> blocks() => _blocks.values;
+  Future<Holder<BlockState>> getBlockState(String id) async =>
+      _getState(id, _blocks);
 
   // Get all known blocks groups
-  Iterable<BlockGroupState> blockGroups() => _blockGroups.values;
-  Future<BlockGroupState> getBlockGroupState(String id) async =>
+  Iterable<Holder<BlockGroupState>> blockGroups() => _blockGroups.values;
+  Future<Holder<BlockGroupState>> getBlockGroupState(String id) async =>
       _getState(id, _blockGroups);
 
   // Get all known junctions
-  Iterable<JunctionState> junctions() => _junctions.values;
-  Future<JunctionState> getJunctionState(String id) async =>
+  Iterable<Holder<JunctionState>> junctions() => _junctions.values;
+  Future<Holder<JunctionState>> getJunctionState(String id) async =>
       _getState(id, _junctions);
 
   // Get all known outputs
-  Iterable<OutputState> outputs() => _outputs.values;
-  Future<OutputState> getOutputState(String id) async =>
+  Iterable<Holder<OutputState>> outputs() => _outputs.values;
+  Future<Holder<OutputState>> getOutputState(String id) async =>
       _getState(id, _outputs);
 
   // Get all known routes
-  Iterable<RouteState> routes() => _routes.values;
-  Future<RouteState> getRouteState(String id) async => _getState(id, _routes);
+  Iterable<Holder<RouteState>> routes() => _routes.values;
+  Future<Holder<RouteState>> getRouteState(String id) async =>
+      _getState(id, _routes);
 
   // Get all known sensors
-  Iterable<SensorState> sensors() => _sensors.values;
-  Future<SensorState> getSensorState(String id) async =>
+  Iterable<Holder<SensorState>> sensors() => _sensors.values;
+  Future<Holder<SensorState>> getSensorState(String id) async =>
       _getState(id, _sensors);
 
   // Get all known signals
-  Iterable<SignalState> signals() => _signals.values;
-  Future<SignalState> getSignalState(String id) async =>
+  Iterable<Holder<SignalState>> signals() => _signals.values;
+  Future<Holder<SignalState>> getSignalState(String id) async =>
       _getState(id, _signals);
 
   // Collect state changes from the server, until the
   Future<void> _getStateChanges(bool bootstrap) async {
     // Clear current state
+    _commandStations.clear();
+    _locs.clear();
     _blocks.clear();
+    _blockGroups.clear();
+    _junctions.clear();
+    _outputs.clear();
+    _routes.clear();
+    _sensors.clear();
+    _signals.clear();
     // Keep fetching changes until run mode is disabled
     final stateClient = APIClient().stateClient();
     while (_railwayState?.isRunModeEnabled ?? false) {
@@ -184,42 +197,88 @@ class StateModel extends ChangeNotifier {
       final req = GetStateChangesRequest(bootstrap: bootstrap);
       try {
         await for (var change in stateClient.getStateChanges(req)) {
+          var changed = false;
           if (change.hasRailway()) {
             _railwayState = change.railway;
+            changed = true;
           }
           if (change.hasCommandStation()) {
-            _commandStations[change.commandStation.model.id] =
-                change.commandStation;
+            changed |= _commandStations.set(
+                change.commandStation.model.id, change.commandStation);
           }
           if (change.hasLoc()) {
-            _locs[change.loc.model.id] = change.loc;
+            changed |= _locs.set(change.loc.model.id, change.loc);
           }
           if (change.hasBlock()) {
-            _blocks[change.block.model.id] = change.block;
+            changed |= _blocks.set(change.block.model.id, change.block);
           }
           if (change.hasBlockGroup()) {
-            _blockGroups[change.blockGroup.model.id] = change.blockGroup;
+            changed |=
+                _blockGroups.set(change.blockGroup.model.id, change.blockGroup);
           }
           if (change.hasJunction()) {
-            _junctions[change.junction.model.id] = change.junction;
+            changed |=
+                _junctions.set(change.junction.model.id, change.junction);
           }
           if (change.hasOutput()) {
-            _outputs[change.output.model.id] = change.output;
+            changed |= _outputs.set(change.output.model.id, change.output);
           }
           if (change.hasRoute()) {
-            _routes[change.route.model.id] = change.route;
+            changed |= _routes.set(change.route.model.id, change.route);
           }
           if (change.hasSensor()) {
-            _sensors[change.sensor.model.id] = change.sensor;
+            changed |= _sensors.set(change.sensor.model.id, change.sensor);
           }
           if (change.hasSignal()) {
-            _signals[change.signal.model.id] = change.signal;
+            changed |= _signals.set(change.signal.model.id, change.signal);
           }
-          notifyListeners();
+          if (changed) {
+            notifyListeners();
+          }
         }
       } catch (err) {
         print(err);
       }
     }
+  }
+}
+
+// Holder allows for changing content in a map.
+class Holder<T> {
+  T last;
+
+  Holder(this.last);
+
+  // Update the last value.
+  // Returns true if changes, false otherwise.
+  bool update(T value) {
+    if (last.hashCode == value.hashCode) {
+      return false;
+    }
+    last = value;
+    return true;
+  }
+}
+
+class HolderMap<T> {
+  final Map<String, Holder<T>> _map = {};
+
+  Iterable<Holder<T>> get values => _map.values;
+
+  Holder<T>? get(String id) {
+    return _map[id];
+  }
+
+  bool set(String id, T value) {
+    final holder = _map[id];
+    if (holder != null) {
+      return holder.update(value);
+    }
+    _map[id] = Holder(value);
+    return true;
+  }
+
+  void clear() {
+    _map.clear();
   }
 }

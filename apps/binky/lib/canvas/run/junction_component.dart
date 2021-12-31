@@ -22,35 +22,43 @@ import 'package:flutter/material.dart';
 
 import '../junction_component.dart' as common;
 import '../../api.dart' as api;
+import '../../models.dart';
 
 class JunctionComponent extends common.JunctionComponent with Tappable {
-  api.JunctionState state;
+  Holder<api.JunctionState> state;
   final StateModel stateModel;
 
   JunctionComponent({required this.state, required this.stateModel})
-      : super(model: state.model);
+      : super(model: state.last.model);
 
   @override
   bool onTapUp(TapUpInfo event) {
-    if (state.hasSwitch_2()) {
-      stateModel
-          .setSwitchDirection(
-              model.id, state.switch_2.directionRequested.invert())
-          .then((x) {
-        state = x;
-      });
+    final sw = state.last;
+    if (sw.hasSwitch_2()) {
+      stateModel.setSwitchDirection(
+          model.id, sw.switch_2.directionRequested.invert());
     }
     return true;
   }
 
   @override
   Color switchColor() {
-    if (state.switch_2.directionActual == state.switch_2.directionRequested) {
-      return super.switchColor();
+    final sw = state.last;
+    if (sw.hasSwitch_2()) {
+      if (sw.switch_2.directionActual == sw.switch_2.directionRequested) {
+        return super.switchColor();
+      }
+      return Colors.orangeAccent;
     }
-    return Colors.orangeAccent;
+    return super.switchColor();
   }
 
   @override
-  api.SwitchDirection switchDirection() => state.switch_2.directionActual;
+  api.SwitchDirection switchDirection() {
+    final sw = state.last;
+    if (sw.hasSwitch_2()) {
+      return sw.switch_2.directionActual;
+    }
+    return super.switchDirection();
+  }
 }

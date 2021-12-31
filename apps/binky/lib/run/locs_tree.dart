@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
-import '../api.dart';
 
 class LocsTree extends StatelessWidget {
   const LocsTree({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class LocsTree extends StatelessWidget {
     final selectedLocId = runCtx.selectedLocId;
     return Consumer<StateModel>(
       builder: (context, state, child) {
-        final allLocs = state.locs().toList()
+        final allLocs = state.locs().map((x) => x.last).toList()
           ..sort((a, b) => a.model.description.compareTo(b.model.description));
         final assignedLocs =
             allLocs.where((x) => x.canBeControlledAutomatically).toList();
