@@ -40,7 +40,11 @@ all: binaries
 clean:
 	rm -Rf bin
 
-binaries: generate
+.PHONY: binaries
+binaries: generate binaries-server
+
+.PHONY: binaries-server
+binaries-server: generate
 	gox \
 		-mod=readonly \
 		-osarch="darwin/amd64 darwin/arm64" \
@@ -48,6 +52,10 @@ binaries: generate
 		-output="bin/{{.OS}}/{{.Arch}}/binky-server" \
 		-tags="netgo" \
 		github.com/binkyrailways/BinkyRailways
+
+.PHONY: binaries-gui
+binaries-gui: 
+	cd apps/binky ; flutter build macos
 
 bootstrap:
 	go get github.com/mitchellh/gox
