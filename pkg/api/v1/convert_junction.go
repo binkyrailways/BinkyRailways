@@ -32,6 +32,17 @@ func (dst *Junction) FromModel(ctx context.Context, src model.Junction) error {
 	if err := dst.Position.FromModel(ctx, src); err != nil {
 		return err
 	}
+	if x := src.GetBlock(); x != nil {
+		dst.Block = &BlockRef{
+			Id: x.GetID(),
+		}
+	}
+	if sw, ok := src.(model.Switch); ok {
+		dst.Switch = &Switch{}
+		if err := dst.Switch.FromModel(ctx, sw); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -44,6 +55,26 @@ func (src *Junction) ToModel(ctx context.Context, dst model.Junction) error {
 	dst.SetDescription(src.GetDescription())
 	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
 		return err
+	}
+	var block model.Block
+	if id := src.GetBlock().GetId(); id != "" {
+		var ok bool
+		block, ok = dst.GetModule().GetBlocks().Get(id)
+		if block == nil || !ok {
+			return InvalidArgument("Invalid block '%s'", id)
+		}
+	}
+	if err := dst.SetBlock(block); err != nil {
+		return err
+	}
+	if sw, ok := dst.(model.Switch); ok {
+		swSrc := src.GetSwitch()
+		if swSrc == nil {
+			return InvalidArgument("Expected switch")
+		}
+		if err := swSrc.ToModel(ctx, sw); err != nil {
+			return err
+		}
 	}
 	return nil
 }

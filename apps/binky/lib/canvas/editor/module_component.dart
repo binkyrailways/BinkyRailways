@@ -20,6 +20,7 @@ import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './block_component.dart';
+import './junction_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   ModuleComponent({required mapi.Module model}) : super(model: model);
@@ -32,6 +33,11 @@ class ModuleComponent extends common.ModuleComponent {
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
       add(BlockComponent(editorCtx: editorCtx, model: block));
+    }
+    // Load junctions
+    for (var junctionRef in model.junctions) {
+      final junction = await modelModel.getJunction(junctionRef.id);
+      add(JunctionComponent(editorCtx: editorCtx, model: junction));
     }
   }
 }

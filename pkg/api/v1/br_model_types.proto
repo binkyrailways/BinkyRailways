@@ -249,12 +249,48 @@ message Junction {
   string module_id = 3;
   // Position of the Junction
   Position position = 4;
+  // The block that this junction belongs to.
+  // When set, this junction is considered lock if the block is locked.
+  BlockRef block = 5;
+  // Set when this junction is of type switch.
+  Switch switch = 6;
 }
 
 // Reference to a Junction
 message JunctionRef {
   // ID of the Junction
   string id = 1;
+}
+
+// Switch specialization of a Junction
+message Switch {
+  // Address of the switch
+  string address = 1;
+
+  // Does this switch send a feedback when switched?
+  bool has_feedback = 2;
+  // Address of the feedback unit of the entity
+  string feedback_address = 3;
+
+  // Time (in ms) it takes for the switch to move from one direction to the
+  // other? This property is only used when <see cref="HasFeedback"/> is false.
+  int32 switch_duration = 4;
+
+  // If set, the straight/off commands are inverted.
+  bool invert = 5;
+  // If there is a different feedback address and this is set, the straight/off
+  // feedback states are inverted.
+  bool invert_feedback = 6;
+
+  // At which direction should the switch be initialized?
+  SwitchDirection initial_direction = 7;
+}
+
+enum SwitchDirection {
+  // STRAIGHT indicates the switch in its straight position
+  STRAIGHT = 0;
+  // OFF indicates the switch in its off position
+  OFF = 1;
 }
 
 // Output on the track

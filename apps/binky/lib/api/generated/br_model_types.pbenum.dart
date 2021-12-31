@@ -24,3 +24,18 @@ class ChangeDirection extends $pb.ProtobufEnum {
   const ChangeDirection._($core.int v, $core.String n) : super(v, n);
 }
 
+class SwitchDirection extends $pb.ProtobufEnum {
+  static const SwitchDirection STRAIGHT = SwitchDirection._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'STRAIGHT');
+  static const SwitchDirection OFF = SwitchDirection._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'OFF');
+
+  static const $core.List<SwitchDirection> values = <SwitchDirection> [
+    STRAIGHT,
+    OFF,
+  ];
+
+  static final $core.Map<$core.int, SwitchDirection> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static SwitchDirection? valueOf($core.int value) => _byValue[value];
+
+  const SwitchDirection._($core.int v, $core.String n) : super(v, n);
+}
+

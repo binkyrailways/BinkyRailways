@@ -23,10 +23,10 @@ import 'dart:math';
 import 'entity_component.dart';
 import '../api.dart' as mapi;
 
-class BlockComponent extends EntityComponent {
-  final mapi.Block model;
+class JunctionComponent extends EntityComponent {
+  final mapi.Junction model;
 
-  BlockComponent({required this.model}) {
+  JunctionComponent({required this.model}) {
     loadPosition(model.position);
   }
 
@@ -39,24 +39,35 @@ class BlockComponent extends EntityComponent {
         color: textColor(),
       ),
     );
-
     canvas.save();
 
-    // Draw background
+    // Clip rrect
     canvas.clipRRect(
         RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
+    // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
-    // Draw front
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, minDim, minDim), Paint()..color = frontColor());
     // Draw description
     textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
         anchor: fc.Anchor.center);
-
+    // Draw switch direction (if switch)
+    if (model.hasSwitch_6()) {
+      final strokeWith = minDim / 4;
+      final linePaint = Paint()
+        ..strokeWidth = strokeWith
+        ..color = switchColor();
+      if (switchDirection() == mapi.SwitchDirection.STRAIGHT) {
+        final y = (size.y - strokeWith) / 2;
+        canvas.drawLine(Offset(0, y), Offset(size.x, y), linePaint);
+      } else {
+        canvas.drawLine(Offset.zero, size.toOffset(), linePaint);
+      }
+    }
     canvas.restore();
   }
 
-  Color backgroundColor() => Colors.grey;
-  Color frontColor() => Colors.green;
+  Color backgroundColor() => Colors.white;
   Color textColor() => Colors.black;
+  Color switchColor() => Colors.red.shade200;
+
+  mapi.SwitchDirection switchDirection() => mapi.SwitchDirection.STRAIGHT;
 }

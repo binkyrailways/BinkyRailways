@@ -19,6 +19,17 @@ const ChangeDirection$json = const {
 
 /// Descriptor for `ChangeDirection`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List changeDirectionDescriptor = $convert.base64Decode('Cg9DaGFuZ2VEaXJlY3Rpb24SCQoFQUxMT1cQABIJCgVBVk9JRBAB');
+@$core.Deprecated('Use switchDirectionDescriptor instead')
+const SwitchDirection$json = const {
+  '1': 'SwitchDirection',
+  '2': const [
+    const {'1': 'STRAIGHT', '2': 0},
+    const {'1': 'OFF', '2': 1},
+  ],
+};
+
+/// Descriptor for `SwitchDirection`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List switchDirectionDescriptor = $convert.base64Decode('Cg9Td2l0Y2hEaXJlY3Rpb24SDAoIU1RSQUlHSFQQABIHCgNPRkYQAQ==');
 @$core.Deprecated('Use emptyDescriptor instead')
 const Empty$json = const {
   '1': 'Empty',
@@ -249,11 +260,13 @@ const Junction$json = const {
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
+    const {'1': 'block', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'block'},
+    const {'1': 'switch', '3': 6, '4': 1, '5': 11, '6': '.binkyrailways.v1.Switch', '10': 'switch'},
   ],
 };
 
 /// Descriptor for `Junction`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List junctionDescriptor = $convert.base64Decode('CghKdW5jdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YBCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbg==');
+final $typed_data.Uint8List junctionDescriptor = $convert.base64Decode('CghKdW5jdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YBCABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbhIwCgVibG9jaxgFIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBWJsb2NrEjAKBnN3aXRjaBgGIAEoCzIYLmJpbmt5cmFpbHdheXMudjEuU3dpdGNoUgZzd2l0Y2g=');
 @$core.Deprecated('Use junctionRefDescriptor instead')
 const JunctionRef$json = const {
   '1': 'JunctionRef',
@@ -264,6 +277,22 @@ const JunctionRef$json = const {
 
 /// Descriptor for `JunctionRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List junctionRefDescriptor = $convert.base64Decode('CgtKdW5jdGlvblJlZhIOCgJpZBgBIAEoCVICaWQ=');
+@$core.Deprecated('Use switchDescriptor instead')
+const Switch$json = const {
+  '1': 'Switch',
+  '2': const [
+    const {'1': 'address', '3': 1, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'has_feedback', '3': 2, '4': 1, '5': 8, '10': 'hasFeedback'},
+    const {'1': 'feedback_address', '3': 3, '4': 1, '5': 9, '10': 'feedbackAddress'},
+    const {'1': 'switch_duration', '3': 4, '4': 1, '5': 5, '10': 'switchDuration'},
+    const {'1': 'invert', '3': 5, '4': 1, '5': 8, '10': 'invert'},
+    const {'1': 'invert_feedback', '3': 6, '4': 1, '5': 8, '10': 'invertFeedback'},
+    const {'1': 'initial_direction', '3': 7, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'initialDirection'},
+  ],
+};
+
+/// Descriptor for `Switch`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List switchDescriptor = $convert.base64Decode('CgZTd2l0Y2gSGAoHYWRkcmVzcxgBIAEoCVIHYWRkcmVzcxIhCgxoYXNfZmVlZGJhY2sYAiABKAhSC2hhc0ZlZWRiYWNrEikKEGZlZWRiYWNrX2FkZHJlc3MYAyABKAlSD2ZlZWRiYWNrQWRkcmVzcxInCg9zd2l0Y2hfZHVyYXRpb24YBCABKAVSDnN3aXRjaER1cmF0aW9uEhYKBmludmVydBgFIAEoCFIGaW52ZXJ0EicKD2ludmVydF9mZWVkYmFjaxgGIAEoCFIOaW52ZXJ0RmVlZGJhY2sSTgoRaW5pdGlhbF9kaXJlY3Rpb24YByABKA4yIS5iaW5reXJhaWx3YXlzLnYxLlN3aXRjaERpcmVjdGlvblIQaW5pdGlhbERpcmVjdGlvbg==');
 @$core.Deprecated('Use outputDescriptor instead')
 const Output$json = const {
   '1': 'Output',
