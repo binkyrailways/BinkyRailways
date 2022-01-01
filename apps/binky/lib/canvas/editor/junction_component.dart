@@ -35,9 +35,7 @@ class JunctionComponent extends common.JunctionComponent with Tappable {
     return true;
   }
 
-  _isSelected() =>
-      editorCtx.selector.entityType == EntityType.junction &&
-      editorCtx.selector.id == model.id;
+  _isSelected() => editorCtx.selector.idOf(EntityType.junction) == model.id;
 
   @override
   backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();

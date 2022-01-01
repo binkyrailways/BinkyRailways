@@ -32,7 +32,7 @@ class SignalSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final signalId = selector.id ?? "";
+        final signalId = selector.idOf(EntityType.signal) ?? "";
         return FutureBuilder<Signal>(
             future: model.getSignal(signalId),
             initialData: model.getCachedSignal(signalId),

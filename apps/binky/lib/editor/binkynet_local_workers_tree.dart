@@ -30,7 +30,8 @@ class BinkyNetLocalWorkersTree extends StatelessWidget {
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
-    final csId = selector.parentId ?? selector.id ?? "";
+    final csId =
+        selector.parentId ?? selector.idOf(EntityType.commandstation) ?? "";
     return Consumer<ModelModel>(
       builder: (context, model, child) {
         return FutureBuilder<List<BinkyNetLocalWorker>>(
@@ -50,7 +51,8 @@ class BinkyNetLocalWorkersTree extends StatelessWidget {
                       title: Text(localworkers[index].description),
                       onTap: () =>
                           editorCtx.select(EntityType.binkynetlocalworker, id),
-                      selected: selector.id == id,
+                      selected:
+                          selector.idOf(EntityType.binkynetlocalworker) == id,
                     );
                   });
             });

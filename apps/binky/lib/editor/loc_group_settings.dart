@@ -32,7 +32,7 @@ class LocGroupSettings extends StatelessWidget {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(builder: (context, model, child) {
-      final lgId = selector.id ?? "";
+      final lgId = selector.idOf(EntityType.locgroup) ?? "";
       return FutureBuilder<LocGroup>(
           future: model.getLocGroup(lgId),
           initialData: model.getCachedLocGroup(lgId),

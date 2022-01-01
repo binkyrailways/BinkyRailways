@@ -32,7 +32,7 @@ class EdgeSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final edgeId = selector.id ?? "";
+        final edgeId = selector.idOf(EntityType.edge) ?? "";
         return FutureBuilder<Edge>(
             future: model.getEdge(edgeId),
             initialData: model.getCachedEdge(edgeId),

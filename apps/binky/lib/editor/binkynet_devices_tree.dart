@@ -50,7 +50,7 @@ class BinkyNetDevicesTree extends StatelessWidget {
                       title: Text(devices[index].deviceId),
                       onTap: () =>
                           editorCtx.select(EntityType.binkynetdevice, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.binkynetdevice) == id,
                     );
                   });
             });

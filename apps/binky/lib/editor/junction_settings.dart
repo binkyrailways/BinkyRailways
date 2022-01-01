@@ -32,7 +32,7 @@ class JunctionSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final junctionId = selector.id ?? "";
+        final junctionId = selector.idOf(EntityType.junction) ?? "";
         return FutureBuilder<Junction>(
             future: model.getJunction(junctionId),
             initialData: model.getCachedJunction(junctionId),

@@ -33,7 +33,7 @@ class BinkyNetDeviceSettings extends StatelessWidget {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
         final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
-        final devId = selector.id ?? "";
+        final devId = selector.idOf(EntityType.binkynetdevice) ?? "";
         return FutureBuilder<BinkyNetLocalWorker>(
             future: model.getBinkyNetLocalWorker(lwId),
             initialData: model.getCachedBinkyNetLocalWorker(lwId),

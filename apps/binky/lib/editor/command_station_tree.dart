@@ -32,7 +32,7 @@ class CommandStationTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final csId = selector.id ?? "";
+        final csId = selector.idOf(EntityType.commandstation) ?? "";
         return FutureBuilder<CommandStation>(
             future: model.getCommandStation(csId),
             initialData: model.getCachedCommandStation(csId),

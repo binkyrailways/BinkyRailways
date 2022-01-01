@@ -47,7 +47,7 @@ class LocGroupsTree extends StatelessWidget {
                       leading: BinkyIcons.locGroup,
                       title: Text(lgs[index].description),
                       onTap: () => editorCtx.select(EntityType.locgroup, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.locgroup) == id,
                     );
                   });
             });

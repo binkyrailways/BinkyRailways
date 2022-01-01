@@ -32,7 +32,7 @@ class EdgesTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
+        final moduleId = selector.idOf(EntityType.module) ?? "";
         return FutureBuilder<List<Edge>>(
             future: getEdges(model, moduleId),
             builder: (context, snapshot) {
@@ -48,7 +48,7 @@ class EdgesTree extends StatelessWidget {
                       leading: BinkyIcons.edge,
                       title: Text(edges[index].description),
                       onTap: () => editorCtx.select(EntityType.edge, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.edge) == id,
                     );
                   });
             });

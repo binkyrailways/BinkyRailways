@@ -32,7 +32,7 @@ class RouteSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final routeId = selector.id ?? "";
+        final routeId = selector.idOf(EntityType.route) ?? "";
         return FutureBuilder<Route>(
             future: model.getRoute(routeId),
             initialData: model.getCachedRoute(routeId),

@@ -32,10 +32,10 @@ class SensorSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final blockId = selector.id ?? "";
+        final sensorId = selector.idOf(EntityType.sensor) ?? "";
         return FutureBuilder<Sensor>(
-            future: model.getSensor(blockId),
-            initialData: model.getCachedSensor(blockId),
+            future: model.getSensor(sensorId),
+            initialData: model.getCachedSensor(sensorId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());

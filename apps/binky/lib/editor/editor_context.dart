@@ -52,27 +52,27 @@ enum EntityType {
 
 class EntitySelector {
   final EntityType entityType;
-  final String? id;
+  final String? _id;
   final EntitySelector? parent;
 
   EntitySelector.initial()
       : entityType = EntityType.unknown,
-        id = null,
+        _id = null,
         parent = null;
 
   EntitySelector.railway(this.entityType)
-      : id = null,
+      : _id = null,
         parent = null;
 
-  EntitySelector.child(this.entityType, this.id) : parent = null;
+  EntitySelector.child(this.entityType, this._id) : parent = null;
 
-  EntitySelector.parentChild(this.entityType, this.parent, this.id);
+  EntitySelector.parentChild(this.entityType, this.parent, this._id);
 
-  String? get parentId => parent?.id;
+  String? get parentId => parent?._id;
 
   String? idOf(EntityType entityType) {
     if (entityType == this.entityType) {
-      return id;
+      return _id;
     }
     return parent?.idOf(entityType);
   }

@@ -32,7 +32,7 @@ class SensorsTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
+        final moduleId = selector.idOf(EntityType.module) ?? "";
         return FutureBuilder<List<Sensor>>(
             future: getSensors(model, moduleId),
             builder: (context, snapshot) {
@@ -48,7 +48,7 @@ class SensorsTree extends StatelessWidget {
                       leading: BinkyIcons.sensor,
                       title: Text(sensors[index].description),
                       onTap: () => editorCtx.select(EntityType.sensor, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.sensor) == id,
                     );
                   });
             });

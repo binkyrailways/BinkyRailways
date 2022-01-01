@@ -32,7 +32,7 @@ class BinkyNetLocalWorkerSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final lwId = selector.id ?? "";
+        final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
         return FutureBuilder<BinkyNetLocalWorker>(
             future: model.getBinkyNetLocalWorker(lwId),
             initialData: model.getCachedBinkyNetLocalWorker(lwId),

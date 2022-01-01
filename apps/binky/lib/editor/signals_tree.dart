@@ -32,7 +32,7 @@ class SignalsTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
+        final moduleId = selector.idOf(EntityType.module) ?? "";
         return FutureBuilder<List<Signal>>(
             future: getSignals(model, moduleId),
             builder: (context, snapshot) {
@@ -48,7 +48,7 @@ class SignalsTree extends StatelessWidget {
                       leading: BinkyIcons.signal,
                       title: Text(signals[index].description),
                       onTap: () => editorCtx.select(EntityType.signal, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.signal) == id,
                     );
                   });
             });

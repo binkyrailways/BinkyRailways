@@ -32,7 +32,7 @@ class RoutesTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
+        final moduleId = selector.idOf(EntityType.module) ?? "";
         return FutureBuilder<List<Route>>(
             future: getRoutes(model, moduleId),
             builder: (context, snapshot) {
@@ -48,7 +48,7 @@ class RoutesTree extends StatelessWidget {
                       leading: BinkyIcons.route,
                       title: Text(routes[index].description),
                       onTap: () => editorCtx.select(EntityType.route, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.route) == id,
                     );
                   });
             });

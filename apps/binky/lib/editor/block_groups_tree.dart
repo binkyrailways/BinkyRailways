@@ -32,7 +32,7 @@ class BlockGroupsTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
+        final moduleId = selector.idOf(EntityType.module) ?? "";
         return FutureBuilder<List<BlockGroup>>(
             future: getBlockGroups(model, moduleId),
             builder: (context, snapshot) {
@@ -48,7 +48,7 @@ class BlockGroupsTree extends StatelessWidget {
                       leading: BinkyIcons.blockGroup,
                       title: Text(blockGroups[index].description),
                       onTap: () => editorCtx.select(EntityType.blockgroup, id),
-                      selected: selector.id == id,
+                      selected: selector.idOf(EntityType.blockgroup) == id,
                     );
                   });
             });

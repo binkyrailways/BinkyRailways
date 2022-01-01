@@ -32,7 +32,7 @@ class BlockGroupSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final blockGroupId = selector.id ?? "";
+        final blockGroupId = selector.idOf(EntityType.blockgroup) ?? "";
         return FutureBuilder<BlockGroup>(
             future: model.getBlockGroup(blockGroupId),
             initialData: model.getCachedBlockGroup(blockGroupId),
