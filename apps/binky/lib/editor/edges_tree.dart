@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class EdgesTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = edges[index].id;
                     return ListTile(
+                      leading: BinkyIcons.edge,
                       title: Text(edges[index].description),
                       onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.edge, moduleId, id)),

@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +44,7 @@ class CommandStationsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = css[index].id;
                     return ListTile(
+                      leading: BinkyIcons.commandstation,
                       title: Text(css[index].description),
                       onTap: () => editorCtx.select(
                           EntitySelector.child(EntityType.commandstation, id)),

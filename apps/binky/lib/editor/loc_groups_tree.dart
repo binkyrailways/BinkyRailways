@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +44,7 @@ class LocGroupsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = lgs[index].id;
                     return ListTile(
+                      leading: BinkyIcons.locGroup,
                       title: Text(lgs[index].description),
                       onTap: () => editorCtx.select(
                           EntitySelector.child(EntityType.locgroup, id)),

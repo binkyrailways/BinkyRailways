@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class BlockGroupsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = blockGroups[index].id;
                     return ListTile(
+                      leading: BinkyIcons.blockGroup,
                       title: Text(blockGroups[index].description),
                       onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.blockgroup, moduleId, id)),

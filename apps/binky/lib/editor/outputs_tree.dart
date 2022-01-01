@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class OutputsTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = outputs[index].id;
                     return ListTile(
+                      leading: BinkyIcons.output,
                       title: Text(outputs[index].description),
                       onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.output, moduleId, id)),

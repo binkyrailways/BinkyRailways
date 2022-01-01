@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,7 @@ class RoutesTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final id = routes[index].id;
                     return ListTile(
+                      leading: BinkyIcons.route,
                       title: Text(routes[index].description),
                       onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.route, moduleId, id)),
