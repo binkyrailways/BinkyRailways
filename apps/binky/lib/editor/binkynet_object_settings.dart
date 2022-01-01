@@ -115,16 +115,18 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
         items: _objectTypeItems,
       ),
     ];
-    widget.binkynetobject.connections.forEach((conn) {
+    final connections = widget.binkynetobject.connections;
+    for (var i = 0; i < connections.length; i++) {
       children.add(_BinkyNetConnectionSettings(
           editorCtx: widget.editorCtx,
           model: widget.model,
           binkynetlocalworker: widget.binkynetlocalworker,
           binkynetobject: widget.binkynetobject,
-          binkynetconnection: conn,
+          binkynetconnection: connections[i],
           update: _update));
-    });
+    }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );
   }
