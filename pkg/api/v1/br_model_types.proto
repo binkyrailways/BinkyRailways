@@ -210,21 +210,75 @@ message BinkyNetLocalWorker {
   string id = 1;
   // Description of the local worker
   string description = 2;
+  // ID of the command station containing this worker
+  string command_station_id = 3;
 
   // Hardware ID of the local worker.
-  string hardware_id = 3;
+  string hardware_id = 4;
   // Optional alias for the local worker.
-  string alias = 4;
+  string alias = 5;
 
   // Set of devices that must be configured on this local worker.
-  //	GetDevices() BinkyNetDeviceSet
+  repeated BinkyNetDevice devices = 10;
   // Set of real world objects controlled by the local worker
-  // GetObjects() BinkyNetObjectSet
+  repeated BinkyNetObject objects = 11;
 }
 
 message BinkyNetLocalWorkerRef {
   // ID of the local worker
   string id = 1;
+}
+
+message BinkyNetDevice {
+  // ID of this object
+  string id = 1;
+  // ID of the device in the BinkyNet.
+  string device_id = 2;
+  // Type of the device
+  BinkyNetDeviceType device_type = 3;
+  // Address of the device
+  string address = 4;
+}
+
+enum BinkyNetDeviceType {
+  // DeviceTypeMCP23008 is the device type of a General Purpose I/O
+  MCP23008 = 0;
+  // DeviceTypeMCP23017 is the device type of a General Purpose I/O
+  MCP23017 = 1;
+  // DeviceTypePCA9685 is the device type of a Pulse Width Modulation device
+  PCA9685 = 2;
+  // DeviceTypePCF8574 is the device type of a General Purpose I/O
+  PCF8574 = 3;
+}
+
+message BinkyNetObject {
+  // ID of this object
+  string id = 1;
+
+  // ID of the object in the binky network.
+  string object_id = 2;
+  // Type of the object
+  BinkyNetObjectType object_type = 3;
+
+  // Connections to devices used by this object
+  // The keys used in this map are specific to the type of object.
+  //      GetConnections() BinkyNetConnectionSet
+}
+
+enum BinkyNetObjectType {
+  // ObjectTypeBinarySensor is the object type of a single-bit on/off sensor
+  BINARYSENSOR = 0;
+  // ObjectTypeBinaryOutput is the object type of a single-bit on/off output
+  BINARYOUTPUT = 1;
+  // ObjectTypeServoSwitch is the object type of a servo driven switch, with an
+  // option phase switching relay.
+  SERVOSWITCH = 2;
+  // ObjectTypeRelaySwitch is the object type of a double relay driven switch,
+  // with an option phase switching relay.
+  RELAYSWITCH = 3;
+  // ObjectTypeTrackInverter is the object type of a four relay based track
+  // power inverter.
+  TRACKINVERTER = 4;
 }
 
 // Block on the track

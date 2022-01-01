@@ -29,8 +29,19 @@ import (
 func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNetLocalWorker) error {
 	dst.Id = JoinParentChildID(src.GetCommandStation().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
+	dst.CommandStationId = src.GetCommandStation().GetID()
 	dst.HardwareId = src.GetHardwareID()
 	dst.Alias = src.GetAlias()
+	src.GetDevices().ForEach(func(src model.BinkyNetDevice) {
+		bd := &BinkyNetDevice{}
+		bd.FromModel(ctx, src)
+		dst.Devices = append(dst.Devices, bd)
+	})
+	src.GetObjects().ForEach(func(src model.BinkyNetObject) {
+		bo := &BinkyNetObject{}
+		bo.FromModel(ctx, src)
+		dst.Objects = append(dst.Objects, bo)
+	})
 	return nil
 }
 
@@ -40,9 +51,29 @@ func (src *BinkyNetLocalWorker) ToModel(ctx context.Context, dst model.BinkyNetL
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected binkynet local worker ID: '%s'", src.GetId())
 	}
+	if len(src.GetDevices()) != dst.GetDevices().GetCount() {
+		return InvalidArgument("Unexpected number of devices in local worker (got %d, expected %d)", len(src.GetDevices()), dst.GetDevices().GetCount())
+	}
+	if len(src.GetObjects()) != dst.GetObjects().GetCount() {
+		return InvalidArgument("Unexpected number of objects in local worker (got %d, expected %d)", len(src.GetObjects()), dst.GetObjects().GetCount())
+	}
 	var err error
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	multierr.AppendInto(&err, dst.SetHardwareID(src.GetHardwareId()))
 	multierr.AppendInto(&err, dst.SetAlias(src.GetAlias()))
+	for i, src := range src.GetDevices() {
+		dst, ok := dst.GetDevices().GetAt(i)
+		if !ok {
+			return InvalidArgument("Unexpected device at index %d", i)
+		}
+		multierr.AppendInto(&err, src.ToModel(ctx, dst))
+	}
+	for i, src := range src.GetObjects() {
+		dst, ok := dst.GetObjects().GetAt(i)
+		if !ok {
+			return InvalidArgument("Unexpected object at index %d", i)
+		}
+		multierr.AppendInto(&err, src.ToModel(ctx, dst))
+	}
 	return err
 }
