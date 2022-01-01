@@ -28,6 +28,8 @@ import './binkynet_devices_tree.dart';
 import './binkynet_local_worker_settings.dart';
 import './binkynet_local_worker_tree.dart';
 import './binkynet_local_workers_tree.dart';
+import './binkynet_object_settings.dart';
+import './binkynet_objects_tree.dart';
 import './block_settings.dart';
 import './blocks_tree.dart';
 import './block_group_settings.dart';
@@ -275,6 +277,16 @@ class _EditorPageState extends State<EditorPage> {
         return const SplitView(
           menu: BinkyNetDevicesTree(),
           content: BinkyNetDeviceSettings(),
+        );
+      case EntityType.binkynetobjects:
+        return const SplitView(
+          menu: BinkyNetLocalWorkerTree(),
+          content: BinkyNetObjectsTree(),
+        );
+      case EntityType.binkynetobject:
+        return const SplitView(
+          menu: BinkyNetObjectsTree(),
+          content: BinkyNetObjectSettings(),
         );
       default:
         return const Center(child: Text("No selection"));

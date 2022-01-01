@@ -48,6 +48,8 @@ enum EntityType {
   binkynetlocalworkers,
   binkynetdevice,
   binkynetdevices,
+  binkynetobject,
+  binkynetobjects,
 }
 
 class EntitySelector {
