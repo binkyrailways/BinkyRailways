@@ -77,7 +77,7 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
   final TextEditingController _deviceIdController = TextEditingController();
 
   void _initConrollers() {
-    _deviceIdController.text = widget.binkynetlocalworker.hardwareId;
+    _deviceIdController.text = widget.binkynetdevice.deviceId;
   }
 
   @override

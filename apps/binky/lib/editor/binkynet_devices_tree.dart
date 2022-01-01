@@ -61,6 +61,6 @@ class BinkyNetDevicesTree extends StatelessWidget {
   Future<List<BinkyNetDevice>> getBinkyNetDevices(
       ModelModel model, String lwId) async {
     final lw = await model.getBinkyNetLocalWorker(lwId);
-    return lw.devices;
+    return lw.devices.toList();
   }
 }
