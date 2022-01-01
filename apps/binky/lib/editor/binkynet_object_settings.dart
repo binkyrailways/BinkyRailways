@@ -94,32 +94,42 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> children = [
+      Text(widget.binkynetobject.id),
+      SettingsTextField(
+          controller: _objectIdController,
+          label: "Object ID",
+          onLostFocus: (value) async {
+            await _update((update) => {update.objectId = value});
+          }),
+      SettingsDropdownField<BinkyNetObjectType>(
+        label: "Object type",
+        value: widget.binkynetobject.objectType,
+        onChanged: (value) {
+          _update((x) {
+            if (value != null) {
+              x.objectType = value;
+            }
+          });
+        },
+        items: _objectTypeItems,
+      ),
+    ];
+    widget.binkynetobject.connections.forEach((conn) {
+      children.add(_BinkyNetConnectionSettings(
+          editorCtx: widget.editorCtx,
+          model: widget.model,
+          binkynetlocalworker: widget.binkynetlocalworker,
+          binkynetobject: widget.binkynetobject,
+          binkynetconnection: conn,
+          update: _update));
+    });
     return Column(
-      children: <Widget>[
-        Text(widget.binkynetobject.id),
-        SettingsTextField(
-            controller: _objectIdController,
-            label: "Object ID",
-            onLostFocus: (value) async {
-              await _update((update) => {update.objectId = value});
-            }),
-        SettingsDropdownField<BinkyNetObjectType>(
-          label: "Object type",
-          value: widget.binkynetobject.objectType,
-          onChanged: (value) {
-            _update((x) {
-              if (value != null) {
-                x.objectType = value;
-              }
-            });
-          },
-          items: _objectTypeItems,
-        ),
-      ],
+      children: children,
     );
   }
 
-  Future<void> _update(Function(BinkyNetObject) editor) async {
+  Future<void> _update(void Function(BinkyNetObject) editor) async {
     final lw = await widget.model
         .getBinkyNetLocalWorker(widget.binkynetlocalworker.id);
     var update = lw.deepCopy();
@@ -134,4 +144,147 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
                 value: e,
               ))
           .toList();
+}
+
+class _BinkyNetConnectionSettings extends StatelessWidget {
+  final EditorContext editorCtx;
+  final ModelModel model;
+  final BinkyNetLocalWorker binkynetlocalworker;
+  final BinkyNetObject binkynetobject;
+  final BinkyNetConnection binkynetconnection;
+  final Future<void> Function(void Function(BinkyNetObject)) update;
+
+  const _BinkyNetConnectionSettings(
+      {Key? key,
+      required this.editorCtx,
+      required this.model,
+      required this.binkynetlocalworker,
+      required this.binkynetobject,
+      required this.binkynetconnection,
+      required this.update})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> children = [
+      SettingsHeader(title: binkynetconnection.key),
+    ];
+    final pins = binkynetconnection.pins;
+    for (var i = 0; i < pins.length; i++) {
+      children.add(_BinkyNetDevicePinSettings(
+          editorCtx: editorCtx,
+          model: model,
+          binkynetlocalworker: binkynetlocalworker,
+          binkynetobject: binkynetobject,
+          binkynetconnection: binkynetconnection,
+          binkynetdevicepin: pins[i],
+          binkynetdevicepinIndex: i,
+          update: _update));
+    }
+    ;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    );
+  }
+
+  Future<void> _update(void Function(BinkyNetConnection) editor) async {
+    await update((update) {
+      editor(update.connections
+          .singleWhere((x) => x.key == binkynetconnection.key));
+    });
+  }
+}
+
+class _BinkyNetDevicePinSettings extends StatefulWidget {
+  final EditorContext editorCtx;
+  final ModelModel model;
+  final BinkyNetLocalWorker binkynetlocalworker;
+  final BinkyNetObject binkynetobject;
+  final BinkyNetConnection binkynetconnection;
+  final BinkyNetDevicePin binkynetdevicepin;
+  final int binkynetdevicepinIndex;
+  final Future<void> Function(void Function(BinkyNetConnection)) update;
+
+  const _BinkyNetDevicePinSettings(
+      {Key? key,
+      required this.editorCtx,
+      required this.model,
+      required this.binkynetlocalworker,
+      required this.binkynetobject,
+      required this.binkynetconnection,
+      required this.binkynetdevicepin,
+      required this.binkynetdevicepinIndex,
+      required this.update})
+      : super(key: key);
+
+  @override
+  State<_BinkyNetDevicePinSettings> createState() =>
+      _BinkyNetDevicePinSettingsState();
+}
+
+class _BinkyNetDevicePinSettingsState
+    extends State<_BinkyNetDevicePinSettings> {
+  final TextEditingController _indexController = TextEditingController();
+  final NumericValidator _indexValidator =
+      NumericValidator(minimum: 1, maximum: 16);
+
+  void _initConrollers() {
+    _indexController.text = widget.binkynetdevicepin.index.toString();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initConrollers();
+  }
+
+  @override
+  void didUpdateWidget(covariant _BinkyNetDevicePinSettings oldWidget) {
+    _initConrollers();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> children = [
+      SettingsTextField(
+          controller: _indexController,
+          label: "Pin",
+          validator: _indexValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) => {update.index = int.parse(value)});
+          }),
+      SettingsDropdownField<String>(
+        label: "Device ID",
+        value: widget.binkynetdevicepin.deviceId,
+        onChanged: (value) {
+          _update((x) {
+            if (value != null) {
+              x.deviceId = value;
+            }
+          });
+        },
+        items: _deviceIds(),
+      ),
+    ];
+    return Column(
+      children: children,
+    );
+  }
+
+  Future<void> _update(void Function(BinkyNetDevicePin) editor) async {
+    await widget.update((update) {
+      editor(update.pins[widget.binkynetdevicepinIndex]);
+    });
+  }
+
+  List<DropdownMenuItem<String>> _deviceIds() {
+    return widget.binkynetlocalworker.devices
+        .map((e) => DropdownMenuItem<String>(
+              child: Text(e.deviceId),
+              value: e.deviceId,
+            ))
+        .toList();
+  }
 }
