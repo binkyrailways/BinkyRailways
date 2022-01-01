@@ -40,7 +40,7 @@ class ModuleTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var rw = snapshot.data!;
+              var module = snapshot.data!;
               return ListView(
                 children: <Widget>[
                   ListTile(
@@ -57,7 +57,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.block,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Blocks (${rw.blocks.length})",
+                      "Blocks (${module.blocks.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.blocks,
@@ -67,7 +67,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.blockGroup,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Block groups (${rw.blockGroups.length})",
+                      "Block groups (${module.blockGroups.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.blockgroups,
@@ -78,7 +78,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.edge,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Edges (${rw.edges.length})",
+                      "Edges (${module.edges.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.edges,
@@ -88,7 +88,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.junction,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Junctions (${rw.junctions.length})",
+                      "Junctions (${module.junctions.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.junctions,
@@ -99,7 +99,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.output,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Outputs (${rw.outputs.length})",
+                      "Outputs (${module.outputs.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.outputs,
@@ -109,7 +109,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.route,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Routes (${rw.routes.length})",
+                      "Routes (${module.routes.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.routes,
@@ -119,7 +119,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.sensor,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Sensors (${rw.sensors.length})",
+                      "Sensors (${module.sensors.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.sensors,
@@ -129,7 +129,7 @@ class ModuleTree extends StatelessWidget {
                     leading: BinkyIcons.signal,
                     minLeadingWidth: 20,
                     title: Text(
-                      "Signals (${rw.signals.length})",
+                      "Signals (${module.signals.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.signals,
