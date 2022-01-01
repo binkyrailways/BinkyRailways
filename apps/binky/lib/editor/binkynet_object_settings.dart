@@ -125,10 +125,11 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
           binkynetconnection: connections[i],
           update: _update));
     }
-    return Column(
+    return ScrollableForm(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
-    );
+    ));
   }
 
   Future<void> _update(void Function(BinkyNetObject) editor) async {
