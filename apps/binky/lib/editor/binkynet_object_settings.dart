@@ -95,7 +95,7 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      Text(widget.binkynetobject.id),
+      const SettingsHeader(title: "General"),
       SettingsTextField(
           controller: _objectIdController,
           label: "Object ID",
@@ -169,21 +169,24 @@ class _BinkyNetConnectionSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      SettingsHeader(title: binkynetconnection.key),
+      SettingsHeader(title: "Connection: ${binkynetconnection.key}"),
     ];
     final pins = binkynetconnection.pins;
     for (var i = 0; i < pins.length; i++) {
       children.add(_BinkyNetDevicePinSettings(
-          editorCtx: editorCtx,
-          model: model,
           binkynetlocalworker: binkynetlocalworker,
-          binkynetobject: binkynetobject,
           binkynetconnection: binkynetconnection,
           binkynetdevicepin: pins[i],
           binkynetdevicepinIndex: i,
           update: _update));
     }
-    ;
+    final configuration = binkynetconnection.configuration;
+    configuration.forEach((key, value) {
+      children.add(_BinkyNetConfigKeyValueSettings(
+          binkynetconnection: binkynetconnection,
+          configKey: key,
+          update: _update));
+    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -199,10 +202,7 @@ class _BinkyNetConnectionSettings extends StatelessWidget {
 }
 
 class _BinkyNetDevicePinSettings extends StatefulWidget {
-  final EditorContext editorCtx;
-  final ModelModel model;
   final BinkyNetLocalWorker binkynetlocalworker;
-  final BinkyNetObject binkynetobject;
   final BinkyNetConnection binkynetconnection;
   final BinkyNetDevicePin binkynetdevicepin;
   final int binkynetdevicepinIndex;
@@ -210,10 +210,7 @@ class _BinkyNetDevicePinSettings extends StatefulWidget {
 
   const _BinkyNetDevicePinSettings(
       {Key? key,
-      required this.editorCtx,
-      required this.model,
       required this.binkynetlocalworker,
-      required this.binkynetobject,
       required this.binkynetconnection,
       required this.binkynetdevicepin,
       required this.binkynetdevicepinIndex,
@@ -288,5 +285,59 @@ class _BinkyNetDevicePinSettingsState
               value: e.deviceId,
             ))
         .toList();
+  }
+}
+
+class _BinkyNetConfigKeyValueSettings extends StatefulWidget {
+  final BinkyNetConnection binkynetconnection;
+  final String configKey;
+  final Future<void> Function(void Function(BinkyNetConnection)) update;
+
+  const _BinkyNetConfigKeyValueSettings(
+      {Key? key,
+      required this.binkynetconnection,
+      required this.configKey,
+      required this.update})
+      : super(key: key);
+
+  @override
+  State<_BinkyNetConfigKeyValueSettings> createState() =>
+      _BinkyNetConfigKeyValueSettingsState();
+}
+
+class _BinkyNetConfigKeyValueSettingsState
+    extends State<_BinkyNetConfigKeyValueSettings> {
+  final TextEditingController _valueController = TextEditingController();
+
+  void _initConrollers() {
+    _valueController.text =
+        widget.binkynetconnection.configuration[widget.configKey] ?? "";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initConrollers();
+  }
+
+  @override
+  void didUpdateWidget(covariant _BinkyNetConfigKeyValueSettings oldWidget) {
+    _initConrollers();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SettingsTextField(
+            controller: _valueController,
+            label: widget.configKey,
+            onLostFocus: (value) async {
+              await widget.update(
+                  (update) => {update.configuration[widget.configKey] = value});
+            }),
+      ],
+    );
   }
 }
