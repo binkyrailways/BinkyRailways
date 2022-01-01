@@ -45,7 +45,7 @@ class OutputsTree extends StatelessWidget {
                     final id = outputs[index].id;
                     return ListTile(
                       title: Text(outputs[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.output(
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.output, moduleId, id)),
                       selected: selector.id == id,
                     );

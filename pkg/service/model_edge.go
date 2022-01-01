@@ -25,7 +25,7 @@ import (
 
 // Gets a edge by ID.
 func (s *service) GetEdge(ctx context.Context, req *api.IDRequest) (*api.Edge, error) {
-	moduleID, edgeID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, edgeID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetEdge(ctx context.Context, req *api.IDRequest) (*api.Edge, e
 
 // Update a edge by ID.
 func (s *service) UpdateEdge(ctx context.Context, req *api.Edge) (*api.Edge, error) {
-	moduleID, edgeID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, edgeID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

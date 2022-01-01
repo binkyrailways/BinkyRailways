@@ -20,6 +20,8 @@ package v1
 import (
 	context "context"
 
+	"go.uber.org/multierr"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -27,6 +29,12 @@ import (
 func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStation) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	if bncs, ok := src.(model.BinkyNetCommandStation); ok {
+		dst.BinkynetCommandStation = &BinkyNetCommandStation{}
+		if err := dst.BinkynetCommandStation.FromModel(ctx, bncs); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -35,6 +43,15 @@ func (src *CommandStation) ToModel(ctx context.Context, dst model.CommandStation
 	if src.GetId() != dst.GetID() {
 		return InvalidArgument("Unexpected command station ID: '%s'", src.GetId())
 	}
-	dst.SetDescription(src.GetDescription())
-	return nil
+	var err error
+	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
+	if bncs, ok := dst.(model.BinkyNetCommandStation); ok {
+		if src.GetBinkynetCommandStation() == nil {
+			return InvalidArgument("Expected BinkynetCommandStation")
+		}
+		if err := src.BinkynetCommandStation.ToModel(ctx, bncs); err != nil {
+			return err
+		}
+	}
+	return err
 }

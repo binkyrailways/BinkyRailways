@@ -23,11 +23,14 @@ import '../models.dart';
 import '../api.dart';
 
 import './editor_context.dart';
+import './binkynet_local_worker_settings.dart';
+import './binkynet_local_workers_tree.dart';
 import './block_settings.dart';
 import './blocks_tree.dart';
 import './block_group_settings.dart';
 import './block_groups_tree.dart';
 import './command_station_settings.dart';
+import './command_station_tree.dart';
 import './command_stations_tree.dart';
 import './edge_settings.dart';
 import './edges_tree.dart';
@@ -160,7 +163,7 @@ class _EditorPageState extends State<EditorPage> {
         );
       case EntityType.commandstation:
         return const SplitView(
-          menu: CommandStationsTree(),
+          menu: CommandStationTree(),
           content: CommandStationSettings(),
         );
       case EntityType.blocks:
@@ -250,6 +253,16 @@ class _EditorPageState extends State<EditorPage> {
           menu: SignalsTree(),
           content: ModuleCanvas(),
           endMenu: SignalSettings(),
+        );
+      case EntityType.binkynetlocalworkers:
+        return const SplitView(
+          menu: CommandStationTree(),
+          content: BinkyNetLocalWorkersTree(),
+        );
+      case EntityType.binkynetlocalworker:
+        return const SplitView(
+          menu: BinkyNetLocalWorkersTree(),
+          content: BinkyNetLocalWorkerSettings(),
         );
       default:
         return const Center(child: Text("No selection"));

@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,7 @@ class RailwayTree extends StatelessWidget {
               return ListView(
                 children: <Widget>[
                   ListTile(
-                    leading: const Icon(Icons.book),
+                    leading: BinkyIcons.railway,
                     minLeadingWidth: 20,
                     title: const Text(
                       "Railway",
@@ -52,7 +53,7 @@ class RailwayTree extends StatelessWidget {
                         .select(EntitySelector.railway(EntityType.railway)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.view_module_sharp),
+                    leading: BinkyIcons.module,
                     minLeadingWidth: 20,
                     title: Text(
                       "Modules (${rw.modules.length})",
@@ -63,7 +64,7 @@ class RailwayTree extends StatelessWidget {
                         .select(EntitySelector.railway(EntityType.modules)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.train_sharp),
+                    leading: BinkyIcons.loc,
                     minLeadingWidth: 20,
                     title: Text(
                       "Locs (${rw.locs.length})",
@@ -74,7 +75,7 @@ class RailwayTree extends StatelessWidget {
                         .select(EntitySelector.railway(EntityType.locs)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.info_outline),
+                    leading: BinkyIcons.locGroup,
                     minLeadingWidth: 20,
                     title: Text(
                       "Loc groups (${rw.locGroups.length})",
@@ -85,7 +86,7 @@ class RailwayTree extends StatelessWidget {
                         .select(EntitySelector.railway(EntityType.locgroups)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.computer),
+                    leading: BinkyIcons.commandstation,
                     minLeadingWidth: 20,
                     title: Text(
                       "Command stations (${rw.commandStations.length})",

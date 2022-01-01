@@ -45,8 +45,8 @@ class RoutesTree extends StatelessWidget {
                     final id = routes[index].id;
                     return ListTile(
                       title: Text(routes[index].description),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.route(EntityType.route, moduleId, id)),
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
+                          EntityType.route, moduleId, id)),
                       selected: selector.id == id,
                     );
                   });

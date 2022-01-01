@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model Junction to an API Junction
 func (dst *Junction) FromModel(ctx context.Context, src model.Junction) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -48,7 +48,7 @@ func (dst *Junction) FromModel(ctx context.Context, src model.Junction) error {
 
 // ToModel converts an API Junction to a model Junction
 func (src *Junction) ToModel(ctx context.Context, dst model.Junction) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected junction ID: '%s'", src.GetId())
 	}

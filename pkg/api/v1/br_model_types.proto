@@ -180,10 +180,50 @@ message CommandStation {
   string id = 1;
   // Description of the command station
   string description = 2;
+  // Settings of binkynet command station
+  BinkyNetCommandStation binkynet_command_station = 10;
 }
 
 message CommandStationRef {
   // ID of the command station
+  string id = 1;
+}
+
+message BinkyNetCommandStation {
+  // Network host address (defaults to 0.0.0.0)
+  string server_host = 1;
+
+  // Network Port of the command station
+  int32 grpc_port = 2;
+
+  // The required version of local workers
+  string required_worker_version = 3;
+
+  // Gets the configuration of local workers on the Binky network
+  // that this command station is attached to.
+  repeated BinkyNetLocalWorkerRef local_workers = 4;
+}
+
+// Configuration of a binky local worker
+message BinkyNetLocalWorker {
+  // ID of the local worker
+  string id = 1;
+  // Description of the local worker
+  string description = 2;
+
+  // Hardware ID of the local worker.
+  string hardware_id = 3;
+  // Optional alias for the local worker.
+  string alias = 4;
+
+  // Set of devices that must be configured on this local worker.
+  //	GetDevices() BinkyNetDeviceSet
+  // Set of real world objects controlled by the local worker
+  // GetObjects() BinkyNetObjectSet
+}
+
+message BinkyNetLocalWorkerRef {
+  // ID of the local worker
   string id = 1;
 }
 

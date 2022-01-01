@@ -30,7 +30,7 @@ func (s *service) SetSwitchDirection(ctx context.Context, req *api.SetSwitchDire
 	if err != nil {
 		return nil, err
 	}
-	_, junctionID, err := api.SplitModuleEntityID(req.GetId())
+	_, junctionID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

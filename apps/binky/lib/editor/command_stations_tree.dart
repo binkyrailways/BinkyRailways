@@ -45,8 +45,7 @@ class CommandStationsTree extends StatelessWidget {
                     return ListTile(
                       title: Text(css[index].description),
                       onTap: () => editorCtx.select(
-                          EntitySelector.commandStation(
-                              EntityType.commandstation, id)),
+                          EntitySelector.child(EntityType.commandstation, id)),
                       selected: selector.id == id,
                     );
                   });

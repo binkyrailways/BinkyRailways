@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model Sensor to an API Sensor
 func (dst *Sensor) FromModel(ctx context.Context, src model.Sensor) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -37,7 +37,7 @@ func (dst *Sensor) FromModel(ctx context.Context, src model.Sensor) error {
 
 // ToModel converts an API Sensor to a model Sensor
 func (src *Sensor) ToModel(ctx context.Context, dst model.Sensor) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected sensor ID: '%s'", src.GetId())
 	}

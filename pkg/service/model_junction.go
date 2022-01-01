@@ -25,7 +25,7 @@ import (
 
 // Gets a Junction by ID.
 func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Junction, error) {
-	moduleID, junctionID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, junctionID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Jun
 
 // Update a loc by ID.
 func (s *service) UpdateJunction(ctx context.Context, req *api.Junction) (*api.Junction, error) {
-	moduleID, junctionID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, junctionID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

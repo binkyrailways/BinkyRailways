@@ -21,14 +21,14 @@ import (
 	"strings"
 )
 
-// JoinModuleEntityID creates a single ID by joining the module ID and the entity ID
-func JoinModuleEntityID(moduleID, entityID string) string {
-	return moduleID + "/" + entityID
+// JoinParentChildID creates a single ID by joining the module ID and the entity ID
+func JoinParentChildID(parentID, childID string) string {
+	return parentID + "/" + childID
 }
 
-// SplitModuleEntityID split a single ID into a module ID and an entity ID.
-// Returns: moduleID, entityID, error
-func SplitModuleEntityID(id string) (string, string, error) {
+// SplitParentChildID split a single ID into a module ID and an entity ID.
+// Returns: parentID, childID, error
+func SplitParentChildID(id string) (string, string, error) {
 	parts := strings.Split(id, "/")
 	if len(parts) != 2 {
 		return "", "", InvalidArgument("Invalid id: '%s'", id)

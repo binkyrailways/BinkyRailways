@@ -38,6 +38,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.Route> _routes = {};
   final Map<String, mapi.Sensor> _sensors = {};
   final Map<String, mapi.Signal> _signals = {};
+  final Map<String, mapi.BinkyNetLocalWorker> _binkynetLocalWorkers = {};
 
   ModelModel();
 
@@ -411,6 +412,32 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateSignal(value);
     _signals[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Gets a BinkyNetLocalWorker by ID from cache
+  mapi.BinkyNetLocalWorker? getCachedBinkyNetLocalWorker(String id) =>
+      _binkynetLocalWorkers[id];
+
+  // Gets a BinkyNetLocalWorker by ID
+  Future<mapi.BinkyNetLocalWorker> getBinkyNetLocalWorker(String id) async {
+    var result = _binkynetLocalWorkers[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getBinkyNetLocalWorker(mapi.IDRequest(id: id));
+    _binkynetLocalWorkers[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Update the given BinkyNetLocalWorker
+  Future<void> updateBinkyNetLocalWorker(mapi.BinkyNetLocalWorker value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateBinkyNetLocalWorker(value);
+    _binkynetLocalWorkers[updated.id] = updated;
     notifyListeners();
   }
 }

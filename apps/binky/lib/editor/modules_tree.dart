@@ -46,7 +46,7 @@ class ModulesTree extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(modules[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.module(
+                      onTap: () => editorCtx.select(EntitySelector.child(
                           EntityType.module, modules[index].id)),
                     );
                   });

@@ -44,6 +44,8 @@ enum EntityType {
   sensors,
   signal,
   signals,
+  binkynetlocalworker,
+  binkynetlocalworkers,
 }
 
 class EntitySelector {
@@ -60,29 +62,9 @@ class EntitySelector {
       : id = null,
         parentId = null;
 
-  EntitySelector.module(this.entityType, this.id) : parentId = null;
+  EntitySelector.child(this.entityType, this.id) : parentId = null;
 
-  EntitySelector.loc(this.entityType, this.id) : parentId = null;
-
-  EntitySelector.locGroup(this.entityType, this.id) : parentId = null;
-
-  EntitySelector.commandStation(this.entityType, this.id) : parentId = null;
-
-  EntitySelector.block(this.entityType, this.parentId, this.id);
-
-  EntitySelector.blockgroup(this.entityType, this.parentId, this.id);
-
-  EntitySelector.edge(this.entityType, this.parentId, this.id);
-
-  EntitySelector.junction(this.entityType, this.parentId, this.id);
-
-  EntitySelector.output(this.entityType, this.parentId, this.id);
-
-  EntitySelector.route(this.entityType, this.parentId, this.id);
-
-  EntitySelector.sensor(this.entityType, this.parentId, this.id);
-
-  EntitySelector.signal(this.entityType, this.parentId, this.id);
+  EntitySelector.parentChild(this.entityType, this.parentId, this.id);
 
   EntitySelector back() {
     switch (entityType) {
@@ -100,37 +82,41 @@ class EntitySelector {
       case EntityType.commandstations:
         return EntitySelector.railway(EntityType.railway);
       case EntityType.blocks:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.block:
-        return EntitySelector.module(EntityType.blocks, parentId);
+        return EntitySelector.child(EntityType.blocks, parentId);
       case EntityType.blockgroups:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.blockgroup:
-        return EntitySelector.module(EntityType.blockgroups, parentId);
+        return EntitySelector.child(EntityType.blockgroups, parentId);
       case EntityType.edges:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.edge:
-        return EntitySelector.module(EntityType.edges, parentId);
+        return EntitySelector.child(EntityType.edges, parentId);
       case EntityType.junctions:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.junction:
-        return EntitySelector.module(EntityType.junctions, parentId);
+        return EntitySelector.child(EntityType.junctions, parentId);
       case EntityType.outputs:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.output:
-        return EntitySelector.module(EntityType.outputs, parentId);
+        return EntitySelector.child(EntityType.outputs, parentId);
       case EntityType.routes:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.route:
-        return EntitySelector.module(EntityType.routes, parentId);
+        return EntitySelector.child(EntityType.routes, parentId);
       case EntityType.sensors:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.sensor:
-        return EntitySelector.module(EntityType.sensors, parentId);
+        return EntitySelector.child(EntityType.sensors, parentId);
       case EntityType.signals:
-        return EntitySelector.module(EntityType.module, id);
+        return EntitySelector.child(EntityType.module, id);
       case EntityType.signal:
-        return EntitySelector.module(EntityType.signals, parentId);
+        return EntitySelector.child(EntityType.signals, parentId);
+      case EntityType.binkynetlocalworkers:
+        return EntitySelector.child(EntityType.commandstation, id);
+      case EntityType.binkynetlocalworker:
+        return EntitySelector.child(EntityType.commandstation, parentId);
       default:
         return this;
     }

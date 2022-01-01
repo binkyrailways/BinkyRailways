@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model Output to an API Output
 func (dst *Output) FromModel(ctx context.Context, src model.Output) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -37,7 +37,7 @@ func (dst *Output) FromModel(ctx context.Context, src model.Output) error {
 
 // ToModel converts an API Output to a model Output
 func (src *Output) ToModel(ctx context.Context, dst model.Output) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected output ID: '%s'", src.GetId())
 	}

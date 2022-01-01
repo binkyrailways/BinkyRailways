@@ -25,7 +25,7 @@ import (
 
 // Gets a Sensor by ID.
 func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Sensor, error) {
-	moduleID, sensorID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, sensorID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Senso
 
 // Update a Sensor by ID.
 func (s *service) UpdateSensor(ctx context.Context, req *api.Sensor) (*api.Sensor, error) {
-	moduleID, sensorID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, sensorID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

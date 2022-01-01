@@ -25,7 +25,7 @@ import (
 
 // Gets a route by ID.
 func (s *service) GetRoute(ctx context.Context, req *api.IDRequest) (*api.Route, error) {
-	moduleID, routeID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, routeID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetRoute(ctx context.Context, req *api.IDRequest) (*api.Route,
 
 // Update a route by ID.
 func (s *service) UpdateRoute(ctx context.Context, req *api.Route) (*api.Route, error) {
-	moduleID, routeID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, routeID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

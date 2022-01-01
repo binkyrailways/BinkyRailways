@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model block to an API block
 func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -51,7 +51,7 @@ func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 
 // ToModel converts an API block to a model block
 func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected block ID: '%s'", src.GetId())
 	}

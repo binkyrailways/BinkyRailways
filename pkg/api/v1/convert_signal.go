@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model Signal to an API Signal
 func (dst *Signal) FromModel(ctx context.Context, src model.Signal) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -37,7 +37,7 @@ func (dst *Signal) FromModel(ctx context.Context, src model.Signal) error {
 
 // ToModel converts an API Signal to a model Signal
 func (src *Signal) ToModel(ctx context.Context, dst model.Signal) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected signal ID: '%s'", src.GetId())
 	}

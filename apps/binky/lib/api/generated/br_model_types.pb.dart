@@ -903,6 +903,7 @@ class CommandStation extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOM<BinkyNetCommandStation>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binkynetCommandStation', subBuilder: BinkyNetCommandStation.create)
     ..hasRequiredFields = false
   ;
 
@@ -910,6 +911,7 @@ class CommandStation extends $pb.GeneratedMessage {
   factory CommandStation({
     $core.String? id,
     $core.String? description,
+    BinkyNetCommandStation? binkynetCommandStation,
   }) {
     final _result = create();
     if (id != null) {
@@ -917,6 +919,9 @@ class CommandStation extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (binkynetCommandStation != null) {
+      _result.binkynetCommandStation = binkynetCommandStation;
     }
     return _result;
   }
@@ -958,6 +963,17 @@ class CommandStation extends $pb.GeneratedMessage {
   $core.bool hasDescription() => $_has(1);
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(10)
+  BinkyNetCommandStation get binkynetCommandStation => $_getN(2);
+  @$pb.TagNumber(10)
+  set binkynetCommandStation(BinkyNetCommandStation v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasBinkynetCommandStation() => $_has(2);
+  @$pb.TagNumber(10)
+  void clearBinkynetCommandStation() => clearField(10);
+  @$pb.TagNumber(10)
+  BinkyNetCommandStation ensureBinkynetCommandStation() => $_ensure(2);
 }
 
 class CommandStationRef extends $pb.GeneratedMessage {
@@ -996,6 +1012,225 @@ class CommandStationRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static CommandStationRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandStationRef>(create);
   static CommandStationRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class BinkyNetCommandStation extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetCommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serverHost')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'grpcPort', $pb.PbFieldType.O3)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiredWorkerVersion')
+    ..pc<BinkyNetLocalWorkerRef>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkers', $pb.PbFieldType.PM, subBuilder: BinkyNetLocalWorkerRef.create)
+    ..hasRequiredFields = false
+  ;
+
+  BinkyNetCommandStation._() : super();
+  factory BinkyNetCommandStation({
+    $core.String? serverHost,
+    $core.int? grpcPort,
+    $core.String? requiredWorkerVersion,
+    $core.Iterable<BinkyNetLocalWorkerRef>? localWorkers,
+  }) {
+    final _result = create();
+    if (serverHost != null) {
+      _result.serverHost = serverHost;
+    }
+    if (grpcPort != null) {
+      _result.grpcPort = grpcPort;
+    }
+    if (requiredWorkerVersion != null) {
+      _result.requiredWorkerVersion = requiredWorkerVersion;
+    }
+    if (localWorkers != null) {
+      _result.localWorkers.addAll(localWorkers);
+    }
+    return _result;
+  }
+  factory BinkyNetCommandStation.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinkyNetCommandStation.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinkyNetCommandStation clone() => BinkyNetCommandStation()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinkyNetCommandStation copyWith(void Function(BinkyNetCommandStation) updates) => super.copyWith((message) => updates(message as BinkyNetCommandStation)) as BinkyNetCommandStation; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetCommandStation create() => BinkyNetCommandStation._();
+  BinkyNetCommandStation createEmptyInstance() => create();
+  static $pb.PbList<BinkyNetCommandStation> createRepeated() => $pb.PbList<BinkyNetCommandStation>();
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetCommandStation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetCommandStation>(create);
+  static BinkyNetCommandStation? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get serverHost => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set serverHost($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasServerHost() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearServerHost() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get grpcPort => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set grpcPort($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasGrpcPort() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGrpcPort() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get requiredWorkerVersion => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set requiredWorkerVersion($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasRequiredWorkerVersion() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRequiredWorkerVersion() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<BinkyNetLocalWorkerRef> get localWorkers => $_getList(3);
+}
+
+class BinkyNetLocalWorker extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetLocalWorker', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareId')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alias')
+    ..hasRequiredFields = false
+  ;
+
+  BinkyNetLocalWorker._() : super();
+  factory BinkyNetLocalWorker({
+    $core.String? id,
+    $core.String? description,
+    $core.String? hardwareId,
+    $core.String? alias,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (hardwareId != null) {
+      _result.hardwareId = hardwareId;
+    }
+    if (alias != null) {
+      _result.alias = alias;
+    }
+    return _result;
+  }
+  factory BinkyNetLocalWorker.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinkyNetLocalWorker.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinkyNetLocalWorker clone() => BinkyNetLocalWorker()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinkyNetLocalWorker copyWith(void Function(BinkyNetLocalWorker) updates) => super.copyWith((message) => updates(message as BinkyNetLocalWorker)) as BinkyNetLocalWorker; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetLocalWorker create() => BinkyNetLocalWorker._();
+  BinkyNetLocalWorker createEmptyInstance() => create();
+  static $pb.PbList<BinkyNetLocalWorker> createRepeated() => $pb.PbList<BinkyNetLocalWorker>();
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetLocalWorker getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetLocalWorker>(create);
+  static BinkyNetLocalWorker? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get hardwareId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set hardwareId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasHardwareId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearHardwareId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get alias => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set alias($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasAlias() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAlias() => clearField(4);
+}
+
+class BinkyNetLocalWorkerRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetLocalWorkerRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  BinkyNetLocalWorkerRef._() : super();
+  factory BinkyNetLocalWorkerRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory BinkyNetLocalWorkerRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinkyNetLocalWorkerRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinkyNetLocalWorkerRef clone() => BinkyNetLocalWorkerRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinkyNetLocalWorkerRef copyWith(void Function(BinkyNetLocalWorkerRef) updates) => super.copyWith((message) => updates(message as BinkyNetLocalWorkerRef)) as BinkyNetLocalWorkerRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetLocalWorkerRef create() => BinkyNetLocalWorkerRef._();
+  BinkyNetLocalWorkerRef createEmptyInstance() => create();
+  static $pb.PbList<BinkyNetLocalWorkerRef> createRepeated() => $pb.PbList<BinkyNetLocalWorkerRef>();
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetLocalWorkerRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetLocalWorkerRef>(create);
+  static BinkyNetLocalWorkerRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

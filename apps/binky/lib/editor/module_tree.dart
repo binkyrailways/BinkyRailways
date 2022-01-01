@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,7 @@ class ModuleTree extends StatelessWidget {
               return ListView(
                 children: <Widget>[
                   ListTile(
-                    leading: const Icon(Icons.book),
+                    leading: BinkyIcons.module,
                     minLeadingWidth: 20,
                     title: const Text(
                       "Module",
@@ -51,10 +52,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.module,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.module, moduleId)),
+                        EntitySelector.child(EntityType.module, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.stop),
+                    leading: BinkyIcons.block,
                     minLeadingWidth: 20,
                     title: Text(
                       "Blocks (${rw.blocks.length})",
@@ -62,21 +63,21 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.blocks,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.blocks, moduleId)),
+                        EntitySelector.child(EntityType.blocks, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.stop_outlined),
+                    leading: BinkyIcons.blockGroup,
                     minLeadingWidth: 20,
                     title: Text(
                       "Block groups (${rw.blockGroups.length})",
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.blockgroups,
-                    onTap: () => editorCtx.select(EntitySelector.module(
-                        EntityType.blockgroups, moduleId)),
+                    onTap: () => editorCtx.select(
+                        EntitySelector.child(EntityType.blockgroups, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.close_fullscreen),
+                    leading: BinkyIcons.edge,
                     minLeadingWidth: 20,
                     title: Text(
                       "Edges (${rw.edges.length})",
@@ -84,10 +85,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.edges,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.edges, moduleId)),
+                        EntitySelector.child(EntityType.edges, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.alt_route),
+                    leading: BinkyIcons.junction,
                     minLeadingWidth: 20,
                     title: Text(
                       "Junctions (${rw.junctions.length})",
@@ -95,10 +96,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.junctions,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.junctions, moduleId)),
+                        EntitySelector.child(EntityType.junctions, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.check_box),
+                    leading: BinkyIcons.output,
                     minLeadingWidth: 20,
                     title: Text(
                       "Outputs (${rw.outputs.length})",
@@ -106,10 +107,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.outputs,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.outputs, moduleId)),
+                        EntitySelector.child(EntityType.outputs, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.arrow_right_alt),
+                    leading: BinkyIcons.route,
                     minLeadingWidth: 20,
                     title: Text(
                       "Routes (${rw.routes.length})",
@@ -117,10 +118,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.routes,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.routes, moduleId)),
+                        EntitySelector.child(EntityType.routes, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.sensors),
+                    leading: BinkyIcons.sensor,
                     minLeadingWidth: 20,
                     title: Text(
                       "Sensors (${rw.sensors.length})",
@@ -128,10 +129,10 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.sensors,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.sensors, moduleId)),
+                        EntitySelector.child(EntityType.sensors, moduleId)),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.traffic),
+                    leading: BinkyIcons.signal,
                     minLeadingWidth: 20,
                     title: Text(
                       "Signals (${rw.signals.length})",
@@ -139,7 +140,7 @@ class ModuleTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.signals,
                     onTap: () => editorCtx.select(
-                        EntitySelector.module(EntityType.signals, moduleId)),
+                        EntitySelector.child(EntityType.signals, moduleId)),
                   ),
                 ],
               );

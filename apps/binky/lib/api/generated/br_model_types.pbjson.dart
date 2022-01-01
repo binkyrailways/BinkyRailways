@@ -169,11 +169,12 @@ const CommandStation$json = const {
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'binkynet_command_station', '3': 10, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetCommandStation', '10': 'binkynetCommandStation'},
   ],
 };
 
 /// Descriptor for `CommandStation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commandStationDescriptor = $convert.base64Decode('Cg5Db21tYW5kU3RhdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9u');
+final $typed_data.Uint8List commandStationDescriptor = $convert.base64Decode('Cg5Db21tYW5kU3RhdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEmIKGGJpbmt5bmV0X2NvbW1hbmRfc3RhdGlvbhgKIAEoCzIoLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRDb21tYW5kU3RhdGlvblIWYmlua3luZXRDb21tYW5kU3RhdGlvbg==');
 @$core.Deprecated('Use commandStationRefDescriptor instead')
 const CommandStationRef$json = const {
   '1': 'CommandStationRef',
@@ -184,6 +185,42 @@ const CommandStationRef$json = const {
 
 /// Descriptor for `CommandStationRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List commandStationRefDescriptor = $convert.base64Decode('ChFDb21tYW5kU3RhdGlvblJlZhIOCgJpZBgBIAEoCVICaWQ=');
+@$core.Deprecated('Use binkyNetCommandStationDescriptor instead')
+const BinkyNetCommandStation$json = const {
+  '1': 'BinkyNetCommandStation',
+  '2': const [
+    const {'1': 'server_host', '3': 1, '4': 1, '5': 9, '10': 'serverHost'},
+    const {'1': 'grpc_port', '3': 2, '4': 1, '5': 5, '10': 'grpcPort'},
+    const {'1': 'required_worker_version', '3': 3, '4': 1, '5': 9, '10': 'requiredWorkerVersion'},
+    const {'1': 'local_workers', '3': 4, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorkerRef', '10': 'localWorkers'},
+  ],
+};
+
+/// Descriptor for `BinkyNetCommandStation`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetCommandStationDescriptor = $convert.base64Decode('ChZCaW5reU5ldENvbW1hbmRTdGF0aW9uEh8KC3NlcnZlcl9ob3N0GAEgASgJUgpzZXJ2ZXJIb3N0EhsKCWdycGNfcG9ydBgCIAEoBVIIZ3JwY1BvcnQSNgoXcmVxdWlyZWRfd29ya2VyX3ZlcnNpb24YAyABKAlSFXJlcXVpcmVkV29ya2VyVmVyc2lvbhJNCg1sb2NhbF93b3JrZXJzGAQgAygLMiguYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldExvY2FsV29ya2VyUmVmUgxsb2NhbFdvcmtlcnM=');
+@$core.Deprecated('Use binkyNetLocalWorkerDescriptor instead')
+const BinkyNetLocalWorker$json = const {
+  '1': 'BinkyNetLocalWorker',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'hardware_id', '3': 3, '4': 1, '5': 9, '10': 'hardwareId'},
+    const {'1': 'alias', '3': 4, '4': 1, '5': 9, '10': 'alias'},
+  ],
+};
+
+/// Descriptor for `BinkyNetLocalWorker`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetLocalWorkerDescriptor = $convert.base64Decode('ChNCaW5reU5ldExvY2FsV29ya2VyEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SHwoLaGFyZHdhcmVfaWQYAyABKAlSCmhhcmR3YXJlSWQSFAoFYWxpYXMYBCABKAlSBWFsaWFz');
+@$core.Deprecated('Use binkyNetLocalWorkerRefDescriptor instead')
+const BinkyNetLocalWorkerRef$json = const {
+  '1': 'BinkyNetLocalWorkerRef',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `BinkyNetLocalWorkerRef`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetLocalWorkerRefDescriptor = $convert.base64Decode('ChZCaW5reU5ldExvY2FsV29ya2VyUmVmEg4KAmlkGAEgASgJUgJpZA==');
 @$core.Deprecated('Use blockDescriptor instead')
 const Block$json = const {
   '1': 'Block',

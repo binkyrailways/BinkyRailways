@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model edge to an API edge
 func (dst *Edge) FromModel(ctx context.Context, src model.Edge) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
@@ -37,7 +37,7 @@ func (dst *Edge) FromModel(ctx context.Context, src model.Edge) error {
 
 // ToModel converts an API edge to a model edge
 func (src *Edge) ToModel(ctx context.Context, dst model.Edge) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected edge ID: '%s'", src.GetId())
 	}

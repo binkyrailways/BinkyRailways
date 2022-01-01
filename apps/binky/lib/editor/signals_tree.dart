@@ -45,7 +45,7 @@ class SignalsTree extends StatelessWidget {
                     final id = signals[index].id;
                     return ListTile(
                       title: Text(signals[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.signal(
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.signal, moduleId, id)),
                       selected: selector.id == id,
                     );

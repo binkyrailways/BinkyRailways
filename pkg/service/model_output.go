@@ -25,7 +25,7 @@ import (
 
 // Gets a Output by ID.
 func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Output, error) {
-	moduleID, outputID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, outputID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Outpu
 
 // Update a Output by ID.
 func (s *service) UpdateOutput(ctx context.Context, req *api.Output) (*api.Output, error) {
-	moduleID, outputID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, outputID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

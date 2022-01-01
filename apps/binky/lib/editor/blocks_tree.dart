@@ -46,8 +46,8 @@ class BlocksTree extends StatelessWidget {
                     final id = blocks[index].id;
                     return ListTile(
                       title: Text(blocks[index].description),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.block(EntityType.block, moduleId, id)),
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
+                          EntityType.block, moduleId, id)),
                       selected: selector.id == id,
                     );
                   });

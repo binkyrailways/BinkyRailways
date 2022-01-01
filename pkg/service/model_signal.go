@@ -25,7 +25,7 @@ import (
 
 // Gets a signal by ID.
 func (s *service) GetSignal(ctx context.Context, req *api.IDRequest) (*api.Signal, error) {
-	moduleID, signalID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, signalID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetSignal(ctx context.Context, req *api.IDRequest) (*api.Signa
 
 // Update a signal by ID.
 func (s *service) UpdateSignal(ctx context.Context, req *api.Signal) (*api.Signal, error) {
-	moduleID, signalID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, signalID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

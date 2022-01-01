@@ -96,6 +96,12 @@ service ModelService {
   rpc GetSignal(IDRequest) returns (Signal);
   // Update a Signal by ID.
   rpc UpdateSignal(Signal) returns (Signal);
+
+  // Gets a BinkyNetLocalWorker by ID.
+  rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
+  // Update a Signal by ID.
+  rpc UpdateBinkyNetLocalWorker(BinkyNetLocalWorker)
+      returns (BinkyNetLocalWorker);
 }
 
 // Request by ID

@@ -45,7 +45,7 @@ class JunctionsTree extends StatelessWidget {
                     final id = junctions[index].id;
                     return ListTile(
                       title: Text(junctions[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.junction(
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.junction, moduleId, id)),
                       selected: selector.id == id,
                     );

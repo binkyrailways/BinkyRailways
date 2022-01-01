@@ -45,7 +45,7 @@ class LocGroupsTree extends StatelessWidget {
                     return ListTile(
                       title: Text(lgs[index].description),
                       onTap: () => editorCtx.select(
-                          EntitySelector.locGroup(EntityType.locgroup, id)),
+                          EntitySelector.child(EntityType.locgroup, id)),
                       selected: selector.id == id,
                     );
                   });

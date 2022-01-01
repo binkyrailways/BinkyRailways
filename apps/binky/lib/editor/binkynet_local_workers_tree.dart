@@ -16,37 +16,40 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
 import '../api.dart';
 
-class EdgesTree extends StatelessWidget {
-  const EdgesTree({Key? key}) : super(key: key);
+class BinkyNetLocalWorkersTree extends StatelessWidget {
+  const BinkyNetLocalWorkersTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
+    final csId = selector.parentId ?? selector.id ?? "";
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
-        return FutureBuilder<List<Edge>>(
-            future: getEdges(model, moduleId),
+        return FutureBuilder<List<BinkyNetLocalWorker>>(
+            future: getBinkyNetLocalWorkers(model, csId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var edges = snapshot.data!;
+              var localworkers = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
-                  itemCount: edges.length,
+                  itemCount: localworkers.length,
                   itemBuilder: (context, index) {
-                    final id = edges[index].id;
+                    final id = localworkers[index].id;
                     return ListTile(
-                      title: Text(edges[index].description),
+                      leading: BinkyIcons.binkynetlocalworker,
+                      title: Text(localworkers[index].description),
                       onTap: () => editorCtx.select(EntitySelector.parentChild(
-                          EntityType.edge, moduleId, id)),
+                          EntityType.binkynetlocalworker, csId, id)),
                       selected: selector.id == id,
                     );
                   });
@@ -55,10 +58,15 @@ class EdgesTree extends StatelessWidget {
     );
   }
 
-  Future<List<Edge>> getEdges(ModelModel model, String moduleId) async {
-    var rw = await model.getModule(moduleId);
-    return await Future.wait([
-      for (var x in rw.edges) model.getEdge(x.id),
-    ]);
+  Future<List<BinkyNetLocalWorker>> getBinkyNetLocalWorkers(
+      ModelModel model, String csId) async {
+    final cs = await model.getCommandStation(csId);
+    if (cs.hasBinkynetCommandStation()) {
+      final bnCs = cs.binkynetCommandStation;
+      return await Future.wait([
+        for (var x in bnCs.localWorkers) model.getBinkyNetLocalWorker(x.id),
+      ]);
+    }
+    return [];
   }
 }

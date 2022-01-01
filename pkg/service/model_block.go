@@ -25,7 +25,7 @@ import (
 
 // Gets a block by ID.
 func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, blockID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 
 // Update a block by ID.
 func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, error) {
-	moduleID, blockID, err := api.SplitModuleEntityID(req.GetId())
+	moduleID, blockID, err := api.SplitParentChildID(req.GetId())
 	if err != nil {
 		return nil, err
 	}

@@ -25,7 +25,7 @@ import (
 
 // FromModel converts a model BlockGroup to an API BlockGroup
 func (dst *BlockGroup) FromModel(ctx context.Context, src model.BlockGroup) error {
-	dst.Id = JoinModuleEntityID(src.GetModule().GetID(), src.GetID())
+	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	return nil
@@ -33,7 +33,7 @@ func (dst *BlockGroup) FromModel(ctx context.Context, src model.BlockGroup) erro
 
 // ToModel converts an API BlockGroup to a model BlockGroup
 func (src *BlockGroup) ToModel(ctx context.Context, dst model.BlockGroup) error {
-	expectedID := JoinModuleEntityID(dst.GetModule().GetID(), dst.GetID())
+	expectedID := JoinParentChildID(dst.GetModule().GetID(), dst.GetID())
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected block group ID: '%s'", src.GetId())
 	}

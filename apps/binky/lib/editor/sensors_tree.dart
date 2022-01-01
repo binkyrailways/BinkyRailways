@@ -45,7 +45,7 @@ class SensorsTree extends StatelessWidget {
                     final id = sensors[index].id;
                     return ListTile(
                       title: Text(sensors[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.sensor(
+                      onTap: () => editorCtx.select(EntitySelector.parentChild(
                           EntityType.sensor, moduleId, id)),
                       selected: selector.id == id,
                     );
