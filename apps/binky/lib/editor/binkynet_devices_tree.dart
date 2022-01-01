@@ -23,31 +23,33 @@ import 'package:provider/provider.dart';
 import '../models.dart';
 import '../api.dart';
 
-class JunctionsTree extends StatelessWidget {
-  const JunctionsTree({Key? key}) : super(key: key);
+class BinkyNetDevicesTree extends StatelessWidget {
+  const BinkyNetDevicesTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
+    final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final moduleId = selector.parentId ?? selector.id ?? "";
-        return FutureBuilder<List<Junction>>(
-            future: getJunctions(model, moduleId),
+        return FutureBuilder<List<BinkyNetDevice>>(
+            future: getBinkyNetDevices(model, lwId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var junctions = snapshot.data!;
+              var devices = snapshot.data!
+                ..sort((a, b) => a.deviceId.compareTo(b.deviceId));
               return ListView.builder(
-                  itemCount: junctions.length,
+                  itemCount: devices.length,
                   itemBuilder: (context, index) {
-                    final id = junctions[index].id;
+                    final id = devices[index].id;
                     return ListTile(
-                      leading: BinkyIcons.junction,
-                      title: Text(junctions[index].description),
-                      onTap: () => editorCtx.select(EntityType.junction, id),
+                      leading: BinkyIcons.binkynetdevice,
+                      title: Text(devices[index].deviceId),
+                      onTap: () =>
+                          editorCtx.select(EntityType.binkynetdevice, id),
                       selected: selector.id == id,
                     );
                   });
@@ -56,10 +58,9 @@ class JunctionsTree extends StatelessWidget {
     );
   }
 
-  Future<List<Junction>> getJunctions(ModelModel model, String moduleId) async {
-    var rw = await model.getModule(moduleId);
-    return await Future.wait([
-      for (var x in rw.junctions) model.getJunction(x.id),
-    ]);
+  Future<List<BinkyNetDevice>> getBinkyNetDevices(
+      ModelModel model, String lwId) async {
+    final lw = await model.getBinkyNetLocalWorker(lwId);
+    return lw.devices;
   }
 }

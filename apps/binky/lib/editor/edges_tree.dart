@@ -47,8 +47,7 @@ class EdgesTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.edge,
                       title: Text(edges[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.parentChild(
-                          EntityType.edge, moduleId, id)),
+                      onTap: () => editorCtx.select(EntityType.edge, id),
                       selected: selector.id == id,
                     );
                   });

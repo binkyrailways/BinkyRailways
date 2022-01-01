@@ -48,8 +48,7 @@ class BlocksTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.block,
                       title: Text(blocks[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.parentChild(
-                          EntityType.block, moduleId, id)),
+                      onTap: () => editorCtx.select(EntityType.block, id),
                       selected: selector.id == id,
                     );
                   });

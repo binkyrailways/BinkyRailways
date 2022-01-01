@@ -31,8 +31,7 @@ class JunctionComponent extends common.JunctionComponent with Tappable {
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntitySelector.parentChild(
-        EntityType.junction, model.moduleId, model.id));
+    editorCtx.select(EntityType.junction, model.id);
     return true;
   }
 

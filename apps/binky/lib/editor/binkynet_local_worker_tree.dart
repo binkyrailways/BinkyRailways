@@ -23,8 +23,8 @@ import '../models.dart';
 import '../api.dart';
 import '../icons.dart';
 
-class CommandStationTree extends StatelessWidget {
-  const CommandStationTree({Key? key}) : super(key: key);
+class BinkyNetLocalWorkerTree extends StatelessWidget {
+  const BinkyNetLocalWorkerTree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,45 +32,40 @@ class CommandStationTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        final csId = selector.id ?? "";
-        return FutureBuilder<CommandStation>(
-            future: model.getCommandStation(csId),
-            initialData: model.getCachedCommandStation(csId),
+        final lwId = selector.id ?? "";
+        return FutureBuilder<BinkyNetLocalWorker>(
+            future: model.getBinkyNetLocalWorker(lwId),
+            initialData: model.getCachedBinkyNetLocalWorker(lwId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var cs = snapshot.data!;
+              var lw = snapshot.data!;
               final List<Widget> children = [
                 ListTile(
-                  leading: BinkyIcons.commandstation,
+                  leading: BinkyIcons.binkynetlocalworker,
                   minLeadingWidth: 20,
                   title: const Text(
-                    "Command station",
+                    "Local worker",
                     overflow: TextOverflow.ellipsis,
                   ),
-                  selected: selector.entityType == EntityType.commandstation,
+                  selected:
+                      selector.entityType == EntityType.binkynetlocalworker,
                   onTap: () =>
-                      editorCtx.select(EntityType.commandstation, csId),
+                      editorCtx.select(EntityType.binkynetlocalworker, lwId),
+                ),
+                ListTile(
+                  leading: BinkyIcons.binkynetdevice,
+                  minLeadingWidth: 20,
+                  title: Text(
+                    "Devices (${lw.devices.length})",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  selected: selector.entityType == EntityType.binkynetdevices,
+                  onTap: () =>
+                      editorCtx.select(EntityType.binkynetdevices, lwId),
                 ),
               ];
-              if (cs.hasBinkynetCommandStation()) {
-                final bnCs = cs.binkynetCommandStation;
-                children.add(
-                  ListTile(
-                    leading: BinkyIcons.binkynetlocalworker,
-                    minLeadingWidth: 20,
-                    title: Text(
-                      "Local workers (${bnCs.localWorkers.length})",
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    selected:
-                        selector.entityType == EntityType.binkynetlocalworkers,
-                    onTap: () =>
-                        editorCtx.select(EntityType.binkynetlocalworkers, csId),
-                  ),
-                );
-              }
               return ListView(
                 children: children,
               );

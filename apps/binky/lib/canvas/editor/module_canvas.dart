@@ -31,7 +31,7 @@ class ModuleCanvas extends StatelessWidget {
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
-    final moduleId = selector.parentId ?? selector.id ?? "";
+    final moduleId = selector.idOf(EntityType.module) ?? "";
     return Consumer<ModelModel>(builder: (context, model, child) {
       return GameWidget(
           game: ModuleGame(

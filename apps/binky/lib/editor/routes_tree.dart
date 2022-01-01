@@ -47,8 +47,7 @@ class RoutesTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.route,
                       title: Text(routes[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.parentChild(
-                          EntityType.route, moduleId, id)),
+                      onTap: () => editorCtx.select(EntityType.route, id),
                       selected: selector.id == id,
                     );
                   });

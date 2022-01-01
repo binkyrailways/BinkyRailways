@@ -30,8 +30,7 @@ class BlockComponent extends common.BlockComponent {
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(
-        EntitySelector.parentChild(EntityType.block, model.moduleId, model.id));
+    editorCtx.select(EntityType.block, model.id);
     return true;
   }
 

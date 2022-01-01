@@ -49,8 +49,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.railway,
-                    onTap: () => editorCtx
-                        .select(EntitySelector.railway(EntityType.railway)),
+                    onTap: () => editorCtx.select(EntityType.railway, ""),
                   ),
                   ListTile(
                     leading: BinkyIcons.module,
@@ -60,8 +59,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.modules,
-                    onTap: () => editorCtx
-                        .select(EntitySelector.railway(EntityType.modules)),
+                    onTap: () => editorCtx.select(EntityType.modules, ""),
                   ),
                   ListTile(
                     leading: BinkyIcons.loc,
@@ -71,8 +69,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.locs,
-                    onTap: () => editorCtx
-                        .select(EntitySelector.railway(EntityType.locs)),
+                    onTap: () => editorCtx.select(EntityType.locs, ""),
                   ),
                   ListTile(
                     leading: BinkyIcons.locGroup,
@@ -82,8 +79,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.locgroups,
-                    onTap: () => editorCtx
-                        .select(EntitySelector.railway(EntityType.locgroups)),
+                    onTap: () => editorCtx.select(EntityType.locgroups, ""),
                   ),
                   ListTile(
                     leading: BinkyIcons.commandstation,
@@ -93,8 +89,8 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.commandstations,
-                    onTap: () => editorCtx.select(
-                        EntitySelector.railway(EntityType.commandstations)),
+                    onTap: () =>
+                        editorCtx.select(EntityType.commandstations, ""),
                   ),
                 ],
               );

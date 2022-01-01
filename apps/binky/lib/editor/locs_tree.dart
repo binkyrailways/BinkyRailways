@@ -46,8 +46,7 @@ class LocsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.loc,
                       title: Text(locs[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.child(EntityType.loc, id)),
+                      onTap: () => editorCtx.select(EntityType.loc, id),
                       selected: selector.id == id,
                     );
                   });

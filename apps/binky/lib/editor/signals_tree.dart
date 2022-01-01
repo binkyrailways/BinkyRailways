@@ -47,8 +47,7 @@ class SignalsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.signal,
                       title: Text(signals[index].description),
-                      onTap: () => editorCtx.select(EntitySelector.parentChild(
-                          EntityType.signal, moduleId, id)),
+                      onTap: () => editorCtx.select(EntityType.signal, id),
                       selected: selector.id == id,
                     );
                   });

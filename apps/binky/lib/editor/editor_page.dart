@@ -23,7 +23,10 @@ import '../models.dart';
 import '../api.dart';
 
 import './editor_context.dart';
+import './binkynet_device_settings.dart';
+import './binkynet_devices_tree.dart';
 import './binkynet_local_worker_settings.dart';
+import './binkynet_local_worker_tree.dart';
 import './binkynet_local_workers_tree.dart';
 import './block_settings.dart';
 import './blocks_tree.dart';
@@ -116,8 +119,7 @@ class _EditorPageState extends State<EditorPage> {
       ModelModel model, Railway railway) {
     if ((editorCtx.selector.entityType == EntityType.unknown) &&
         model.isRailwayLoaded()) {
-      editorCtx.select(EntitySelector.railway(EntityType.railway),
-          notify: false);
+      editorCtx.select(EntityType.railway, "", notify: false);
     }
     switch (editorCtx.selector.entityType) {
       case EntityType.railway:
@@ -261,8 +263,18 @@ class _EditorPageState extends State<EditorPage> {
         );
       case EntityType.binkynetlocalworker:
         return const SplitView(
-          menu: BinkyNetLocalWorkersTree(),
+          menu: BinkyNetLocalWorkerTree(),
           content: BinkyNetLocalWorkerSettings(),
+        );
+      case EntityType.binkynetdevices:
+        return const SplitView(
+          menu: BinkyNetLocalWorkerTree(),
+          content: BinkyNetDevicesTree(),
+        );
+      case EntityType.binkynetdevice:
+        return const SplitView(
+          menu: BinkyNetDevicesTree(),
+          content: BinkyNetDeviceSettings(),
         );
       default:
         return const Center(child: Text("No selection"));
@@ -272,13 +284,12 @@ class _EditorPageState extends State<EditorPage> {
   Widget? _buildLeading(
       BuildContext context, EditorContext editorCtx, ModelModel model) {
     final selector = editorCtx.selector;
-    final prev = selector.back();
-    if (prev.entityType == selector.entityType) {
+    if (!editorCtx.canGoBack) {
       // No reason for back button
       return null;
     }
     return IconButton(
-      onPressed: () => editorCtx.select(prev),
+      onPressed: () => editorCtx.goBack(),
       icon: const Icon(Icons.arrow_back),
       tooltip: 'Back',
     );
