@@ -103,6 +103,18 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
             onLostFocus: (value) async {
               await _update((update) => {update.deviceId = value});
             }),
+        SettingsDropdownField<BinkyNetDeviceType>(
+          label: "Device type",
+          value: widget.binkynetdevice.deviceType,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.deviceType = value;
+              }
+            });
+          },
+          items: _deviceTypeItems,
+        ),
       ],
     );
   }
@@ -114,4 +126,12 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
     editor(update.devices.singleWhere((x) => x.id == widget.binkynetdevice.id));
     widget.model.updateBinkyNetLocalWorker(update);
   }
+
+  static final List<DropdownMenuItem<BinkyNetDeviceType>> _deviceTypeItems =
+      BinkyNetDeviceType.values
+          .map((e) => DropdownMenuItem<BinkyNetDeviceType>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }

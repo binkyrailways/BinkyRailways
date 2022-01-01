@@ -271,11 +271,46 @@ const BinkyNetObject$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'object_id', '3': 2, '4': 1, '5': 9, '10': 'objectId'},
     const {'1': 'object_type', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.BinkyNetObjectType', '10': 'objectType'},
+    const {'1': 'connections', '3': 4, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetConnection', '10': 'connections'},
   ],
 };
 
 /// Descriptor for `BinkyNetObject`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetObjectDescriptor = $convert.base64Decode('Cg5CaW5reU5ldE9iamVjdBIOCgJpZBgBIAEoCVICaWQSGwoJb2JqZWN0X2lkGAIgASgJUghvYmplY3RJZBJFCgtvYmplY3RfdHlwZRgDIAEoDjIkLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRPYmplY3RUeXBlUgpvYmplY3RUeXBl');
+final $typed_data.Uint8List binkyNetObjectDescriptor = $convert.base64Decode('Cg5CaW5reU5ldE9iamVjdBIOCgJpZBgBIAEoCVICaWQSGwoJb2JqZWN0X2lkGAIgASgJUghvYmplY3RJZBJFCgtvYmplY3RfdHlwZRgDIAEoDjIkLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRPYmplY3RUeXBlUgpvYmplY3RUeXBlEkYKC2Nvbm5lY3Rpb25zGAQgAygLMiQuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldENvbm5lY3Rpb25SC2Nvbm5lY3Rpb25z');
+@$core.Deprecated('Use binkyNetConnectionDescriptor instead')
+const BinkyNetConnection$json = const {
+  '1': 'BinkyNetConnection',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'pins', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetDevicePin', '10': 'pins'},
+    const {'1': 'configuration', '3': 3, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetConnection.ConfigurationEntry', '10': 'configuration'},
+  ],
+  '3': const [BinkyNetConnection_ConfigurationEntry$json],
+};
+
+@$core.Deprecated('Use binkyNetConnectionDescriptor instead')
+const BinkyNetConnection_ConfigurationEntry$json = const {
+  '1': 'ConfigurationEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+/// Descriptor for `BinkyNetConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetConnectionDescriptor = $convert.base64Decode('ChJCaW5reU5ldENvbm5lY3Rpb24SEAoDa2V5GAEgASgJUgNrZXkSNwoEcGlucxgCIAMoCzIjLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXREZXZpY2VQaW5SBHBpbnMSXQoNY29uZmlndXJhdGlvbhgDIAMoCzI3LmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRDb25uZWN0aW9uLkNvbmZpZ3VyYXRpb25FbnRyeVINY29uZmlndXJhdGlvbhpAChJDb25maWd1cmF0aW9uRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AQ==');
+@$core.Deprecated('Use binkyNetDevicePinDescriptor instead')
+const BinkyNetDevicePin$json = const {
+  '1': 'BinkyNetDevicePin',
+  '2': const [
+    const {'1': 'device_id', '3': 1, '4': 1, '5': 9, '10': 'deviceId'},
+    const {'1': 'index', '3': 2, '4': 1, '5': 13, '10': 'index'},
+  ],
+};
+
+/// Descriptor for `BinkyNetDevicePin`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetDevicePinDescriptor = $convert.base64Decode('ChFCaW5reU5ldERldmljZVBpbhIbCglkZXZpY2VfaWQYASABKAlSCGRldmljZUlkEhQKBWluZGV4GAIgASgNUgVpbmRleA==');
 @$core.Deprecated('Use blockDescriptor instead')
 const Block$json = const {
   '1': 'Block',

@@ -31,7 +31,11 @@ func (dst *BinkyNetObject) FromModel(ctx context.Context, src model.BinkyNetObje
 	dst.Id = src.GetID()
 	dst.ObjectId = string(src.GetObjectID())
 	dst.ObjectType.FromModel(ctx, src.GetObjectType())
-	// TODO connections
+	src.GetConnections().ForEach(func(bnc model.BinkyNetConnection) {
+		conn := &BinkyNetConnection{}
+		conn.FromModel(ctx, bnc)
+		dst.Connections = append(dst.Connections, conn)
+	})
 	return nil
 }
 
@@ -41,6 +45,9 @@ func (src *BinkyNetObject) ToModel(ctx context.Context, dst model.BinkyNetObject
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected binkynet object ID: '%s'", src.GetId())
 	}
+	if len(src.GetConnections()) != dst.GetConnections().GetCount() {
+		return InvalidArgument("Unexpected number of connections in object '%s' (got %d, expected %d)", src.GetObjectId(), len(src.GetConnections()), dst.GetConnections().GetCount())
+	}
 	var err error
 	multierr.AppendInto(&err, dst.SetObjectID(api.ObjectID(src.GetObjectId())))
 	if ot, err := src.GetObjectType().ToModel(ctx); err != nil {
@@ -48,6 +55,12 @@ func (src *BinkyNetObject) ToModel(ctx context.Context, dst model.BinkyNetObject
 	} else {
 		multierr.AppendInto(&err, dst.SetObjectType(ot))
 	}
-	// TODO connections
+	for i, srcConn := range src.GetConnections() {
+		dstConn, ok := dst.GetConnections().GetAt(i)
+		if !ok {
+			return InvalidArgument("Failed to get connection at index %d", i)
+		}
+		multierr.AppendInto(&err, srcConn.ToModel(ctx, dstConn))
+	}
 	return err
 }

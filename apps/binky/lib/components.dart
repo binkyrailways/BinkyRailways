@@ -20,5 +20,6 @@ export 'components/_dialogs.dart';
 export 'components/_error_message.dart';
 export 'components/_numeric_validator.dart';
 export 'components/_scrollable_form.dart';
+export 'components/_settings_dropdownfield.dart';
 export 'components/_settings_textfield.dart';
 export 'components/_split_view.dart';

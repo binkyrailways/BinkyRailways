@@ -262,7 +262,7 @@ message BinkyNetObject {
 
   // Connections to devices used by this object
   // The keys used in this map are specific to the type of object.
-  //      GetConnections() BinkyNetConnectionSet
+  repeated BinkyNetConnection connections = 4;
 }
 
 enum BinkyNetObjectType {
@@ -279,6 +279,29 @@ enum BinkyNetObjectType {
   // ObjectTypeTrackInverter is the object type of a four relay based track
   // power inverter.
   TRACKINVERTER = 4;
+}
+
+// BinkyNetConnection represents a connection from a BinkyNetObject to a
+// BinkyNetDevice.
+message BinkyNetConnection {
+  // Key is specific to the type of device.
+  string key = 1;
+
+  // The pins of devices to connect to.
+  repeated BinkyNetDevicePin pins = 2;
+
+  // Gets optional configuration for this connection.
+  map<string, string> configuration = 3;
+}
+
+// BinkyNetDevicePin identifies a hardware device and an index within that
+// hardware address.
+message BinkyNetDevicePin {
+  // ID of the device that this connection refers to.
+  string device_id = 1;
+
+  // Index on the device (1...)
+  uint32 index = 2;
 }
 
 // Block on the track

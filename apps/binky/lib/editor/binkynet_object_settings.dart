@@ -103,6 +103,18 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
             onLostFocus: (value) async {
               await _update((update) => {update.objectId = value});
             }),
+        SettingsDropdownField<BinkyNetObjectType>(
+          label: "Object type",
+          value: widget.binkynetobject.objectType,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.objectType = value;
+              }
+            });
+          },
+          items: _objectTypeItems,
+        ),
       ],
     );
   }
@@ -114,4 +126,12 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
     editor(update.objects.singleWhere((x) => x.id == widget.binkynetobject.id));
     widget.model.updateBinkyNetLocalWorker(update);
   }
+
+  static final List<DropdownMenuItem<BinkyNetObjectType>> _objectTypeItems =
+      BinkyNetObjectType.values
+          .map((e) => DropdownMenuItem<BinkyNetObjectType>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }
