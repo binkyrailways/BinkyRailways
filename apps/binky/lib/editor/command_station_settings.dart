@@ -65,9 +65,22 @@ class _CommandStationSettings extends StatefulWidget {
 
 class _CommandStationSettingsState extends State<_CommandStationSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _serverHostController = TextEditingController();
+  final TextEditingController _grpcPortController = TextEditingController();
+  final TextEditingController _requiredVersionController =
+      TextEditingController();
+  final NumericValidator _grpcPortValidator =
+      NumericValidator(minimum: 1, maximum: 32000);
 
   _initControllers() {
-    _descriptionController.text = widget.commandStation.description;
+    final cs = widget.commandStation;
+    _descriptionController.text = cs.description;
+    if (cs.hasBinkynetCommandStation()) {
+      final bnCs = cs.binkynetCommandStation;
+      _serverHostController.text = bnCs.serverHost;
+      _grpcPortController.text = bnCs.grpcPort.toString();
+      _requiredVersionController.text = bnCs.requiredWorkerVersion;
+    }
   }
 
   @override
@@ -84,21 +97,52 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = widget.commandStation;
+    final List<Widget> children = [
+      const SettingsHeader(title: "General"),
+      SettingsTextField(
+          controller: _descriptionController,
+          label: "Description",
+          firstChild: true,
+          onLostFocus: (value) async {
+            await _update((update) => {update.description = value});
+          }),
+    ];
+    if (cs.hasBinkynetCommandStation()) {
+      children.add(const SettingsHeader(title: "BinkyNet"));
+      children.add(SettingsTextField(
+          controller: _serverHostController,
+          label: "Server host",
+          onLostFocus: (value) async {
+            await _update(
+                (update) => {update.binkynetCommandStation.serverHost = value});
+          }));
+      children.add(SettingsTextField(
+          controller: _grpcPortController,
+          label: "GRPC port",
+          validator: _grpcPortValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) =>
+                {update.binkynetCommandStation.grpcPort = int.parse(value)});
+          }));
+      children.add(SettingsTextField(
+          controller: _requiredVersionController,
+          label: "Required version",
+          onLostFocus: (value) async {
+            await _update((update) =>
+                {update.binkynetCommandStation.requiredWorkerVersion = value});
+          }));
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
-        SettingsTextField(
-            controller: _descriptionController,
-            label: "Description",
-            firstChild: true,
-            onLostFocus: (value) async {
-              final cs = await widget.model
-                  .getCommandStation(widget.commandStation.id);
-              var update = cs.deepCopy()..description = value;
-              widget.model.updateCommandStation(update);
-            }),
-      ],
+      children: children,
     );
+  }
+
+  Future<void> _update(Function(CommandStation) editor) async {
+    final cs = await widget.model.getCommandStation(widget.commandStation.id);
+    var update = cs.deepCopy();
+    editor(update);
+    widget.model.updateCommandStation(update);
   }
 }
