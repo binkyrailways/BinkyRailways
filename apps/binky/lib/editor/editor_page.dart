@@ -100,6 +100,8 @@ class _EditorPageState extends State<EditorPage> {
                     );
                   }
                   var rw = snapshot.data!;
+                  final addSpeedDialChildren =
+                      _buildAddSpeedDialChildren(context, editorCtx, model);
                   return Scaffold(
                     appBar: AppBar(
                       // Here we take the value from the MyHomePage object that was created by
@@ -109,12 +111,13 @@ class _EditorPageState extends State<EditorPage> {
                       actions: _buildActions(context, editorCtx, model),
                     ),
                     body: _buildContent(context, editorCtx, model, rw),
-                    floatingActionButton: SpeedDial(
-                      icon: Icons.add,
-                      activeIcon: Icons.close_sharp,
-                      children:
-                          _buildAddSpeedDialChildren(context, editorCtx, model),
-                    ), // This trailing comma makes auto-formatting nicer for build methods.
+                    floatingActionButton: addSpeedDialChildren.isNotEmpty
+                        ? SpeedDial(
+                            icon: Icons.add,
+                            activeIcon: Icons.close_sharp,
+                            children: addSpeedDialChildren,
+                          )
+                        : null, // This trailing comma makes auto-formatting nicer for build methods.
                   );
                 });
               });
@@ -365,24 +368,31 @@ class _EditorPageState extends State<EditorPage> {
 
   List<SpeedDialChild> _buildAddSpeedDialChildren(
       BuildContext context, EditorContext editorCtx, ModelModel model) {
-    final children = [
-      SpeedDialChild(
-        child: BinkyIcons.module,
-        label: "Add module",
-        onTap: () async {
-          final added = await model.addModule();
-          editorCtx.select(EntityType.module, added.id);
-        },
-      ),
-      SpeedDialChild(
-        child: BinkyIcons.loc,
-        label: "Add loc",
-        onTap: () async {
-          final added = await model.addLoc();
-          editorCtx.select(EntityType.loc, added.id);
-        },
-      ),
-    ];
-    return children.reversed.toList();
+    switch (editorCtx.selector.entityType) {
+      case EntityType.modules:
+        return [
+          SpeedDialChild(
+            child: BinkyIcons.module,
+            label: "Add module",
+            onTap: () async {
+              final added = await model.addModule();
+              editorCtx.select(EntityType.module, added.id);
+            },
+          ),
+        ];
+      case EntityType.locs:
+        return [
+          SpeedDialChild(
+            child: BinkyIcons.loc,
+            label: "Add loc",
+            onTap: () async {
+              final added = await model.addLoc();
+              editorCtx.select(EntityType.loc, added.id);
+            },
+          ),
+        ];
+      default:
+        return [];
+    }
   }
 }
