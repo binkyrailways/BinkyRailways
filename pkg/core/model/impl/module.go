@@ -142,7 +142,7 @@ func (m *module) SetBackgroundImage(value []byte) error {
 
 // Gets the horizontal size (in pixels) of this entity.
 func (m *module) GetWidth() int {
-	maxw := 0
+	maxw := 1
 	m.ForEachPositionedEntity(func(item model.PositionedEntity) {
 		w := item.GetX() + item.GetWidth()
 		if w > maxw {
@@ -154,7 +154,7 @@ func (m *module) GetWidth() int {
 
 // Gets the vertical size (in pixels) of this entity.
 func (m *module) GetHeight() int {
-	maxh := 0
+	maxh := 1
 	m.ForEachPositionedEntity(func(item model.PositionedEntity) {
 		h := item.GetY() + item.GetHeight()
 		if h > maxh {

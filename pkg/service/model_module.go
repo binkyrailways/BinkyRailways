@@ -91,3 +91,21 @@ func (s *service) UpdateModule(ctx context.Context, req *api.Module) (*api.Modul
 	}
 	return &result, nil
 }
+
+// Add a new module.
+func (s *service) AddModule(ctx context.Context, req *api.Empty) (*api.Module, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	mod, err := rw.GetPackage().AddNewModule()
+	if err != nil {
+		return nil, err
+	}
+	rw.GetModules().Add(mod)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

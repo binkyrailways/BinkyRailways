@@ -15,6 +15,9 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/icons.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
 import '../components.dart';
 import 'package:flutter/material.dart' hide RouteSettings;
 import 'package:provider/provider.dart';
@@ -106,10 +109,11 @@ class _EditorPageState extends State<EditorPage> {
                       actions: _buildActions(context, editorCtx, model),
                     ),
                     body: _buildContent(context, editorCtx, model, rw),
-                    floatingActionButton: FloatingActionButton(
-                      onPressed: () => {},
-                      tooltip: 'Increment',
-                      child: const Icon(Icons.add),
+                    floatingActionButton: SpeedDial(
+                      icon: Icons.add,
+                      activeIcon: Icons.close_sharp,
+                      children:
+                          _buildAddSpeedDialChildren(context, editorCtx, model),
                     ), // This trailing comma makes auto-formatting nicer for build methods.
                   );
                 });
@@ -357,5 +361,28 @@ class _EditorPageState extends State<EditorPage> {
           ),
         ];
     }
+  }
+
+  List<SpeedDialChild> _buildAddSpeedDialChildren(
+      BuildContext context, EditorContext editorCtx, ModelModel model) {
+    final children = [
+      SpeedDialChild(
+        child: BinkyIcons.module,
+        label: "Add module",
+        onTap: () async {
+          final added = await model.addModule();
+          editorCtx.select(EntityType.module, added.id);
+        },
+      ),
+      SpeedDialChild(
+        child: BinkyIcons.loc,
+        label: "Add loc",
+        onTap: () async {
+          final added = await model.addLoc();
+          editorCtx.select(EntityType.loc, added.id);
+        },
+      ),
+    ];
+    return children.reversed.toList();
   }
 }

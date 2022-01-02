@@ -16,6 +16,7 @@
 //
 
 import 'dart:ui' as ui;
+import 'dart:math';
 
 import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
@@ -30,8 +31,8 @@ class ModuleComponent extends EntityComponent {
   ui.Image? _bgImage;
 
   ModuleComponent({required this.model}) {
-    size.x = model.width.toDouble();
-    size.y = model.height.toDouble();
+    size.x = model.hasWidth() ? max(1, model.width.toDouble()) : 1;
+    size.y = model.hasHeight() ? max(1, model.height.toDouble()) : 1;
   }
 
   Future<void> loadBackgroundImage(ModelModel modelModel) async {

@@ -41,11 +41,15 @@ service ModelService {
   rpc GetModuleBackgroundImage(IDRequest) returns (Image);
   // Update a module by ID.
   rpc UpdateModule(Module) returns (Module);
+  // Adds a new module.
+  rpc AddModule(Empty) returns (Module);
 
   // Gets a loc by ID.
   rpc GetLoc(IDRequest) returns (Loc);
   // Update a loc by ID.
   rpc UpdateLoc(Loc) returns (Loc);
+  // Adds a new loc.
+  rpc AddLoc(Empty) returns (Loc);
 
   // Gets a loc group by ID.
   rpc GetLocGroup(IDRequest) returns (LocGroup);

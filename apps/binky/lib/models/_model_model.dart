@@ -45,6 +45,9 @@ class ModelModel extends ChangeNotifier {
   // Is a railway already loaded?
   bool isRailwayLoaded() => _railway != null;
 
+  // Is the currently loaded railway modified since last save?
+  bool isRailwayModified() => _railway?.dirty ?? false;
+
   void requireRailwayLoaded() {
     if (!isRailwayLoaded()) {
       throw Exception("Railway is not loaded");
@@ -139,6 +142,16 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new module
+  Future<mapi.Module> addModule() async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addModule(mapi.Empty());
+    _modules[added.id] = added;
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+    return added;
+  }
+
   // Gets a loc by ID from cache
   mapi.Loc? getCachedLoc(String id) => _locs[id];
 
@@ -162,6 +175,16 @@ class ModelModel extends ChangeNotifier {
     var updated = await modelClient.updateLoc(value);
     _locs[updated.id] = updated;
     notifyListeners();
+  }
+
+  // Add a new loc
+  Future<mapi.Loc> addLoc() async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addLoc(mapi.Empty());
+    _locs[added.id] = added;
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+    return added;
   }
 
   // Gets a loc group by ID from cache

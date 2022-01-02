@@ -72,3 +72,21 @@ func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error)
 	}
 	return &result, nil
 }
+
+// Add a new loc.
+func (s *service) AddLoc(ctx context.Context, req *api.Empty) (*api.Loc, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	loc, err := rw.GetPackage().AddNewLoc()
+	if err != nil {
+		return nil, err
+	}
+	rw.GetLocs().Add(loc)
+	var result api.Loc
+	if err := result.FromModel(ctx, loc); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
