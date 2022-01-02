@@ -93,12 +93,18 @@ class _BlockGroupSettingsState extends State<_BlockGroupSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final blockGroup =
-                  await widget.model.getBlockGroup(widget.blockGroup.id);
-              var update = blockGroup.deepCopy()..description = value;
-              widget.model.updateBlockGroup(update);
+              await _update((update) {
+                update.description = value;
+              });
             }),
       ],
     );
+  }
+
+  Future<void> _update(void Function(BlockGroup) editor) async {
+    final current = await widget.model.getBlockGroup(widget.blockGroup.id);
+    var update = current.deepCopy();
+    editor(update);
+    await widget.model.updateBlockGroup(update);
   }
 }

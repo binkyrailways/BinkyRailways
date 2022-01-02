@@ -22,7 +22,8 @@ import 'package:provider/provider.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';
-import 'package:binky/editor/editor_context.dart';
+import './editor_context.dart';
+import './position_settings.dart';
 
 class SignalSettings extends StatelessWidget {
   const SignalSettings({Key? key}) : super(key: key);
@@ -86,18 +87,36 @@ class _SignalSettingsState extends State<_SignalSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.signal.id),
+        const SettingsHeader(title: "General"),
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final signal = await widget.model.getSignal(widget.signal.id);
-              var update = signal.deepCopy()..description = value;
-              widget.model.updateSignal(update);
+              await _update((update) {
+                update.description = value;
+              });
+            }),
+        const SettingsHeader(title: "Position"),
+        PositionSettings(
+            editorCtx: widget.editorCtx,
+            model: widget.model,
+            position: widget.signal.position,
+            update: (editor) async {
+              await _update((update) {
+                editor(update.position);
+              });
             }),
       ],
     );
+  }
+
+  Future<void> _update(void Function(Signal) editor) async {
+    final current = await widget.model.getSignal(widget.signal.id);
+    var update = current.deepCopy();
+    editor(update);
+    await widget.model.updateSignal(update);
   }
 }

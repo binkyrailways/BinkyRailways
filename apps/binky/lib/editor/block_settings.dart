@@ -114,8 +114,8 @@ class _BlockSettingsState extends State<_BlockSettings> {
   }
 
   Future<void> _update(void Function(Block) editor) async {
-    final block = await widget.model.getBlock(widget.block.id);
-    var update = block.deepCopy();
+    final current = await widget.model.getBlock(widget.block.id);
+    var update = current.deepCopy();
     editor(update);
     await widget.model.updateBlock(update);
   }

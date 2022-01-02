@@ -86,18 +86,26 @@ class _RouteSettingsState extends State<_RouteSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.route.id),
+        const SettingsHeader(title: "General"),
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final route = await widget.model.getRoute(widget.route.id);
-              var update = route.deepCopy()..description = value;
-              widget.model.updateRoute(update);
+              await _update((update) {
+                update.description = value;
+              });
             }),
       ],
     );
+  }
+
+  Future<void> _update(void Function(Route) editor) async {
+    final current = await widget.model.getRoute(widget.route.id);
+    var update = current.deepCopy();
+    editor(update);
+    await widget.model.updateRoute(update);
   }
 }

@@ -114,8 +114,8 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
   }
 
   Future<void> _update(void Function(Junction) editor) async {
-    final block = await widget.model.getJunction(widget.junction.id);
-    var update = block.deepCopy();
+    final current = await widget.model.getJunction(widget.junction.id);
+    var update = current.deepCopy();
     editor(update);
     await widget.model.updateJunction(update);
   }
