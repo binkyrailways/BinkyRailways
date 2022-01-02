@@ -93,7 +93,6 @@ class _BlockSettingsState extends State<_BlockSettings> {
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
-            firstChild: true,
             onLostFocus: (value) async {
               await _update((update) {
                 update.description = value;

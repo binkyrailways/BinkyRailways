@@ -86,8 +86,9 @@ class _BlockGroupSettingsState extends State<_BlockGroupSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.blockGroup.id),
+        const SettingsHeader(title: "General"),
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
