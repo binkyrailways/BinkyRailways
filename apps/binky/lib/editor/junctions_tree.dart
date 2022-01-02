@@ -39,7 +39,8 @@ class JunctionsTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var junctions = snapshot.data!;
+              var junctions = snapshot.data!.toList()
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
                   itemCount: junctions.length,
                   itemBuilder: (context, index) {

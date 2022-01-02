@@ -22,7 +22,8 @@ import 'package:provider/provider.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';
-import 'package:binky/editor/editor_context.dart';
+import './editor_context.dart';
+import './position_settings.dart';
 
 class JunctionSettings extends StatelessWidget {
   const JunctionSettings({Key? key}) : super(key: key);
@@ -86,19 +87,36 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.junction.id),
+        const SettingsHeader(title: "General"),
         SettingsTextField(
             controller: _descriptionController,
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final junction =
-                  await widget.model.getJunction(widget.junction.id);
-              var update = junction.deepCopy()..description = value;
-              widget.model.updateJunction(update);
+              await _update((update) {
+                update.description = value;
+              });
+            }),
+        const SettingsHeader(title: "Position"),
+        PositionSettings(
+            editorCtx: widget.editorCtx,
+            model: widget.model,
+            position: widget.junction.position,
+            update: (editor) async {
+              await _update((update) {
+                editor(update.position);
+              });
             }),
       ],
     );
+  }
+
+  Future<void> _update(void Function(Junction) editor) async {
+    final block = await widget.model.getJunction(widget.junction.id);
+    var update = block.deepCopy();
+    editor(update);
+    await widget.model.updateJunction(update);
   }
 }
