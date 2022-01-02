@@ -65,16 +65,22 @@ service ModelService {
   rpc GetBlock(IDRequest) returns (Block);
   // Update a block by ID.
   rpc UpdateBlock(Block) returns (Block);
+  // Adds a new block in the module identified by given by ID.
+  rpc AddBlock(IDRequest) returns (Block);
 
   // Gets a block group by ID.
   rpc GetBlockGroup(IDRequest) returns (BlockGroup);
   // Update a block group by ID.
   rpc UpdateBlockGroup(BlockGroup) returns (BlockGroup);
+  // Adds a new block group in the module identified by given by ID.
+  rpc AddBlockGroup(IDRequest) returns (BlockGroup);
 
   // Gets an edge by ID.
   rpc GetEdge(IDRequest) returns (Edge);
   // Update an edge by ID.
   rpc UpdateEdge(Edge) returns (Edge);
+  // Adds a new edge in the module identified by given by ID.
+  rpc AddEdge(IDRequest) returns (Edge);
 
   // Gets a Junction by ID.
   rpc GetJunction(IDRequest) returns (Junction);
@@ -90,6 +96,8 @@ service ModelService {
   rpc GetRoute(IDRequest) returns (Route);
   // Update a Route by ID.
   rpc UpdateRoute(Route) returns (Route);
+  // Adds a new block in the module identified by given by ID.
+  rpc AddRoute(IDRequest) returns (Route);
 
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);

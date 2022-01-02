@@ -67,3 +67,17 @@ func (s *service) UpdateRoute(ctx context.Context, req *api.Route) (*api.Route, 
 	}
 	return &result, nil
 }
+
+// Adds a new route in the module identified by given by ID.
+func (s *service) AddRoute(ctx context.Context, req *api.IDRequest) (*api.Route, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	route := mod.GetRoutes().AddNew()
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

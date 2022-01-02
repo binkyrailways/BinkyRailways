@@ -67,3 +67,17 @@ func (s *service) UpdateBlockGroup(ctx context.Context, req *api.BlockGroup) (*a
 	}
 	return &result, nil
 }
+
+// Adds a new block group in the module identified by given by ID.
+func (s *service) AddBlockGroup(ctx context.Context, req *api.IDRequest) (*api.BlockGroup, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	blockGroup := mod.GetBlockGroups().AddNew()
+	var result api.BlockGroup
+	if err := result.FromModel(ctx, blockGroup); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

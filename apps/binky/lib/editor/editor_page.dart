@@ -368,7 +368,8 @@ class _EditorPageState extends State<EditorPage> {
 
   List<SpeedDialChild> _buildAddSpeedDialChildren(
       BuildContext context, EditorContext editorCtx, ModelModel model) {
-    switch (editorCtx.selector.entityType) {
+    final selector = editorCtx.selector;
+    switch (selector.entityType) {
       case EntityType.modules:
         return [
           SpeedDialChild(
@@ -391,6 +392,66 @@ class _EditorPageState extends State<EditorPage> {
             },
           ),
         ];
+      case EntityType.blocks:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.block,
+              label: "Add block",
+              onTap: () async {
+                final added = await model.addBlock(moduleId);
+                editorCtx.select(EntityType.block, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.blockgroups:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.blockGroup,
+              label: "Add block group",
+              onTap: () async {
+                final added = await model.addBlockGroup(moduleId);
+                editorCtx.select(EntityType.blockgroup, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.edges:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.edge,
+              label: "Add edge",
+              onTap: () async {
+                final added = await model.addEdge(moduleId);
+                editorCtx.select(EntityType.edge, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.routes:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.route,
+              label: "Add route",
+              onTap: () async {
+                final added = await model.addRoute(moduleId);
+                editorCtx.select(EntityType.route, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
       default:
         return [];
     }

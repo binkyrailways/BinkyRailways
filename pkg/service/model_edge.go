@@ -67,3 +67,17 @@ func (s *service) UpdateEdge(ctx context.Context, req *api.Edge) (*api.Edge, err
 	}
 	return &result, nil
 }
+
+// Adds a new edge in the module identified by given by ID.
+func (s *service) AddEdge(ctx context.Context, req *api.IDRequest) (*api.Edge, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	edge := mod.GetEdges().AddNew()
+	var result api.Edge
+	if err := result.FromModel(ctx, edge); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

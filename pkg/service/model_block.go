@@ -67,3 +67,17 @@ func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, 
 	}
 	return &result, nil
 }
+
+// Adds a new block in the module identified by given by ID.
+func (s *service) AddBlock(ctx context.Context, req *api.IDRequest) (*api.Block, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	block := mod.GetBlocks().AddNew()
+	var result api.Block
+	if err := result.FromModel(ctx, block); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

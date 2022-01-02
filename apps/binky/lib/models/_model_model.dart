@@ -263,6 +263,17 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new block
+  Future<mapi.Block> addBlock(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBlock(mapi.IDRequest(id: moduleId));
+    _blocks[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Gets a block group by ID from cache
   mapi.BlockGroup? getCachedBlockGroup(String id) => _blockGroups[id];
 
@@ -288,6 +299,17 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new block group
+  Future<mapi.BlockGroup> addBlockGroup(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBlockGroup(mapi.IDRequest(id: moduleId));
+    _blockGroups[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Gets an edge by ID from cache
   mapi.Edge? getCachedEdge(String id) => _edges[id];
 
@@ -311,6 +333,17 @@ class ModelModel extends ChangeNotifier {
     var updated = await modelClient.updateEdge(value);
     _edges[updated.id] = updated;
     notifyListeners();
+  }
+
+  // Add a new edge
+  Future<mapi.Edge> addEdge(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addEdge(mapi.IDRequest(id: moduleId));
+    _edges[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
   }
 
   // Gets a Junction by ID from cache
@@ -386,6 +419,17 @@ class ModelModel extends ChangeNotifier {
     var updated = await modelClient.updateRoute(value);
     _routes[updated.id] = updated;
     notifyListeners();
+  }
+
+  // Add a new route
+  Future<mapi.Route> addRoute(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addRoute(mapi.IDRequest(id: moduleId));
+    _routes[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
   }
 
   // Gets a Sensor by ID from cache
