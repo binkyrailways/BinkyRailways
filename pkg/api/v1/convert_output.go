@@ -32,6 +32,12 @@ func (dst *Output) FromModel(ctx context.Context, src model.Output) error {
 	if err := dst.Position.FromModel(ctx, src); err != nil {
 		return err
 	}
+	if sw, ok := src.(model.BinaryOutput); ok {
+		dst.BinaryOutput = &BinaryOutput{}
+		if err := dst.BinaryOutput.FromModel(ctx, sw); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -44,6 +50,15 @@ func (src *Output) ToModel(ctx context.Context, dst model.Output) error {
 	dst.SetDescription(src.GetDescription())
 	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
 		return err
+	}
+	if bo, ok := dst.(model.BinaryOutput); ok {
+		boSrc := src.GetBinaryOutput()
+		if boSrc == nil {
+			return InvalidArgument("Expected binary output")
+		}
+		if err := boSrc.ToModel(ctx, bo); err != nil {
+			return err
+		}
 	}
 	return nil
 }

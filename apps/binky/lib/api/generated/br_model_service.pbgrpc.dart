@@ -139,6 +139,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateOutput',
       ($1.Output value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
+  static final _$addBinaryOutput = $grpc.ClientMethod<$0.IDRequest, $1.Output>(
+      '/binkyrailways.v1.ModelService/AddBinaryOutput',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
   static final _$getRoute = $grpc.ClientMethod<$0.IDRequest, $1.Route>(
       '/binkyrailways.v1.ModelService/GetRoute',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -338,6 +342,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Output> updateOutput($1.Output request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOutput, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Output> addBinaryOutput($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinaryOutput, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Route> getRoute($0.IDRequest request,
@@ -606,6 +615,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Output.fromBuffer(value),
         ($1.Output value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Output>(
+        'AddBinaryOutput',
+        addBinaryOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Output value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Route>(
         'GetRoute',
         getRoute_Pre,
@@ -825,6 +841,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateOutput(call, await request);
   }
 
+  $async.Future<$1.Output> addBinaryOutput_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return addBinaryOutput(call, await request);
+  }
+
   $async.Future<$1.Route> getRoute_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getRoute(call, await request);
@@ -925,6 +946,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Output> updateOutput(
       $grpc.ServiceCall call, $1.Output request);
+  $async.Future<$1.Output> addBinaryOutput(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Route> getRoute(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Route> updateRoute($grpc.ServiceCall call, $1.Route request);

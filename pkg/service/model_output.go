@@ -67,3 +67,17 @@ func (s *service) UpdateOutput(ctx context.Context, req *api.Output) (*api.Outpu
 	}
 	return &result, nil
 }
+
+// Adds a new output of type binary output in the module identified by given by ID.
+func (s *service) AddBinaryOutput(ctx context.Context, req *api.IDRequest) (*api.Output, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	output := mod.GetOutputs().AddNewBinaryOutput()
+	var result api.Output
+	if err := result.FromModel(ctx, output); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

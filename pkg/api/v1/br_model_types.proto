@@ -458,12 +458,29 @@ message Output {
   string module_id = 3;
   // Position of the Output
   Position position = 4;
+  // Set when this output is of type binary output.
+  BinaryOutput binary_output = 5;
 }
 
 // Reference to a Output
 message OutputRef {
   // ID of the Output
   string id = 1;
+}
+
+// Sub type of Output
+message BinaryOutput {
+  // Output address
+  string address = 1;
+  // Type of output
+  BinaryOutputType output_type = 2;
+}
+
+enum BinaryOutputType {
+  // DEFAULT indicates a standard on/off switch
+  BOT_DEFAULT = 0;
+  // TRACKINVERTER indicates a digital track inverter
+  BOT_TRACKINVERTER = 1;
 }
 
 // Route on the track

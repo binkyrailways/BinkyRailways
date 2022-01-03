@@ -93,6 +93,9 @@ service ModelService {
   rpc GetOutput(IDRequest) returns (Output);
   // Update a Output by ID.
   rpc UpdateOutput(Output) returns (Output);
+  // Adds a new output of type binary output in the module identified by given
+  // by ID.
+  rpc AddBinaryOutput(IDRequest) returns (Output);
 
   // Gets a Route by ID.
   rpc GetRoute(IDRequest) returns (Route);

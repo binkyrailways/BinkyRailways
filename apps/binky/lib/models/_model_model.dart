@@ -407,6 +407,17 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new output of type binary output
+  Future<mapi.Output> addBinaryOutput(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBinaryOutput(mapi.IDRequest(id: moduleId));
+    _outputs[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Gets a Route by ID from cache
   mapi.Route? getCachedRoute(String id) => _routes[id];
 

@@ -452,6 +452,21 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.outputs:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.output,
+              label: "Add binary output",
+              onTap: () async {
+                final added = await model.addBinaryOutput(moduleId);
+                editorCtx.select(EntityType.output, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.routes:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {

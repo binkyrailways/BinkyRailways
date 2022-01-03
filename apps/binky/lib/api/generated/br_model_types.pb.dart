@@ -2387,6 +2387,7 @@ class Output extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
     ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..aOM<BinaryOutput>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binaryOutput', subBuilder: BinaryOutput.create)
     ..hasRequiredFields = false
   ;
 
@@ -2396,6 +2397,7 @@ class Output extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? moduleId,
     Position? position,
+    BinaryOutput? binaryOutput,
   }) {
     final _result = create();
     if (id != null) {
@@ -2409,6 +2411,9 @@ class Output extends $pb.GeneratedMessage {
     }
     if (position != null) {
       _result.position = position;
+    }
+    if (binaryOutput != null) {
+      _result.binaryOutput = binaryOutput;
     }
     return _result;
   }
@@ -2470,6 +2475,17 @@ class Output extends $pb.GeneratedMessage {
   void clearPosition() => clearField(4);
   @$pb.TagNumber(4)
   Position ensurePosition() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  BinaryOutput get binaryOutput => $_getN(4);
+  @$pb.TagNumber(5)
+  set binaryOutput(BinaryOutput v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasBinaryOutput() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBinaryOutput() => clearField(5);
+  @$pb.TagNumber(5)
+  BinaryOutput ensureBinaryOutput() => $_ensure(4);
 }
 
 class OutputRef extends $pb.GeneratedMessage {
@@ -2517,6 +2533,67 @@ class OutputRef extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+}
+
+class BinaryOutput extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinaryOutput', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..e<BinaryOutputType>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputType', $pb.PbFieldType.OE, defaultOrMaker: BinaryOutputType.BOT_DEFAULT, valueOf: BinaryOutputType.valueOf, enumValues: BinaryOutputType.values)
+    ..hasRequiredFields = false
+  ;
+
+  BinaryOutput._() : super();
+  factory BinaryOutput({
+    $core.String? address,
+    BinaryOutputType? outputType,
+  }) {
+    final _result = create();
+    if (address != null) {
+      _result.address = address;
+    }
+    if (outputType != null) {
+      _result.outputType = outputType;
+    }
+    return _result;
+  }
+  factory BinaryOutput.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinaryOutput.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinaryOutput clone() => BinaryOutput()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinaryOutput copyWith(void Function(BinaryOutput) updates) => super.copyWith((message) => updates(message as BinaryOutput)) as BinaryOutput; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutput create() => BinaryOutput._();
+  BinaryOutput createEmptyInstance() => create();
+  static $pb.PbList<BinaryOutput> createRepeated() => $pb.PbList<BinaryOutput>();
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutput getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinaryOutput>(create);
+  static BinaryOutput? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get address => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set address($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasAddress() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAddress() => clearField(1);
+
+  @$pb.TagNumber(2)
+  BinaryOutputType get outputType => $_getN(1);
+  @$pb.TagNumber(2)
+  set outputType(BinaryOutputType v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasOutputType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOutputType() => clearField(2);
 }
 
 class Route extends $pb.GeneratedMessage {

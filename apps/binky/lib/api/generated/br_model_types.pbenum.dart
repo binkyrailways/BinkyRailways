@@ -79,3 +79,18 @@ class SwitchDirection extends $pb.ProtobufEnum {
   const SwitchDirection._($core.int v, $core.String n) : super(v, n);
 }
 
+class BinaryOutputType extends $pb.ProtobufEnum {
+  static const BinaryOutputType BOT_DEFAULT = BinaryOutputType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BOT_DEFAULT');
+  static const BinaryOutputType BOT_TRACKINVERTER = BinaryOutputType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BOT_TRACKINVERTER');
+
+  static const $core.List<BinaryOutputType> values = <BinaryOutputType> [
+    BOT_DEFAULT,
+    BOT_TRACKINVERTER,
+  ];
+
+  static final $core.Map<$core.int, BinaryOutputType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BinaryOutputType? valueOf($core.int value) => _byValue[value];
+
+  const BinaryOutputType._($core.int v, $core.String n) : super(v, n);
+}
+
