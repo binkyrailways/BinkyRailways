@@ -163,6 +163,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateSensor',
       ($1.Sensor value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value));
+  static final _$addBinarySensor = $grpc.ClientMethod<$0.IDRequest, $1.Sensor>(
+      '/binkyrailways.v1.ModelService/AddBinarySensor',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value));
   static final _$getSignal = $grpc.ClientMethod<$0.IDRequest, $1.Signal>(
       '/binkyrailways.v1.ModelService/GetSignal',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -372,6 +376,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Sensor> updateSensor($1.Sensor request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateSensor, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Sensor> addBinarySensor($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinarySensor, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Signal> getSignal($0.IDRequest request,
@@ -657,6 +666,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value),
         ($1.Sensor value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Sensor>(
+        'AddBinarySensor',
+        addBinarySensor_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Sensor value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Signal>(
         'GetSignal',
         getSignal_Pre,
@@ -871,6 +887,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateSensor(call, await request);
   }
 
+  $async.Future<$1.Sensor> addBinarySensor_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return addBinarySensor(call, await request);
+  }
+
   $async.Future<$1.Signal> getSignal_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getSignal(call, await request);
@@ -957,6 +978,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Sensor> updateSensor(
       $grpc.ServiceCall call, $1.Sensor request);
+  $async.Future<$1.Sensor> addBinarySensor(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Signal> getSignal(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Signal> updateSignal(

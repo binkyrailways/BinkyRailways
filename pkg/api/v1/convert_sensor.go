@@ -21,6 +21,7 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"go.uber.org/multierr"
 )
 
 // FromModel converts a model Sensor to an API Sensor
@@ -32,6 +33,16 @@ func (dst *Sensor) FromModel(ctx context.Context, src model.Sensor) error {
 	if err := dst.Position.FromModel(ctx, src); err != nil {
 		return err
 	}
+	dst.Address = src.GetAddress().String()
+	if b := src.GetBlock(); b != nil {
+		dst.Block = &BlockRef{
+			Id: b.GetID(),
+		}
+	}
+	dst.Shape.FromModel(ctx, src.GetShape())
+	if _, ok := src.(model.BinarySensor); ok {
+		dst.BinarySensor = &BinarySensor{}
+	}
 	return nil
 }
 
@@ -41,9 +52,26 @@ func (src *Sensor) ToModel(ctx context.Context, dst model.Sensor) error {
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected sensor ID: '%s'", src.GetId())
 	}
-	dst.SetDescription(src.GetDescription())
-	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
+	addr, err := model.NewAddressFromString(src.GetAddress())
+	if err != nil {
 		return err
 	}
-	return nil
+	shape, err := src.GetShape().ToModel(ctx)
+	if err != nil {
+		return err
+	}
+	var block model.Block
+	if id := src.GetBlock().GetId(); id != "" {
+		var ok bool
+		block, ok = dst.GetModule().GetBlocks().Get(id)
+		if !ok {
+			return InvalidArgument("Unknown block '%s'", id)
+		}
+	}
+	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
+	multierr.AppendInto(&err, src.GetPosition().ToModel(ctx, dst))
+	multierr.AppendInto(&err, dst.SetAddress(addr))
+	multierr.AppendInto(&err, dst.SetShape(shape))
+	multierr.AppendInto(&err, dst.SetBlock(block))
+	return err
 }

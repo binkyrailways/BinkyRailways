@@ -482,6 +482,21 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.sensors:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.sensor,
+              label: "Add binary sensor",
+              onTap: () async {
+                final added = await model.addBinarySensor(moduleId);
+                editorCtx.select(EntityType.sensor, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.binkynetlocalworkers:
         final csId = selector.idOf(EntityType.commandstation);
         if (csId != null) {

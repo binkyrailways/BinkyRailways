@@ -68,6 +68,19 @@ const BinaryOutputType$json = const {
 
 /// Descriptor for `BinaryOutputType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List binaryOutputTypeDescriptor = $convert.base64Decode('ChBCaW5hcnlPdXRwdXRUeXBlEg8KC0JPVF9ERUZBVUxUEAASFQoRQk9UX1RSQUNLSU5WRVJURVIQAQ==');
+@$core.Deprecated('Use shapeDescriptor instead')
+const Shape$json = const {
+  '1': 'Shape',
+  '2': const [
+    const {'1': 'CIRCLE', '2': 0},
+    const {'1': 'TRIANGLE', '2': 1},
+    const {'1': 'SQUARE', '2': 2},
+    const {'1': 'DIAMOND', '2': 3},
+  ],
+};
+
+/// Descriptor for `Shape`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List shapeDescriptor = $convert.base64Decode('CgVTaGFwZRIKCgZDSVJDTEUQABIMCghUUklBTkdMRRABEgoKBlNRVUFSRRACEgsKB0RJQU1PTkQQAw==');
 @$core.Deprecated('Use emptyDescriptor instead')
 const Empty$json = const {
   '1': 'Empty',
@@ -504,11 +517,15 @@ const Sensor$json = const {
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
+    const {'1': 'address', '3': 5, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'block', '3': 6, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'block'},
+    const {'1': 'shape', '3': 7, '4': 1, '5': 14, '6': '.binkyrailways.v1.Shape', '10': 'shape'},
+    const {'1': 'binary_sensor', '3': 8, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinarySensor', '10': 'binarySensor'},
   ],
 };
 
 /// Descriptor for `Sensor`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sensorDescriptor = $convert.base64Decode('CgZTZW5zb3ISDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAyABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAQgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24=');
+final $typed_data.Uint8List sensorDescriptor = $convert.base64Decode('CgZTZW5zb3ISDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAyABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAQgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24SGAoHYWRkcmVzcxgFIAEoCVIHYWRkcmVzcxIwCgVibG9jaxgGIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBWJsb2NrEi0KBXNoYXBlGAcgASgOMhcuYmlua3lyYWlsd2F5cy52MS5TaGFwZVIFc2hhcGUSQwoNYmluYXJ5X3NlbnNvchgIIAEoCzIeLmJpbmt5cmFpbHdheXMudjEuQmluYXJ5U2Vuc29yUgxiaW5hcnlTZW5zb3I=');
 @$core.Deprecated('Use sensorRefDescriptor instead')
 const SensorRef$json = const {
   '1': 'SensorRef',
@@ -519,6 +536,13 @@ const SensorRef$json = const {
 
 /// Descriptor for `SensorRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List sensorRefDescriptor = $convert.base64Decode('CglTZW5zb3JSZWYSDgoCaWQYASABKAlSAmlk');
+@$core.Deprecated('Use binarySensorDescriptor instead')
+const BinarySensor$json = const {
+  '1': 'BinarySensor',
+};
+
+/// Descriptor for `BinarySensor`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binarySensorDescriptor = $convert.base64Decode('CgxCaW5hcnlTZW5zb3I=');
 @$core.Deprecated('Use signalDescriptor instead')
 const Signal$json = const {
   '1': 'Signal',

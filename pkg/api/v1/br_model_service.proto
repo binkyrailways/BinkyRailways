@@ -108,6 +108,9 @@ service ModelService {
   rpc GetSensor(IDRequest) returns (Sensor);
   // Update a Sensor by ID.
   rpc UpdateSensor(Sensor) returns (Sensor);
+  // Adds a new sensor of type binary sensor in the module identified by given
+  // by ID.
+  rpc AddBinarySensor(IDRequest) returns (Sensor);
 
   // Gets a Signal by ID.
   rpc GetSignal(IDRequest) returns (Signal);

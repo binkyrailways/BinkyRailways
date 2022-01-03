@@ -479,6 +479,17 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new output of type binary sensor
+  Future<mapi.Sensor> addBinarySensor(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBinarySensor(mapi.IDRequest(id: moduleId));
+    _sensors[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Gets a Signal by ID from cache
   mapi.Signal? getCachedSignal(String id) => _signals[id];
 

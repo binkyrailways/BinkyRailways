@@ -67,3 +67,17 @@ func (s *service) UpdateSensor(ctx context.Context, req *api.Sensor) (*api.Senso
 	}
 	return &result, nil
 }
+
+// Adds a new sensor of type binary sensor in the module identified by given by ID.
+func (s *service) AddBinarySensor(ctx context.Context, req *api.IDRequest) (*api.Sensor, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	sensor := mod.GetSensors().AddNewBinarySensor()
+	var result api.Sensor
+	if err := result.FromModel(ctx, sensor); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

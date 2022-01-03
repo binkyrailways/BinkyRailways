@@ -2724,6 +2724,10 @@ class Sensor extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
     ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOM<BlockRef>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'block', subBuilder: BlockRef.create)
+    ..e<Shape>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'shape', $pb.PbFieldType.OE, defaultOrMaker: Shape.CIRCLE, valueOf: Shape.valueOf, enumValues: Shape.values)
+    ..aOM<BinarySensor>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binarySensor', subBuilder: BinarySensor.create)
     ..hasRequiredFields = false
   ;
 
@@ -2733,6 +2737,10 @@ class Sensor extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? moduleId,
     Position? position,
+    $core.String? address,
+    BlockRef? block,
+    Shape? shape,
+    BinarySensor? binarySensor,
   }) {
     final _result = create();
     if (id != null) {
@@ -2746,6 +2754,18 @@ class Sensor extends $pb.GeneratedMessage {
     }
     if (position != null) {
       _result.position = position;
+    }
+    if (address != null) {
+      _result.address = address;
+    }
+    if (block != null) {
+      _result.block = block;
+    }
+    if (shape != null) {
+      _result.shape = shape;
+    }
+    if (binarySensor != null) {
+      _result.binarySensor = binarySensor;
     }
     return _result;
   }
@@ -2807,6 +2827,46 @@ class Sensor extends $pb.GeneratedMessage {
   void clearPosition() => clearField(4);
   @$pb.TagNumber(4)
   Position ensurePosition() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $core.String get address => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set address($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasAddress() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAddress() => clearField(5);
+
+  @$pb.TagNumber(6)
+  BlockRef get block => $_getN(5);
+  @$pb.TagNumber(6)
+  set block(BlockRef v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasBlock() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBlock() => clearField(6);
+  @$pb.TagNumber(6)
+  BlockRef ensureBlock() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  Shape get shape => $_getN(6);
+  @$pb.TagNumber(7)
+  set shape(Shape v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasShape() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearShape() => clearField(7);
+
+  @$pb.TagNumber(8)
+  BinarySensor get binarySensor => $_getN(7);
+  @$pb.TagNumber(8)
+  set binarySensor(BinarySensor v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasBinarySensor() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearBinarySensor() => clearField(8);
+  @$pb.TagNumber(8)
+  BinarySensor ensureBinarySensor() => $_ensure(7);
 }
 
 class SensorRef extends $pb.GeneratedMessage {
@@ -2854,6 +2914,35 @@ class SensorRef extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+}
+
+class BinarySensor extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinarySensor', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  BinarySensor._() : super();
+  factory BinarySensor() => create();
+  factory BinarySensor.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinarySensor.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinarySensor clone() => BinarySensor()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinarySensor copyWith(void Function(BinarySensor) updates) => super.copyWith((message) => updates(message as BinarySensor)) as BinarySensor; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinarySensor create() => BinarySensor._();
+  BinarySensor createEmptyInstance() => create();
+  static $pb.PbList<BinarySensor> createRepeated() => $pb.PbList<BinarySensor>();
+  @$core.pragma('dart2js:noInline')
+  static BinarySensor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinarySensor>(create);
+  static BinarySensor? _defaultInstance;
 }
 
 class Signal extends $pb.GeneratedMessage {

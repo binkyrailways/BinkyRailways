@@ -94,3 +94,22 @@ class BinaryOutputType extends $pb.ProtobufEnum {
   const BinaryOutputType._($core.int v, $core.String n) : super(v, n);
 }
 
+class Shape extends $pb.ProtobufEnum {
+  static const Shape CIRCLE = Shape._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'CIRCLE');
+  static const Shape TRIANGLE = Shape._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TRIANGLE');
+  static const Shape SQUARE = Shape._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SQUARE');
+  static const Shape DIAMOND = Shape._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'DIAMOND');
+
+  static const $core.List<Shape> values = <Shape> [
+    CIRCLE,
+    TRIANGLE,
+    SQUARE,
+    DIAMOND,
+  ];
+
+  static final $core.Map<$core.int, Shape> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static Shape? valueOf($core.int value) => _byValue[value];
+
+  const Shape._($core.int v, $core.String n) : super(v, n);
+}
+

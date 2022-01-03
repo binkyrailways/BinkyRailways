@@ -509,12 +509,37 @@ message Sensor {
   string module_id = 3;
   // Position of the Sensor
   Position position = 4;
+  // Address of the sensor
+  string address = 5;
+  // The block that this sensor belongs to.
+  // When set, this connection is used in the loc-to-block assignment process.
+  BlockRef block = 6;
+  // Shape used to visualize this sensor
+  Shape shape = 7;
+  // Set when this sensor is of type binary sensor.
+  BinarySensor binary_sensor = 8;
+}
+
+enum Shape {
+  // Circle
+  CIRCLE = 0;
+  // Triangle
+  TRIANGLE = 1;
+  // Square
+  SQUARE = 2;
+  // Diamond
+  DIAMOND = 3;
 }
 
 // Reference to a Sensor
 message SensorRef {
   // ID of the Sensor
   string id = 1;
+}
+
+// Sub type of Sensor
+message BinarySensor {
+  // No additional fields
 }
 
 // Signal on the track
