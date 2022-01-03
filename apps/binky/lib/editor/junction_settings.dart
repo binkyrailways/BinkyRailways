@@ -70,7 +70,11 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _feedbackAddressController =
       TextEditingController();
+  final TextEditingController _switchDurationController =
+      TextEditingController();
   final AddressValidator _addressValidator = AddressValidator();
+  final NumericValidator _switchDurationValidator =
+      NumericValidator(minimum: 0, maximum: 10000);
 
   void _initConrollers() {
     _addressValidator.setState = () {
@@ -81,6 +85,8 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
       _addressController.text = widget.junction.switch_6.address;
       _feedbackAddressController.text =
           widget.junction.switch_6.feedbackAddress;
+      _switchDurationController.text =
+          widget.junction.switch_6.switchDuration.toString();
     }
   }
 
@@ -120,15 +126,65 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
               update.switch_6.address = value;
             });
           }));
-      children.add(SettingsTextField(
-          controller: _feedbackAddressController,
-          label: "Feedback address",
-          validator: _addressValidator.validate,
-          onLostFocus: (value) async {
+      children.add(SettingsCheckBoxField(
+        label: "Invert direction",
+        value: widget.junction.switch_6.invert,
+        onChanged: (value) async {
+          await _update((update) {
+            update.switch_6.invert = value;
+          });
+        },
+      ));
+      children.add(SettingsCheckBoxField(
+        label: "Has feedback",
+        value: widget.junction.switch_6.hasFeedback,
+        onChanged: (value) async {
+          await _update((update) {
+            update.switch_6.hasFeedback = value;
+          });
+        },
+      ));
+      if (widget.junction.switch_6.hasFeedback) {
+        children.add(SettingsTextField(
+            controller: _feedbackAddressController,
+            label: "Feedback address",
+            validator: _addressValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.switch_6.feedbackAddress = value;
+              });
+            }));
+        children.add(SettingsCheckBoxField(
+          label: "Invert feedback direction",
+          value: widget.junction.switch_6.invertFeedback,
+          onChanged: (value) async {
             await _update((update) {
-              update.switch_6.feedbackAddress = value;
+              update.switch_6.invertFeedback = value;
             });
-          }));
+          },
+        ));
+        children.add(SettingsTextField(
+            controller: _switchDurationController,
+            label: "Switch duration (ms)",
+            validator: _switchDurationValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.switch_6.switchDuration = int.parse(value);
+              });
+            }));
+        children.add(SettingsDropdownField<SwitchDirection>(
+          label: "Initial direction",
+          value: widget.junction.switch_6.initialDirection,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.switch_6.initialDirection = value;
+              }
+            });
+          },
+          items: _switchDirectionItems,
+        ));
+      }
     }
     children.add(const SettingsHeader(title: "Position"));
     children.add(
@@ -154,4 +210,12 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
     editor(update);
     await widget.model.updateJunction(update);
   }
+
+  static final List<DropdownMenuItem<SwitchDirection>> _switchDirectionItems =
+      SwitchDirection.values
+          .map((e) => DropdownMenuItem<SwitchDirection>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }
