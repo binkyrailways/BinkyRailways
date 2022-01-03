@@ -125,6 +125,12 @@ service ModelService {
   // Adds a new BinkyNetLocalWorker to the command station identified by given
   // by ID.
   rpc AddBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
+  // Adds a new BinkyNetDevice to the binkynet local worker identified by given
+  // by ID.
+  rpc AddBinkyNetDevice(IDRequest) returns (BinkyNetDevice);
+  // Adds a new BinkyNetObject to the binkynet local worker identified by given
+  // by ID.
+  rpc AddBinkyNetObject(IDRequest) returns (BinkyNetObject);
 }
 
 // Request by ID

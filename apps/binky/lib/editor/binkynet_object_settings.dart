@@ -280,12 +280,16 @@ class _BinkyNetDevicePinSettingsState
   }
 
   List<DropdownMenuItem<String>> _deviceIds() {
-    return widget.binkynetlocalworker.devices
+    final list = widget.binkynetlocalworker.devices
         .map((e) => DropdownMenuItem<String>(
               child: Text(e.deviceId),
               value: e.deviceId,
             ))
         .toList();
+    list.add(
+      const DropdownMenuItem(child: Text("<None>"), value: ""),
+    );
+    return list;
   }
 }
 

@@ -552,4 +552,26 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
     return added;
   }
+
+  // Add a new device to a binkynet local worker
+  Future<mapi.BinkyNetDevice> addBinkyNetDevice(String localWorkerId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added =
+        await modelClient.addBinkyNetDevice(mapi.IDRequest(id: localWorkerId));
+    _binkynetLocalWorkers[localWorkerId] = await modelClient
+        .getBinkyNetLocalWorker(mapi.IDRequest(id: localWorkerId));
+    notifyListeners();
+    return added;
+  }
+
+  // Add a new object to a binkynet local worker
+  Future<mapi.BinkyNetObject> addBinkyNetObject(String localWorkerId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added =
+        await modelClient.addBinkyNetObject(mapi.IDRequest(id: localWorkerId));
+    _binkynetLocalWorkers[localWorkerId] = await modelClient
+        .getBinkyNetLocalWorker(mapi.IDRequest(id: localWorkerId));
+    notifyListeners();
+    return added;
+  }
 }

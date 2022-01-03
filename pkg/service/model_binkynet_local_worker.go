@@ -24,9 +24,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// Gets a Output by ID.
-func (s *service) GetBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest) (*api.BinkyNetLocalWorker, error) {
-	csID, lwID, err := api.SplitParentChildID(req.GetId())
+// Gets a binkynet local worker by ID.
+func (s *service) getBinkyNetLocalWorker(ctx context.Context, fullLocalWorkerID string) (model.BinkyNetLocalWorker, error) {
+	csID, lwID, err := api.SplitParentChildID(fullLocalWorkerID)
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +41,15 @@ func (s *service) GetBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest
 	lw, ok := bncs.GetLocalWorkers().Get(lwID)
 	if !ok {
 		return nil, api.NotFound(lwID)
+	}
+	return lw, nil
+}
+
+// Gets a Output by ID.
+func (s *service) GetBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest) (*api.BinkyNetLocalWorker, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.BinkyNetLocalWorker
 	if err := result.FromModel(ctx, lw); err != nil {
@@ -51,21 +60,9 @@ func (s *service) GetBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest
 
 // Update a BinkyNetLocalWorker by ID.
 func (s *service) UpdateBinkyNetLocalWorker(ctx context.Context, req *api.BinkyNetLocalWorker) (*api.BinkyNetLocalWorker, error) {
-	csID, lwID, err := api.SplitParentChildID(req.GetId())
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
 	if err != nil {
 		return nil, err
-	}
-	cs, err := s.getCommandStation(ctx, csID)
-	if err != nil {
-		return nil, err
-	}
-	bncs, ok := cs.(model.BinkyNetCommandStation)
-	if !ok {
-		return nil, api.NotFound(lwID)
-	}
-	lw, ok := bncs.GetLocalWorkers().Get(lwID)
-	if !ok {
-		return nil, api.NotFound(lwID)
 	}
 	if err := req.ToModel(ctx, lw); err != nil {
 		return nil, err
@@ -93,6 +90,34 @@ func (s *service) AddBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest
 	}
 	var result api.BinkyNetLocalWorker
 	if err := result.FromModel(ctx, lw); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Adds a new BinkyNetDevice to the local worker identified by given by ID.
+func (s *service) AddBinkyNetDevice(ctx context.Context, req *api.IDRequest) (*api.BinkyNetDevice, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	bnDev := lw.GetDevices().AddNew()
+	var result api.BinkyNetDevice
+	if err := result.FromModel(ctx, bnDev); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Adds a new BinkyNetObject to the local worker identified by given by ID.
+func (s *service) AddBinkyNetObject(ctx context.Context, req *api.IDRequest) (*api.BinkyNetObject, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	bnObj := lw.GetObjects().AddNew()
+	var result api.BinkyNetObject
+	if err := result.FromModel(ctx, bnObj); err != nil {
 		return nil, err
 	}
 	return &result, nil

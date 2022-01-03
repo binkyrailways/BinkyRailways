@@ -114,8 +114,10 @@ func (l *binkyNetObjectSet) Contains(entry model.BinkyNetObject) bool {
 // Add a new entry
 func (l *binkyNetObjectSet) AddNew() model.BinkyNetObject {
 	d := newBinkyNetObject()
+	d.EnsureID()
 	d.SetContainer(l)
 	d.SetObjectID(api.ObjectID(fmt.Sprintf("newObject%d", len(l.Objects)+1)))
+	d.SetObjectType(api.ObjectTypeBinaryOutput)
 	l.Objects = append(l.Objects, d)
 	l.OnModified()
 	return d

@@ -113,8 +113,10 @@ func (l *binkyNetDeviceSet) Contains(entry model.BinkyNetDevice) bool {
 // Add a new entry
 func (l *binkyNetDeviceSet) AddNew() model.BinkyNetDevice {
 	d := newBinkyNetDevice()
+	d.EnsureID()
 	d.SetContainer(l)
 	d.SetDeviceID(api.DeviceID(fmt.Sprintf("newDevice%d", len(l.Devices)+1)))
+	d.SetDeviceType(api.DeviceTypeMCP23008)
 	l.Devices = append(l.Devices, d)
 	l.OnModified()
 	return d

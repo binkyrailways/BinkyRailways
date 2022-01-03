@@ -512,6 +512,36 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.binkynetdevices:
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        if (lwId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.binkynetdevice,
+              label: "Add device",
+              onTap: () async {
+                final added = await model.addBinkyNetDevice(lwId);
+                editorCtx.select(EntityType.binkynetdevice, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.binkynetobjects:
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        if (lwId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.binkynetobject,
+              label: "Add object",
+              onTap: () async {
+                final added = await model.addBinkyNetObject(lwId);
+                editorCtx.select(EntityType.binkynetobject, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
       default:
         return [];
     }
