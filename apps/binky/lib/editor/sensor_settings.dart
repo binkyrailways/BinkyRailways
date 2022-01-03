@@ -156,6 +156,18 @@ class _SensorSettingsState extends State<_SensorSettings> {
                 editor(update.position);
               });
             }),
+        SettingsDropdownField<Shape>(
+          label: "Shape",
+          value: widget.sensor.shape,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.shape = value;
+              }
+            });
+          },
+          items: _shapeItems,
+        ),
       ],
     );
   }
@@ -179,4 +191,11 @@ class _SensorSettingsState extends State<_SensorSettings> {
     );
     return list;
   }
+
+  static final List<DropdownMenuItem<Shape>> _shapeItems = Shape.values
+      .map((e) => DropdownMenuItem<Shape>(
+            child: Text(e.name),
+            value: e,
+          ))
+      .toList();
 }
