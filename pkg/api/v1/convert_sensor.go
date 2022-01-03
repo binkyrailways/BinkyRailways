@@ -36,7 +36,7 @@ func (dst *Sensor) FromModel(ctx context.Context, src model.Sensor) error {
 	dst.Address = src.GetAddress().String()
 	if b := src.GetBlock(); b != nil {
 		dst.Block = &BlockRef{
-			Id: b.GetID(),
+			Id: JoinParentChildID(src.GetModule().GetID(), b.GetID()),
 		}
 	}
 	dst.Shape.FromModel(ctx, src.GetShape())
@@ -62,10 +62,17 @@ func (src *Sensor) ToModel(ctx context.Context, dst model.Sensor) error {
 	}
 	var block model.Block
 	if id := src.GetBlock().GetId(); id != "" {
+		moduleId, blockId, err := SplitParentChildID(id)
+		if err != nil {
+			return err
+		}
+		if moduleId != dst.GetModule().GetID() {
+			return InvalidArgument("Unexpected module ID: '%s'", moduleId)
+		}
 		var ok bool
-		block, ok = dst.GetModule().GetBlocks().Get(id)
+		block, ok = dst.GetModule().GetBlocks().Get(blockId)
 		if !ok {
-			return InvalidArgument("Unknown block '%s'", id)
+			return InvalidArgument("Unknown block '%s'", blockId)
 		}
 	}
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))

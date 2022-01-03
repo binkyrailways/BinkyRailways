@@ -33,31 +33,51 @@ class SensorSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final sensorId = selector.idOf(EntityType.sensor) ?? "";
-        return FutureBuilder<Sensor>(
-            future: model.getSensor(sensorId),
-            initialData: model.getCachedSensor(sensorId),
+        final moduleId = selector.idOf(EntityType.module) ?? "";
+        return FutureBuilder<List<Block>>(
+            future: _getBlocks(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var sensor = snapshot.data!;
-              return _SensorSettings(
-                  editorCtx: editorCtx, model: model, sensor: sensor);
+              var blocks = snapshot.data!;
+              final sensorId = selector.idOf(EntityType.sensor) ?? "";
+              return FutureBuilder<Sensor>(
+                  future: model.getSensor(sensorId),
+                  initialData: model.getCachedSensor(sensorId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    var sensor = snapshot.data!;
+                    return _SensorSettings(
+                        editorCtx: editorCtx,
+                        model: model,
+                        blocks: blocks,
+                        sensor: sensor);
+                  });
             });
       });
     });
+  }
+
+  Future<List<Block>> _getBlocks(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final blockList = mod.blocks.map((e) => model.getBlock(e.id));
+    return await Future.wait(blockList);
   }
 }
 
 class _SensorSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
+  final List<Block> blocks;
   final Sensor sensor;
   const _SensorSettings(
       {Key? key,
       required this.editorCtx,
       required this.model,
+      required this.blocks,
       required this.sensor})
       : super(key: key);
 
@@ -67,9 +87,15 @@ class _SensorSettings extends StatefulWidget {
 
 class _SensorSettingsState extends State<_SensorSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final AddressValidator _addressValidator = AddressValidator();
 
   void _initConrollers() {
+    _addressValidator.setState = () {
+      setState(() {});
+    };
     _descriptionController.text = widget.sensor.description;
+    _addressController.text = widget.sensor.address;
   }
 
   @override
@@ -99,6 +125,27 @@ class _SensorSettingsState extends State<_SensorSettings> {
                 update.description = value;
               });
             }),
+        SettingsTextField(
+            controller: _addressController,
+            label: "Address",
+            validator: _addressValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.address = value;
+              });
+            }),
+        SettingsDropdownField<String>(
+          label: "Block",
+          value: widget.sensor.block.id,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.block = BlockRef(id: value);
+              }
+            });
+          },
+          items: _blockIds(),
+        ),
         const SettingsHeader(title: "Position"),
         PositionSettings(
             editorCtx: widget.editorCtx,
@@ -118,5 +165,18 @@ class _SensorSettingsState extends State<_SensorSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateSensor(update);
+  }
+
+  List<DropdownMenuItem<String>> _blockIds() {
+    final list = widget.blocks
+        .map((e) => DropdownMenuItem<String>(
+              child: Text(e.description),
+              value: e.id,
+            ))
+        .toList();
+    list.add(
+      const DropdownMenuItem(child: Text("<None>"), value: ""),
+    );
+    return list;
   }
 }
