@@ -371,6 +371,17 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new junction of type switch
+  Future<mapi.Junction> addSwitch(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addSwitch(mapi.IDRequest(id: moduleId));
+    _junctions[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Gets a Output by ID from cache
   mapi.Output? getCachedOutput(String id) => _outputs[id];
 
@@ -506,5 +517,17 @@ class ModelModel extends ChangeNotifier {
     var updated = await modelClient.updateBinkyNetLocalWorker(value);
     _binkynetLocalWorkers[updated.id] = updated;
     notifyListeners();
+  }
+
+  // Add a new local worker
+  Future<mapi.BinkyNetLocalWorker> addBinkyNetLocalWorker(
+      String commandStationId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient
+        .addBinkyNetLocalWorker(mapi.IDRequest(id: commandStationId));
+    _commandStations[commandStationId] = await modelClient
+        .getCommandStation(mapi.IDRequest(id: commandStationId));
+    notifyListeners();
+    return added;
   }
 }

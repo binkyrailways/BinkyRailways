@@ -67,3 +67,17 @@ func (s *service) UpdateJunction(ctx context.Context, req *api.Junction) (*api.J
 	}
 	return &result, nil
 }
+
+// Adds a new junction of type switch in the module identified by given by ID.
+func (s *service) AddSwitch(ctx context.Context, req *api.IDRequest) (*api.Junction, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	junction := mod.GetJunctions().AddSwitch()
+	var result api.Junction
+	if err := result.FromModel(ctx, junction); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

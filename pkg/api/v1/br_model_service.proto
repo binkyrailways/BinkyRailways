@@ -86,6 +86,8 @@ service ModelService {
   rpc GetJunction(IDRequest) returns (Junction);
   // Update a Junction by ID.
   rpc UpdateJunction(Junction) returns (Junction);
+  // Adds a new junction of type switch in the module identified by given by ID.
+  rpc AddSwitch(IDRequest) returns (Junction);
 
   // Gets a Output by ID.
   rpc GetOutput(IDRequest) returns (Output);
@@ -111,9 +113,12 @@ service ModelService {
 
   // Gets a BinkyNetLocalWorker by ID.
   rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
-  // Update a Signal by ID.
+  // Update a BinkyNetLocalWorker by ID.
   rpc UpdateBinkyNetLocalWorker(BinkyNetLocalWorker)
       returns (BinkyNetLocalWorker);
+  // Adds a new BinkyNetLocalWorker to the command station identified by given
+  // by ID.
+  rpc AddBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
 }
 
 // Request by ID

@@ -76,3 +76,24 @@ func (s *service) UpdateBinkyNetLocalWorker(ctx context.Context, req *api.BinkyN
 	}
 	return &result, nil
 }
+
+// Adds a new BinkyNetLocalWorker to the command station identified by given by ID.
+func (s *service) AddBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest) (*api.BinkyNetLocalWorker, error) {
+	cs, err := s.getCommandStation(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	bncs, ok := cs.(model.BinkyNetCommandStation)
+	if !ok {
+		return nil, api.InvalidArgument("Command station '%s' is not of type BinkyNet", req.GetId())
+	}
+	lw, err := bncs.GetLocalWorkers().AddNew("<newid>")
+	if err != nil {
+		return nil, err
+	}
+	var result api.BinkyNetLocalWorker
+	if err := result.FromModel(ctx, lw); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

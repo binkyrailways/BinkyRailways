@@ -127,6 +127,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateJunction',
       ($1.Junction value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Junction.fromBuffer(value));
+  static final _$addSwitch = $grpc.ClientMethod<$0.IDRequest, $1.Junction>(
+      '/binkyrailways.v1.ModelService/AddSwitch',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Junction.fromBuffer(value));
   static final _$getOutput = $grpc.ClientMethod<$0.IDRequest, $1.Output>(
       '/binkyrailways.v1.ModelService/GetOutput',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -173,6 +177,12 @@ class ModelServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$1.BinkyNetLocalWorker, $1.BinkyNetLocalWorker>(
           '/binkyrailways.v1.ModelService/UpdateBinkyNetLocalWorker',
           ($1.BinkyNetLocalWorker value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $1.BinkyNetLocalWorker.fromBuffer(value));
+  static final _$addBinkyNetLocalWorker =
+      $grpc.ClientMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
+          '/binkyrailways.v1.ModelService/AddBinkyNetLocalWorker',
+          ($0.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.BinkyNetLocalWorker.fromBuffer(value));
 
@@ -315,6 +325,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateJunction, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Junction> addSwitch($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addSwitch, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.Output> getOutput($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getOutput, request, options: options);
@@ -371,6 +386,13 @@ class ModelServiceClient extends $grpc.Client {
       $1.BinkyNetLocalWorker request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateBinkyNetLocalWorker, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker(
+      $0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinkyNetLocalWorker, request,
         options: options);
   }
 }
@@ -563,6 +585,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Junction.fromBuffer(value),
         ($1.Junction value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Junction>(
+        'AddSwitch',
+        addSwitch_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Junction value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Output>(
         'GetOutput',
         getOutput_Pre,
@@ -642,6 +671,13 @@ abstract class ModelServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $1.BinkyNetLocalWorker.fromBuffer(value),
             ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
+        'AddBinkyNetLocalWorker',
+        addBinkyNetLocalWorker_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ParseAddressResult> parseAddress_Pre($grpc.ServiceCall call,
@@ -774,6 +810,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateJunction(call, await request);
   }
 
+  $async.Future<$1.Junction> addSwitch_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return addSwitch(call, await request);
+  }
+
   $async.Future<$1.Output> getOutput_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getOutput(call, await request);
@@ -830,6 +871,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateBinkyNetLocalWorker(call, await request);
   }
 
+  $async.Future<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return addBinkyNetLocalWorker(call, await request);
+  }
+
   $async.Future<$0.ParseAddressResult> parseAddress(
       $grpc.ServiceCall call, $0.ParseAddressRequest request);
   $async.Future<$1.Railway> getRailway(
@@ -873,6 +919,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Junction> updateJunction(
       $grpc.ServiceCall call, $1.Junction request);
+  $async.Future<$1.Junction> addSwitch(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Output> getOutput(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Output> updateOutput(
@@ -894,4 +942,6 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> updateBinkyNetLocalWorker(
       $grpc.ServiceCall call, $1.BinkyNetLocalWorker request);
+  $async.Future<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker(
+      $grpc.ServiceCall call, $0.IDRequest request);
 }

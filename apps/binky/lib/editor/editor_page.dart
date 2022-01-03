@@ -437,6 +437,21 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.junctions:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.junction,
+              label: "Add switch",
+              onTap: () async {
+                final added = await model.addSwitch(moduleId);
+                editorCtx.select(EntityType.junction, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.routes:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -447,6 +462,21 @@ class _EditorPageState extends State<EditorPage> {
               onTap: () async {
                 final added = await model.addRoute(moduleId);
                 editorCtx.select(EntityType.route, added.id);
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.binkynetlocalworkers:
+        final csId = selector.idOf(EntityType.commandstation);
+        if (csId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.binkynetlocalworker,
+              label: "Add local worker",
+              onTap: () async {
+                final added = await model.addBinkyNetLocalWorker(csId);
+                editorCtx.select(EntityType.binkynetlocalworker, added.id);
               },
             ),
           ];
