@@ -67,9 +67,21 @@ class _JunctionSettings extends StatefulWidget {
 
 class _JunctionSettingsState extends State<_JunctionSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _feedbackAddressController =
+      TextEditingController();
+  final AddressValidator _addressValidator = AddressValidator();
 
   void _initConrollers() {
+    _addressValidator.setState = () {
+      setState(() {});
+    };
     _descriptionController.text = widget.junction.description;
+    if (widget.junction.hasSwitch_6()) {
+      _addressController.text = widget.junction.switch_6.address;
+      _feedbackAddressController.text =
+          widget.junction.switch_6.feedbackAddress;
+    }
   }
 
   @override
@@ -86,30 +98,53 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> children = [
+      const SettingsHeader(title: "General"),
+      SettingsTextField(
+          controller: _descriptionController,
+          label: "Description",
+          firstChild: true,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.description = value;
+            });
+          }),
+    ];
+    if (widget.junction.hasSwitch_6()) {
+      children.add(SettingsTextField(
+          controller: _addressController,
+          label: "Address",
+          validator: _addressValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.switch_6.address = value;
+            });
+          }));
+      children.add(SettingsTextField(
+          controller: _feedbackAddressController,
+          label: "Feedback address",
+          validator: _addressValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.switch_6.feedbackAddress = value;
+            });
+          }));
+    }
+    children.add(const SettingsHeader(title: "Position"));
+    children.add(
+      PositionSettings(
+          editorCtx: widget.editorCtx,
+          model: widget.model,
+          position: widget.junction.position,
+          update: (editor) async {
+            await _update((update) {
+              editor(update.position);
+            });
+          }),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
-        SettingsTextField(
-            controller: _descriptionController,
-            label: "Description",
-            firstChild: true,
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
-            }),
-        const SettingsHeader(title: "Position"),
-        PositionSettings(
-            editorCtx: widget.editorCtx,
-            model: widget.model,
-            position: widget.junction.position,
-            update: (editor) async {
-              await _update((update) {
-                editor(update.position);
-              });
-            }),
-      ],
+      children: children,
     );
   }
 
