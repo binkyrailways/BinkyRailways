@@ -484,3 +484,64 @@ class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   void clearDirection() => clearField(2);
 }
 
+class SetBinaryOutputActiveRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetBinaryOutputActiveRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'active')
+    ..hasRequiredFields = false
+  ;
+
+  SetBinaryOutputActiveRequest._() : super();
+  factory SetBinaryOutputActiveRequest({
+    $core.String? id,
+    $core.bool? active,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (active != null) {
+      _result.active = active;
+    }
+    return _result;
+  }
+  factory SetBinaryOutputActiveRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetBinaryOutputActiveRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetBinaryOutputActiveRequest clone() => SetBinaryOutputActiveRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetBinaryOutputActiveRequest copyWith(void Function(SetBinaryOutputActiveRequest) updates) => super.copyWith((message) => updates(message as SetBinaryOutputActiveRequest)) as SetBinaryOutputActiveRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetBinaryOutputActiveRequest create() => SetBinaryOutputActiveRequest._();
+  SetBinaryOutputActiveRequest createEmptyInstance() => create();
+  static $pb.PbList<SetBinaryOutputActiveRequest> createRepeated() => $pb.PbList<SetBinaryOutputActiveRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetBinaryOutputActiveRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetBinaryOutputActiveRequest>(create);
+  static SetBinaryOutputActiveRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get active => $_getBF(1);
+  @$pb.TagNumber(2)
+  set active($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasActive() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActive() => clearField(2);
+}
+

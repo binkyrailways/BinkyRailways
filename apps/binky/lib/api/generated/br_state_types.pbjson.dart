@@ -145,11 +145,23 @@ const OutputState$json = const {
   '1': 'OutputState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.Output', '10': 'model'},
+    const {'1': 'binary_output', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinaryOutputState', '10': 'binaryOutput'},
   ],
 };
 
 /// Descriptor for `OutputState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List outputStateDescriptor = $convert.base64Decode('CgtPdXRwdXRTdGF0ZRIuCgVtb2RlbBgBIAEoCzIYLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UgVtb2RlbA==');
+final $typed_data.Uint8List outputStateDescriptor = $convert.base64Decode('CgtPdXRwdXRTdGF0ZRIuCgVtb2RlbBgBIAEoCzIYLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UgVtb2RlbBJICg1iaW5hcnlfb3V0cHV0GAIgASgLMiMuYmlua3lyYWlsd2F5cy52MS5CaW5hcnlPdXRwdXRTdGF0ZVIMYmluYXJ5T3V0cHV0');
+@$core.Deprecated('Use binaryOutputStateDescriptor instead')
+const BinaryOutputState$json = const {
+  '1': 'BinaryOutputState',
+  '2': const [
+    const {'1': 'active_actual', '3': 1, '4': 1, '5': 8, '10': 'activeActual'},
+    const {'1': 'active_requested', '3': 2, '4': 1, '5': 8, '10': 'activeRequested'},
+  ],
+};
+
+/// Descriptor for `BinaryOutputState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binaryOutputStateDescriptor = $convert.base64Decode('ChFCaW5hcnlPdXRwdXRTdGF0ZRIjCg1hY3RpdmVfYWN0dWFsGAEgASgIUgxhY3RpdmVBY3R1YWwSKQoQYWN0aXZlX3JlcXVlc3RlZBgCIAEoCFIPYWN0aXZlUmVxdWVzdGVk');
 @$core.Deprecated('Use routeStateDescriptor instead')
 const RouteState$json = const {
   '1': 'RouteState',

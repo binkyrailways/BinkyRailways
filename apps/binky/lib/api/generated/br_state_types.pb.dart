@@ -816,16 +816,21 @@ class SwitchState extends $pb.GeneratedMessage {
 class OutputState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OutputState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Output>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Output.create)
+    ..aOM<BinaryOutputState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binaryOutput', subBuilder: BinaryOutputState.create)
     ..hasRequiredFields = false
   ;
 
   OutputState._() : super();
   factory OutputState({
     $1.Output? model,
+    BinaryOutputState? binaryOutput,
   }) {
     final _result = create();
     if (model != null) {
       _result.model = model;
+    }
+    if (binaryOutput != null) {
+      _result.binaryOutput = binaryOutput;
     }
     return _result;
   }
@@ -860,6 +865,78 @@ class OutputState extends $pb.GeneratedMessage {
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
   $1.Output ensureModel() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  BinaryOutputState get binaryOutput => $_getN(1);
+  @$pb.TagNumber(2)
+  set binaryOutput(BinaryOutputState v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBinaryOutput() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBinaryOutput() => clearField(2);
+  @$pb.TagNumber(2)
+  BinaryOutputState ensureBinaryOutput() => $_ensure(1);
+}
+
+class BinaryOutputState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinaryOutputState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'activeActual')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'activeRequested')
+    ..hasRequiredFields = false
+  ;
+
+  BinaryOutputState._() : super();
+  factory BinaryOutputState({
+    $core.bool? activeActual,
+    $core.bool? activeRequested,
+  }) {
+    final _result = create();
+    if (activeActual != null) {
+      _result.activeActual = activeActual;
+    }
+    if (activeRequested != null) {
+      _result.activeRequested = activeRequested;
+    }
+    return _result;
+  }
+  factory BinaryOutputState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinaryOutputState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinaryOutputState clone() => BinaryOutputState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinaryOutputState copyWith(void Function(BinaryOutputState) updates) => super.copyWith((message) => updates(message as BinaryOutputState)) as BinaryOutputState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutputState create() => BinaryOutputState._();
+  BinaryOutputState createEmptyInstance() => create();
+  static $pb.PbList<BinaryOutputState> createRepeated() => $pb.PbList<BinaryOutputState>();
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutputState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinaryOutputState>(create);
+  static BinaryOutputState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get activeActual => $_getBF(0);
+  @$pb.TagNumber(1)
+  set activeActual($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasActiveActual() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearActiveActual() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get activeRequested => $_getBF(1);
+  @$pb.TagNumber(2)
+  set activeRequested($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasActiveRequested() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActiveRequested() => clearField(2);
 }
 
 class RouteState extends $pb.GeneratedMessage {

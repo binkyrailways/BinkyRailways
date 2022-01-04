@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,17 +23,9 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// FromState converts a state output to an API output
-func (dst *OutputState) FromState(ctx context.Context, src state.Output) error {
-	dst.Model = &Output{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
-		return err
-	}
-	if bos, ok := src.(state.BinaryOutput); ok {
-		dst.BinaryOutput = &BinaryOutputState{}
-		if err := dst.BinaryOutput.FromState(ctx, bos); err != nil {
-			return err
-		}
-	}
+// FromState converts a state binary output to an API binary output
+func (dst *BinaryOutputState) FromState(ctx context.Context, src state.BinaryOutput) error {
+	dst.ActiveActual = src.GetActive().GetActual(ctx)
+	dst.ActiveRequested = src.GetActive().GetRequested(ctx)
 	return nil
 }

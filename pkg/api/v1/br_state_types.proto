@@ -243,6 +243,15 @@ message SwitchState {
 message OutputState {
   // Model of the output
   Output model = 1;
+  // Set if output is a binary output
+  BinaryOutputState binary_output = 2;
+}
+
+message BinaryOutputState {
+  // Actual active state
+  bool active_actual = 1;
+  // Requested active state
+  bool active_requested = 2;
 }
 
 // State of a single route

@@ -96,6 +96,9 @@ type Railway interface {
 
 	// Gets the states of all outputs in this railway
 	ForEachOutput(func(Output))
+	// Gets the state of the output with given ID.
+	// Returns nil if not found
+	GetOutput(id string) (Output, error)
 
 	// Close the railway
 	Close(ctx context.Context)

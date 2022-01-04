@@ -80,3 +80,14 @@ const SetSwitchDirectionRequest$json = const {
 
 /// Descriptor for `SetSwitchDirectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setSwitchDirectionRequestDescriptor = $convert.base64Decode('ChlTZXRTd2l0Y2hEaXJlY3Rpb25SZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBI/CglkaXJlY3Rpb24YAiABKA4yIS5iaW5reXJhaWx3YXlzLnYxLlN3aXRjaERpcmVjdGlvblIJZGlyZWN0aW9u');
+@$core.Deprecated('Use setBinaryOutputActiveRequestDescriptor instead')
+const SetBinaryOutputActiveRequest$json = const {
+  '1': 'SetBinaryOutputActiveRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'active', '3': 2, '4': 1, '5': 8, '10': 'active'},
+  ],
+};
+
+/// Descriptor for `SetBinaryOutputActiveRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setBinaryOutputActiveRequestDescriptor = $convert.base64Decode('ChxTZXRCaW5hcnlPdXRwdXRBY3RpdmVSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBIWCgZhY3RpdmUYAiABKAhSBmFjdGl2ZQ==');

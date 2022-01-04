@@ -50,6 +50,11 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/SetSwitchDirection',
           ($3.SetSwitchDirectionRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.JunctionState.fromBuffer(value));
+  static final _$setBinaryOutputActive =
+      $grpc.ClientMethod<$3.SetBinaryOutputActiveRequest, $2.OutputState>(
+          '/binkyrailways.v1.StateService/SetBinaryOutputActive',
+          ($3.SetBinaryOutputActiveRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.OutputState.fromBuffer(value));
 
   StateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -96,6 +101,12 @@ class StateServiceClient extends $grpc.Client {
       $3.SetSwitchDirectionRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setSwitchDirection, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.OutputState> setBinaryOutputActive(
+      $3.SetBinaryOutputActiveRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$setBinaryOutputActive, request, options: options);
   }
 }
 
@@ -158,6 +169,15 @@ abstract class StateServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $3.SetSwitchDirectionRequest.fromBuffer(value),
             ($2.JunctionState value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$3.SetBinaryOutputActiveRequest, $2.OutputState>(
+            'SetBinaryOutputActive',
+            setBinaryOutputActive_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $3.SetBinaryOutputActiveRequest.fromBuffer(value),
+            ($2.OutputState value) => value.writeToBuffer()));
   }
 
   $async.Future<$2.RailwayState> getRailwayState_Pre(
@@ -195,6 +215,12 @@ abstract class StateServiceBase extends $grpc.Service {
     return setSwitchDirection(call, await request);
   }
 
+  $async.Future<$2.OutputState> setBinaryOutputActive_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$3.SetBinaryOutputActiveRequest> request) async {
+    return setBinaryOutputActive(call, await request);
+  }
+
   $async.Future<$2.RailwayState> getRailwayState(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.RailwayState> enableRunMode(
@@ -209,4 +235,6 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.SetLocSpeedAndDirectionRequest request);
   $async.Future<$2.JunctionState> setSwitchDirection(
       $grpc.ServiceCall call, $3.SetSwitchDirectionRequest request);
+  $async.Future<$2.OutputState> setBinaryOutputActive(
+      $grpc.ServiceCall call, $3.SetBinaryOutputActiveRequest request);
 }

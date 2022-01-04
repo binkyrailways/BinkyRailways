@@ -459,6 +459,17 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 	}
 }
 
+// Gets the state of the output with given ID.
+// Returns nil if not found
+func (r *railway) GetOutput(id string) (state.Output, error) {
+	for _, x := range r.outputs {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Close the railway
 func (r *railway) Close(ctx context.Context) {
 	// Stop virtual mode

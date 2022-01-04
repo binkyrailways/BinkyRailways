@@ -123,6 +123,19 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<OutputState> setBinaryOutputActive(String id, bool active) async {
+    var stateClient = APIClient().stateClient();
+    final result =
+        await stateClient.setBinaryOutputActive(SetBinaryOutputActiveRequest(
+      id: id,
+      active: active,
+    ));
+    if (_outputs.set(id, result)) {
+      notifyListeners();
+    }
+    return result;
+  }
+
   Future<Holder<T>> _getState<T>(String id, HolderMap<T> state) async {
     return retry(() {
       final result = state.get(id);

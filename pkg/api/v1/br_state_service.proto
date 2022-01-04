@@ -45,8 +45,11 @@ service StateService {
   rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
       returns (LocState);
 
-  // Change the of a junction of type switch
+  // Change the direction of a junction of type switch
   rpc SetSwitchDirection(SetSwitchDirectionRequest) returns (JunctionState);
+
+  // Change the active state of an output of type binary output
+  rpc SetBinaryOutputActive(SetBinaryOutputActiveRequest) returns (OutputState);
 }
 
 // Request arguments for EnableRunMode.
@@ -96,4 +99,11 @@ message SetSwitchDirectionRequest {
   string id = 1;
   // New direction of the switch
   SwitchDirection direction = 2;
+}
+
+message SetBinaryOutputActiveRequest {
+  // ID of the output (of type binary output)
+  string id = 1;
+  // Request active state
+  bool active = 2;
 }

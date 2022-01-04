@@ -20,6 +20,7 @@ import '../../api.dart' as mapi;
 import '../../models.dart';
 import './block_component.dart';
 import './junction_component.dart';
+import './output_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   final mapi.ModuleRef moduleRef;
@@ -39,6 +40,10 @@ class ModuleComponent extends common.ModuleComponent {
     for (var junctionRef in model.junctions) {
       final junctionState = await stateModel.getJunctionState(junctionRef.id);
       add(JunctionComponent(state: junctionState, stateModel: stateModel));
+    }
+    for (var outputRef in model.outputs) {
+      final outputState = await stateModel.getOutputState(outputRef.id);
+      add(OutputComponent(state: outputState, stateModel: stateModel));
     }
   }
 }
