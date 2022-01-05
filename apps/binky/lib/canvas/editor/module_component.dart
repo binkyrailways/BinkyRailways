@@ -22,6 +22,7 @@ import '../../editor/editor_context.dart';
 import './block_component.dart';
 import './junction_component.dart';
 import './output_component.dart';
+import './sensor_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   ModuleComponent({required mapi.Module model}) : super(model: model);
@@ -44,6 +45,11 @@ class ModuleComponent extends common.ModuleComponent {
     for (var outputRef in model.outputs) {
       final output = await modelModel.getOutput(outputRef.id);
       add(OutputComponent(editorCtx: editorCtx, model: output));
+    }
+    // Load sensors
+    for (var sensorRef in model.sensors) {
+      final sensor = await modelModel.getSensor(sensorRef.id);
+      add(SensorComponent(editorCtx: editorCtx, model: sensor));
     }
   }
 }

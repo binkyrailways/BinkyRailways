@@ -991,16 +991,21 @@ class RouteState extends $pb.GeneratedMessage {
 class SensorState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SensorState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Sensor>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Sensor.create)
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'active')
     ..hasRequiredFields = false
   ;
 
   SensorState._() : super();
   factory SensorState({
     $1.Sensor? model,
+    $core.bool? active,
   }) {
     final _result = create();
     if (model != null) {
       _result.model = model;
+    }
+    if (active != null) {
+      _result.active = active;
     }
     return _result;
   }
@@ -1035,6 +1040,15 @@ class SensorState extends $pb.GeneratedMessage {
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
   $1.Sensor ensureModel() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.bool get active => $_getBF(1);
+  @$pb.TagNumber(2)
+  set active($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasActive() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActive() => clearField(2);
 }
 
 class SignalState extends $pb.GeneratedMessage {

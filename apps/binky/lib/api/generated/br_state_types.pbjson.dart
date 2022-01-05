@@ -177,11 +177,12 @@ const SensorState$json = const {
   '1': 'SensorState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.Sensor', '10': 'model'},
+    const {'1': 'active', '3': 2, '4': 1, '5': 8, '10': 'active'},
   ],
 };
 
 /// Descriptor for `SensorState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sensorStateDescriptor = $convert.base64Decode('CgtTZW5zb3JTdGF0ZRIuCgVtb2RlbBgBIAEoCzIYLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yUgVtb2RlbA==');
+final $typed_data.Uint8List sensorStateDescriptor = $convert.base64Decode('CgtTZW5zb3JTdGF0ZRIuCgVtb2RlbBgBIAEoCzIYLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yUgVtb2RlbBIWCgZhY3RpdmUYAiABKAhSBmFjdGl2ZQ==');
 @$core.Deprecated('Use signalStateDescriptor instead')
 const SignalState$json = const {
   '1': 'SignalState',

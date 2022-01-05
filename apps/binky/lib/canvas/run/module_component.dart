@@ -21,6 +21,7 @@ import '../../models.dart';
 import './block_component.dart';
 import './junction_component.dart';
 import './output_component.dart';
+import './sensor_component.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   final mapi.ModuleRef moduleRef;
@@ -44,6 +45,10 @@ class ModuleComponent extends common.ModuleComponent {
     for (var outputRef in model.outputs) {
       final outputState = await stateModel.getOutputState(outputRef.id);
       add(OutputComponent(state: outputState, stateModel: stateModel));
+    }
+    for (var sensorRef in model.sensors) {
+      final sensorState = await stateModel.getSensorState(sensorRef.id);
+      add(SensorComponent(state: sensorState, stateModel: stateModel));
     }
   }
 }

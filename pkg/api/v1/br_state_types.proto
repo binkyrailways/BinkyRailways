@@ -264,6 +264,8 @@ message RouteState {
 message SensorState {
   // Model of the sensor
   Sensor model = 1;
+  // Is the sensor indicating an active input?
+  bool active = 2;
 }
 
 // State of a single signal

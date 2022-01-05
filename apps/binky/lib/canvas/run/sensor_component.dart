@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,22 @@
 // Author Ewout Prangsma
 //
 
-package v1
+import 'package:binky/models/_state_model.dart';
 
-import (
-	context "context"
+import '../sensor_component.dart' as common;
+import '../../api.dart' as api;
+import '../../models.dart';
 
-	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
-)
+class SensorComponent extends common.SensorComponent {
+  Holder<api.SensorState> state;
+  final StateModel stateModel;
 
-// FromState converts a state sensor to an API sensor
-func (dst *SensorState) FromState(ctx context.Context, src state.Sensor) error {
-	dst.Model = &Sensor{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
-		return err
-	}
-	dst.Active = src.GetActive().GetActual(ctx)
-	return nil
+  SensorComponent({required this.state, required this.stateModel})
+      : super(model: state.last.model);
+
+  @override
+  bool isActive() {
+    final sState = state.last;
+    return sState.active;
+  }
 }
