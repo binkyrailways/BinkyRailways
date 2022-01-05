@@ -75,9 +75,11 @@ class _BinkyNetDeviceSettings extends StatefulWidget {
 
 class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
   final TextEditingController _deviceIdController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   void _initConrollers() {
     _deviceIdController.text = widget.binkynetdevice.deviceId;
+    _addressController.text = widget.binkynetdevice.address;
   }
 
   @override
@@ -115,6 +117,12 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
           },
           items: _deviceTypeItems,
         ),
+        SettingsTextField(
+            controller: _addressController,
+            label: "Address",
+            onLostFocus: (value) async {
+              await _update((update) => {update.address = value});
+            }),
       ],
     );
   }
