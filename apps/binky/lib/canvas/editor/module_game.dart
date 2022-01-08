@@ -24,7 +24,7 @@ import '../../models.dart';
 import '../../editor/editor_context.dart';
 import 'module_component.dart';
 
-class ModuleGame extends FlameGame with HasHoverables, HasTappables {
+class ModuleGame extends FlameGame with HasDraggables, HasHoverables, HasTappables {
   final ModelModel modelModel;
   final String moduleId;
   final EditorContext editorCtx;

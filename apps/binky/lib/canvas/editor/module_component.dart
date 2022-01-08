@@ -34,22 +34,22 @@ class ModuleComponent extends common.ModuleComponent {
     // Load blocks
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
-      add(BlockComponent(editorCtx: editorCtx, model: block));
+      add(BlockComponent(editorCtx: editorCtx, model: block, modelModel: modelModel));
     }
     // Load junctions
     for (var junctionRef in model.junctions) {
       final junction = await modelModel.getJunction(junctionRef.id);
-      add(JunctionComponent(editorCtx: editorCtx, model: junction));
+      add(JunctionComponent(editorCtx: editorCtx, model: junction, modelModel: modelModel));
     }
     // Load outputs
     for (var outputRef in model.outputs) {
       final output = await modelModel.getOutput(outputRef.id);
-      add(OutputComponent(editorCtx: editorCtx, model: output));
+      add(OutputComponent(editorCtx: editorCtx, model: output, modelModel: modelModel));
     }
     // Load sensors
     for (var sensorRef in model.sensors) {
       final sensor = await modelModel.getSensor(sensorRef.id);
-      add(SensorComponent(editorCtx: editorCtx, model: sensor));
+      add(SensorComponent(editorCtx: editorCtx, model: sensor, modelModel: modelModel));
     }
   }
 }

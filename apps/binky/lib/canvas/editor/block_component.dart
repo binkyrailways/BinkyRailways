@@ -15,18 +15,36 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
+import 'package:flame/components.dart';
+import 'package:flutter/material.dart' hide Draggable;
 import 'package:flame/input.dart';
+import 'package:protobuf/protobuf.dart';
 
 import '../block_component.dart' as common;
 import '../../api.dart' as mapi;
+import '../../models.dart';
 import '../../editor/editor_context.dart';
+import './position_draggable.dart';
 
-class BlockComponent extends common.BlockComponent {
+class BlockComponent extends common.BlockComponent
+    with Draggable, PositionDraggable<mapi.Block> {
   final EditorContext editorCtx;
+  final ModelModel modelModel;
 
-  BlockComponent({required this.editorCtx, required mapi.Block model})
+  BlockComponent(
+      {required this.editorCtx,
+      required mapi.Block model,
+      required this.modelModel})
       : super(model: model);
+
+  @override
+  Future<void> savePosition(void Function(mapi.Position) editor) async {
+    final current = await modelModel.getBlock(model.id);
+    var update = current.deepCopy();
+    editor(update.position);
+    await modelModel.updateBlock(update);
+    editorCtx.select(EntityType.block, model.id);
+  }
 
   @override
   bool onTapUp(TapUpInfo event) {

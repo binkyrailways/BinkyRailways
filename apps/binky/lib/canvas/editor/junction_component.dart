@@ -16,18 +16,35 @@
 //
 
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Draggable;
 import 'package:flame/input.dart';
+import 'package:protobuf/protobuf.dart';
 
 import '../junction_component.dart' as common;
 import '../../api.dart' as mapi;
+import '../../models.dart';
 import '../../editor/editor_context.dart';
+import './position_draggable.dart';
 
-class JunctionComponent extends common.JunctionComponent with Tappable {
+class JunctionComponent extends common.JunctionComponent
+    with Tappable, Draggable, PositionDraggable<mapi.Junction> {
   final EditorContext editorCtx;
+  final ModelModel modelModel;
 
-  JunctionComponent({required this.editorCtx, required mapi.Junction model})
+  JunctionComponent(
+      {required this.editorCtx,
+      required mapi.Junction model,
+      required this.modelModel})
       : super(model: model);
+
+  @override
+  Future<void> savePosition(void Function(mapi.Position) editor) async {
+    final current = await modelModel.getJunction(model.id);
+    var update = current.deepCopy();
+    editor(update.position);
+    await modelModel.updateJunction(update);
+    editorCtx.select(EntityType.junction, model.id);
+  }
 
   @override
   bool onTapUp(TapUpInfo event) {
