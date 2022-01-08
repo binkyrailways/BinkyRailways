@@ -67,24 +67,14 @@ class _JunctionSettings extends StatefulWidget {
 
 class _JunctionSettingsState extends State<_JunctionSettings> {
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _feedbackAddressController =
-      TextEditingController();
   final TextEditingController _switchDurationController =
       TextEditingController();
-  final AddressValidator _addressValidator = AddressValidator();
   final NumericValidator _switchDurationValidator =
       NumericValidator(minimum: 0, maximum: 10000);
 
   void _initConrollers() {
-    _addressValidator.setState = () {
-      setState(() {});
-    };
     _descriptionController.text = widget.junction.description;
     if (widget.junction.hasSwitch_6()) {
-      _addressController.text = widget.junction.switch_6.address;
-      _feedbackAddressController.text =
-          widget.junction.switch_6.feedbackAddress;
       _switchDurationController.text =
           widget.junction.switch_6.switchDuration.toString();
     }
@@ -117,10 +107,9 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
           }),
     ];
     if (widget.junction.hasSwitch_6()) {
-      children.add(SettingsTextField(
-          controller: _addressController,
+      children.add(SettingsAddressField(
           label: "Address",
-          validator: _addressValidator.validate,
+          address: widget.junction.switch_6.address,
           onLostFocus: (value) async {
             await _update((update) {
               update.switch_6.address = value;
@@ -145,10 +134,9 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
         },
       ));
       if (widget.junction.switch_6.hasFeedback) {
-        children.add(SettingsTextField(
-            controller: _feedbackAddressController,
+        children.add(SettingsAddressField(
+          address: widget.junction.switch_6.feedbackAddress,
             label: "Feedback address",
-            validator: _addressValidator.validate,
             onLostFocus: (value) async {
               await _update((update) {
                 update.switch_6.feedbackAddress = value;
