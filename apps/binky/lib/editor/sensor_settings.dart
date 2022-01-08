@@ -120,6 +120,7 @@ class _SensorSettingsState extends State<_SensorSettings> {
               });
             }),
         SettingsAddressField(
+            key: Key("${widget.sensor.id}/sensor/address"),
             address: widget.sensor.address,
             label: "Address",
             onLostFocus: (value) async {

@@ -108,6 +108,7 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
     ];
     if (widget.junction.hasSwitch_6()) {
       children.add(SettingsAddressField(
+          key: Key("${widget.junction.id}/junction/address"),
           label: "Address",
           address: widget.junction.switch_6.address,
           onLostFocus: (value) async {
@@ -135,7 +136,8 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
       ));
       if (widget.junction.switch_6.hasFeedback) {
         children.add(SettingsAddressField(
-          address: widget.junction.switch_6.feedbackAddress,
+            key: Key("${widget.junction.id}/junction/feedbackAddress"),
+            address: widget.junction.switch_6.feedbackAddress,
             label: "Feedback address",
             onLostFocus: (value) async {
               await _update((update) {
