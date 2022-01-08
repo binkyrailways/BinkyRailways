@@ -87,15 +87,9 @@ class _SensorSettings extends StatefulWidget {
 
 class _SensorSettingsState extends State<_SensorSettings> {
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final AddressValidator _addressValidator = AddressValidator();
 
   void _initConrollers() {
-    _addressValidator.setState = () {
-      setState(() {});
-    };
     _descriptionController.text = widget.sensor.description;
-    _addressController.text = widget.sensor.address;
   }
 
   @override
@@ -125,10 +119,9 @@ class _SensorSettingsState extends State<_SensorSettings> {
                 update.description = value;
               });
             }),
-        SettingsTextField(
-            controller: _addressController,
+        SettingsAddressField(
+            address: widget.sensor.address,
             label: "Address",
-            validator: _addressValidator.validate,
             onLostFocus: (value) async {
               await _update((update) {
                 update.address = value;
