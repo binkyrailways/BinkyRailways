@@ -85,3 +85,26 @@ const RemoveRouteEventRequest$json = const {
 
 /// Descriptor for `RemoveRouteEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List removeRouteEventRequestDescriptor = $convert.base64Decode('ChdSZW1vdmVSb3V0ZUV2ZW50UmVxdWVzdBIZCghyb3V0ZV9pZBgBIAEoCVIHcm91dGVJZBIbCglzZW5zb3JfaWQYAiABKAlSCHNlbnNvcklk');
+@$core.Deprecated('Use addRouteEventBehaviorRequestDescriptor instead')
+const AddRouteEventBehaviorRequest$json = const {
+  '1': 'AddRouteEventBehaviorRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'sensor_id', '3': 2, '4': 1, '5': 9, '10': 'sensorId'},
+  ],
+};
+
+/// Descriptor for `AddRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addRouteEventBehaviorRequestDescriptor = $convert.base64Decode('ChxBZGRSb3V0ZUV2ZW50QmVoYXZpb3JSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEhsKCXNlbnNvcl9pZBgCIAEoCVIIc2Vuc29ySWQ=');
+@$core.Deprecated('Use removeRouteEventBehaviorRequestDescriptor instead')
+const RemoveRouteEventBehaviorRequest$json = const {
+  '1': 'RemoveRouteEventBehaviorRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'sensor_id', '3': 2, '4': 1, '5': 9, '10': 'sensorId'},
+    const {'1': 'index', '3': 3, '4': 1, '5': 5, '10': 'index'},
+  ],
+};
+
+/// Descriptor for `RemoveRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List removeRouteEventBehaviorRequestDescriptor = $convert.base64Decode('Ch9SZW1vdmVSb3V0ZUV2ZW50QmVoYXZpb3JSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEhsKCXNlbnNvcl9pZBgCIAEoCVIIc2Vuc29ySWQSFAoFaW5kZXgYAyABKAVSBWluZGV4');

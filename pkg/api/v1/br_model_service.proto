@@ -111,6 +111,10 @@ service ModelService {
   rpc AddRouteEvent(AddRouteEventRequest) returns (Route);
   // Remove an event from the given route
   rpc RemoveRouteEvent(RemoveRouteEventRequest) returns (Route);
+  // Adds a behavior to an event in the given route
+  rpc AddRouteEventBehavior(AddRouteEventBehaviorRequest) returns (Route);
+  // Remove a behavior from an event in the given route
+  rpc RemoveRouteEventBehavior(RemoveRouteEventBehaviorRequest) returns (Route);
 
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);
@@ -186,4 +190,20 @@ message RemoveRouteEventRequest {
   string route_id = 1;
   // ID of sensor to remove event for 
   string sensor_id = 2;
+}
+
+message AddRouteEventBehaviorRequest {
+  // ID of the route to add an event to
+  string route_id = 1;
+  // ID of sensor to add a behavior for
+  string sensor_id = 2;
+}
+
+message RemoveRouteEventBehaviorRequest {
+  // ID of the route to remove an event from
+  string route_id = 1;
+  // ID of sensor to remove behavior for 
+  string sensor_id = 2;
+  // Index of the behavior to removed
+  int32 index = 3;
 }

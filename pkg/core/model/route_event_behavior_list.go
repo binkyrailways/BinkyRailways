@@ -22,6 +22,10 @@ type RouteEventBehaviorList interface {
 	// Get number of entries
 	GetCount() int
 
+	// Get the behavior at the given index
+	// Returns false if index is out of bounds
+	GetAt(index int) (RouteEventBehavior, bool)
+
 	// Invoke the callback for each item
 	ForEach(cb func(RouteEventBehavior))
 

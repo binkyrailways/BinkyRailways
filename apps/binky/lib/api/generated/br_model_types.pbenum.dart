@@ -109,6 +109,44 @@ class BlockSide extends $pb.ProtobufEnum {
   const BlockSide._($core.int v, $core.String n) : super(v, n);
 }
 
+class RouteStateBehavior extends $pb.ProtobufEnum {
+  static const RouteStateBehavior RSB_NOCHANGE = RouteStateBehavior._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RSB_NOCHANGE');
+  static const RouteStateBehavior RSB_ENTER = RouteStateBehavior._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RSB_ENTER');
+  static const RouteStateBehavior RSB_REACHED = RouteStateBehavior._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RSB_REACHED');
+
+  static const $core.List<RouteStateBehavior> values = <RouteStateBehavior> [
+    RSB_NOCHANGE,
+    RSB_ENTER,
+    RSB_REACHED,
+  ];
+
+  static final $core.Map<$core.int, RouteStateBehavior> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static RouteStateBehavior? valueOf($core.int value) => _byValue[value];
+
+  const RouteStateBehavior._($core.int v, $core.String n) : super(v, n);
+}
+
+class LocSpeedBehavior extends $pb.ProtobufEnum {
+  static const LocSpeedBehavior LSB_DEFAULT = LocSpeedBehavior._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LSB_DEFAULT');
+  static const LocSpeedBehavior LSB_NOCHANGE = LocSpeedBehavior._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LSB_NOCHANGE');
+  static const LocSpeedBehavior LSB_MEDIUM = LocSpeedBehavior._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LSB_MEDIUM');
+  static const LocSpeedBehavior LSB_MINIMUM = LocSpeedBehavior._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LSB_MINIMUM');
+  static const LocSpeedBehavior LSB_MAXIMUM = LocSpeedBehavior._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LSB_MAXIMUM');
+
+  static const $core.List<LocSpeedBehavior> values = <LocSpeedBehavior> [
+    LSB_DEFAULT,
+    LSB_NOCHANGE,
+    LSB_MEDIUM,
+    LSB_MINIMUM,
+    LSB_MAXIMUM,
+  ];
+
+  static final $core.Map<$core.int, LocSpeedBehavior> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static LocSpeedBehavior? valueOf($core.int value) => _byValue[value];
+
+  const LocSpeedBehavior._($core.int v, $core.String n) : super(v, n);
+}
+
 class Shape extends $pb.ProtobufEnum {
   static const Shape CIRCLE = Shape._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'CIRCLE');
   static const Shape TRIANGLE = Shape._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TRIANGLE');

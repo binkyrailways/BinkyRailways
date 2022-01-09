@@ -570,9 +570,43 @@ message SwitchWithState { SwitchDirection direction = 1; }
 message RouteEvent {
   // Sensor that triggers the event
   SensorRef sensor = 1;
-	// Gets the list of behaviors to choose from.
-	// The first matching behavior is used.
-//	GetBehaviors() RouteEventBehaviorList
+  // Gets the list of behaviors to choose from.
+  // The first matching behavior is used.
+  repeated RouteEventBehavior behaviors = 2;
+}
+
+message RouteEventBehavior {
+  // Predicate used to select the locs to which this event applies.
+  // GetAppliesTo() LocPredicate
+
+  // How is the state of the route changed.
+  RouteStateBehavior state_behavior = 2;
+
+  // How is the speed of the occupying loc changed.
+  LocSpeedBehavior speed_behavior = 3;
+}
+
+enum RouteStateBehavior {
+  // NOCHANGE indicates that the state does not change
+  RSB_NOCHANGE = 0;
+  // ENTER indicates that the loc has entered the To block.
+  RSB_ENTER = 1;
+  // REACHED indicates that the loc has reached the To block.
+  RSB_REACHED = 2;
+}
+
+enum LocSpeedBehavior {
+  // LocSpeedBehaviorDefault indicates the speed change is controlled by state
+  // behavior
+  LSB_DEFAULT = 0;
+  // LocSpeedBehaviorNoChange indicates no change in speed
+  LSB_NOCHANGE = 1;
+  // LocSpeedBehaviorMedium indicates that the speed is set to medium speed.
+  LSB_MEDIUM = 2;
+  // LocSpeedBehaviorMinimum indicates that the speed is set to minimum speed.
+  LSB_MINIMUM = 3;
+  // LocSpeedBehaviorMaximum indicates that the speed is set to maximum speed.
+  LSB_MAXIMUM = 4;
 }
 
 // Sensor on the track

@@ -285,6 +285,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
             final description = snapshot.data!;
             return ListTile(
               title: Text(description),
+              subtitle: Text("${evt.behaviors.length} behaviors"),
               trailing: GestureDetector(
                 child: const Icon(Icons.more_vert),
                 onTapDown: (TapDownDetails details) {

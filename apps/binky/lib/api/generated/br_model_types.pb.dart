@@ -3016,16 +3016,21 @@ class SwitchWithState extends $pb.GeneratedMessage {
 class RouteEvent extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<SensorRef>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensor', subBuilder: SensorRef.create)
+    ..pc<RouteEventBehavior>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'behaviors', $pb.PbFieldType.PM, subBuilder: RouteEventBehavior.create)
     ..hasRequiredFields = false
   ;
 
   RouteEvent._() : super();
   factory RouteEvent({
     SensorRef? sensor,
+    $core.Iterable<RouteEventBehavior>? behaviors,
   }) {
     final _result = create();
     if (sensor != null) {
       _result.sensor = sensor;
+    }
+    if (behaviors != null) {
+      _result.behaviors.addAll(behaviors);
     }
     return _result;
   }
@@ -3060,6 +3065,70 @@ class RouteEvent extends $pb.GeneratedMessage {
   void clearSensor() => clearField(1);
   @$pb.TagNumber(1)
   SensorRef ensureSensor() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<RouteEventBehavior> get behaviors => $_getList(1);
+}
+
+class RouteEventBehavior extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteEventBehavior', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..e<RouteStateBehavior>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stateBehavior', $pb.PbFieldType.OE, defaultOrMaker: RouteStateBehavior.RSB_NOCHANGE, valueOf: RouteStateBehavior.valueOf, enumValues: RouteStateBehavior.values)
+    ..e<LocSpeedBehavior>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedBehavior', $pb.PbFieldType.OE, defaultOrMaker: LocSpeedBehavior.LSB_DEFAULT, valueOf: LocSpeedBehavior.valueOf, enumValues: LocSpeedBehavior.values)
+    ..hasRequiredFields = false
+  ;
+
+  RouteEventBehavior._() : super();
+  factory RouteEventBehavior({
+    RouteStateBehavior? stateBehavior,
+    LocSpeedBehavior? speedBehavior,
+  }) {
+    final _result = create();
+    if (stateBehavior != null) {
+      _result.stateBehavior = stateBehavior;
+    }
+    if (speedBehavior != null) {
+      _result.speedBehavior = speedBehavior;
+    }
+    return _result;
+  }
+  factory RouteEventBehavior.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RouteEventBehavior.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RouteEventBehavior clone() => RouteEventBehavior()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RouteEventBehavior copyWith(void Function(RouteEventBehavior) updates) => super.copyWith((message) => updates(message as RouteEventBehavior)) as RouteEventBehavior; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RouteEventBehavior create() => RouteEventBehavior._();
+  RouteEventBehavior createEmptyInstance() => create();
+  static $pb.PbList<RouteEventBehavior> createRepeated() => $pb.PbList<RouteEventBehavior>();
+  @$core.pragma('dart2js:noInline')
+  static RouteEventBehavior getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RouteEventBehavior>(create);
+  static RouteEventBehavior? _defaultInstance;
+
+  @$pb.TagNumber(2)
+  RouteStateBehavior get stateBehavior => $_getN(0);
+  @$pb.TagNumber(2)
+  set stateBehavior(RouteStateBehavior v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStateBehavior() => $_has(0);
+  @$pb.TagNumber(2)
+  void clearStateBehavior() => clearField(2);
+
+  @$pb.TagNumber(3)
+  LocSpeedBehavior get speedBehavior => $_getN(1);
+  @$pb.TagNumber(3)
+  set speedBehavior(LocSpeedBehavior v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasSpeedBehavior() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearSpeedBehavior() => clearField(3);
 }
 
 class Sensor extends $pb.GeneratedMessage {

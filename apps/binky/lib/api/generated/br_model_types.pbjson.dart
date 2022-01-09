@@ -79,6 +79,32 @@ const BlockSide$json = const {
 
 /// Descriptor for `BlockSide`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List blockSideDescriptor = $convert.base64Decode('CglCbG9ja1NpZGUSCQoFRlJPTlQQABIICgRCQUNLEAE=');
+@$core.Deprecated('Use routeStateBehaviorDescriptor instead')
+const RouteStateBehavior$json = const {
+  '1': 'RouteStateBehavior',
+  '2': const [
+    const {'1': 'RSB_NOCHANGE', '2': 0},
+    const {'1': 'RSB_ENTER', '2': 1},
+    const {'1': 'RSB_REACHED', '2': 2},
+  ],
+};
+
+/// Descriptor for `RouteStateBehavior`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List routeStateBehaviorDescriptor = $convert.base64Decode('ChJSb3V0ZVN0YXRlQmVoYXZpb3ISEAoMUlNCX05PQ0hBTkdFEAASDQoJUlNCX0VOVEVSEAESDwoLUlNCX1JFQUNIRUQQAg==');
+@$core.Deprecated('Use locSpeedBehaviorDescriptor instead')
+const LocSpeedBehavior$json = const {
+  '1': 'LocSpeedBehavior',
+  '2': const [
+    const {'1': 'LSB_DEFAULT', '2': 0},
+    const {'1': 'LSB_NOCHANGE', '2': 1},
+    const {'1': 'LSB_MEDIUM', '2': 2},
+    const {'1': 'LSB_MINIMUM', '2': 3},
+    const {'1': 'LSB_MAXIMUM', '2': 4},
+  ],
+};
+
+/// Descriptor for `LocSpeedBehavior`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List locSpeedBehaviorDescriptor = $convert.base64Decode('ChBMb2NTcGVlZEJlaGF2aW9yEg8KC0xTQl9ERUZBVUxUEAASEAoMTFNCX05PQ0hBTkdFEAESDgoKTFNCX01FRElVTRACEg8KC0xTQl9NSU5JTVVNEAMSDwoLTFNCX01BWElNVU0QBA==');
 @$core.Deprecated('Use shapeDescriptor instead')
 const Shape$json = const {
   '1': 'Shape',
@@ -566,11 +592,23 @@ const RouteEvent$json = const {
   '1': 'RouteEvent',
   '2': const [
     const {'1': 'sensor', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.SensorRef', '10': 'sensor'},
+    const {'1': 'behaviors', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteEventBehavior', '10': 'behaviors'},
   ],
 };
 
 /// Descriptor for `RouteEvent`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeEventDescriptor = $convert.base64Decode('CgpSb3V0ZUV2ZW50EjMKBnNlbnNvchgBIAEoCzIbLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yUmVmUgZzZW5zb3I=');
+final $typed_data.Uint8List routeEventDescriptor = $convert.base64Decode('CgpSb3V0ZUV2ZW50EjMKBnNlbnNvchgBIAEoCzIbLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yUmVmUgZzZW5zb3ISQgoJYmVoYXZpb3JzGAIgAygLMiQuYmlua3lyYWlsd2F5cy52MS5Sb3V0ZUV2ZW50QmVoYXZpb3JSCWJlaGF2aW9ycw==');
+@$core.Deprecated('Use routeEventBehaviorDescriptor instead')
+const RouteEventBehavior$json = const {
+  '1': 'RouteEventBehavior',
+  '2': const [
+    const {'1': 'state_behavior', '3': 2, '4': 1, '5': 14, '6': '.binkyrailways.v1.RouteStateBehavior', '10': 'stateBehavior'},
+    const {'1': 'speed_behavior', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.LocSpeedBehavior', '10': 'speedBehavior'},
+  ],
+};
+
+/// Descriptor for `RouteEventBehavior`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List routeEventBehaviorDescriptor = $convert.base64Decode('ChJSb3V0ZUV2ZW50QmVoYXZpb3ISSwoOc3RhdGVfYmVoYXZpb3IYAiABKA4yJC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlU3RhdGVCZWhhdmlvclINc3RhdGVCZWhhdmlvchJJCg5zcGVlZF9iZWhhdmlvchgDIAEoDjIiLmJpbmt5cmFpbHdheXMudjEuTG9jU3BlZWRCZWhhdmlvclINc3BlZWRCZWhhdmlvcg==');
 @$core.Deprecated('Use sensorDescriptor instead')
 const Sensor$json = const {
   '1': 'Sensor',

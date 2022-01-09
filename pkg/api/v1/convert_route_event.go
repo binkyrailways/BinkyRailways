@@ -21,6 +21,7 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"go.uber.org/multierr"
 )
 
 // FromModel converts a model RouteEvent to an API RouteEvent
@@ -29,6 +30,11 @@ func (dst *RouteEvent) FromModel(ctx context.Context, src model.RouteEvent) erro
 	dst.Sensor = &SensorRef{
 		Id: id,
 	}
+	src.GetBehaviors().ForEach(func(reb model.RouteEventBehavior) {
+		dstReb := &RouteEventBehavior{}
+		dstReb.FromModel(ctx, reb)
+		dst.Behaviors = append(dst.Behaviors, dstReb)
+	})
 	return nil
 }
 
@@ -38,5 +44,16 @@ func (src *RouteEvent) ToModel(ctx context.Context, dst model.RouteEvent) error 
 	if src.GetSensor().GetId() != expectedID {
 		return InvalidArgument("Unexpected sensor ID: '%s'", src.GetSensor().GetId())
 	}
-	return nil
+	if len(src.GetBehaviors()) != dst.GetBehaviors().GetCount() {
+		return InvalidArgument("Unexpected number of behaviors (got %d, expected %d)", len(src.GetBehaviors()), dst.GetBehaviors().GetCount())
+	}
+	var err error
+	for index, bhv := range src.GetBehaviors() {
+		dstBhv, ok := dst.GetBehaviors().GetAt(index)
+		if !ok {
+			return InvalidArgument("Route event behavior not found at index %d", index)
+		}
+		multierr.AppendInto(&err, bhv.ToModel(ctx, dstBhv))
+	}
+	return err
 }

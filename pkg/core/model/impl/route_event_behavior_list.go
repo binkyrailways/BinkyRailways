@@ -50,6 +50,14 @@ func (rs *routeEventBehaviorList) GetCount() int {
 	return len(rs.Items)
 }
 
+// Get behavior at given index
+func (rs *routeEventBehaviorList) GetAt(index int) (model.RouteEventBehavior, bool) {
+	if index < 0 || index >= len(rs.Items) {
+		return nil, false
+	}
+	return rs.Items[index], true
+}
+
 // Invoke the callback for each item
 func (rs *routeEventBehaviorList) ForEach(cb func(model.RouteEventBehavior)) {
 	for _, x := range rs.Items {

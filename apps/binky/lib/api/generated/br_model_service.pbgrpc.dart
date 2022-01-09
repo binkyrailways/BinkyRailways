@@ -177,6 +177,16 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/RemoveRouteEvent',
           ($0.RemoveRouteEventRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$addRouteEventBehavior =
+      $grpc.ClientMethod<$0.AddRouteEventBehaviorRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/AddRouteEventBehavior',
+          ($0.AddRouteEventBehaviorRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$removeRouteEventBehavior =
+      $grpc.ClientMethod<$0.RemoveRouteEventBehaviorRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/RemoveRouteEventBehavior',
+          ($0.RemoveRouteEventBehaviorRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
   static final _$getSensor = $grpc.ClientMethod<$0.IDRequest, $1.Sensor>(
       '/binkyrailways.v1.ModelService/GetSensor',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -423,6 +433,19 @@ class ModelServiceClient extends $grpc.Client {
       $0.RemoveRouteEventRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$removeRouteEvent, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> addRouteEventBehavior(
+      $0.AddRouteEventBehaviorRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addRouteEventBehavior, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> removeRouteEventBehavior(
+      $0.RemoveRouteEventBehaviorRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$removeRouteEventBehavior, request,
+        options: options);
   }
 
   $grpc.ResponseFuture<$1.Sensor> getSensor($0.IDRequest request,
@@ -755,6 +778,23 @@ abstract class ModelServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.RemoveRouteEventRequest.fromBuffer(value),
         ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.AddRouteEventBehaviorRequest, $1.Route>(
+        'AddRouteEventBehavior',
+        addRouteEventBehavior_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.AddRouteEventBehaviorRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.RemoveRouteEventBehaviorRequest, $1.Route>(
+            'RemoveRouteEventBehavior',
+            removeRouteEventBehavior_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.RemoveRouteEventBehaviorRequest.fromBuffer(value),
+            ($1.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Sensor>(
         'GetSensor',
         getSensor_Pre,
@@ -1016,6 +1056,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return removeRouteEvent(call, await request);
   }
 
+  $async.Future<$1.Route> addRouteEventBehavior_Pre($grpc.ServiceCall call,
+      $async.Future<$0.AddRouteEventBehaviorRequest> request) async {
+    return addRouteEventBehavior(call, await request);
+  }
+
+  $async.Future<$1.Route> removeRouteEventBehavior_Pre($grpc.ServiceCall call,
+      $async.Future<$0.RemoveRouteEventBehaviorRequest> request) async {
+    return removeRouteEventBehavior(call, await request);
+  }
+
   $async.Future<$1.Sensor> getSensor_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getSensor(call, await request);
@@ -1131,6 +1181,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.AddRouteEventRequest request);
   $async.Future<$1.Route> removeRouteEvent(
       $grpc.ServiceCall call, $0.RemoveRouteEventRequest request);
+  $async.Future<$1.Route> addRouteEventBehavior(
+      $grpc.ServiceCall call, $0.AddRouteEventBehaviorRequest request);
+  $async.Future<$1.Route> removeRouteEventBehavior(
+      $grpc.ServiceCall call, $0.RemoveRouteEventBehaviorRequest request);
   $async.Future<$1.Sensor> getSensor(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Sensor> updateSensor(
