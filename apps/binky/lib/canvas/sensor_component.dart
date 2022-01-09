@@ -48,13 +48,19 @@ class SensorComponent extends EntityComponent {
     // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
     // Draw description
-    textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
-        anchor: fc.Anchor.center);
     canvas.restore();
+
+    // Show description (if hovered)
+    if (showDescription()) {
+      textPaint.render(
+          canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
+          anchor: fc.Anchor.center);
+    }
   }
 
   Color backgroundColor() => isActive() ? Colors.green : Colors.blueGrey;
   Color textColor() => Colors.black;
 
   bool isActive() => true;
+  bool showDescription() => isHovered;
 }

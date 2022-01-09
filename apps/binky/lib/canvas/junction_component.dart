@@ -47,9 +47,6 @@ class JunctionComponent extends EntityComponent {
         RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
     // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
-    // Draw description
-    textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
-        anchor: fc.Anchor.center);
     // Draw switch direction (if switch)
     if (model.hasSwitch_6()) {
       final strokeWith = minDim / 4;
@@ -64,6 +61,12 @@ class JunctionComponent extends EntityComponent {
       }
     }
     canvas.restore();
+    // Draw description
+    if (showDescription()) {
+      textPaint.render(
+          canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
+          anchor: fc.Anchor.center);
+    }
   }
 
   Color backgroundColor() => Colors.white;
@@ -71,4 +74,5 @@ class JunctionComponent extends EntityComponent {
   Color switchColor() => Colors.red.shade200;
 
   mapi.SwitchDirection switchDirection() => mapi.SwitchDirection.STRAIGHT;
+  bool showDescription() => isHovered;
 }

@@ -47,14 +47,19 @@ class OutputComponent extends EntityComponent {
         RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
     // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
-    // Draw description
-    textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
-        anchor: fc.Anchor.center);
     canvas.restore();
+
+    // Draw description
+    if (showDescription()) {
+      textPaint.render(
+          canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
+          anchor: fc.Anchor.center);
+    }
   }
 
   Color backgroundColor() => isActive() ? Colors.yellow : Colors.blueGrey;
   Color textColor() => Colors.black;
 
   bool isActive() => true;
+  bool showDescription() => isHovered;
 }
