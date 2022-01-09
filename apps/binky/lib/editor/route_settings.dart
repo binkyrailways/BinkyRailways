@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2021-2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import '../models.dart';
 import '../api.dart';
 import '../icons.dart';
 import 'package:binky/editor/editor_context.dart';
+import './route_event_settings.dart';
 
 class RouteSettings extends StatelessWidget {
   const RouteSettings({Key? key}) : super(key: key);
@@ -305,6 +306,21 @@ class _RouteSettingsState extends State<_RouteSettings> {
                   );
                 },
               ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => SimpleDialog(
+                    title: Text(description),
+                    children: [
+                      RouteEventSettings(
+                        model: widget.model,
+                        route: widget.route,
+                        event: evt,
+                      )
+                    ],
+                  ),
+                );
+              },
             );
           }));
     }
