@@ -37,3 +37,37 @@ extension SwitchDirectionExt on SwitchDirection {
     }
   }
 }
+
+extension RouteStateBehaviorExt on RouteStateBehavior {
+  String humanize() {
+    switch (this) {
+      case RouteStateBehavior.RSB_NOCHANGE:
+        return "No change";
+      case RouteStateBehavior.RSB_ENTER:
+        return "Enter";
+      case RouteStateBehavior.RSB_REACHED:
+        return "Reached";
+      default:
+        return toString();
+    }
+  }
+}
+
+extension LocSpeedBehaviorExt on LocSpeedBehavior {
+  String humanize() {
+    switch (this) {
+      case LocSpeedBehavior.LSB_DEFAULT:
+        return "Default";
+      case LocSpeedBehavior.LSB_NOCHANGE:
+        return "No change";
+      case LocSpeedBehavior.LSB_MEDIUM:
+        return "Medium speed";
+      case LocSpeedBehavior.LSB_MINIMUM:
+        return "Minimum speed";
+      case LocSpeedBehavior.LSB_MAXIMUM:
+        return "Maximum speed";
+      default:
+        return toString();
+    }
+  }
+}

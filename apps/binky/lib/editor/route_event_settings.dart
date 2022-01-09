@@ -17,29 +17,118 @@
 
 import 'package:flutter/material.dart' hide Route;
 
-import '../components.dart';
 import '../models.dart';
 import '../api.dart';
 
-class RouteEventSettings extends StatelessWidget {
+class RouteEventSettings extends StatefulWidget {
   final ModelModel model;
-  final Route route;
-  final RouteEvent event;
+  final String routeId;
+  final int eventIndex;
+  final Future<void> Function(void Function(RouteEvent)) update;
+
   const RouteEventSettings(
-      {Key? key, required this.model, required this.route, required this.event})
+      {Key? key,
+      required this.model,
+      required this.routeId,
+      required this.eventIndex,
+      required this.update})
       : super(key: key);
 
   @override
+  State<RouteEventSettings> createState() => _RouteEventSettingsState();
+}
+
+class _RouteEventSettingsState extends State<RouteEventSettings> {
+  @override
   Widget build(BuildContext context) {
-    final behaviors = event.behaviors;
-    final List<Widget> children = [];
-    for (var bhv in behaviors) {
-      children.add(ListTile(
-        title: Text("${bhv.stateBehavior}"),
-      ));
-    }
-    return Column(
-      children: children,
-    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    return FutureBuilder<Route>(
+        future: widget.model.getRoute(widget.routeId),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return SizedBox(
+              width: screenWidth * 0.6,
+              child: const Text("Loading..."),
+            );
+          }
+          final route = snapshot.data!;
+          final event = route.events[widget.eventIndex];
+          return SizedBox(
+            width: screenWidth * 0.6,
+            child: PaginatedDataTable(
+              rowsPerPage: 5,
+              columns: const [
+                DataColumn(label: Text("Locs")),
+                DataColumn(label: Text("State behavior")),
+                DataColumn(label: Text("Speed behavior")),
+              ],
+              source: _BehaviorsDataSource(event.behaviors, widget.update),
+            ),
+          );
+        });
+  }
+}
+
+class _BehaviorsDataSource extends DataTableSource {
+  final List<RouteEventBehavior> items;
+  final Future<void> Function(void Function(RouteEvent)) update;
+
+  _BehaviorsDataSource(this.items, this.update);
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => items.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    final bhv = items[index];
+    return DataRow(cells: [
+      const DataCell(Text("Loc predicate...")),
+      DataCell(DropdownButton<RouteStateBehavior>(
+        items: _routeStateBehaviorOptions(),
+        value: bhv.stateBehavior,
+        onChanged: (value) async {
+          await update((update) {
+            if (value != null) {
+              update.behaviors[index].stateBehavior = value;
+            }
+          });
+        },
+      )),
+      DataCell(DropdownButton<LocSpeedBehavior>(
+        items: _locSpeedBehaviorOptions(),
+        value: bhv.speedBehavior,
+        onChanged: (value) async {
+          await update((update) {
+            if (value != null) {
+              update.behaviors[index].speedBehavior = value;
+            }
+          });
+        },
+      )),
+    ]);
+  }
+
+  List<DropdownMenuItem<RouteStateBehavior>> _routeStateBehaviorOptions() {
+    return RouteStateBehavior.values
+        .map((x) => DropdownMenuItem<RouteStateBehavior>(
+              child: Text(x.humanize()),
+              value: x,
+            ))
+        .toList();
+  }
+
+  List<DropdownMenuItem<LocSpeedBehavior>> _locSpeedBehaviorOptions() {
+    return LocSpeedBehavior.values
+        .map((x) => DropdownMenuItem<LocSpeedBehavior>(
+              child: Text(x.humanize()),
+              value: x,
+            ))
+        .toList();
   }
 }

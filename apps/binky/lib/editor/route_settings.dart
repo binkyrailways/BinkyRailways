@@ -273,7 +273,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
     ));
 
     final List<Widget> eventsChildren = [];
-    for (var evt in widget.route.events) {
+    widget.route.events.asMap().forEach((index, evt) {
       eventsChildren.add(FutureBuilder<String>(
           future: _formatRouteEvent(widget.model, evt),
           builder: (context, snapshot) {
@@ -308,22 +308,32 @@ class _RouteSettingsState extends State<_RouteSettings> {
               ),
               onTap: () {
                 showDialog(
-                  context: context,
-                  builder: (context) => SimpleDialog(
-                    title: Text(description),
-                    children: [
-                      RouteEventSettings(
-                        model: widget.model,
-                        route: widget.route,
-                        event: evt,
-                      )
-                    ],
-                  ),
-                );
+                    context: context,
+                    builder: (context) {
+                      return StatefulBuilder(builder: ((context, setState) {
+                        return SimpleDialog(
+                          title: Text(description),
+                          children: [
+                            RouteEventSettings(
+                              model: widget.model,
+                              routeId: widget.route.id,
+                              eventIndex: index,
+                              update: (editor) async {
+                                await _update((update) {
+                                  editor(update.events[index]);
+                                });
+                                // Rebuild dialog content
+                                setState(() {});
+                              },
+                            )
+                          ],
+                        );
+                      }));
+                    });
               },
             );
           }));
-    }
+    });
     eventsChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
       future: _addRouteEventList(widget.model),
       builder: (context, snapshot) {
