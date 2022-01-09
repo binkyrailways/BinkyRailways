@@ -220,10 +220,10 @@ class _RouteSettingsState extends State<_RouteSettings> {
               update.maxDuration = int.parse(value);
             });
           }),
-      const SettingsHeader(title: "Crossing junctions"),
     ];
+    final List<Widget> crossingJunctionChildren = [];
     for (var cj in widget.route.crossingJunctions) {
-      children.add(FutureBuilder<String>(
+      crossingJunctionChildren.add(FutureBuilder<String>(
           future: _formatJunctionWithState(widget.model, cj),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -257,7 +257,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
             );
           }));
     }
-    children.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+    crossingJunctionChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
       future: _addJunctionWithStateList(widget.model),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -272,6 +272,13 @@ class _RouteSettingsState extends State<_RouteSettings> {
               hint: const Text("Add..."),
             ));
       },
+    ));
+    children.add(SettingsHeader(
+      title: "Crossing junctions",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: crossingJunctionChildren,
+      ),
     ));
 
     return ScrollableForm(
