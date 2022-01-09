@@ -107,6 +107,10 @@ service ModelService {
   rpc AddRouteCrossingJunctionSwitch(AddRouteCrossingJunctionSwitchRequest) returns (Route);
   // Removes a crossing junction with given junction ID.
   rpc RemoveRouteCrossingJunction(RemoveRouteCrossingJunctionRequest) returns (Route);
+  // Adds an event to the given route
+  rpc AddRouteEvent(AddRouteEventRequest) returns (Route);
+  // Remove an event from the given route
+  rpc RemoveRouteEvent(RemoveRouteEventRequest) returns (Route);
 
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);
@@ -168,4 +172,18 @@ message RemoveRouteCrossingJunctionRequest {
    string route_id = 1;
    // ID of the junction (of type switch) to remove
    string junction_id = 2;  
+}
+
+message AddRouteEventRequest {
+  // ID of the route to add an event to
+  string route_id = 1;
+  // ID of sensor to add event for
+  string sensor_id = 2;
+}
+
+message RemoveRouteEventRequest {
+  // ID of the route to remove an event from
+  string route_id = 1;
+  // ID of sensor to remove event for 
+  string sensor_id = 2;
 }

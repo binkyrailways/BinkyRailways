@@ -38,6 +38,11 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 		jwsDst.FromModel(ctx, jws)
 		dst.CrossingJunctions = append(dst.CrossingJunctions, jwsDst)
 	})
+	src.GetEvents().ForEach(func(re model.RouteEvent) {
+		reDst := &RouteEvent{}
+		reDst.FromModel(ctx, re)
+		dst.Events = append(dst.Events, reDst)
+	})
 	dst.Speed = int32(src.GetSpeed())
 	dst.ChooseProbability = int32(src.GetChooseProbability())
 	dst.Closed = src.GetClosed()
@@ -62,17 +67,35 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	if len(src.GetCrossingJunctions()) != dst.GetCrossingJunctions().GetCount() {
 		return InvalidArgument("Unexpected number of crossing junctions (got %d, expected %d)", len(src.GetCrossingJunctions()), dst.GetCrossingJunctions().GetCount())
 	}
+	if len(src.GetEvents()) != dst.GetEvents().GetCount() {
+		return InvalidArgument("Unexpected number of events (got %d, expected %d)", len(src.GetEvents()), dst.GetEvents().GetCount())
+	}
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	multierr.AppendInto(&err, dst.SetFrom(epFrom))
 	multierr.AppendInto(&err, dst.SetFromBlockSide(bSideFrom))
 	multierr.AppendInto(&err, dst.SetTo(epTo))
 	multierr.AppendInto(&err, dst.SetToBlockSide(bSideTo))
 	for _, x := range src.GetCrossingJunctions() {
-		dstJws, ok := dst.GetCrossingJunctions().Get(x.GetJunction().GetId())
+		_, junctionID, err := SplitParentChildID(x.GetJunction().GetId())
+		if err != nil {
+			return err
+		}
+		dstJws, ok := dst.GetCrossingJunctions().Get(junctionID)
 		if !ok {
-			return InvalidArgument("Unknown junction ID: '%s'", x.GetJunction().GetId())
+			return InvalidArgument("Unknown junction ID: '%s'", junctionID)
 		}
 		multierr.AppendInto(&err, x.ToModel(ctx, dstJws))
+	}
+	for _, x := range src.GetEvents() {
+		_, sensorID, err := SplitParentChildID(x.GetSensor().GetId())
+		if err != nil {
+			return err
+		}
+		dstRe, ok := dst.GetEvents().Get(sensorID)
+		if !ok {
+			return InvalidArgument("Unknown sensor ID: '%s'", sensorID)
+		}
+		multierr.AppendInto(&err, x.ToModel(ctx, dstRe))
 	}
 	multierr.AppendInto(&err, dst.SetSpeed(int(src.GetSpeed())))
 	multierr.AppendInto(&err, dst.SetChooseProbability(int(src.GetChooseProbability())))

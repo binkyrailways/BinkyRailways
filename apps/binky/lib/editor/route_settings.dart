@@ -16,6 +16,7 @@
 //
 
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/services.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
@@ -270,6 +271,66 @@ class _RouteSettingsState extends State<_RouteSettings> {
       ),
     ));
 
+    final List<Widget> eventsChildren = [];
+    for (var evt in widget.route.events) {
+      eventsChildren.add(FutureBuilder<String>(
+          future: _formatRouteEvent(widget.model, evt),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const ListTile(
+                leading: BinkyIcons.junction,
+                title: Text("Loading..."),
+              );
+            }
+            final description = snapshot.data!;
+            return ListTile(
+              title: Text(description),
+              trailing: GestureDetector(
+                child: const Icon(Icons.more_vert),
+                onTapDown: (TapDownDetails details) {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(details.globalPosition.dx,
+                        details.globalPosition.dy, 0, 0),
+                    items: [
+                      PopupMenuItem<String>(
+                          child: const Text('Remove'),
+                          onTap: () async {
+                            await widget.model.removeRouteEvent(
+                                widget.route.id, evt.sensor.id);
+                          }),
+                    ],
+                    elevation: 8.0,
+                  );
+                },
+              ),
+            );
+          }));
+    }
+    /*eventsChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+      future: _addJunctionWithStateList(widget.model),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text("Loading...");
+        }
+        return Container(
+            padding: const EdgeInsets.all(8),
+            child: DropdownButton<String>(
+              items: snapshot.data!,
+              onChanged: (value) {},
+              isDense: true,
+              hint: const Text("Add..."),
+            ));
+      },
+    ));*/
+    children.add(SettingsHeader(
+      title: "Events",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: eventsChildren,
+      ),
+    ));
+
     return ScrollableForm(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,5 +445,11 @@ class _RouteSettingsState extends State<_RouteSettings> {
       }
     }
     return result;
+  }
+
+  Future<String> _formatRouteEvent(
+      ModelModel modelModel, RouteEvent evt) async {
+    final sensor = await modelModel.getSensor(evt.sensor.id);
+    return sensor.description;
   }
 }

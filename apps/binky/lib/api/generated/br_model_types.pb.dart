@@ -2604,6 +2604,7 @@ class Route extends $pb.GeneratedMessage {
     ..aOM<Endpoint>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'from', subBuilder: Endpoint.create)
     ..aOM<Endpoint>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'to', subBuilder: Endpoint.create)
     ..pc<JunctionWithState>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'crossingJunctions', $pb.PbFieldType.PM, subBuilder: JunctionWithState.create)
+    ..pc<RouteEvent>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'events', $pb.PbFieldType.PM, subBuilder: RouteEvent.create)
     ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chooseProbability', $pb.PbFieldType.O3)
     ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closed')
@@ -2619,6 +2620,7 @@ class Route extends $pb.GeneratedMessage {
     Endpoint? from,
     Endpoint? to,
     $core.Iterable<JunctionWithState>? crossingJunctions,
+    $core.Iterable<RouteEvent>? events,
     $core.int? speed,
     $core.int? chooseProbability,
     $core.bool? closed,
@@ -2642,6 +2644,9 @@ class Route extends $pb.GeneratedMessage {
     }
     if (crossingJunctions != null) {
       _result.crossingJunctions.addAll(crossingJunctions);
+    }
+    if (events != null) {
+      _result.events.addAll(events);
     }
     if (speed != null) {
       _result.speed = speed;
@@ -2730,39 +2735,42 @@ class Route extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.List<JunctionWithState> get crossingJunctions => $_getList(5);
 
+  @$pb.TagNumber(7)
+  $core.List<RouteEvent> get events => $_getList(6);
+
   @$pb.TagNumber(10)
-  $core.int get speed => $_getIZ(6);
+  $core.int get speed => $_getIZ(7);
   @$pb.TagNumber(10)
-  set speed($core.int v) { $_setSignedInt32(6, v); }
+  set speed($core.int v) { $_setSignedInt32(7, v); }
   @$pb.TagNumber(10)
-  $core.bool hasSpeed() => $_has(6);
+  $core.bool hasSpeed() => $_has(7);
   @$pb.TagNumber(10)
   void clearSpeed() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.int get chooseProbability => $_getIZ(7);
+  $core.int get chooseProbability => $_getIZ(8);
   @$pb.TagNumber(11)
-  set chooseProbability($core.int v) { $_setSignedInt32(7, v); }
+  set chooseProbability($core.int v) { $_setSignedInt32(8, v); }
   @$pb.TagNumber(11)
-  $core.bool hasChooseProbability() => $_has(7);
+  $core.bool hasChooseProbability() => $_has(8);
   @$pb.TagNumber(11)
   void clearChooseProbability() => clearField(11);
 
   @$pb.TagNumber(13)
-  $core.bool get closed => $_getBF(8);
+  $core.bool get closed => $_getBF(9);
   @$pb.TagNumber(13)
-  set closed($core.bool v) { $_setBool(8, v); }
+  set closed($core.bool v) { $_setBool(9, v); }
   @$pb.TagNumber(13)
-  $core.bool hasClosed() => $_has(8);
+  $core.bool hasClosed() => $_has(9);
   @$pb.TagNumber(13)
   void clearClosed() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.int get maxDuration => $_getIZ(9);
+  $core.int get maxDuration => $_getIZ(10);
   @$pb.TagNumber(14)
-  set maxDuration($core.int v) { $_setSignedInt32(9, v); }
+  set maxDuration($core.int v) { $_setSignedInt32(10, v); }
   @$pb.TagNumber(14)
-  $core.bool hasMaxDuration() => $_has(9);
+  $core.bool hasMaxDuration() => $_has(10);
   @$pb.TagNumber(14)
   void clearMaxDuration() => clearField(14);
 }
@@ -3003,6 +3011,55 @@ class SwitchWithState extends $pb.GeneratedMessage {
   $core.bool hasDirection() => $_has(0);
   @$pb.TagNumber(1)
   void clearDirection() => clearField(1);
+}
+
+class RouteEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<SensorRef>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensor', subBuilder: SensorRef.create)
+    ..hasRequiredFields = false
+  ;
+
+  RouteEvent._() : super();
+  factory RouteEvent({
+    SensorRef? sensor,
+  }) {
+    final _result = create();
+    if (sensor != null) {
+      _result.sensor = sensor;
+    }
+    return _result;
+  }
+  factory RouteEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RouteEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RouteEvent clone() => RouteEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RouteEvent copyWith(void Function(RouteEvent) updates) => super.copyWith((message) => updates(message as RouteEvent)) as RouteEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RouteEvent create() => RouteEvent._();
+  RouteEvent createEmptyInstance() => create();
+  static $pb.PbList<RouteEvent> createRepeated() => $pb.PbList<RouteEvent>();
+  @$core.pragma('dart2js:noInline')
+  static RouteEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RouteEvent>(create);
+  static RouteEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  SensorRef get sensor => $_getN(0);
+  @$pb.TagNumber(1)
+  set sensor(SensorRef v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSensor() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSensor() => clearField(1);
+  @$pb.TagNumber(1)
+  SensorRef ensureSensor() => $_ensure(0);
 }
 
 class Sensor extends $pb.GeneratedMessage {

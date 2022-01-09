@@ -90,10 +90,10 @@ func (rs *routeEventSet) Clear() bool {
 }
 
 // Add a the given item to this list
-func (rs *routeEventSet) Add(sensor model.Sensor) model.RouteEvent {
+func (rs *routeEventSet) Add(sensor model.Sensor) (model.RouteEvent, error) {
 	rev := newRouteEvent(sensor)
 	rev.SetContainer(rs)
 	rs.Items = append(rs.Items, rev)
 	rs.OnModified()
-	return rev
+	return rev, nil
 }

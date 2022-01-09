@@ -63,3 +63,25 @@ const RemoveRouteCrossingJunctionRequest$json = const {
 
 /// Descriptor for `RemoveRouteCrossingJunctionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List removeRouteCrossingJunctionRequestDescriptor = $convert.base64Decode('CiJSZW1vdmVSb3V0ZUNyb3NzaW5nSnVuY3Rpb25SZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEh8KC2p1bmN0aW9uX2lkGAIgASgJUgpqdW5jdGlvbklk');
+@$core.Deprecated('Use addRouteEventRequestDescriptor instead')
+const AddRouteEventRequest$json = const {
+  '1': 'AddRouteEventRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'sensor_id', '3': 2, '4': 1, '5': 9, '10': 'sensorId'},
+  ],
+};
+
+/// Descriptor for `AddRouteEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addRouteEventRequestDescriptor = $convert.base64Decode('ChRBZGRSb3V0ZUV2ZW50UmVxdWVzdBIZCghyb3V0ZV9pZBgBIAEoCVIHcm91dGVJZBIbCglzZW5zb3JfaWQYAiABKAlSCHNlbnNvcklk');
+@$core.Deprecated('Use removeRouteEventRequestDescriptor instead')
+const RemoveRouteEventRequest$json = const {
+  '1': 'RemoveRouteEventRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'sensor_id', '3': 2, '4': 1, '5': 9, '10': 'sensorId'},
+  ],
+};
+
+/// Descriptor for `RemoveRouteEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List removeRouteEventRequestDescriptor = $convert.base64Decode('ChdSZW1vdmVSb3V0ZUV2ZW50UmVxdWVzdBIZCghyb3V0ZV9pZBgBIAEoCVIHcm91dGVJZBIbCglzZW5zb3JfaWQYAiABKAlSCHNlbnNvcklk');

@@ -37,5 +37,5 @@ type RouteEventSet interface {
 	Clear() bool
 
 	// Add the given item to this set.
-	Add(sensor Sensor) RouteEvent
+	Add(sensor Sensor) (RouteEvent, error)
 }

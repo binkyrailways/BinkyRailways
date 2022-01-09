@@ -483,6 +483,31 @@ class ModelModel extends ChangeNotifier {
     return updated;
   }
 
+  // Add an event to a route.
+  Future<mapi.Route> addRouteEvent(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.addRouteEvent(mapi.AddRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Remove an event from a route.
+  Future<mapi.Route> removeRouteEvent(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated =
+        await modelClient.removeRouteEvent(mapi.RemoveRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
   // Gets a Sensor by ID from cache
   mapi.Sensor? getCachedSensor(String id) => _sensors[id];
 

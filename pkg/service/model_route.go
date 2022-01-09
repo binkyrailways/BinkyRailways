@@ -129,3 +129,45 @@ func (s *service) RemoveRouteCrossingJunction(ctx context.Context, req *api.Remo
 	}
 	return &result, nil
 }
+
+// Adds an event to the given route
+func (s *service) AddRouteEvent(ctx context.Context, req *api.AddRouteEventRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	if _, err := route.GetEvents().Add(sensor); err != nil {
+		return nil, err
+	}
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Remove an event from the given route
+func (s *service) RemoveRouteEvent(ctx context.Context, req *api.RemoveRouteEventRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	evt, ok := route.GetEvents().Get(sensor.GetID())
+	if !ok {
+		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
+	}
+	route.GetEvents().Remove(evt)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

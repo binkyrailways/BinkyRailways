@@ -316,3 +316,125 @@ class RemoveRouteCrossingJunctionRequest extends $pb.GeneratedMessage {
   void clearJunctionId() => clearField(2);
 }
 
+class AddRouteEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensorId')
+    ..hasRequiredFields = false
+  ;
+
+  AddRouteEventRequest._() : super();
+  factory AddRouteEventRequest({
+    $core.String? routeId,
+    $core.String? sensorId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (sensorId != null) {
+      _result.sensorId = sensorId;
+    }
+    return _result;
+  }
+  factory AddRouteEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddRouteEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AddRouteEventRequest clone() => AddRouteEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AddRouteEventRequest copyWith(void Function(AddRouteEventRequest) updates) => super.copyWith((message) => updates(message as AddRouteEventRequest)) as AddRouteEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AddRouteEventRequest create() => AddRouteEventRequest._();
+  AddRouteEventRequest createEmptyInstance() => create();
+  static $pb.PbList<AddRouteEventRequest> createRepeated() => $pb.PbList<AddRouteEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AddRouteEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddRouteEventRequest>(create);
+  static AddRouteEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sensorId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sensorId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSensorId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSensorId() => clearField(2);
+}
+
+class RemoveRouteEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensorId')
+    ..hasRequiredFields = false
+  ;
+
+  RemoveRouteEventRequest._() : super();
+  factory RemoveRouteEventRequest({
+    $core.String? routeId,
+    $core.String? sensorId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (sensorId != null) {
+      _result.sensorId = sensorId;
+    }
+    return _result;
+  }
+  factory RemoveRouteEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RemoveRouteEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RemoveRouteEventRequest clone() => RemoveRouteEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RemoveRouteEventRequest copyWith(void Function(RemoveRouteEventRequest) updates) => super.copyWith((message) => updates(message as RemoveRouteEventRequest)) as RemoveRouteEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteEventRequest create() => RemoveRouteEventRequest._();
+  RemoveRouteEventRequest createEmptyInstance() => create();
+  static $pb.PbList<RemoveRouteEventRequest> createRepeated() => $pb.PbList<RemoveRouteEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RemoveRouteEventRequest>(create);
+  static RemoveRouteEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sensorId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sensorId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSensorId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSensorId() => clearField(2);
+}
+

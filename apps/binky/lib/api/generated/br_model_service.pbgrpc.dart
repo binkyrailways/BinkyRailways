@@ -167,6 +167,16 @@ class ModelServiceClient extends $grpc.Client {
           ($0.RemoveRouteCrossingJunctionRequest value) =>
               value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$addRouteEvent =
+      $grpc.ClientMethod<$0.AddRouteEventRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/AddRouteEvent',
+          ($0.AddRouteEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$removeRouteEvent =
+      $grpc.ClientMethod<$0.RemoveRouteEventRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/RemoveRouteEvent',
+          ($0.RemoveRouteEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
   static final _$getSensor = $grpc.ClientMethod<$0.IDRequest, $1.Sensor>(
       '/binkyrailways.v1.ModelService/GetSensor',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -402,6 +412,17 @@ class ModelServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$removeRouteCrossingJunction, request,
         options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> addRouteEvent($0.AddRouteEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addRouteEvent, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> removeRouteEvent(
+      $0.RemoveRouteEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$removeRouteEvent, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Sensor> getSensor($0.IDRequest request,
@@ -718,6 +739,22 @@ abstract class ModelServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.RemoveRouteCrossingJunctionRequest.fromBuffer(value),
             ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.AddRouteEventRequest, $1.Route>(
+        'AddRouteEvent',
+        addRouteEvent_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.AddRouteEventRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RemoveRouteEventRequest, $1.Route>(
+        'RemoveRouteEvent',
+        removeRouteEvent_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.RemoveRouteEventRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Sensor>(
         'GetSensor',
         getSensor_Pre,
@@ -969,6 +1006,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return removeRouteCrossingJunction(call, await request);
   }
 
+  $async.Future<$1.Route> addRouteEvent_Pre($grpc.ServiceCall call,
+      $async.Future<$0.AddRouteEventRequest> request) async {
+    return addRouteEvent(call, await request);
+  }
+
+  $async.Future<$1.Route> removeRouteEvent_Pre($grpc.ServiceCall call,
+      $async.Future<$0.RemoveRouteEventRequest> request) async {
+    return removeRouteEvent(call, await request);
+  }
+
   $async.Future<$1.Sensor> getSensor_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getSensor(call, await request);
@@ -1080,6 +1127,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.AddRouteCrossingJunctionSwitchRequest request);
   $async.Future<$1.Route> removeRouteCrossingJunction(
       $grpc.ServiceCall call, $0.RemoveRouteCrossingJunctionRequest request);
+  $async.Future<$1.Route> addRouteEvent(
+      $grpc.ServiceCall call, $0.AddRouteEventRequest request);
+  $async.Future<$1.Route> removeRouteEvent(
+      $grpc.ServiceCall call, $0.RemoveRouteEventRequest request);
   $async.Future<$1.Sensor> getSensor(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Sensor> updateSensor(

@@ -21,11 +21,12 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Gets a Sensor by ID.
-func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Sensor, error) {
-	moduleID, sensorID, err := api.SplitParentChildID(req.GetId())
+func (s *service) getSensor(ctx context.Context, id string) (model.Sensor, error) {
+	moduleID, sensorID, err := api.SplitParentChildID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -36,6 +37,15 @@ func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Senso
 	sensor, ok := mod.GetSensors().Get(sensorID)
 	if !ok {
 		return nil, api.NotFound(sensorID)
+	}
+	return sensor, nil
+}
+
+// Gets a Sensor by ID.
+func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Sensor, error) {
+	sensor, err := s.getSensor(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.Sensor
 	if err := result.FromModel(ctx, sensor); err != nil {
@@ -46,17 +56,9 @@ func (s *service) GetSensor(ctx context.Context, req *api.IDRequest) (*api.Senso
 
 // Update a Sensor by ID.
 func (s *service) UpdateSensor(ctx context.Context, req *api.Sensor) (*api.Sensor, error) {
-	moduleID, sensorID, err := api.SplitParentChildID(req.GetId())
+	sensor, err := s.getSensor(ctx, req.GetId())
 	if err != nil {
 		return nil, err
-	}
-	mod, err := s.getModule(ctx, moduleID)
-	if err != nil {
-		return nil, err
-	}
-	sensor, ok := mod.GetSensors().Get(sensorID)
-	if !ok {
-		return nil, api.NotFound(sensorID)
 	}
 	if err := req.ToModel(ctx, sensor); err != nil {
 		return nil, err
