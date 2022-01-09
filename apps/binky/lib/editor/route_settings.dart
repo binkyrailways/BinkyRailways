@@ -325,7 +325,14 @@ class _RouteSettingsState extends State<_RouteSettings> {
                                 // Rebuild dialog content
                                 setState(() {});
                               },
-                            )
+                            ),
+                            TextButton(
+                              child: const Text("Add..."),
+                              onPressed: () async {
+                                await widget.model.addRouteEventBehavior(
+                                    widget.route.id, evt.sensor.id);
+                              },
+                            ),
                           ],
                         );
                       }));

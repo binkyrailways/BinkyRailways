@@ -54,15 +54,21 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
           final route = snapshot.data!;
           final event = route.events[widget.eventIndex];
           return SizedBox(
-            width: screenWidth * 0.6,
-            child: PaginatedDataTable(
-              rowsPerPage: 5,
-              columns: const [
-                DataColumn(label: Text("Locs")),
-                DataColumn(label: Text("State behavior")),
-                DataColumn(label: Text("Speed behavior")),
+            width: screenWidth / 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PaginatedDataTable(
+                  sortAscending: false,
+                  rowsPerPage: 5,
+                  columns: const [
+                    DataColumn(label: Text("Locs")),
+                    DataColumn(label: Text("State behavior")),
+                    DataColumn(label: Text("Speed behavior")),
+                  ],
+                  source: _BehaviorsDataSource(event.behaviors, widget.update),
+                ),
               ],
-              source: _BehaviorsDataSource(event.behaviors, widget.update),
             ),
           );
         });
