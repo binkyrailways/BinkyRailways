@@ -38,11 +38,11 @@ class _SettingsAddressFieldState extends State<SettingsAddressField> {
   final TextEditingController _controller = TextEditingController();
   final AddressValidator _addressValidator = AddressValidator();
 
-@override 
-void initState() {
+  @override
+  void initState() {
     super.initState();
     _controller.text = widget.address;
-    _addressValidator.setState = () => setState(() {});
+    _addressValidator.setState = () => {if (mounted) setState(() {})};
   }
 
   @override
@@ -52,6 +52,6 @@ void initState() {
       label: widget.label,
       onLostFocus: widget.onLostFocus,
       validator: _addressValidator.validate,
-      );
+    );
   }
 }

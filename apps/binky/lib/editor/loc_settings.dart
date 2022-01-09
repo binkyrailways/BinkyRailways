@@ -64,7 +64,6 @@ class _LocSettingsState extends State<_LocSettings> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ownerController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _slowSpeedController = TextEditingController();
   final TextEditingController _mediumSpeedController = TextEditingController();
   final TextEditingController _maximumSpeedController = TextEditingController();
@@ -73,15 +72,10 @@ class _LocSettingsState extends State<_LocSettings> {
       NumericValidator(minimum: 0, maximum: 100);
   final NumericValidator _speedStepsValidator =
       NumericValidator(values: [14, 28, 128]);
-  final AddressValidator _addressValidator = AddressValidator();
 
   _initControllers() {
-    _addressValidator.setState = () {
-      setState(() {});
-    };
     _descriptionController.text = widget.loc.description;
     _ownerController.text = widget.loc.owner;
-    _addressController.text = widget.loc.address;
     _slowSpeedController.text = widget.loc.slowSpeed.toString();
     _mediumSpeedController.text = widget.loc.mediumSpeed.toString();
     _maximumSpeedController.text = widget.loc.maximumSpeed.toString();
@@ -125,10 +119,9 @@ class _LocSettingsState extends State<_LocSettings> {
                 widget.model.updateLoc(update);
               }),
           const SettingsHeader(title: "Controller"),
-          SettingsTextField(
-              controller: _addressController,
+          SettingsAddressField(
+              address: widget.loc.address,
               label: "Address",
-              validator: _addressValidator.validate,
               onLostFocus: (value) async {
                 final loc = await widget.model.getLoc(widget.loc.id);
                 var update = loc.deepCopy()..address = value;
