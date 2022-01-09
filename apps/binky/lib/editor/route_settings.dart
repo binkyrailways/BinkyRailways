@@ -307,8 +307,8 @@ class _RouteSettingsState extends State<_RouteSettings> {
             );
           }));
     }
-    /*eventsChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
-      future: _addJunctionWithStateList(widget.model),
+    eventsChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+      future: _addRouteEventList(widget.model),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Text("Loading...");
@@ -322,7 +322,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               hint: const Text("Add..."),
             ));
       },
-    ));*/
+    ));
     children.add(SettingsHeader(
       title: "Events",
       child: Column(
@@ -451,5 +451,30 @@ class _RouteSettingsState extends State<_RouteSettings> {
       ModelModel modelModel, RouteEvent evt) async {
     final sensor = await modelModel.getSensor(evt.sensor.id);
     return sensor.description;
+  }
+
+  Future<List<DropdownMenuItem<String>>> _addRouteEventList(
+      ModelModel modelModel) async {
+    final module = await modelModel.getModule(widget.route.moduleId);
+    final routeSensorIds =
+        widget.route.events.map((evt) => evt.sensor.id).toList();
+    final allSensorIds = module.sensors.map((e) => e.id);
+    final allUnusedSensorIds =
+        allSensorIds.where((id) => !routeSensorIds.contains(id));
+    final allUnusedSensors = await Future.wait(
+        allUnusedSensorIds.map((id) => modelModel.getSensor(id)));
+    allUnusedSensors.sort((a, b) => a.description.compareTo(b.description));
+
+    final List<DropdownMenuItem<String>> result = [];
+    for (var sensor in allUnusedSensors) {
+      result.add(DropdownMenuItem<String>(
+        value: sensor.id,
+        child: Text(sensor.description),
+        onTap: () async {
+          await modelModel.addRouteEvent(widget.route.id, sensor.id);
+        },
+      ));
+    }
+    return result;
   }
 }
