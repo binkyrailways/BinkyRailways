@@ -24,6 +24,15 @@ class RailwayState extends $pb.GeneratedMessage {
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
+    ..pc<$1.BlockRef>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: $1.BlockRef.create)
+    ..pc<$1.BlockGroupRef>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, subBuilder: $1.BlockGroupRef.create)
+    ..pc<$1.CommandStationRef>(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, subBuilder: $1.CommandStationRef.create)
+    ..pc<$1.JunctionRef>(53, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: $1.JunctionRef.create)
+    ..pc<$1.LocRef>(54, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: $1.LocRef.create)
+    ..pc<$1.OutputRef>(55, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: $1.OutputRef.create)
+    ..pc<$1.RouteRef>(56, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: $1.RouteRef.create)
+    ..pc<$1.SensorRef>(57, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: $1.SensorRef.create)
+    ..pc<$1.SignalRef>(58, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: $1.SignalRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -35,6 +44,15 @@ class RailwayState extends $pb.GeneratedMessage {
     $core.bool? isVirtualAutorunEnabled,
     $core.bool? powerActual,
     $core.bool? powerRequested,
+    $core.Iterable<$1.BlockRef>? blocks,
+    $core.Iterable<$1.BlockGroupRef>? blockGroups,
+    $core.Iterable<$1.CommandStationRef>? commandStations,
+    $core.Iterable<$1.JunctionRef>? junctions,
+    $core.Iterable<$1.LocRef>? locs,
+    $core.Iterable<$1.OutputRef>? outputs,
+    $core.Iterable<$1.RouteRef>? routes,
+    $core.Iterable<$1.SensorRef>? sensors,
+    $core.Iterable<$1.SignalRef>? signals,
   }) {
     final _result = create();
     if (model != null) {
@@ -54,6 +72,33 @@ class RailwayState extends $pb.GeneratedMessage {
     }
     if (powerRequested != null) {
       _result.powerRequested = powerRequested;
+    }
+    if (blocks != null) {
+      _result.blocks.addAll(blocks);
+    }
+    if (blockGroups != null) {
+      _result.blockGroups.addAll(blockGroups);
+    }
+    if (commandStations != null) {
+      _result.commandStations.addAll(commandStations);
+    }
+    if (junctions != null) {
+      _result.junctions.addAll(junctions);
+    }
+    if (locs != null) {
+      _result.locs.addAll(locs);
+    }
+    if (outputs != null) {
+      _result.outputs.addAll(outputs);
+    }
+    if (routes != null) {
+      _result.routes.addAll(routes);
+    }
+    if (sensors != null) {
+      _result.sensors.addAll(sensors);
+    }
+    if (signals != null) {
+      _result.signals.addAll(signals);
     }
     return _result;
   }
@@ -133,6 +178,33 @@ class RailwayState extends $pb.GeneratedMessage {
   $core.bool hasPowerRequested() => $_has(5);
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
+
+  @$pb.TagNumber(50)
+  $core.List<$1.BlockRef> get blocks => $_getList(6);
+
+  @$pb.TagNumber(51)
+  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(7);
+
+  @$pb.TagNumber(52)
+  $core.List<$1.CommandStationRef> get commandStations => $_getList(8);
+
+  @$pb.TagNumber(53)
+  $core.List<$1.JunctionRef> get junctions => $_getList(9);
+
+  @$pb.TagNumber(54)
+  $core.List<$1.LocRef> get locs => $_getList(10);
+
+  @$pb.TagNumber(55)
+  $core.List<$1.OutputRef> get outputs => $_getList(11);
+
+  @$pb.TagNumber(56)
+  $core.List<$1.RouteRef> get routes => $_getList(12);
+
+  @$pb.TagNumber(57)
+  $core.List<$1.SensorRef> get sensors => $_getList(13);
+
+  @$pb.TagNumber(58)
+  $core.List<$1.SignalRef> get signals => $_getList(14);
 }
 
 class LocState extends $pb.GeneratedMessage {

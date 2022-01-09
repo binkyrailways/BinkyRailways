@@ -26,8 +26,8 @@ class EntityComponent extends PositionComponent with Hoverable {
     anchor = Anchor.center;
     width = max(1, position.width.toDouble());
     height = max(1, position.height.toDouble());
-    x = position.x.toDouble() + width / 2;
-    y = position.y.toDouble() + height / 2;
+    x = (position.hasX() ? position.x.toDouble() : 0) + width / 2;
+    y = (position.hasY() ? position.y.toDouble() : 0) + height / 2;
     angle = radians(position.rotation.toDouble());
   }
 }

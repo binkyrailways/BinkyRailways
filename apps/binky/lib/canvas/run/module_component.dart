@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flame/components.dart';
+import 'dart:math';
 import '../module_component.dart' as common;
 import '../../api.dart' as mapi;
 import '../../models.dart';
@@ -28,17 +30,24 @@ class ModuleComponent extends common.ModuleComponent {
 
   ModuleComponent({required mapi.Module model, required this.moduleRef})
       : super(model: model) {
-    loadPosition(moduleRef.position);
+    anchor = Anchor.center;
+    width = model.width.toDouble();
+    height = model.height.toDouble();
+    final p = moduleRef.position;
+    x = (p.hasX() ? p.x.toDouble() : 0) + width / 2;
+    y = (p.hasY() ? p.y.toDouble() : 0) + height / 2;
+    angle = radians(p.rotation.toDouble());
   }
 
   Future<void> loadChildren(
       ModelModel modelModel, StateModel stateModel) async {
+    final railway = await stateModel.getRailwayState();
     try {
       await loadBackgroundImage(modelModel);
     } catch (err) {
       print(err);
     }
-    for (var blockRef in model.blocks) {
+    for (var blockRef in railway.blocks) {
       try {
         final blockState = await stateModel.getBlockState(blockRef.id);
         add(BlockComponent(state: blockState));
@@ -46,7 +55,7 @@ class ModuleComponent extends common.ModuleComponent {
         print(err);
       }
     }
-    for (var junctionRef in model.junctions) {
+    for (var junctionRef in railway.junctions) {
       try {
         final junctionState = await stateModel.getJunctionState(junctionRef.id);
         add(JunctionComponent(state: junctionState, stateModel: stateModel));
@@ -54,7 +63,7 @@ class ModuleComponent extends common.ModuleComponent {
         print(err);
       }
     }
-    for (var outputRef in model.outputs) {
+    for (var outputRef in railway.outputs) {
       try {
         final outputState = await stateModel.getOutputState(outputRef.id);
         add(OutputComponent(state: outputState, stateModel: stateModel));
@@ -62,7 +71,7 @@ class ModuleComponent extends common.ModuleComponent {
         print(err);
       }
     }
-    for (var sensorRef in model.sensors) {
+    for (var sensorRef in railway.sensors) {
       try {
         final sensorState = await stateModel.getSensorState(sensorRef.id);
         add(SensorComponent(state: sensorState, stateModel: stateModel));

@@ -37,6 +37,16 @@ message RailwayState {
   bool power_actual = 10;
   // Is the requested power status on?
   bool power_requested = 11;
+
+  repeated BlockRef blocks = 50;
+  repeated BlockGroupRef block_groups = 51;
+  repeated CommandStationRef command_stations = 52;
+  repeated JunctionRef junctions = 53;
+  repeated LocRef locs = 54;
+  repeated OutputRef outputs = 55;
+  repeated RouteRef routes = 56;
+  repeated SensorRef sensors = 57;
+  repeated SignalRef signals = 58;
 }
 
 // State of a single loc

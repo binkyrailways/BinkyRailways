@@ -18,6 +18,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'dart:math';
 
 import '../../models.dart';
 
@@ -42,13 +43,16 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
       final rwModel = await modelModel.getRailway();
       for (var modRef in rwModel.modules) {
         final p = modRef.position;
-        final zoomFactor = modRef.zoomFactor.toDouble() / 100.0;
-        final maxX = p.x.toDouble() + (p.width.toDouble() * zoomFactor);
-        final maxY = p.y.toDouble() + (p.height.toDouble() * zoomFactor);
-        size.x = size.x > maxX ? size.x : maxX;
-        size.y = size.y > maxY ? size.y : maxY;
         final module = await modelModel.getModule(modRef.id);
+        final zoomFactor = modRef.zoomFactor.toDouble() / 100.0;
+        final x = p.hasX() ? p.x : 0;
+        final y = p.hasY() ? p.y : 0;
+        final maxX = x.toDouble() + (module.width.toDouble() * zoomFactor);
+        final maxY = y.toDouble() + (module.height.toDouble() * zoomFactor);
+        size.x = max(size.x, maxX);
+        size.y = max(size.y, maxY);
         final modComp = ModuleComponent(model: module, moduleRef: modRef);
+        modComp.scale = Vector2.all(zoomFactor);
         await modComp.loadChildren(modelModel, stateModel);
         add(modComp);
       }

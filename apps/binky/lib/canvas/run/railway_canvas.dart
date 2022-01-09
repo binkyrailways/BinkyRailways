@@ -60,6 +60,10 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: _game!);
+    return GameWidget(
+      game: _game!,
+      loadingBuilder: (context) => const Text("Loading..."),
+      errorBuilder: (context, err) => Text("Error: $err"),
+    );
   }
 }

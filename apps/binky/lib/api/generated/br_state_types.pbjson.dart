@@ -48,11 +48,20 @@ const RailwayState$json = const {
     const {'1': 'is_virtual_autorun_enabled', '3': 4, '4': 1, '5': 8, '10': 'isVirtualAutorunEnabled'},
     const {'1': 'power_actual', '3': 10, '4': 1, '5': 8, '10': 'powerActual'},
     const {'1': 'power_requested', '3': 11, '4': 1, '5': 8, '10': 'powerRequested'},
+    const {'1': 'blocks', '3': 50, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'blocks'},
+    const {'1': 'block_groups', '3': 51, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockGroupRef', '10': 'blockGroups'},
+    const {'1': 'command_stations', '3': 52, '4': 3, '5': 11, '6': '.binkyrailways.v1.CommandStationRef', '10': 'commandStations'},
+    const {'1': 'junctions', '3': 53, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionRef', '10': 'junctions'},
+    const {'1': 'locs', '3': 54, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'locs'},
+    const {'1': 'outputs', '3': 55, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputRef', '10': 'outputs'},
+    const {'1': 'routes', '3': 56, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteRef', '10': 'routes'},
+    const {'1': 'sensors', '3': 57, '4': 3, '5': 11, '6': '.binkyrailways.v1.SensorRef', '10': 'sensors'},
+    const {'1': 'signals', '3': 58, '4': 3, '5': 11, '6': '.binkyrailways.v1.SignalRef', '10': 'signals'},
   ],
 };
 
 /// Descriptor for `RailwayState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railwayStateDescriptor = $convert.base64Decode('CgxSYWlsd2F5U3RhdGUSLwoFbW9kZWwYASABKAsyGS5iaW5reXJhaWx3YXlzLnYxLlJhaWx3YXlSBW1vZGVsEi0KE2lzX3J1bl9tb2RlX2VuYWJsZWQYAiABKAhSEGlzUnVuTW9kZUVuYWJsZWQSNQoXaXNfdmlydHVhbF9tb2RlX2VuYWJsZWQYAyABKAhSFGlzVmlydHVhbE1vZGVFbmFibGVkEjsKGmlzX3ZpcnR1YWxfYXV0b3J1bl9lbmFibGVkGAQgASgIUhdpc1ZpcnR1YWxBdXRvcnVuRW5hYmxlZBIhCgxwb3dlcl9hY3R1YWwYCiABKAhSC3Bvd2VyQWN0dWFsEicKD3Bvd2VyX3JlcXVlc3RlZBgLIAEoCFIOcG93ZXJSZXF1ZXN0ZWQ=');
+final $typed_data.Uint8List railwayStateDescriptor = $convert.base64Decode('CgxSYWlsd2F5U3RhdGUSLwoFbW9kZWwYASABKAsyGS5iaW5reXJhaWx3YXlzLnYxLlJhaWx3YXlSBW1vZGVsEi0KE2lzX3J1bl9tb2RlX2VuYWJsZWQYAiABKAhSEGlzUnVuTW9kZUVuYWJsZWQSNQoXaXNfdmlydHVhbF9tb2RlX2VuYWJsZWQYAyABKAhSFGlzVmlydHVhbE1vZGVFbmFibGVkEjsKGmlzX3ZpcnR1YWxfYXV0b3J1bl9lbmFibGVkGAQgASgIUhdpc1ZpcnR1YWxBdXRvcnVuRW5hYmxlZBIhCgxwb3dlcl9hY3R1YWwYCiABKAhSC3Bvd2VyQWN0dWFsEicKD3Bvd2VyX3JlcXVlc3RlZBgLIAEoCFIOcG93ZXJSZXF1ZXN0ZWQSMgoGYmxvY2tzGDIgAygLMhouYmlua3lyYWlsd2F5cy52MS5CbG9ja1JlZlIGYmxvY2tzEkIKDGJsb2NrX2dyb3VwcxgzIAMoCzIfLmJpbmt5cmFpbHdheXMudjEuQmxvY2tHcm91cFJlZlILYmxvY2tHcm91cHMSTgoQY29tbWFuZF9zdGF0aW9ucxg0IAMoCzIjLmJpbmt5cmFpbHdheXMudjEuQ29tbWFuZFN0YXRpb25SZWZSD2NvbW1hbmRTdGF0aW9ucxI7CglqdW5jdGlvbnMYNSADKAsyHS5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uUmVmUglqdW5jdGlvbnMSLAoEbG9jcxg2IAMoCzIYLmJpbmt5cmFpbHdheXMudjEuTG9jUmVmUgRsb2NzEjUKB291dHB1dHMYNyADKAsyGy5iaW5reXJhaWx3YXlzLnYxLk91dHB1dFJlZlIHb3V0cHV0cxIyCgZyb3V0ZXMYOCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLlJvdXRlUmVmUgZyb3V0ZXMSNQoHc2Vuc29ycxg5IAMoCzIbLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yUmVmUgdzZW5zb3JzEjUKB3NpZ25hbHMYOiADKAsyGy5iaW5reXJhaWx3YXlzLnYxLlNpZ25hbFJlZlIHc2lnbmFscw==');
 @$core.Deprecated('Use locStateDescriptor instead')
 const LocState$json = const {
   '1': 'LocState',
