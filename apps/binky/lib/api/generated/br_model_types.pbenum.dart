@@ -94,6 +94,21 @@ class BinaryOutputType extends $pb.ProtobufEnum {
   const BinaryOutputType._($core.int v, $core.String n) : super(v, n);
 }
 
+class BlockSide extends $pb.ProtobufEnum {
+  static const BlockSide FRONT = BlockSide._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'FRONT');
+  static const BlockSide BACK = BlockSide._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BACK');
+
+  static const $core.List<BlockSide> values = <BlockSide> [
+    FRONT,
+    BACK,
+  ];
+
+  static final $core.Map<$core.int, BlockSide> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BlockSide? valueOf($core.int value) => _byValue[value];
+
+  const BlockSide._($core.int v, $core.String n) : super(v, n);
+}
+
 class Shape extends $pb.ProtobufEnum {
   static const Shape CIRCLE = Shape._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'CIRCLE');
   static const Shape TRIANGLE = Shape._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TRIANGLE');

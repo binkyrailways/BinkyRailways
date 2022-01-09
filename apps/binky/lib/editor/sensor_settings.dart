@@ -64,7 +64,9 @@ class SensorSettings extends StatelessWidget {
   Future<List<Block>> _getBlocks(ModelModel model, String moduleId) async {
     final mod = await model.getModule(moduleId);
     final blockList = mod.blocks.map((e) => model.getBlock(e.id));
-    return await Future.wait(blockList);
+    final result = await Future.wait(blockList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
   }
 }
 

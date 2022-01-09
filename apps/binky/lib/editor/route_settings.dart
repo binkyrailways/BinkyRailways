@@ -32,20 +32,59 @@ class RouteSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final routeId = selector.idOf(EntityType.route) ?? "";
-        return FutureBuilder<Route>(
-            future: model.getRoute(routeId),
-            initialData: model.getCachedRoute(routeId),
+        final moduleId = selector.idOf(EntityType.module) ?? "";
+        return FutureBuilder<List<Block>>(
+            future: _getBlocks(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var route = snapshot.data!;
-              return _RouteSettings(
-                  editorCtx: editorCtx, model: model, route: route);
+              var blocks = snapshot.data!;
+              return FutureBuilder<List<Edge>>(
+                  future: _getEges(model, moduleId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    var edges = snapshot.data!;
+                    final routeId = selector.idOf(EntityType.route) ?? "";
+                    return FutureBuilder<Route>(
+                        future: model.getRoute(routeId),
+                        initialData: model.getCachedRoute(routeId),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          var route = snapshot.data!;
+                          return _RouteSettings(
+                            editorCtx: editorCtx,
+                            model: model,
+                            route: route,
+                            blocks: blocks,
+                            edges: edges,
+                          );
+                        });
+                  });
             });
       });
     });
+  }
+
+  Future<List<Block>> _getBlocks(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final blockList = mod.blocks.map((e) => model.getBlock(e.id));
+    final result = await Future.wait(blockList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
+  }
+
+  Future<List<Edge>> _getEges(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final edgeList = mod.edges.map((e) => model.getEdge(e.id));
+    final result = await Future.wait(edgeList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
   }
 }
 
@@ -53,11 +92,15 @@ class _RouteSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
   final Route route;
+  final List<Block> blocks;
+  final List<Edge> edges;
   const _RouteSettings(
       {Key? key,
       required this.editorCtx,
       required this.model,
-      required this.route})
+      required this.route,
+      required this.blocks,
+      required this.edges})
       : super(key: key);
 
   @override
@@ -90,6 +133,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
       children: <Widget>[
         const SettingsHeader(title: "General"),
         SettingsTextField(
+            key: Key("${widget.route.id}/route/description"),
             controller: _descriptionController,
             label: "Description",
             firstChild: true,
@@ -98,6 +142,32 @@ class _RouteSettingsState extends State<_RouteSettings> {
                 update.description = value;
               });
             }),
+        SettingsDropdownField<String>(
+          key: Key("${widget.route.id}/route/from"),
+          label: "From",
+          value: _endpointId(widget.route.from),
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.from = _endpointFromId(value);
+              }
+            });
+          },
+          items: _endpointIds(),
+        ),
+        SettingsDropdownField<String>(
+          key: Key("${widget.route.id}/route/to"),
+          label: "To",
+          value: _endpointId(widget.route.to),
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.to = _endpointFromId(value);
+              }
+            });
+          },
+          items: _endpointIds(),
+        ),
       ],
     );
   }
@@ -107,5 +177,62 @@ class _RouteSettingsState extends State<_RouteSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateRoute(update);
+  }
+
+  List<DropdownMenuItem<String>> _endpointIds() {
+    final List<DropdownMenuItem<String>> list = [];
+    for (var e in widget.blocks) {
+      list.add(DropdownMenuItem<String>(
+        child: Text("Front of ${e.description}"),
+        value: "block/front/${e.id}",
+      ));
+      list.add(DropdownMenuItem<String>(
+        child: Text("Back of ${e.description}"),
+        value: "block/back/${e.id}",
+      ));
+    }
+    for (var e in widget.edges) {
+      list.add(DropdownMenuItem<String>(
+        child: Text("Edge ${e.description}"),
+        value: "edge/${e.id}",
+      ));
+    }
+    list.add(const DropdownMenuItem(child: Text("<None>"), value: ""));
+    return list;
+  }
+
+  String _endpointId(Endpoint ep) {
+    if (ep.hasBlock()) {
+      if (ep.blockSide == BlockSide.FRONT) {
+        return "block/front/${ep.block.id}";
+      }
+      return "block/back/${ep.block.id}";
+    }
+    if (ep.hasEdge()) {
+      return "edge/${ep.edge.id}";
+    }
+    return "";
+  }
+
+  Endpoint _endpointFromId(String id) {
+    if (id.startsWith("block/front/")) {
+      return Endpoint(
+        block: BlockRef(id: id.substring("block/front/".length)),
+        blockSide: BlockSide.FRONT,
+      );
+    }
+    if (id.startsWith("block/back/")) {
+      return Endpoint(
+        block: BlockRef(id: id.substring("block/back/".length)),
+        blockSide: BlockSide.BACK,
+      );
+    }
+    if (id.startsWith("edge/")) {
+      return Endpoint(
+        edge: EdgeRef(id: id.substring("edge/".length)),
+        blockSide: BlockSide.FRONT,
+      );
+    }
+    return Endpoint();
   }
 }

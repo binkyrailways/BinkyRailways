@@ -21,6 +21,7 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"go.uber.org/multierr"
 )
 
 // FromModel converts a model Route to an API Route
@@ -28,6 +29,14 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
+	dst.From = &Endpoint{}
+	dst.From.FromModel(ctx, src.GetFrom(), src.GetFromBlockSide())
+	dst.To = &Endpoint{}
+	dst.To.FromModel(ctx, src.GetTo(), src.GetToBlockSide())
+	dst.Speed = int32(src.GetSpeed())
+	dst.ChooseProbability = int32(src.GetChooseProbability())
+	dst.Closed = src.GetClosed()
+	dst.MaxDuration = int32(src.GetMaxDuration())
 	return nil
 }
 
@@ -37,6 +46,22 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected block ID: '%s'", src.GetId())
 	}
-	dst.SetDescription(src.GetDescription())
+	epFrom, bSideFrom, err := src.GetFrom().ToModel(ctx, dst.GetModule())
+	if err != nil {
+		return err
+	}
+	epTo, bSideTo, err := src.GetTo().ToModel(ctx, dst.GetModule())
+	if err != nil {
+		return err
+	}
+	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
+	multierr.AppendInto(&err, dst.SetFrom(epFrom))
+	multierr.AppendInto(&err, dst.SetFromBlockSide(bSideFrom))
+	multierr.AppendInto(&err, dst.SetTo(epTo))
+	multierr.AppendInto(&err, dst.SetToBlockSide(bSideTo))
+	multierr.AppendInto(&err, dst.SetSpeed(int(src.GetSpeed())))
+	multierr.AppendInto(&err, dst.SetChooseProbability(int(src.GetChooseProbability())))
+	multierr.AppendInto(&err, dst.SetClosed(src.GetClosed()))
+	multierr.AppendInto(&err, dst.SetMaxDuration(int(src.GetMaxDuration())))
 	return nil
 }

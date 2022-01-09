@@ -68,6 +68,17 @@ const BinaryOutputType$json = const {
 
 /// Descriptor for `BinaryOutputType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List binaryOutputTypeDescriptor = $convert.base64Decode('ChBCaW5hcnlPdXRwdXRUeXBlEg8KC0JPVF9ERUZBVUxUEAASFQoRQk9UX1RSQUNLSU5WRVJURVIQAQ==');
+@$core.Deprecated('Use blockSideDescriptor instead')
+const BlockSide$json = const {
+  '1': 'BlockSide',
+  '2': const [
+    const {'1': 'FRONT', '2': 0},
+    const {'1': 'BACK', '2': 1},
+  ],
+};
+
+/// Descriptor for `BlockSide`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List blockSideDescriptor = $convert.base64Decode('CglCbG9ja1NpZGUSCQoFRlJPTlQQABIICgRCQUNLEAE=');
 @$core.Deprecated('Use shapeDescriptor instead')
 const Shape$json = const {
   '1': 'Shape',
@@ -494,11 +505,17 @@ const Route$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
+    const {'1': 'from', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'from'},
+    const {'1': 'to', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'to'},
+    const {'1': 'speed', '3': 10, '4': 1, '5': 5, '10': 'speed'},
+    const {'1': 'choose_probability', '3': 11, '4': 1, '5': 5, '10': 'chooseProbability'},
+    const {'1': 'closed', '3': 13, '4': 1, '5': 8, '10': 'closed'},
+    const {'1': 'max_duration', '3': 14, '4': 1, '5': 5, '10': 'maxDuration'},
   ],
 };
 
 /// Descriptor for `Route`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQ=');
+final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRIWCgZjbG9zZWQYDSABKAhSBmNsb3NlZBIhCgxtYXhfZHVyYXRpb24YDiABKAVSC21heER1cmF0aW9u');
 @$core.Deprecated('Use routeRefDescriptor instead')
 const RouteRef$json = const {
   '1': 'RouteRef',
@@ -509,6 +526,18 @@ const RouteRef$json = const {
 
 /// Descriptor for `RouteRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List routeRefDescriptor = $convert.base64Decode('CghSb3V0ZVJlZhIOCgJpZBgBIAEoCVICaWQ=');
+@$core.Deprecated('Use endpointDescriptor instead')
+const Endpoint$json = const {
+  '1': 'Endpoint',
+  '2': const [
+    const {'1': 'block', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'block'},
+    const {'1': 'edge', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.EdgeRef', '10': 'edge'},
+    const {'1': 'block_side', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.BlockSide', '10': 'blockSide'},
+  ],
+};
+
+/// Descriptor for `Endpoint`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List endpointDescriptor = $convert.base64Decode('CghFbmRwb2ludBIwCgVibG9jaxgBIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBWJsb2NrEi0KBGVkZ2UYAiABKAsyGS5iaW5reXJhaWx3YXlzLnYxLkVkZ2VSZWZSBGVkZ2USOgoKYmxvY2tfc2lkZRgDIAEoDjIbLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTaWRlUglibG9ja1NpZGU=');
 @$core.Deprecated('Use sensorDescriptor instead')
 const Sensor$json = const {
   '1': 'Sensor',
