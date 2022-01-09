@@ -47,7 +47,8 @@ class OutputsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.output,
                       title: Text(outputs[index].description),
-                      onTap: () => editorCtx.select(EntityType.output, id),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.output(outputs[index])),
                       selected: selector.idOf(EntityType.output) == id,
                     );
                   });

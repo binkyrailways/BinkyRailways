@@ -128,7 +128,7 @@ class _EditorPageState extends State<EditorPage> {
       ModelModel model, Railway railway) {
     if ((editorCtx.selector.entityType == EntityType.unknown) &&
         model.isRailwayLoaded()) {
-      editorCtx.select(EntityType.railway, "", notify: false);
+      editorCtx.select(EntitySelector.railway(), notify: false);
     }
     switch (editorCtx.selector.entityType) {
       case EntityType.railway:
@@ -377,7 +377,7 @@ class _EditorPageState extends State<EditorPage> {
             label: "Add module",
             onTap: () async {
               final added = await model.addModule();
-              editorCtx.select(EntityType.module, added.id);
+              editorCtx.select(EntitySelector.module(added, null));
             },
           ),
         ];
@@ -388,7 +388,7 @@ class _EditorPageState extends State<EditorPage> {
             label: "Add loc",
             onTap: () async {
               final added = await model.addLoc();
-              editorCtx.select(EntityType.loc, added.id);
+              editorCtx.select(EntitySelector.loc(added));
             },
           ),
         ];
@@ -401,7 +401,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add block",
               onTap: () async {
                 final added = await model.addBlock(moduleId);
-                editorCtx.select(EntityType.block, added.id);
+                editorCtx.select(EntitySelector.block(added));
               },
             ),
           ];
@@ -416,7 +416,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add block group",
               onTap: () async {
                 final added = await model.addBlockGroup(moduleId);
-                editorCtx.select(EntityType.blockgroup, added.id);
+                editorCtx.select(EntitySelector.blockGroup(added));
               },
             ),
           ];
@@ -431,7 +431,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add edge",
               onTap: () async {
                 final added = await model.addEdge(moduleId);
-                editorCtx.select(EntityType.edge, added.id);
+                editorCtx.select(EntitySelector.edge(added));
               },
             ),
           ];
@@ -446,7 +446,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add switch",
               onTap: () async {
                 final added = await model.addSwitch(moduleId);
-                editorCtx.select(EntityType.junction, added.id);
+                editorCtx.select(EntitySelector.junction(added));
               },
             ),
           ];
@@ -461,7 +461,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add binary output",
               onTap: () async {
                 final added = await model.addBinaryOutput(moduleId);
-                editorCtx.select(EntityType.output, added.id);
+                editorCtx.select(EntitySelector.output(added));
               },
             ),
           ];
@@ -476,7 +476,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add route",
               onTap: () async {
                 final added = await model.addRoute(moduleId);
-                editorCtx.select(EntityType.route, added.id);
+                editorCtx.select(EntitySelector.route(added));
               },
             ),
           ];
@@ -491,7 +491,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add binary sensor",
               onTap: () async {
                 final added = await model.addBinarySensor(moduleId);
-                editorCtx.select(EntityType.sensor, added.id);
+                editorCtx.select(EntitySelector.sensor(added));
               },
             ),
           ];
@@ -506,7 +506,7 @@ class _EditorPageState extends State<EditorPage> {
               label: "Add local worker",
               onTap: () async {
                 final added = await model.addBinkyNetLocalWorker(csId);
-                editorCtx.select(EntityType.binkynetlocalworker, added.id);
+                editorCtx.select(EntitySelector.binkynetLocalWorker(added));
               },
             ),
           ];
@@ -520,8 +520,9 @@ class _EditorPageState extends State<EditorPage> {
               child: BinkyIcons.binkynetdevice,
               label: "Add device",
               onTap: () async {
+                final lw = await model.getBinkyNetLocalWorker(lwId);
                 final added = await model.addBinkyNetDevice(lwId);
-                editorCtx.select(EntityType.binkynetdevice, added.id);
+                editorCtx.select(EntitySelector.binkynetDevice(lw, added));
               },
             ),
           ];
@@ -535,8 +536,9 @@ class _EditorPageState extends State<EditorPage> {
               child: BinkyIcons.binkynetobject,
               label: "Add object",
               onTap: () async {
+                final lw = await model.getBinkyNetLocalWorker(lwId);
                 final added = await model.addBinkyNetObject(lwId);
-                editorCtx.select(EntityType.binkynetobject, added.id);
+                editorCtx.select(EntitySelector.binkynetObject(lw, added));
               },
             ),
           ];

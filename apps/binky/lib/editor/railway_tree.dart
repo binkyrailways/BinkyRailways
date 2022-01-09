@@ -49,7 +49,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.railway,
-                    onTap: () => editorCtx.select(EntityType.railway, ""),
+                    onTap: () => editorCtx.select(EntitySelector.railway()),
                   ),
                   ListTile(
                     leading: BinkyIcons.module,
@@ -59,7 +59,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.modules,
-                    onTap: () => editorCtx.select(EntityType.modules, ""),
+                    onTap: () => editorCtx.select(EntitySelector.modules()),
                   ),
                   ListTile(
                     leading: BinkyIcons.loc,
@@ -69,7 +69,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.locs,
-                    onTap: () => editorCtx.select(EntityType.locs, ""),
+                    onTap: () => editorCtx.select(EntitySelector.locs()),
                   ),
                   ListTile(
                     leading: BinkyIcons.locGroup,
@@ -79,7 +79,7 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.locgroups,
-                    onTap: () => editorCtx.select(EntityType.locgroups, ""),
+                    onTap: () => editorCtx.select(EntitySelector.locGroups()),
                   ),
                   ListTile(
                     leading: BinkyIcons.commandstation,
@@ -90,7 +90,7 @@ class RailwayTree extends StatelessWidget {
                     ),
                     selected: selector.entityType == EntityType.commandstations,
                     onTap: () =>
-                        editorCtx.select(EntityType.commandstations, ""),
+                        editorCtx.select(EntitySelector.commandStations()),
                   ),
                 ],
               );

@@ -46,8 +46,8 @@ class CommandStationsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.commandstation,
                       title: Text(css[index].description),
-                      onTap: () =>
-                          editorCtx.select(EntityType.commandstation, id),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.commandStation(css[index], null)),
                       selected: selector.idOf(EntityType.commandstation) == id,
                     );
                   });

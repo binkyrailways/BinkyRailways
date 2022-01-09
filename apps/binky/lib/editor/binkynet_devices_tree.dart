@@ -33,13 +33,14 @@ class BinkyNetDevicesTree extends StatelessWidget {
     final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
     return Consumer<ModelModel>(
       builder: (context, model, child) {
-        return FutureBuilder<List<BinkyNetDevice>>(
-            future: getBinkyNetDevices(model, lwId),
+        return FutureBuilder<BinkyNetLocalWorker>(
+            future: getBinkyNetLocalWorker(model, lwId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var devices = snapshot.data!
+              final lw = snapshot.data!;
+              var devices = lw.devices.toList()
                 ..sort((a, b) => a.deviceId.compareTo(b.deviceId));
               return ListView.builder(
                   itemCount: devices.length,
@@ -48,8 +49,8 @@ class BinkyNetDevicesTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.binkynetdevice,
                       title: Text(devices[index].deviceId),
-                      onTap: () =>
-                          editorCtx.select(EntityType.binkynetdevice, id),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.binkynetDevice(lw, devices[index])),
                       selected: selector.idOf(EntityType.binkynetdevice) == id,
                     );
                   });
@@ -58,9 +59,8 @@ class BinkyNetDevicesTree extends StatelessWidget {
     );
   }
 
-  Future<List<BinkyNetDevice>> getBinkyNetDevices(
+  Future<BinkyNetLocalWorker> getBinkyNetLocalWorker(
       ModelModel model, String lwId) async {
-    final lw = await model.getBinkyNetLocalWorker(lwId);
-    return lw.devices.toList();
+    return await model.getBinkyNetLocalWorker(lwId);
   }
 }

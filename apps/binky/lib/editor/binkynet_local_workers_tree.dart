@@ -49,8 +49,9 @@ class BinkyNetLocalWorkersTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.binkynetlocalworker,
                       title: Text(localworkers[index].description),
-                      onTap: () =>
-                          editorCtx.select(EntityType.binkynetlocalworker, id),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.binkynetLocalWorker(
+                              localworkers[index])),
                       selected:
                           selector.idOf(EntityType.binkynetlocalworker) == id,
                     );

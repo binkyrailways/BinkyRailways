@@ -48,7 +48,8 @@ class JunctionsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.junction,
                       title: Text(junctions[index].description),
-                      onTap: () => editorCtx.select(EntityType.junction, id),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.junction(junctions[index])),
                       selected: selector.idOf(EntityType.junction) == id,
                     );
                   });

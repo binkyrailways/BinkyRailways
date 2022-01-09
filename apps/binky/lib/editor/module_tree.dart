@@ -51,7 +51,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.module,
-                    onTap: () => editorCtx.select(EntityType.module, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.module(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.block,
@@ -61,7 +62,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.blocks,
-                    onTap: () => editorCtx.select(EntityType.blocks, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.blocks(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.blockGroup,
@@ -71,8 +73,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.blockgroups,
-                    onTap: () =>
-                        editorCtx.select(EntityType.blockgroups, moduleId),
+                    onTap: () => editorCtx
+                        .select(EntitySelector.blockGroups(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.edge,
@@ -82,7 +84,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.edges,
-                    onTap: () => editorCtx.select(EntityType.edges, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.edges(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.junction,
@@ -92,8 +95,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.junctions,
-                    onTap: () =>
-                        editorCtx.select(EntityType.junctions, moduleId),
+                    onTap: () => editorCtx
+                        .select(EntitySelector.junctions(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.output,
@@ -103,7 +106,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.outputs,
-                    onTap: () => editorCtx.select(EntityType.outputs, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.outputs(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.route,
@@ -113,7 +117,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.routes,
-                    onTap: () => editorCtx.select(EntityType.routes, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.routes(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.sensor,
@@ -123,7 +128,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.sensors,
-                    onTap: () => editorCtx.select(EntityType.sensors, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.sensors(module, null)),
                   ),
                   ListTile(
                     leading: BinkyIcons.signal,
@@ -133,7 +139,8 @@ class ModuleTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.signals,
-                    onTap: () => editorCtx.select(EntityType.signals, moduleId),
+                    onTap: () =>
+                        editorCtx.select(EntitySelector.signals(module, null)),
                   ),
                 ],
               );

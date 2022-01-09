@@ -52,7 +52,7 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
                   selected:
                       selector.entityType == EntityType.binkynetlocalworker,
                   onTap: () =>
-                      editorCtx.select(EntityType.binkynetlocalworker, lwId),
+                      editorCtx.select(EntitySelector.binkynetLocalWorker(lw)),
                 ),
                 ListTile(
                   leading: BinkyIcons.binkynetdevice,
@@ -63,7 +63,7 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
                   ),
                   selected: selector.entityType == EntityType.binkynetdevices,
                   onTap: () =>
-                      editorCtx.select(EntityType.binkynetdevices, lwId),
+                      editorCtx.select(EntitySelector.binkynetDevices(lw)),
                 ),
                 ListTile(
                   leading: BinkyIcons.binkynetobject,
@@ -74,7 +74,7 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
                   ),
                   selected: selector.entityType == EntityType.binkynetobjects,
                   onTap: () =>
-                      editorCtx.select(EntityType.binkynetobjects, lwId),
+                      editorCtx.select(EntitySelector.binkynetObjects(lw)),
                 ),
               ];
               return ListView(

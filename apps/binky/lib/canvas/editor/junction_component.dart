@@ -43,12 +43,12 @@ class JunctionComponent extends common.JunctionComponent
     var update = current.deepCopy();
     editor(update.position);
     await modelModel.updateJunction(update);
-    editorCtx.select(EntityType.junction, model.id);
+    editorCtx.select(EntitySelector.junction(model));
   }
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntityType.junction, model.id);
+    editorCtx.select(EntitySelector.junction(model));
     return true;
   }
 

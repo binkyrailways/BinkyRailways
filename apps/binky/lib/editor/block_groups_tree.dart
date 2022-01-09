@@ -47,7 +47,8 @@ class BlockGroupsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.blockGroup,
                       title: Text(blockGroups[index].description),
-                      onTap: () => editorCtx.select(EntityType.blockgroup, id),
+                      onTap: () => editorCtx.select(
+                          EntitySelector.blockGroup(blockGroups[index])),
                       selected: selector.idOf(EntityType.blockgroup) == id,
                     );
                   });

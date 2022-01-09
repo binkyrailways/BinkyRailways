@@ -48,8 +48,8 @@ class ModulesTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.module,
                       title: Text(modules[index].description),
-                      onTap: () => editorCtx.select(
-                          EntityType.module, modules[index].id),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.module(modules[index], null)),
                     );
                   });
             });

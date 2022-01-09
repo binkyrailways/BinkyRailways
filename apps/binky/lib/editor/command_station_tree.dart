@@ -51,7 +51,7 @@ class CommandStationTree extends StatelessWidget {
                   ),
                   selected: selector.entityType == EntityType.commandstation,
                   onTap: () =>
-                      editorCtx.select(EntityType.commandstation, csId),
+                      editorCtx.select(EntitySelector.commandStation(cs, null)),
                 ),
               ];
               if (cs.hasBinkynetCommandStation()) {
@@ -66,8 +66,8 @@ class CommandStationTree extends StatelessWidget {
                     ),
                     selected:
                         selector.entityType == EntityType.binkynetlocalworkers,
-                    onTap: () =>
-                        editorCtx.select(EntityType.binkynetlocalworkers, csId),
+                    onTap: () => editorCtx
+                        .select(EntitySelector.binkynetLocalWorkers(cs, null)),
                   ),
                 );
               }

@@ -26,12 +26,15 @@ import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './position_draggable.dart';
 
-class OutputComponent extends common.OutputComponent 
+class OutputComponent extends common.OutputComponent
     with Tappable, Draggable, PositionDraggable<mapi.Output> {
   final EditorContext editorCtx;
   final ModelModel modelModel;
 
-  OutputComponent({required this.editorCtx, required mapi.Output model, required this.modelModel})
+  OutputComponent(
+      {required this.editorCtx,
+      required mapi.Output model,
+      required this.modelModel})
       : super(model: model);
 
   @override
@@ -40,12 +43,12 @@ class OutputComponent extends common.OutputComponent
     var update = current.deepCopy();
     editor(update.position);
     await modelModel.updateOutput(update);
-    editorCtx.select(EntityType.output, model.id);
+    editorCtx.select(EntitySelector.output(model));
   }
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntityType.output, model.id);
+    editorCtx.select(EntitySelector.output(model));
     return true;
   }
 

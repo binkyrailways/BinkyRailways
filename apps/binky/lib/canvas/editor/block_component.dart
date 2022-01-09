@@ -43,12 +43,12 @@ class BlockComponent extends common.BlockComponent
     var update = current.deepCopy();
     editor(update.position);
     await modelModel.updateBlock(update);
-    editorCtx.select(EntityType.block, model.id);
+    editorCtx.select(EntitySelector.block(model));
   }
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntityType.block, model.id);
+    editorCtx.select(EntitySelector.block(model));
     return true;
   }
 

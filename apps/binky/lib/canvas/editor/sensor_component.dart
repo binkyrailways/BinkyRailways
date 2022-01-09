@@ -31,7 +31,10 @@ class SensorComponent extends common.SensorComponent
   final EditorContext editorCtx;
   final ModelModel modelModel;
 
-  SensorComponent({required this.editorCtx, required mapi.Sensor model, required this.modelModel})
+  SensorComponent(
+      {required this.editorCtx,
+      required mapi.Sensor model,
+      required this.modelModel})
       : super(model: model);
 
   @override
@@ -40,12 +43,12 @@ class SensorComponent extends common.SensorComponent
     var update = current.deepCopy();
     editor(update.position);
     await modelModel.updateSensor(update);
-    editorCtx.select(EntityType.sensor, model.id);
+    editorCtx.select(EntitySelector.sensor(model));
   }
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntityType.sensor, model.id);
+    editorCtx.select(EntitySelector.sensor(model));
     return true;
   }
 

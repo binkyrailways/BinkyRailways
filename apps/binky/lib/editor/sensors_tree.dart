@@ -47,7 +47,8 @@ class SensorsTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.sensor,
                       title: Text(sensors[index].description),
-                      onTap: () => editorCtx.select(EntityType.sensor, id),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.sensor(sensors[index])),
                       selected: selector.idOf(EntityType.sensor) == id,
                     );
                   });
