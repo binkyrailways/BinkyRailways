@@ -23,4 +23,5 @@ type SwitchWithState interface {
 
 	// Desired direction
 	GetDirection() SwitchDirection
+	SetDirection(SwitchDirection) error
 }

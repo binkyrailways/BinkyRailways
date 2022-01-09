@@ -40,3 +40,26 @@ const ParseAddressResult$json = const {
 
 /// Descriptor for `ParseAddressResult`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List parseAddressResultDescriptor = $convert.base64Decode('ChJQYXJzZUFkZHJlc3NSZXN1bHQSFAoFdmFsaWQYASABKAhSBXZhbGlkEhgKB21lc3NhZ2UYAiABKAlSB21lc3NhZ2USJwoPZm9ybWF0dGVkX3ZhbHVlGAMgASgJUg5mb3JtYXR0ZWRWYWx1ZQ==');
+@$core.Deprecated('Use addRouteCrossingJunctionSwitchRequestDescriptor instead')
+const AddRouteCrossingJunctionSwitchRequest$json = const {
+  '1': 'AddRouteCrossingJunctionSwitchRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'junction_id', '3': 2, '4': 1, '5': 9, '10': 'junctionId'},
+    const {'1': 'direction', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'direction'},
+  ],
+};
+
+/// Descriptor for `AddRouteCrossingJunctionSwitchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addRouteCrossingJunctionSwitchRequestDescriptor = $convert.base64Decode('CiVBZGRSb3V0ZUNyb3NzaW5nSnVuY3Rpb25Td2l0Y2hSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEh8KC2p1bmN0aW9uX2lkGAIgASgJUgpqdW5jdGlvbklkEj8KCWRpcmVjdGlvbhgDIAEoDjIhLmJpbmt5cmFpbHdheXMudjEuU3dpdGNoRGlyZWN0aW9uUglkaXJlY3Rpb24=');
+@$core.Deprecated('Use removeRouteCrossingJunctionRequestDescriptor instead')
+const RemoveRouteCrossingJunctionRequest$json = const {
+  '1': 'RemoveRouteCrossingJunctionRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'junction_id', '3': 2, '4': 1, '5': 9, '10': 'junctionId'},
+  ],
+};
+
+/// Descriptor for `RemoveRouteCrossingJunctionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List removeRouteCrossingJunctionRequestDescriptor = $convert.base64Decode('CiJSZW1vdmVSb3V0ZUNyb3NzaW5nSnVuY3Rpb25SZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEh8KC2p1bmN0aW9uX2lkGAIgASgJUgpqdW5jdGlvbklk');

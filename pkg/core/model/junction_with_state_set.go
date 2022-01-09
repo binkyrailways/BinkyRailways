@@ -25,6 +25,10 @@ type JunctionWithStateSet interface {
 	// Invoke the callback for each item
 	ForEach(cb func(JunctionWithState))
 
+	// Get by junction ID.
+	// Returns false if not found
+	Get(junctionID string) (JunctionWithState, bool)
+
 	// Remove the given item from this set.
 	// Returns true if it was removed, false otherwise
 	Remove(item Junction) bool
@@ -47,7 +51,7 @@ type JunctionWithStateSet interface {
 	/// <summary>
 	/// Add the given item to this set
 	/// </summary>
-	AddSwitch(item Switch, direction SwitchDirection)
+	AddSwitch(item Switch, direction SwitchDirection) error
 
 	/// <summary>
 	/// Add the given item to this set

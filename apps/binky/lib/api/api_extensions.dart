@@ -25,4 +25,15 @@ extension SwitchDirectionExt on SwitchDirection {
       return SwitchDirection.STRAIGHT;
     }
   }
+
+  String humanize() {
+    switch (this) {
+      case SwitchDirection.STRAIGHT:
+        return "Straight";
+      case SwitchDirection.OFF:
+        return "Off";
+      default:
+        return toString();
+    }
+  }
 }

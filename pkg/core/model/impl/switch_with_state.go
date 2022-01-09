@@ -56,6 +56,12 @@ func (j *switchWithState) GetDirection() model.SwitchDirection {
 	return refs.SwitchDirectionValue(j.Direction, model.SwitchDirectionStraight)
 }
 
+// Desired direction
+func (j *switchWithState) SetDirection(value model.SwitchDirection) error {
+	j.Direction = refs.NewSwitchDirection(value)
+	return nil
+}
+
 // Create a clone of this entity.
 // Do not clone the junction.
 func (j *switchWithState) Clone() model.JunctionWithState {

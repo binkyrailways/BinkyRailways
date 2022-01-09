@@ -21,11 +21,12 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Gets a Junction by ID.
-func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Junction, error) {
-	moduleID, junctionID, err := api.SplitParentChildID(req.GetId())
+func (s *service) getJunction(ctx context.Context, id string) (model.Junction, error) {
+	moduleID, junctionID, err := api.SplitParentChildID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -36,6 +37,15 @@ func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Jun
 	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
 		return nil, api.NotFound(junctionID)
+	}
+	return junction, nil
+}
+
+// Gets a Junction by ID.
+func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Junction, error) {
+	junction, err := s.getJunction(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.Junction
 	if err := result.FromModel(ctx, junction); err != nil {
@@ -46,17 +56,9 @@ func (s *service) GetJunction(ctx context.Context, req *api.IDRequest) (*api.Jun
 
 // Update a loc by ID.
 func (s *service) UpdateJunction(ctx context.Context, req *api.Junction) (*api.Junction, error) {
-	moduleID, junctionID, err := api.SplitParentChildID(req.GetId())
+	junction, err := s.getJunction(ctx, req.GetId())
 	if err != nil {
 		return nil, err
-	}
-	mod, err := s.getModule(ctx, moduleID)
-	if err != nil {
-		return nil, err
-	}
-	junction, ok := mod.GetJunctions().Get(junctionID)
-	if !ok {
-		return nil, api.NotFound(junctionID)
 	}
 	if err := req.ToModel(ctx, junction); err != nil {
 		return nil, err

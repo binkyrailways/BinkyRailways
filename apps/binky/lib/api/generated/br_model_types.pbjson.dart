@@ -507,6 +507,7 @@ const Route$json = const {
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'from', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'from'},
     const {'1': 'to', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'to'},
+    const {'1': 'crossing_junctions', '3': 6, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionWithState', '10': 'crossingJunctions'},
     const {'1': 'speed', '3': 10, '4': 1, '5': 5, '10': 'speed'},
     const {'1': 'choose_probability', '3': 11, '4': 1, '5': 5, '10': 'chooseProbability'},
     const {'1': 'closed', '3': 13, '4': 1, '5': 8, '10': 'closed'},
@@ -515,7 +516,7 @@ const Route$json = const {
 };
 
 /// Descriptor for `Route`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRIWCgZjbG9zZWQYDSABKAhSBmNsb3NlZBIhCgxtYXhfZHVyYXRpb24YDiABKAVSC21heER1cmF0aW9u');
+final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRIWCgZjbG9zZWQYDSABKAhSBmNsb3NlZBIhCgxtYXhfZHVyYXRpb24YDiABKAVSC21heER1cmF0aW9u');
 @$core.Deprecated('Use routeRefDescriptor instead')
 const RouteRef$json = const {
   '1': 'RouteRef',
@@ -538,6 +539,27 @@ const Endpoint$json = const {
 
 /// Descriptor for `Endpoint`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List endpointDescriptor = $convert.base64Decode('CghFbmRwb2ludBIwCgVibG9jaxgBIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBWJsb2NrEi0KBGVkZ2UYAiABKAsyGS5iaW5reXJhaWx3YXlzLnYxLkVkZ2VSZWZSBGVkZ2USOgoKYmxvY2tfc2lkZRgDIAEoDjIbLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTaWRlUglibG9ja1NpZGU=');
+@$core.Deprecated('Use junctionWithStateDescriptor instead')
+const JunctionWithState$json = const {
+  '1': 'JunctionWithState',
+  '2': const [
+    const {'1': 'junction', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.JunctionRef', '10': 'junction'},
+    const {'1': 'switch_state', '3': 10, '4': 1, '5': 11, '6': '.binkyrailways.v1.SwitchWithState', '10': 'switchState'},
+  ],
+};
+
+/// Descriptor for `JunctionWithState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List junctionWithStateDescriptor = $convert.base64Decode('ChFKdW5jdGlvbldpdGhTdGF0ZRI5CghqdW5jdGlvbhgBIAEoCzIdLmJpbmt5cmFpbHdheXMudjEuSnVuY3Rpb25SZWZSCGp1bmN0aW9uEkQKDHN3aXRjaF9zdGF0ZRgKIAEoCzIhLmJpbmt5cmFpbHdheXMudjEuU3dpdGNoV2l0aFN0YXRlUgtzd2l0Y2hTdGF0ZQ==');
+@$core.Deprecated('Use switchWithStateDescriptor instead')
+const SwitchWithState$json = const {
+  '1': 'SwitchWithState',
+  '2': const [
+    const {'1': 'direction', '3': 1, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'direction'},
+  ],
+};
+
+/// Descriptor for `SwitchWithState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List switchWithStateDescriptor = $convert.base64Decode('Cg9Td2l0Y2hXaXRoU3RhdGUSPwoJZGlyZWN0aW9uGAEgASgOMiEuYmlua3lyYWlsd2F5cy52MS5Td2l0Y2hEaXJlY3Rpb25SCWRpcmVjdGlvbg==');
 @$core.Deprecated('Use sensorDescriptor instead')
 const Sensor$json = const {
   '1': 'Sensor',

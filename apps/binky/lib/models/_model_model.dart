@@ -454,6 +454,35 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Add a crossing junction (of type switch) to a given route.
+  Future<mapi.Route> addRouteCrossingJunctionSwitch(
+      String routeId, String junctionId, mapi.SwitchDirection direction) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.addRouteCrossingJunctionSwitch(
+        mapi.AddRouteCrossingJunctionSwitchRequest(
+      routeId: routeId,
+      junctionId: junctionId,
+      direction: direction,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Remove a crossing junction from a given route.
+  Future<mapi.Route> removeRouteCrossingJunction(
+      String routeId, String junctionId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient
+        .removeRouteCrossingJunction(mapi.RemoveRouteCrossingJunctionRequest(
+      routeId: routeId,
+      junctionId: junctionId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
   // Gets a Sensor by ID from cache
   mapi.Sensor? getCachedSensor(String id) => _sensors[id];
 

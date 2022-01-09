@@ -33,6 +33,11 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 	dst.From.FromModel(ctx, src.GetFrom(), src.GetFromBlockSide())
 	dst.To = &Endpoint{}
 	dst.To.FromModel(ctx, src.GetTo(), src.GetToBlockSide())
+	src.GetCrossingJunctions().ForEach(func(jws model.JunctionWithState) {
+		jwsDst := &JunctionWithState{}
+		jwsDst.FromModel(ctx, jws)
+		dst.CrossingJunctions = append(dst.CrossingJunctions, jwsDst)
+	})
 	dst.Speed = int32(src.GetSpeed())
 	dst.ChooseProbability = int32(src.GetChooseProbability())
 	dst.Closed = src.GetClosed()
@@ -54,11 +59,21 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	if err != nil {
 		return err
 	}
+	if len(src.GetCrossingJunctions()) != dst.GetCrossingJunctions().GetCount() {
+		return InvalidArgument("Unexpected number of crossing junctions (got %d, expected %d)", len(src.GetCrossingJunctions()), dst.GetCrossingJunctions().GetCount())
+	}
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	multierr.AppendInto(&err, dst.SetFrom(epFrom))
 	multierr.AppendInto(&err, dst.SetFromBlockSide(bSideFrom))
 	multierr.AppendInto(&err, dst.SetTo(epTo))
 	multierr.AppendInto(&err, dst.SetToBlockSide(bSideTo))
+	for _, x := range src.GetCrossingJunctions() {
+		dstJws, ok := dst.GetCrossingJunctions().Get(x.GetJunction().GetId())
+		if !ok {
+			return InvalidArgument("Unknown junction ID: '%s'", x.GetJunction().GetId())
+		}
+		multierr.AppendInto(&err, x.ToModel(ctx, dstJws))
+	}
 	multierr.AppendInto(&err, dst.SetSpeed(int(src.GetSpeed())))
 	multierr.AppendInto(&err, dst.SetChooseProbability(int(src.GetChooseProbability())))
 	multierr.AppendInto(&err, dst.SetClosed(src.GetClosed()))

@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';
+import '../icons.dart';
 import 'package:binky/editor/editor_context.dart';
 
 class RouteSettings extends StatelessWidget {
@@ -142,87 +143,142 @@ class _RouteSettingsState extends State<_RouteSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
-        SettingsTextField(
-            key: Key("${widget.route.id}/route/description"),
-            controller: _descriptionController,
-            label: "Description",
-            firstChild: true,
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
-            }),
-        SettingsDropdownField<String>(
-          key: Key("${widget.route.id}/route/from"),
-          label: "From",
-          value: _endpointId(widget.route.from),
-          onChanged: (value) {
-            _update((x) {
-              if (value != null) {
-                x.from = _endpointFromId(value);
-              }
-            });
-          },
-          items: _endpointIds(),
-        ),
-        SettingsDropdownField<String>(
-          key: Key("${widget.route.id}/route/to"),
-          label: "To",
-          value: _endpointId(widget.route.to),
-          onChanged: (value) {
-            _update((x) {
-              if (value != null) {
-                x.to = _endpointFromId(value);
-              }
-            });
-          },
-          items: _endpointIds(),
-        ),
-        SettingsCheckBoxField(
-          label: "Closed",
-          value: widget.route.closed,
-          onChanged: (value) async {
+    final List<Widget> children = [
+      const SettingsHeader(title: "General"),
+      SettingsTextField(
+          key: Key("${widget.route.id}/route/description"),
+          controller: _descriptionController,
+          label: "Description",
+          firstChild: true,
+          onLostFocus: (value) async {
             await _update((update) {
-              update.closed = value;
+              update.description = value;
             });
-          },
-        ),
-        SettingsTextField(
-            key: Key("${widget.route.id}/route/speed"),
-            controller: _speedController,
-            label: "Speed",
-            validator: _speedValidator.validate,
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.speed = int.parse(value);
-              });
-            }),
-        SettingsTextField(
-            key: Key("${widget.route.id}/route/chooseProbability"),
-            controller: _chooseProbabilityController,
-            label: "Choose probability",
-            validator: _chooseProbabilityValidator.validate,
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.chooseProbability = int.parse(value);
-              });
-            }),
-        SettingsTextField(
-            key: Key("${widget.route.id}/route/maxDuration"),
-            controller: _maxDurationController,
-            label: "Max duration",
-            validator: _maxDurationValidator.validate,
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.maxDuration = int.parse(value);
-              });
-            }),
-      ],
-    );
+          }),
+      SettingsDropdownField<String>(
+        key: Key("${widget.route.id}/route/from"),
+        label: "From",
+        value: _endpointId(widget.route.from),
+        onChanged: (value) {
+          _update((x) {
+            if (value != null) {
+              x.from = _endpointFromId(value);
+            }
+          });
+        },
+        items: _endpointIds(),
+      ),
+      SettingsDropdownField<String>(
+        key: Key("${widget.route.id}/route/to"),
+        label: "To",
+        value: _endpointId(widget.route.to),
+        onChanged: (value) {
+          _update((x) {
+            if (value != null) {
+              x.to = _endpointFromId(value);
+            }
+          });
+        },
+        items: _endpointIds(),
+      ),
+      SettingsCheckBoxField(
+        label: "Closed",
+        value: widget.route.closed,
+        onChanged: (value) async {
+          await _update((update) {
+            update.closed = value;
+          });
+        },
+      ),
+      SettingsTextField(
+          key: Key("${widget.route.id}/route/speed"),
+          controller: _speedController,
+          label: "Speed",
+          validator: _speedValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.speed = int.parse(value);
+            });
+          }),
+      SettingsTextField(
+          key: Key("${widget.route.id}/route/chooseProbability"),
+          controller: _chooseProbabilityController,
+          label: "Choose probability",
+          validator: _chooseProbabilityValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.chooseProbability = int.parse(value);
+            });
+          }),
+      SettingsTextField(
+          key: Key("${widget.route.id}/route/maxDuration"),
+          controller: _maxDurationController,
+          label: "Max duration",
+          validator: _maxDurationValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.maxDuration = int.parse(value);
+            });
+          }),
+      const SettingsHeader(title: "Crossing junctions"),
+    ];
+    for (var cj in widget.route.crossingJunctions) {
+      children.add(FutureBuilder<String>(
+          future: _formatJunctionWithState(widget.model, cj),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const ListTile(
+                leading: BinkyIcons.junction,
+                title: Text("Loading..."),
+              );
+            }
+            final description = snapshot.data!;
+            return ListTile(
+              title: Text(description),
+              trailing: GestureDetector(
+                child: const Icon(Icons.more_vert),
+                onTapDown: (TapDownDetails details) {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(details.globalPosition.dx,
+                        details.globalPosition.dy, 0, 0),
+                    items: [
+                      PopupMenuItem<String>(
+                          child: const Text('Remove'),
+                          onTap: () async {
+                            await widget.model.removeRouteCrossingJunction(
+                                widget.route.id, cj.junction.id);
+                          }),
+                    ],
+                    elevation: 8.0,
+                  );
+                },
+              ),
+            );
+          }));
+    }
+    children.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+      future: _addJunctionWithStateList(widget.model),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text("Loading...");
+        }
+        return Container(
+            padding: const EdgeInsets.all(8),
+            child: DropdownButton<String>(
+              items: snapshot.data!,
+              onChanged: (value) {},
+              isDense: true,
+              hint: const Text("Add..."),
+            ));
+      },
+    ));
+
+    return ScrollableForm(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    ));
   }
 
   Future<void> _update(void Function(Route) editor) async {
@@ -287,5 +343,50 @@ class _RouteSettingsState extends State<_RouteSettings> {
       );
     }
     return Endpoint();
+  }
+
+  Future<String> _formatJunctionWithState(
+      ModelModel modelModel, JunctionWithState jws) async {
+    final junction = await modelModel.getJunction(jws.junction.id);
+    if (jws.hasSwitchState()) {
+      return "${junction.description} -> ${jws.switchState.direction.humanize()}";
+    }
+    return junction.description;
+  }
+
+  Future<List<DropdownMenuItem<String>>> _addJunctionWithStateList(
+      ModelModel modelModel) async {
+    final module = await modelModel.getModule(widget.route.moduleId);
+    final crossingJunctionIds =
+        widget.route.crossingJunctions.map((cj) => cj.junction.id).toList();
+    final allJunctionIds = module.junctions.map((e) => e.id);
+    final allUnusedJunctionIds =
+        allJunctionIds.where((id) => !crossingJunctionIds.contains(id));
+    final allUnusedJunctions = await Future.wait(
+        allUnusedJunctionIds.map((id) => modelModel.getJunction(id)));
+    allUnusedJunctions.sort((a, b) => a.description.compareTo(b.description));
+
+    final List<DropdownMenuItem<String>> result = [];
+    for (var junction in allUnusedJunctions) {
+      if (junction.hasSwitch_6()) {
+        result.add(DropdownMenuItem<String>(
+          value: junction.id,
+          child: Text("${junction.description} -> Straight"),
+          onTap: () async {
+            await modelModel.addRouteCrossingJunctionSwitch(
+                widget.route.id, junction.id, SwitchDirection.STRAIGHT);
+          },
+        ));
+        result.add(DropdownMenuItem<String>(
+          value: junction.id,
+          child: Text("${junction.description} -> Off"),
+          onTap: () async {
+            await modelModel.addRouteCrossingJunctionSwitch(
+                widget.route.id, junction.id, SwitchDirection.OFF);
+          },
+        ));
+      }
+    }
+    return result;
   }
 }

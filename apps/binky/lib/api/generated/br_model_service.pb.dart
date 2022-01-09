@@ -9,6 +9,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'br_model_types.pbenum.dart' as $1;
+
 class IDRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IDRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
@@ -176,5 +178,141 @@ class ParseAddressResult extends $pb.GeneratedMessage {
   $core.bool hasFormattedValue() => $_has(2);
   @$pb.TagNumber(3)
   void clearFormattedValue() => clearField(3);
+}
+
+class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteCrossingJunctionSwitchRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctionId')
+    ..e<$1.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..hasRequiredFields = false
+  ;
+
+  AddRouteCrossingJunctionSwitchRequest._() : super();
+  factory AddRouteCrossingJunctionSwitchRequest({
+    $core.String? routeId,
+    $core.String? junctionId,
+    $1.SwitchDirection? direction,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (junctionId != null) {
+      _result.junctionId = junctionId;
+    }
+    if (direction != null) {
+      _result.direction = direction;
+    }
+    return _result;
+  }
+  factory AddRouteCrossingJunctionSwitchRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddRouteCrossingJunctionSwitchRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AddRouteCrossingJunctionSwitchRequest clone() => AddRouteCrossingJunctionSwitchRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AddRouteCrossingJunctionSwitchRequest copyWith(void Function(AddRouteCrossingJunctionSwitchRequest) updates) => super.copyWith((message) => updates(message as AddRouteCrossingJunctionSwitchRequest)) as AddRouteCrossingJunctionSwitchRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AddRouteCrossingJunctionSwitchRequest create() => AddRouteCrossingJunctionSwitchRequest._();
+  AddRouteCrossingJunctionSwitchRequest createEmptyInstance() => create();
+  static $pb.PbList<AddRouteCrossingJunctionSwitchRequest> createRepeated() => $pb.PbList<AddRouteCrossingJunctionSwitchRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AddRouteCrossingJunctionSwitchRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddRouteCrossingJunctionSwitchRequest>(create);
+  static AddRouteCrossingJunctionSwitchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get junctionId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set junctionId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasJunctionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearJunctionId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $1.SwitchDirection get direction => $_getN(2);
+  @$pb.TagNumber(3)
+  set direction($1.SwitchDirection v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDirection() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDirection() => clearField(3);
+}
+
+class RemoveRouteCrossingJunctionRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteCrossingJunctionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctionId')
+    ..hasRequiredFields = false
+  ;
+
+  RemoveRouteCrossingJunctionRequest._() : super();
+  factory RemoveRouteCrossingJunctionRequest({
+    $core.String? routeId,
+    $core.String? junctionId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (junctionId != null) {
+      _result.junctionId = junctionId;
+    }
+    return _result;
+  }
+  factory RemoveRouteCrossingJunctionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RemoveRouteCrossingJunctionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RemoveRouteCrossingJunctionRequest clone() => RemoveRouteCrossingJunctionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RemoveRouteCrossingJunctionRequest copyWith(void Function(RemoveRouteCrossingJunctionRequest) updates) => super.copyWith((message) => updates(message as RemoveRouteCrossingJunctionRequest)) as RemoveRouteCrossingJunctionRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteCrossingJunctionRequest create() => RemoveRouteCrossingJunctionRequest._();
+  RemoveRouteCrossingJunctionRequest createEmptyInstance() => create();
+  static $pb.PbList<RemoveRouteCrossingJunctionRequest> createRepeated() => $pb.PbList<RemoveRouteCrossingJunctionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteCrossingJunctionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RemoveRouteCrossingJunctionRequest>(create);
+  static RemoveRouteCrossingJunctionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get junctionId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set junctionId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasJunctionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearJunctionId() => clearField(2);
 }
 

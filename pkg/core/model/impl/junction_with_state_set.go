@@ -53,10 +53,10 @@ func (js *junctionWithStateSet) GetCount() int {
 }
 
 // Get an item by ID
-func (js *junctionWithStateSet) Get(id string) (model.Junction, bool) {
+func (js *junctionWithStateSet) Get(id string) (model.JunctionWithState, bool) {
 	for _, x := range js.Items {
 		if x.GetID() == id {
-			return x.JunctionWithState.GetJunction(), true
+			return x.JunctionWithState, true
 		}
 	}
 	return nil, false
@@ -133,13 +133,14 @@ func (js *junctionWithStateSet) CopyTo(destination model.JunctionWithStateSet) e
 /// <summary>
 /// Add the given item to this set
 /// </summary>
-func (js *junctionWithStateSet) AddSwitch(item model.Switch, direction model.SwitchDirection) {
+func (js *junctionWithStateSet) AddSwitch(item model.Switch, direction model.SwitchDirection) error {
 	sws := newSwitchWithState()
 	sws.JunctionID = JunctionRef(item.GetID())
 	sws.Direction = refs.NewSwitchDirection(direction)
 	sws.SetContainer(js)
 	js.Items = append(js.Items, &JunctionWithStateContainer{JunctionWithState: sws})
 	js.OnModified()
+	return nil
 }
 
 /// <summary>

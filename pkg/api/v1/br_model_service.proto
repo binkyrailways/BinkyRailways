@@ -103,6 +103,10 @@ service ModelService {
   rpc UpdateRoute(Route) returns (Route);
   // Adds a new block in the module identified by given by ID.
   rpc AddRoute(IDRequest) returns (Route);
+  // Adds a crossing junction (of type switch) with given junction ID & switch direction.
+  rpc AddRouteCrossingJunctionSwitch(AddRouteCrossingJunctionSwitchRequest) returns (Route);
+  // Removes a crossing junction with given junction ID.
+  rpc RemoveRouteCrossingJunction(RemoveRouteCrossingJunctionRequest) returns (Route);
 
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);
@@ -148,4 +152,20 @@ message ParseAddressResult {
   string message = 2;
   // Formatted address in case of valid input
   string formatted_value = 3;
+}
+
+message AddRouteCrossingJunctionSwitchRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the junction (of type switch) to add
+  string junction_id = 2;
+  // Direction of the switch to add
+  SwitchDirection direction = 3;
+}
+
+message RemoveRouteCrossingJunctionRequest {
+   // ID of route to change
+   string route_id = 1;
+   // ID of the junction (of type switch) to remove
+   string junction_id = 2;  
 }
