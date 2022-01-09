@@ -370,6 +370,7 @@ class _EditorPageState extends State<EditorPage> {
       BuildContext context, EditorContext editorCtx, ModelModel model) {
     final selector = editorCtx.selector;
     switch (selector.entityType) {
+      case EntityType.module:
       case EntityType.modules:
         return [
           SpeedDialChild(
@@ -381,6 +382,7 @@ class _EditorPageState extends State<EditorPage> {
             },
           ),
         ];
+      case EntityType.loc:
       case EntityType.locs:
         return [
           SpeedDialChild(
@@ -392,6 +394,7 @@ class _EditorPageState extends State<EditorPage> {
             },
           ),
         ];
+      case EntityType.block:
       case EntityType.blocks:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -407,6 +410,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.blockgroup:
       case EntityType.blockgroups:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -422,6 +426,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.edge:
       case EntityType.edges:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -437,6 +442,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.junction:
       case EntityType.junctions:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -452,6 +458,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.output:
       case EntityType.outputs:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -467,6 +474,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.route:
       case EntityType.routes:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -482,6 +490,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.sensor:
       case EntityType.sensors:
         final moduleId = selector.idOf(EntityType.module);
         if (moduleId != null) {
@@ -497,6 +506,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.binkynetlocalworker:
       case EntityType.binkynetlocalworkers:
         final csId = selector.idOf(EntityType.commandstation);
         if (csId != null) {
@@ -512,6 +522,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.binkynetdevice:
       case EntityType.binkynetdevices:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {
@@ -528,6 +539,7 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.binkynetobject:
       case EntityType.binkynetobjects:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {

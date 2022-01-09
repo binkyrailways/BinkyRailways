@@ -109,7 +109,6 @@ class _RouteSettings extends StatefulWidget {
 }
 
 class _RouteSettingsState extends State<_RouteSettings> {
-  final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _speedController = TextEditingController();
   final NumericValidator _speedValidator =
       NumericValidator(minimum: 1, maximum: 100);
@@ -122,7 +121,6 @@ class _RouteSettingsState extends State<_RouteSettings> {
       NumericValidator(minimum: 0, maximum: 600);
 
   void _initConrollers() {
-    _descriptionController.text = widget.route.description;
     _speedController.text = widget.route.speed.toString();
     _chooseProbabilityController.text =
         widget.route.chooseProbability.toString();
@@ -145,18 +143,9 @@ class _RouteSettingsState extends State<_RouteSettings> {
   Widget build(BuildContext context) {
     final List<Widget> children = [
       const SettingsHeader(title: "General"),
-      SettingsTextField(
-          key: Key("${widget.route.id}/route/description"),
-          controller: _descriptionController,
-          label: "Description",
-          firstChild: true,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.description = value;
-            });
-          }),
       SettingsDropdownField<String>(
         key: Key("${widget.route.id}/route/from"),
+        firstChild: true,
         label: "From",
         value: _endpointId(widget.route.from),
         onChanged: (value) {
