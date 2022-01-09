@@ -109,9 +109,23 @@ class _RouteSettings extends StatefulWidget {
 
 class _RouteSettingsState extends State<_RouteSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _speedController = TextEditingController();
+  final NumericValidator _speedValidator =
+      NumericValidator(minimum: 1, maximum: 100);
+  final TextEditingController _chooseProbabilityController =
+      TextEditingController();
+  final NumericValidator _chooseProbabilityValidator =
+      NumericValidator(minimum: 0, maximum: 100);
+  final TextEditingController _maxDurationController = TextEditingController();
+  final NumericValidator _maxDurationValidator =
+      NumericValidator(minimum: 0, maximum: 600);
 
   void _initConrollers() {
     _descriptionController.text = widget.route.description;
+    _speedController.text = widget.route.speed.toString();
+    _chooseProbabilityController.text =
+        widget.route.chooseProbability.toString();
+    _maxDurationController.text = widget.route.maxDuration.toString();
   }
 
   @override
@@ -168,6 +182,45 @@ class _RouteSettingsState extends State<_RouteSettings> {
           },
           items: _endpointIds(),
         ),
+        SettingsCheckBoxField(
+          label: "Closed",
+          value: widget.route.closed,
+          onChanged: (value) async {
+            await _update((update) {
+              update.closed = value;
+            });
+          },
+        ),
+        SettingsTextField(
+            key: Key("${widget.route.id}/route/speed"),
+            controller: _speedController,
+            label: "Speed",
+            validator: _speedValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.speed = int.parse(value);
+              });
+            }),
+        SettingsTextField(
+            key: Key("${widget.route.id}/route/chooseProbability"),
+            controller: _chooseProbabilityController,
+            label: "Choose probability",
+            validator: _chooseProbabilityValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.chooseProbability = int.parse(value);
+              });
+            }),
+        SettingsTextField(
+            key: Key("${widget.route.id}/route/maxDuration"),
+            controller: _maxDurationController,
+            label: "Max duration",
+            validator: _maxDurationValidator.validate,
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.maxDuration = int.parse(value);
+              });
+            }),
       ],
     );
   }
