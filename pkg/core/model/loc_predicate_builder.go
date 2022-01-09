@@ -34,6 +34,9 @@ type LocPredicateBuilder interface {
 	// Create a 'loc is allowed to change direction' predicate
 	CreateCanChangeDirection() LocCanChangeDirectionPredicate
 
+	// Create a standard predicate
+	CreateStandard() LocStandardPredicate
+
 	// Create a 'allowed between start and end time' predicate
 	//      ILocTimePredicate CreateTime(Time periodStart, Time periodEnd);
 }

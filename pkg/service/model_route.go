@@ -186,7 +186,7 @@ func (s *service) AddRouteEventBehavior(ctx context.Context, req *api.AddRouteEv
 	if !ok {
 		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
 	}
-	evt.GetBehaviors().AddNew(nil)
+	evt.GetBehaviors().AddNew(s.railway.GetPredicateBuilder().CreateStandard())
 	var result api.Route
 	if err := result.FromModel(ctx, route); err != nil {
 		return nil, err

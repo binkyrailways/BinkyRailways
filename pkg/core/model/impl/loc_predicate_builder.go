@@ -53,5 +53,10 @@ func (b *locPredicateBuilder) CreateCanChangeDirection() model.LocCanChangeDirec
 	return newLocCanChangeDirectionPredicate()
 }
 
+// Create a standard predicate
+func (b *locPredicateBuilder) CreateStandard() model.LocStandardPredicate {
+	return newLocStandardPredicate()
+}
+
 // Create a 'allowed between start and end time' predicate
 //      ILocTimePredicate CreateTime(Time periodStart, Time periodEnd);

@@ -25,14 +25,16 @@ class RouteEventSettings extends StatefulWidget {
   final String routeId;
   final int eventIndex;
   final Future<void> Function(void Function(RouteEvent)) update;
+  final Future<void> Function(int index) removeBehavior;
 
-  const RouteEventSettings(
-      {Key? key,
-      required this.model,
-      required this.routeId,
-      required this.eventIndex,
-      required this.update})
-      : super(key: key);
+  const RouteEventSettings({
+    Key? key,
+    required this.model,
+    required this.routeId,
+    required this.eventIndex,
+    required this.update,
+    required this.removeBehavior,
+  }) : super(key: key);
 
   @override
   State<RouteEventSettings> createState() => _RouteEventSettingsState();
@@ -65,8 +67,16 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
                     DataColumn(label: Text("Locs")),
                     DataColumn(label: Text("State behavior")),
                     DataColumn(label: Text("Speed behavior")),
+                    DataColumn(label: Text("")),
                   ],
-                  source: _BehaviorsDataSource(event.behaviors, widget.update),
+                  source: _BehaviorsDataSource(
+                    model: widget.model,
+                    route: route,
+                    event: event,
+                    items: event.behaviors,
+                    update: widget.update,
+                    removeBehavior: widget.removeBehavior,
+                  ),
                 ),
               ],
             ),
@@ -76,10 +86,21 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
 }
 
 class _BehaviorsDataSource extends DataTableSource {
+  final ModelModel model;
+  final Route route;
+  final RouteEvent event;
   final List<RouteEventBehavior> items;
   final Future<void> Function(void Function(RouteEvent)) update;
+  final Future<void> Function(int index) removeBehavior;
 
-  _BehaviorsDataSource(this.items, this.update);
+  _BehaviorsDataSource({
+    required this.model,
+    required this.route,
+    required this.event,
+    required this.items,
+    required this.update,
+    required this.removeBehavior,
+  });
 
   @override
   bool get isRowCountApproximate => false;
@@ -115,6 +136,12 @@ class _BehaviorsDataSource extends DataTableSource {
               update.behaviors[index].speedBehavior = value;
             }
           });
+        },
+      )),
+      DataCell(GestureDetector(
+        child: const Icon(Icons.delete_outline),
+        onTapDown: (details) async {
+          await removeBehavior(index);
         },
       )),
     ]);
