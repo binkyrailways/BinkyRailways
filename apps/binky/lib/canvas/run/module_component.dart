@@ -33,22 +33,42 @@ class ModuleComponent extends common.ModuleComponent {
 
   Future<void> loadChildren(
       ModelModel modelModel, StateModel stateModel) async {
-    await loadBackgroundImage(modelModel);
+    try {
+      await loadBackgroundImage(modelModel);
+    } catch (err) {
+      print(err);
+    }
     for (var blockRef in model.blocks) {
-      final blockState = await stateModel.getBlockState(blockRef.id);
-      add(BlockComponent(state: blockState));
+      try {
+        final blockState = await stateModel.getBlockState(blockRef.id);
+        add(BlockComponent(state: blockState));
+      } catch (err) {
+        print(err);
+      }
     }
     for (var junctionRef in model.junctions) {
-      final junctionState = await stateModel.getJunctionState(junctionRef.id);
-      add(JunctionComponent(state: junctionState, stateModel: stateModel));
+      try {
+        final junctionState = await stateModel.getJunctionState(junctionRef.id);
+        add(JunctionComponent(state: junctionState, stateModel: stateModel));
+      } catch (err) {
+        print(err);
+      }
     }
     for (var outputRef in model.outputs) {
-      final outputState = await stateModel.getOutputState(outputRef.id);
-      add(OutputComponent(state: outputState, stateModel: stateModel));
+      try {
+        final outputState = await stateModel.getOutputState(outputRef.id);
+        add(OutputComponent(state: outputState, stateModel: stateModel));
+      } catch (err) {
+        print(err);
+      }
     }
     for (var sensorRef in model.sensors) {
-      final sensorState = await stateModel.getSensorState(sensorRef.id);
-      add(SensorComponent(state: sensorState, stateModel: stateModel));
+      try {
+        final sensorState = await stateModel.getSensorState(sensorRef.id);
+        add(SensorComponent(state: sensorState, stateModel: stateModel));
+      } catch (err) {
+        print(err);
+      }
     }
   }
 }

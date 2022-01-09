@@ -16,6 +16,7 @@
 //
 
 import 'package:flame/components.dart';
+import 'dart:math';
 
 import '../api.dart' as mapi;
 
@@ -23,8 +24,8 @@ class EntityComponent extends PositionComponent with Hoverable {
   // Load the given position into this component
   void loadPosition(mapi.Position position) {
     anchor = Anchor.center;
-    width = position.width.toDouble();
-    height = position.height.toDouble();
+    width = max(1, position.width.toDouble());
+    height = max(1, position.height.toDouble());
     x = position.x.toDouble() + width / 2;
     y = position.y.toDouble() + height / 2;
     angle = radians(position.rotation.toDouble());

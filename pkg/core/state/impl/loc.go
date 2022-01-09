@@ -111,6 +111,9 @@ func (l *loc) GetModel() model.Loc {
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+	if l.GetAddress(ctx).IsEmpty() {
+		return nil
+	}
 	var err error
 	l.commandStation, err = l.GetRailwayImpl().SelectCommandStation(ctx, l.getLoc())
 	if err != nil {
