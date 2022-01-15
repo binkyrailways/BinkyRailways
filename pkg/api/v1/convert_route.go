@@ -45,6 +45,15 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 	})
 	dst.Speed = int32(src.GetSpeed())
 	dst.ChooseProbability = int32(src.GetChooseProbability())
+	if !src.GetPermissions().IsEmpty() {
+		perm, err := (&LocPredicate{}).FromModel(ctx, src.GetPermissions())
+		if err != nil {
+			return err
+		}
+		dst.Permissions = perm.GetStandard()
+	} else {
+		dst.Permissions = &LocStandardPredicate{}
+	}
 	dst.Closed = src.GetClosed()
 	dst.MaxDuration = int32(src.GetMaxDuration())
 	return nil
@@ -63,6 +72,17 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	epTo, bSideTo, err := src.GetTo().ToModel(ctx, dst.GetModule())
 	if err != nil {
 		return err
+	}
+	if src.GetPermissions() != nil {
+		src := LocPredicate{Standard: src.GetPermissions()}
+		railway := dst.GetModule().GetPackage().GetRailway()
+		lp, err := src.ToModel(ctx, railway)
+		if err != nil {
+			return err
+		}
+		if err := dst.SetPermissions(lp.(model.LocStandardPredicate)); err != nil {
+			return err
+		}
 	}
 	if len(src.GetCrossingJunctions()) != dst.GetCrossingJunctions().GetCount() {
 		return InvalidArgument("Unexpected number of crossing junctions (got %d, expected %d)", len(src.GetCrossingJunctions()), dst.GetCrossingJunctions().GetCount())

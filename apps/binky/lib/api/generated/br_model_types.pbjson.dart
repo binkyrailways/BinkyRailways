@@ -537,13 +537,14 @@ const Route$json = const {
     const {'1': 'events', '3': 7, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteEvent', '10': 'events'},
     const {'1': 'speed', '3': 10, '4': 1, '5': 5, '10': 'speed'},
     const {'1': 'choose_probability', '3': 11, '4': 1, '5': 5, '10': 'chooseProbability'},
+    const {'1': 'permissions', '3': 12, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocStandardPredicate', '10': 'permissions'},
     const {'1': 'closed', '3': 13, '4': 1, '5': 8, '10': 'closed'},
     const {'1': 'max_duration', '3': 14, '4': 1, '5': 5, '10': 'maxDuration'},
   ],
 };
 
 /// Descriptor for `Route`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI0CgZldmVudHMYByADKAsyHC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlRXZlbnRSBmV2ZW50cxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRIWCgZjbG9zZWQYDSABKAhSBmNsb3NlZBIhCgxtYXhfZHVyYXRpb24YDiABKAVSC21heER1cmF0aW9u');
+final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI0CgZldmVudHMYByADKAsyHC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlRXZlbnRSBmV2ZW50cxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRJICgtwZXJtaXNzaW9ucxgMIAEoCzImLmJpbmt5cmFpbHdheXMudjEuTG9jU3RhbmRhcmRQcmVkaWNhdGVSC3Blcm1pc3Npb25zEhYKBmNsb3NlZBgNIAEoCFIGY2xvc2VkEiEKDG1heF9kdXJhdGlvbhgOIAEoBVILbWF4RHVyYXRpb24=');
 @$core.Deprecated('Use routeRefDescriptor instead')
 const RouteRef$json = const {
   '1': 'RouteRef',
@@ -602,13 +603,14 @@ final $typed_data.Uint8List routeEventDescriptor = $convert.base64Decode('CgpSb3
 const RouteEventBehavior$json = const {
   '1': 'RouteEventBehavior',
   '2': const [
+    const {'1': 'applies_to', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocPredicate', '10': 'appliesTo'},
     const {'1': 'state_behavior', '3': 2, '4': 1, '5': 14, '6': '.binkyrailways.v1.RouteStateBehavior', '10': 'stateBehavior'},
     const {'1': 'speed_behavior', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.LocSpeedBehavior', '10': 'speedBehavior'},
   ],
 };
 
 /// Descriptor for `RouteEventBehavior`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeEventBehaviorDescriptor = $convert.base64Decode('ChJSb3V0ZUV2ZW50QmVoYXZpb3ISSwoOc3RhdGVfYmVoYXZpb3IYAiABKA4yJC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlU3RhdGVCZWhhdmlvclINc3RhdGVCZWhhdmlvchJJCg5zcGVlZF9iZWhhdmlvchgDIAEoDjIiLmJpbmt5cmFpbHdheXMudjEuTG9jU3BlZWRCZWhhdmlvclINc3BlZWRCZWhhdmlvcg==');
+final $typed_data.Uint8List routeEventBehaviorDescriptor = $convert.base64Decode('ChJSb3V0ZUV2ZW50QmVoYXZpb3ISPQoKYXBwbGllc190bxgBIAEoCzIeLmJpbmt5cmFpbHdheXMudjEuTG9jUHJlZGljYXRlUglhcHBsaWVzVG8SSwoOc3RhdGVfYmVoYXZpb3IYAiABKA4yJC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlU3RhdGVCZWhhdmlvclINc3RhdGVCZWhhdmlvchJJCg5zcGVlZF9iZWhhdmlvchgDIAEoDjIiLmJpbmt5cmFpbHdheXMudjEuTG9jU3BlZWRCZWhhdmlvclINc3BlZWRCZWhhdmlvcg==');
 @$core.Deprecated('Use sensorDescriptor instead')
 const Sensor$json = const {
   '1': 'Sensor',
@@ -666,3 +668,76 @@ const SignalRef$json = const {
 
 /// Descriptor for `SignalRef`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List signalRefDescriptor = $convert.base64Decode('CglTaWduYWxSZWYSDgoCaWQYASABKAlSAmlk');
+@$core.Deprecated('Use locPredicateDescriptor instead')
+const LocPredicate$json = const {
+  '1': 'LocPredicate',
+  '2': const [
+    const {'1': 'and', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocAndPredicate', '10': 'and'},
+    const {'1': 'or', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocOrPredicate', '10': 'or'},
+    const {'1': 'equals', '3': 3, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocEqualsPredicate', '10': 'equals'},
+    const {'1': 'group', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocGroupEqualsPredicate', '10': 'group'},
+    const {'1': 'canChangeDirection', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocCanChangeDirectionPredicate', '10': 'canChangeDirection'},
+    const {'1': 'standard', '3': 6, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocStandardPredicate', '10': 'standard'},
+  ],
+};
+
+/// Descriptor for `LocPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locPredicateDescriptor = $convert.base64Decode('CgxMb2NQcmVkaWNhdGUSMwoDYW5kGAEgASgLMiEuYmlua3lyYWlsd2F5cy52MS5Mb2NBbmRQcmVkaWNhdGVSA2FuZBIwCgJvchgCIAEoCzIgLmJpbmt5cmFpbHdheXMudjEuTG9jT3JQcmVkaWNhdGVSAm9yEjwKBmVxdWFscxgDIAEoCzIkLmJpbmt5cmFpbHdheXMudjEuTG9jRXF1YWxzUHJlZGljYXRlUgZlcXVhbHMSPwoFZ3JvdXAYBCABKAsyKS5iaW5reXJhaWx3YXlzLnYxLkxvY0dyb3VwRXF1YWxzUHJlZGljYXRlUgVncm91cBJgChJjYW5DaGFuZ2VEaXJlY3Rpb24YBSABKAsyMC5iaW5reXJhaWx3YXlzLnYxLkxvY0NhbkNoYW5nZURpcmVjdGlvblByZWRpY2F0ZVISY2FuQ2hhbmdlRGlyZWN0aW9uEkIKCHN0YW5kYXJkGAYgASgLMiYuYmlua3lyYWlsd2F5cy52MS5Mb2NTdGFuZGFyZFByZWRpY2F0ZVIIc3RhbmRhcmQ=');
+@$core.Deprecated('Use locAndPredicateDescriptor instead')
+const LocAndPredicate$json = const {
+  '1': 'LocAndPredicate',
+  '2': const [
+    const {'1': 'predicates', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocPredicate', '10': 'predicates'},
+  ],
+};
+
+/// Descriptor for `LocAndPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locAndPredicateDescriptor = $convert.base64Decode('Cg9Mb2NBbmRQcmVkaWNhdGUSPgoKcHJlZGljYXRlcxgBIAMoCzIeLmJpbmt5cmFpbHdheXMudjEuTG9jUHJlZGljYXRlUgpwcmVkaWNhdGVz');
+@$core.Deprecated('Use locOrPredicateDescriptor instead')
+const LocOrPredicate$json = const {
+  '1': 'LocOrPredicate',
+  '2': const [
+    const {'1': 'predicates', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocPredicate', '10': 'predicates'},
+  ],
+};
+
+/// Descriptor for `LocOrPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locOrPredicateDescriptor = $convert.base64Decode('Cg5Mb2NPclByZWRpY2F0ZRI+CgpwcmVkaWNhdGVzGAEgAygLMh4uYmlua3lyYWlsd2F5cy52MS5Mb2NQcmVkaWNhdGVSCnByZWRpY2F0ZXM=');
+@$core.Deprecated('Use locEqualsPredicateDescriptor instead')
+const LocEqualsPredicate$json = const {
+  '1': 'LocEqualsPredicate',
+  '2': const [
+    const {'1': 'loc', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'loc'},
+  ],
+};
+
+/// Descriptor for `LocEqualsPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locEqualsPredicateDescriptor = $convert.base64Decode('ChJMb2NFcXVhbHNQcmVkaWNhdGUSKgoDbG9jGAEgASgLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSA2xvYw==');
+@$core.Deprecated('Use locGroupEqualsPredicateDescriptor instead')
+const LocGroupEqualsPredicate$json = const {
+  '1': 'LocGroupEqualsPredicate',
+  '2': const [
+    const {'1': 'group', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocGroupRef', '10': 'group'},
+  ],
+};
+
+/// Descriptor for `LocGroupEqualsPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locGroupEqualsPredicateDescriptor = $convert.base64Decode('ChdMb2NHcm91cEVxdWFsc1ByZWRpY2F0ZRIzCgVncm91cBgBIAEoCzIdLmJpbmt5cmFpbHdheXMudjEuTG9jR3JvdXBSZWZSBWdyb3Vw');
+@$core.Deprecated('Use locCanChangeDirectionPredicateDescriptor instead')
+const LocCanChangeDirectionPredicate$json = const {
+  '1': 'LocCanChangeDirectionPredicate',
+};
+
+/// Descriptor for `LocCanChangeDirectionPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locCanChangeDirectionPredicateDescriptor = $convert.base64Decode('Ch5Mb2NDYW5DaGFuZ2VEaXJlY3Rpb25QcmVkaWNhdGU=');
+@$core.Deprecated('Use locStandardPredicateDescriptor instead')
+const LocStandardPredicate$json = const {
+  '1': 'LocStandardPredicate',
+  '2': const [
+    const {'1': 'includes', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocPredicate', '10': 'includes'},
+    const {'1': 'excludes', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocPredicate', '10': 'excludes'},
+  ],
+};
+
+/// Descriptor for `LocStandardPredicate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locStandardPredicateDescriptor = $convert.base64Decode('ChRMb2NTdGFuZGFyZFByZWRpY2F0ZRI6CghpbmNsdWRlcxgBIAMoCzIeLmJpbmt5cmFpbHdheXMudjEuTG9jUHJlZGljYXRlUghpbmNsdWRlcxI6CghleGNsdWRlcxgCIAMoCzIeLmJpbmt5cmFpbHdheXMudjEuTG9jUHJlZGljYXRlUghleGNsdWRlcw==');

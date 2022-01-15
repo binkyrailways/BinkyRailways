@@ -46,3 +46,11 @@ func (p *locPredicatesPredicate) GetPredicates() model.LocPredicateSet {
 func (p *locPredicatesPredicate) IsEmpty() bool {
 	return p.Predicates.GetCount() == 0
 }
+
+// Copy from the given source
+func (p *locPredicatesPredicate) CopyFrom(src model.LocPredicatesPredicate) {
+	p.Predicates.Clear()
+	src.GetPredicates().ForEach(func(lp model.LocPredicate) {
+		p.Predicates.Add(lp.Clone())
+	})
+}

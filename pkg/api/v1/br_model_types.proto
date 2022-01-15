@@ -515,7 +515,7 @@ message Route {
 
   /// Gets the predicate used to decide which locs are allowed to use this
   /// route.
-  // GetPermissions() LocStandardPredicate
+  LocStandardPredicate permissions = 12;
 
   // Is this rout open for traffic or not?
   // Setting to true, allows for maintance etc. on this route.
@@ -577,7 +577,7 @@ message RouteEvent {
 
 message RouteEventBehavior {
   // Predicate used to select the locs to which this event applies.
-  // GetAppliesTo() LocPredicate
+  LocPredicate applies_to = 1;
 
   // How is the state of the route changed.
   RouteStateBehavior state_behavior = 2;
@@ -668,4 +668,54 @@ message Signal {
 message SignalRef {
   // ID of the Signal
   string id = 1;
+}
+
+// Loc predicate allows expressions to select locs.
+message LocPredicate {
+  // Set if predicate is of type And.
+  LocAndPredicate and = 1;
+  // Set if predicate is of type Or.
+  LocOrPredicate or = 2;
+  // Set if predicate is of type Equals.
+  LocEqualsPredicate equals = 3;
+  // Set if predicate is of type GroupEquals.
+  LocGroupEqualsPredicate group = 4;
+  // Set if predicate is of type CanChangeDirection.
+  LocCanChangeDirectionPredicate canChangeDirection = 5;
+  // Set if predicate is of type Standard.
+  LocStandardPredicate standard = 6;
+}
+
+// Loc predicate that evaluates to true if all predicates evaluate to true.
+message LocAndPredicate {
+  repeated LocPredicate predicates = 1;
+}
+
+// Loc predicate that evaluates to true if and on the predicates evaluate to true.
+message LocOrPredicate {
+  repeated LocPredicate predicates = 1;
+}
+
+// Loc predicate that evaluates to true if the loc equals the given loc reference.
+message LocEqualsPredicate {
+  LocRef loc = 1;
+}
+
+// Loc predicate that evaluates to true if the loc is member of the given group.
+message LocGroupEqualsPredicate {
+  LocGroupRef group = 1;
+}
+
+// Loc predicate that evaluates to true if the loc can change direction.
+message LocCanChangeDirectionPredicate {}
+
+// LocStandardPredicate is a predicate that evaluates to true based on includes and excludes predicates.
+// The predicate evaluates to true if:
+// - Includes is empty and the excludes predicate for the loc evaluates to false.
+// - The Includes predicate evaluates to true and the excludes predicate for the loc evaluates to false
+message LocStandardPredicate {
+  // Including predicates
+  repeated LocPredicate includes = 1;
+  // Excluding predicates
+  repeated LocPredicate excludes = 2;
 }

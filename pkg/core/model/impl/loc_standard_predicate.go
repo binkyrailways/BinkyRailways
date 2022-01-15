@@ -98,3 +98,9 @@ func (p *locStandardPredicate) Evaluate(loc model.Loc) bool {
 	}
 	return p.Includes.Evaluate(loc) && !p.Excludes.Evaluate(loc)
 }
+
+// Copy from the given source
+func (p *locStandardPredicate) CopyFrom(src model.LocStandardPredicate) {
+	p.Includes.CopyFrom(src.GetIncludes())
+	p.Excludes.CopyFrom(src.GetExcludes())
+}

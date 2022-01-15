@@ -59,6 +59,7 @@ type Route interface {
 
 	/// Gets the predicate used to decide which locs are allowed to use this route.
 	GetPermissions() LocStandardPredicate
+	SetPermissions(value LocStandardPredicate) error
 
 	// Is this rout open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.

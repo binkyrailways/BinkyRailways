@@ -26,13 +26,20 @@ import (
 
 // FromModel converts a model RouteEventBehavior to an API RouteEventBehavior
 func (dst *RouteEventBehavior) FromModel(ctx context.Context, src model.RouteEventBehavior) error {
+	var err error
+	dst.AppliesTo, err = dst.AppliesTo.FromModel(ctx, src.GetAppliesTo())
 	dst.StateBehavior.FromModel(ctx, src.GetStateBehavior())
 	dst.SpeedBehavior.FromModel(ctx, src.GetSpeedBehavior())
-	return nil
+	return err
 }
 
 // ToModel converts an API RouteEventBehavior to a model RouteEventBehavior
 func (src *RouteEventBehavior) ToModel(ctx context.Context, dst model.RouteEventBehavior) error {
+	railway := dst.GetModule().GetPackage().GetRailway()
+	lp, err := src.GetAppliesTo().ToModel(ctx, railway)
+	if err != nil {
+		return err
+	}
 	stB, err := src.GetStateBehavior().ToModel(ctx)
 	if err != nil {
 		return err
@@ -41,6 +48,7 @@ func (src *RouteEventBehavior) ToModel(ctx context.Context, dst model.RouteEvent
 	if err != nil {
 		return err
 	}
+	multierr.AppendInto(&err, dst.SetAppliesTo(lp))
 	multierr.AppendInto(&err, dst.SetStateBehavior(stB))
 	multierr.AppendInto(&err, dst.SetSpeedBehavior(spB))
 	return nil

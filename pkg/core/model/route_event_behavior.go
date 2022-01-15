@@ -23,6 +23,7 @@ type RouteEventBehavior interface {
 
 	// Predicate used to select the locs to which this event applies.
 	GetAppliesTo() LocPredicate
+	SetAppliesTo(LocPredicate) error
 
 	// How is the state of the route changed.
 	GetStateBehavior() RouteStateBehavior

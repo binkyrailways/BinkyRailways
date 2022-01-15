@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"fmt"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -53,6 +55,16 @@ func (s *routeEventBehavior) Accept(v model.EntityVisitor) interface{} {
 // Predicate used to select the locs to which this event applies.
 func (s *routeEventBehavior) GetAppliesTo() model.LocPredicate {
 	return s.AppliesTo.LocPredicate
+}
+
+// Predicate used to select the locs to which this event applies.
+func (s *routeEventBehavior) SetAppliesTo(value model.LocPredicate) error {
+	if lp, ok := value.(LocPredicate); !ok {
+		return fmt.Errorf("Value not of type LocPredicate but %T", value)
+	} else {
+		s.AppliesTo.LocPredicate = lp
+	}
+	return nil
 }
 
 // How is the state of the route changed.

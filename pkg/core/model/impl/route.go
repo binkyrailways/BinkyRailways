@@ -187,9 +187,15 @@ func (r *route) SetChooseProbability(value int) error {
 	return nil
 }
 
-/// Gets the predicate used to decide which locs are allowed to use this route.
+// Gets the predicate used to decide which locs are allowed to use this route.
 func (r *route) GetPermissions() model.LocStandardPredicate {
 	return &r.Permissions
+}
+
+// Sets the predicate used to decide which locs are allowed to use this route.
+func (r *route) SetPermissions(value model.LocStandardPredicate) error {
+	r.Permissions.CopyFrom(value)
+	return nil
 }
 
 // Is this route open for traffic or not?

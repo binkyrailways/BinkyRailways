@@ -2607,6 +2607,7 @@ class Route extends $pb.GeneratedMessage {
     ..pc<RouteEvent>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'events', $pb.PbFieldType.PM, subBuilder: RouteEvent.create)
     ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chooseProbability', $pb.PbFieldType.O3)
+    ..aOM<LocStandardPredicate>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'permissions', subBuilder: LocStandardPredicate.create)
     ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closed')
     ..a<$core.int>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDuration', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -2623,6 +2624,7 @@ class Route extends $pb.GeneratedMessage {
     $core.Iterable<RouteEvent>? events,
     $core.int? speed,
     $core.int? chooseProbability,
+    LocStandardPredicate? permissions,
     $core.bool? closed,
     $core.int? maxDuration,
   }) {
@@ -2653,6 +2655,9 @@ class Route extends $pb.GeneratedMessage {
     }
     if (chooseProbability != null) {
       _result.chooseProbability = chooseProbability;
+    }
+    if (permissions != null) {
+      _result.permissions = permissions;
     }
     if (closed != null) {
       _result.closed = closed;
@@ -2756,21 +2761,32 @@ class Route extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   void clearChooseProbability() => clearField(11);
 
+  @$pb.TagNumber(12)
+  LocStandardPredicate get permissions => $_getN(9);
+  @$pb.TagNumber(12)
+  set permissions(LocStandardPredicate v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasPermissions() => $_has(9);
+  @$pb.TagNumber(12)
+  void clearPermissions() => clearField(12);
+  @$pb.TagNumber(12)
+  LocStandardPredicate ensurePermissions() => $_ensure(9);
+
   @$pb.TagNumber(13)
-  $core.bool get closed => $_getBF(9);
+  $core.bool get closed => $_getBF(10);
   @$pb.TagNumber(13)
-  set closed($core.bool v) { $_setBool(9, v); }
+  set closed($core.bool v) { $_setBool(10, v); }
   @$pb.TagNumber(13)
-  $core.bool hasClosed() => $_has(9);
+  $core.bool hasClosed() => $_has(10);
   @$pb.TagNumber(13)
   void clearClosed() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.int get maxDuration => $_getIZ(10);
+  $core.int get maxDuration => $_getIZ(11);
   @$pb.TagNumber(14)
-  set maxDuration($core.int v) { $_setSignedInt32(10, v); }
+  set maxDuration($core.int v) { $_setSignedInt32(11, v); }
   @$pb.TagNumber(14)
-  $core.bool hasMaxDuration() => $_has(10);
+  $core.bool hasMaxDuration() => $_has(11);
   @$pb.TagNumber(14)
   void clearMaxDuration() => clearField(14);
 }
@@ -3072,6 +3088,7 @@ class RouteEvent extends $pb.GeneratedMessage {
 
 class RouteEventBehavior extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteEventBehavior', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<LocPredicate>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'appliesTo', subBuilder: LocPredicate.create)
     ..e<RouteStateBehavior>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stateBehavior', $pb.PbFieldType.OE, defaultOrMaker: RouteStateBehavior.RSB_NOCHANGE, valueOf: RouteStateBehavior.valueOf, enumValues: RouteStateBehavior.values)
     ..e<LocSpeedBehavior>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedBehavior', $pb.PbFieldType.OE, defaultOrMaker: LocSpeedBehavior.LSB_DEFAULT, valueOf: LocSpeedBehavior.valueOf, enumValues: LocSpeedBehavior.values)
     ..hasRequiredFields = false
@@ -3079,10 +3096,14 @@ class RouteEventBehavior extends $pb.GeneratedMessage {
 
   RouteEventBehavior._() : super();
   factory RouteEventBehavior({
+    LocPredicate? appliesTo,
     RouteStateBehavior? stateBehavior,
     LocSpeedBehavior? speedBehavior,
   }) {
     final _result = create();
+    if (appliesTo != null) {
+      _result.appliesTo = appliesTo;
+    }
     if (stateBehavior != null) {
       _result.stateBehavior = stateBehavior;
     }
@@ -3112,21 +3133,32 @@ class RouteEventBehavior extends $pb.GeneratedMessage {
   static RouteEventBehavior getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RouteEventBehavior>(create);
   static RouteEventBehavior? _defaultInstance;
 
+  @$pb.TagNumber(1)
+  LocPredicate get appliesTo => $_getN(0);
+  @$pb.TagNumber(1)
+  set appliesTo(LocPredicate v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasAppliesTo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAppliesTo() => clearField(1);
+  @$pb.TagNumber(1)
+  LocPredicate ensureAppliesTo() => $_ensure(0);
+
   @$pb.TagNumber(2)
-  RouteStateBehavior get stateBehavior => $_getN(0);
+  RouteStateBehavior get stateBehavior => $_getN(1);
   @$pb.TagNumber(2)
   set stateBehavior(RouteStateBehavior v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasStateBehavior() => $_has(0);
+  $core.bool hasStateBehavior() => $_has(1);
   @$pb.TagNumber(2)
   void clearStateBehavior() => clearField(2);
 
   @$pb.TagNumber(3)
-  LocSpeedBehavior get speedBehavior => $_getN(1);
+  LocSpeedBehavior get speedBehavior => $_getN(2);
   @$pb.TagNumber(3)
   set speedBehavior(LocSpeedBehavior v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasSpeedBehavior() => $_has(1);
+  $core.bool hasSpeedBehavior() => $_has(2);
   @$pb.TagNumber(3)
   void clearSpeedBehavior() => clearField(3);
 }
@@ -3494,5 +3526,392 @@ class SignalRef extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+}
+
+class LocPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<LocAndPredicate>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'and', subBuilder: LocAndPredicate.create)
+    ..aOM<LocOrPredicate>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'or', subBuilder: LocOrPredicate.create)
+    ..aOM<LocEqualsPredicate>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'equals', subBuilder: LocEqualsPredicate.create)
+    ..aOM<LocGroupEqualsPredicate>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'group', subBuilder: LocGroupEqualsPredicate.create)
+    ..aOM<LocCanChangeDirectionPredicate>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canChangeDirection', protoName: 'canChangeDirection', subBuilder: LocCanChangeDirectionPredicate.create)
+    ..aOM<LocStandardPredicate>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'standard', subBuilder: LocStandardPredicate.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocPredicate._() : super();
+  factory LocPredicate({
+    LocAndPredicate? and,
+    LocOrPredicate? or,
+    LocEqualsPredicate? equals,
+    LocGroupEqualsPredicate? group,
+    LocCanChangeDirectionPredicate? canChangeDirection,
+    LocStandardPredicate? standard,
+  }) {
+    final _result = create();
+    if (and != null) {
+      _result.and = and;
+    }
+    if (or != null) {
+      _result.or = or;
+    }
+    if (equals != null) {
+      _result.equals = equals;
+    }
+    if (group != null) {
+      _result.group = group;
+    }
+    if (canChangeDirection != null) {
+      _result.canChangeDirection = canChangeDirection;
+    }
+    if (standard != null) {
+      _result.standard = standard;
+    }
+    return _result;
+  }
+  factory LocPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocPredicate clone() => LocPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocPredicate copyWith(void Function(LocPredicate) updates) => super.copyWith((message) => updates(message as LocPredicate)) as LocPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocPredicate create() => LocPredicate._();
+  LocPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocPredicate> createRepeated() => $pb.PbList<LocPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocPredicate>(create);
+  static LocPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  LocAndPredicate get and => $_getN(0);
+  @$pb.TagNumber(1)
+  set and(LocAndPredicate v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasAnd() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAnd() => clearField(1);
+  @$pb.TagNumber(1)
+  LocAndPredicate ensureAnd() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  LocOrPredicate get or => $_getN(1);
+  @$pb.TagNumber(2)
+  set or(LocOrPredicate v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasOr() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOr() => clearField(2);
+  @$pb.TagNumber(2)
+  LocOrPredicate ensureOr() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  LocEqualsPredicate get equals => $_getN(2);
+  @$pb.TagNumber(3)
+  set equals(LocEqualsPredicate v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEquals() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEquals() => clearField(3);
+  @$pb.TagNumber(3)
+  LocEqualsPredicate ensureEquals() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  LocGroupEqualsPredicate get group => $_getN(3);
+  @$pb.TagNumber(4)
+  set group(LocGroupEqualsPredicate v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasGroup() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearGroup() => clearField(4);
+  @$pb.TagNumber(4)
+  LocGroupEqualsPredicate ensureGroup() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  LocCanChangeDirectionPredicate get canChangeDirection => $_getN(4);
+  @$pb.TagNumber(5)
+  set canChangeDirection(LocCanChangeDirectionPredicate v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCanChangeDirection() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCanChangeDirection() => clearField(5);
+  @$pb.TagNumber(5)
+  LocCanChangeDirectionPredicate ensureCanChangeDirection() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  LocStandardPredicate get standard => $_getN(5);
+  @$pb.TagNumber(6)
+  set standard(LocStandardPredicate v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasStandard() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearStandard() => clearField(6);
+  @$pb.TagNumber(6)
+  LocStandardPredicate ensureStandard() => $_ensure(5);
+}
+
+class LocAndPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocAndPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..pc<LocPredicate>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'predicates', $pb.PbFieldType.PM, subBuilder: LocPredicate.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocAndPredicate._() : super();
+  factory LocAndPredicate({
+    $core.Iterable<LocPredicate>? predicates,
+  }) {
+    final _result = create();
+    if (predicates != null) {
+      _result.predicates.addAll(predicates);
+    }
+    return _result;
+  }
+  factory LocAndPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocAndPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocAndPredicate clone() => LocAndPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocAndPredicate copyWith(void Function(LocAndPredicate) updates) => super.copyWith((message) => updates(message as LocAndPredicate)) as LocAndPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocAndPredicate create() => LocAndPredicate._();
+  LocAndPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocAndPredicate> createRepeated() => $pb.PbList<LocAndPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocAndPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocAndPredicate>(create);
+  static LocAndPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<LocPredicate> get predicates => $_getList(0);
+}
+
+class LocOrPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocOrPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..pc<LocPredicate>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'predicates', $pb.PbFieldType.PM, subBuilder: LocPredicate.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocOrPredicate._() : super();
+  factory LocOrPredicate({
+    $core.Iterable<LocPredicate>? predicates,
+  }) {
+    final _result = create();
+    if (predicates != null) {
+      _result.predicates.addAll(predicates);
+    }
+    return _result;
+  }
+  factory LocOrPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocOrPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocOrPredicate clone() => LocOrPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocOrPredicate copyWith(void Function(LocOrPredicate) updates) => super.copyWith((message) => updates(message as LocOrPredicate)) as LocOrPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocOrPredicate create() => LocOrPredicate._();
+  LocOrPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocOrPredicate> createRepeated() => $pb.PbList<LocOrPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocOrPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocOrPredicate>(create);
+  static LocOrPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<LocPredicate> get predicates => $_getList(0);
+}
+
+class LocEqualsPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocEqualsPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<LocRef>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'loc', subBuilder: LocRef.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocEqualsPredicate._() : super();
+  factory LocEqualsPredicate({
+    LocRef? loc,
+  }) {
+    final _result = create();
+    if (loc != null) {
+      _result.loc = loc;
+    }
+    return _result;
+  }
+  factory LocEqualsPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocEqualsPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocEqualsPredicate clone() => LocEqualsPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocEqualsPredicate copyWith(void Function(LocEqualsPredicate) updates) => super.copyWith((message) => updates(message as LocEqualsPredicate)) as LocEqualsPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocEqualsPredicate create() => LocEqualsPredicate._();
+  LocEqualsPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocEqualsPredicate> createRepeated() => $pb.PbList<LocEqualsPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocEqualsPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocEqualsPredicate>(create);
+  static LocEqualsPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  LocRef get loc => $_getN(0);
+  @$pb.TagNumber(1)
+  set loc(LocRef v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLoc() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLoc() => clearField(1);
+  @$pb.TagNumber(1)
+  LocRef ensureLoc() => $_ensure(0);
+}
+
+class LocGroupEqualsPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocGroupEqualsPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<LocGroupRef>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'group', subBuilder: LocGroupRef.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocGroupEqualsPredicate._() : super();
+  factory LocGroupEqualsPredicate({
+    LocGroupRef? group,
+  }) {
+    final _result = create();
+    if (group != null) {
+      _result.group = group;
+    }
+    return _result;
+  }
+  factory LocGroupEqualsPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocGroupEqualsPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocGroupEqualsPredicate clone() => LocGroupEqualsPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocGroupEqualsPredicate copyWith(void Function(LocGroupEqualsPredicate) updates) => super.copyWith((message) => updates(message as LocGroupEqualsPredicate)) as LocGroupEqualsPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocGroupEqualsPredicate create() => LocGroupEqualsPredicate._();
+  LocGroupEqualsPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocGroupEqualsPredicate> createRepeated() => $pb.PbList<LocGroupEqualsPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocGroupEqualsPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocGroupEqualsPredicate>(create);
+  static LocGroupEqualsPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  LocGroupRef get group => $_getN(0);
+  @$pb.TagNumber(1)
+  set group(LocGroupRef v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasGroup() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearGroup() => clearField(1);
+  @$pb.TagNumber(1)
+  LocGroupRef ensureGroup() => $_ensure(0);
+}
+
+class LocCanChangeDirectionPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocCanChangeDirectionPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  LocCanChangeDirectionPredicate._() : super();
+  factory LocCanChangeDirectionPredicate() => create();
+  factory LocCanChangeDirectionPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocCanChangeDirectionPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocCanChangeDirectionPredicate clone() => LocCanChangeDirectionPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocCanChangeDirectionPredicate copyWith(void Function(LocCanChangeDirectionPredicate) updates) => super.copyWith((message) => updates(message as LocCanChangeDirectionPredicate)) as LocCanChangeDirectionPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocCanChangeDirectionPredicate create() => LocCanChangeDirectionPredicate._();
+  LocCanChangeDirectionPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocCanChangeDirectionPredicate> createRepeated() => $pb.PbList<LocCanChangeDirectionPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocCanChangeDirectionPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocCanChangeDirectionPredicate>(create);
+  static LocCanChangeDirectionPredicate? _defaultInstance;
+}
+
+class LocStandardPredicate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocStandardPredicate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..pc<LocPredicate>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includes', $pb.PbFieldType.PM, subBuilder: LocPredicate.create)
+    ..pc<LocPredicate>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'excludes', $pb.PbFieldType.PM, subBuilder: LocPredicate.create)
+    ..hasRequiredFields = false
+  ;
+
+  LocStandardPredicate._() : super();
+  factory LocStandardPredicate({
+    $core.Iterable<LocPredicate>? includes,
+    $core.Iterable<LocPredicate>? excludes,
+  }) {
+    final _result = create();
+    if (includes != null) {
+      _result.includes.addAll(includes);
+    }
+    if (excludes != null) {
+      _result.excludes.addAll(excludes);
+    }
+    return _result;
+  }
+  factory LocStandardPredicate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocStandardPredicate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocStandardPredicate clone() => LocStandardPredicate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocStandardPredicate copyWith(void Function(LocStandardPredicate) updates) => super.copyWith((message) => updates(message as LocStandardPredicate)) as LocStandardPredicate; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocStandardPredicate create() => LocStandardPredicate._();
+  LocStandardPredicate createEmptyInstance() => create();
+  static $pb.PbList<LocStandardPredicate> createRepeated() => $pb.PbList<LocStandardPredicate>();
+  @$core.pragma('dart2js:noInline')
+  static LocStandardPredicate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocStandardPredicate>(create);
+  static LocStandardPredicate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<LocPredicate> get includes => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.List<LocPredicate> get excludes => $_getList(1);
 }
 
