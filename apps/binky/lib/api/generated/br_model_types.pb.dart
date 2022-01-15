@@ -1577,6 +1577,7 @@ class Block extends $pb.GeneratedMessage {
     ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waitProbability', $pb.PbFieldType.O3)
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minimumWaitTime', $pb.PbFieldType.O3)
     ..a<$core.int>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maximumWaitTime', $pb.PbFieldType.O3)
+    ..aOM<LocStandardPredicate>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waitPermissions', subBuilder: LocStandardPredicate.create)
     ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'reverseSides')
     ..e<ChangeDirection>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'changeDirection', $pb.PbFieldType.OE, defaultOrMaker: ChangeDirection.ALLOW, valueOf: ChangeDirection.valueOf, enumValues: ChangeDirection.values)
     ..aOB(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'changeDirectionReversingLocs')
@@ -1594,6 +1595,7 @@ class Block extends $pb.GeneratedMessage {
     $core.int? waitProbability,
     $core.int? minimumWaitTime,
     $core.int? maximumWaitTime,
+    LocStandardPredicate? waitPermissions,
     $core.bool? reverseSides,
     ChangeDirection? changeDirection,
     $core.bool? changeDirectionReversingLocs,
@@ -1621,6 +1623,9 @@ class Block extends $pb.GeneratedMessage {
     }
     if (maximumWaitTime != null) {
       _result.maximumWaitTime = maximumWaitTime;
+    }
+    if (waitPermissions != null) {
+      _result.waitPermissions = waitPermissions;
     }
     if (reverseSides != null) {
       _result.reverseSides = reverseSides;
@@ -1725,52 +1730,63 @@ class Block extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   void clearMaximumWaitTime() => clearField(12);
 
+  @$pb.TagNumber(13)
+  LocStandardPredicate get waitPermissions => $_getN(7);
+  @$pb.TagNumber(13)
+  set waitPermissions(LocStandardPredicate v) { setField(13, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasWaitPermissions() => $_has(7);
+  @$pb.TagNumber(13)
+  void clearWaitPermissions() => clearField(13);
+  @$pb.TagNumber(13)
+  LocStandardPredicate ensureWaitPermissions() => $_ensure(7);
+
   @$pb.TagNumber(14)
-  $core.bool get reverseSides => $_getBF(7);
+  $core.bool get reverseSides => $_getBF(8);
   @$pb.TagNumber(14)
-  set reverseSides($core.bool v) { $_setBool(7, v); }
+  set reverseSides($core.bool v) { $_setBool(8, v); }
   @$pb.TagNumber(14)
-  $core.bool hasReverseSides() => $_has(7);
+  $core.bool hasReverseSides() => $_has(8);
   @$pb.TagNumber(14)
   void clearReverseSides() => clearField(14);
 
   @$pb.TagNumber(15)
-  ChangeDirection get changeDirection => $_getN(8);
+  ChangeDirection get changeDirection => $_getN(9);
   @$pb.TagNumber(15)
   set changeDirection(ChangeDirection v) { setField(15, v); }
   @$pb.TagNumber(15)
-  $core.bool hasChangeDirection() => $_has(8);
+  $core.bool hasChangeDirection() => $_has(9);
   @$pb.TagNumber(15)
   void clearChangeDirection() => clearField(15);
 
   @$pb.TagNumber(16)
-  $core.bool get changeDirectionReversingLocs => $_getBF(9);
+  $core.bool get changeDirectionReversingLocs => $_getBF(10);
   @$pb.TagNumber(16)
-  set changeDirectionReversingLocs($core.bool v) { $_setBool(9, v); }
+  set changeDirectionReversingLocs($core.bool v) { $_setBool(10, v); }
   @$pb.TagNumber(16)
-  $core.bool hasChangeDirectionReversingLocs() => $_has(9);
+  $core.bool hasChangeDirectionReversingLocs() => $_has(10);
   @$pb.TagNumber(16)
   void clearChangeDirectionReversingLocs() => clearField(16);
 
   @$pb.TagNumber(18)
-  $core.bool get isStation => $_getBF(10);
+  $core.bool get isStation => $_getBF(11);
   @$pb.TagNumber(18)
-  set isStation($core.bool v) { $_setBool(10, v); }
+  set isStation($core.bool v) { $_setBool(11, v); }
   @$pb.TagNumber(18)
-  $core.bool hasIsStation() => $_has(10);
+  $core.bool hasIsStation() => $_has(11);
   @$pb.TagNumber(18)
   void clearIsStation() => clearField(18);
 
   @$pb.TagNumber(19)
-  BlockGroupRef get blockGroup => $_getN(11);
+  BlockGroupRef get blockGroup => $_getN(12);
   @$pb.TagNumber(19)
   set blockGroup(BlockGroupRef v) { setField(19, v); }
   @$pb.TagNumber(19)
-  $core.bool hasBlockGroup() => $_has(11);
+  $core.bool hasBlockGroup() => $_has(12);
   @$pb.TagNumber(19)
   void clearBlockGroup() => clearField(19);
   @$pb.TagNumber(19)
-  BlockGroupRef ensureBlockGroup() => $_ensure(11);
+  BlockGroupRef ensureBlockGroup() => $_ensure(12);
 }
 
 class BlockRef extends $pb.GeneratedMessage {

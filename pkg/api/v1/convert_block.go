@@ -46,6 +46,16 @@ func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 			Id: x.GetID(),
 		}
 	}
+	if !src.GetWaitPermissions().IsEmpty() {
+		perm, err := (&LocPredicate{}).FromModel(ctx, src.GetWaitPermissions())
+		if err != nil {
+			return err
+		}
+		dst.WaitPermissions = perm.GetStandard()
+	} else {
+		dst.WaitPermissions = &LocStandardPredicate{}
+	}
+
 	return nil
 }
 
@@ -69,6 +79,17 @@ func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
 	}
 	if err := dst.SetMaximumWaitTime(int(src.GetMaximumWaitTime())); err != nil {
 		return err
+	}
+	if src.GetWaitPermissions() != nil {
+		src := LocPredicate{Standard: src.GetWaitPermissions()}
+		railway := dst.GetModule().GetPackage().GetRailway()
+		lp, err := src.ToModel(ctx, railway)
+		if err != nil {
+			return err
+		}
+		if err := dst.SetWaitPermissions(lp.(model.LocStandardPredicate)); err != nil {
+			return err
+		}
 	}
 	//	GetWaitPermissions() LocStandardPredicate
 	dst.SetReverseSides(src.GetReverseSides())

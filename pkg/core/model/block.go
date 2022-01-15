@@ -38,6 +38,7 @@ type Block interface {
 
 	// Gets the predicate used to decide which locs are allowed to wait in this block.
 	GetWaitPermissions() LocStandardPredicate
+	SetWaitPermissions(LocStandardPredicate) error
 
 	// By default the front of the block is on the right of the block.
 	// When this property is set, that is reversed to the left of the block.

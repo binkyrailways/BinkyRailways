@@ -111,6 +111,12 @@ func (b *block) GetWaitPermissions() model.LocStandardPredicate {
 	return &b.WaitPermissions
 }
 
+// Sets the predicate used to decide which locs are allowed to wait in this block.
+func (b *block) SetWaitPermissions(value model.LocStandardPredicate) error {
+	b.WaitPermissions.CopyFrom(value)
+	return nil
+}
+
 // By default the front of the block is on the right of the block.
 // When this property is set, that is reversed to the left of the block.
 // Setting this property will only alter the display behavior of the block.
