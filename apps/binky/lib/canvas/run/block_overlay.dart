@@ -48,23 +48,13 @@ class _BlockOverlayState extends State<BlockOverlay> {
             return const Text("Loading...");
           }
           final locs = snapshot.data!;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(widget.block.model.description,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const Divider(),
-              TextButton(
-                onPressed: () async {
-                  await widget.stateModel.setBlockClosed(
-                      widget.block.model.id, !widget.block.closedActual);
-                  widget.onClose();
-                },
-                child: Text(widget.block.closedActual
-                    ? "Re-open block"
-                    : "Close block"),
-              ),
-              const Divider(),
+          final List<Widget> children = [
+            Text(widget.block.model.description,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            const Divider(),
+          ];
+          if (locs.length > 0) {
+            children.add(
               Expanded(
                 child: ListView.builder(
                   itemCount: locs.length,
@@ -84,6 +74,8 @@ class _BlockOverlayState extends State<BlockOverlay> {
                   },
                 ),
               ),
+            );
+            children.add(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -115,7 +107,23 @@ class _BlockOverlayState extends State<BlockOverlay> {
                   ),
                 ],
               ),
-            ],
+            );
+            children.add(const Divider());
+          }
+          children.add(
+            TextButton(
+              onPressed: () async {
+                await widget.stateModel.setBlockClosed(
+                    widget.block.model.id, !widget.block.closedActual);
+                widget.onClose();
+              },
+              child: Text(
+                  widget.block.closedActual ? "Re-open block" : "Close block"),
+            ),
+          );
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children,
           );
         });
   }
