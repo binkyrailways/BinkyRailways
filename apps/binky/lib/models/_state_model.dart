@@ -16,6 +16,8 @@
 //
 //
 
+import 'package:binky/canvas/run/assign_loc_to_block_overlay.dart';
+
 import '../api.dart';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
@@ -141,6 +143,19 @@ class StateModel extends ChangeNotifier {
     final result =
         await stateClient.clickVirtualSensor(ClickVirtualSensorRequest(
       id: id,
+    ));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
+  Future<RailwayState> assignLocToBlock(
+      String locId, String blockId, BlockSide blockSide) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.assignLocToBlock(AssignLocToBlockRequest(
+      locId: locId,
+      blockId: blockId,
+      blockSide: blockSide,
     ));
     _railwayState = result;
     notifyListeners();

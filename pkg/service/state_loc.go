@@ -66,12 +66,16 @@ func (s *service) AssignLocToBlock(ctx context.Context, req *api.AssignLocToBloc
 	if locState == nil {
 		return nil, api.NotFound("Loc '%s'", req.GetLocId())
 	}
-	blockState, err := rwState.GetBlock(req.GetBlockId())
+	_, blockID, err := api.SplitParentChildID(req.GetBlockId())
+	if err != nil {
+		return nil, err
+	}
+	blockState, err := rwState.GetBlock(blockID)
 	if err != nil {
 		return nil, err
 	}
 	if blockState == nil {
-		return nil, api.NotFound("Block '%s'", req.GetBlockId())
+		return nil, api.NotFound("Block '%s'", blockID)
 	}
 	blockSide, err := req.GetBlockSide().ToModel(ctx)
 	if err != nil {

@@ -15,23 +15,67 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/api/generated/br_state_types.pb.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 import '../../models.dart';
 
-import 'module_component.dart';
+import './module_component.dart';
+import './assign_loc_to_block_overlay.dart';
 
 class RailwayGame extends FlameGame with HasHoverables, HasTappables {
   final ModelModel modelModel;
   final StateModel stateModel;
+  BlockState? _assignBlock;
+  Vector2? _overlayPosition;
+
+  static const assignBlockToLocOverlay = "assignBlockToLoc";
 
   RailwayGame({required this.modelModel, required this.stateModel});
 
   @override
   Color backgroundColor() => const Color(0xFFFFFFFF);
+
+  void showAssignLocToBlock(Vector2 position, BlockState block) {
+    _overlayPosition = position;
+    _assignBlock = block;
+    overlays.add(assignBlockToLocOverlay);
+  }
+
+  Widget assignLocToBlockBuilder(BuildContext buildContext, RailwayGame game) {
+    return Stack(
+      children: [
+        GestureDetector(
+          child: Container(
+            color: Colors.grey.withAlpha(128),
+          ),
+          onTap: () {
+            game.overlays.remove(assignBlockToLocOverlay);
+          },
+        ),
+        Positioned(
+          left: _overlayPosition?.x,
+          top: _overlayPosition?.y,
+          width: 200,
+          height: 200,
+          child: Container(
+            color: Colors.white,
+            child: AssignLocToBlockOverlay(
+              stateModel: stateModel,
+              block: _assignBlock!,
+              onClose: () {
+                game.overlays.remove(assignBlockToLocOverlay);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   // Load the game components
   @override
@@ -51,7 +95,8 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
         final maxY = y.toDouble() + (module.height.toDouble() * zoomFactor);
         size.x = max(size.x, maxX);
         size.y = max(size.y, maxY);
-        final modComp = ModuleComponent(model: module, moduleRef: modRef);
+        final modComp =
+            ModuleComponent(model: module, moduleRef: modRef, game: this);
         modComp.scale = Vector2.all(zoomFactor);
         await modComp.loadChildren(modelModel, stateModel);
         add(modComp);

@@ -15,12 +15,23 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flame/input.dart';
+
 import '../block_component.dart' as common;
 import '../../api.dart' as sapi;
 import '../../models.dart';
+import './railway_game.dart';
 
 class BlockComponent extends common.BlockComponent {
   final Holder<sapi.BlockState> state;
+  final RailwayGame game;
 
-  BlockComponent({required this.state}) : super(model: state.last.model);
+  BlockComponent({required this.state, required this.game})
+      : super(model: state.last.model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    game.showAssignLocToBlock(event.eventPosition.widget, state.last);
+    return true;
+  }
 }

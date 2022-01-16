@@ -16,7 +16,6 @@
 //
 
 import 'package:flame/components.dart';
-import 'dart:math';
 import '../module_component.dart' as common;
 import '../../api.dart' as mapi;
 import '../../models.dart';
@@ -24,11 +23,14 @@ import './block_component.dart';
 import './junction_component.dart';
 import './output_component.dart';
 import './sensor_component.dart';
+import './railway_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   final mapi.ModuleRef moduleRef;
+  final RailwayGame game;
 
-  ModuleComponent({required mapi.Module model, required this.moduleRef})
+  ModuleComponent(
+      {required mapi.Module model, required this.moduleRef, required this.game})
       : super(model: model) {
     anchor = Anchor.center;
     width = model.width.toDouble();
@@ -50,7 +52,7 @@ class ModuleComponent extends common.ModuleComponent {
     for (var blockRef in railway.blocks) {
       try {
         final blockState = await stateModel.getBlockState(blockRef.id);
-        add(BlockComponent(state: blockState));
+        add(BlockComponent(state: blockState, game: game));
       } catch (err) {
         print(err);
       }
