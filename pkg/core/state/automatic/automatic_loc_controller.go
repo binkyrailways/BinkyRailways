@@ -24,6 +24,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	"github.com/rs/zerolog"
 )
 
 type railway interface {
@@ -32,21 +33,30 @@ type railway interface {
 }
 
 // NewAutomaticLocController creates a new automatic loc controller
-func NewAutomaticLocController(railway railway) (state.AutomaticLocController, error) {
+func NewAutomaticLocController(railway railway, log zerolog.Logger) (state.AutomaticLocController, error) {
 	alc := &automaticLocController{
-		railway:  railway,
-		autoLocs: make(map[string]state.Loc),
+		railway:                 railway,
+		log:                     log,
+		autoLocs:                make(map[string]state.Loc),
+		routeAvailabilityTester: NewLiveRouteAvailabilityTester(railway),
 	}
 	alc.enabled.alc = alc
 	return alc, nil
 }
 
+const (
+	// Maximum interval until checking state again
+	maxDuration = time.Hour * 24
+)
+
 type automaticLocController struct {
-	railway  railway
-	enabled  enabledProperty
-	autoLocs map[string]state.Loc // ID -> loc
-	trigger  util.Trigger
-	closing  bool
+	railway                 railway
+	log                     zerolog.Logger
+	enabled                 enabledProperty
+	autoLocs                map[string]state.Loc // ID -> loc
+	trigger                 util.Trigger
+	closing                 bool
+	routeAvailabilityTester *liveRouteAvailabilityTester
 }
 
 // Is automatic loc control enabled?
@@ -323,8 +333,187 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 	return nextDelay, false
 }
 
+/// Choose an available route from the given block.
+/// <param name="loc">The loc a route should be choosen for</param>
+/// <param name="fromBlock">The starting block of the route</param>
+/// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
+/// <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
+/// <returns>Null if not route is available.</returns>
+func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Loc, fromBlock state.Block, locDirection model.BlockSide, avoidDirectionChanges bool) state.Route {
+	// Gather possible routes.
+	routeFromFromBlock := getAllPossibleNonClosedRoutesFromBlock(fromBlock)
+	routeOptions := routeFromFromBlock.And(func(ctx context.Context, r state.Route) bool {
+		return alc.routeAvailabilityTester.IsAvailableFor(ctx, r, loc, locDirection, avoidDirectionChanges).IsPossible
+	})
+	possibleRoutes := routeOptions.GetRoutes(ctx, alc.railway)
+	//loc.LastRouteOptions.Actual = routeOptions.ToArray()
+	// TODO ^^
+
+	if len(possibleRoutes) > 0 {
+		// Use the route selector to choose a next route
+		selector := loc.GetRouteSelector(ctx)
+		selected := selector.SelectRoute(ctx, possibleRoutes, loc, fromBlock, locDirection)
+		if selected == nil {
+			alc.log.Info().
+				Str("loc", loc.GetDescription()).
+				Str("from", fromBlock.GetDescription()).
+				Str("fromSide", locDirection.String()).
+				Interface("availableRoutes", possibleRoutes).
+				Msg("No route selected for loc")
+		} else {
+			alc.log.Info().
+				Str("loc", loc.GetDescription()).
+				Str("selected", selected.GetDescription()).
+				Str("from", fromBlock.GetDescription()).
+				Str("fromSide", locDirection.String()).
+				Interface("availableRoutes", possibleRoutes).
+				Msg("Selected route for loc")
+		}
+		return selected
+	}
+
+	alc.log.Info().
+		Str("loc", loc.GetDescription()).
+		Str("from", fromBlock.GetDescription()).
+		Str("fromSide", locDirection.String()).
+		Msg("No possible routes for loc")
+
+	// No available routes
+	return nil
+}
+
+/// <summary>
+/// Try to choose a next route, unless the target block of the current route
+/// is set to wait.
+/// </summary>
+/// <returns>True if a next route has been chosen.</returns>
+func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc state.Loc) bool {
+	// Should we wait in the destination block?
+	route := loc.GetCurrentRoute().GetActual(ctx)
+	if (route == nil) ||
+		(loc.GetWaitAfterCurrentRoute().GetActual(ctx)) ||
+		(state.HasNextRoute(ctx, loc)) ||
+		!alc.shouldControlAutomatically(ctx, loc) {
+		// No need to choose a next route
+		return false
+	}
+
+	// The loc can continue (if a free route is found)
+	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute().GetTo(), route.GetRoute().GetToBlockSide().Invert(), true)
+	if nextRoute == nil {
+		// No route available
+		return false
+	}
+
+	// We have a next route
+	nextRoute.Lock(ctx, loc)
+	loc.GetNextRoute().SetActual(ctx, nextRoute)
+
+	// Set all junctions correct
+	nextRoute.Prepare()
+	return true
+}
+
+// Try to assign a route to the given loc.
+// Returns: The timespan before this method wants to be called again.
 func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	// Check lock state
+	if st := loc.GetAutomaticState().GetActual(ctx); st != state.AssignRoute {
+		log.Warn().
+			Str("state", st.String()).
+			Msg("Cannot assign route to loc in this state")
+		return maxDuration
+	}
+
+	// Log state
+	log.Trace().Msg("onAssignRoute")
+
+	// Does the locs still wants to be controlled?
+	if !alc.shouldControlAutomatically(ctx, loc) {
+		alc.removeLocFromAutomaticControl(ctx, loc)
+		return maxDuration
+	}
+
+	// Look for a free route from the current destination
+	block := loc.GetCurrentBlock().GetActual(ctx)
+	if block == nil {
+		// Oops, no current block, we cannot control this loc
+		alc.removeLocFromAutomaticControl(ctx, loc)
+		return maxDuration
+	}
+
+	// Is a reversing block on a block where it must un-reverse?
+	if loc.GetReversing().GetActual(ctx) && block.GetChangeDirectionReversingLocs(ctx) {
+		// Change direction and clear the reversing flag
+		loc.GetCurrentBlockEnterSide().SetActual(ctx, loc.GetCurrentBlockEnterSide().GetActual(ctx).Invert())
+		loc.GetReversing().SetActual(ctx, false)
+		loc.GetDirection().SetRequested(ctx, loc.GetDirection().GetActual(ctx).Invert())
+		loc.GetAutomaticState().SetActual(ctx, state.ReversingWaitingForDirectionChange)
+		return 0
+	}
+
+	// Select next route
+	route := loc.GetNextRoute().GetActual(ctx)
+	if route == nil {
+		// No next route was set
+		if (loc.GetSpeed().GetRequested(ctx) == 0) && (!canLeaveCurrentBlock(ctx, loc)) {
+			// We're not running and we're not allowed to leave the current block
+			loc.GetAutomaticState().SetActual(ctx, state.WaitingForDestinationGroupMinimum)
+			return time.Minute
+		}
+
+		// Choose a next route now
+		route = alc.chooseRoute(ctx, loc, block, loc.GetCurrentBlockEnterSide().GetActual(ctx).Invert(), false)
+	}
+	if route == nil {
+		// No possible routes right now, try again
+		return time.Minute
+	}
+
+	// Lock the route
+	route.Lock(ctx, loc)
+	// Setup waiting after block (do this before assigning the route)
+	if route.GetTo().GetWaitPermissions().Evaluate(ctx, loc) {
+		// Waiting allowed, gamble for it.
+		waitProbability := route.GetTo().GetWaitProbability(ctx)
+		loc.GetWaitAfterCurrentRoute().SetActual(ctx, gamble(waitProbability))
+	} else {
+		// Waiting not allowed.
+		loc.GetWaitAfterCurrentRoute().SetActual(ctx, false)
+	}
+	// Assign the route
+	loc.GetCurrentRoute().SetActual(ctx, route.CreateStateForLoc(loc))
+
+	// Clear next route
+	loc.GetNextRoute().SetActual(ctx, nil)
+
+	// Should we change direction?
+	enteredSide := loc.GetCurrentBlockEnterSide().GetActual(ctx)
+	leavingSide := route.GetFromBlockSide()
+	if enteredSide == leavingSide {
+		// Reverse direction
+		loc.GetDirection().SetRequested(ctx, loc.GetDirection().GetActual(ctx).Invert())
+
+		// Are we reversing now?
+		if loc.GetChangeDirection(ctx) == model.ChangeDirectionAvoid {
+			loc.GetReversing().SetActual(ctx, !loc.GetReversing().GetActual(ctx))
+		}
+
+		// When reversing, check the state of the target block
+		if loc.GetReversing().GetActual(ctx) && route.GetTo().GetChangeDirectionReversingLocs(ctx) {
+			// We must stop at the target block
+			loc.GetWaitAfterCurrentRoute().SetActual(ctx, true)
+		}
+	}
+
+	// Change state
+	loc.GetAutomaticState().SetActual(ctx, state.WaitingForAssignedRouteReady)
+
+	// Prepare the route?
+	route.Prepare()
+
+	// We're done
 	return 0
 }
 
@@ -374,4 +563,16 @@ func (alc *automaticLocController) onWaitingForDestinationGroupMinimum(ctx conte
 	// TODO
 	return 0
 
+}
+
+// Is automatic loc control requested to de-activate?
+func (alc *automaticLocController) isStopping(ctx context.Context) bool {
+	return !alc.enabled.GetRequested(ctx)
+}
+
+/// Should the given loc be controlled automatically?
+func (alc *automaticLocController) shouldControlAutomatically(ctx context.Context, loc state.Loc) bool {
+	return loc.GetControlledAutomatically().GetRequested(ctx) &&
+		!alc.isStopping(ctx)
+	// TODO && !disposing
 }

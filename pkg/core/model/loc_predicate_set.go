@@ -24,6 +24,9 @@ type LocPredicateSet interface {
 	// Get an item by ID
 	Get(id string) (LocPredicate, bool)
 
+	// Gets the number of predicates
+	GetCount() int
+
 	// Invoke the callback for each item
 	ForEach(cb func(LocPredicate))
 

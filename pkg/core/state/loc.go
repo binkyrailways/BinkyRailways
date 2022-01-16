@@ -109,7 +109,8 @@ type Loc interface {
 
 	// Gets/sets a selector used to select the next route from a list of possible routes.
 	// If no route selector is set, a default will be created.
-	//IRouteSelector RouteSelector { get; set; }
+	GetRouteSelector(context.Context) RouteSelector
+	SetRouteSelector(context.Context, RouteSelector) error
 
 	// Current speed of this loc as percentage of the speed steps of the loc.
 	// Value between 0 and 100.
@@ -176,6 +177,11 @@ type Loc interface {
 
 	// Is the speed behavior of the last event set to default?
 	GetIsLastEventBehaviorSpeedDefault(context.Context) bool
+}
+
+// Has the given loc a next route configured?
+func HasNextRoute(ctx context.Context, loc Loc) bool {
+	return (loc.GetNextRoute().GetActual(ctx) != nil)
 }
 
 // GetMaximumSpeedForRoute returns the maximum speed of the given loc on the given route.

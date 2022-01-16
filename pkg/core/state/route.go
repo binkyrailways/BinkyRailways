@@ -17,7 +17,11 @@
 
 package state
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"context"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Route specifies the state of a single route.
 type Route interface {
@@ -68,18 +72,19 @@ type Route interface {
 	// Does this route contains the given junction
 	ContainsJunction(Junction) bool
 
+	// Gets the number of sensors that are listed as entering/reached sensor of this route.
+	GetSensorCount(context.Context) int
 	// Gets all sensors that are listed as entering/reached sensor of this route.
 	ForEachSensor(func(Sensor))
 
 	// All routes that must be free before this route can be taken.
-	//ICriticalSectionRoutes CriticalSection { get; }
+	GetCriticalSection() CriticalSectionRoutes
 
 	// Gets all events configured for this route.
 	ForEachEvent(func(RouteEvent))
 
 	// Gets the predicate used to decide which locs are allowed to use this route.
-
-	//ILocPredicateState Permissions { get; }
+	GetPermissions() LocPredicate
 
 	// Is this route open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.

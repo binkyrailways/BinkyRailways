@@ -44,7 +44,7 @@ type Block interface {
 	GetMaximumWaitTime(context.Context) int
 
 	// Gets the predicate used to decide which locs are allowed to wait in this block.
-	//ILocPredicateState WaitPermissions { get; }
+	GetWaitPermissions() LocPredicate
 
 	// By default the front of the block is on the right of the block.
 	// When this property is set, that is reversed to the left of the block.

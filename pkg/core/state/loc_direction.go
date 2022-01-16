@@ -39,6 +39,13 @@ func (d LocDirection) String() string {
 	return "Reverse"
 }
 
+func (d LocDirection) Invert() LocDirection {
+	if d == LocDirectionForward {
+		return LocDirectionReverse
+	}
+	return LocDirectionForward
+}
+
 // ParseLocDirection converts a string into a loc direction.
 func ParseLocDirection(input string) (LocDirection, error) {
 	switch strings.ToLower(input) {

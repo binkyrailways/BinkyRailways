@@ -35,9 +35,11 @@ type route struct {
 	entity
 	lockable
 
-	from   Block
-	to     Block
-	events []RouteEvent
+	from        Block
+	to          Block
+	events      []RouteEvent
+	permissions locPredicate
+	csr         *criticalSectionRoutes
 }
 
 // Create a new entity
@@ -45,6 +47,12 @@ func newRoute(en model.Route, railway Railway) Route {
 	r := &route{
 		entity:   newEntity(en, railway),
 		lockable: newLockable(railway),
+		csr:      &criticalSectionRoutes{},
+	}
+	var err error
+	r.permissions, err = newLocPredicate(railway, en.GetPermissions())
+	if err != nil {
+		panic(err)
 	}
 	return r
 }
@@ -67,7 +75,7 @@ func (r *route) GetModel() model.Route {
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (r *route) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps state.Persistence) error {
 	// Resolve from, to
 	var err error
 	r.from, err = r.GetRailwayImpl().ResolveEndPoint(ctx, r.getRoute().GetFrom())
@@ -90,6 +98,11 @@ func (r *route) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ s
 	})
 	if merr != nil {
 		return merr
+	}
+
+	// Construct critical section
+	if err := r.csr.TryPrepareForUse(ctx, ui, ps); err != nil {
+		return err
 	}
 
 	return nil
@@ -203,9 +216,14 @@ func (r *route) ForEachSensor(cb func(state.Sensor)) {
 		cb(x.GetSensor())
 	}
 }
+func (r *route) GetSensorCount(context.Context) int {
+	return len(r.events)
+}
 
 // All routes that must be free before this route can be taken.
-//ICriticalSectionRoutes CriticalSection { get; }
+func (r *route) GetCriticalSection() state.CriticalSectionRoutes {
+	return r.csr
+}
 
 // Gets all events configured for this route.
 func (r *route) ForEachEvent(cb func(state.RouteEvent)) {
@@ -215,8 +233,9 @@ func (r *route) ForEachEvent(cb func(state.RouteEvent)) {
 }
 
 // Gets the predicate used to decide which locs are allowed to use this route.
-
-//ILocPredicateState Permissions { get; }
+func (r *route) GetPermissions() state.LocPredicate {
+	return r.permissions
+}
 
 // Is this route open for traffic or not?
 // Setting to true, allows for maintance etc. on this route.

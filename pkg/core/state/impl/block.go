@@ -34,8 +34,9 @@ type block struct {
 	entity
 	lockable
 
-	closed boolProperty
-	state  state.BlockState
+	closed          boolProperty
+	state           state.BlockState
+	waitPermissions state.LocPredicate
 }
 
 // Create a new entity
@@ -45,6 +46,11 @@ func newBlock(en model.Block, railway Railway) Block {
 		lockable: newLockable(railway),
 	}
 	b.closed.Configure(b, railway, railway)
+	var err error
+	b.waitPermissions, err = newLocPredicate(railway, en.GetWaitPermissions())
+	if err != nil {
+		panic(err)
+	}
 	return b
 }
 
@@ -89,7 +95,9 @@ func (b *block) GetMaximumWaitTime(context.Context) int {
 }
 
 // Gets the predicate used to decide which locs are allowed to wait in this block.
-//ILocPredicateState WaitPermissions { get; }
+func (b *block) GetWaitPermissions() state.LocPredicate {
+	return b.waitPermissions
+}
 
 // By default the front of the block is on the right of the block.
 // When this property is set, that is reversed to the left of the block.

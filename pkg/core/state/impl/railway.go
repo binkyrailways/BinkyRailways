@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2021-2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -218,7 +218,7 @@ func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, 
 		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 
-	if alc, xerr := automatic.NewAutomaticLocController(r); xerr != nil {
+	if alc, xerr := automatic.NewAutomaticLocController(r, r.log); xerr != nil {
 		multierr.AppendInto(&err, xerr)
 	} else {
 		r.automaticLocController = alc
@@ -381,11 +381,21 @@ func (r *railway) ForEachBlock(cb func(state.Block)) {
 	}
 }
 
+// Gets the number of blocks in this railway
+func (r *railway) GetBlockCount(context.Context) int {
+	return len(r.blocks)
+}
+
 // Gets the states of all block groups in this railway
 func (r *railway) ForEachBlockGroup(cb func(state.BlockGroup)) {
 	for _, x := range r.blockGroups {
 		cb(x)
 	}
+}
+
+// Gets the number of block groups in this railway
+func (r *railway) GetBlockGroupCount(context.Context) int {
+	return len(r.blockGroups)
 }
 
 // Gets the states of all command stations in this railway
@@ -395,11 +405,21 @@ func (r *railway) ForEachCommandStation(cb func(state.CommandStation)) {
 	}
 }
 
+// Gets the number of command stations in this railway
+func (r *railway) GetCommandStationCount(context.Context) int {
+	return len(r.commandStations)
+}
+
 // Gets the states of all junctions in this railway
 func (r *railway) ForEachJunction(cb func(state.Junction)) {
 	for _, x := range r.junctions {
 		cb(x)
 	}
+}
+
+// Gets the number of junctions in this railway
+func (r *railway) GetJunctionCount(context.Context) int {
+	return len(r.junctions)
 }
 
 // Gets the state of the junction with given ID.
@@ -420,6 +440,11 @@ func (r *railway) ForEachLoc(cb func(state.Loc)) {
 	}
 }
 
+// Gets the number of locomotives in this railway
+func (r *railway) GetLocCount(context.Context) int {
+	return len(r.locs)
+}
+
 // Gets the state of the loc with given ID.
 // Returns nil if not found
 func (r *railway) GetLoc(id string) (state.Loc, error) {
@@ -438,11 +463,21 @@ func (r *railway) ForEachRoute(cb func(state.Route)) {
 	}
 }
 
+// Gets the number of routes in this railway
+func (r *railway) GetRouteCount(context.Context) int {
+	return len(r.routes)
+}
+
 // Gets the states of all sensors in this railway
 func (r *railway) ForEachSensor(cb func(state.Sensor)) {
 	for _, x := range r.sensors {
 		cb(x)
 	}
+}
+
+// Gets the number of sensors in this railway
+func (r *railway) GetSensorCount(context.Context) int {
+	return len(r.sensors)
 }
 
 // Gets the states of all signals in this railway
@@ -452,11 +487,21 @@ func (r *railway) ForEachSignal(cb func(state.Signal)) {
 	}
 }
 
+// Gets the number of signals in this railway
+func (r *railway) GetSignalCount(context.Context) int {
+	return len(r.signals)
+}
+
 // Gets the states of all outputs in this railway
 func (r *railway) ForEachOutput(cb func(state.Output)) {
 	for _, x := range r.outputs {
 		cb(x)
 	}
+}
+
+// Gets the number of outputs in this railway
+func (r *railway) GetOutputCount(context.Context) int {
+	return len(r.outputs)
 }
 
 // Gets the state of the output with given ID.

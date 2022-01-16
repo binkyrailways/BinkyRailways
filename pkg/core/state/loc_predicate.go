@@ -1,4 +1,4 @@
-// Copyright 2020 Ewout Prangsma
+// Copyright 2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,27 +15,14 @@
 // Author Ewout Prangsma
 //
 
-package model
+package state
 
-// BlockSide indicates a side on the block.
-type BlockSide string
-
-const (
-	// BlockSideFront indicates the end of normal driving direction
-	BlockSideFront BlockSide = "Front"
-	// BlockSideBack indicates the begining of normal driving direction
-	BlockSideBack BlockSide = "Back"
+import (
+	"context"
 )
 
-// Invert returns the inverted side.
-func (bs BlockSide) Invert() BlockSide {
-	if bs == BlockSideFront {
-		return BlockSideBack
-	}
-	return BlockSideFront
-}
-
-// String returns block side as string
-func (bs BlockSide) String() string {
-	return string(bs)
+// State for a loc predicate
+type LocPredicate interface {
+	// Evaluate this predicate for the given loc.
+	Evaluate(ctx context.Context, loc Loc) bool
 }

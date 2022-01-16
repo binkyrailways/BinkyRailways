@@ -58,6 +58,7 @@ type loc struct {
 	currentRoute                    actualRouteForLocProperty
 	lockedEntities                  []Lockable
 	lastEventBehavior               state.RouteEventBehavior
+	routeSelector                   state.RouteSelector
 }
 
 // Create a new entity
@@ -241,7 +242,16 @@ func (l *loc) GetStartNextRouteTime() state.ActualTimeProperty {
 
 // Gets/sets a selector used to select the next route from a list of possible routes.
 // If no route selector is set, a default will be created.
-//IRouteSelector RouteSelector { get; set; }
+func (l *loc) GetRouteSelector(ctx context.Context) state.RouteSelector {
+	if l.routeSelector != nil {
+		return l.routeSelector
+	}
+	return defaultRouteSelectorInstance
+}
+func (l *loc) SetRouteSelector(ctx context.Context, selector state.RouteSelector) error {
+	l.routeSelector = selector
+	return nil
+}
 
 // Current speed of this loc as percentage of the speed steps of the loc.
 // Value between 0 and 100.
