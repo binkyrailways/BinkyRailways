@@ -386,6 +386,17 @@ func (r *railway) GetBlockCount(context.Context) int {
 	return len(r.blocks)
 }
 
+// Gets the state of the block with given ID.
+// Returns nil if not found
+func (r *railway) GetBlock(id string) (state.Block, error) {
+	for _, x := range r.blocks {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Gets the states of all block groups in this railway
 func (r *railway) ForEachBlockGroup(cb func(state.BlockGroup)) {
 	for _, x := range r.blockGroups {

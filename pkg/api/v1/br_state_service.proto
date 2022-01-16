@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2021-2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,6 +50,9 @@ service StateService {
 
   // Change the active state of an output of type binary output
   rpc SetBinaryOutputActive(SetBinaryOutputActiveRequest) returns (OutputState);
+
+  // Assign a loc to a block
+  rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
 }
 
 // Request arguments for EnableRunMode.
@@ -106,4 +109,13 @@ message SetBinaryOutputActiveRequest {
   string id = 1;
   // Request active state
   bool active = 2;
+}
+
+message AssignLocToBlockRequest {
+  // ID of loc to assign
+  string loc_id = 1;
+  // ID of block to assign to
+  string block_id = 2;
+  // Side of the block that the loc is facing
+  BlockSide block_side = 3;
 }

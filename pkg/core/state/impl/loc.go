@@ -311,30 +311,34 @@ func (l *loc) GetF0() state.BoolProperty {
 // and the block on that block is unlocked.
 // <param name="block">The new block to assign to. If null, the loc will only be unassigned from the current block.</param>
 // <param name="currentBlockEnterSide">The site to which the block is entered (invert of facing)</param>
-// <returns>True on success, false otherwise</returns>
-func (l *loc) AssignTo(ctx context.Context, block state.Block, currentBlockEnterSide model.BlockSide) bool {
+// <returns>Nil on success, error otherwise</returns>
+func (l *loc) AssignTo(ctx context.Context, block state.Block, currentBlockEnterSide model.BlockSide) error {
 	ca := l.GetControlledAutomatically()
-	if ca.GetActual(ctx) || ca.GetRequested(ctx) {
-		return false
+	if ca.GetActual(ctx) {
+		return fmt.Errorf("Loc already controlled automatically")
+	}
+	if ca.GetRequested(ctx) {
+		return fmt.Errorf("Loc about to be controlled automatically")
 	}
 
 	// No change?
 	current := l.GetCurrentBlock().GetActual(ctx)
 	if current == block {
-		return true
+		// Already assigned to requested block
+		return nil
 	}
 
 	// Try to lock new block
 	if block != nil {
 		if _, canLock := block.CanLock(ctx, l); !canLock {
-			return false
+			return fmt.Errorf("Cannot lock block %s", block.GetDescription())
 		}
 	}
 
 	// Unassign from current block
 	if current != nil {
 		if err := current.ValidateLockedBy(ctx, l); err != nil {
-			return false
+			return err
 		}
 		current.Unlock(ctx, nil)
 	}
@@ -350,7 +354,7 @@ func (l *loc) AssignTo(ctx context.Context, block state.Block, currentBlockEnter
 		l.UnlockAll(ctx)
 	}
 
-	return true
+	return nil
 }
 
 // Gets command station specific (advanced) info for this loc.

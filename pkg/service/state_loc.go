@@ -52,3 +52,37 @@ func (s *service) SetLocSpeedAndDirection(ctx context.Context, req *api.SetLocSp
 	}
 	return &result, nil
 }
+
+// Assign a loc to a block
+func (s *service) AssignLocToBlock(ctx context.Context, req *api.AssignLocToBlockRequest) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	locState, err := rwState.GetLoc(req.GetLocId())
+	if err != nil {
+		return nil, err
+	}
+	if locState == nil {
+		return nil, api.NotFound("Loc '%s'", req.GetLocId())
+	}
+	blockState, err := rwState.GetBlock(req.GetBlockId())
+	if err != nil {
+		return nil, err
+	}
+	if blockState == nil {
+		return nil, api.NotFound("Block '%s'", req.GetBlockId())
+	}
+	blockSide, err := req.GetBlockSide().ToModel(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := locState.AssignTo(ctx, blockState, blockSide.Invert()); err != nil {
+		return nil, err
+	}
+	var result api.RailwayState
+	if err := result.FromState(ctx, s.railwayState); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

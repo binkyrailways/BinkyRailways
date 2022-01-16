@@ -91,3 +91,15 @@ const SetBinaryOutputActiveRequest$json = const {
 
 /// Descriptor for `SetBinaryOutputActiveRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setBinaryOutputActiveRequestDescriptor = $convert.base64Decode('ChxTZXRCaW5hcnlPdXRwdXRBY3RpdmVSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBIWCgZhY3RpdmUYAiABKAhSBmFjdGl2ZQ==');
+@$core.Deprecated('Use assignLocToBlockRequestDescriptor instead')
+const AssignLocToBlockRequest$json = const {
+  '1': 'AssignLocToBlockRequest',
+  '2': const [
+    const {'1': 'loc_id', '3': 1, '4': 1, '5': 9, '10': 'locId'},
+    const {'1': 'block_id', '3': 2, '4': 1, '5': 9, '10': 'blockId'},
+    const {'1': 'block_side', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.BlockSide', '10': 'blockSide'},
+  ],
+};
+
+/// Descriptor for `AssignLocToBlockRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List assignLocToBlockRequestDescriptor = $convert.base64Decode('ChdBc3NpZ25Mb2NUb0Jsb2NrUmVxdWVzdBIVCgZsb2NfaWQYASABKAlSBWxvY0lkEhkKCGJsb2NrX2lkGAIgASgJUgdibG9ja0lkEjoKCmJsb2NrX3NpZGUYAyABKA4yGy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrU2lkZVIJYmxvY2tTaWRl');

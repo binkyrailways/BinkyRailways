@@ -68,6 +68,9 @@ type Railway interface {
 	ForEachBlock(func(Block))
 	// Get the number of blocks
 	GetBlockCount(context.Context) int
+	// Gets the state of the block with given ID.
+	// Returns nil if not found
+	GetBlock(id string) (Block, error)
 
 	// Gets the states of all block groups in this railway
 	ForEachBlockGroup(func(BlockGroup))

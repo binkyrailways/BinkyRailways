@@ -545,3 +545,78 @@ class SetBinaryOutputActiveRequest extends $pb.GeneratedMessage {
   void clearActive() => clearField(2);
 }
 
+class AssignLocToBlockRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AssignLocToBlockRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockId')
+    ..e<$1.BlockSide>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: $1.BlockSide.FRONT, valueOf: $1.BlockSide.valueOf, enumValues: $1.BlockSide.values)
+    ..hasRequiredFields = false
+  ;
+
+  AssignLocToBlockRequest._() : super();
+  factory AssignLocToBlockRequest({
+    $core.String? locId,
+    $core.String? blockId,
+    $1.BlockSide? blockSide,
+  }) {
+    final _result = create();
+    if (locId != null) {
+      _result.locId = locId;
+    }
+    if (blockId != null) {
+      _result.blockId = blockId;
+    }
+    if (blockSide != null) {
+      _result.blockSide = blockSide;
+    }
+    return _result;
+  }
+  factory AssignLocToBlockRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AssignLocToBlockRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AssignLocToBlockRequest clone() => AssignLocToBlockRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AssignLocToBlockRequest copyWith(void Function(AssignLocToBlockRequest) updates) => super.copyWith((message) => updates(message as AssignLocToBlockRequest)) as AssignLocToBlockRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AssignLocToBlockRequest create() => AssignLocToBlockRequest._();
+  AssignLocToBlockRequest createEmptyInstance() => create();
+  static $pb.PbList<AssignLocToBlockRequest> createRepeated() => $pb.PbList<AssignLocToBlockRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AssignLocToBlockRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AssignLocToBlockRequest>(create);
+  static AssignLocToBlockRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get locId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set locId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLocId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLocId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get blockId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set blockId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBlockId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBlockId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $1.BlockSide get blockSide => $_getN(2);
+  @$pb.TagNumber(3)
+  set blockSide($1.BlockSide v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasBlockSide() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBlockSide() => clearField(3);
+}
+

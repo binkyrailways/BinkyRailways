@@ -154,8 +154,8 @@ type Loc interface {
 	// and the block on that block is unlocked.
 	// <param name="block">The new block to assign to. If null, the loc will only be unassigned from the current block.</param>
 	// <param name="currentBlockEnterSide">The site to which the block is entered (invert of facing)</param>
-	// <returns>True on success, false otherwise</returns>
-	AssignTo(ctx context.Context, block Block, currentBlockEnterSide model.BlockSide) bool
+	// <returns>Nil on success, error otherwise</returns>
+	AssignTo(ctx context.Context, block Block, currentBlockEnterSide model.BlockSide) error
 
 	// Gets command station specific (advanced) info for this loc.
 	GetCommandStationInfo(context.Context) string
