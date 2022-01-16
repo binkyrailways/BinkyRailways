@@ -60,9 +60,10 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
         Positioned(
           left: _overlayPosition?.x,
           top: _overlayPosition?.y,
-          width: 200,
-          height: 200,
+          width: 300,
+          height: 300,
           child: Container(
+            padding: const EdgeInsets.all(8),
             color: Colors.white,
             child: AssignLocToBlockOverlay(
               stateModel: stateModel,
