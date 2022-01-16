@@ -56,6 +56,9 @@ service StateService {
 
   // Assign a loc to a block
   rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
+
+  // Set the closed status of a block
+  rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
 }
 
 // Request arguments for EnableRunMode.
@@ -126,4 +129,11 @@ message AssignLocToBlockRequest {
   string block_id = 2;
   // Side of the block that the loc is facing
   BlockSide block_side = 3;
+}
+
+message SetBlockClosedRequest {
+  // ID of the block
+  string id = 1; 
+  // Requested closed status
+  bool closed = 2;
 }

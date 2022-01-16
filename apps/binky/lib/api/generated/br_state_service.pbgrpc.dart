@@ -65,6 +65,11 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/AssignLocToBlock',
           ($3.AssignLocToBlockRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.RailwayState.fromBuffer(value));
+  static final _$setBlockClosed =
+      $grpc.ClientMethod<$3.SetBlockClosedRequest, $2.BlockState>(
+          '/binkyrailways.v1.StateService/SetBlockClosed',
+          ($3.SetBlockClosedRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.BlockState.fromBuffer(value));
 
   StateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -129,6 +134,12 @@ class StateServiceClient extends $grpc.Client {
       $3.AssignLocToBlockRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$assignLocToBlock, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.BlockState> setBlockClosed(
+      $3.SetBlockClosedRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$setBlockClosed, request, options: options);
   }
 }
 
@@ -217,6 +228,14 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $3.AssignLocToBlockRequest.fromBuffer(value),
         ($2.RailwayState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.SetBlockClosedRequest, $2.BlockState>(
+        'SetBlockClosed',
+        setBlockClosed_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $3.SetBlockClosedRequest.fromBuffer(value),
+        ($2.BlockState value) => value.writeToBuffer()));
   }
 
   $async.Future<$2.RailwayState> getRailwayState_Pre(
@@ -270,6 +289,11 @@ abstract class StateServiceBase extends $grpc.Service {
     return assignLocToBlock(call, await request);
   }
 
+  $async.Future<$2.BlockState> setBlockClosed_Pre($grpc.ServiceCall call,
+      $async.Future<$3.SetBlockClosedRequest> request) async {
+    return setBlockClosed(call, await request);
+  }
+
   $async.Future<$2.RailwayState> getRailwayState(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.RailwayState> enableRunMode(
@@ -290,4 +314,6 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.ClickVirtualSensorRequest request);
   $async.Future<$2.RailwayState> assignLocToBlock(
       $grpc.ServiceCall call, $3.AssignLocToBlockRequest request);
+  $async.Future<$2.BlockState> setBlockClosed(
+      $grpc.ServiceCall call, $3.SetBlockClosedRequest request);
 }

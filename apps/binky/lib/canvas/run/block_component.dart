@@ -31,7 +31,19 @@ class BlockComponent extends common.BlockComponent {
 
   @override
   bool onTapUp(TapUpInfo event) {
-    game.showAssignLocToBlock(event.eventPosition.widget, state.last);
+    game.showBlock(event.eventPosition.widget, state.last);
     return true;
+  }
+
+  @override
+  String description() {
+    final bs = state.last;
+    if (bs.closedActual) {
+      return "${bs.model.description}: Closed";
+    }
+    if (bs.closedRequested) {
+      return "${bs.model.description}: Closing";
+    }
+    return bs.model.description;
   }
 }

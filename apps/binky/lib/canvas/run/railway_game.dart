@@ -25,28 +25,28 @@ import 'package:flutter/material.dart';
 import '../../models.dart';
 
 import './module_component.dart';
-import './assign_loc_to_block_overlay.dart';
+import 'block_overlay.dart';
 
 class RailwayGame extends FlameGame with HasHoverables, HasTappables {
   final ModelModel modelModel;
   final StateModel stateModel;
-  BlockState? _assignBlock;
+  BlockState? _block;
   Vector2? _overlayPosition;
 
-  static const assignBlockToLocOverlay = "assignBlockToLoc";
+  static const blockOverlay = "assignBlockToLoc";
 
   RailwayGame({required this.modelModel, required this.stateModel});
 
   @override
   Color backgroundColor() => const Color(0xFFFFFFFF);
 
-  void showAssignLocToBlock(Vector2 position, BlockState block) {
+  void showBlock(Vector2 position, BlockState block) {
     _overlayPosition = position;
-    _assignBlock = block;
-    overlays.add(assignBlockToLocOverlay);
+    _block = block;
+    overlays.add(blockOverlay);
   }
 
-  Widget assignLocToBlockBuilder(BuildContext buildContext, RailwayGame game) {
+  Widget blockOverlayBuilder(BuildContext buildContext, RailwayGame game) {
     return Stack(
       children: [
         GestureDetector(
@@ -54,22 +54,22 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
             color: Colors.grey.withAlpha(128),
           ),
           onTap: () {
-            game.overlays.remove(assignBlockToLocOverlay);
+            game.overlays.remove(blockOverlay);
           },
         ),
         Positioned(
           left: _overlayPosition?.x,
           top: _overlayPosition?.y,
-          width: 300,
+          width: 400,
           height: 300,
           child: Container(
             padding: const EdgeInsets.all(8),
             color: Colors.white,
-            child: AssignLocToBlockOverlay(
+            child: BlockOverlay(
               stateModel: stateModel,
-              block: _assignBlock!,
+              block: _block!,
               onClose: () {
-                game.overlays.remove(assignBlockToLocOverlay);
+                game.overlays.remove(blockOverlay);
               },
             ),
           ),

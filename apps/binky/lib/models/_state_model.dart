@@ -16,8 +16,6 @@
 //
 //
 
-import 'package:binky/canvas/run/assign_loc_to_block_overlay.dart';
-
 import '../api.dart';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
@@ -159,6 +157,18 @@ class StateModel extends ChangeNotifier {
     ));
     _railwayState = result;
     notifyListeners();
+    return result;
+  }
+
+  Future<BlockState> setBlockClosed(String id, bool closed) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.setBlockClosed(SetBlockClosedRequest(
+      id: id,
+      closed: closed,
+    ));
+    if (_blocks.set(id, result)) {
+      notifyListeners();
+    }
     return result;
   }
 

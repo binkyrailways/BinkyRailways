@@ -65,7 +65,7 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
       loadingBuilder: (context) => const Text("Loading..."),
       errorBuilder: (context, err) => Text("Error: $err"),
       overlayBuilderMap: {
-        RailwayGame.assignBlockToLocOverlay: _game!.assignLocToBlockBuilder,
+        RailwayGame.blockOverlay: _game!.blockOverlayBuilder,
       },
     );
   }

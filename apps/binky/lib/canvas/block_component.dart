@@ -53,7 +53,7 @@ class BlockComponent extends EntityComponent with Tappable {
         : Rect.fromLTRB(size.x - minDim, 0, size.x, minDim);
     canvas.drawRect(frontRect, Paint()..color = frontColor());
     // Draw description
-    textPaint.render(canvas, model.description, Vector2(size.x / 2, size.y / 2),
+    textPaint.render(canvas, description(), Vector2(size.x / 2, size.y / 2),
         anchor: Anchor.center);
 
     canvas.restore();
@@ -62,4 +62,5 @@ class BlockComponent extends EntityComponent with Tappable {
   Color backgroundColor() => Colors.grey;
   Color frontColor() => Colors.green;
   Color textColor() => Colors.black;
+  String description() => model.description;
 }
