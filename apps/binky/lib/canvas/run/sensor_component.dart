@@ -16,17 +16,30 @@
 //
 
 import 'package:binky/models/_state_model.dart';
+import 'package:flame/components.dart';
+import 'package:flame/input.dart';
 
 import '../sensor_component.dart' as common;
 import '../../api.dart' as api;
 import '../../models.dart';
 
-class SensorComponent extends common.SensorComponent {
+class SensorComponent extends common.SensorComponent with Tappable {
   Holder<api.SensorState> state;
   final StateModel stateModel;
 
   SensorComponent({required this.state, required this.stateModel})
       : super(model: state.last.model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    final rw = stateModel.getCachedRailwayState();
+    final isVirtualModeEnabled = rw?.isVirtualModeEnabled ?? false;
+    if (isVirtualModeEnabled) {
+      final sState = state.last;
+      stateModel.clickVirtualSensor(sState.model.id);
+    }
+    return true;
+  }
 
   @override
   bool isActive() {

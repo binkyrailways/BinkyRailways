@@ -74,15 +74,21 @@ type Railway interface {
 
 	// Gets the states of all block groups in this railway
 	ForEachBlockGroup(func(BlockGroup))
+	// Get the number of block groups
+	GetBlockGroupCount(context.Context) int
 
 	// Gets the states of all command stations in this railway
 	ForEachCommandStation(func(CommandStation))
+	// Get the number of command stations
+	GetCommandStationCount(context.Context) int
 
 	// Gets the states of all junctions in this railway
 	ForEachJunction(func(Junction))
 	// Gets the state of the junction with given ID.
 	// Returns nil if not found
 	GetJunction(id string) (Junction, error)
+	// Get the number of junctions
+	GetJunctionCount(context.Context) int
 
 	// Gets the states of all locomotives in this railway
 	ForEachLoc(func(Loc))
@@ -99,15 +105,27 @@ type Railway interface {
 
 	// Gets the states of all sensors in this railway
 	ForEachSensor(func(Sensor))
+	// Gets the state of the sensor with given ID.
+	// Returns nil if not found
+	GetSensor(id string) (Sensor, error)
+	// Get the number of sensors
+	GetSensorCount(context.Context) int
 
 	// Gets the states of all signals in this railway
 	ForEachSignal(func(Signal))
+	// Gets the state of the signal with given ID.
+	// Returns nil if not found
+	GetSignal(id string) (Signal, error)
+	// Get the number of signals
+	GetSignalCount(context.Context) int
 
 	// Gets the states of all outputs in this railway
 	ForEachOutput(func(Output))
 	// Gets the state of the output with given ID.
 	// Returns nil if not found
 	GetOutput(id string) (Output, error)
+	// Get the number of outputs
+	GetOutputCount(context.Context) int
 
 	// Close the railway
 	Close(ctx context.Context)

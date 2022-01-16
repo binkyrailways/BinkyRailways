@@ -491,6 +491,17 @@ func (r *railway) GetSensorCount(context.Context) int {
 	return len(r.sensors)
 }
 
+// Gets the state of the sensor with given ID.
+// Returns nil if not found
+func (r *railway) GetSensor(id string) (state.Sensor, error) {
+	for _, x := range r.sensors {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Gets the states of all signals in this railway
 func (r *railway) ForEachSignal(cb func(state.Signal)) {
 	for _, x := range r.signals {
@@ -501,6 +512,17 @@ func (r *railway) ForEachSignal(cb func(state.Signal)) {
 // Gets the number of signals in this railway
 func (r *railway) GetSignalCount(context.Context) int {
 	return len(r.signals)
+}
+
+// Gets the state of the signal with given ID.
+// Returns nil if not found
+func (r *railway) GetSignal(id string) (state.Signal, error) {
+	for _, x := range r.signals {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
 }
 
 // Gets the states of all outputs in this railway

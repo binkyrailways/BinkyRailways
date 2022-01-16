@@ -55,6 +55,11 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/SetBinaryOutputActive',
           ($3.SetBinaryOutputActiveRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.OutputState.fromBuffer(value));
+  static final _$clickVirtualSensor =
+      $grpc.ClientMethod<$3.ClickVirtualSensorRequest, $2.RailwayState>(
+          '/binkyrailways.v1.StateService/ClickVirtualSensor',
+          ($3.ClickVirtualSensorRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.RailwayState.fromBuffer(value));
   static final _$assignLocToBlock =
       $grpc.ClientMethod<$3.AssignLocToBlockRequest, $2.RailwayState>(
           '/binkyrailways.v1.StateService/AssignLocToBlock',
@@ -112,6 +117,12 @@ class StateServiceClient extends $grpc.Client {
       $3.SetBinaryOutputActiveRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setBinaryOutputActive, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.RailwayState> clickVirtualSensor(
+      $3.ClickVirtualSensorRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$clickVirtualSensor, request, options: options);
   }
 
   $grpc.ResponseFuture<$2.RailwayState> assignLocToBlock(
@@ -189,6 +200,15 @@ abstract class StateServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $3.SetBinaryOutputActiveRequest.fromBuffer(value),
             ($2.OutputState value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$3.ClickVirtualSensorRequest, $2.RailwayState>(
+            'ClickVirtualSensor',
+            clickVirtualSensor_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $3.ClickVirtualSensorRequest.fromBuffer(value),
+            ($2.RailwayState value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.AssignLocToBlockRequest, $2.RailwayState>(
         'AssignLocToBlock',
         assignLocToBlock_Pre,
@@ -240,6 +260,11 @@ abstract class StateServiceBase extends $grpc.Service {
     return setBinaryOutputActive(call, await request);
   }
 
+  $async.Future<$2.RailwayState> clickVirtualSensor_Pre($grpc.ServiceCall call,
+      $async.Future<$3.ClickVirtualSensorRequest> request) async {
+    return clickVirtualSensor(call, await request);
+  }
+
   $async.Future<$2.RailwayState> assignLocToBlock_Pre($grpc.ServiceCall call,
       $async.Future<$3.AssignLocToBlockRequest> request) async {
     return assignLocToBlock(call, await request);
@@ -261,6 +286,8 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.SetSwitchDirectionRequest request);
   $async.Future<$2.OutputState> setBinaryOutputActive(
       $grpc.ServiceCall call, $3.SetBinaryOutputActiveRequest request);
+  $async.Future<$2.RailwayState> clickVirtualSensor(
+      $grpc.ServiceCall call, $3.ClickVirtualSensorRequest request);
   $async.Future<$2.RailwayState> assignLocToBlock(
       $grpc.ServiceCall call, $3.AssignLocToBlockRequest request);
 }

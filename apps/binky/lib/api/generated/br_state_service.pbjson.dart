@@ -91,6 +91,16 @@ const SetBinaryOutputActiveRequest$json = const {
 
 /// Descriptor for `SetBinaryOutputActiveRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setBinaryOutputActiveRequestDescriptor = $convert.base64Decode('ChxTZXRCaW5hcnlPdXRwdXRBY3RpdmVSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBIWCgZhY3RpdmUYAiABKAhSBmFjdGl2ZQ==');
+@$core.Deprecated('Use clickVirtualSensorRequestDescriptor instead')
+const ClickVirtualSensorRequest$json = const {
+  '1': 'ClickVirtualSensorRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `ClickVirtualSensorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List clickVirtualSensorRequestDescriptor = $convert.base64Decode('ChlDbGlja1ZpcnR1YWxTZW5zb3JSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZA==');
 @$core.Deprecated('Use assignLocToBlockRequestDescriptor instead')
 const AssignLocToBlockRequest$json = const {
   '1': 'AssignLocToBlockRequest',

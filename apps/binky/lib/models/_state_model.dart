@@ -136,6 +136,17 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<RailwayState> clickVirtualSensor(String id) async {
+    var stateClient = APIClient().stateClient();
+    final result =
+        await stateClient.clickVirtualSensor(ClickVirtualSensorRequest(
+      id: id,
+    ));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
   Future<Holder<T>> _getState<T>(String id, HolderMap<T> state) async {
     return retry(() {
       final result = state.get(id);

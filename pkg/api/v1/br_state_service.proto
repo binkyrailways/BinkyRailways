@@ -51,6 +51,9 @@ service StateService {
   // Change the active state of an output of type binary output
   rpc SetBinaryOutputActive(SetBinaryOutputActiveRequest) returns (OutputState);
 
+  // Click on an entity in virtual mode
+  rpc ClickVirtualSensor(ClickVirtualSensorRequest) returns (RailwayState);
+
   // Assign a loc to a block
   rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
 }
@@ -109,6 +112,11 @@ message SetBinaryOutputActiveRequest {
   string id = 1;
   // Request active state
   bool active = 2;
+}
+
+message ClickVirtualSensorRequest {
+  // ID of the sensor
+  string id = 1;
 }
 
 message AssignLocToBlockRequest {
