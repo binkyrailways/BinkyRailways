@@ -48,6 +48,10 @@ service StateService {
   rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
       returns (LocState);
 
+  // Change the automatic controlled state of a loc
+  rpc SetLocControlledAutomatically(SetLocControlledAutomaticallyRequest)
+      returns (LocState);
+
   // Change the direction of a junction of type switch
   rpc SetSwitchDirection(SetSwitchDirectionRequest) returns (JunctionState);
 
@@ -109,6 +113,13 @@ message SetLocSpeedAndDirectionRequest {
   int32 speed = 2;
   // New direction of the loc
   LocDirection direction = 3;
+}
+
+message SetLocControlledAutomaticallyRequest {
+  // ID of the loc
+  string id = 1;
+  // Enable/disable automatic control of this loc
+  bool enabled = 2;
 }
 
 message SetSwitchDirectionRequest {

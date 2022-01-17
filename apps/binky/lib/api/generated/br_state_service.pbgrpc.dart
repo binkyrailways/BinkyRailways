@@ -50,6 +50,12 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/SetLocSpeedAndDirection',
           ($3.SetLocSpeedAndDirectionRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.LocState.fromBuffer(value));
+  static final _$setLocControlledAutomatically =
+      $grpc.ClientMethod<$3.SetLocControlledAutomaticallyRequest, $2.LocState>(
+          '/binkyrailways.v1.StateService/SetLocControlledAutomatically',
+          ($3.SetLocControlledAutomaticallyRequest value) =>
+              value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.LocState.fromBuffer(value));
   static final _$setSwitchDirection =
       $grpc.ClientMethod<$3.SetSwitchDirectionRequest, $2.JunctionState>(
           '/binkyrailways.v1.StateService/SetSwitchDirection',
@@ -120,6 +126,13 @@ class StateServiceClient extends $grpc.Client {
       $3.SetLocSpeedAndDirectionRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setLocSpeedAndDirection, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$2.LocState> setLocControlledAutomatically(
+      $3.SetLocControlledAutomaticallyRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$setLocControlledAutomatically, request,
         options: options);
   }
 
@@ -213,6 +226,15 @@ abstract class StateServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $3.SetLocSpeedAndDirectionRequest.fromBuffer(value),
             ($2.LocState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.SetLocControlledAutomaticallyRequest,
+            $2.LocState>(
+        'SetLocControlledAutomatically',
+        setLocControlledAutomatically_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $3.SetLocControlledAutomaticallyRequest.fromBuffer(value),
+        ($2.LocState value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$3.SetSwitchDirectionRequest, $2.JunctionState>(
             'SetSwitchDirection',
@@ -293,6 +315,12 @@ abstract class StateServiceBase extends $grpc.Service {
     return setLocSpeedAndDirection(call, await request);
   }
 
+  $async.Future<$2.LocState> setLocControlledAutomatically_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$3.SetLocControlledAutomaticallyRequest> request) async {
+    return setLocControlledAutomatically(call, await request);
+  }
+
   $async.Future<$2.JunctionState> setSwitchDirection_Pre($grpc.ServiceCall call,
       $async.Future<$3.SetSwitchDirectionRequest> request) async {
     return setSwitchDirection(call, await request);
@@ -333,6 +361,8 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.SetAutomaticControlRequest request);
   $async.Future<$2.LocState> setLocSpeedAndDirection(
       $grpc.ServiceCall call, $3.SetLocSpeedAndDirectionRequest request);
+  $async.Future<$2.LocState> setLocControlledAutomatically(
+      $grpc.ServiceCall call, $3.SetLocControlledAutomaticallyRequest request);
   $async.Future<$2.JunctionState> setSwitchDirection(
       $grpc.ServiceCall call, $3.SetSwitchDirectionRequest request);
   $async.Future<$2.OutputState> setBinaryOutputActive(

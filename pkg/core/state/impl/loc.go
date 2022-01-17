@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -269,7 +270,52 @@ func (l *loc) GetSpeedText(ctx context.Context) string {
 
 // Gets a human readable representation of the state of the loc.
 func (l *loc) GetStateText(ctx context.Context) string {
-	return "" // TODO
+	prefix := ""
+	/*targetRouteSelector = RouteSelector as TargetBlockRouteSelector;
+	if (targetRouteSelector != null)
+	{
+		prefix = "@" + targetRouteSelector.TargetBlock.Description + " ";
+	}*/
+	// TODO ^^
+	block := l.GetCurrentBlock().GetActual(ctx)
+
+	if l.GetControlledAutomatically().GetActual(ctx) {
+		// Automatic
+		route := l.GetCurrentRoute().GetActual(ctx)
+		aState := l.GetAutomaticState().GetActual(ctx)
+		switch aState {
+		case state.AssignRoute:
+			return prefix + "Assigning route"
+		case state.ReversingWaitingForDirectionChange:
+			return prefix + "Waiting for direction change"
+		case state.WaitingForAssignedRouteReady:
+			return prefix + "Preparing route"
+		case state.Running:
+			return prefix + route.GetRoute().GetDescription()
+		case state.EnterSensorActivated:
+			return prefix + route.GetRoute().GetDescription() + " ."
+		case state.EnteringDestination:
+			return prefix + route.GetRoute().GetDescription() + " .."
+		case state.ReachedSensorActivated:
+			return prefix + route.GetRoute().GetDescription() + " ..."
+		case state.ReachedDestination:
+			return prefix + route.GetRoute().GetDescription() + " ...."
+		case state.WaitingForDestinationTimeout:
+			delay := math.Max(0, l.GetStartNextRouteTime().GetActual(ctx).Sub(time.Now()).Seconds())
+			return prefix + fmt.Sprintf("Waiting %ds", int(math.Round(delay)))
+		case state.WaitingForDestinationGroupMinimum:
+			return prefix + "Waiting for other locs"
+		default:
+			return fmt.Sprintf("Unknown loc state: %v", aState)
+		}
+	}
+
+	// Manual
+	if block != nil {
+		return prefix + fmt.Sprintf("In block %s", block.GetDescription())
+	} else {
+		return prefix + "Manual"
+	}
 }
 
 // Gets the actual speed of the loc in speed steps

@@ -53,6 +53,29 @@ func (s *service) SetLocSpeedAndDirection(ctx context.Context, req *api.SetLocSp
 	return &result, nil
 }
 
+// Change the automatically controlled state of a loc
+func (s *service) SetLocControlledAutomatically(ctx context.Context, req *api.SetLocControlledAutomaticallyRequest) (*api.LocState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	locState, err := rwState.GetLoc(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	if locState == nil {
+		return nil, api.NotFound("Loc '%s'", req.GetId())
+	}
+	if err := locState.GetControlledAutomatically().SetRequested(ctx, req.GetEnabled()); err != nil {
+		return nil, err
+	}
+	var result api.LocState
+	if err := result.FromState(ctx, locState); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Assign a loc to a block
 func (s *service) AssignLocToBlock(ctx context.Context, req *api.AssignLocToBlockRequest) (*api.RailwayState, error) {
 	rwState, err := s.getRailwayState()

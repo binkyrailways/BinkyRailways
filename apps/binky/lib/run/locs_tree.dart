@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2021-2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/run/run_context.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,10 +59,24 @@ class LocsTree extends StatelessWidget {
                 final canBeControlledAutomatically =
                     loc.canBeControlledAutomatically;
                 return ListTile(
+                  dense: true,
+                  visualDensity: VisualDensity.compact,
                   leading: canBeControlledAutomatically
-                      ? Checkbox(
-                          onChanged: (bool? value) {},
-                          value: loc.controlledAutomaticallyActual,
+                      ? GestureDetector(
+                          child: Icon(
+                            loc.controlledAutomaticallyActual
+                                ? Icons.computer
+                                : Icons.person,
+                            color: loc.controlledAutomaticallyActual ==
+                                    loc.controlledAutomaticallyRequested
+                                ? Colors.black
+                                : Colors.orange,
+                          ),
+                          onTap: () async {
+                            await state.setLocControlledAutomatically(
+                                loc.model.id,
+                                !loc.controlledAutomaticallyRequested);
+                          },
                         )
                       : const Icon(Icons.indeterminate_check_box_outlined),
                   title: Text(loc.model.description),

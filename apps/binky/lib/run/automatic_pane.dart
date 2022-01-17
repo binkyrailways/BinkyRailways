@@ -33,8 +33,10 @@ class AutomaticPane extends StatelessWidget {
             initialData: state.getCachedRailwayState(),
             builder: (context, snapshot) {
               final rwState = snapshot.data;
-              final onShade = (rwState?.powerActual ?? false) ? 200 : 400;
-              final offShade = (rwState?.powerActual ?? false) ? 400 : 200;
+              final onShade =
+                  (rwState?.automaticControlActual ?? false) ? 200 : 400;
+              final offShade =
+                  (rwState?.automaticControlActual ?? false) ? 400 : 200;
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [

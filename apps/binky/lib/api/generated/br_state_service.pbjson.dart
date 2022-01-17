@@ -79,6 +79,17 @@ const SetLocSpeedAndDirectionRequest$json = const {
 
 /// Descriptor for `SetLocSpeedAndDirectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setLocSpeedAndDirectionRequestDescriptor = $convert.base64Decode('Ch5TZXRMb2NTcGVlZEFuZERpcmVjdGlvblJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhQKBXNwZWVkGAIgASgFUgVzcGVlZBI8CglkaXJlY3Rpb24YAyABKA4yHi5iaW5reXJhaWx3YXlzLnYxLkxvY0RpcmVjdGlvblIJZGlyZWN0aW9u');
+@$core.Deprecated('Use setLocControlledAutomaticallyRequestDescriptor instead')
+const SetLocControlledAutomaticallyRequest$json = const {
+  '1': 'SetLocControlledAutomaticallyRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'enabled', '3': 2, '4': 1, '5': 8, '10': 'enabled'},
+  ],
+};
+
+/// Descriptor for `SetLocControlledAutomaticallyRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setLocControlledAutomaticallyRequestDescriptor = $convert.base64Decode('CiRTZXRMb2NDb250cm9sbGVkQXV0b21hdGljYWxseVJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhgKB2VuYWJsZWQYAiABKAhSB2VuYWJsZWQ=');
 @$core.Deprecated('Use setSwitchDirectionRequestDescriptor instead')
 const SetSwitchDirectionRequest$json = const {
   '1': 'SetSwitchDirectionRequest',

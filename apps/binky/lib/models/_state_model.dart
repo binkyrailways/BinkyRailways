@@ -120,6 +120,20 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<LocState> setLocControlledAutomatically(
+      String id, bool enabled) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient
+        .setLocControlledAutomatically(SetLocControlledAutomaticallyRequest(
+      id: id,
+      enabled: enabled,
+    ));
+    if (_locs.set(id, result)) {
+      notifyListeners();
+    }
+    return result;
+  }
+
   Future<JunctionState> setSwitchDirection(
       String id, SwitchDirection direction) async {
     var stateClient = APIClient().stateClient();

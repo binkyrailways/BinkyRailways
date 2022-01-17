@@ -470,6 +470,67 @@ class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   void clearDirection() => clearField(3);
 }
 
+class SetLocControlledAutomaticallyRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetLocControlledAutomaticallyRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'enabled')
+    ..hasRequiredFields = false
+  ;
+
+  SetLocControlledAutomaticallyRequest._() : super();
+  factory SetLocControlledAutomaticallyRequest({
+    $core.String? id,
+    $core.bool? enabled,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (enabled != null) {
+      _result.enabled = enabled;
+    }
+    return _result;
+  }
+  factory SetLocControlledAutomaticallyRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetLocControlledAutomaticallyRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetLocControlledAutomaticallyRequest clone() => SetLocControlledAutomaticallyRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetLocControlledAutomaticallyRequest copyWith(void Function(SetLocControlledAutomaticallyRequest) updates) => super.copyWith((message) => updates(message as SetLocControlledAutomaticallyRequest)) as SetLocControlledAutomaticallyRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetLocControlledAutomaticallyRequest create() => SetLocControlledAutomaticallyRequest._();
+  SetLocControlledAutomaticallyRequest createEmptyInstance() => create();
+  static $pb.PbList<SetLocControlledAutomaticallyRequest> createRepeated() => $pb.PbList<SetLocControlledAutomaticallyRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetLocControlledAutomaticallyRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetLocControlledAutomaticallyRequest>(create);
+  static SetLocControlledAutomaticallyRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get enabled => $_getBF(1);
+  @$pb.TagNumber(2)
+  set enabled($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasEnabled() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearEnabled() => clearField(2);
+}
+
 class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetSwitchDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
