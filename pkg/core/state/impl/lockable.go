@@ -31,17 +31,24 @@ type Lockable interface {
 }
 
 type lockable struct {
-	Children []state.Lockable
+	Children   []state.Lockable
+	onUnlocked []func(context.Context)
 
 	exclusive util.Exclusive
 	lockedBy  Loc
 }
 
 // newLockable initializes a new lockable
-func newLockable(exclusive util.Exclusive) lockable {
+func newLockable(exclusive util.Exclusive, onUnlocked ...func(context.Context)) lockable {
 	return lockable{
-		exclusive: exclusive,
+		exclusive:  exclusive,
+		onUnlocked: onUnlocked,
 	}
+}
+
+// Is this resource locked?
+func (l *lockable) IsLocked(context.Context) bool {
+	return l.lockedBy != nil
 }
 
 // Gets the locomotive that has this state locked.
@@ -119,6 +126,9 @@ func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 		l.lockedBy = nil
 		for _, c := range l.Children {
 			c.Unlock(ctx, exclusion)
+		}
+		for _, cb := range l.onUnlocked {
+			cb(ctx)
 		}
 		return nil
 	})

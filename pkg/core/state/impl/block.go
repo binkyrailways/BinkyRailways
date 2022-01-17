@@ -42,10 +42,16 @@ type block struct {
 // Create a new entity
 func newBlock(en model.Block, railway Railway) Block {
 	b := &block{
-		entity:   newEntity(en, railway),
-		lockable: newLockable(railway),
+		entity: newEntity(en, railway),
 	}
+	b.lockable = newLockable(railway, func(ctx context.Context) {
+		// OnUnlock
+		b.updateClosed(ctx)
+	})
 	b.closed.Configure(b, railway, railway)
+	b.closed.OnRequestedChanged = func(ctx context.Context, value bool) {
+		b.updateClosed(ctx)
+	}
 	var err error
 	b.waitPermissions, err = newLocPredicate(railway, en.GetWaitPermissions())
 	if err != nil {
@@ -64,6 +70,15 @@ func (b *block) getBlock() model.Block {
 // returns an error otherwise.
 func (b *block) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
 	return nil
+}
+
+// Update the actual closed status
+func (b *block) updateClosed(ctx context.Context) {
+	if !b.closed.IsConsistent(ctx) {
+		if !b.IsLocked(ctx) {
+			b.closed.SetActual(ctx, b.closed.GetRequested(ctx))
+		}
+	}
 }
 
 // Unique ID of the module containing this entity
