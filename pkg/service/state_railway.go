@@ -91,3 +91,15 @@ func (s *service) SetPower(ctx context.Context, req *api.SetPowerRequest) (*api.
 	}
 	return s.GetRailwayState(ctx, nil)
 }
+
+// Change the requested automatic controller state
+func (s *service) SetAutomaticControl(ctx context.Context, req *api.SetAutomaticControlRequest) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetAutomaticLocController().GetEnabled().SetRequested(ctx, req.GetEnabled()); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
+}

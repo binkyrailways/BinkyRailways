@@ -38,6 +38,8 @@ func (dst *RailwayState) FromState(ctx context.Context, src state.Railway) error
 	}
 	dst.PowerActual = src.GetPower().GetActual(ctx)
 	dst.PowerRequested = src.GetPower().GetRequested(ctx)
+	dst.AutomaticControlActual = src.GetAutomaticLocController().GetEnabled().GetActual(ctx)
+	dst.AutomaticControlRequested = src.GetAutomaticLocController().GetEnabled().GetRequested(ctx)
 
 	src.ForEachBlock(func(b state.Block) {
 		r := &BlockRef{Id: JoinParentChildID(b.GetModuleID(), b.GetID())}

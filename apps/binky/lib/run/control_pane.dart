@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../components.dart';
+import './automatic_pane.dart';
 import './power_pane.dart';
 import './locs_tree.dart';
 import './loc_pane.dart';
@@ -32,6 +33,7 @@ class ControlPane extends StatelessWidget {
     return Consumer<RunContext>(builder: (context, runCtx, child) {
       final List<Widget> children = [
         const PowerPane(),
+        const AutomaticPane(),
         const SettingsDivider(),
         const Expanded(child: LocsTree()),
       ];

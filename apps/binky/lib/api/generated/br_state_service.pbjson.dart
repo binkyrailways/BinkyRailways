@@ -57,6 +57,16 @@ const SetPowerRequest$json = const {
 
 /// Descriptor for `SetPowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setPowerRequestDescriptor = $convert.base64Decode('Cg9TZXRQb3dlclJlcXVlc3QSGAoHZW5hYmxlZBgBIAEoCFIHZW5hYmxlZA==');
+@$core.Deprecated('Use setAutomaticControlRequestDescriptor instead')
+const SetAutomaticControlRequest$json = const {
+  '1': 'SetAutomaticControlRequest',
+  '2': const [
+    const {'1': 'enabled', '3': 1, '4': 1, '5': 8, '10': 'enabled'},
+  ],
+};
+
+/// Descriptor for `SetAutomaticControlRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setAutomaticControlRequestDescriptor = $convert.base64Decode('ChpTZXRBdXRvbWF0aWNDb250cm9sUmVxdWVzdBIYCgdlbmFibGVkGAEgASgIUgdlbmFibGVk');
 @$core.Deprecated('Use setLocSpeedAndDirectionRequestDescriptor instead')
 const SetLocSpeedAndDirectionRequest$json = const {
   '1': 'SetLocSpeedAndDirectionRequest',

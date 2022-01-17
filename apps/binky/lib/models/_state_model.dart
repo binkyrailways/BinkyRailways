@@ -85,10 +85,21 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  // Set power on/off
   Future<RailwayState> setPower(bool enabled) async {
     var stateClient = APIClient().stateClient();
     final result =
         await stateClient.setPower(SetPowerRequest(enabled: enabled));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Set automatic control on/off
+  Future<RailwayState> setAutomaticControl(bool enabled) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient
+        .setAutomaticControl(SetAutomaticControlRequest(enabled: enabled));
     _railwayState = result;
     notifyListeners();
     return result;

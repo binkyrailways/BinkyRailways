@@ -348,6 +348,53 @@ class SetPowerRequest extends $pb.GeneratedMessage {
   void clearEnabled() => clearField(1);
 }
 
+class SetAutomaticControlRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetAutomaticControlRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'enabled')
+    ..hasRequiredFields = false
+  ;
+
+  SetAutomaticControlRequest._() : super();
+  factory SetAutomaticControlRequest({
+    $core.bool? enabled,
+  }) {
+    final _result = create();
+    if (enabled != null) {
+      _result.enabled = enabled;
+    }
+    return _result;
+  }
+  factory SetAutomaticControlRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetAutomaticControlRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetAutomaticControlRequest clone() => SetAutomaticControlRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetAutomaticControlRequest copyWith(void Function(SetAutomaticControlRequest) updates) => super.copyWith((message) => updates(message as SetAutomaticControlRequest)) as SetAutomaticControlRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetAutomaticControlRequest create() => SetAutomaticControlRequest._();
+  SetAutomaticControlRequest createEmptyInstance() => create();
+  static $pb.PbList<SetAutomaticControlRequest> createRepeated() => $pb.PbList<SetAutomaticControlRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetAutomaticControlRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetAutomaticControlRequest>(create);
+  static SetAutomaticControlRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get enabled => $_getBF(0);
+  @$pb.TagNumber(1)
+  set enabled($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasEnabled() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEnabled() => clearField(1);
+}
+
 class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetLocSpeedAndDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')

@@ -41,6 +41,9 @@ service StateService {
   // Change the requested power state
   rpc SetPower(SetPowerRequest) returns (RailwayState);
 
+  // Change the requested automatic controller state
+  rpc SetAutomaticControl(SetAutomaticControlRequest) returns (RailwayState);
+
   // Change the speed and direction of a loc
   rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
       returns (LocState);
@@ -91,6 +94,11 @@ message StateChange {
 
 message SetPowerRequest {
   // Is set, power will be turned on, otherwise power will be turned off.
+  bool enabled = 1;
+}
+
+message SetAutomaticControlRequest {
+  // If set, automatic control will be turned on, otherwise it will be turned off.
   bool enabled = 1;
 }
 

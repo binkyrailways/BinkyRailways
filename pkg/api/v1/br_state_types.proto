@@ -37,6 +37,10 @@ message RailwayState {
   bool power_actual = 10;
   // Is the requested power status on?
   bool power_requested = 11;
+  // Is the automatic controller currently active?
+  bool automatic_control_actual = 12;
+  // Is the automatic controller requested to become active?
+  bool automatic_control_requested = 13;
 
   repeated BlockRef blocks = 50;
   repeated BlockGroupRef block_groups = 51;

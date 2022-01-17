@@ -24,6 +24,8 @@ class RailwayState extends $pb.GeneratedMessage {
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
+    ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticControlActual')
+    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticControlRequested')
     ..pc<$1.BlockRef>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: $1.BlockRef.create)
     ..pc<$1.BlockGroupRef>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, subBuilder: $1.BlockGroupRef.create)
     ..pc<$1.CommandStationRef>(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, subBuilder: $1.CommandStationRef.create)
@@ -44,6 +46,8 @@ class RailwayState extends $pb.GeneratedMessage {
     $core.bool? isVirtualAutorunEnabled,
     $core.bool? powerActual,
     $core.bool? powerRequested,
+    $core.bool? automaticControlActual,
+    $core.bool? automaticControlRequested,
     $core.Iterable<$1.BlockRef>? blocks,
     $core.Iterable<$1.BlockGroupRef>? blockGroups,
     $core.Iterable<$1.CommandStationRef>? commandStations,
@@ -72,6 +76,12 @@ class RailwayState extends $pb.GeneratedMessage {
     }
     if (powerRequested != null) {
       _result.powerRequested = powerRequested;
+    }
+    if (automaticControlActual != null) {
+      _result.automaticControlActual = automaticControlActual;
+    }
+    if (automaticControlRequested != null) {
+      _result.automaticControlRequested = automaticControlRequested;
     }
     if (blocks != null) {
       _result.blocks.addAll(blocks);
@@ -179,32 +189,50 @@ class RailwayState extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
 
+  @$pb.TagNumber(12)
+  $core.bool get automaticControlActual => $_getBF(6);
+  @$pb.TagNumber(12)
+  set automaticControlActual($core.bool v) { $_setBool(6, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasAutomaticControlActual() => $_has(6);
+  @$pb.TagNumber(12)
+  void clearAutomaticControlActual() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.bool get automaticControlRequested => $_getBF(7);
+  @$pb.TagNumber(13)
+  set automaticControlRequested($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasAutomaticControlRequested() => $_has(7);
+  @$pb.TagNumber(13)
+  void clearAutomaticControlRequested() => clearField(13);
+
   @$pb.TagNumber(50)
-  $core.List<$1.BlockRef> get blocks => $_getList(6);
+  $core.List<$1.BlockRef> get blocks => $_getList(8);
 
   @$pb.TagNumber(51)
-  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(7);
+  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(9);
 
   @$pb.TagNumber(52)
-  $core.List<$1.CommandStationRef> get commandStations => $_getList(8);
+  $core.List<$1.CommandStationRef> get commandStations => $_getList(10);
 
   @$pb.TagNumber(53)
-  $core.List<$1.JunctionRef> get junctions => $_getList(9);
+  $core.List<$1.JunctionRef> get junctions => $_getList(11);
 
   @$pb.TagNumber(54)
-  $core.List<$1.LocRef> get locs => $_getList(10);
+  $core.List<$1.LocRef> get locs => $_getList(12);
 
   @$pb.TagNumber(55)
-  $core.List<$1.OutputRef> get outputs => $_getList(11);
+  $core.List<$1.OutputRef> get outputs => $_getList(13);
 
   @$pb.TagNumber(56)
-  $core.List<$1.RouteRef> get routes => $_getList(12);
+  $core.List<$1.RouteRef> get routes => $_getList(14);
 
   @$pb.TagNumber(57)
-  $core.List<$1.SensorRef> get sensors => $_getList(13);
+  $core.List<$1.SensorRef> get sensors => $_getList(15);
 
   @$pb.TagNumber(58)
-  $core.List<$1.SignalRef> get signals => $_getList(14);
+  $core.List<$1.SignalRef> get signals => $_getList(16);
 }
 
 class LocState extends $pb.GeneratedMessage {
