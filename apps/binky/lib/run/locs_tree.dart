@@ -41,15 +41,23 @@ class LocsTree extends StatelessWidget {
             itemCount: allLocs.length + 2,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return Text(
-                  "Assigned locs (${assignedLocs.length})",
-                  textAlign: TextAlign.center,
-                );
+                return ListTile(
+                    dense: true,
+                    minLeadingWidth: 30,
+                    leading: const Text(""),
+                    title: Text(
+                      "Assigned locs (${assignedLocs.length})",
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ));
               } else if (index == 1 + assignedLocs.length) {
-                return Text(
-                  "Unassigned locs (${unassignedLocs.length})",
-                  textAlign: TextAlign.center,
-                );
+                return ListTile(
+                    dense: true,
+                    minLeadingWidth: 30,
+                    leading: const Text(""),
+                    title: Text(
+                      "Unassigned locs (${unassignedLocs.length})",
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ));
               } else {
                 index = index - 1;
                 final loc = (index < assignedLocs.length)
@@ -59,6 +67,7 @@ class LocsTree extends StatelessWidget {
                 final canBeControlledAutomatically =
                     loc.canBeControlledAutomatically;
                 return ListTile(
+                  minLeadingWidth: 30,
                   dense: true,
                   visualDensity: VisualDensity.compact,
                   leading: canBeControlledAutomatically
@@ -71,6 +80,7 @@ class LocsTree extends StatelessWidget {
                                     loc.controlledAutomaticallyRequested
                                 ? Colors.black
                                 : Colors.orange,
+                            size: 24,
                           ),
                           onTap: () async {
                             await state.setLocControlledAutomatically(
@@ -78,7 +88,10 @@ class LocsTree extends StatelessWidget {
                                 !loc.controlledAutomaticallyRequested);
                           },
                         )
-                      : const Icon(Icons.indeterminate_check_box_outlined),
+                      : const Icon(
+                          Icons.indeterminate_check_box_outlined,
+                          size: 24,
+                        ),
                   title: Text(loc.model.description),
                   subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
                   selected: selectedLocId == loc.model.id,

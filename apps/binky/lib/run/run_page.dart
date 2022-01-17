@@ -70,6 +70,7 @@ class _RunPageState extends State<RunPage> {
                   actions: _buildActions(context),
                 ),
                 body: const SplitView(
+                  menuWidth: 300,
                   menu: ControlPane(),
                   content: RailwayCanvas(),
                 ),
