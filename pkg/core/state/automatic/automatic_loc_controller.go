@@ -19,6 +19,7 @@ package automatic
 
 import (
 	"context"
+	"math/rand"
 	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -517,52 +518,287 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 	return 0
 }
 
+// Continue to AssignRoute state once the direction is consistent.
 func (alc *automaticLocController) onReversingWaitingForDirectionChange(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.ReversingWaitingForDirectionChange {
+		log.Warn().Str("state", st.String()).Msg("Expected ReversingWaitingForDirectionChange state for loc")
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnReversingWaitingForDirectionChange")
+
+	if loc.GetDirection().IsConsistent(ctx) {
+		// Ok, we can continue
+		loc.GetAutomaticState().SetActual(ctx, state.AssignRoute)
+		return 0
+	}
+
+	// Wait a bit more
+	return time.Second
 }
 
+// Check that the designated route is ready and if so, start the loc.
 func (alc *automaticLocController) onWaitingForRouteReady(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.WaitingForAssignedRouteReady {
+		log.Warn().Str("state", st.String()).Msg("Cannot start running loc in this state.")
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnWaitingForRouteReady")
+
+	// If the route ready?
+	route := loc.GetCurrentRoute().GetActual(ctx)
+	if !route.GetRoute().GetIsPrepared() {
+		// Make sure we stop
+		loc.GetSpeed().SetRequested(ctx, 0)
+		// We're not ready yet
+		return time.Minute
+	}
+
+	// Set to max speed
+	loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, route.GetRoute()))
+
+	// Update state
+	loc.GetAutomaticState().SetActual(ctx, state.Running)
+
+	// Already look for a next route
+	alc.chooseNextRoute(ctx, loc)
+
+	return maxDuration
 }
 
+// Loc has triggered an enter sensor.
 func (alc *automaticLocController) onEnterSensorActivated(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.EnterSensorActivated {
+		// Wrong state, no need to do anything
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnEnterSensorActivated")
+
+	// Notify route selector
+	loc.GetRouteSelector(ctx).BlockEntered(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute().GetTo())
+
+	// Should we wait in the destination block?
+	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
+		// The loc should wait in the target block,
+		// so slow down the loc.
+		if loc.GetIsLastEventBehaviorSpeedDefault(ctx) {
+			loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute()))
+		}
+	} else {
+		// The loc can continue (if a free route is found)
+		alc.chooseNextRoute(ctx, loc)
+		nextRoute := loc.GetNextRoute().GetActual(ctx)
+		if (nextRoute != nil) && nextRoute.GetIsPrepared() {
+			// We have a next route, so we can continue our speed
+			if loc.GetIsLastEventBehaviorSpeedDefault(ctx) {
+				loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, nextRoute))
+			}
+		} else if nextRoute != nil {
+			// No next route not yet ready, slow down
+			if loc.GetIsLastEventBehaviorSpeedDefault(ctx) {
+				loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, nextRoute))
+			}
+		} else {
+			// No route available at this time, or next route not yet ready, slow down
+			if loc.GetIsLastEventBehaviorSpeedDefault(ctx) {
+				loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute()))
+			}
+		}
+	}
+
+	// Update state
+	loc.GetAutomaticState().SetActual(ctx, state.EnteringDestination)
+
+	return time.Minute
 }
 
+// Loc is entering its destination.
 func (alc *automaticLocController) onEnteringDestination(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.EnteringDestination {
+		// Wrong state, no need to do anything
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnEnteringDestination")
+
+	// The loc can continue (if a free route is found)
+	alc.chooseNextRoute(ctx, loc)
+	if state.HasNextRoute(ctx, loc) && loc.GetNextRoute().GetActual(ctx).GetIsPrepared() {
+		// We have a next route, so we can continue our speed
+		loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, loc.GetNextRoute().GetActual(ctx)))
+	}
+
+	return maxDuration
 }
 
+// Change the state of the loc to reached destination.
 func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.ReachedSensorActivated {
+		// Invalid state, no need to do anything
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnReachSensorActivated")
+
+	route := loc.GetCurrentRoute().GetActual(ctx)
+	currentBlock := route.GetRoute().GetTo()
+
+	// Notify route selector
+	loc.GetRouteSelector(ctx).BlockReached(ctx, loc, currentBlock)
+
+	// Should we wait in the destination block?
+	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) ||
+		(loc.GetNextRoute().GetActual(ctx) == nil) ||
+		(!alc.shouldControlAutomatically(ctx, loc)) {
+		// Stop the loc now
+		loc.GetSpeed().SetRequested(ctx, 0)
+	}
+
+	// Release the current route, except for the current block.
+	loc.GetCurrentBlock().SetActual(ctx, currentBlock)
+	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide())
+	route.GetRoute().Unlock(ctx, currentBlock)
+	// Make sure the current block is still locked
+	state.AssertLockedBy(ctx, currentBlock, loc)
+
+	// Update state
+	loc.GetAutomaticState().SetActual(ctx, state.ReachedDestination)
+	return 0
 }
 
+// Change the state of the loc to reached destination.
 func (alc *automaticLocController) onReachedDestination(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.ReachedDestination {
+		// Invalid state, no need to do anything
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnReachedDestination")
+
+	// Do we still control this loc?
+	if !alc.shouldControlAutomatically(ctx, loc) {
+		alc.removeLocFromAutomaticControl(ctx, loc)
+		return maxDuration
+	}
+
+	// Delay if we should wait
+	route := loc.GetCurrentRoute().GetActual(ctx)
+	currentBlock := route.GetRoute().GetTo()
+	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
+		delta := maxInt(0, currentBlock.GetMaximumWaitTime(ctx)-currentBlock.GetMinimumWaitTime(ctx))
+		secondsToWait := currentBlock.GetMinimumWaitTime(ctx)
+		if delta > 0 {
+			secondsToWait += rand.Intn(delta)
+		}
+		restartTime := time.Now().Add(time.Duration(secondsToWait) * time.Second)
+		loc.GetStartNextRouteTime().SetActual(ctx, restartTime)
+
+		// Post an action to continue after the wait time
+		loc.GetAutomaticState().SetActual(ctx, state.WaitingForDestinationTimeout)
+
+		return time.Second * time.Duration(secondsToWait)
+	}
+
+	// We can continue, let's assign a new route
+	loc.GetAutomaticState().SetActual(ctx, state.AssignRoute)
+	return 0
 }
 
+// The given loc has waited at it's destination.
+// Let's assign a new route.
 func (alc *automaticLocController) onWaitingForDestinationTimeout(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.WaitingForDestinationTimeout {
+		log.Warn().Str("state", st.String()).Msg("Loc in valid state at destination timeout.")
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnWaitingForDestinationTimeout")
+
+	// Do we still control this loc?
+	if !alc.shouldControlAutomatically(ctx, loc) {
+		alc.removeLocFromAutomaticControl(ctx, loc)
+		return maxDuration
+	}
+
+	// Timeout reached?
+	startNextRouteTime := loc.GetStartNextRouteTime().GetActual(ctx)
+	now := time.Now()
+	if !now.Before(startNextRouteTime) {
+		// Check the block group, see if we can leave
+		if canLeaveCurrentBlock(ctx, loc) {
+			// Yes, let's assign a new route
+			loc.GetAutomaticState().SetActual(ctx, state.AssignRoute)
+			return 0
+		} else {
+			// No we cannot leave yet
+			loc.GetAutomaticState().SetActual(ctx, state.WaitingForDestinationGroupMinimum)
+			return maxDuration
+		}
+	}
+
+	// Nothing changed
+	return startNextRouteTime.Sub(now)
 }
 
+// The given loc has waited at it's destination.
+// Let's assign a new route.
 func (alc *automaticLocController) onWaitingForDestinationGroupMinimum(ctx context.Context, loc state.Loc) time.Duration {
-	// TODO
-	return 0
+	// Check state
+	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	st := loc.GetAutomaticState().GetActual(ctx)
+	if st != state.WaitingForDestinationGroupMinimum {
+		log.Warn().Str("state", st.String()).Msg("Loc in valid state at destination timeout.")
+		return maxDuration
+	}
 
+	// Log state
+	log.Trace().Msg("OnWaitingForDestinationGroupMinimum")
+
+	// Do we still control this loc?
+	if !alc.shouldControlAutomatically(ctx, loc) {
+		alc.removeLocFromAutomaticControl(ctx, loc)
+		return maxDuration
+	}
+
+	// Timeout reached?
+	if canLeaveCurrentBlock(ctx, loc) {
+		// Yes, let's assign a new route
+		loc.GetAutomaticState().SetActual(ctx, state.AssignRoute)
+		return 0
+	}
+
+	// Nothing changed
+	return maxDuration
 }
 
 // Is automatic loc control requested to de-activate?

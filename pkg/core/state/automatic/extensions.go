@@ -30,6 +30,13 @@ func init() {
 	rand.Seed(time.Now().Unix())
 }
 
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 // Is is needed for a loc facing in the given direction (in the From block of the given route)
 // to chance direction when taking this route?
 // route: The route being investigated

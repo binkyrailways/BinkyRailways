@@ -17,7 +17,10 @@
 
 package state
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // Lockable specifies a state that can be locked by a locomotive
 type Lockable interface {
@@ -50,4 +53,16 @@ func IsLocked(ctx context.Context, l Lockable) bool {
 // IsLockedBy returns true if the given lockable is locked by the given loc.
 func IsLockedBy(ctx context.Context, l Lockable, loc Loc) bool {
 	return l.GetLockedBy(ctx) == loc
+}
+
+/// Validate that the given state is locked by the given loc.
+/// If not, throw an error.
+func AssertLockedBy(ctx context.Context, l Lockable, loc Loc) {
+	if current := l.GetLockedBy(ctx); current != loc {
+		if current == nil {
+			panic(fmt.Sprintf("Object %v is not locked by %v", l, loc))
+		} else {
+			panic(fmt.Sprintf("Object %v is not locked by %v but by %v", l, loc, current))
+		}
+	}
 }
