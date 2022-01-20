@@ -118,6 +118,7 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
     final connections = widget.binkynetobject.connections;
     for (var i = 0; i < connections.length; i++) {
       children.add(_BinkyNetConnectionSettings(
+          key: Key("conn-${connections[i].key}"),
           editorCtx: widget.editorCtx,
           model: widget.model,
           binkynetlocalworker: widget.binkynetlocalworker,
