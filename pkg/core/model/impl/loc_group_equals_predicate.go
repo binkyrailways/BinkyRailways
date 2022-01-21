@@ -96,3 +96,5 @@ func (p *locGroupEqualsPredicate) Evaluate(loc model.Loc) bool {
 	}
 	return group.GetLocs().ContainsID(loc.GetID())
 }
+
+func (p *locGroupEqualsPredicate) ImplementsGroupEqualsPredicate() {}

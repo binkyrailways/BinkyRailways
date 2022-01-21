@@ -26,6 +26,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/cenkalti/backoff"
 )
 
 // Loc adds implementation functions to state.Loc.
@@ -60,6 +61,8 @@ type loc struct {
 	lockedEntities                  []Lockable
 	lastEventBehavior               state.RouteEventBehavior
 	routeSelector                   state.RouteSelector
+	beforeReset                     []func(context.Context)
+	afterReset                      []func(context.Context)
 }
 
 // Create a new entity
@@ -129,10 +132,20 @@ func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ sta
 }
 
 // All settings of this loc will be reset, because the loc is taken of the track.
-//BeforeReset() model.EventHandler
+func (l *loc) SubscribeBeforeReset(cb func(context.Context)) {
+	l.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+		l.beforeReset = append(l.beforeReset, cb)
+		return nil
+	})
+}
 
 // All settings of this loc have been reset, because the loc is taken of the track.
-//AfterReset() model.EventHandler
+func (l *loc) SubscribeAfterReset(cb func(context.Context)) {
+	l.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+		l.afterReset = append(l.afterReset, cb)
+		return nil
+	})
+}
 
 // Address of the entity
 func (l *loc) GetAddress(context.Context) model.Address {
@@ -411,7 +424,34 @@ func (l *loc) GetCommandStationInfo(ctx context.Context) string {
 // Forcefully reset of settings of this loc.
 // This should be used when a loc is taken of the track.
 func (l *loc) Reset(ctx context.Context) {
-	// TODO
+	ctx, cancel := context.WithCancel(ctx)
+	attempt := func() error {
+		return l.railway.Exclusive(ctx, func(ctx context.Context) error {
+			// Stop
+			l.GetSpeed().SetRequested(ctx, 0)
+			l.GetControlledAutomatically().SetRequested(ctx, false)
+
+			// Call before reset handlers
+			for _, cb := range l.beforeReset {
+				cb(ctx)
+			}
+
+			// Disconnect from block
+			if err := l.AssignTo(ctx, nil, model.BlockSideBack); err != nil {
+				return err
+			}
+
+			// Call after reset handlers
+			for _, cb := range l.afterReset {
+				cb(ctx)
+			}
+			return nil
+		})
+	}
+	go func() {
+		defer cancel()
+		backoff.Retry(attempt, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(time.Second/10), 25), ctx))
+	}()
 }
 
 // Save the current state to the state persistence.

@@ -21,6 +21,7 @@ package model
 // given loc is part of the specified group.
 type LocGroupEqualsPredicate interface {
 	LocPredicate
+	ImplementsGroupEqualsPredicate()
 
 	// Gets/Sets the group to compare to.
 	GetGroup() LocGroup

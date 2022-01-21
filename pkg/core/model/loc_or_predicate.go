@@ -21,4 +21,5 @@ package model
 // one of the nested predicates evaluate to true.
 type LocOrPredicate interface {
 	LocPredicatesPredicate
+	ImplementsOrPredicate()
 }

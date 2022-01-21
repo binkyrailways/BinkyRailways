@@ -56,3 +56,5 @@ func (p *locCanChangeDirectionPredicate) Clone() model.LocPredicate {
 func (p *locCanChangeDirectionPredicate) Evaluate(loc model.Loc) bool {
 	return loc.GetChangeDirection() == model.ChangeDirectionAllow
 }
+
+func (p *locCanChangeDirectionPredicate) ImplementsCanChangeDirectionPredicate() {}

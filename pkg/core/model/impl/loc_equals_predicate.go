@@ -96,3 +96,5 @@ func (p *locEqualsPredicate) Clone() model.LocPredicate {
 func (p *locEqualsPredicate) Evaluate(loc model.Loc) bool {
 	return loc.GetID() == p.LocID
 }
+
+func (p *locEqualsPredicate) ImplementsEqualsPredicate() {}

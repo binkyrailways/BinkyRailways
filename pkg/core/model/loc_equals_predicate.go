@@ -21,6 +21,7 @@ package model
 // given loc is equal to the specified loc.
 type LocEqualsPredicate interface {
 	LocPredicate
+	ImplementsEqualsPredicate()
 
 	// Gets/Sets the loc to compare to.
 	GetLoc() (Loc, error)

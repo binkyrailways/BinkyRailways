@@ -28,8 +28,8 @@ import (
 func (dst *RouteEventBehavior) FromModel(ctx context.Context, src model.RouteEventBehavior) error {
 	var err error
 	dst.AppliesTo, err = dst.AppliesTo.FromModel(ctx, src.GetAppliesTo())
-	dst.StateBehavior.FromModel(ctx, src.GetStateBehavior())
-	dst.SpeedBehavior.FromModel(ctx, src.GetSpeedBehavior())
+	multierr.AppendInto(&err, dst.StateBehavior.FromModel(ctx, src.GetStateBehavior()))
+	multierr.AppendInto(&err, dst.SpeedBehavior.FromModel(ctx, src.GetSpeedBehavior()))
 	return err
 }
 

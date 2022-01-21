@@ -68,3 +68,5 @@ func (p *locOrPredicate) Evaluate(loc model.Loc) bool {
 	})
 	return result
 }
+
+func (p *locOrPredicate) ImplementsOrPredicate() {}

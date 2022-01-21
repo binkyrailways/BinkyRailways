@@ -104,3 +104,5 @@ func (p *locStandardPredicate) CopyFrom(src model.LocStandardPredicate) {
 	p.Includes.CopyFrom(src.GetIncludes())
 	p.Excludes.CopyFrom(src.GetExcludes())
 }
+
+func (p *locStandardPredicate) ImplementsStandardPredicate() {}

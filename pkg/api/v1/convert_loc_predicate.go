@@ -29,6 +29,9 @@ func (dst *LocPredicate) FromModel(ctx context.Context, src model.LocPredicate) 
 	if src == nil {
 		return nil, nil
 	}
+	if dst == nil {
+		dst = &LocPredicate{}
+	}
 	var err error
 	switch p := src.(type) {
 	case model.LocAndPredicate:
@@ -39,8 +42,6 @@ func (dst *LocPredicate) FromModel(ctx context.Context, src model.LocPredicate) 
 				dst.And.Predicates = append(dst.And.Predicates, x)
 			}
 		})
-	case model.LocCanChangeDirectionPredicate:
-		dst.CanChangeDirection = &LocCanChangeDirectionPredicate{}
 	case model.LocEqualsPredicate:
 		if loc, e := p.GetLoc(); e != nil {
 			multierr.AppendInto(&err, e)
@@ -80,6 +81,8 @@ func (dst *LocPredicate) FromModel(ctx context.Context, src model.LocPredicate) 
 				dst.Standard.Excludes = append(dst.Standard.Excludes, x)
 			}
 		})
+	case model.LocCanChangeDirectionPredicate:
+		dst.CanChangeDirection = &LocCanChangeDirectionPredicate{}
 	default:
 		return nil, InvalidArgument("Unknown loc predicate type %T", src)
 	}

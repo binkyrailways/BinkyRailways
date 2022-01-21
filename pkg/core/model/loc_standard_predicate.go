@@ -23,6 +23,7 @@ package model
 // - The Includes predicate evaluates to true and the excludes predicate for the loc evaluates to false
 type LocStandardPredicate interface {
 	LocPredicate
+	ImplementsStandardPredicate()
 
 	// Including predicates.
 	GetIncludes() LocOrPredicate

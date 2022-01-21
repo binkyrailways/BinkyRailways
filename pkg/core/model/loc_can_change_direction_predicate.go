@@ -21,4 +21,5 @@ package model
 // given loc is allowed to change direction.
 type LocCanChangeDirectionPredicate interface {
 	LocPredicate
+	ImplementsCanChangeDirectionPredicate()
 }
