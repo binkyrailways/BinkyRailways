@@ -73,11 +73,16 @@ func (alc *automaticLocController) Close(ctx context.Context) {
 
 // Run the automatic controller loop until automatic control is disabled.
 func (alc *automaticLocController) run() {
+	log := alc.log
+	defer func() {
+		log.Debug().Msg("alc run ended")
+	}()
 	sensorActiveChanged := make(chan state.Sensor, 32)
 	defer close(sensorActiveChanged)
 	cancel := alc.railway.Subscribe(context.Background(), func(evt state.Event) {
 		switch evt := evt.(type) {
 		case state.ActualStateChangedEvent:
+			log.Debug().Interface("event", evt).Msg("ActualStateChangedEvent")
 			if sensor, ok := evt.Subject.(state.Sensor); ok && sensor.GetActive() == evt.Property {
 				sensorActiveChanged <- sensor
 			}
@@ -91,10 +96,12 @@ func (alc *automaticLocController) run() {
 		select {
 		case <-alc.trigger.Done():
 			// Update triggered
+			log.Trace().Msg("alc triggered")
 		case <-time.After(delay):
 			// Heartbeat
 		case sensor = <-sensorActiveChanged:
 			// Sensor active property change
+			log.Trace().Msg("sensor active changed")
 		}
 
 		// Update state of locs
@@ -192,13 +199,13 @@ func (alc *automaticLocController) removeLocFromAutomaticControl(ctx context.Con
 
 // Active state of given sensor has changed.
 func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, sensor state.Sensor) {
+	log := alc.log.With().Str("sensor", sensor.GetDescription()).Logger()
 	if !sensor.GetActive().GetActual(ctx) {
 		// Sensor became inactive
 		return
 	}
 
-	// log.Trace("OnSensorActive {0}", sensor);
-	// TODO ^^
+	log.Trace().Msg("OnSensorActive")
 	var locsWithRoutes, locsWithSensor []state.Loc
 	alc.railway.ForEachLoc(func(x state.Loc) {
 		if x.GetCurrentRoute().GetActual(ctx) != nil {
@@ -293,6 +300,10 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 	nextDelay := time.Second * 10
 	for _, loc := range alc.autoLocs {
 		st := loc.GetAutomaticState().GetActual(ctx)
+		log := alc.log.With().
+			Str("loc", loc.GetDescription()).
+			Str("state", st.String()).
+			Logger()
 		nextLocDelay := nextDelay
 		switch st {
 		case state.AssignRoute:
@@ -316,8 +327,7 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 		case state.WaitingForDestinationGroupMinimum:
 			nextLocDelay = alc.onWaitingForDestinationGroupMinimum(ctx, loc)
 		default:
-			//			log.Warn("Invalid state ({0}) in loc {1}.", state, loc)
-			// TODO
+			log.Warn().Msg("Invalid state in loc.")
 		}
 		if nextLocDelay < nextDelay {
 			nextDelay = nextLocDelay
