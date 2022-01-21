@@ -22,6 +22,11 @@ type Switch interface {
 	Junction
 	AddressEntity
 
+	// Is this switch turning to the left?
+	// Otherwise it is turning to the right.
+	GetIsLeft() bool
+	SetIsLeft(value bool) error
+
 	// Does this switch send a feedback when switched?
 	GetHasFeedback() bool
 	SetHasFeedback(value bool) error

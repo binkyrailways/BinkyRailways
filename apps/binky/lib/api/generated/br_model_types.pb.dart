@@ -2275,6 +2275,7 @@ class Switch extends $pb.GeneratedMessage {
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'invert')
     ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'invertFeedback')
     ..e<SwitchDirection>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'initialDirection', $pb.PbFieldType.OE, defaultOrMaker: SwitchDirection.STRAIGHT, valueOf: SwitchDirection.valueOf, enumValues: SwitchDirection.values)
+    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isLeft')
     ..hasRequiredFields = false
   ;
 
@@ -2287,6 +2288,7 @@ class Switch extends $pb.GeneratedMessage {
     $core.bool? invert,
     $core.bool? invertFeedback,
     SwitchDirection? initialDirection,
+    $core.bool? isLeft,
   }) {
     final _result = create();
     if (address != null) {
@@ -2309,6 +2311,9 @@ class Switch extends $pb.GeneratedMessage {
     }
     if (initialDirection != null) {
       _result.initialDirection = initialDirection;
+    }
+    if (isLeft != null) {
+      _result.isLeft = isLeft;
     }
     return _result;
   }
@@ -2395,6 +2400,15 @@ class Switch extends $pb.GeneratedMessage {
   $core.bool hasInitialDirection() => $_has(6);
   @$pb.TagNumber(7)
   void clearInitialDirection() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.bool get isLeft => $_getBF(7);
+  @$pb.TagNumber(8)
+  set isLeft($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasIsLeft() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearIsLeft() => clearField(8);
 }
 
 class Output extends $pb.GeneratedMessage {

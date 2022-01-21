@@ -31,6 +31,7 @@ func (dst *Switch) FromModel(ctx context.Context, src model.Switch) error {
 	dst.SwitchDuration = int32(src.GetSwitchDuration())
 	dst.Invert = src.GetInvert()
 	dst.InvertFeedback = src.GetInvertFeedback()
+	dst.IsLeft = src.GetIsLeft()
 	if err := dst.InitialDirection.FromModel(ctx, src.GetInitialDirection()); err != nil {
 		return err
 	}
@@ -63,6 +64,9 @@ func (src *Switch) ToModel(ctx context.Context, dst model.Switch) error {
 		return err
 	}
 	if err := dst.SetInvertFeedback(src.GetInvertFeedback()); err != nil {
+		return err
+	}
+	if err := dst.SetIsLeft(src.GetIsLeft()); err != nil {
 		return err
 	}
 	dir, err := src.GetInitialDirection().ToModel(ctx)

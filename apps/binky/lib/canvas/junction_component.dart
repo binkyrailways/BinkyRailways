@@ -53,11 +53,32 @@ class JunctionComponent extends EntityComponent {
       final linePaint = Paint()
         ..strokeWidth = strokeWith
         ..color = switchColor();
+      final altLinePaint = Paint()
+        ..strokeWidth = strokeWith
+        ..color = altSwitchColor();
+      final y = size.y / 2;
       if (switchDirection() == mapi.SwitchDirection.STRAIGHT) {
-        final y = (size.y - strokeWith) / 2;
+        if (model.switch_6.isLeft) {
+          // turn left
+          canvas.drawLine(
+              Offset(size.x / 2, y), Offset(size.x, 0), altLinePaint);
+        } else {
+          // turn right
+          canvas.drawLine(
+              Offset(size.x / 2, y), Offset(size.x, size.y), altLinePaint);
+        }
         canvas.drawLine(Offset(0, y), Offset(size.x, y), linePaint);
       } else {
-        canvas.drawLine(Offset.zero, size.toOffset(), linePaint);
+        canvas.drawLine(Offset(size.x / 2, y), Offset(size.x, y), altLinePaint);
+        if (model.switch_6.isLeft) {
+          // turn left
+          canvas.drawLine(Offset(size.x / 2, y), Offset(size.x, 0), linePaint);
+        } else {
+          // turn right
+          canvas.drawLine(
+              Offset(size.x / 2, y), Offset(size.x, size.y), linePaint);
+        }
+        canvas.drawLine(Offset(0, y), Offset(size.x / 2, y), linePaint);
       }
     }
     canvas.restore();
@@ -72,6 +93,7 @@ class JunctionComponent extends EntityComponent {
   Color backgroundColor() => Colors.white;
   Color textColor() => Colors.black;
   Color switchColor() => Colors.red.shade200;
+  Color altSwitchColor() => Colors.grey.shade200;
 
   mapi.SwitchDirection switchDirection() => mapi.SwitchDirection.STRAIGHT;
   bool showDescription() => isHovered;

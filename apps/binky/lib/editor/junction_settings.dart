@@ -107,6 +107,15 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
           }),
     ];
     if (widget.junction.hasSwitch_6()) {
+      children.add(SettingsCheckBoxField(
+        label: "Is left (otherwise right)",
+        value: widget.junction.switch_6.isLeft,
+        onChanged: (value) async {
+          await _update((update) {
+            update.switch_6.isLeft = value;
+          });
+        },
+      ));
       children.add(SettingsAddressField(
           key: Key("${widget.junction.id}/junction/address"),
           label: "Address",

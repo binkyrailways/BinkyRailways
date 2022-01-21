@@ -439,6 +439,10 @@ message Switch {
 
   // At which direction should the switch be initialized?
   SwitchDirection initial_direction = 7;
+
+  // Is this switch turning left?
+  // Otherwise it is turning right.
+  bool is_left = 8;
 }
 
 enum SwitchDirection {

@@ -485,11 +485,12 @@ const Switch$json = const {
     const {'1': 'invert', '3': 5, '4': 1, '5': 8, '10': 'invert'},
     const {'1': 'invert_feedback', '3': 6, '4': 1, '5': 8, '10': 'invertFeedback'},
     const {'1': 'initial_direction', '3': 7, '4': 1, '5': 14, '6': '.binkyrailways.v1.SwitchDirection', '10': 'initialDirection'},
+    const {'1': 'is_left', '3': 8, '4': 1, '5': 8, '10': 'isLeft'},
   ],
 };
 
 /// Descriptor for `Switch`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List switchDescriptor = $convert.base64Decode('CgZTd2l0Y2gSGAoHYWRkcmVzcxgBIAEoCVIHYWRkcmVzcxIhCgxoYXNfZmVlZGJhY2sYAiABKAhSC2hhc0ZlZWRiYWNrEikKEGZlZWRiYWNrX2FkZHJlc3MYAyABKAlSD2ZlZWRiYWNrQWRkcmVzcxInCg9zd2l0Y2hfZHVyYXRpb24YBCABKAVSDnN3aXRjaER1cmF0aW9uEhYKBmludmVydBgFIAEoCFIGaW52ZXJ0EicKD2ludmVydF9mZWVkYmFjaxgGIAEoCFIOaW52ZXJ0RmVlZGJhY2sSTgoRaW5pdGlhbF9kaXJlY3Rpb24YByABKA4yIS5iaW5reXJhaWx3YXlzLnYxLlN3aXRjaERpcmVjdGlvblIQaW5pdGlhbERpcmVjdGlvbg==');
+final $typed_data.Uint8List switchDescriptor = $convert.base64Decode('CgZTd2l0Y2gSGAoHYWRkcmVzcxgBIAEoCVIHYWRkcmVzcxIhCgxoYXNfZmVlZGJhY2sYAiABKAhSC2hhc0ZlZWRiYWNrEikKEGZlZWRiYWNrX2FkZHJlc3MYAyABKAlSD2ZlZWRiYWNrQWRkcmVzcxInCg9zd2l0Y2hfZHVyYXRpb24YBCABKAVSDnN3aXRjaER1cmF0aW9uEhYKBmludmVydBgFIAEoCFIGaW52ZXJ0EicKD2ludmVydF9mZWVkYmFjaxgGIAEoCFIOaW52ZXJ0RmVlZGJhY2sSTgoRaW5pdGlhbF9kaXJlY3Rpb24YByABKA4yIS5iaW5reXJhaWx3YXlzLnYxLlN3aXRjaERpcmVjdGlvblIQaW5pdGlhbERpcmVjdGlvbhIXCgdpc19sZWZ0GAggASgIUgZpc0xlZnQ=');
 @$core.Deprecated('Use outputDescriptor instead')
 const Output$json = const {
   '1': 'Output',

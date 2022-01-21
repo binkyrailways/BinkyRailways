@@ -34,6 +34,7 @@ type stdSwitch struct {
 	Address          model.Address          `xml:"Address"`
 	FeedbackAddress  model.Address          `xml:"FeedbackAddress,omitempty"`
 	HasFeedback      *bool                  `xml:"HasFeedback,omitempty"`
+	IsLeft           *bool                  `xml:"IsLeft,omitempty"`
 	SwitchDuration   *int                   `xml:"SwitchDuration,omitempty"`
 	Invert           *bool                  `xml:"Invert,omitempty"`
 	InvertFeedback   *bool                  `xml:"InvertFeedback,omitempty"`
@@ -83,6 +84,20 @@ func (sw *stdSwitch) ForEachAddressUsage(cb func(model.AddressUsage)) {
 			Direction: model.AddressDirectionOutput,
 		})
 	}
+}
+
+// Is this switch turning to the left?
+// Otherwise it is turning to the right.
+func (sw *stdSwitch) GetIsLeft() bool {
+	return refs.BoolValue(sw.IsLeft, false)
+}
+func (sw *stdSwitch) SetIsLeft(value bool) error {
+	if sw.GetIsLeft() != value {
+		sw.IsLeft = refs.NewBool(value)
+		sw.OnModified()
+	}
+	return nil
+
 }
 
 // Does this switch send a feedback when switched?
