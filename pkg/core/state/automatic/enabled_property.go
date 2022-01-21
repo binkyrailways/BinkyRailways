@@ -26,8 +26,9 @@ import (
 type enabledProperty struct {
 	alc *automaticLocController
 
-	actual    bool
-	requested bool
+	actual         bool
+	requested      bool
+	requestChanges []func(context.Context, bool)
 }
 
 // Is the request value equal to the actual value?
@@ -48,6 +49,11 @@ func (p *enabledProperty) SetActual(context.Context, bool) error {
 	return fmt.Errorf("Cannot change actual")
 }
 
+// Subscribe to actual changes
+func (p *enabledProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+	panic("Not support")
+}
+
 // Gets / sets the requested value
 func (p *enabledProperty) GetRequested(ctx context.Context) bool {
 	var result bool
@@ -66,6 +72,14 @@ func (p *enabledProperty) SetRequested(ctx context.Context, value bool) error {
 		p.requested = value
 		p.actual = value
 		p.alc.Startup(ctx)
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (p *enabledProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+	p.alc.railway.Exclusive(context.Background(), func(c context.Context) error {
+		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
 }

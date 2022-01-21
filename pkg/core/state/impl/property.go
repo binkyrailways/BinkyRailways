@@ -22,14 +22,20 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // BoolProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type boolProperty struct {
 	actualBoolProperty
-	requested          bool
-	OnRequestedChanged func(context.Context, bool)
+	requested      bool
+	requestChanges []func(context.Context, bool)
+}
+
+// Configure the values of the property
+func (p *boolProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualBoolProperty.Configure(p, subject, dispatcher, exclusive)
 }
 
 func (p *boolProperty) IsConsistent(ctx context.Context) bool {
@@ -42,11 +48,19 @@ func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
-			if p.OnRequestedChanged != nil {
-				p.OnRequestedChanged(ctx, value)
+			for _, cb := range p.requestChanges {
+				cb(ctx, value)
 			}
-			p.SendRequestedStateChanged(p)
+			p.SendRequestedStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (p *boolProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
 }
@@ -55,8 +69,13 @@ func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
 // The value contains a requested value and an actual value.
 type intProperty struct {
 	actualIntProperty
-	requested          int
-	OnRequestedChanged func(context.Context, int)
+	requested      int
+	requestChanges []func(context.Context, int)
+}
+
+// Configure the values of the property
+func (p *intProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualIntProperty.Configure(p, subject, dispatcher, exclusive)
 }
 
 func (p *intProperty) IsConsistent(ctx context.Context) bool {
@@ -69,11 +88,19 @@ func (p *intProperty) SetRequested(ctx context.Context, value int) error {
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
-			if p.OnRequestedChanged != nil {
-				p.OnRequestedChanged(ctx, value)
+			for _, cb := range p.requestChanges {
+				cb(ctx, value)
 			}
-			p.SendRequestedStateChanged(p)
+			p.SendRequestedStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (p *intProperty) SubscribeRequestChanges(cb func(context.Context, int)) {
+	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
 }
@@ -82,8 +109,13 @@ func (p *intProperty) SetRequested(ctx context.Context, value int) error {
 // The value contains a requested value and an actual value.
 type locDirectionProperty struct {
 	actualLocDirectionProperty
-	requested          state.LocDirection
-	OnRequestedChanged func(context.Context, state.LocDirection)
+	requested      state.LocDirection
+	requestChanges []func(context.Context, state.LocDirection)
+}
+
+// Configure the values of the property
+func (p *locDirectionProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualLocDirectionProperty.Configure(p, subject, dispatcher, exclusive)
 }
 
 func (p *locDirectionProperty) IsConsistent(ctx context.Context) bool {
@@ -96,11 +128,19 @@ func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.Loc
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
-			if p.OnRequestedChanged != nil {
-				p.OnRequestedChanged(ctx, value)
+			for _, cb := range p.requestChanges {
+				cb(ctx, value)
 			}
-			p.SendRequestedStateChanged(p)
+			p.SendRequestedStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (p *locDirectionProperty) SubscribeRequestChanges(cb func(context.Context, state.LocDirection)) {
+	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
 }
@@ -109,8 +149,13 @@ func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.Loc
 // The value contains a requested value and an actual value.
 type switchDirectionProperty struct {
 	actualSwitchDirectionProperty
-	requested          model.SwitchDirection
-	OnRequestedChanged func(context.Context, model.SwitchDirection)
+	requested      model.SwitchDirection
+	requestChanges []func(context.Context, model.SwitchDirection)
+}
+
+// Configure the values of the property
+func (p *switchDirectionProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualSwitchDirectionProperty.Configure(p, subject, dispatcher, exclusive)
 }
 
 func (p *switchDirectionProperty) IsConsistent(ctx context.Context) bool {
@@ -123,11 +168,19 @@ func (p *switchDirectionProperty) SetRequested(ctx context.Context, value model.
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
-			if p.OnRequestedChanged != nil {
-				p.OnRequestedChanged(ctx, value)
+			for _, cb := range p.requestChanges {
+				cb(ctx, value)
 			}
-			p.SendRequestedStateChanged(p)
+			p.SendRequestedStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (p *switchDirectionProperty) SubscribeRequestChanges(cb func(context.Context, model.SwitchDirection)) {
+	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
 }

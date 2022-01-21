@@ -41,6 +41,8 @@ type BoolProperty interface {
 	// Gets / sets the requested value
 	GetRequested(context.Context) bool
 	SetRequested(context.Context, bool) error
+	// Subscribe to requested changes
+	SubscribeRequestChanges(func(context.Context, bool))
 }
 
 // IntProperty contains the value of a property in a state object.
@@ -52,6 +54,8 @@ type IntProperty interface {
 	// Gets / sets the requested value
 	GetRequested(context.Context) int
 	SetRequested(context.Context, int) error
+	// Subscribe to requested changes
+	SubscribeRequestChanges(func(context.Context, int))
 }
 
 // LocDirectionProperty contains the value of a property in a state object.
@@ -63,6 +67,8 @@ type LocDirectionProperty interface {
 	// Gets / sets the requested value
 	GetRequested(context.Context) LocDirection
 	SetRequested(context.Context, LocDirection) error
+	// Subscribe to requested changes
+	SubscribeRequestChanges(func(context.Context, LocDirection))
 }
 
 // SwitchDirectionProperty contains the value of a property in a state object.
@@ -73,4 +79,6 @@ type SwitchDirectionProperty interface {
 	// Gets / sets the requested value
 	GetRequested(context.Context) model.SwitchDirection
 	SetRequested(context.Context, model.SwitchDirection) error
+	// Subscribe to requested changes
+	SubscribeRequestChanges(func(context.Context, model.SwitchDirection))
 }

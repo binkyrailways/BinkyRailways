@@ -37,6 +37,8 @@ type ActualBoolProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) bool
 	SetActual(context.Context, bool) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, bool))
 }
 
 // ActualIntProperty contains the value of a property in a state object.
@@ -47,6 +49,8 @@ type ActualIntProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) int
 	SetActual(context.Context, int) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, int))
 }
 
 // ActualTimeProperty contains the value of a property in a state object.
@@ -57,6 +61,8 @@ type ActualTimeProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) time.Time
 	SetActual(context.Context, time.Time) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, time.Time))
 }
 
 // ActualAutoLocStateProperty contains the value of a property in a state object.
@@ -67,6 +73,8 @@ type ActualAutoLocStateProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) AutoLocState
 	SetActual(context.Context, AutoLocState) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, AutoLocState))
 }
 
 // ActualLocDirectionProperty contains the value of a property in a state object.
@@ -77,6 +85,8 @@ type ActualLocDirectionProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) LocDirection
 	SetActual(context.Context, LocDirection) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, LocDirection))
 }
 
 // ActualSwitchDirectionProperty contains the value of a property in a state object.
@@ -87,6 +97,8 @@ type ActualSwitchDirectionProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) model.SwitchDirection
 	SetActual(context.Context, model.SwitchDirection) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, model.SwitchDirection))
 }
 
 // ActualBlockSideProperty contains the value of a property in a state object.
@@ -97,6 +109,8 @@ type ActualBlockSideProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) model.BlockSide
 	SetActual(context.Context, model.BlockSide) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, model.BlockSide))
 }
 
 // ActualBlockProperty contains the value of a property in a state object.
@@ -107,6 +121,8 @@ type ActualBlockProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) Block
 	SetActual(context.Context, Block) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, Block))
 }
 
 // ActualRouteProperty contains the value of a property in a state object.
@@ -117,6 +133,8 @@ type ActualRouteProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) Route
 	SetActual(context.Context, Route) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, Route))
 }
 
 // ActualRouteForLocProperty contains the value of a property in a state object.
@@ -127,4 +145,6 @@ type ActualRouteForLocProperty interface {
 	// Gets / sets the actual value
 	GetActual(context.Context) RouteForLoc
 	SetActual(context.Context, RouteForLoc) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, RouteForLoc))
 }

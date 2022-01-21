@@ -52,7 +52,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 		commandStation: newCommandStation(en, railway),
 	}
 	cs.power.Configure(cs, railway, railway)
-	cs.power.OnRequestedChanged = cs.sendPower
+	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
 }
 

@@ -67,35 +67,35 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
 		entity: newEntity(en, railway),
 	}
-	l.waitAfterCurrentRoute.Configure(l, railway, railway)
-	l.durationExceedsCurrentRouteTime.Configure(l, railway, railway)
-	l.autoLocState.Configure(l, railway, railway)
-	l.nextRoute.Configure(l, railway, railway)
-	l.currentBlock.Configure(l, railway, railway)
-	l.currentBlockEnterSide.Configure(l, railway, railway)
-	l.startNextRouteTime.Configure(l, railway, railway)
+	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, l, railway, railway)
+	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, l, railway, railway)
+	l.autoLocState.Configure(&l.autoLocState, l, railway, railway)
+	l.nextRoute.Configure(&l.nextRoute, l, railway, railway)
+	l.currentBlock.Configure(&l.currentBlock, l, railway, railway)
+	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, l, railway, railway)
+	l.startNextRouteTime.Configure(&l.startNextRouteTime, l, railway, railway)
 	l.speed.loc = l
 	l.speedInSteps.Configure(l, railway, railway)
-	l.speedInSteps.OnRequestedChanged = func(ctx context.Context, value int) {
+	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
-	}
+	})
 	l.direction.Configure(l, railway, railway)
-	l.direction.OnRequestedChanged = func(ctx context.Context, value state.LocDirection) {
+	l.direction.SubscribeRequestChanges(func(ctx context.Context, value state.LocDirection) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
-	}
-	l.reversing.Configure(l, railway, railway)
+	})
+	l.reversing.Configure(l.reversing, l, railway, railway)
 	l.f0.Configure(l, railway, railway)
-	l.f0.OnRequestedChanged = func(ctx context.Context, value bool) {
+	l.f0.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
-	}
+	})
 	l.controlledAutomatically.Configure(l, railway, railway)
-	l.currentRoute.Configure(l, railway, railway)
+	l.currentRoute.Configure(l.currentRoute, l, railway, railway)
 	return l
 }
 

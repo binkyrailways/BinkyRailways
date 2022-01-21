@@ -44,19 +44,19 @@ func newBinaryOutput(en model.BinaryOutput, railway Railway) BinaryOutput {
 		output: newOutput(en, railway),
 	}
 	bo.active.Configure(bo, railway, railway)
-	bo.active.OnRequestedChanged = func(ctx context.Context, value bool) {
+	bo.active.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		if bo.commandStation != nil {
 			bo.commandStation.SendOutputActive(ctx, bo)
 		}
-	}
-	bo.active.OnActualChanged = func(ctx context.Context, value bool) {
+	})
+	bo.active.SubscribeActualChanges(func(ctx context.Context, value bool) {
 		if bo.commandStation != nil && value != bo.active.GetRequested(ctx) {
 			// We got a different actual than what we requested.
 			// Send again
 			fmt.Println("Get unexpected output actual")
 			bo.commandStation.SendOutputActive(ctx, bo)
 		}
-	}
+	})
 	return bo
 }
 

@@ -29,13 +29,15 @@ import (
 // propertyBase contains the value of a property in a state object.
 // The value contains an actual value.
 type propertyBase struct {
+	Property   interface{}
 	Subject    state.Entity
 	Dispatcher state.EventDispatcher
 	exclusive  util.Exclusive
 }
 
 // Configure the values of the property
-func (p *propertyBase) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+func (p *propertyBase) Configure(property state.ActualProperty, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.Property = property
 	p.Subject = subject
 	p.Dispatcher = dispatcher
 	p.exclusive = exclusive
@@ -46,17 +48,17 @@ func (p *propertyBase) SendActualStateChanged() {
 	if p.Dispatcher != nil {
 		p.Dispatcher.Send(state.ActualStateChangedEvent{
 			Subject:  p.Subject,
-			Property: p,
+			Property: p.Property,
 		})
 	}
 }
 
 // SendActualStateChanged dispatches an RequestedStateChangedEvent
-func (p *propertyBase) SendRequestedStateChanged(prop state.Property) {
+func (p *propertyBase) SendRequestedStateChanged() {
 	if p.Dispatcher != nil {
 		p.Dispatcher.Send(state.RequestedStateChangedEvent{
 			Subject:  p.Subject,
-			Property: prop,
+			Property: p.Property.(state.Property),
 		})
 	}
 }
@@ -65,8 +67,8 @@ func (p *propertyBase) SendRequestedStateChanged(prop state.Property) {
 // The value contains an actual value.
 type actualBoolProperty struct {
 	propertyBase
-	actual          bool
-	OnActualChanged func(context.Context, bool)
+	actual        bool
+	actualChanges []func(context.Context, bool)
 }
 
 func (p *actualBoolProperty) GetActual(ctx context.Context) bool {
@@ -76,11 +78,19 @@ func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualBoolProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -89,8 +99,8 @@ func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
 // The value contains an actual value.
 type actualIntProperty struct {
 	propertyBase
-	actual          int
-	OnActualChanged func(context.Context, int)
+	actual        int
+	actualChanges []func(context.Context, int)
 }
 
 func (p *actualIntProperty) GetActual(ctx context.Context) int {
@@ -100,11 +110,19 @@ func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualIntProperty) SubscribeActualChanges(cb func(context.Context, int)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -113,8 +131,8 @@ func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
 // The value contains an actual value.
 type actualTimeProperty struct {
 	propertyBase
-	actual          time.Time
-	OnActualChanged func(context.Context, time.Time)
+	actual        time.Time
+	actualChanges []func(context.Context, time.Time)
 }
 
 func (p *actualTimeProperty) GetActual(ctx context.Context) time.Time {
@@ -124,11 +142,19 @@ func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) err
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if !p.actual.Equal(value) {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualTimeProperty) SubscribeActualChanges(cb func(context.Context, time.Time)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -137,8 +163,8 @@ func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) err
 // The value contains an actual value.
 type actualAutoLocStateProperty struct {
 	propertyBase
-	actual          state.AutoLocState
-	OnActualChanged func(context.Context, state.AutoLocState)
+	actual        state.AutoLocState
+	actualChanges []func(context.Context, state.AutoLocState)
 }
 
 func (p *actualAutoLocStateProperty) GetActual(ctx context.Context) state.AutoLocState {
@@ -148,11 +174,19 @@ func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualAutoLocStateProperty) SubscribeActualChanges(cb func(context.Context, state.AutoLocState)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -161,8 +195,8 @@ func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.
 // The value contains an actual value.
 type actualLocDirectionProperty struct {
 	propertyBase
-	actual          state.LocDirection
-	OnActualChanged func(context.Context, state.LocDirection)
+	actual        state.LocDirection
+	actualChanges []func(context.Context, state.LocDirection)
 }
 
 func (p *actualLocDirectionProperty) GetActual(ctx context.Context) state.LocDirection {
@@ -172,11 +206,19 @@ func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualLocDirectionProperty) SubscribeActualChanges(cb func(context.Context, state.LocDirection)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -185,8 +227,8 @@ func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.
 // The value contains an actual value.
 type actualSwitchDirectionProperty struct {
 	propertyBase
-	actual          model.SwitchDirection
-	OnActualChanged func(context.Context, model.SwitchDirection)
+	actual        model.SwitchDirection
+	actualChanges []func(context.Context, model.SwitchDirection)
 }
 
 func (p *actualSwitchDirectionProperty) GetActual(ctx context.Context) model.SwitchDirection {
@@ -196,11 +238,19 @@ func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value mod
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualSwitchDirectionProperty) SubscribeActualChanges(cb func(context.Context, model.SwitchDirection)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -209,8 +259,8 @@ func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value mod
 // The value contains an actual value.
 type actualBlockSideProperty struct {
 	propertyBase
-	actual          model.BlockSide
-	OnActualChanged func(context.Context, model.BlockSide)
+	actual        model.BlockSide
+	actualChanges []func(context.Context, model.BlockSide)
 }
 
 func (p *actualBlockSideProperty) GetActual(ctx context.Context) model.BlockSide {
@@ -220,11 +270,19 @@ func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.Blo
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualBlockSideProperty) SubscribeActualChanges(cb func(context.Context, model.BlockSide)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -233,8 +291,8 @@ func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.Blo
 // The value contains an actual value.
 type actualBlockProperty struct {
 	propertyBase
-	actual          state.Block
-	OnActualChanged func(context.Context, state.Block)
+	actual        state.Block
+	actualChanges []func(context.Context, state.Block)
 }
 
 func (p *actualBlockProperty) GetActual(ctx context.Context) state.Block {
@@ -244,11 +302,19 @@ func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) 
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualBlockProperty) SubscribeActualChanges(cb func(context.Context, state.Block)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -257,8 +323,8 @@ func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) 
 // The value contains an actual value.
 type actualRouteProperty struct {
 	propertyBase
-	actual          state.Route
-	OnActualChanged func(context.Context, state.Route)
+	actual        state.Route
+	actualChanges []func(context.Context, state.Route)
 }
 
 func (p *actualRouteProperty) GetActual(ctx context.Context) state.Route {
@@ -268,11 +334,19 @@ func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) 
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualRouteProperty) SubscribeActualChanges(cb func(context.Context, state.Route)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
@@ -281,8 +355,8 @@ func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) 
 // The value contains an actual value.
 type actualRouteForLocProperty struct {
 	propertyBase
-	actual          state.RouteForLoc
-	OnActualChanged func(context.Context, state.RouteForLoc)
+	actual        state.RouteForLoc
+	actualChanges []func(context.Context, state.RouteForLoc)
 }
 
 func (p *actualRouteForLocProperty) GetActual(ctx context.Context) state.RouteForLoc {
@@ -292,11 +366,19 @@ func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.R
 	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
 			p.actual = value
-			if p.OnActualChanged != nil {
-				p.OnActualChanged(ctx, value)
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualRouteForLocProperty) SubscribeActualChanges(cb func(context.Context, state.RouteForLoc)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }

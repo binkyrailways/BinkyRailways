@@ -49,9 +49,9 @@ func newBlock(en model.Block, railway Railway) Block {
 		b.updateClosed(ctx)
 	})
 	b.closed.Configure(b, railway, railway)
-	b.closed.OnRequestedChanged = func(ctx context.Context, value bool) {
+	b.closed.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		b.updateClosed(ctx)
-	}
+	})
 	var err error
 	b.waitPermissions, err = newLocPredicate(railway, en.GetWaitPermissions())
 	if err != nil {

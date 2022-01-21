@@ -42,6 +42,40 @@ func NewAutomaticLocController(railway railway, log zerolog.Logger) (state.Autom
 		routeAvailabilityTester: NewLiveRouteAvailabilityTester(railway),
 	}
 	alc.enabled.alc = alc
+
+	// Register on all state change events.
+	railway.ForEachLoc(func(loc state.Loc) {
+		loc.GetControlledAutomatically().SubscribeRequestChanges(func(ctx context.Context, value bool) {
+			alc.onLocControlledAutomaticallyChanged(ctx, loc, false, false)
+		})
+		/*
+			loc.BeforeReset += (s, x) => dispatcher.PostAction(() => OnLocControlledAutomaticallyChanged(loc, false, true));
+			loc.AfterReset += (s, x) => dispatcher.PostAction(() => OnAfterResetLoc(loc));
+		*/
+		// TODO
+	})
+
+	railway.ForEachSensor(func(sensor state.Sensor) {
+		sensor.GetActive().SubscribeActualChanges(func(ctx context.Context, value bool) {
+			alc.onSensorActiveChanged(ctx, sensor)
+		})
+	})
+
+	railway.ForEachJunction(func(junction state.Junction) {
+		if sw, ok := junction.(state.Switch); ok {
+			sw.GetDirection().SubscribeActualChanges(func(ctx context.Context, dir model.SwitchDirection) {
+				//alc.requestUpdate()
+				// TODOs
+			})
+		}
+	})
+
+	/*
+	   // Register on all state change events.
+	   signals.AddRange(railwayState.SignalStates);
+	*/
+	//TODO
+
 	return alc, nil
 }
 

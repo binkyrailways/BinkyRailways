@@ -29,7 +29,9 @@ import (
 type powerProperty struct {
 	Railway Railway
 
-	requested bool
+	requested      bool
+	actualChanges  []func(context.Context, bool)
+	requestChanges []func(context.Context, bool)
 }
 
 var _ state.BoolProperty = &powerProperty{}
@@ -62,11 +64,22 @@ func (sp *powerProperty) SetActual(ctx context.Context, value bool) error {
 			return err
 		}
 		if actual != value {
+			for _, cb := range sp.actualChanges {
+				cb(ctx, value)
+			}
 			sp.Railway.Send(state.ActualStateChangedEvent{
 				Subject:  sp.Railway,
 				Property: sp,
 			})
 		}
+		return nil
+	})
+}
+
+// Subscribe to requested changes
+func (sp *powerProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+	sp.Railway.Exclusive(context.Background(), func(c context.Context) error {
+		sp.actualChanges = append(sp.actualChanges, cb)
 		return nil
 	})
 }
@@ -86,6 +99,9 @@ func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
 		}
 		if sp.requested != value {
 			sp.requested = value
+			for _, cb := range sp.requestChanges {
+				cb(ctx, value)
+			}
 			sp.Railway.Send(state.RequestedStateChangedEvent{
 				Subject:  sp.Railway,
 				Property: sp,
@@ -97,4 +113,12 @@ func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
 
 func (sp *powerProperty) IsConsistent(ctx context.Context) bool {
 	return sp.GetActual(ctx) == sp.GetRequested(ctx)
+}
+
+// Subscribe to requested changes
+func (sp *powerProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+	sp.Railway.Exclusive(context.Background(), func(c context.Context) error {
+		sp.requestChanges = append(sp.requestChanges, cb)
+		return nil
+	})
 }
