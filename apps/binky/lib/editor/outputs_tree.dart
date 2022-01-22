@@ -65,6 +65,28 @@ class OutputsTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.output(output)),
                       selected: selector.idOf(EntityType.output) == id,
+                      trailing: GestureDetector(
+                        child: const Icon(Icons.more_vert),
+                        onTapDown: (TapDownDetails details) {
+                          showMenu(
+                            context: context,
+                            useRootNavigator: true,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            items: [
+                              PopupMenuItem<String>(
+                                  child: const Text('Remove'),
+                                  onTap: () async {
+                                    await model.deleteOutput(output);
+                                  }),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                      ),
                     );
                   });
             });

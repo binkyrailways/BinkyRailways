@@ -65,6 +65,28 @@ class SensorsTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.sensor(sensor)),
                       selected: selector.idOf(EntityType.sensor) == id,
+                      trailing: GestureDetector(
+                        child: const Icon(Icons.more_vert),
+                        onTapDown: (TapDownDetails details) {
+                          showMenu(
+                            context: context,
+                            useRootNavigator: true,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            items: [
+                              PopupMenuItem<String>(
+                                  child: const Text('Remove'),
+                                  onTap: () async {
+                                    await model.deleteSensor(sensor);
+                                  }),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                      ),
                     );
                   });
             });

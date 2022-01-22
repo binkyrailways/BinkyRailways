@@ -95,6 +95,28 @@ class _RoutesTreeState extends State<RoutesTree> {
                                       .select(EntitySelector.route(route)),
                                   selected:
                                       selector.idOf(EntityType.route) == id,
+                                  trailing: GestureDetector(
+                                    child: const Icon(Icons.more_vert),
+                                    onTapDown: (TapDownDetails details) {
+                                      showMenu(
+                                        context: context,
+                                        useRootNavigator: true,
+                                        position: RelativeRect.fromLTRB(
+                                            details.globalPosition.dx,
+                                            details.globalPosition.dy,
+                                            details.globalPosition.dx,
+                                            details.globalPosition.dy),
+                                        items: [
+                                          PopupMenuItem<String>(
+                                              child: const Text('Remove'),
+                                              onTap: () async {
+                                                await model.deleteRoute(route);
+                                              }),
+                                        ],
+                                        elevation: 8.0,
+                                      );
+                                    },
+                                  ),
                                 );
                               }),
                         ),

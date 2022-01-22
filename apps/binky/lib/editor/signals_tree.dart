@@ -65,6 +65,28 @@ class SignalsTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.signal(signal)),
                       selected: selector.idOf(EntityType.signal) == id,
+                      trailing: GestureDetector(
+                        child: const Icon(Icons.more_vert),
+                        onTapDown: (TapDownDetails details) {
+                          showMenu(
+                            context: context,
+                            useRootNavigator: true,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            items: [
+                              PopupMenuItem<String>(
+                                  child: const Text('Remove'),
+                                  onTap: () async {
+                                    await model.deleteSignal(signal);
+                                  }),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                      ),
                     );
                   });
             });

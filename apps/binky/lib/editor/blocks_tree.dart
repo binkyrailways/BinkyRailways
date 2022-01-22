@@ -66,6 +66,28 @@ class BlocksTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.block(block)),
                       selected: selector.idOf(EntityType.block) == id,
+                      trailing: GestureDetector(
+                        child: const Icon(Icons.more_vert),
+                        onTapDown: (TapDownDetails details) {
+                          showMenu(
+                            context: context,
+                            useRootNavigator: true,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            items: [
+                              PopupMenuItem<String>(
+                                  child: const Text('Remove'),
+                                  onTap: () async {
+                                    await model.deleteBlock(block);
+                                  }),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                      ),
                     );
                   });
             });

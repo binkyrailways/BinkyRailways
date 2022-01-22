@@ -61,33 +61,34 @@ class JunctionsTree extends StatelessWidget {
                     final junction = junctions[index - 2];
                     final id = junction.id;
                     return ListTile(
-                        leading: BinkyIcons.junction,
-                        title: Text(junction.description),
-                        onTap: () =>
-                            editorCtx.select(EntitySelector.junction(junction)),
-                        selected: selector.idOf(EntityType.junction) == id,
-                        trailing: GestureDetector(
-                          child: const Icon(Icons.more_vert),
-                          onTapDown: (TapDownDetails details) {
-                            showMenu(
-                              context: context,
-                              useRootNavigator: true,
-                              position: RelativeRect.fromLTRB(
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy,
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy),
-                              items: [
-                                PopupMenuItem<String>(
-                                    child: const Text('Remove'),
-                                    onTap: () async {
-                                      await model.deleteJunction(junction);
-                                    }),
-                              ],
-                              elevation: 8.0,
-                            );
-                          },
-                        ));
+                      leading: BinkyIcons.junction,
+                      title: Text(junction.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.junction(junction)),
+                      selected: selector.idOf(EntityType.junction) == id,
+                      trailing: GestureDetector(
+                        child: const Icon(Icons.more_vert),
+                        onTapDown: (TapDownDetails details) {
+                          showMenu(
+                            context: context,
+                            useRootNavigator: true,
+                            position: RelativeRect.fromLTRB(
+                                details.globalPosition.dx,
+                                details.globalPosition.dy,
+                                details.globalPosition.dx,
+                                details.globalPosition.dy),
+                            items: [
+                              PopupMenuItem<String>(
+                                  child: const Text('Remove'),
+                                  onTap: () async {
+                                    await model.deleteJunction(junction);
+                                  }),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                      ),
+                    );
                   });
             });
       },
