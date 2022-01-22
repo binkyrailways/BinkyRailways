@@ -105,6 +105,6 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
     } catch (err) {
       print(err);
     }
-    camera.viewport = FixedResolutionViewport(size);
+    camera.viewport = FixedResolutionViewport(size, noClip: true);
   }
 }

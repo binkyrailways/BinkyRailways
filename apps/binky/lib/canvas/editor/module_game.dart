@@ -24,7 +24,8 @@ import '../../models.dart';
 import '../../editor/editor_context.dart';
 import 'module_component.dart';
 
-class ModuleGame extends FlameGame with HasDraggables, HasHoverables, HasTappables {
+class ModuleGame extends FlameGame
+    with HasDraggables, HasHoverables, HasTappables {
   final ModelModel modelModel;
   final String moduleId;
   final EditorContext editorCtx;
@@ -48,6 +49,6 @@ class ModuleGame extends FlameGame with HasDraggables, HasHoverables, HasTappabl
     await modComp.loadChildren(editorCtx, modelModel);
     add(modComp);
 
-    camera.viewport = FixedResolutionViewport(size);
+    camera.viewport = FixedResolutionViewport(size, noClip: true);
   }
 }
