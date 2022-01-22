@@ -67,6 +67,8 @@ service ModelService {
   rpc UpdateBlock(Block) returns (Block);
   // Adds a new block in the module identified by given by ID.
   rpc AddBlock(IDRequest) returns (Block);
+  // Delete the block with the given ID.
+  rpc DeleteBlock(IDRequest) returns (Module);
 
   // Gets a block group by ID.
   rpc GetBlockGroup(IDRequest) returns (BlockGroup);
@@ -74,6 +76,8 @@ service ModelService {
   rpc UpdateBlockGroup(BlockGroup) returns (BlockGroup);
   // Adds a new block group in the module identified by given by ID.
   rpc AddBlockGroup(IDRequest) returns (BlockGroup);
+  // Delete the block group with the given ID.
+  rpc DeleteBlockGroup(IDRequest) returns (Module);
 
   // Gets an edge by ID.
   rpc GetEdge(IDRequest) returns (Edge);
@@ -81,6 +85,8 @@ service ModelService {
   rpc UpdateEdge(Edge) returns (Edge);
   // Adds a new edge in the module identified by given by ID.
   rpc AddEdge(IDRequest) returns (Edge);
+  // Delete the edge with the given ID.
+  rpc DeleteEdge(IDRequest) returns (Module);
 
   // Gets a Junction by ID.
   rpc GetJunction(IDRequest) returns (Junction);
@@ -88,6 +94,8 @@ service ModelService {
   rpc UpdateJunction(Junction) returns (Junction);
   // Adds a new junction of type switch in the module identified by given by ID.
   rpc AddSwitch(IDRequest) returns (Junction);
+  // Delete the junction with the given ID.
+  rpc DeleteJunction(IDRequest) returns (Module);
 
   // Gets a Output by ID.
   rpc GetOutput(IDRequest) returns (Output);
@@ -96,6 +104,8 @@ service ModelService {
   // Adds a new output of type binary output in the module identified by given
   // by ID.
   rpc AddBinaryOutput(IDRequest) returns (Output);
+  // Delete the output with the given ID.
+  rpc DeleteOutput(IDRequest) returns (Module);
 
   // Gets a Route by ID.
   rpc GetRoute(IDRequest) returns (Route);
@@ -103,6 +113,8 @@ service ModelService {
   rpc UpdateRoute(Route) returns (Route);
   // Adds a new block in the module identified by given by ID.
   rpc AddRoute(IDRequest) returns (Route);
+  // Delete the route with the given ID.
+  rpc DeleteRoute(IDRequest) returns (Module);
   // Adds a crossing junction (of type switch) with given junction ID & switch direction.
   rpc AddRouteCrossingJunctionSwitch(AddRouteCrossingJunctionSwitchRequest) returns (Route);
   // Removes a crossing junction with given junction ID.
@@ -123,11 +135,15 @@ service ModelService {
   // Adds a new sensor of type binary sensor in the module identified by given
   // by ID.
   rpc AddBinarySensor(IDRequest) returns (Sensor);
+  // Delete the sensor with the given ID.
+  rpc DeleteSensor(IDRequest) returns (Module);
 
   // Gets a Signal by ID.
   rpc GetSignal(IDRequest) returns (Signal);
   // Update a Signal by ID.
   rpc UpdateSignal(Signal) returns (Signal);
+  // Delete the signal with the given ID.
+  rpc DeleteSignal(IDRequest) returns (Module);
 
   // Gets a BinkyNetLocalWorker by ID.
   rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);

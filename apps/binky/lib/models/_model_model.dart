@@ -274,6 +274,15 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given block
+  Future<void> deleteBlock(mapi.Block value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated = await modelClient.deleteBlock(mapi.IDRequest(id: value.id));
+    _blocks.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Gets a block group by ID from cache
   mapi.BlockGroup? getCachedBlockGroup(String id) => _blockGroups[id];
 
@@ -308,6 +317,16 @@ class ModelModel extends ChangeNotifier {
         await modelClient.getModule(mapi.IDRequest(id: moduleId));
     notifyListeners();
     return added;
+  }
+
+  // Delete the given block group
+  Future<void> deleteBlockGroup(mapi.BlockGroup value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteBlockGroup(mapi.IDRequest(id: value.id));
+    _blockGroups.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
   }
 
   // Gets an edge by ID from cache
@@ -346,6 +365,15 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given edge
+  Future<void> deleteEdge(mapi.Edge value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated = await modelClient.deleteEdge(mapi.IDRequest(id: value.id));
+    _edges.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Gets a Junction by ID from cache
   mapi.Junction? getCachedJunction(String id) => _junctions[id];
 
@@ -380,6 +408,16 @@ class ModelModel extends ChangeNotifier {
         await modelClient.getModule(mapi.IDRequest(id: moduleId));
     notifyListeners();
     return added;
+  }
+
+  // Delete the given junction
+  Future<void> deleteJunction(mapi.Junction value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteJunction(mapi.IDRequest(id: value.id));
+    _junctions.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
   }
 
   // Gets a Output by ID from cache
@@ -418,6 +456,16 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given output
+  Future<void> deleteOutput(mapi.Output value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteOutput(mapi.IDRequest(id: value.id));
+    _outputs.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Gets a Route by ID from cache
   mapi.Route? getCachedRoute(String id) => _routes[id];
 
@@ -452,6 +500,15 @@ class ModelModel extends ChangeNotifier {
         await modelClient.getModule(mapi.IDRequest(id: moduleId));
     notifyListeners();
     return added;
+  }
+
+  // Delete the given route
+  Future<void> deleteRoute(mapi.Route value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated = await modelClient.deleteRoute(mapi.IDRequest(id: value.id));
+    _routes.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
   }
 
   // Add a crossing junction (of type switch) to a given route.
@@ -573,6 +630,16 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given sensor
+  Future<void> deleteSensor(mapi.Sensor value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteSensor(mapi.IDRequest(id: value.id));
+    _sensors.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Gets a Signal by ID from cache
   mapi.Signal? getCachedSignal(String id) => _signals[id];
 
@@ -595,6 +662,16 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateSignal(value);
     _signals[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Delete the given signal
+  Future<void> deleteSignal(mapi.Signal value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteSignal(mapi.IDRequest(id: value.id));
+    _signals.remove(value.id);
+    _modules[updated.id] = updated;
     notifyListeners();
   }
 

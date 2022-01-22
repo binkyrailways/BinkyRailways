@@ -81,3 +81,25 @@ func (s *service) AddEdge(ctx context.Context, req *api.IDRequest) (*api.Edge, e
 	}
 	return &result, nil
 }
+
+// Delete an edge by ID.
+func (s *service) DeleteEdge(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, edgeID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	edge, ok := mod.GetEdges().Get(edgeID)
+	if !ok {
+		return nil, api.NotFound(edgeID)
+	}
+	mod.GetEdges().Remove(edge)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

@@ -84,6 +84,28 @@ func (s *service) AddRoute(ctx context.Context, req *api.IDRequest) (*api.Route,
 	return &result, nil
 }
 
+// Delete a route by ID.
+func (s *service) DeleteRoute(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, routeID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	route, ok := mod.GetRoutes().Get(routeID)
+	if !ok {
+		return nil, api.NotFound(routeID)
+	}
+	mod.GetRoutes().Remove(route)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Adds a crossing junction (of type switch) with given junction ID & switch direction.
 func (s *service) AddRouteCrossingJunctionSwitch(ctx context.Context, req *api.AddRouteCrossingJunctionSwitchRequest) (*api.Route, error) {
 	route, err := s.getRoute(ctx, req.GetRouteId())

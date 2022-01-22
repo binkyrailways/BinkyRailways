@@ -563,71 +563,75 @@ func init() {
 func init() { proto.RegisterFile("br_model_service.proto", fileDescriptor_0d5e66fb0029ff04) }
 
 var fileDescriptor_0d5e66fb0029ff04 = []byte{
-	// 1025 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xed, 0x4e, 0x1b, 0x47,
-	0x14, 0xad, 0x69, 0x03, 0xf6, 0xe5, 0x23, 0x64, 0x4a, 0x88, 0x31, 0xa9, 0x93, 0x5a, 0x4d, 0x3f,
-	0x54, 0xc9, 0x88, 0xb4, 0x52, 0x53, 0x29, 0x22, 0xd8, 0x40, 0x1d, 0xa3, 0x86, 0xd0, 0xb5, 0x4a,
-	0xa5, 0x34, 0x12, 0x59, 0x7b, 0x26, 0x66, 0xe3, 0xdd, 0x1d, 0x77, 0x77, 0xd6, 0xd4, 0x2f, 0x52,
-	0xf5, 0x01, 0xfa, 0x30, 0xfd, 0xd9, 0x47, 0xa8, 0xe8, 0x8b, 0x54, 0x3b, 0x77, 0x77, 0x31, 0xf6,
-	0xce, 0xd8, 0xc6, 0xe4, 0x1f, 0x77, 0xe6, 0x9c, 0x73, 0xcf, 0x5d, 0xcf, 0x9d, 0xbd, 0x0b, 0xac,
-	0x37, 0xbd, 0x53, 0x87, 0x53, 0x66, 0x9f, 0xfa, 0xcc, 0xeb, 0x59, 0x2d, 0x56, 0xee, 0x7a, 0x5c,
-	0x70, 0xb2, 0xda, 0xb4, 0xdc, 0x4e, 0xdf, 0x33, 0x2d, 0xfb, 0xdc, 0xec, 0xfb, 0xe5, 0xde, 0x76,
-	0x61, 0x2d, 0x41, 0x8a, 0x7e, 0x97, 0xf9, 0x88, 0x2b, 0x6d, 0x42, 0xae, 0xbe, 0x6f, 0xb0, 0xdf,
-	0x02, 0xe6, 0x0b, 0xb2, 0x02, 0x73, 0x16, 0xcd, 0x67, 0x1e, 0x66, 0xbe, 0xcc, 0x19, 0x73, 0x16,
-	0x2d, 0x7d, 0x0d, 0x1f, 0x1f, 0x9b, 0x9e, 0xcf, 0x2a, 0x94, 0x7a, 0xcc, 0xf7, 0x63, 0xd8, 0x1a,
-	0xdc, 0xea, 0x99, 0x76, 0xc0, 0x22, 0x24, 0x06, 0x25, 0x07, 0xc8, 0x55, 0xb0, 0x1f, 0xd8, 0x31,
-	0x36, 0x52, 0xcd, 0x1a, 0x18, 0x90, 0x3c, 0x2c, 0x38, 0xcc, 0xf7, 0xcd, 0x36, 0xcb, 0xcf, 0x49,
-	0x8d, 0x38, 0x24, 0x5f, 0xc0, 0xed, 0xb7, 0xdc, 0x73, 0x4c, 0x21, 0x18, 0x3d, 0xc5, 0x2c, 0x1f,
-	0x4a, 0xc4, 0x4a, 0xb2, 0x7c, 0x22, 0xd3, 0xfd, 0x95, 0x81, 0x47, 0x15, 0x4a, 0x0d, 0x1e, 0x08,
-	0xb6, 0xe7, 0x71, 0xdf, 0xb7, 0xdc, 0xf6, 0x61, 0xe0, 0xb6, 0x84, 0xc5, 0xdd, 0xc6, 0xb9, 0x25,
-	0x5a, 0x67, 0xb1, 0xdd, 0x0d, 0xc8, 0x7a, 0x21, 0xea, 0x34, 0xa9, 0x6d, 0x41, 0xc6, 0x75, 0x4a,
-	0x1e, 0xc0, 0xe2, 0xbb, 0x88, 0x13, 0xee, 0xa2, 0x17, 0x88, 0x97, 0xea, 0x94, 0x3c, 0x83, 0x1c,
-	0xb5, 0x3c, 0x26, 0x43, 0x69, 0x64, 0xe5, 0xf1, 0xa7, 0xe5, 0xe1, 0x47, 0x5b, 0xc6, 0x7c, 0xfb,
-	0x31, 0xd0, 0xb8, 0xe4, 0x94, 0xde, 0x40, 0xc9, 0x60, 0x0e, 0xef, 0xb1, 0x54, 0xa3, 0x37, 0x60,
-	0xb1, 0x74, 0x04, 0x6b, 0xf1, 0x73, 0x38, 0xe8, 0x31, 0x57, 0x4c, 0xa0, 0xb9, 0x09, 0x39, 0x9f,
-	0xb9, 0x3e, 0xf7, 0x2e, 0x15, 0xb3, 0xb8, 0x50, 0xa7, 0xa5, 0x9f, 0xe0, 0xde, 0x80, 0xe3, 0x1b,
-	0x91, 0x3c, 0x81, 0xfb, 0x57, 0x2c, 0x56, 0xd9, 0x99, 0xd9, 0xb3, 0xb8, 0x37, 0xab, 0x2e, 0x87,
-	0x07, 0xc3, 0x56, 0x6f, 0x48, 0x3a, 0x3c, 0xb7, 0x96, 0x4b, 0xd9, 0xef, 0xf2, 0x47, 0xbf, 0x65,
-	0x60, 0xf0, 0xf8, 0x8f, 0x4f, 0x60, 0xe9, 0x45, 0xd8, 0x43, 0x0d, 0x6c, 0x36, 0xf2, 0x2b, 0x2c,
-	0x0d, 0x1e, 0x7a, 0xf2, 0x68, 0xf4, 0x70, 0xa4, 0x74, 0x50, 0xe1, 0xb3, 0x71, 0x30, 0xd9, 0x3b,
-	0xbb, 0x00, 0x35, 0x26, 0x0c, 0x04, 0x91, 0x7b, 0xa3, 0x9c, 0x03, 0xa7, 0x2b, 0xfa, 0x85, 0x8d,
-	0xd1, 0x8d, 0x98, 0x73, 0x00, 0xcb, 0x3f, 0x77, 0xa9, 0x29, 0x58, 0xbc, 0xa0, 0xc6, 0xea, 0x64,
-	0x9e, 0xc0, 0x47, 0x0d, 0xb3, 0xc7, 0xd4, 0x16, 0x54, 0x1b, 0xa4, 0x0a, 0xb9, 0x1a, 0x13, 0x2f,
-	0x38, 0x0d, 0x6c, 0x46, 0x36, 0x47, 0x51, 0xc9, 0xdd, 0x53, 0xc8, 0x8f, 0x6e, 0x46, 0xb4, 0x63,
-	0xc8, 0x27, 0x1a, 0x55, 0xb3, 0xd5, 0x69, 0x7b, 0x3c, 0x70, 0x69, 0xdd, 0x09, 0xaf, 0x0b, 0xad,
-	0x64, 0x8a, 0x2b, 0x64, 0x55, 0x61, 0x09, 0x1f, 0x4b, 0x94, 0x41, 0x99, 0x5b, 0xe3, 0x6a, 0x07,
-	0x72, 0x15, 0x4a, 0xa3, 0x40, 0xf9, 0x60, 0xd4, 0xfc, 0xa7, 0x30, 0x5f, 0x63, 0xe2, 0x47, 0xde,
-	0xd2, 0xd7, 0x70, 0x77, 0x74, 0x33, 0xe4, 0x7c, 0x0f, 0x39, 0xac, 0x20, 0x0c, 0xd2, 0x31, 0x2a,
-	0xea, 0x13, 0x98, 0xaf, 0x50, 0x1a, 0xfe, 0xa5, 0x74, 0xad, 0x60, 0xfe, 0x00, 0x8b, 0x68, 0xb9,
-	0xe6, 0xf1, 0xa0, 0xab, 0xf7, 0x5d, 0x48, 0x95, 0x40, 0xe2, 0x73, 0x58, 0x49, 0xcc, 0xe3, 0x8a,
-	0x06, 0xad, 0x55, 0x32, 0xe0, 0x4e, 0x8d, 0x89, 0x3d, 0xee, 0x38, 0xa6, 0x4b, 0x1b, 0xc2, 0x0c,
-	0xaf, 0x44, 0xbd, 0xaf, 0x87, 0xa3, 0x9b, 0x43, 0xf4, 0x57, 0xb0, 0x86, 0xee, 0x86, 0xd6, 0xc7,
-	0x32, 0x27, 0xd0, 0xde, 0x85, 0x6c, 0x8d, 0x89, 0xaa, 0xcd, 0x5b, 0x9d, 0xa9, 0x8f, 0x2e, 0xb2,
-	0x9e, 0xc1, 0x22, 0xba, 0xc3, 0x50, 0x85, 0x53, 0x0b, 0xec, 0x42, 0xb6, 0x42, 0xe9, 0x2c, 0x16,
-	0x0e, 0x61, 0x39, 0x2e, 0x62, 0x82, 0x83, 0x70, 0x5f, 0x21, 0x83, 0xd4, 0x23, 0x58, 0x1d, 0x28,
-	0x07, 0xd7, 0xb4, 0x8c, 0x31, 0x7a, 0x87, 0xb0, 0x1c, 0x57, 0x37, 0xb3, 0xb7, 0x1d, 0x58, 0xa8,
-	0x31, 0x71, 0x40, 0xc7, 0x5d, 0x33, 0xeb, 0x29, 0x6d, 0x14, 0x92, 0x9e, 0x02, 0x60, 0x6d, 0x32,
-	0x52, 0xa0, 0x94, 0xec, 0x1d, 0x58, 0xa8, 0x50, 0x7a, 0xfd, 0xec, 0xd8, 0xac, 0xf1, 0xa0, 0x31,
-	0x75, 0xb3, 0x26, 0xc4, 0xa4, 0x59, 0x93, 0x15, 0x0d, 0x5a, 0xab, 0xb4, 0x2f, 0x6f, 0x4c, 0x9c,
-	0x95, 0xae, 0xef, 0x07, 0xdf, 0x28, 0x2f, 0x03, 0xd1, 0x0d, 0xc4, 0xd4, 0x6f, 0x94, 0x88, 0x96,
-	0xdc, 0xff, 0x51, 0xac, 0x44, 0x6a, 0x34, 0x9e, 0xc3, 0xed, 0xf0, 0xa4, 0x59, 0xae, 0xe9, 0xf5,
-	0x67, 0x73, 0x83, 0x97, 0x82, 0x1c, 0x61, 0xa6, 0xee, 0x48, 0x64, 0x25, 0x97, 0x02, 0x86, 0x2a,
-	0x9c, 0x5a, 0x00, 0x2f, 0x85, 0x59, 0x2c, 0x78, 0x50, 0xd4, 0x4f, 0xe3, 0xe4, 0xbb, 0x51, 0xea,
-	0x44, 0xf3, 0xbb, 0x3a, 0xa7, 0x0d, 0x9b, 0x9a, 0xd9, 0x9a, 0x7c, 0x9b, 0xc2, 0x1b, 0x3b, 0x8a,
-	0xab, 0xb3, 0x1d, 0xcb, 0xab, 0xe5, 0x72, 0xd2, 0x24, 0x9f, 0xab, 0x0b, 0x1a, 0x9c, 0x9a, 0xd5,
-	0x8a, 0x27, 0xb0, 0x3a, 0x3c, 0xbe, 0x92, 0xaf, 0xb4, 0xa6, 0x27, 0xd3, 0x7d, 0x03, 0x77, 0x53,
-	0xc7, 0x6d, 0x52, 0x1e, 0xe3, 0x78, 0x68, 0x78, 0x56, 0x67, 0x78, 0x0b, 0x79, 0xd5, 0xe0, 0x4d,
-	0xb6, 0xc7, 0x57, 0x30, 0x71, 0x1e, 0x6c, 0xf6, 0x86, 0x1c, 0xca, 0xa7, 0x6e, 0xaf, 0x88, 0x96,
-	0x34, 0x7b, 0x14, 0x2b, 0x91, 0x1a, 0x8d, 0xc1, 0x66, 0x9f, 0xd5, 0x8d, 0xac, 0xc8, 0x6a, 0xbb,
-	0xa6, 0x3d, 0xbd, 0x06, 0xd2, 0x2e, 0x2b, 0xc2, 0x58, 0x89, 0xd4, 0x68, 0xbc, 0x86, 0xf5, 0xf0,
-	0x25, 0x1e, 0xee, 0x1e, 0xc9, 0x99, 0xce, 0xb4, 0x7f, 0xe1, 0x5e, 0x87, 0x8d, 0x29, 0x2c, 0xe5,
-	0xfb, 0x26, 0x4d, 0xc3, 0x82, 0x8d, 0xe8, 0xb5, 0x9e, 0xb2, 0x39, 0x99, 0xc6, 0xa4, 0xa9, 0x5e,
-	0xc3, 0x3a, 0xfe, 0x34, 0xef, 0xa5, 0x10, 0x03, 0xee, 0x0c, 0xa8, 0xef, 0x33, 0xf9, 0xd1, 0x37,
-	0xed, 0x80, 0x39, 0x44, 0xbf, 0xaa, 0xf9, 0xb2, 0xf9, 0x8e, 0xb5, 0xc4, 0xb5, 0x35, 0x91, 0x5e,
-	0xdd, 0xfb, 0xfb, 0xa2, 0x98, 0xf9, 0xe7, 0xa2, 0x98, 0xf9, 0xf7, 0xa2, 0x98, 0xf9, 0xf3, 0xbf,
-	0xe2, 0x07, 0xaf, 0xb6, 0xdb, 0x96, 0x38, 0x0b, 0x9a, 0xe5, 0x16, 0x77, 0xb6, 0xae, 0xb0, 0xb7,
-	0x24, 0xd5, 0x88, 0xa3, 0x6e, 0xa7, 0xbd, 0x65, 0x76, 0xad, 0xad, 0xde, 0x76, 0x73, 0x5e, 0xfe,
-	0x4b, 0xe8, 0x9b, 0xff, 0x03, 0x00, 0x00, 0xff, 0xff, 0xc9, 0x01, 0x25, 0xa4, 0x54, 0x12, 0x00,
+	// 1089 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xed, 0x6e, 0xdb, 0x36,
+	0x14, 0x9d, 0xb3, 0x35, 0x89, 0x6f, 0x12, 0x37, 0xd5, 0xd2, 0xd4, 0x71, 0x0a, 0xb7, 0x35, 0xd6,
+	0x7d, 0x60, 0x80, 0x83, 0x74, 0x03, 0xd6, 0x01, 0x45, 0x1b, 0x3b, 0xf6, 0x5c, 0x07, 0x6b, 0x9a,
+	0xc9, 0x58, 0x06, 0x74, 0x05, 0x52, 0xd9, 0x64, 0x1d, 0xd5, 0x92, 0xe8, 0x49, 0x94, 0x3b, 0xbf,
+	0xc9, 0x1e, 0x60, 0x0f, 0xb3, 0x9f, 0x7d, 0x84, 0x21, 0x7b, 0x91, 0x41, 0xba, 0x92, 0xfc, 0x25,
+	0x52, 0xb2, 0x9d, 0xfe, 0xcb, 0x25, 0xcf, 0x39, 0x3c, 0xbc, 0x21, 0xaf, 0x78, 0x0d, 0xbb, 0x6d,
+	0xfb, 0xc2, 0x64, 0x84, 0x1a, 0x17, 0x0e, 0xb5, 0x07, 0x7a, 0x87, 0x96, 0xfb, 0x36, 0xe3, 0x4c,
+	0xd9, 0x6e, 0xeb, 0x56, 0x6f, 0x68, 0x6b, 0xba, 0xf1, 0x5e, 0x1b, 0x3a, 0xe5, 0xc1, 0x61, 0x61,
+	0x27, 0x42, 0xf2, 0x61, 0x9f, 0x3a, 0x88, 0x2b, 0xed, 0x43, 0xb6, 0x59, 0x53, 0xe9, 0x1f, 0x2e,
+	0x75, 0xb8, 0x92, 0x83, 0x15, 0x9d, 0xe4, 0x33, 0xf7, 0x33, 0x5f, 0x67, 0xd5, 0x15, 0x9d, 0x94,
+	0xbe, 0x85, 0xcf, 0xcf, 0x34, 0xdb, 0xa1, 0x15, 0x42, 0x6c, 0xea, 0x38, 0x21, 0x6c, 0x07, 0x6e,
+	0x0c, 0x34, 0xc3, 0xa5, 0x01, 0x12, 0x83, 0x92, 0x09, 0xca, 0x24, 0xd8, 0x71, 0x8d, 0x10, 0x1b,
+	0xa8, 0xae, 0xab, 0x18, 0x28, 0x79, 0x58, 0x33, 0xa9, 0xe3, 0x68, 0x5d, 0x9a, 0x5f, 0xf1, 0x35,
+	0xc2, 0x50, 0xf9, 0x0a, 0x6e, 0xbe, 0x65, 0xb6, 0xa9, 0x71, 0x4e, 0xc9, 0x05, 0xae, 0xf2, 0xa9,
+	0x8f, 0xc8, 0x45, 0xc3, 0xe7, 0xfe, 0x72, 0x7f, 0x67, 0xe0, 0x61, 0x85, 0x10, 0x95, 0xb9, 0x9c,
+	0x1e, 0xdb, 0xcc, 0x71, 0x74, 0xab, 0x7b, 0xe2, 0x5a, 0x1d, 0xae, 0x33, 0xab, 0xf5, 0x5e, 0xe7,
+	0x9d, 0xcb, 0xd0, 0xee, 0x1e, 0xac, 0xdb, 0x1e, 0xea, 0x22, 0xda, 0xdb, 0x9a, 0x1f, 0x37, 0x89,
+	0x72, 0x0f, 0x36, 0xde, 0x05, 0x1c, 0x6f, 0x16, 0xbd, 0x40, 0x38, 0xd4, 0x24, 0xca, 0x33, 0xc8,
+	0x12, 0xdd, 0xa6, 0x7e, 0xe8, 0x1b, 0xc9, 0x3d, 0x7a, 0x50, 0x9e, 0x4e, 0x6d, 0x19, 0xd7, 0xab,
+	0x85, 0x40, 0x75, 0xc4, 0x29, 0xbd, 0x81, 0x92, 0x4a, 0x4d, 0x36, 0xa0, 0xb1, 0x46, 0xaf, 0xc1,
+	0x62, 0xe9, 0x14, 0x76, 0xc2, 0x3c, 0xd4, 0x07, 0xd4, 0xe2, 0x29, 0x34, 0xf7, 0x21, 0xeb, 0x50,
+	0xcb, 0x61, 0xf6, 0x48, 0x71, 0x1d, 0x07, 0x9a, 0xa4, 0xf4, 0x0b, 0xdc, 0x19, 0x73, 0x7c, 0x2d,
+	0x92, 0xe7, 0x70, 0x77, 0xc2, 0x62, 0x95, 0x5e, 0x6a, 0x03, 0x9d, 0xd9, 0xcb, 0xea, 0x32, 0xb8,
+	0x37, 0x6d, 0xf5, 0x9a, 0xa4, 0xbd, 0x73, 0xab, 0x5b, 0x84, 0xfe, 0xe9, 0xff, 0xd3, 0x6f, 0xa8,
+	0x18, 0x3c, 0xfa, 0xf0, 0x00, 0x36, 0x5f, 0x78, 0x77, 0xa8, 0x85, 0x97, 0x4d, 0xf9, 0x1d, 0x36,
+	0xc7, 0x0f, 0xbd, 0xf2, 0x70, 0xf6, 0x70, 0xc4, 0xdc, 0xa0, 0xc2, 0x17, 0x49, 0x30, 0xff, 0xee,
+	0x1c, 0x01, 0x34, 0x28, 0x57, 0x11, 0xa4, 0xdc, 0x99, 0xe5, 0xd4, 0xcd, 0x3e, 0x1f, 0x16, 0xf6,
+	0x66, 0x27, 0x42, 0x4e, 0x1d, 0xb6, 0x7e, 0xed, 0x13, 0x8d, 0xd3, 0x70, 0x40, 0x8c, 0x95, 0xc9,
+	0x3c, 0x86, 0xcf, 0x5a, 0xda, 0x80, 0x8a, 0x2d, 0x88, 0x26, 0x94, 0x2a, 0x64, 0x1b, 0x94, 0xbf,
+	0x60, 0xc4, 0x35, 0xa8, 0xb2, 0x3f, 0x8b, 0x8a, 0x6a, 0x4f, 0x21, 0x3f, 0x3b, 0x19, 0xd0, 0xce,
+	0x20, 0x1f, 0x69, 0x54, 0xb5, 0x4e, 0xaf, 0x6b, 0x33, 0xd7, 0x22, 0x4d, 0xd3, 0x2b, 0x17, 0x52,
+	0xc9, 0x18, 0x57, 0xc8, 0xaa, 0xc2, 0x26, 0xa6, 0x25, 0x58, 0x41, 0xb8, 0xb6, 0xc4, 0xd5, 0x53,
+	0xc8, 0x56, 0x08, 0x09, 0x02, 0x61, 0x62, 0xc4, 0xfc, 0x27, 0xb0, 0xda, 0xa0, 0xfc, 0x67, 0xd6,
+	0x91, 0xef, 0xe1, 0xf6, 0xec, 0xa4, 0xc7, 0xf9, 0x11, 0xb2, 0xb8, 0x03, 0x2f, 0x88, 0xc7, 0x88,
+	0xa8, 0x8f, 0x61, 0xb5, 0x42, 0x88, 0xf7, 0x97, 0xd0, 0xb5, 0x80, 0xf9, 0x13, 0x6c, 0xa0, 0xe5,
+	0x86, 0xcd, 0xdc, 0xbe, 0xdc, 0x77, 0x21, 0x56, 0x02, 0x89, 0xcf, 0x21, 0x17, 0x99, 0xc7, 0x11,
+	0x09, 0x5a, 0xaa, 0xa4, 0xc2, 0xad, 0x06, 0xe5, 0xc7, 0xcc, 0x34, 0x35, 0x8b, 0xb4, 0xb8, 0xe6,
+	0x95, 0x44, 0xb9, 0xaf, 0xfb, 0xb3, 0x93, 0x53, 0xf4, 0x57, 0xb0, 0x83, 0xee, 0xa6, 0xc6, 0x13,
+	0x99, 0x29, 0xb4, 0x8f, 0x60, 0xbd, 0x41, 0x79, 0xd5, 0x60, 0x9d, 0xde, 0xdc, 0x47, 0x17, 0x59,
+	0xcf, 0x60, 0x03, 0xdd, 0x61, 0x28, 0xc2, 0x89, 0x05, 0x8e, 0x60, 0xbd, 0x42, 0xc8, 0x32, 0x16,
+	0x6a, 0xb0, 0x51, 0xa3, 0x06, 0x0d, 0x2d, 0x2c, 0x78, 0xab, 0x4f, 0x60, 0x2b, 0x4c, 0x45, 0x8a,
+	0xe3, 0x74, 0x57, 0x60, 0x06, 0xa9, 0xa7, 0xb0, 0x3d, 0x96, 0x14, 0x1c, 0x93, 0x32, 0x12, 0xf4,
+	0x4e, 0x60, 0x2b, 0xcc, 0xd1, 0xd2, 0xde, 0x9a, 0xb0, 0x3d, 0x96, 0xad, 0x14, 0x72, 0xb2, 0x92,
+	0xb3, 0xd6, 0xa0, 0xbc, 0x4e, 0x92, 0xea, 0xde, 0x6e, 0xcc, 0xbd, 0xf6, 0x48, 0x4f, 0x00, 0x30,
+	0x4d, 0x7e, 0x24, 0x40, 0x09, 0xd9, 0x4f, 0x61, 0xad, 0x42, 0xc8, 0xe2, 0xab, 0x1f, 0x03, 0x60,
+	0x22, 0x92, 0x25, 0xc4, 0x29, 0xc0, 0x12, 0x14, 0x3e, 0x9f, 0xe6, 0x2e, 0x41, 0x11, 0x31, 0x2a,
+	0x41, 0xd1, 0x88, 0x04, 0x2d, 0x55, 0xaa, 0xf9, 0xdf, 0x01, 0x7c, 0x01, 0x2e, 0xee, 0xa7, 0x01,
+	0x39, 0x4c, 0x4e, 0xba, 0xad, 0x89, 0x13, 0x84, 0x1f, 0xdc, 0x97, 0x2e, 0xef, 0xbb, 0x7c, 0x6e,
+	0x8d, 0x80, 0x16, 0x7d, 0x1e, 0x83, 0x58, 0x88, 0x94, 0x68, 0x3c, 0x87, 0x9b, 0xde, 0x15, 0xd2,
+	0x2d, 0xcd, 0x1e, 0x2e, 0xe7, 0xa6, 0x0e, 0x9b, 0x98, 0x9a, 0x05, 0x65, 0x82, 0xc4, 0x60, 0xe9,
+	0xf5, 0x1f, 0x8a, 0x73, 0xd7, 0x3d, 0x64, 0x45, 0xa5, 0x17, 0x43, 0x11, 0x4e, 0x2c, 0x80, 0xa5,
+	0x77, 0x19, 0x0b, 0x51, 0xe9, 0x4d, 0x21, 0x22, 0x4e, 0x85, 0x0d, 0x45, 0x79, 0xe7, 0xa4, 0xfc,
+	0x30, 0xcb, 0x4d, 0xd5, 0x6b, 0x89, 0x9d, 0x1b, 0xb0, 0x2f, 0xe9, 0x83, 0x94, 0xef, 0x63, 0x78,
+	0x89, 0x6d, 0x93, 0x78, 0xb5, 0x33, 0xbf, 0x80, 0x8f, 0xba, 0x02, 0xe5, 0x4b, 0xf1, 0x86, 0xc6,
+	0x3b, 0x1c, 0xb1, 0xe2, 0x39, 0x6c, 0x4f, 0xb7, 0x1a, 0xca, 0x37, 0x52, 0xd3, 0xe9, 0x74, 0xdf,
+	0xc0, 0xed, 0xd8, 0xd6, 0x48, 0x29, 0x27, 0x38, 0x9e, 0x6a, 0x74, 0xc4, 0x2b, 0xbc, 0x85, 0xbc,
+	0xa8, 0x49, 0x52, 0x0e, 0x93, 0x77, 0x90, 0x7a, 0x1d, 0xac, 0x3c, 0x2d, 0xbf, 0x81, 0x9a, 0xfb,
+	0x64, 0x06, 0xb4, 0xa8, 0xf2, 0x04, 0xb1, 0x10, 0x29, 0xd1, 0x18, 0xaf, 0x3c, 0xcb, 0xb9, 0x89,
+	0x2a, 0xcf, 0x82, 0x32, 0x13, 0x25, 0xb9, 0xa5, 0x77, 0x2d, 0xcd, 0x98, 0xdf, 0x0a, 0xd2, 0x46,
+	0x89, 0xc1, 0x58, 0x88, 0x94, 0x68, 0x8c, 0xb6, 0xb3, 0x98, 0x95, 0x60, 0x3b, 0xaf, 0x61, 0xd7,
+	0x7b, 0xb8, 0x79, 0xb3, 0xa7, 0x7e, 0x37, 0xa0, 0x19, 0xbf, 0x31, 0xbb, 0x47, 0x13, 0xf2, 0x13,
+	0xd3, 0x19, 0xc7, 0x69, 0xe8, 0xb0, 0x17, 0x3c, 0xe5, 0x62, 0x26, 0xd3, 0x69, 0xa4, 0x5d, 0xea,
+	0x35, 0xec, 0xe2, 0x41, 0xf9, 0x28, 0x1b, 0x51, 0xe1, 0xd6, 0x98, 0x7a, 0x8d, 0xfa, 0x3f, 0x17,
+	0xcc, 0xdb, 0x9a, 0x4c, 0xd1, 0x27, 0x35, 0x5f, 0xb6, 0xdf, 0xd1, 0x0e, 0x5f, 0x58, 0x13, 0xe9,
+	0xd5, 0xe3, 0x7f, 0xae, 0x8a, 0x99, 0x0f, 0x57, 0xc5, 0xcc, 0xbf, 0x57, 0xc5, 0xcc, 0x5f, 0xff,
+	0x15, 0x3f, 0x79, 0x75, 0xd8, 0xd5, 0xf9, 0xa5, 0xdb, 0x2e, 0x77, 0x98, 0x79, 0x30, 0xc1, 0x3e,
+	0xf0, 0xa9, 0x6a, 0x18, 0xf5, 0x7b, 0xdd, 0x03, 0xad, 0xaf, 0x1f, 0x0c, 0x0e, 0xdb, 0xab, 0xfe,
+	0x8f, 0x89, 0xdf, 0xfd, 0x1f, 0x00, 0x00, 0xff, 0xff, 0xeb, 0x94, 0x2c, 0x41, 0x8e, 0x14, 0x00,
 	0x00,
 }
 
@@ -679,24 +683,32 @@ type ModelServiceClient interface {
 	UpdateBlock(ctx context.Context, in *Block, opts ...grpc.CallOption) (*Block, error)
 	// Adds a new block in the module identified by given by ID.
 	AddBlock(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Block, error)
+	// Delete the block with the given ID.
+	DeleteBlock(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a block group by ID.
 	GetBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BlockGroup, error)
 	// Update a block group by ID.
 	UpdateBlockGroup(ctx context.Context, in *BlockGroup, opts ...grpc.CallOption) (*BlockGroup, error)
 	// Adds a new block group in the module identified by given by ID.
 	AddBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BlockGroup, error)
+	// Delete the block group with the given ID.
+	DeleteBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets an edge by ID.
 	GetEdge(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Edge, error)
 	// Update an edge by ID.
 	UpdateEdge(ctx context.Context, in *Edge, opts ...grpc.CallOption) (*Edge, error)
 	// Adds a new edge in the module identified by given by ID.
 	AddEdge(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Edge, error)
+	// Delete the edge with the given ID.
+	DeleteEdge(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a Junction by ID.
 	GetJunction(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Junction, error)
 	// Update a Junction by ID.
 	UpdateJunction(ctx context.Context, in *Junction, opts ...grpc.CallOption) (*Junction, error)
 	// Adds a new junction of type switch in the module identified by given by ID.
 	AddSwitch(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Junction, error)
+	// Delete the junction with the given ID.
+	DeleteJunction(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a Output by ID.
 	GetOutput(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Output, error)
 	// Update a Output by ID.
@@ -704,12 +716,16 @@ type ModelServiceClient interface {
 	// Adds a new output of type binary output in the module identified by given
 	// by ID.
 	AddBinaryOutput(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Output, error)
+	// Delete the output with the given ID.
+	DeleteOutput(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a Route by ID.
 	GetRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Route, error)
 	// Update a Route by ID.
 	UpdateRoute(ctx context.Context, in *Route, opts ...grpc.CallOption) (*Route, error)
 	// Adds a new block in the module identified by given by ID.
 	AddRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Route, error)
+	// Delete the route with the given ID.
+	DeleteRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Adds a crossing junction (of type switch) with given junction ID & switch direction.
 	AddRouteCrossingJunctionSwitch(ctx context.Context, in *AddRouteCrossingJunctionSwitchRequest, opts ...grpc.CallOption) (*Route, error)
 	// Removes a crossing junction with given junction ID.
@@ -729,10 +745,14 @@ type ModelServiceClient interface {
 	// Adds a new sensor of type binary sensor in the module identified by given
 	// by ID.
 	AddBinarySensor(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Sensor, error)
+	// Delete the sensor with the given ID.
+	DeleteSensor(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a Signal by ID.
 	GetSignal(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Signal, error)
 	// Update a Signal by ID.
 	UpdateSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Signal, error)
+	// Delete the signal with the given ID.
+	DeleteSignal(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error)
 	// Gets a BinkyNetLocalWorker by ID.
 	GetBinkyNetLocalWorker(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BinkyNetLocalWorker, error)
 	// Update a BinkyNetLocalWorker by ID.
@@ -918,6 +938,15 @@ func (c *modelServiceClient) AddBlock(ctx context.Context, in *IDRequest, opts .
 	return out, nil
 }
 
+func (c *modelServiceClient) DeleteBlock(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteBlock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *modelServiceClient) GetBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BlockGroup, error) {
 	out := new(BlockGroup)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/GetBlockGroup", in, out, opts...)
@@ -939,6 +968,15 @@ func (c *modelServiceClient) UpdateBlockGroup(ctx context.Context, in *BlockGrou
 func (c *modelServiceClient) AddBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*BlockGroup, error) {
 	out := new(BlockGroup)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/AddBlockGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) DeleteBlockGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteBlockGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -972,6 +1010,15 @@ func (c *modelServiceClient) AddEdge(ctx context.Context, in *IDRequest, opts ..
 	return out, nil
 }
 
+func (c *modelServiceClient) DeleteEdge(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteEdge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *modelServiceClient) GetJunction(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Junction, error) {
 	out := new(Junction)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/GetJunction", in, out, opts...)
@@ -993,6 +1040,15 @@ func (c *modelServiceClient) UpdateJunction(ctx context.Context, in *Junction, o
 func (c *modelServiceClient) AddSwitch(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Junction, error) {
 	out := new(Junction)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/AddSwitch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) DeleteJunction(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteJunction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1026,6 +1082,15 @@ func (c *modelServiceClient) AddBinaryOutput(ctx context.Context, in *IDRequest,
 	return out, nil
 }
 
+func (c *modelServiceClient) DeleteOutput(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteOutput", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *modelServiceClient) GetRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Route, error) {
 	out := new(Route)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/GetRoute", in, out, opts...)
@@ -1047,6 +1112,15 @@ func (c *modelServiceClient) UpdateRoute(ctx context.Context, in *Route, opts ..
 func (c *modelServiceClient) AddRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Route, error) {
 	out := new(Route)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/AddRoute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) DeleteRoute(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteRoute", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1134,6 +1208,15 @@ func (c *modelServiceClient) AddBinarySensor(ctx context.Context, in *IDRequest,
 	return out, nil
 }
 
+func (c *modelServiceClient) DeleteSensor(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteSensor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *modelServiceClient) GetSignal(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Signal, error) {
 	out := new(Signal)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/GetSignal", in, out, opts...)
@@ -1146,6 +1229,15 @@ func (c *modelServiceClient) GetSignal(ctx context.Context, in *IDRequest, opts 
 func (c *modelServiceClient) UpdateSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Signal, error) {
 	out := new(Signal)
 	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/UpdateSignal", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) DeleteSignal(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*Module, error) {
+	out := new(Module)
+	err := c.cc.Invoke(ctx, "/binkyrailways.v1.ModelService/DeleteSignal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1235,24 +1327,32 @@ type ModelServiceServer interface {
 	UpdateBlock(context.Context, *Block) (*Block, error)
 	// Adds a new block in the module identified by given by ID.
 	AddBlock(context.Context, *IDRequest) (*Block, error)
+	// Delete the block with the given ID.
+	DeleteBlock(context.Context, *IDRequest) (*Module, error)
 	// Gets a block group by ID.
 	GetBlockGroup(context.Context, *IDRequest) (*BlockGroup, error)
 	// Update a block group by ID.
 	UpdateBlockGroup(context.Context, *BlockGroup) (*BlockGroup, error)
 	// Adds a new block group in the module identified by given by ID.
 	AddBlockGroup(context.Context, *IDRequest) (*BlockGroup, error)
+	// Delete the block group with the given ID.
+	DeleteBlockGroup(context.Context, *IDRequest) (*Module, error)
 	// Gets an edge by ID.
 	GetEdge(context.Context, *IDRequest) (*Edge, error)
 	// Update an edge by ID.
 	UpdateEdge(context.Context, *Edge) (*Edge, error)
 	// Adds a new edge in the module identified by given by ID.
 	AddEdge(context.Context, *IDRequest) (*Edge, error)
+	// Delete the edge with the given ID.
+	DeleteEdge(context.Context, *IDRequest) (*Module, error)
 	// Gets a Junction by ID.
 	GetJunction(context.Context, *IDRequest) (*Junction, error)
 	// Update a Junction by ID.
 	UpdateJunction(context.Context, *Junction) (*Junction, error)
 	// Adds a new junction of type switch in the module identified by given by ID.
 	AddSwitch(context.Context, *IDRequest) (*Junction, error)
+	// Delete the junction with the given ID.
+	DeleteJunction(context.Context, *IDRequest) (*Module, error)
 	// Gets a Output by ID.
 	GetOutput(context.Context, *IDRequest) (*Output, error)
 	// Update a Output by ID.
@@ -1260,12 +1360,16 @@ type ModelServiceServer interface {
 	// Adds a new output of type binary output in the module identified by given
 	// by ID.
 	AddBinaryOutput(context.Context, *IDRequest) (*Output, error)
+	// Delete the output with the given ID.
+	DeleteOutput(context.Context, *IDRequest) (*Module, error)
 	// Gets a Route by ID.
 	GetRoute(context.Context, *IDRequest) (*Route, error)
 	// Update a Route by ID.
 	UpdateRoute(context.Context, *Route) (*Route, error)
 	// Adds a new block in the module identified by given by ID.
 	AddRoute(context.Context, *IDRequest) (*Route, error)
+	// Delete the route with the given ID.
+	DeleteRoute(context.Context, *IDRequest) (*Module, error)
 	// Adds a crossing junction (of type switch) with given junction ID & switch direction.
 	AddRouteCrossingJunctionSwitch(context.Context, *AddRouteCrossingJunctionSwitchRequest) (*Route, error)
 	// Removes a crossing junction with given junction ID.
@@ -1285,10 +1389,14 @@ type ModelServiceServer interface {
 	// Adds a new sensor of type binary sensor in the module identified by given
 	// by ID.
 	AddBinarySensor(context.Context, *IDRequest) (*Sensor, error)
+	// Delete the sensor with the given ID.
+	DeleteSensor(context.Context, *IDRequest) (*Module, error)
 	// Gets a Signal by ID.
 	GetSignal(context.Context, *IDRequest) (*Signal, error)
 	// Update a Signal by ID.
 	UpdateSignal(context.Context, *Signal) (*Signal, error)
+	// Delete the signal with the given ID.
+	DeleteSignal(context.Context, *IDRequest) (*Module, error)
 	// Gets a BinkyNetLocalWorker by ID.
 	GetBinkyNetLocalWorker(context.Context, *IDRequest) (*BinkyNetLocalWorker, error)
 	// Update a BinkyNetLocalWorker by ID.
@@ -1362,6 +1470,9 @@ func (*UnimplementedModelServiceServer) UpdateBlock(ctx context.Context, req *Bl
 func (*UnimplementedModelServiceServer) AddBlock(ctx context.Context, req *IDRequest) (*Block, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBlock not implemented")
 }
+func (*UnimplementedModelServiceServer) DeleteBlock(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlock not implemented")
+}
 func (*UnimplementedModelServiceServer) GetBlockGroup(ctx context.Context, req *IDRequest) (*BlockGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBlockGroup not implemented")
 }
@@ -1370,6 +1481,9 @@ func (*UnimplementedModelServiceServer) UpdateBlockGroup(ctx context.Context, re
 }
 func (*UnimplementedModelServiceServer) AddBlockGroup(ctx context.Context, req *IDRequest) (*BlockGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBlockGroup not implemented")
+}
+func (*UnimplementedModelServiceServer) DeleteBlockGroup(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlockGroup not implemented")
 }
 func (*UnimplementedModelServiceServer) GetEdge(ctx context.Context, req *IDRequest) (*Edge, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEdge not implemented")
@@ -1380,6 +1494,9 @@ func (*UnimplementedModelServiceServer) UpdateEdge(ctx context.Context, req *Edg
 func (*UnimplementedModelServiceServer) AddEdge(ctx context.Context, req *IDRequest) (*Edge, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddEdge not implemented")
 }
+func (*UnimplementedModelServiceServer) DeleteEdge(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEdge not implemented")
+}
 func (*UnimplementedModelServiceServer) GetJunction(ctx context.Context, req *IDRequest) (*Junction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetJunction not implemented")
 }
@@ -1388,6 +1505,9 @@ func (*UnimplementedModelServiceServer) UpdateJunction(ctx context.Context, req 
 }
 func (*UnimplementedModelServiceServer) AddSwitch(ctx context.Context, req *IDRequest) (*Junction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSwitch not implemented")
+}
+func (*UnimplementedModelServiceServer) DeleteJunction(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteJunction not implemented")
 }
 func (*UnimplementedModelServiceServer) GetOutput(ctx context.Context, req *IDRequest) (*Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOutput not implemented")
@@ -1398,6 +1518,9 @@ func (*UnimplementedModelServiceServer) UpdateOutput(ctx context.Context, req *O
 func (*UnimplementedModelServiceServer) AddBinaryOutput(ctx context.Context, req *IDRequest) (*Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBinaryOutput not implemented")
 }
+func (*UnimplementedModelServiceServer) DeleteOutput(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOutput not implemented")
+}
 func (*UnimplementedModelServiceServer) GetRoute(ctx context.Context, req *IDRequest) (*Route, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoute not implemented")
 }
@@ -1406,6 +1529,9 @@ func (*UnimplementedModelServiceServer) UpdateRoute(ctx context.Context, req *Ro
 }
 func (*UnimplementedModelServiceServer) AddRoute(ctx context.Context, req *IDRequest) (*Route, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRoute not implemented")
+}
+func (*UnimplementedModelServiceServer) DeleteRoute(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoute not implemented")
 }
 func (*UnimplementedModelServiceServer) AddRouteCrossingJunctionSwitch(ctx context.Context, req *AddRouteCrossingJunctionSwitchRequest) (*Route, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRouteCrossingJunctionSwitch not implemented")
@@ -1434,11 +1560,17 @@ func (*UnimplementedModelServiceServer) UpdateSensor(ctx context.Context, req *S
 func (*UnimplementedModelServiceServer) AddBinarySensor(ctx context.Context, req *IDRequest) (*Sensor, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBinarySensor not implemented")
 }
+func (*UnimplementedModelServiceServer) DeleteSensor(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSensor not implemented")
+}
 func (*UnimplementedModelServiceServer) GetSignal(ctx context.Context, req *IDRequest) (*Signal, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSignal not implemented")
 }
 func (*UnimplementedModelServiceServer) UpdateSignal(ctx context.Context, req *Signal) (*Signal, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSignal not implemented")
+}
+func (*UnimplementedModelServiceServer) DeleteSignal(ctx context.Context, req *IDRequest) (*Module, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSignal not implemented")
 }
 func (*UnimplementedModelServiceServer) GetBinkyNetLocalWorker(ctx context.Context, req *IDRequest) (*BinkyNetLocalWorker, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBinkyNetLocalWorker not implemented")
@@ -1784,6 +1916,24 @@ func _ModelService_AddBlock_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_DeleteBlock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteBlock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteBlock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteBlock(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ModelService_GetBlockGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDRequest)
 	if err := dec(in); err != nil {
@@ -1834,6 +1984,24 @@ func _ModelService_AddBlockGroup_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).AddBlockGroup(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_DeleteBlockGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteBlockGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteBlockGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteBlockGroup(ctx, req.(*IDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1892,6 +2060,24 @@ func _ModelService_AddEdge_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_DeleteEdge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteEdge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteEdge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteEdge(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ModelService_GetJunction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDRequest)
 	if err := dec(in); err != nil {
@@ -1942,6 +2128,24 @@ func _ModelService_AddSwitch_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).AddSwitch(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_DeleteJunction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteJunction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteJunction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteJunction(ctx, req.(*IDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2000,6 +2204,24 @@ func _ModelService_AddBinaryOutput_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_DeleteOutput_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteOutput(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteOutput",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteOutput(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ModelService_GetRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDRequest)
 	if err := dec(in); err != nil {
@@ -2050,6 +2272,24 @@ func _ModelService_AddRoute_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).AddRoute(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_DeleteRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteRoute(ctx, req.(*IDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2216,6 +2456,24 @@ func _ModelService_AddBinarySensor_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_DeleteSensor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteSensor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteSensor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteSensor(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ModelService_GetSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDRequest)
 	if err := dec(in); err != nil {
@@ -2248,6 +2506,24 @@ func _ModelService_UpdateSignal_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).UpdateSignal(ctx, req.(*Signal))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_DeleteSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).DeleteSignal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binkyrailways.v1.ModelService/DeleteSignal",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).DeleteSignal(ctx, req.(*IDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2419,6 +2695,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ModelService_AddBlock_Handler,
 		},
 		{
+			MethodName: "DeleteBlock",
+			Handler:    _ModelService_DeleteBlock_Handler,
+		},
+		{
 			MethodName: "GetBlockGroup",
 			Handler:    _ModelService_GetBlockGroup_Handler,
 		},
@@ -2429,6 +2709,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddBlockGroup",
 			Handler:    _ModelService_AddBlockGroup_Handler,
+		},
+		{
+			MethodName: "DeleteBlockGroup",
+			Handler:    _ModelService_DeleteBlockGroup_Handler,
 		},
 		{
 			MethodName: "GetEdge",
@@ -2443,6 +2727,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ModelService_AddEdge_Handler,
 		},
 		{
+			MethodName: "DeleteEdge",
+			Handler:    _ModelService_DeleteEdge_Handler,
+		},
+		{
 			MethodName: "GetJunction",
 			Handler:    _ModelService_GetJunction_Handler,
 		},
@@ -2453,6 +2741,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddSwitch",
 			Handler:    _ModelService_AddSwitch_Handler,
+		},
+		{
+			MethodName: "DeleteJunction",
+			Handler:    _ModelService_DeleteJunction_Handler,
 		},
 		{
 			MethodName: "GetOutput",
@@ -2467,6 +2759,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ModelService_AddBinaryOutput_Handler,
 		},
 		{
+			MethodName: "DeleteOutput",
+			Handler:    _ModelService_DeleteOutput_Handler,
+		},
+		{
 			MethodName: "GetRoute",
 			Handler:    _ModelService_GetRoute_Handler,
 		},
@@ -2477,6 +2773,10 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddRoute",
 			Handler:    _ModelService_AddRoute_Handler,
+		},
+		{
+			MethodName: "DeleteRoute",
+			Handler:    _ModelService_DeleteRoute_Handler,
 		},
 		{
 			MethodName: "AddRouteCrossingJunctionSwitch",
@@ -2515,12 +2815,20 @@ var _ModelService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ModelService_AddBinarySensor_Handler,
 		},
 		{
+			MethodName: "DeleteSensor",
+			Handler:    _ModelService_DeleteSensor_Handler,
+		},
+		{
 			MethodName: "GetSignal",
 			Handler:    _ModelService_GetSignal_Handler,
 		},
 		{
 			MethodName: "UpdateSignal",
 			Handler:    _ModelService_UpdateSignal_Handler,
+		},
+		{
+			MethodName: "DeleteSignal",
+			Handler:    _ModelService_DeleteSignal_Handler,
 		},
 		{
 			MethodName: "GetBinkyNetLocalWorker",

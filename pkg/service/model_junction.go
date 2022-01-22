@@ -83,3 +83,25 @@ func (s *service) AddSwitch(ctx context.Context, req *api.IDRequest) (*api.Junct
 	}
 	return &result, nil
 }
+
+// Delete an junction by ID.
+func (s *service) DeleteJunction(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, junctionID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	junction, ok := mod.GetJunctions().Get(junctionID)
+	if !ok {
+		return nil, api.NotFound(junctionID)
+	}
+	mod.GetJunctions().Remove(junction)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

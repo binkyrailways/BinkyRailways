@@ -81,3 +81,25 @@ func (s *service) AddBlockGroup(ctx context.Context, req *api.IDRequest) (*api.B
 	}
 	return &result, nil
 }
+
+// Delete a block group by ID.
+func (s *service) DeleteBlockGroup(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, blockGroupID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	blockGroup, ok := mod.GetBlockGroups().Get(blockGroupID)
+	if !ok {
+		return nil, api.NotFound(blockGroupID)
+	}
+	mod.GetBlockGroups().Remove(blockGroup)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

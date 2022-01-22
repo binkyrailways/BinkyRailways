@@ -83,3 +83,25 @@ func (s *service) AddBinarySensor(ctx context.Context, req *api.IDRequest) (*api
 	}
 	return &result, nil
 }
+
+// Delete a sensor by ID.
+func (s *service) DeleteSensor(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, sensorID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	sensor, ok := mod.GetSensors().Get(sensorID)
+	if !ok {
+		return nil, api.NotFound(sensorID)
+	}
+	mod.GetSensors().Remove(sensor)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

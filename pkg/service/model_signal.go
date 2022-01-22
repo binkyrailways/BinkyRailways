@@ -67,3 +67,25 @@ func (s *service) UpdateSignal(ctx context.Context, req *api.Signal) (*api.Signa
 	}
 	return &result, nil
 }
+
+// Delete a signal by ID.
+func (s *service) DeleteSignal(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, signalID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	signal, ok := mod.GetSignals().Get(signalID)
+	if !ok {
+		return nil, api.NotFound(signalID)
+	}
+	mod.GetSignals().Remove(signal)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

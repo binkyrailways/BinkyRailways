@@ -81,3 +81,25 @@ func (s *service) AddBinaryOutput(ctx context.Context, req *api.IDRequest) (*api
 	}
 	return &result, nil
 }
+
+// Delete an output by ID.
+func (s *service) DeleteOutput(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, outputID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	output, ok := mod.GetOutputs().Get(outputID)
+	if !ok {
+		return nil, api.NotFound(outputID)
+	}
+	mod.GetOutputs().Remove(output)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

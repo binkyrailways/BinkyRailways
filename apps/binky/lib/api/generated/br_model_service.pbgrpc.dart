@@ -92,6 +92,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddBlock',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Block.fromBuffer(value));
+  static final _$deleteBlock = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteBlock',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getBlockGroup =
       $grpc.ClientMethod<$0.IDRequest, $1.BlockGroup>(
           '/binkyrailways.v1.ModelService/GetBlockGroup',
@@ -107,6 +111,10 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/AddBlockGroup',
           ($0.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.BlockGroup.fromBuffer(value));
+  static final _$deleteBlockGroup = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteBlockGroup',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getEdge = $grpc.ClientMethod<$0.IDRequest, $1.Edge>(
       '/binkyrailways.v1.ModelService/GetEdge',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -119,6 +127,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddEdge',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Edge.fromBuffer(value));
+  static final _$deleteEdge = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteEdge',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getJunction = $grpc.ClientMethod<$0.IDRequest, $1.Junction>(
       '/binkyrailways.v1.ModelService/GetJunction',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -131,6 +143,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddSwitch',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Junction.fromBuffer(value));
+  static final _$deleteJunction = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteJunction',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getOutput = $grpc.ClientMethod<$0.IDRequest, $1.Output>(
       '/binkyrailways.v1.ModelService/GetOutput',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -143,6 +159,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddBinaryOutput',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Output.fromBuffer(value));
+  static final _$deleteOutput = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteOutput',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getRoute = $grpc.ClientMethod<$0.IDRequest, $1.Route>(
       '/binkyrailways.v1.ModelService/GetRoute',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -155,6 +175,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddRoute',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$deleteRoute = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteRoute',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$addRouteCrossingJunctionSwitch =
       $grpc.ClientMethod<$0.AddRouteCrossingJunctionSwitchRequest, $1.Route>(
           '/binkyrailways.v1.ModelService/AddRouteCrossingJunctionSwitch',
@@ -199,6 +223,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddBinarySensor',
       ($0.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Sensor.fromBuffer(value));
+  static final _$deleteSensor = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteSensor',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getSignal = $grpc.ClientMethod<$0.IDRequest, $1.Signal>(
       '/binkyrailways.v1.ModelService/GetSignal',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -207,6 +235,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateSignal',
       ($1.Signal value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Signal.fromBuffer(value));
+  static final _$deleteSignal = $grpc.ClientMethod<$0.IDRequest, $1.Module>(
+      '/binkyrailways.v1.ModelService/DeleteSignal',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
   static final _$getBinkyNetLocalWorker =
       $grpc.ClientMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
           '/binkyrailways.v1.ModelService/GetBinkyNetLocalWorker',
@@ -335,6 +367,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addBlock, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Module> deleteBlock($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBlock, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.BlockGroup> getBlockGroup($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getBlockGroup, request, options: options);
@@ -348,6 +385,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.BlockGroup> addBlockGroup($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addBlockGroup, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Module> deleteBlockGroup($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBlockGroup, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Edge> getEdge($0.IDRequest request,
@@ -365,6 +407,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addEdge, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Module> deleteEdge($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteEdge, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.Junction> getJunction($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getJunction, request, options: options);
@@ -378,6 +425,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Junction> addSwitch($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addSwitch, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Module> deleteJunction($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteJunction, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Output> getOutput($0.IDRequest request,
@@ -395,6 +447,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addBinaryOutput, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Module> deleteOutput($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteOutput, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.Route> getRoute($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getRoute, request, options: options);
@@ -408,6 +465,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Route> addRoute($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addRoute, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Module> deleteRoute($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteRoute, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Route> addRouteCrossingJunctionSwitch(
@@ -463,6 +525,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addBinarySensor, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Module> deleteSensor($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteSensor, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.Signal> getSignal($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getSignal, request, options: options);
@@ -471,6 +538,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Signal> updateSignal($1.Signal request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateSignal, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Module> deleteSignal($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteSignal, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.BinkyNetLocalWorker> getBinkyNetLocalWorker(
@@ -639,6 +711,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Block value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteBlock',
+        deleteBlock_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.BlockGroup>(
         'GetBlockGroup',
         getBlockGroup_Pre,
@@ -660,6 +739,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.BlockGroup value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteBlockGroup',
+        deleteBlockGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Edge>(
         'GetEdge',
         getEdge_Pre,
@@ -681,6 +767,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Edge value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteEdge',
+        deleteEdge_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Junction>(
         'GetJunction',
         getJunction_Pre,
@@ -702,6 +795,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Junction value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteJunction',
+        deleteJunction_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Output>(
         'GetOutput',
         getOutput_Pre,
@@ -723,6 +823,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Output value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteOutput',
+        deleteOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Route>(
         'GetRoute',
         getRoute_Pre,
@@ -744,6 +851,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteRoute',
+        deleteRoute_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.AddRouteCrossingJunctionSwitchRequest, $1.Route>(
             'AddRouteCrossingJunctionSwitch',
@@ -816,6 +930,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.Sensor value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteSensor',
+        deleteSensor_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Signal>(
         'GetSignal',
         getSignal_Pre,
@@ -830,6 +951,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Signal.fromBuffer(value),
         ($1.Signal value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Module>(
+        'DeleteSignal',
+        deleteSignal_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
         'GetBinkyNetLocalWorker',
         getBinkyNetLocalWorker_Pre,
@@ -959,6 +1087,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBlock(call, await request);
   }
 
+  $async.Future<$1.Module> deleteBlock_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteBlock(call, await request);
+  }
+
   $async.Future<$1.BlockGroup> getBlockGroup_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getBlockGroup(call, await request);
@@ -972,6 +1105,11 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.BlockGroup> addBlockGroup_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return addBlockGroup(call, await request);
+  }
+
+  $async.Future<$1.Module> deleteBlockGroup_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteBlockGroup(call, await request);
   }
 
   $async.Future<$1.Edge> getEdge_Pre(
@@ -989,6 +1127,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addEdge(call, await request);
   }
 
+  $async.Future<$1.Module> deleteEdge_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteEdge(call, await request);
+  }
+
   $async.Future<$1.Junction> getJunction_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getJunction(call, await request);
@@ -1002,6 +1145,11 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Junction> addSwitch_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return addSwitch(call, await request);
+  }
+
+  $async.Future<$1.Module> deleteJunction_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteJunction(call, await request);
   }
 
   $async.Future<$1.Output> getOutput_Pre(
@@ -1019,6 +1167,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBinaryOutput(call, await request);
   }
 
+  $async.Future<$1.Module> deleteOutput_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteOutput(call, await request);
+  }
+
   $async.Future<$1.Route> getRoute_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getRoute(call, await request);
@@ -1032,6 +1185,11 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Route> addRoute_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return addRoute(call, await request);
+  }
+
+  $async.Future<$1.Module> deleteRoute_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteRoute(call, await request);
   }
 
   $async.Future<$1.Route> addRouteCrossingJunctionSwitch_Pre(
@@ -1081,6 +1239,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBinarySensor(call, await request);
   }
 
+  $async.Future<$1.Module> deleteSensor_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteSensor(call, await request);
+  }
+
   $async.Future<$1.Signal> getSignal_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getSignal(call, await request);
@@ -1089,6 +1252,11 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Signal> updateSignal_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Signal> request) async {
     return updateSignal(call, await request);
+  }
+
+  $async.Future<$1.Module> deleteSignal_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteSignal(call, await request);
   }
 
   $async.Future<$1.BinkyNetLocalWorker> getBinkyNetLocalWorker_Pre(
@@ -1147,20 +1315,28 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Block> updateBlock($grpc.ServiceCall call, $1.Block request);
   $async.Future<$1.Block> addBlock(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteBlock(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BlockGroup> getBlockGroup(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BlockGroup> updateBlockGroup(
       $grpc.ServiceCall call, $1.BlockGroup request);
   $async.Future<$1.BlockGroup> addBlockGroup(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteBlockGroup(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Edge> getEdge($grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Edge> updateEdge($grpc.ServiceCall call, $1.Edge request);
   $async.Future<$1.Edge> addEdge($grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteEdge(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Junction> getJunction(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Junction> updateJunction(
       $grpc.ServiceCall call, $1.Junction request);
   $async.Future<$1.Junction> addSwitch(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteJunction(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Output> getOutput(
       $grpc.ServiceCall call, $0.IDRequest request);
@@ -1168,10 +1344,14 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Output request);
   $async.Future<$1.Output> addBinaryOutput(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteOutput(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Route> getRoute(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Route> updateRoute($grpc.ServiceCall call, $1.Route request);
   $async.Future<$1.Route> addRoute(
+      $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteRoute(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Route> addRouteCrossingJunctionSwitch(
       $grpc.ServiceCall call, $0.AddRouteCrossingJunctionSwitchRequest request);
@@ -1191,10 +1371,14 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Sensor request);
   $async.Future<$1.Sensor> addBinarySensor(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.Module> deleteSensor(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Signal> getSignal(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Signal> updateSignal(
       $grpc.ServiceCall call, $1.Signal request);
+  $async.Future<$1.Module> deleteSignal(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> getBinkyNetLocalWorker(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> updateBinkyNetLocalWorker(

@@ -81,3 +81,25 @@ func (s *service) AddBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 	}
 	return &result, nil
 }
+
+// Delete a block by ID.
+func (s *service) DeleteBlock(ctx context.Context, req *api.IDRequest) (*api.Module, error) {
+	moduleID, blockID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	mod, err := s.getModule(ctx, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	block, ok := mod.GetBlocks().Get(blockID)
+	if !ok {
+		return nil, api.NotFound(blockID)
+	}
+	mod.GetBlocks().Remove(block)
+	var result api.Module
+	if err := result.FromModel(ctx, mod); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
