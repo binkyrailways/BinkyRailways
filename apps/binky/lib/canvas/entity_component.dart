@@ -30,4 +30,12 @@ class EntityComponent extends PositionComponent with Hoverable {
     y = (position.hasY() ? position.y.toDouble() : 0) + height / 2;
     angle = radians(position.rotation.toDouble());
   }
+
+  // Gets the angle (in radians) to draw the description of this element.
+  // Ensures that text is always with the correct side up.
+  double getTextRotation(mapi.Position position) {
+    final modelRotation = position.rotation % 360;
+    final rotation = (modelRotation > 90 && modelRotation < 270) ? 180 : 0;
+    return radians(rotation.toDouble());
+  }
 }

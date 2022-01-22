@@ -84,9 +84,13 @@ class JunctionComponent extends EntityComponent {
     canvas.restore();
     // Draw description
     if (showDescription()) {
-      textPaint.render(
-          canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
-          anchor: fc.Anchor.center);
+      canvas.renderRotated(
+          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+          (canvas) {
+        textPaint.render(
+            canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
+            anchor: fc.Anchor.center);
+      });
     }
   }
 
