@@ -64,16 +64,21 @@ class EnableRunModeRequest extends $pb.GeneratedMessage {
 class GetStateChangesRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetStateChangesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrap')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrapOnly')
     ..hasRequiredFields = false
   ;
 
   GetStateChangesRequest._() : super();
   factory GetStateChangesRequest({
     $core.bool? bootstrap,
+    $core.bool? bootstrapOnly,
   }) {
     final _result = create();
     if (bootstrap != null) {
       _result.bootstrap = bootstrap;
+    }
+    if (bootstrapOnly != null) {
+      _result.bootstrapOnly = bootstrapOnly;
     }
     return _result;
   }
@@ -106,6 +111,15 @@ class GetStateChangesRequest extends $pb.GeneratedMessage {
   $core.bool hasBootstrap() => $_has(0);
   @$pb.TagNumber(1)
   void clearBootstrap() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get bootstrapOnly => $_getBF(1);
+  @$pb.TagNumber(2)
+  set bootstrapOnly($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBootstrapOnly() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBootstrapOnly() => clearField(2);
 }
 
 class StateChange extends $pb.GeneratedMessage {

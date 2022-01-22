@@ -22,6 +22,7 @@ import 'package:retry/retry.dart';
 
 class StateModel extends ChangeNotifier {
   RailwayState? _railwayState;
+  bool _fetchingChanges = false;
   final HolderMap<CommandStationState> _commandStations = HolderMap();
   final HolderMap<LocState> _locs = HolderMap();
   final HolderMap<BlockState> _blocks = HolderMap();
@@ -46,6 +47,14 @@ class StateModel extends ChangeNotifier {
     if (_railwayState == null) {
       var stateClient = APIClient().stateClient();
       _railwayState = await stateClient.getRailwayState(Empty());
+      final rwState = _railwayState;
+      if (rwState != null) {
+        if (rwState.isRunModeEnabled) {
+          await _ensureFetchingChanges();
+        } else {
+          _fetchingChanges = false;
+        }
+      }
       notifyListeners();
     }
     return _railwayState!;
@@ -63,11 +72,20 @@ class StateModel extends ChangeNotifier {
     final result =
         await stateClient.enableRunMode(EnableRunModeRequest(virtual: virtual));
     _railwayState = result;
-    // Start fetching state changes
-    _getStateChanges(true);
+    await _ensureFetchingChanges();
     // Notify listeners
     notifyListeners();
     return result;
+  }
+
+  Future<void> _ensureFetchingChanges() async {
+    if (!_fetchingChanges) {
+      _fetchingChanges = true;
+      // Fetch all state changes first
+      await _getStateChanges(true, true);
+      // Now wait for all future changes
+      _getStateChanges(true, false);
+    }
   }
 
   // Disable run mode
@@ -81,6 +99,7 @@ class StateModel extends ChangeNotifier {
     var stateClient = APIClient().stateClient();
     final result = await stateClient.disableRunMode(Empty());
     _railwayState = result;
+    _fetchingChanges = false;
     notifyListeners();
     return result;
   }
@@ -253,7 +272,7 @@ class StateModel extends ChangeNotifier {
       _getState(id, _signals);
 
   // Collect state changes from the server, until the
-  Future<void> _getStateChanges(bool bootstrap) async {
+  Future<void> _getStateChanges(bool bootstrap, bool bootstrapOnly) async {
     // Clear current state
     _commandStations.clear();
     _locs.clear();
@@ -268,7 +287,8 @@ class StateModel extends ChangeNotifier {
     final stateClient = APIClient().stateClient();
     while (_railwayState?.isRunModeEnabled ?? false) {
       // Request state changes
-      final req = GetStateChangesRequest(bootstrap: bootstrap);
+      final req = GetStateChangesRequest(
+          bootstrap: bootstrap, bootstrapOnly: bootstrapOnly);
       try {
         await for (var change in stateClient.getStateChanges(req)) {
           var changed = false;

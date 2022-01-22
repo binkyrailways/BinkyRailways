@@ -212,6 +212,8 @@ message CommandStationState {
 message BlockState {
   // Model of the block
   Block model = 1;
+  // If set, contains the loc that has locked this block
+  LocRef locked_by = 2;
   // Gets all sensors that are either an "entering" or a "reached" sensor for a
   // route that leads to this block.
   // ForEachSensor(context.Context, func(Sensor))

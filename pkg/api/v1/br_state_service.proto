@@ -79,6 +79,8 @@ message GetStateChangesRequest {
   // If set, all state objects will be send to the stream before state changes
   // are passed.
   bool bootstrap = 1;
+  // If set, only all state objects will be send to the stream, after which the stream is closed.
+  bool bootstrap_only = 2;
 }
 
 // State change of a single object.

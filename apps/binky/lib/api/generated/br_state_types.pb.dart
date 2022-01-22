@@ -622,6 +622,7 @@ class CommandStationState extends $pb.GeneratedMessage {
 class BlockState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Block.create)
+    ..aOM<$1.LocRef>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lockedBy', subBuilder: $1.LocRef.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedRequested')
     ..aOB(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isDeadend')
@@ -633,6 +634,7 @@ class BlockState extends $pb.GeneratedMessage {
   BlockState._() : super();
   factory BlockState({
     $1.Block? model,
+    $1.LocRef? lockedBy,
     $core.bool? closedActual,
     $core.bool? closedRequested,
     $core.bool? isDeadend,
@@ -642,6 +644,9 @@ class BlockState extends $pb.GeneratedMessage {
     final _result = create();
     if (model != null) {
       _result.model = model;
+    }
+    if (lockedBy != null) {
+      _result.lockedBy = lockedBy;
     }
     if (closedActual != null) {
       _result.closedActual = closedActual;
@@ -692,48 +697,59 @@ class BlockState extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $1.Block ensureModel() => $_ensure(0);
 
+  @$pb.TagNumber(2)
+  $1.LocRef get lockedBy => $_getN(1);
+  @$pb.TagNumber(2)
+  set lockedBy($1.LocRef v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLockedBy() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLockedBy() => clearField(2);
+  @$pb.TagNumber(2)
+  $1.LocRef ensureLockedBy() => $_ensure(1);
+
   @$pb.TagNumber(10)
-  $core.bool get closedActual => $_getBF(1);
+  $core.bool get closedActual => $_getBF(2);
   @$pb.TagNumber(10)
-  set closedActual($core.bool v) { $_setBool(1, v); }
+  set closedActual($core.bool v) { $_setBool(2, v); }
   @$pb.TagNumber(10)
-  $core.bool hasClosedActual() => $_has(1);
+  $core.bool hasClosedActual() => $_has(2);
   @$pb.TagNumber(10)
   void clearClosedActual() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get closedRequested => $_getBF(2);
+  $core.bool get closedRequested => $_getBF(3);
   @$pb.TagNumber(11)
-  set closedRequested($core.bool v) { $_setBool(2, v); }
+  set closedRequested($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(11)
-  $core.bool hasClosedRequested() => $_has(2);
+  $core.bool hasClosedRequested() => $_has(3);
   @$pb.TagNumber(11)
   void clearClosedRequested() => clearField(11);
 
   @$pb.TagNumber(20)
-  $core.bool get isDeadend => $_getBF(3);
+  $core.bool get isDeadend => $_getBF(4);
   @$pb.TagNumber(20)
-  set isDeadend($core.bool v) { $_setBool(3, v); }
+  set isDeadend($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(20)
-  $core.bool hasIsDeadend() => $_has(3);
+  $core.bool hasIsDeadend() => $_has(4);
   @$pb.TagNumber(20)
   void clearIsDeadend() => clearField(20);
 
   @$pb.TagNumber(21)
-  $core.bool get isStation => $_getBF(4);
+  $core.bool get isStation => $_getBF(5);
   @$pb.TagNumber(21)
-  set isStation($core.bool v) { $_setBool(4, v); }
+  set isStation($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(21)
-  $core.bool hasIsStation() => $_has(4);
+  $core.bool hasIsStation() => $_has(5);
   @$pb.TagNumber(21)
   void clearIsStation() => clearField(21);
 
   @$pb.TagNumber(22)
-  $core.bool get hasWaitingLoc => $_getBF(5);
+  $core.bool get hasWaitingLoc => $_getBF(6);
   @$pb.TagNumber(22)
-  set hasWaitingLoc($core.bool v) { $_setBool(5, v); }
+  set hasWaitingLoc($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(22)
-  $core.bool hasHasWaitingLoc() => $_has(5);
+  $core.bool hasHasWaitingLoc() => $_has(6);
   @$pb.TagNumber(22)
   void clearHasWaitingLoc() => clearField(22);
 }

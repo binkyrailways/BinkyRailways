@@ -23,11 +23,12 @@ const GetStateChangesRequest$json = const {
   '1': 'GetStateChangesRequest',
   '2': const [
     const {'1': 'bootstrap', '3': 1, '4': 1, '5': 8, '10': 'bootstrap'},
+    const {'1': 'bootstrap_only', '3': 2, '4': 1, '5': 8, '10': 'bootstrapOnly'},
   ],
 };
 
 /// Descriptor for `GetStateChangesRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStateChangesRequestDescriptor = $convert.base64Decode('ChZHZXRTdGF0ZUNoYW5nZXNSZXF1ZXN0EhwKCWJvb3RzdHJhcBgBIAEoCFIJYm9vdHN0cmFw');
+final $typed_data.Uint8List getStateChangesRequestDescriptor = $convert.base64Decode('ChZHZXRTdGF0ZUNoYW5nZXNSZXF1ZXN0EhwKCWJvb3RzdHJhcBgBIAEoCFIJYm9vdHN0cmFwEiUKDmJvb3RzdHJhcF9vbmx5GAIgASgIUg1ib290c3RyYXBPbmx5');
 @$core.Deprecated('Use stateChangeDescriptor instead')
 const StateChange$json = const {
   '1': 'StateChange',

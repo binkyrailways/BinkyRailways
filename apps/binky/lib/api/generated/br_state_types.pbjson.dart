@@ -109,6 +109,7 @@ const BlockState$json = const {
   '1': 'BlockState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.Block', '10': 'model'},
+    const {'1': 'locked_by', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'lockedBy'},
     const {'1': 'closed_actual', '3': 10, '4': 1, '5': 8, '10': 'closedActual'},
     const {'1': 'closed_requested', '3': 11, '4': 1, '5': 8, '10': 'closedRequested'},
     const {'1': 'is_deadend', '3': 20, '4': 1, '5': 8, '10': 'isDeadend'},
@@ -118,7 +119,7 @@ const BlockState$json = const {
 };
 
 /// Descriptor for `BlockState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List blockStateDescriptor = $convert.base64Decode('CgpCbG9ja1N0YXRlEi0KBW1vZGVsGAEgASgLMhcuYmlua3lyYWlsd2F5cy52MS5CbG9ja1IFbW9kZWwSIwoNY2xvc2VkX2FjdHVhbBgKIAEoCFIMY2xvc2VkQWN0dWFsEikKEGNsb3NlZF9yZXF1ZXN0ZWQYCyABKAhSD2Nsb3NlZFJlcXVlc3RlZBIdCgppc19kZWFkZW5kGBQgASgIUglpc0RlYWRlbmQSHQoKaXNfc3RhdGlvbhgVIAEoCFIJaXNTdGF0aW9uEiYKD2hhc193YWl0aW5nX2xvYxgWIAEoCFINaGFzV2FpdGluZ0xvYw==');
+final $typed_data.Uint8List blockStateDescriptor = $convert.base64Decode('CgpCbG9ja1N0YXRlEi0KBW1vZGVsGAEgASgLMhcuYmlua3lyYWlsd2F5cy52MS5CbG9ja1IFbW9kZWwSNQoJbG9ja2VkX2J5GAIgASgLMhguYmlua3lyYWlsd2F5cy52MS5Mb2NSZWZSCGxvY2tlZEJ5EiMKDWNsb3NlZF9hY3R1YWwYCiABKAhSDGNsb3NlZEFjdHVhbBIpChBjbG9zZWRfcmVxdWVzdGVkGAsgASgIUg9jbG9zZWRSZXF1ZXN0ZWQSHQoKaXNfZGVhZGVuZBgUIAEoCFIJaXNEZWFkZW5kEh0KCmlzX3N0YXRpb24YFSABKAhSCWlzU3RhdGlvbhImCg9oYXNfd2FpdGluZ19sb2MYFiABKAhSDWhhc1dhaXRpbmdMb2M=');
 @$core.Deprecated('Use blockGroupStateDescriptor instead')
 const BlockGroupState$json = const {
   '1': 'BlockGroupState',

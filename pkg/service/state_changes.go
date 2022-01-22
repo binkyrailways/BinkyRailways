@@ -32,17 +32,19 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	}
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
-	defer close(changes)
 
 	// Listen for state changes
-	cb := func(stateChange *api.StateChange) {
-		changes <- stateChange
+	if !req.GetBootstrapOnly() {
+		defer close(changes)
+		cb := func(stateChange *api.StateChange) {
+			changes <- stateChange
+		}
+		s.stateChanges.Sub(cb)
+		defer s.stateChanges.Leave(cb)
 	}
-	s.stateChanges.Sub(cb)
-	defer s.stateChanges.Leave(cb)
 
 	// If requested, send all state objects
-	if req.GetBootstrap() {
+	if req.GetBootstrap() || req.GetBootstrapOnly() {
 		go func() {
 			ctx := context.Background()
 			send := func(sc *api.StateChange) bool {
@@ -83,6 +85,9 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 			rwState.ForEachSignal(func(b state.Signal) {
 				send(s.stateChangeBuilder(ctx, b))
 			})
+			if req.GetBootstrapOnly() {
+				close(changes)
+			}
 		}()
 	}
 

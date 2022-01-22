@@ -62,7 +62,7 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
   Widget build(BuildContext context) {
     return GameWidget(
       game: _game!,
-      loadingBuilder: (context) => const Text("Loading..."),
+      loadingBuilder: (context) => const Text("Loading canvas..."),
       errorBuilder: (context, err) => Text("Error: $err"),
       overlayBuilderMap: {
         RailwayGame.blockOverlay: _game!.blockOverlayBuilder,

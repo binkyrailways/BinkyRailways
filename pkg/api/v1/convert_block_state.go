@@ -29,6 +29,9 @@ func (dst *BlockState) FromState(ctx context.Context, src state.Block) error {
 	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
 		return err
 	}
+	if loc := src.GetLockedBy(ctx); loc != nil {
+		dst.LockedBy = &LocRef{Id: loc.GetID()}
+	}
 	dst.ClosedActual = src.GetClosed().GetActual(ctx)
 	dst.ClosedRequested = src.GetClosed().GetRequested(ctx)
 	dst.IsDeadend = src.GetIsDeadEnd(ctx)
