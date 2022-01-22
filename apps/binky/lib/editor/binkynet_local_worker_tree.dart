@@ -32,6 +32,7 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
     final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
+        final csId = selector.idOf(EntityType.commandstation) ?? "";
         final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
         return FutureBuilder<BinkyNetLocalWorker>(
             future: model.getBinkyNetLocalWorker(lwId),
@@ -42,6 +43,19 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
               }
               var lw = snapshot.data!;
               final List<Widget> children = [
+                ListTile(
+                  leading: BinkyIcons.railway,
+                  minLeadingWidth: 20,
+                  title: const Text("Railway"),
+                  onTap: () => editorCtx.select(EntitySelector.railway()),
+                ),
+                ListTile(
+                  leading: BinkyIcons.commandstation,
+                  minLeadingWidth: 20,
+                  title: const Text("Command station"),
+                  onTap: () => editorCtx
+                      .select(EntitySelector.commandStation(null, csId)),
+                ),
                 ListTile(
                   leading: BinkyIcons.binkynetlocalworker,
                   minLeadingWidth: 20,

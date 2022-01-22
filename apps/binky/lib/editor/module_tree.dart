@@ -44,6 +44,12 @@ class ModuleTree extends StatelessWidget {
               return ListView(
                 children: <Widget>[
                   ListTile(
+                    leading: BinkyIcons.railway,
+                    minLeadingWidth: 20,
+                    title: const Text("Railway"),
+                    onTap: () => editorCtx.select(EntitySelector.railway()),
+                  ),
+                  ListTile(
                     leading: BinkyIcons.module,
                     minLeadingWidth: 20,
                     title: const Text(

@@ -41,14 +41,29 @@ class OutputsTree extends StatelessWidget {
               }
               var outputs = snapshot.data!;
               return ListView.builder(
-                  itemCount: outputs.length,
+                  itemCount: outputs.length + 2,
                   itemBuilder: (context, index) {
-                    final id = outputs[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final output = outputs[index - 2];
+                    final id = output.id;
                     return ListTile(
                       leading: BinkyIcons.output,
-                      title: Text(outputs[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.output(outputs[index])),
+                      title: Text(output.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.output(output)),
                       selected: selector.idOf(EntityType.output) == id,
                     );
                   });

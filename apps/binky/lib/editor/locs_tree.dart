@@ -24,7 +24,8 @@ import '../models.dart';
 import '../api.dart';
 
 class LocsTree extends StatelessWidget {
-  const LocsTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const LocsTree({Key? key, required this.withParents}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +40,23 @@ class LocsTree extends StatelessWidget {
                 return const Text("Loading...");
               }
               var locs = snapshot.data!;
+              final extra = withParents ? 1 : 0;
               return ListView.builder(
-                  itemCount: locs.length,
+                  itemCount: locs.length + extra,
                   itemBuilder: (context, index) {
-                    final id = locs[index].id;
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    }
+                    final loc = locs[index - extra];
+                    final id = loc.id;
                     return ListTile(
                       leading: BinkyIcons.loc,
-                      title: Text(locs[index].description),
-                      onTap: () =>
-                          editorCtx.select(EntitySelector.loc(locs[index])),
+                      title: Text(loc.description),
+                      onTap: () => editorCtx.select(EntitySelector.loc(loc)),
                       selected: selector.idOf(EntityType.loc) == id,
                     );
                   });

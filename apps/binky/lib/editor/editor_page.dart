@@ -139,7 +139,7 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.modules:
         return const SplitView(
           menu: RailwayTree(),
-          content: ModulesTree(),
+          content: ModulesTree(withParents: false),
         );
       case EntityType.module:
         return const SplitView(
@@ -150,27 +150,29 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.locs:
         return const SplitView(
           menu: RailwayTree(),
-          content: LocsTree(),
+          content: LocsTree(withParents: false),
         );
       case EntityType.loc:
         return const SplitView(
-          menu: LocsTree(),
+          menu: LocsTree(withParents: true),
           content: LocSettings(),
         );
       case EntityType.locgroups:
         return const SplitView(
           menu: RailwayTree(),
-          content: LocGroupsTree(),
+          content: LocGroupsTree(withParents: false),
         );
       case EntityType.locgroup:
         return const SplitView(
-          menu: LocGroupsTree(),
+          menu: LocGroupsTree(withParents: true),
           content: LocGroupSettings(),
         );
       case EntityType.commandstations:
         return const SplitView(
           menu: RailwayTree(),
-          content: CommandStationsTree(),
+          content: CommandStationsTree(
+            withParents: false,
+          ),
         );
       case EntityType.commandstation:
         return const SplitView(
@@ -268,7 +270,7 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.binkynetlocalworkers:
         return const SplitView(
           menu: CommandStationTree(),
-          content: BinkyNetLocalWorkersTree(),
+          content: BinkyNetLocalWorkersTree(withParents: false),
         );
       case EntityType.binkynetlocalworker:
         return const SplitView(
@@ -278,21 +280,21 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.binkynetdevices:
         return const SplitView(
           menu: BinkyNetLocalWorkerTree(),
-          content: BinkyNetDevicesTree(),
+          content: BinkyNetDevicesTree(withParents: false),
         );
       case EntityType.binkynetdevice:
         return const SplitView(
-          menu: BinkyNetDevicesTree(),
+          menu: BinkyNetDevicesTree(withParents: true),
           content: BinkyNetDeviceSettings(),
         );
       case EntityType.binkynetobjects:
         return const SplitView(
           menu: BinkyNetLocalWorkerTree(),
-          content: BinkyNetObjectsTree(),
+          content: BinkyNetObjectsTree(withParents: false),
         );
       case EntityType.binkynetobject:
         return const SplitView(
-          menu: BinkyNetObjectsTree(),
+          menu: BinkyNetObjectsTree(withParents: true),
           content: BinkyNetObjectSettings(),
         );
       default:
@@ -302,7 +304,6 @@ class _EditorPageState extends State<EditorPage> {
 
   Widget? _buildLeading(
       BuildContext context, EditorContext editorCtx, ModelModel model) {
-    final selector = editorCtx.selector;
     if (!editorCtx.canGoBack) {
       // No reason for back button
       return null;

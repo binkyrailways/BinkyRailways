@@ -41,14 +41,29 @@ class SensorsTree extends StatelessWidget {
               }
               var sensors = snapshot.data!;
               return ListView.builder(
-                  itemCount: sensors.length,
+                  itemCount: sensors.length + 2,
                   itemBuilder: (context, index) {
-                    final id = sensors[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final sensor = sensors[index - 2];
+                    final id = sensor.id;
                     return ListTile(
                       leading: BinkyIcons.sensor,
-                      title: Text(sensors[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.sensor(sensors[index])),
+                      title: Text(sensor.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.sensor(sensor)),
                       selected: selector.idOf(EntityType.sensor) == id,
                     );
                   });

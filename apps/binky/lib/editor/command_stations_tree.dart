@@ -24,7 +24,9 @@ import '../models.dart';
 import '../api.dart';
 
 class CommandStationsTree extends StatelessWidget {
-  const CommandStationsTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const CommandStationsTree({Key? key, required this.withParents})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +41,24 @@ class CommandStationsTree extends StatelessWidget {
                 return const Text("Loading...");
               }
               var css = snapshot.data!;
+              final extra = withParents ? 1 : 0;
               return ListView.builder(
-                  itemCount: css.length,
+                  itemCount: css.length + extra,
                   itemBuilder: (context, index) {
-                    final id = css[index].id;
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    }
+                    final cs = css[index - extra];
+                    final id = cs.id;
                     return ListTile(
                       leading: BinkyIcons.commandstation,
-                      title: Text(css[index].description),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.commandStation(css[index], null)),
+                      title: Text(cs.description),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.commandStation(cs, null)),
                       selected: selector.idOf(EntityType.commandstation) == id,
                     );
                   });

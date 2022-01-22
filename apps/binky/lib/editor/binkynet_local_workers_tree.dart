@@ -24,7 +24,9 @@ import '../models.dart';
 import '../api.dart';
 
 class BinkyNetLocalWorkersTree extends StatelessWidget {
-  const BinkyNetLocalWorkersTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const BinkyNetLocalWorkersTree({Key? key, required this.withParents})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +44,31 @@ class BinkyNetLocalWorkersTree extends StatelessWidget {
               }
               var localworkers = snapshot.data!
                 ..sort((a, b) => a.description.compareTo(b.description));
+              final extra = withParents ? 2 : 0;
               return ListView.builder(
-                  itemCount: localworkers.length,
+                  itemCount: localworkers.length + extra,
                   itemBuilder: (context, index) {
-                    final id = localworkers[index].id;
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if ((index == 1) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.commandstation,
+                        title: const Text("Command station"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.commandStation(null, csId)),
+                      );
+                    }
+                    final lw = localworkers[index - extra];
+                    final id = lw.id;
                     return ListTile(
                       leading: BinkyIcons.binkynetlocalworker,
-                      title: Text(localworkers[index].description),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.binkynetLocalWorker(
-                              localworkers[index])),
+                      title: Text(lw.description),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.binkynetLocalWorker(lw)),
                       selected:
                           selector.idOf(EntityType.binkynetlocalworker) == id,
                     );

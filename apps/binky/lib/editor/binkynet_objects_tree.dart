@@ -24,12 +24,15 @@ import '../models.dart';
 import '../api.dart';
 
 class BinkyNetObjectsTree extends StatelessWidget {
-  const BinkyNetObjectsTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const BinkyNetObjectsTree({Key? key, required this.withParents})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
+    final csId = selector.idOf(EntityType.commandstation) ?? "";
     final lwId = selector.idOf(EntityType.binkynetlocalworker) ?? "";
     return Consumer<ModelModel>(
       builder: (context, model, child) {
@@ -42,15 +45,38 @@ class BinkyNetObjectsTree extends StatelessWidget {
               final lw = snapshot.data!;
               var objects = lw.objects.toList()
                 ..sort((a, b) => a.objectId.compareTo(b.objectId));
+              final extra = withParents ? 3 : 0;
               return ListView.builder(
-                  itemCount: objects.length,
+                  itemCount: objects.length + extra,
                   itemBuilder: (context, index) {
-                    final id = objects[index].id;
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if ((index == 1) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.commandstation,
+                        title: const Text("Command station"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.commandStation(null, csId)),
+                      );
+                    } else if ((index == 2) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.binkynetlocalworker,
+                        title: const Text("Local worker"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.binkynetLocalWorker(lw)),
+                      );
+                    }
+                    final object = objects[index - extra];
+                    final id = object.id;
                     return ListTile(
                       leading: BinkyIcons.binkynetobject,
-                      title: Text(objects[index].objectId),
-                      onTap: () => editorCtx.select(
-                          EntitySelector.binkynetObject(lw, objects[index])),
+                      title: Text(object.objectId),
+                      onTap: () => editorCtx
+                          .select(EntitySelector.binkynetObject(lw, object)),
                       selected: selector.idOf(EntityType.binkynetobject) == id,
                     );
                   });

@@ -24,7 +24,8 @@ import '../models.dart';
 import '../api.dart';
 
 class LocGroupsTree extends StatelessWidget {
-  const LocGroupsTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const LocGroupsTree({Key? key, required this.withParents}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +40,24 @@ class LocGroupsTree extends StatelessWidget {
                 return const Text("Loading...");
               }
               var lgs = snapshot.data!;
+              final extra = withParents ? 1 : 0;
               return ListView.builder(
-                  itemCount: lgs.length,
+                  itemCount: lgs.length + extra,
                   itemBuilder: (context, index) {
-                    final id = lgs[index].id;
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    }
+                    final lg = lgs[index - extra];
+                    final id = lg.id;
                     return ListTile(
                       leading: BinkyIcons.locGroup,
-                      title: Text(lgs[index].description),
+                      title: Text(lg.description),
                       onTap: () =>
-                          editorCtx.select(EntitySelector.locGroup(lgs[index])),
+                          editorCtx.select(EntitySelector.locGroup(lg)),
                       selected: selector.idOf(EntityType.locgroup) == id,
                     );
                   });

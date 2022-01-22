@@ -25,11 +25,13 @@ import '../models.dart';
 import '../api.dart';
 
 class ModulesTree extends StatelessWidget {
-  const ModulesTree({Key? key}) : super(key: key);
+  final bool withParents;
+  const ModulesTree({Key? key, required this.withParents}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
+    final selector = editorCtx.selector;
     return Consumer<ModelModel>(
       builder: (context, model, child) {
         return FutureBuilder<List<Module>>(
@@ -42,14 +44,25 @@ class ModulesTree extends StatelessWidget {
                 return const Text("Loading module ...");
               }
               var modules = snapshot.data!;
+              final extra = withParents ? 1 : 0;
               return ListView.builder(
-                  itemCount: modules.length,
+                  itemCount: modules.length + extra,
                   itemBuilder: (context, index) {
+                    if ((index == 0) && withParents) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    }
+                    final module = modules[index - extra];
+                    final id = module.id;
                     return ListTile(
                       leading: BinkyIcons.module,
-                      title: Text(modules[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.module(modules[index], null)),
+                      title: Text(module.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.module(module, null)),
+                      selected: selector.idOf(EntityType.module) == id,
                     );
                   });
             });

@@ -42,14 +42,29 @@ class JunctionsTree extends StatelessWidget {
               var junctions = snapshot.data!.toList()
                 ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
-                  itemCount: junctions.length,
+                  itemCount: junctions.length + 2,
                   itemBuilder: (context, index) {
-                    final id = junctions[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final junction = junctions[index - 2];
+                    final id = junction.id;
                     return ListTile(
                       leading: BinkyIcons.junction,
-                      title: Text(junctions[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.junction(junctions[index])),
+                      title: Text(junction.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.junction(junction)),
                       selected: selector.idOf(EntityType.junction) == id,
                     );
                   });

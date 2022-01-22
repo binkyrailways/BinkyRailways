@@ -41,14 +41,29 @@ class RoutesTree extends StatelessWidget {
               }
               var routes = snapshot.data!;
               return ListView.builder(
-                  itemCount: routes.length,
+                  itemCount: routes.length + 2,
                   itemBuilder: (context, index) {
-                    final id = routes[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final route = routes[index - 2];
+                    final id = route.id;
                     return ListTile(
                       leading: BinkyIcons.route,
-                      title: Text(routes[index].description),
+                      title: Text(route.description),
                       onTap: () =>
-                          editorCtx.select(EntitySelector.route(routes[index])),
+                          editorCtx.select(EntitySelector.route(route)),
                       selected: selector.idOf(EntityType.route) == id,
                     );
                   });

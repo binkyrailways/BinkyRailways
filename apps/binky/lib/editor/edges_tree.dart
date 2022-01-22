@@ -41,14 +41,28 @@ class EdgesTree extends StatelessWidget {
               }
               var edges = snapshot.data!;
               return ListView.builder(
-                  itemCount: edges.length,
+                  itemCount: edges.length + 2,
                   itemBuilder: (context, index) {
-                    final id = edges[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final edge = edges[index - 2];
+                    final id = edge.id;
                     return ListTile(
                       leading: BinkyIcons.edge,
-                      title: Text(edges[index].description),
-                      onTap: () =>
-                          editorCtx.select(EntitySelector.edge(edges[index])),
+                      title: Text(edge.description),
+                      onTap: () => editorCtx.select(EntitySelector.edge(edge)),
                       selected: selector.idOf(EntityType.edge) == id,
                     );
                   });

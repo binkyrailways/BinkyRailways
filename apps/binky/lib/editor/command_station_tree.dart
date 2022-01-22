@@ -43,6 +43,12 @@ class CommandStationTree extends StatelessWidget {
               var cs = snapshot.data!;
               final List<Widget> children = [
                 ListTile(
+                  leading: BinkyIcons.railway,
+                  minLeadingWidth: 20,
+                  title: const Text("Railway"),
+                  onTap: () => editorCtx.select(EntitySelector.railway()),
+                ),
+                ListTile(
                   leading: BinkyIcons.commandstation,
                   minLeadingWidth: 20,
                   title: const Text(

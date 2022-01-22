@@ -41,14 +41,29 @@ class SignalsTree extends StatelessWidget {
               }
               var signals = snapshot.data!;
               return ListView.builder(
-                  itemCount: signals.length,
+                  itemCount: signals.length + 2,
                   itemBuilder: (context, index) {
-                    final id = signals[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final signal = signals[index - 2];
+                    final id = signal.id;
                     return ListTile(
                       leading: BinkyIcons.signal,
-                      title: Text(signals[index].description),
-                      onTap: () => editorCtx
-                          .select(EntitySelector.signal(signals[index])),
+                      title: Text(signal.description),
+                      onTap: () =>
+                          editorCtx.select(EntitySelector.signal(signal)),
                       selected: selector.idOf(EntityType.signal) == id,
                     );
                   });

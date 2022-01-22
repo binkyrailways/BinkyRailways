@@ -59,7 +59,14 @@ class RailwayTree extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     selected: selector.entityType == EntityType.modules,
-                    onTap: () => editorCtx.select(EntitySelector.modules()),
+                    onTap: () {
+                      if (rw.modules.length == 1) {
+                        editorCtx.select(
+                            EntitySelector.module(null, rw.modules[0].id));
+                      } else {
+                        editorCtx.select(EntitySelector.modules());
+                      }
+                    },
                   ),
                   ListTile(
                     leading: BinkyIcons.loc,
@@ -82,16 +89,22 @@ class RailwayTree extends StatelessWidget {
                     onTap: () => editorCtx.select(EntitySelector.locGroups()),
                   ),
                   ListTile(
-                    leading: BinkyIcons.commandstation,
-                    minLeadingWidth: 20,
-                    title: Text(
-                      "Command stations (${rw.commandStations.length})",
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    selected: selector.entityType == EntityType.commandstations,
-                    onTap: () =>
-                        editorCtx.select(EntitySelector.commandStations()),
-                  ),
+                      leading: BinkyIcons.commandstation,
+                      minLeadingWidth: 20,
+                      title: Text(
+                        "Command stations (${rw.commandStations.length})",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      selected:
+                          selector.entityType == EntityType.commandstations,
+                      onTap: () {
+                        if (rw.commandStations.length == 1) {
+                          editorCtx.select(EntitySelector.commandStation(
+                              null, rw.commandStations[0].id));
+                        } else {
+                          editorCtx.select(EntitySelector.commandStations());
+                        }
+                      }),
                 ],
               );
             });

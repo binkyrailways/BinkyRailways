@@ -42,14 +42,29 @@ class BlocksTree extends StatelessWidget {
               var blocks = snapshot.data!
                 ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
-                  itemCount: blocks.length,
+                  itemCount: blocks.length + 2,
                   itemBuilder: (context, index) {
-                    final id = blocks[index].id;
+                    if (index == 0) {
+                      return ListTile(
+                        leading: BinkyIcons.railway,
+                        title: const Text("Railway"),
+                        onTap: () => editorCtx.select(EntitySelector.railway()),
+                      );
+                    } else if (index == 1) {
+                      return ListTile(
+                        leading: BinkyIcons.module,
+                        title: const Text("Module"),
+                        onTap: () => editorCtx
+                            .select(EntitySelector.module(null, moduleId)),
+                      );
+                    }
+                    final block = blocks[index - 2];
+                    final id = block.id;
                     return ListTile(
                       leading: BinkyIcons.block,
-                      title: Text(blocks[index].description),
+                      title: Text(block.description),
                       onTap: () =>
-                          editorCtx.select(EntitySelector.block(blocks[index])),
+                          editorCtx.select(EntitySelector.block(block)),
                       selected: selector.idOf(EntityType.block) == id,
                     );
                   });
