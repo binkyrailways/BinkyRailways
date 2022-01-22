@@ -53,7 +53,38 @@ class BlockComponent extends common.BlockComponent
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.block) == model.id;
+  _isSourceOfSelectedRoute() {
+    final routeId = editorCtx.selector.idOf(EntityType.route);
+    if (routeId == null) {
+      return false;
+    }
+    final route = modelModel.getCachedRoute(routeId);
+    return (route != null) && (route.from.block.id == model.id);
+  }
+
+  _isDestinationOfSelectedRoute() {
+    final routeId = editorCtx.selector.idOf(EntityType.route);
+    if (routeId == null) {
+      return false;
+    }
+    final route = modelModel.getCachedRoute(routeId);
+    return (route != null) && (route.to.block.id == model.id);
+  }
 
   @override
-  backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();
+  backgroundColor() => _isSelected()
+      ? Colors.orange
+      : _isSourceOfSelectedRoute() || _isDestinationOfSelectedRoute()
+          ? Colors.cyan
+          : super.backgroundColor();
+
+  @override
+  String description() {
+    final prefix = _isSourceOfSelectedRoute()
+        ? "From "
+        : _isDestinationOfSelectedRoute()
+            ? "To "
+            : "";
+    return prefix + super.description();
+  }
 }
