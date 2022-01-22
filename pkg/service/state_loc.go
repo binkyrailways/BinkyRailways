@@ -113,3 +113,24 @@ func (s *service) AssignLocToBlock(ctx context.Context, req *api.AssignLocToBloc
 	}
 	return &result, nil
 }
+
+// Take a loc of the track
+func (s *service) TakeLocOfTrack(ctx context.Context, req *api.TakeLocOfTrackRequest) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	locState, err := rwState.GetLoc(req.GetLocId())
+	if err != nil {
+		return nil, err
+	}
+	if locState == nil {
+		return nil, api.NotFound("Loc '%s'", req.GetLocId())
+	}
+	locState.Reset(ctx)
+	var result api.RailwayState
+	if err := result.FromState(ctx, s.railwayState); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

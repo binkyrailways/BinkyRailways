@@ -64,6 +64,9 @@ service StateService {
   // Assign a loc to a block
   rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
 
+  // Remove a loc from the track
+  rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
+
   // Set the closed status of a block
   rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
 }
@@ -79,7 +82,8 @@ message GetStateChangesRequest {
   // If set, all state objects will be send to the stream before state changes
   // are passed.
   bool bootstrap = 1;
-  // If set, only all state objects will be send to the stream, after which the stream is closed.
+  // If set, only all state objects will be send to the stream, after which the
+  // stream is closed.
   bool bootstrap_only = 2;
 }
 
@@ -104,7 +108,8 @@ message SetPowerRequest {
 }
 
 message SetAutomaticControlRequest {
-  // If set, automatic control will be turned on, otherwise it will be turned off.
+  // If set, automatic control will be turned on, otherwise it will be turned
+  // off.
   bool enabled = 1;
 }
 
@@ -152,9 +157,14 @@ message AssignLocToBlockRequest {
   BlockSide block_side = 3;
 }
 
+message TakeLocOfTrackRequest {
+  // ID of loc to take of the track
+  string loc_id = 1;
+}
+
 message SetBlockClosedRequest {
   // ID of the block
-  string id = 1; 
+  string id = 1;
   // Requested closed status
   bool closed = 2;
 }

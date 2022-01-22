@@ -38,12 +38,16 @@ class BlockComponent extends common.BlockComponent {
   @override
   String description() {
     final bs = state.last;
+    final locId = bs.hasLockedBy() ? bs.lockedBy.id : "";
+    final loc =
+        (locId.isNotEmpty) ? game.stateModel.getCachedLocState(locId) : null;
+    final suffix = (loc != null) ? " [${loc.last.model.description}]" : "";
     if (bs.closedActual) {
-      return "${bs.model.description}: Closed";
+      return "${bs.model.description}$suffix: Closed";
     }
     if (bs.closedRequested) {
-      return "${bs.model.description}: Closing";
+      return "${bs.model.description}$suffix: Closing";
     }
-    return bs.model.description;
+    return "${bs.model.description}$suffix";
   }
 }

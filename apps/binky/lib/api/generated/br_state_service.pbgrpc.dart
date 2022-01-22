@@ -76,6 +76,11 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/AssignLocToBlock',
           ($3.AssignLocToBlockRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.RailwayState.fromBuffer(value));
+  static final _$takeLocOfTrack =
+      $grpc.ClientMethod<$3.TakeLocOfTrackRequest, $2.RailwayState>(
+          '/binkyrailways.v1.StateService/TakeLocOfTrack',
+          ($3.TakeLocOfTrackRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.RailwayState.fromBuffer(value));
   static final _$setBlockClosed =
       $grpc.ClientMethod<$3.SetBlockClosedRequest, $2.BlockState>(
           '/binkyrailways.v1.StateService/SetBlockClosed',
@@ -158,6 +163,12 @@ class StateServiceClient extends $grpc.Client {
       $3.AssignLocToBlockRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$assignLocToBlock, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.RailwayState> takeLocOfTrack(
+      $3.TakeLocOfTrackRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$takeLocOfTrack, request, options: options);
   }
 
   $grpc.ResponseFuture<$2.BlockState> setBlockClosed(
@@ -270,6 +281,14 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $3.AssignLocToBlockRequest.fromBuffer(value),
         ($2.RailwayState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.TakeLocOfTrackRequest, $2.RailwayState>(
+        'TakeLocOfTrack',
+        takeLocOfTrack_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $3.TakeLocOfTrackRequest.fromBuffer(value),
+        ($2.RailwayState value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.SetBlockClosedRequest, $2.BlockState>(
         'SetBlockClosed',
         setBlockClosed_Pre,
@@ -342,6 +361,11 @@ abstract class StateServiceBase extends $grpc.Service {
     return assignLocToBlock(call, await request);
   }
 
+  $async.Future<$2.RailwayState> takeLocOfTrack_Pre($grpc.ServiceCall call,
+      $async.Future<$3.TakeLocOfTrackRequest> request) async {
+    return takeLocOfTrack(call, await request);
+  }
+
   $async.Future<$2.BlockState> setBlockClosed_Pre($grpc.ServiceCall call,
       $async.Future<$3.SetBlockClosedRequest> request) async {
     return setBlockClosed(call, await request);
@@ -371,6 +395,8 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.ClickVirtualSensorRequest request);
   $async.Future<$2.RailwayState> assignLocToBlock(
       $grpc.ServiceCall call, $3.AssignLocToBlockRequest request);
+  $async.Future<$2.RailwayState> takeLocOfTrack(
+      $grpc.ServiceCall call, $3.TakeLocOfTrackRequest request);
   $async.Future<$2.BlockState> setBlockClosed(
       $grpc.ServiceCall call, $3.SetBlockClosedRequest request);
 }

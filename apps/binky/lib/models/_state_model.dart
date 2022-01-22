@@ -204,6 +204,16 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<RailwayState> takeLocOfTrack(String locId) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.takeLocOfTrack(TakeLocOfTrackRequest(
+      locId: locId,
+    ));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
   Future<BlockState> setBlockClosed(String id, bool closed) async {
     var stateClient = APIClient().stateClient();
     final result = await stateClient.setBlockClosed(SetBlockClosedRequest(
@@ -226,6 +236,10 @@ class StateModel extends ChangeNotifier {
     });
   }
 
+  Holder<T>? _getCachedState<T>(String id, HolderMap<T> state) {
+    return state.get(id);
+  }
+
   // Get all known command stations
   Iterable<Holder<CommandStationState>> commandStations() =>
       _commandStations.values;
@@ -234,6 +248,7 @@ class StateModel extends ChangeNotifier {
 
   // Get all known locs
   Iterable<Holder<LocState>> locs() => _locs.values;
+  Holder<LocState>? getCachedLocState(String id) => _getCachedState(id, _locs);
   Future<Holder<LocState>> getLocState(String id) async => _getState(id, _locs);
 
   // Get all known blocks

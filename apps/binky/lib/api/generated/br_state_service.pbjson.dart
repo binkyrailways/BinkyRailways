@@ -135,6 +135,16 @@ const AssignLocToBlockRequest$json = const {
 
 /// Descriptor for `AssignLocToBlockRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List assignLocToBlockRequestDescriptor = $convert.base64Decode('ChdBc3NpZ25Mb2NUb0Jsb2NrUmVxdWVzdBIVCgZsb2NfaWQYASABKAlSBWxvY0lkEhkKCGJsb2NrX2lkGAIgASgJUgdibG9ja0lkEjoKCmJsb2NrX3NpZGUYAyABKA4yGy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrU2lkZVIJYmxvY2tTaWRl');
+@$core.Deprecated('Use takeLocOfTrackRequestDescriptor instead')
+const TakeLocOfTrackRequest$json = const {
+  '1': 'TakeLocOfTrackRequest',
+  '2': const [
+    const {'1': 'loc_id', '3': 1, '4': 1, '5': 9, '10': 'locId'},
+  ],
+};
+
+/// Descriptor for `TakeLocOfTrackRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List takeLocOfTrackRequestDescriptor = $convert.base64Decode('ChVUYWtlTG9jT2ZUcmFja1JlcXVlc3QSFQoGbG9jX2lkGAEgASgJUgVsb2NJZA==');
 @$core.Deprecated('Use setBlockClosedRequestDescriptor instead')
 const SetBlockClosedRequest$json = const {
   '1': 'SetBlockClosedRequest',

@@ -60,7 +60,8 @@ class LocsTree extends StatelessWidget {
                     ));
               } else {
                 index = index - 1;
-                final loc = (index < assignedLocs.length)
+                final isAssigned = (index < assignedLocs.length);
+                final loc = isAssigned
                     ? assignedLocs[index]
                     : unassignedLocs[index - (assignedLocs.length + 1)];
                 final stateText = loc.stateText;
@@ -98,6 +99,30 @@ class LocsTree extends StatelessWidget {
                   onTap: () {
                     runCtx.selectLoc(loc.model.id);
                   },
+                  trailing: isAssigned
+                      ? GestureDetector(
+                          child: const Icon(Icons.more_vert),
+                          onTapDown: (TapDownDetails details) {
+                            showMenu(
+                              context: context,
+                              useRootNavigator: true,
+                              position: RelativeRect.fromLTRB(
+                                  details.globalPosition.dx,
+                                  details.globalPosition.dy,
+                                  details.globalPosition.dx,
+                                  details.globalPosition.dy),
+                              items: [
+                                PopupMenuItem<String>(
+                                    child: const Text('Take of track'),
+                                    onTap: () async {
+                                      await state.takeLocOfTrack(loc.model.id);
+                                    }),
+                              ],
+                              elevation: 8.0,
+                            );
+                          },
+                        )
+                      : null,
                 );
               }
             });
