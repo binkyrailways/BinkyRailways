@@ -53,7 +53,20 @@ class JunctionComponent extends common.JunctionComponent
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.junction) == model.id;
+  _isPartOfSelectedRoute() {
+    final routeId = editorCtx.selector.idOf(EntityType.route);
+    if (routeId == null) {
+      return false;
+    }
+    final route = modelModel.getCachedRoute(routeId);
+    return (route != null) &&
+        (route.crossingJunctions.any((x) => x.junction.id == model.id));
+  }
 
   @override
-  backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();
+  backgroundColor() => _isSelected()
+      ? Colors.orange
+      : _isPartOfSelectedRoute()
+          ? Colors.cyan
+          : super.backgroundColor();
 }

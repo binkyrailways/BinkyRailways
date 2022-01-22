@@ -146,6 +146,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: ModuleTree(),
           content: ModuleCanvas(),
           endMenu: ModuleSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.locs:
         return const SplitView(
@@ -189,6 +190,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: BlocksTree(),
           content: ModuleCanvas(),
           endMenu: BlockSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.blockgroups:
         return const SplitView(
@@ -200,6 +202,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: BlockGroupsTree(),
           content: ModuleCanvas(),
           endMenu: BlockGroupSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.edges:
         return const SplitView(
@@ -211,6 +214,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: EdgesTree(),
           content: ModuleCanvas(),
           endMenu: EdgeSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.junctions:
         return const SplitView(
@@ -222,6 +226,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: JunctionsTree(),
           content: ModuleCanvas(),
           endMenu: JunctionSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.outputs:
         return const SplitView(
@@ -233,6 +238,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: OutputsTree(),
           content: ModuleCanvas(),
           endMenu: OutputSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.routes:
         return const SplitView(
@@ -244,6 +250,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: RoutesTree(),
           content: ModuleCanvas(),
           endMenu: RouteSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.sensors:
         return const SplitView(
@@ -255,6 +262,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: SensorsTree(),
           content: ModuleCanvas(),
           endMenu: SensorSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.signals:
         return const SplitView(
@@ -266,6 +274,7 @@ class _EditorPageState extends State<EditorPage> {
           menu: SignalsTree(),
           content: ModuleCanvas(),
           endMenu: SignalSettings(),
+          endMenuWidth: 300,
         );
       case EntityType.binkynetlocalworkers:
         return const SplitView(
