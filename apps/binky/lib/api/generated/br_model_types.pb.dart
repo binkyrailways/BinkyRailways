@@ -1278,6 +1278,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
     ..e<BinkyNetDeviceType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetDeviceType.MCP23008, valueOf: BinkyNetDeviceType.valueOf, enumValues: BinkyNetDeviceType.values)
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddMgv93Group')
     ..hasRequiredFields = false
   ;
 
@@ -1287,6 +1288,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     $core.String? deviceId,
     BinkyNetDeviceType? deviceType,
     $core.String? address,
+    $core.bool? canAddMgv93Group,
   }) {
     final _result = create();
     if (id != null) {
@@ -1300,6 +1302,9 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (canAddMgv93Group != null) {
+      _result.canAddMgv93Group = canAddMgv93Group;
     }
     return _result;
   }
@@ -1359,6 +1364,15 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
   $core.bool hasAddress() => $_has(3);
   @$pb.TagNumber(4)
   void clearAddress() => clearField(4);
+
+  @$pb.TagNumber(10)
+  $core.bool get canAddMgv93Group => $_getBF(4);
+  @$pb.TagNumber(10)
+  set canAddMgv93Group($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasCanAddMgv93Group() => $_has(4);
+  @$pb.TagNumber(10)
+  void clearCanAddMgv93Group() => clearField(10);
 }
 
 class BinkyNetObject extends $pb.GeneratedMessage {

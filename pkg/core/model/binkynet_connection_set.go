@@ -30,6 +30,9 @@ type BinkyNetConnectionSet interface {
 	// Get an entry by name.
 	Get(key api.ConnectionName) (BinkyNetConnection, bool)
 
+	// Get an entry by name, add one if not found.
+	GetOrAdd(key api.ConnectionName) (BinkyNetConnection, error)
+
 	// Get an entry by index.
 	GetAt(index int) (BinkyNetConnection, bool)
 

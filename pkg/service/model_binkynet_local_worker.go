@@ -19,7 +19,9 @@ package service
 
 import (
 	"context"
+	"fmt"
 
+	v1 "github.com/binkynet/BinkyNet/apis/v1"
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -118,6 +120,67 @@ func (s *service) AddBinkyNetObject(ctx context.Context, req *api.IDRequest) (*a
 	bnObj := lw.GetObjects().AddNew()
 	var result api.BinkyNetObject
 	if err := result.FromModel(ctx, bnObj); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Adds one or more new BinkyNetObject to the binkynet local worker identified by given
+// by ID and attach them to the given device.
+func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinkyNetObjectsGroupRequest) (*api.BinkyNetLocalWorker, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetLocalWorkerId())
+	if err != nil {
+		return nil, err
+	}
+	bnDev, found := lw.GetDevices().Get(v1.DeviceID(req.GetDeviceId()))
+	if !found {
+		return nil, api.NotFound("Device %s", req.GetDeviceId())
+	}
+	var firstPin int
+	switch req.GetType() {
+	case api.BinkyNetObjectsGroupType_MGV93:
+		// Device must be of GPIO type
+		switch bnDev.GetDeviceType() {
+		case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017:
+			firstPin = 1
+		default:
+			return nil, api.InvalidArgument("Invalid device type (%s) for object group type %s", bnDev.GetDeviceType(), req.GetType().String())
+		}
+		getObjectWithPin := func(pinIndex v1.DeviceIndex) model.BinkyNetObject {
+			var result model.BinkyNetObject
+			lw.GetObjects().ForEach(func(bnObj model.BinkyNetObject) {
+				if conn, found := bnObj.GetConnections().Get(v1.ConnectionNameSensor); found {
+					if pin, found := conn.GetPins().Get(0); found {
+						if pin.GetDeviceID() == bnDev.GetDeviceID() && pin.GetIndex() == pinIndex {
+							result = bnObj
+						}
+					}
+				}
+			})
+			return result
+		}
+		for i := 0; i < 8; i++ {
+			bnObj := getObjectWithPin(v1.DeviceIndex(firstPin + i))
+			if bnObj == nil {
+				// Object not found, create it
+				bnObj = lw.GetObjects().AddNew()
+			}
+			bnObj.SetObjectID(v1.ObjectID(fmt.Sprintf("%s_pin%d", bnDev.GetDeviceID(), firstPin+i)))
+			bnObj.SetObjectType(v1.ObjectTypeBinarySensor)
+			conn, err := bnObj.GetConnections().GetOrAdd(v1.ConnectionNameSensor)
+			if err != nil {
+				return nil, err
+			}
+			pin, err := conn.GetPins().GetOrAdd(0)
+			if err != nil {
+				return nil, err
+			}
+			pin.SetDeviceID(bnDev.GetDeviceID())
+			pin.SetIndex(v1.DeviceIndex(firstPin + i))
+		}
+	}
+	var result api.BinkyNetLocalWorker
+	if err := result.FromModel(ctx, lw); err != nil {
 		return nil, err
 	}
 	return &result, nil

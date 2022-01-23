@@ -23,6 +23,7 @@ import (
 	"go.uber.org/multierr"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
+	v1 "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -32,6 +33,12 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 	dst.DeviceId = string(src.GetDeviceID())
 	dst.DeviceType.FromModel(ctx, src.GetDeviceType())
 	dst.Address = src.GetAddress()
+	switch src.GetDeviceType() {
+	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017:
+		dst.CanAddMgv93Group = true
+	default:
+		dst.CanAddMgv93Group = false
+	}
 	return nil
 }
 

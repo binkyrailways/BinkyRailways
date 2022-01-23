@@ -159,6 +159,9 @@ service ModelService {
   // Adds a new BinkyNetObject to the binkynet local worker identified by given
   // by ID.
   rpc AddBinkyNetObject(IDRequest) returns (BinkyNetObject);
+  // Adds one or more new BinkyNetObject to the binkynet local worker identified by given
+  // by ID and attach them to the given device.
+  rpc AddBinkyNetObjectsGroup(AddBinkyNetObjectsGroupRequest) returns (BinkyNetLocalWorker);
 }
 
 // Request by ID
@@ -222,4 +225,17 @@ message RemoveRouteEventBehaviorRequest {
   string sensor_id = 2;
   // Index of the behavior to removed
   int32 index = 3;
+}
+
+message AddBinkyNetObjectsGroupRequest {
+  // ID of the local worker to create objects in.
+  string local_worker_id = 1;
+  // ID of the device to attach objects to.
+  string device_id = 2;
+  // Type of group
+  BinkyNetObjectsGroupType type = 3;
+}
+
+enum BinkyNetObjectsGroupType {
+  MGV93 = 0;
 }

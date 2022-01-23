@@ -267,6 +267,12 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/AddBinkyNetObject',
           ($0.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.BinkyNetObject.fromBuffer(value));
+  static final _$addBinkyNetObjectsGroup = $grpc.ClientMethod<
+          $0.AddBinkyNetObjectsGroupRequest, $1.BinkyNetLocalWorker>(
+      '/binkyrailways.v1.ModelService/AddBinkyNetObjectsGroup',
+      ($0.AddBinkyNetObjectsGroupRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $1.BinkyNetLocalWorker.fromBuffer(value));
 
   ModelServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -576,6 +582,13 @@ class ModelServiceClient extends $grpc.Client {
       $0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addBinkyNetObject, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup(
+      $0.AddBinkyNetObjectsGroupRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinkyNetObjectsGroup, request,
+        options: options);
   }
 }
 
@@ -995,6 +1008,15 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.BinkyNetObject value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.AddBinkyNetObjectsGroupRequest,
+            $1.BinkyNetLocalWorker>(
+        'AddBinkyNetObjectsGroup',
+        addBinkyNetObjectsGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.AddBinkyNetObjectsGroupRequest.fromBuffer(value),
+        ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ParseAddressResult> parseAddress_Pre($grpc.ServiceCall call,
@@ -1285,6 +1307,12 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBinkyNetObject(call, await request);
   }
 
+  $async.Future<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.AddBinkyNetObjectsGroupRequest> request) async {
+    return addBinkyNetObjectsGroup(call, await request);
+  }
+
   $async.Future<$0.ParseAddressResult> parseAddress(
       $grpc.ServiceCall call, $0.ParseAddressRequest request);
   $async.Future<$1.Railway> getRailway(
@@ -1389,4 +1417,6 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetObject> addBinkyNetObject(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup(
+      $grpc.ServiceCall call, $0.AddBinkyNetObjectsGroupRequest request);
 }

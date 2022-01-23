@@ -80,6 +80,14 @@ func (l *binkyNetConnectionSet) Get(key api.ConnectionName) (model.BinkyNetConne
 	return nil, false
 }
 
+// Get an entry by ID or create it.
+func (l *binkyNetConnectionSet) GetOrAdd(key api.ConnectionName) (model.BinkyNetConnection, error) {
+	if conn, found := l.Get(key); found {
+		return conn, nil
+	}
+	return l.AddNew(key)
+}
+
 // Get an entry by index.
 func (l *binkyNetConnectionSet) GetAt(index int) (model.BinkyNetConnection, bool) {
 	if index >= 0 && index < len(l.Items) {

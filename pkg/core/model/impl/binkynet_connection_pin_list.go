@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -74,6 +75,17 @@ func (l *binkyNetConnectionPinList) Get(index int) (model.BinkyNetDevicePin, boo
 		return l.Pins[index], true
 	}
 	return nil, false
+}
+
+// Get a pin by index
+func (l *binkyNetConnectionPinList) GetOrAdd(index int) (model.BinkyNetDevicePin, error) {
+	if index < 0 {
+		return nil, fmt.Errorf("Index negative (%d)", index)
+	}
+	for index >= len(l.Pins) {
+		l.AddNew()
+	}
+	return l.Pins[index], nil
 }
 
 // Invoke the callback for each pin

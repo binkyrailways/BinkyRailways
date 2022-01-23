@@ -533,6 +533,42 @@ class _EditorPageState extends State<EditorPage> {
         }
         return [];
       case EntityType.binkynetdevice:
+        final List<SpeedDialChild> children = [];
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        final devId = selector.idOf(EntityType.binkynetdevice);
+        if (lwId != null) {
+          children.add(SpeedDialChild(
+            child: BinkyIcons.binkynetdevice,
+            label: "Add device",
+            onTap: () async {
+              final lw = await model.getBinkyNetLocalWorker(lwId);
+              final added = await model.addBinkyNetDevice(lwId);
+              editorCtx.select(EntitySelector.binkynetDevice(lw, added));
+            },
+          ));
+          if (devId != null) {
+            final lw = model.getCachedBinkyNetLocalWorker(lwId);
+            if (lw != null) {
+              final devList = lw.devices.where((x) => x.id == devId).toList();
+              if (devList.length == 1) {
+                final dev = devList[0];
+                if (dev.canAddMgv93Group) {
+                  children.add(SpeedDialChild(
+                    child: BinkyIcons.binkynetobject,
+                    label: "Add MGV93",
+                    onTap: () async {
+                      final lw = await model.getBinkyNetLocalWorker(lwId);
+                      await model.addBinkyNetObjectsGroup(
+                          lwId, dev.deviceId, BinkyNetObjectsGroupType.MGV93);
+                      editorCtx.select(EntitySelector.binkynetObjects(lw));
+                    },
+                  ));
+                }
+              }
+            }
+          }
+        }
+        return children;
       case EntityType.binkynetdevices:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {

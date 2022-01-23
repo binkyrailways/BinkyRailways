@@ -8,6 +8,16 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use binkyNetObjectsGroupTypeDescriptor instead')
+const BinkyNetObjectsGroupType$json = const {
+  '1': 'BinkyNetObjectsGroupType',
+  '2': const [
+    const {'1': 'MGV93', '2': 0},
+  ],
+};
+
+/// Descriptor for `BinkyNetObjectsGroupType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List binkyNetObjectsGroupTypeDescriptor = $convert.base64Decode('ChhCaW5reU5ldE9iamVjdHNHcm91cFR5cGUSCQoFTUdWOTMQAA==');
 @$core.Deprecated('Use iDRequestDescriptor instead')
 const IDRequest$json = const {
   '1': 'IDRequest',
@@ -108,3 +118,15 @@ const RemoveRouteEventBehaviorRequest$json = const {
 
 /// Descriptor for `RemoveRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List removeRouteEventBehaviorRequestDescriptor = $convert.base64Decode('Ch9SZW1vdmVSb3V0ZUV2ZW50QmVoYXZpb3JSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEhsKCXNlbnNvcl9pZBgCIAEoCVIIc2Vuc29ySWQSFAoFaW5kZXgYAyABKAVSBWluZGV4');
+@$core.Deprecated('Use addBinkyNetObjectsGroupRequestDescriptor instead')
+const AddBinkyNetObjectsGroupRequest$json = const {
+  '1': 'AddBinkyNetObjectsGroupRequest',
+  '2': const [
+    const {'1': 'local_worker_id', '3': 1, '4': 1, '5': 9, '10': 'localWorkerId'},
+    const {'1': 'device_id', '3': 2, '4': 1, '5': 9, '10': 'deviceId'},
+    const {'1': 'type', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.BinkyNetObjectsGroupType', '10': 'type'},
+  ],
+};
+
+/// Descriptor for `AddBinkyNetObjectsGroupRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addBinkyNetObjectsGroupRequestDescriptor = $convert.base64Decode('Ch5BZGRCaW5reU5ldE9iamVjdHNHcm91cFJlcXVlc3QSJgoPbG9jYWxfd29ya2VyX2lkGAEgASgJUg1sb2NhbFdvcmtlcklkEhsKCWRldmljZV9pZBgCIAEoCVIIZGV2aWNlSWQSPgoEdHlwZRgDIAEoDjIqLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRPYmplY3RzR3JvdXBUeXBlUgR0eXBl');

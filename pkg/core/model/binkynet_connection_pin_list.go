@@ -28,6 +28,9 @@ type BinkyNetConnectionPinList interface {
 	// Get a pin by index
 	Get(index int) (BinkyNetDevicePin, bool)
 
+	// Get a pin by index, add if not found.
+	GetOrAdd(index int) (BinkyNetDevicePin, error)
+
 	// Invoke the callback for each pin
 	ForEach(cb func(BinkyNetDevicePin))
 
