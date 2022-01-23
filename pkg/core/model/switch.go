@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // Switch is a standard two-way left/right switch
 type Switch interface {
 	Junction
@@ -33,7 +35,7 @@ type Switch interface {
 
 	// Address of the feedback unit of the entity
 	GetFeedbackAddress() Address
-	SetFeedbackAddress(value Address) error
+	SetFeedbackAddress(ctx context.Context, value Address) error
 
 	// Time (in ms) it takes for the switch to move from one direction to the other?
 	// This property is only used when <see cref="HasFeedback"/> is false.

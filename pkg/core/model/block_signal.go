@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // BlockSignal is a device that outputs some signal on the railway.
 type BlockSignal interface {
 	Signal
@@ -24,22 +26,22 @@ type BlockSignal interface {
 	// First address
 	// This is an output signal.
 	GetAddress1() Address
-	SetAddress1(value Address) error
+	SetAddress1(ctx context.Context, value Address) error
 
 	// Second address
 	// This is an output signal.
 	GetAddress2() Address
-	SetAddress2(value Address) error
+	SetAddress2(ctx context.Context, value Address) error
 
 	// Third address
 	// This is an output signal.
 	GetAddress3() Address
-	SetAddress3(value Address) error
+	SetAddress3(ctx context.Context, value Address) error
 
 	// Fourth address
 	// This is an output signal.
 	GetAddress4() Address
-	SetAddress4(value Address) error
+	SetAddress4(ctx context.Context, value Address) error
 
 	// Is the Red color available?
 	GetIsRedAvailable() bool

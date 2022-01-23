@@ -23,6 +23,7 @@ import (
 
 // Output adds implementation methods to model.Output
 type Output interface {
+	Entity
 	ModuleEntity
 	model.Output
 }

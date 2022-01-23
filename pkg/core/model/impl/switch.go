@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -61,13 +63,19 @@ func (sw *stdSwitch) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitSwitch(sw)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (sw *stdSwitch) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(sw.Address, sw.SetAddress)
+	cb(sw.FeedbackAddress, sw.SetFeedbackAddress)
+}
+
 // Get the Address of the entity
 func (sw *stdSwitch) GetAddress() model.Address {
 	return sw.Address
 }
 
 // Set the Address of the entity
-func (sw *stdSwitch) SetAddress(value model.Address) error {
+func (sw *stdSwitch) SetAddress(ctx context.Context, value model.Address) error {
 	if !sw.Address.Equals(value) {
 		sw.Address = value
 		sw.OnModified()
@@ -82,6 +90,12 @@ func (sw *stdSwitch) ForEachAddressUsage(cb func(model.AddressUsage)) {
 		cb(model.AddressUsage{
 			Address:   sw.Address,
 			Direction: model.AddressDirectionOutput,
+		})
+	}
+	if !sw.FeedbackAddress.IsEmpty() {
+		cb(model.AddressUsage{
+			Address:   sw.FeedbackAddress,
+			Direction: model.AddressDirectionInput,
 		})
 	}
 }
@@ -116,7 +130,7 @@ func (sw *stdSwitch) SetHasFeedback(value bool) error {
 func (sw *stdSwitch) GetFeedbackAddress() model.Address {
 	return sw.FeedbackAddress
 }
-func (sw *stdSwitch) SetFeedbackAddress(value model.Address) error {
+func (sw *stdSwitch) SetFeedbackAddress(ctx context.Context, value model.Address) error {
 	if !sw.FeedbackAddress.Equals(value) {
 		sw.FeedbackAddress = value
 		sw.OnModified()

@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // TurnTable or fiddle yard
 type TurnTable interface {
 	Junction
@@ -25,32 +27,32 @@ type TurnTable interface {
 	// Address of first position bit.
 	// This is an output signal.
 	GetPositionAddress1() Address
-	SetPositionAddress1(value Address) error
+	SetPositionAddress1(ctx context.Context, value Address) error
 
 	// Address of second position bit.
 	// This is an output signal.
 	GetPositionAddress2() Address
-	SetPositionAddress2(value Address) error
+	SetPositionAddress2(ctx context.Context, value Address) error
 
 	// Address of third position bit.
 	// This is an output signal.
 	GetPositionAddress3() Address
-	SetPositionAddress3(value Address) error
+	SetPositionAddress3(ctx context.Context, value Address) error
 
 	// Address of fourth position bit.
 	// This is an output signal.
 	GetPositionAddress4() Address
-	SetPositionAddress4(value Address) error
+	SetPositionAddress4(ctx context.Context, value Address) error
 
 	// Address of fifth position bit.
 	// This is an output signal.
 	GetPositionAddress5() Address
-	SetPositionAddress5(value Address) error
+	SetPositionAddress5(ctx context.Context, value Address) error
 
 	// Address of sixth position bit.
 	// This is an output signal.
 	GetPositionAddress6() Address
-	SetPositionAddress6(value Address) error
+	SetPositionAddress6(ctx context.Context, value Address) error
 
 	// If set, the straight/off commands used for position addresses are inverted.
 	GetInvertPositions() bool

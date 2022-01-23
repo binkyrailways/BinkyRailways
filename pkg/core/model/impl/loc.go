@@ -18,11 +18,14 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Loc extends model Loc with implementation methods
 type Loc interface {
+	Entity
 	model.Loc
 	PersistentEntity
 }
@@ -75,13 +78,18 @@ func (l *loc) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitLoc(l)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (l *loc) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(l.Address, l.SetAddress)
+}
+
 // Get the Address of the entity
 func (l *loc) GetAddress() model.Address {
 	return l.Address
 }
 
 // Set the Address of the entity
-func (l *loc) SetAddress(value model.Address) error {
+func (l *loc) SetAddress(ctx context.Context, value model.Address) error {
 	if !l.Address.Equals(value) {
 		l.Address = value
 		l.OnModified()

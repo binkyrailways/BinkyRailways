@@ -71,7 +71,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	lref := r.GetLocs().Add(l)
 	assert.NotNil(t, lref)
 	assert.Equal(t, l.GetID(), lref.GetID())
-	assert.NoError(t, l.SetAddress(model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "136")))
+	assert.NoError(t, l.SetAddress(ctx, model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "136")))
 
 	// Create state
 	rs, err := New(ctx, r, log, nil, nil, true)

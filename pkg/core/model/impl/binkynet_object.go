@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 	"fmt"
 
@@ -86,10 +87,33 @@ func (o *binkyNetObject) GetDescription() string {
 func (o *binkyNetObject) GetObjectID() api.ObjectID {
 	return o.ObjectID
 }
-func (o *binkyNetObject) SetObjectID(value api.ObjectID) error {
+func (o *binkyNetObject) SetObjectID(ctx context.Context, value api.ObjectID) error {
 	if o.ObjectID != value {
+		oldValue := o.ObjectID
 		o.ObjectID = value
 		o.OnModified()
+
+		// Update addresses using this alias
+		if lw := o.GetLocalWorker(); lw != nil {
+			if cs := lw.GetCommandStation(); cs != nil {
+				if rw := cs.GetPackage().GetRailway(); rw != nil {
+					if rw, ok := rw.(Entity); ok {
+						oldAddr := lw.GetAlias() + "/" + string(oldValue)
+						newAddr := lw.GetAlias() + "/" + string(value)
+						fmt.Printf("bnObject: %s -> %s\n", oldAddr, newAddr)
+						rw.ForEachAddress(func(addr model.Address, onUpdate func(context.Context, model.Address) error) {
+							if addr.Network.Type == model.AddressTypeBinkyNet {
+								if addr.Value == oldAddr {
+									fmt.Printf("bnObject updating: %s -> %s\n", oldAddr, newAddr)
+									addr.Value = newAddr
+									onUpdate(ctx, addr)
+								}
+							}
+						})
+					}
+				}
+			}
+		}
 	}
 	return nil
 }
@@ -98,7 +122,7 @@ func (o *binkyNetObject) SetObjectID(value api.ObjectID) error {
 func (o *binkyNetObject) GetObjectType() api.ObjectType {
 	return o.Type
 }
-func (o *binkyNetObject) SetObjectType(value api.ObjectType) error {
+func (o *binkyNetObject) SetObjectType(ctx context.Context, value api.ObjectType) error {
 	if o.Type != value {
 		o.Type = value
 		o.ensureConnectionsForType()

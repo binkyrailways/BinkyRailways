@@ -23,6 +23,7 @@ import (
 
 // CommandStation extends model CommandStation with implementation methods
 type CommandStation interface {
+	Entity
 	model.CommandStation
 	PersistentEntity
 }

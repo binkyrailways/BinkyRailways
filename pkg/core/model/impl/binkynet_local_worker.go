@@ -18,8 +18,10 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 	"fmt"
+	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -43,7 +45,7 @@ var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
 func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw := &binkyNetLocalWorker{}
 	lw.EnsureID()
-	lw.SetHardwareID(hardwareID)
+	lw.SetHardwareID(context.Background(), hardwareID)
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
 	return lw
@@ -89,7 +91,7 @@ func (lw *binkyNetLocalWorker) GetDescription() string {
 func (lw *binkyNetLocalWorker) GetHardwareID() string {
 	return lw.HardwareID
 }
-func (lw *binkyNetLocalWorker) SetHardwareID(value string) error {
+func (lw *binkyNetLocalWorker) SetHardwareID(ctx context.Context, value string) error {
 	if lw.HardwareID != value {
 		lw.HardwareID = value
 		lw.OnModified()
@@ -101,10 +103,29 @@ func (lw *binkyNetLocalWorker) SetHardwareID(value string) error {
 func (lw *binkyNetLocalWorker) GetAlias() string {
 	return lw.Alias
 }
-func (lw *binkyNetLocalWorker) SetAlias(value string) error {
+func (lw *binkyNetLocalWorker) SetAlias(ctx context.Context, value string) error {
 	if lw.Alias != value {
+		oldValue := lw.Alias
 		lw.Alias = value
 		lw.OnModified()
+
+		// Update addresses using this alias
+		if cs := lw.GetCommandStation(); cs != nil {
+			if rw := cs.GetPackage().GetRailway(); rw != nil {
+				if rw, ok := rw.(Entity); ok {
+					oldPrefix := oldValue + "/"
+					newPrefix := value + "/"
+					rw.ForEachAddress(func(addr model.Address, onUpdate func(context.Context, model.Address) error) {
+						if addr.Network.Type == model.AddressTypeBinkyNet {
+							if strings.HasPrefix(addr.Value, oldPrefix) {
+								addr.Value = newPrefix + addr.Value[len(oldPrefix):]
+								onUpdate(ctx, addr)
+							}
+						}
+					})
+				}
+			}
+		}
 	}
 	return nil
 }

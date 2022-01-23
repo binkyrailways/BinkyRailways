@@ -77,7 +77,7 @@ func (src *Sensor) ToModel(ctx context.Context, dst model.Sensor) error {
 	}
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	multierr.AppendInto(&err, src.GetPosition().ToModel(ctx, dst))
-	multierr.AppendInto(&err, dst.SetAddress(addr))
+	multierr.AppendInto(&err, dst.SetAddress(ctx, addr))
 	multierr.AppendInto(&err, dst.SetShape(shape))
 	multierr.AppendInto(&err, dst.SetBlock(block))
 	return err

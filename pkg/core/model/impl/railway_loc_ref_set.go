@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 	"fmt"
 
@@ -44,6 +45,17 @@ func (bs *railwayLocRefSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 		x.SetResolver(bs.tryResolve)
 	}
 	return nil
+}
+
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (bs *railwayLocRefSet) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	for _, x := range bs.Items {
+		if r, err := x.TryResolve(); err == nil {
+			if loc, ok := r.(Loc); ok {
+				loc.ForEachAddress(cb)
+			}
+		}
+	}
 }
 
 // Get number of entries

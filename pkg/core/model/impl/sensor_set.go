@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -43,6 +44,13 @@ func (ss *sensorSet) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 		x.SetContainer(ss)
 	}
 	return nil
+}
+
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (bs *sensorSet) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	for _, item := range bs.Items {
+		item.Sensor.ForEachAddress(cb)
+	}
 }
 
 // Get number of entries

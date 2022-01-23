@@ -117,7 +117,7 @@ func (s *service) AddBinkyNetObject(ctx context.Context, req *api.IDRequest) (*a
 	if err != nil {
 		return nil, err
 	}
-	bnObj := lw.GetObjects().AddNew()
+	bnObj := lw.GetObjects().AddNew(ctx)
 	var result api.BinkyNetObject
 	if err := result.FromModel(ctx, bnObj); err != nil {
 		return nil, err
@@ -163,10 +163,10 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 			bnObj := getObjectWithPin(v1.DeviceIndex(firstPin + i))
 			if bnObj == nil {
 				// Object not found, create it
-				bnObj = lw.GetObjects().AddNew()
+				bnObj = lw.GetObjects().AddNew(ctx)
 			}
-			bnObj.SetObjectID(v1.ObjectID(fmt.Sprintf("%s_pin%d", bnDev.GetDeviceID(), firstPin+i)))
-			bnObj.SetObjectType(v1.ObjectTypeBinarySensor)
+			bnObj.SetObjectID(ctx, v1.ObjectID(fmt.Sprintf("%s_pin%d", bnDev.GetDeviceID(), firstPin+i)))
+			bnObj.SetObjectType(ctx, v1.ObjectTypeBinarySensor)
 			conn, err := bnObj.GetConnections().GetOrAdd(v1.ConnectionNameSensor)
 			if err != nil {
 				return nil, err

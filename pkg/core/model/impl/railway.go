@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -65,6 +67,15 @@ func NewRailway(p model.Package) Railway {
 	r.ModuleConnections.SetContainer(r)
 	r.CommandStations.SetContainer(r)
 	return r
+}
+
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (r *railway) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	r.Locs.ForEachAddress(cb)
+	r.LocGroups.ForEachAddress(cb)
+	r.Modules.ForEachAddress(cb)
+	r.ModuleConnections.ForEachAddress(cb)
+	r.CommandStations.ForEachAddress(cb)
 }
 
 // GetEntityType returns the type of this entity

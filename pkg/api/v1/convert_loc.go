@@ -52,7 +52,7 @@ func (src *Loc) ToModel(ctx context.Context, dst model.Loc) error {
 	if err != nil {
 		return err
 	}
-	dst.SetAddress(addr)
+	dst.SetAddress(ctx, addr)
 	dst.SetSlowSpeed(int(src.GetSlowSpeed()))
 	dst.SetMediumSpeed(int(src.GetMediumSpeed()))
 	dst.SetMaximumSpeed(int(src.GetMaximumSpeed()))

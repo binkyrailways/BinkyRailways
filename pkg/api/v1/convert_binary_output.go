@@ -36,14 +36,14 @@ func (src *BinaryOutput) ToModel(ctx context.Context, dst model.BinaryOutput) er
 	if err != nil {
 		return err
 	}
-	if err := dst.SetAddress(addr); err != nil {
+	if err := dst.SetAddress(ctx, addr); err != nil {
 		return err
 	}
 	bot, err := src.GetOutputType().ToModel(ctx)
 	if err != nil {
 		return err
 	}
-	if err := dst.SetBinaryOutputType(bot); err != nil {
+	if err := dst.SetBinaryOutputType(ctx, bot); err != nil {
 		return err
 	}
 	return nil

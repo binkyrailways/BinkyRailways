@@ -18,9 +18,19 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/dchest/uniuri"
 )
+
+// Entity adds implementation methods to a model Entity.
+type Entity interface {
+	model.Entity
+
+	// ForEachAddress iterates all addresses in this entity and any child entities.
+	ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error))
+}
 
 type entity struct {
 	propertyChanged eventHandler
@@ -28,7 +38,7 @@ type entity struct {
 	Description     string `xml:"Description"`
 }
 
-var _ model.Entity = &entity{}
+var _ Entity = &entity{}
 
 // NewID creates a new random ID
 func NewID() string {
@@ -38,6 +48,11 @@ func NewID() string {
 // Accept a visit by the given visitor
 func (e *entity) Accept(v model.EntityVisitor) interface{} {
 	panic("Override me")
+}
+
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (e *entity) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	// Override me if the entity has one or more addresses
 }
 
 // EnsureID sets a unique ID if needed

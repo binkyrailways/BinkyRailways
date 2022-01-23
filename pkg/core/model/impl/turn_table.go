@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -67,14 +69,24 @@ func (sw *turnTable) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitTurnTable(sw)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (sw *turnTable) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(sw.PositionAddress1, sw.SetPositionAddress1)
+	cb(sw.PositionAddress2, sw.SetPositionAddress2)
+	cb(sw.PositionAddress3, sw.SetPositionAddress3)
+	cb(sw.PositionAddress4, sw.SetPositionAddress4)
+	cb(sw.PositionAddress5, sw.SetPositionAddress5)
+	cb(sw.PositionAddress6, sw.SetPositionAddress6)
+}
+
 // Get the Address of the entity
 func (sw *turnTable) GetAddress() model.Address {
 	return sw.GetPositionAddress1()
 }
 
 // Set the Address of the entity
-func (sw *turnTable) SetAddress(value model.Address) error {
-	return sw.SetPositionAddress1(value)
+func (sw *turnTable) SetAddress(ctx context.Context, value model.Address) error {
+	return sw.SetPositionAddress1(ctx, value)
 }
 
 // Call the given callback for all (non-empty) addresses configured in this
@@ -103,7 +115,7 @@ func (sw *turnTable) ForEachAddressUsage(cb func(model.AddressUsage)) {
 func (sw *turnTable) GetPositionAddress1() model.Address {
 	return sw.PositionAddress1
 }
-func (sw *turnTable) SetPositionAddress1(value model.Address) error {
+func (sw *turnTable) SetPositionAddress1(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress1.Equals(value) {
 		sw.PositionAddress1 = value
 		sw.OnModified()
@@ -116,7 +128,7 @@ func (sw *turnTable) SetPositionAddress1(value model.Address) error {
 func (sw *turnTable) GetPositionAddress2() model.Address {
 	return sw.PositionAddress2
 }
-func (sw *turnTable) SetPositionAddress2(value model.Address) error {
+func (sw *turnTable) SetPositionAddress2(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress2.Equals(value) {
 		sw.PositionAddress2 = value
 		sw.OnModified()
@@ -129,7 +141,7 @@ func (sw *turnTable) SetPositionAddress2(value model.Address) error {
 func (sw *turnTable) GetPositionAddress3() model.Address {
 	return sw.PositionAddress3
 }
-func (sw *turnTable) SetPositionAddress3(value model.Address) error {
+func (sw *turnTable) SetPositionAddress3(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress3.Equals(value) {
 		sw.PositionAddress3 = value
 		sw.OnModified()
@@ -142,7 +154,7 @@ func (sw *turnTable) SetPositionAddress3(value model.Address) error {
 func (sw *turnTable) GetPositionAddress4() model.Address {
 	return sw.PositionAddress4
 }
-func (sw *turnTable) SetPositionAddress4(value model.Address) error {
+func (sw *turnTable) SetPositionAddress4(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress4.Equals(value) {
 		sw.PositionAddress4 = value
 		sw.OnModified()
@@ -155,7 +167,7 @@ func (sw *turnTable) SetPositionAddress4(value model.Address) error {
 func (sw *turnTable) GetPositionAddress5() model.Address {
 	return sw.PositionAddress5
 }
-func (sw *turnTable) SetPositionAddress5(value model.Address) error {
+func (sw *turnTable) SetPositionAddress5(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress5.Equals(value) {
 		sw.PositionAddress5 = value
 		sw.OnModified()
@@ -168,7 +180,7 @@ func (sw *turnTable) SetPositionAddress5(value model.Address) error {
 func (sw *turnTable) GetPositionAddress6() model.Address {
 	return sw.PositionAddress6
 }
-func (sw *turnTable) SetPositionAddress6(value model.Address) error {
+func (sw *turnTable) SetPositionAddress6(ctx context.Context, value model.Address) error {
 	if !sw.PositionAddress6.Equals(value) {
 		sw.PositionAddress6 = value
 		sw.OnModified()

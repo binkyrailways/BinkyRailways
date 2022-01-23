@@ -23,6 +23,7 @@ import (
 
 // Signal adds implementation methods to model.Signal
 type Signal interface {
+	Entity
 	ModuleEntity
 	model.Signal
 	TypedEntity

@@ -59,8 +59,8 @@ func (src *BinkyNetLocalWorker) ToModel(ctx context.Context, dst model.BinkyNetL
 	}
 	var err error
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
-	multierr.AppendInto(&err, dst.SetHardwareID(src.GetHardwareId()))
-	multierr.AppendInto(&err, dst.SetAlias(src.GetAlias()))
+	multierr.AppendInto(&err, dst.SetHardwareID(ctx, src.GetHardwareId()))
+	multierr.AppendInto(&err, dst.SetAlias(ctx, src.GetAlias()))
 	for i, src := range src.GetDevices() {
 		dst, ok := dst.GetDevices().GetAt(i)
 		if !ok {

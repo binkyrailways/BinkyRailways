@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // Clock4StageOutput is a device that sends clock signal in 2 bits to the track.
 type Clock4StageOutput interface {
 	Output
@@ -25,12 +27,12 @@ type Clock4StageOutput interface {
 	// Address of first clock bit.
 	// This is an output signal.
 	GetAddress1() Address
-	SetAddress1(value Address) error
+	SetAddress1(ctx context.Context, value Address) error
 
 	// Address of second clock bit.
 	// This is an output signal.
 	GetAddress2() Address
-	SetAddress2(value Address) error
+	SetAddress2(ctx context.Context, value Address) error
 
 	// Bit pattern used for "morning".
 	GetMorningPattern() int

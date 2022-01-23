@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // AddressEntity is an Entity with address
 type AddressEntity interface {
 	Entity
@@ -24,7 +26,7 @@ type AddressEntity interface {
 	// Get the Address of the entity
 	GetAddress() Address
 	// Set the Address of the entity
-	SetAddress(value Address) error
+	SetAddress(ctx context.Context, value Address) error
 
 	// Call the given callback for all (non-empty) addresses configured in this
 	// entity with the direction their being used.

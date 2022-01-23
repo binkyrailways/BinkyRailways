@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // BinkyNetLocalWorker represents the configuration of a Local Worker in the Bink network.
 type BinkyNetLocalWorker interface {
 	Entity
@@ -26,11 +28,11 @@ type BinkyNetLocalWorker interface {
 
 	// Hardware ID of the local worker.
 	GetHardwareID() string
-	SetHardwareID(value string) error
+	SetHardwareID(ctx context.Context, value string) error
 
 	// Optional alias for the local worker.
 	GetAlias() string
-	SetAlias(value string) error
+	SetAlias(ctx context.Context, value string) error
 
 	// Set of devices that must be configured on this local worker.
 	GetDevices() BinkyNetDeviceSet

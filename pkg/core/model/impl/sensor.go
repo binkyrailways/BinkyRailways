@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -25,6 +26,7 @@ import (
 
 // Sensor adds implementation methods to model.Sensor
 type Sensor interface {
+	Entity
 	ModuleEntity
 	model.Sensor
 }
@@ -44,13 +46,18 @@ func (s *sensor) Initialize(w, h int) {
 	s.positionedModuleEntity.Initialize(w, h)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (s *sensor) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(s.Address, s.SetAddress)
+}
+
 // Get the Address of the entity
 func (s *sensor) GetAddress() model.Address {
 	return s.Address
 }
 
 // Set the Address of the entity
-func (s *sensor) SetAddress(value model.Address) error {
+func (s *sensor) SetAddress(ctx context.Context, value model.Address) error {
 	if !s.Address.Equals(value) {
 		s.Address = value
 		s.OnModified()

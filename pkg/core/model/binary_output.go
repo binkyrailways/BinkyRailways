@@ -17,6 +17,8 @@
 
 package model
 
+import "context"
+
 // BinaryOutput is a device that triggers an output on the railway with a state of "on" or "off".
 type BinaryOutput interface {
 	Output
@@ -24,5 +26,5 @@ type BinaryOutput interface {
 
 	// Type of binary output
 	GetBinaryOutputType() BinaryOutputType
-	SetBinaryOutputType(value BinaryOutputType) error
+	SetBinaryOutputType(ctx context.Context, value BinaryOutputType) error
 }

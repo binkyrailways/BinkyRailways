@@ -25,6 +25,7 @@ import (
 
 // Junction adds implementation methods to model.Junction
 type Junction interface {
+	Entity
 	ModuleEntity
 	model.Junction
 }

@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -29,6 +30,7 @@ const (
 
 // Module extends implementation methods to model.Module
 type Module interface {
+	Entity
 	model.Module
 	PersistentEntity
 
@@ -79,6 +81,18 @@ func (m *module) GetEntityType() string {
 // Accept a visit by the given visitor
 func (m *module) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitModule(m)
+}
+
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (m *module) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	m.Blocks.ForEachAddress(cb)
+	m.BlockGroups.ForEachAddress(cb)
+	m.Edges.ForEachAddress(cb)
+	m.Outputs.ForEachAddress(cb)
+	m.Junctions.ForEachAddress(cb)
+	m.Sensors.ForEachAddress(cb)
+	m.Signals.ForEachAddress(cb)
+	m.Routes.ForEachAddress(cb)
 }
 
 // Return the containing module

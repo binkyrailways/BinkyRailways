@@ -44,7 +44,7 @@ func (src *Switch) ToModel(ctx context.Context, dst model.Switch) error {
 	if err != nil {
 		return err
 	}
-	if err := dst.SetAddress(addr); err != nil {
+	if err := dst.SetAddress(ctx, addr); err != nil {
 		return err
 	}
 	if err := dst.SetHasFeedback(src.GetHasFeedback()); err != nil {
@@ -54,7 +54,7 @@ func (src *Switch) ToModel(ctx context.Context, dst model.Switch) error {
 	if err != nil {
 		return err
 	}
-	if err := dst.SetFeedbackAddress(addr); err != nil {
+	if err := dst.SetFeedbackAddress(ctx, addr); err != nil {
 		return err
 	}
 	if err := dst.SetSwitchDuration(int(src.GetSwitchDuration())); err != nil {

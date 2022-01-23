@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 	"fmt"
 
@@ -112,12 +113,12 @@ func (l *binkyNetObjectSet) Contains(entry model.BinkyNetObject) bool {
 }
 
 // Add a new entry
-func (l *binkyNetObjectSet) AddNew() model.BinkyNetObject {
+func (l *binkyNetObjectSet) AddNew(ctx context.Context) model.BinkyNetObject {
 	d := newBinkyNetObject()
 	d.EnsureID()
 	d.SetContainer(l)
-	d.SetObjectID(api.ObjectID(fmt.Sprintf("newObject%d", len(l.Objects)+1)))
-	d.SetObjectType(api.ObjectTypeBinaryOutput)
+	d.SetObjectID(ctx, api.ObjectID(fmt.Sprintf("newObject%d", len(l.Objects)+1)))
+	d.SetObjectType(ctx, api.ObjectTypeBinaryOutput)
 	l.Objects = append(l.Objects, d)
 	l.OnModified()
 	return d

@@ -18,6 +18,8 @@
 package model
 
 import (
+	"context"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 )
 
@@ -30,11 +32,11 @@ type BinkyNetObject interface {
 
 	// ID of the object
 	GetObjectID() api.ObjectID
-	SetObjectID(value api.ObjectID) error
+	SetObjectID(ctx context.Context, value api.ObjectID) error
 
 	// Type of the object
 	GetObjectType() api.ObjectType
-	SetObjectType(value api.ObjectType) error
+	SetObjectType(ctx context.Context, value api.ObjectType) error
 
 	// Connections to devices used by this object
 	// The keys used in this map are specific to the type of object.

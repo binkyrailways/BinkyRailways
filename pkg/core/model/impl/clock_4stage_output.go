@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -59,14 +61,20 @@ func (cso *clock4StageOutput) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitClock4StageOutput(cso)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (cso *clock4StageOutput) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(cso.Address1, cso.SetAddress1)
+	cb(cso.Address2, cso.SetAddress2)
+}
+
 // Get the Address of the entity
 func (cso *clock4StageOutput) GetAddress() model.Address {
 	return cso.GetAddress1()
 }
 
 // Set the Address of the entity
-func (cso *clock4StageOutput) SetAddress(value model.Address) error {
-	return cso.SetAddress1(value)
+func (cso *clock4StageOutput) SetAddress(ctx context.Context, value model.Address) error {
+	return cso.SetAddress1(ctx, value)
 }
 
 // Call the given callback for all (non-empty) addresses configured in this
@@ -91,7 +99,7 @@ func (cso *clock4StageOutput) ForEachAddressUsage(cb func(model.AddressUsage)) {
 func (cso *clock4StageOutput) GetAddress1() model.Address {
 	return cso.Address1
 }
-func (cso *clock4StageOutput) SetAddress1(value model.Address) error {
+func (cso *clock4StageOutput) SetAddress1(ctx context.Context, value model.Address) error {
 	if !cso.Address1.Equals(value) {
 		cso.Address1 = value
 		cso.OnModified()
@@ -104,7 +112,7 @@ func (cso *clock4StageOutput) SetAddress1(value model.Address) error {
 func (cso *clock4StageOutput) GetAddress2() model.Address {
 	return cso.Address2
 }
-func (cso *clock4StageOutput) SetAddress2(value model.Address) error {
+func (cso *clock4StageOutput) SetAddress2(ctx context.Context, value model.Address) error {
 	if !cso.Address2.Equals(value) {
 		cso.Address2 = value
 		cso.OnModified()

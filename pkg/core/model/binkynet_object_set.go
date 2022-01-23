@@ -17,7 +17,11 @@
 
 package model
 
-import api "github.com/binkynet/BinkyNet/apis/v1"
+import (
+	"context"
+
+	api "github.com/binkynet/BinkyNet/apis/v1"
+)
 
 // BinkyNetObjectSet is a set of objects.
 type BinkyNetObjectSet interface {
@@ -44,5 +48,5 @@ type BinkyNetObjectSet interface {
 	Contains(BinkyNetObject) bool
 
 	// Add a new entry
-	AddNew() BinkyNetObject
+	AddNew(ctx context.Context) BinkyNetObject
 }

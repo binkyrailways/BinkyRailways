@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
@@ -64,14 +66,22 @@ func (bs *blockSignal) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitBlockSignal(bs)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (bs *blockSignal) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(bs.Address1, bs.SetAddress1)
+	cb(bs.Address2, bs.SetAddress2)
+	cb(bs.Address3, bs.SetAddress3)
+	cb(bs.Address4, bs.SetAddress4)
+}
+
 // Get the Address of the entity
 func (bs *blockSignal) GetAddress() model.Address {
 	return bs.GetAddress1()
 }
 
 // Set the Address of the entity
-func (bs *blockSignal) SetAddress(value model.Address) error {
-	return bs.SetAddress1(value)
+func (bs *blockSignal) SetAddress(ctx context.Context, value model.Address) error {
+	return bs.SetAddress1(ctx, value)
 }
 
 // Call the given callback for all (non-empty) addresses configured in this
@@ -108,7 +118,7 @@ func (bs *blockSignal) ForEachAddressUsage(cb func(model.AddressUsage)) {
 func (bs *blockSignal) GetAddress1() model.Address {
 	return bs.Address1
 }
-func (bs *blockSignal) SetAddress1(value model.Address) error {
+func (bs *blockSignal) SetAddress1(ctx context.Context, value model.Address) error {
 	if !bs.Address1.Equals(value) {
 		bs.Address1 = value
 		bs.OnModified()
@@ -121,7 +131,7 @@ func (bs *blockSignal) SetAddress1(value model.Address) error {
 func (bs *blockSignal) GetAddress2() model.Address {
 	return bs.Address2
 }
-func (bs *blockSignal) SetAddress2(value model.Address) error {
+func (bs *blockSignal) SetAddress2(ctx context.Context, value model.Address) error {
 	if !bs.Address2.Equals(value) {
 		bs.Address2 = value
 		bs.OnModified()
@@ -134,7 +144,7 @@ func (bs *blockSignal) SetAddress2(value model.Address) error {
 func (bs *blockSignal) GetAddress3() model.Address {
 	return bs.Address3
 }
-func (bs *blockSignal) SetAddress3(value model.Address) error {
+func (bs *blockSignal) SetAddress3(ctx context.Context, value model.Address) error {
 	if !bs.Address3.Equals(value) {
 		bs.Address3 = value
 		bs.OnModified()
@@ -147,7 +157,7 @@ func (bs *blockSignal) SetAddress3(value model.Address) error {
 func (bs *blockSignal) GetAddress4() model.Address {
 	return bs.Address4
 }
-func (bs *blockSignal) SetAddress4(value model.Address) error {
+func (bs *blockSignal) SetAddress4(ctx context.Context, value model.Address) error {
 	if !bs.Address4.Equals(value) {
 		bs.Address4 = value
 		bs.OnModified()

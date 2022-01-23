@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -54,13 +56,18 @@ func (bo *binaryOutput) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitBinaryOutput(bo)
 }
 
+// ForEachAddress iterates all addresses in this entity and any child entities.
+func (bo *binaryOutput) ForEachAddress(cb func(addr model.Address, onUpdate func(context.Context, model.Address) error)) {
+	cb(bo.Address, bo.SetAddress)
+}
+
 // Get the Address of the entity
 func (bo *binaryOutput) GetAddress() model.Address {
 	return bo.Address
 }
 
 // Set the Address of the entity
-func (bo *binaryOutput) SetAddress(value model.Address) error {
+func (bo *binaryOutput) SetAddress(ctx context.Context, value model.Address) error {
 	if !bo.Address.Equals(value) {
 		bo.Address = value
 		bo.OnModified()
@@ -76,7 +83,7 @@ func (bo *binaryOutput) GetBinaryOutputType() model.BinaryOutputType {
 	return bo.BinaryOutputType
 }
 
-func (bo *binaryOutput) SetBinaryOutputType(value model.BinaryOutputType) error {
+func (bo *binaryOutput) SetBinaryOutputType(ctx context.Context, value model.BinaryOutputType) error {
 	if value == model.BinaryOutputTypeDefault {
 		value = ""
 	}

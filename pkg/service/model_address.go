@@ -19,7 +19,9 @@ package service
 
 import (
 	"context"
+	"strings"
 
+	bnapi "github.com/binkynet/BinkyNet/apis/v1"
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -32,6 +34,50 @@ func (s *service) ParseAddress(ctx context.Context, req *api.ParseAddressRequest
 			Valid:   false,
 			Message: err.Error(),
 		}, nil
+	}
+	if addr.Network.Type == model.AddressTypeBinkyNet {
+		rw, err := s.getRailway()
+		if err != nil {
+			return nil, err
+		}
+		// Check that address exists
+		parts := strings.SplitN(addr.Value, "/", 2)
+		if len(parts) != 2 {
+			return &api.ParseAddressResult{
+				Valid:          false,
+				Message:        "BinkyNet address value must contain alias/object_id",
+				FormattedValue: addr.String(),
+			}, nil
+		}
+		// Search for localworker + object
+		foundLW := false
+		foundObject := false
+		rw.GetCommandStations().ForEach(func(csr model.CommandStationRef) {
+			if cs, err := csr.TryResolve(); err == nil {
+				if bnCs, ok := cs.(model.BinkyNetCommandStation); ok {
+					if lw, ok := bnCs.GetLocalWorkers().Get(parts[0]); ok {
+						foundLW = true
+						if _, ok := lw.GetObjects().Get(bnapi.ObjectID(parts[1])); ok {
+							foundObject = true
+						}
+					}
+				}
+			}
+		})
+		if !foundLW {
+			return &api.ParseAddressResult{
+				Valid:          false,
+				Message:        "BinkyNet address does not refer to an existing local worker",
+				FormattedValue: addr.String(),
+			}, nil
+		}
+		if !foundObject {
+			return &api.ParseAddressResult{
+				Valid:          false,
+				Message:        "BinkyNet address does not refer to an existing object",
+				FormattedValue: addr.String(),
+			}, nil
+		}
 	}
 	return &api.ParseAddressResult{
 		Valid:          true,
