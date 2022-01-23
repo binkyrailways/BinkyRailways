@@ -115,7 +115,8 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
         items: _objectTypeItems,
       ),
     ];
-    final connections = widget.binkynetobject.connections;
+    final connections = widget.binkynetobject.connections.toList();
+    connections.sort((a, b) => a.key.compareTo(b.key));
     for (var i = 0; i < connections.length; i++) {
       children.add(_BinkyNetConnectionSettings(
           key: Key("conn-${connections[i].key}"),
