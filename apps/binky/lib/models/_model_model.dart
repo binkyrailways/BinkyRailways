@@ -68,6 +68,8 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  mapi.Railway? getCachedRailway() => _railway;
+
   Future<mapi.Railway> getRailway() async {
     if (_railway == null) {
       var modelClient = mapi.APIClient().modelClient();

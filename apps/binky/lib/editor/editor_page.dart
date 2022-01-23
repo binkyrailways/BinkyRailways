@@ -586,6 +586,81 @@ class _EditorPageState extends State<EditorPage> {
         }
         return [];
       case EntityType.binkynetobject:
+        final List<SpeedDialChild> children = [];
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        final objId = selector.idOf(EntityType.binkynetobject);
+        if (lwId != null) {
+          children.add(SpeedDialChild(
+            child: BinkyIcons.binkynetobject,
+            label: "Add object",
+            onTap: () async {
+              final lw = await model.getBinkyNetLocalWorker(lwId);
+              final added = await model.addBinkyNetObject(lwId);
+              editorCtx.select(EntitySelector.binkynetObject(lw, added));
+            },
+          ));
+          if (objId != null) {
+            final lw = model.getCachedBinkyNetLocalWorker(lwId);
+            if (lw != null) {
+              final objList = lw.objects.where((x) => x.id == objId).toList();
+              final rw = model.getCachedRailway();
+              if ((objList.length == 1) && (rw != null)) {
+                final obj = objList[0];
+                final address = "BinkyNet ${lw.alias}/${obj.objectId}";
+                if (obj.objectType == BinkyNetObjectType.BINARYSENSOR) {
+                  rw.modules.forEach((modRef) {
+                    final module = model.getCachedModule(modRef.id);
+                    if (module != null) {
+                      final sensors = module.sensors
+                          .map((sRef) => model.getCachedSensor(sRef.id))
+                          .where((x) => x != null);
+                      if (!sensors.any((x) => x!.address == address)) {
+                        children.add(SpeedDialChild(
+                          child: BinkyIcons.sensor,
+                          label: "Add Sensor to module ${module.description}",
+                          onTap: () async {
+                            final sensor =
+                                await model.addBinarySensor(module.id);
+                            sensor.description = "${lw.alias}/${obj.objectId}";
+                            sensor.address = address;
+                            await model.updateSensor(sensor);
+                            editorCtx.select(EntitySelector.sensor(sensor));
+                          },
+                        ));
+                      }
+                    }
+                  });
+                } else if (obj.objectType == BinkyNetObjectType.SERVOSWITCH) {
+                  rw.modules.forEach((modRef) {
+                    final module = model.getCachedModule(modRef.id);
+                    if (module != null) {
+                      final junctions = module.junctions
+                          .map((jRef) => model.getCachedJunction(jRef.id))
+                          .where((x) => x != null);
+                      if (!junctions
+                          .any((x) => x!.switch_6.address == address)) {
+                        children.add(SpeedDialChild(
+                          child: BinkyIcons.junction,
+                          label: "Add Switch to module ${module.description}",
+                          onTap: () async {
+                            final junction = await model.addSwitch(module.id);
+                            junction.description =
+                                "${lw.alias}/${obj.objectId}";
+                            junction.switch_6.address = address;
+                            junction.switch_6.feedbackAddress = address;
+                            await model.updateJunction(junction);
+                            editorCtx.select(EntitySelector.junction(junction));
+                          },
+                        ));
+                      }
+                    }
+                  });
+                }
+              }
+            }
+          }
+        }
+        return children;
       case EntityType.binkynetobjects:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {
