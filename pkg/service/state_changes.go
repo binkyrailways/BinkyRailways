@@ -28,7 +28,8 @@ import (
 func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.StateService_GetStateChangesServer) error {
 	rwState := s.railwayState
 	if rwState == nil {
-		return api.PreconditionFailed("Railway not in run mode")
+		// Nothing to notify about
+		return nil
 	}
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
