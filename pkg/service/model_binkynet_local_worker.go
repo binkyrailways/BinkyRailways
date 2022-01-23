@@ -103,7 +103,7 @@ func (s *service) AddBinkyNetDevice(ctx context.Context, req *api.IDRequest) (*a
 	if err != nil {
 		return nil, err
 	}
-	bnDev := lw.GetDevices().AddNew()
+	bnDev := lw.GetDevices().AddNew(ctx)
 	var result api.BinkyNetDevice
 	if err := result.FromModel(ctx, bnDev); err != nil {
 		return nil, err
@@ -175,8 +175,8 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 			if err != nil {
 				return nil, err
 			}
-			pin.SetDeviceID(bnDev.GetDeviceID())
-			pin.SetIndex(v1.DeviceIndex(firstPin + i))
+			pin.SetDeviceID(ctx, bnDev.GetDeviceID())
+			pin.SetIndex(ctx, v1.DeviceIndex(firstPin+i))
 		}
 	}
 	var result api.BinkyNetLocalWorker

@@ -49,12 +49,12 @@ func (src *BinkyNetDevice) ToModel(ctx context.Context, dst model.BinkyNetDevice
 		return InvalidArgument("Unexpected binkynet device ID: '%s'", src.GetId())
 	}
 	var err error
-	multierr.AppendInto(&err, dst.SetDeviceID(api.DeviceID(src.GetDeviceId())))
+	multierr.AppendInto(&err, dst.SetDeviceID(ctx, api.DeviceID(src.GetDeviceId())))
 	if dt, err := src.GetDeviceType().ToModel(ctx); err != nil {
 		return err
 	} else {
-		multierr.AppendInto(&err, dst.SetDeviceType(dt))
+		multierr.AppendInto(&err, dst.SetDeviceType(ctx, dt))
 	}
-	multierr.AppendInto(&err, dst.SetAddress(src.GetAddress()))
+	multierr.AppendInto(&err, dst.SetAddress(ctx, src.GetAddress()))
 	return err
 }

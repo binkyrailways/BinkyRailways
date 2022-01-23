@@ -35,7 +35,7 @@ func (dst *BinkyNetDevicePin) FromModel(ctx context.Context, src model.BinkyNetD
 // ToModel converts an API BinkyNetDevicePin to a model BinkyNetDevicePin
 func (src *BinkyNetDevicePin) ToModel(ctx context.Context, dst model.BinkyNetDevicePin) error {
 	var err error
-	multierr.AppendInto(&err, dst.SetDeviceID(api.DeviceID(src.GetDeviceId())))
-	multierr.AppendInto(&err, dst.SetIndex(api.DeviceIndex(src.GetIndex())))
+	multierr.AppendInto(&err, dst.SetDeviceID(ctx, api.DeviceID(src.GetDeviceId())))
+	multierr.AppendInto(&err, dst.SetIndex(ctx, api.DeviceIndex(src.GetIndex())))
 	return err
 }

@@ -93,7 +93,7 @@ func (o *binkyNetObject) SetObjectID(ctx context.Context, value api.ObjectID) er
 		o.ObjectID = value
 		o.OnModified()
 
-		// Update addresses using this alias
+		// Update addresses using this object
 		if lw := o.GetLocalWorker(); lw != nil {
 			if cs := lw.GetCommandStation(); cs != nil {
 				if rw := cs.GetPackage().GetRailway(); rw != nil {

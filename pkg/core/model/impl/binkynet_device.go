@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"fmt"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
@@ -70,10 +71,26 @@ func (d *binkyNetDevice) GetDescription() string {
 func (d *binkyNetDevice) GetDeviceID() api.DeviceID {
 	return d.DeviceID
 }
-func (d *binkyNetDevice) SetDeviceID(value api.DeviceID) error {
+func (d *binkyNetDevice) SetDeviceID(ctx context.Context, value api.DeviceID) error {
 	if d.DeviceID != value {
+		oldValue := d.DeviceID
 		d.DeviceID = value
 		d.OnModified()
+
+		// Update objects using this device
+		if lw := d.GetLocalWorker(); lw != nil {
+			lw.GetObjects().ForEach(func(bnObj model.BinkyNetObject) {
+				bnObj.GetConnections().ForEach(func(conn model.BinkyNetConnection) {
+					conn.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+						if pin.GetDeviceID() == oldValue {
+							fmt.Printf("Updating deviceID in pin of %s\n", bnObj.GetObjectID())
+							pin.SetDeviceID(ctx, value)
+						}
+					})
+				})
+			})
+
+		}
 	}
 	return nil
 }
@@ -82,7 +99,7 @@ func (d *binkyNetDevice) SetDeviceID(value api.DeviceID) error {
 func (d *binkyNetDevice) GetDeviceType() api.DeviceType {
 	return d.Type
 }
-func (d *binkyNetDevice) SetDeviceType(value api.DeviceType) error {
+func (d *binkyNetDevice) SetDeviceType(ctx context.Context, value api.DeviceType) error {
 	if d.Type != value {
 		d.Type = value
 		d.OnModified()
@@ -94,7 +111,7 @@ func (d *binkyNetDevice) SetDeviceType(value api.DeviceType) error {
 func (d *binkyNetDevice) GetAddress() string {
 	return d.Address
 }
-func (d *binkyNetDevice) SetAddress(value string) error {
+func (d *binkyNetDevice) SetAddress(ctx context.Context, value string) error {
 	if d.Address != value {
 		d.Address = value
 		d.OnModified()

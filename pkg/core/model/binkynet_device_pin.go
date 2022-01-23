@@ -18,6 +18,8 @@
 package model
 
 import (
+	"context"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 )
 
@@ -31,9 +33,9 @@ type BinkyNetDevicePin interface {
 
 	// ID of the device that this connection refers to.
 	GetDeviceID() api.DeviceID
-	SetDeviceID(value api.DeviceID) error
+	SetDeviceID(ctx context.Context, value api.DeviceID) error
 
 	// Index on the device (1...)
 	GetIndex() api.DeviceIndex
-	SetIndex(value api.DeviceIndex) error
+	SetIndex(ctx context.Context, value api.DeviceIndex) error
 }

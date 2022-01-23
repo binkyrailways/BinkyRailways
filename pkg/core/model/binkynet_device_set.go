@@ -17,7 +17,11 @@
 
 package model
 
-import api "github.com/binkynet/BinkyNet/apis/v1"
+import (
+	"context"
+
+	api "github.com/binkynet/BinkyNet/apis/v1"
+)
 
 // BinkyNetDeviceSet is a set of devices.
 type BinkyNetDeviceSet interface {
@@ -44,5 +48,5 @@ type BinkyNetDeviceSet interface {
 	Contains(BinkyNetDevice) bool
 
 	// Add a new entry
-	AddNew() BinkyNetDevice
+	AddNew(ctx context.Context) BinkyNetDevice
 }

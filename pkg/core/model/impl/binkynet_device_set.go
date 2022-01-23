@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"context"
 	"encoding/xml"
 	"fmt"
 
@@ -111,12 +112,12 @@ func (l *binkyNetDeviceSet) Contains(entry model.BinkyNetDevice) bool {
 }
 
 // Add a new entry
-func (l *binkyNetDeviceSet) AddNew() model.BinkyNetDevice {
+func (l *binkyNetDeviceSet) AddNew(ctx context.Context) model.BinkyNetDevice {
 	d := newBinkyNetDevice()
 	d.EnsureID()
 	d.SetContainer(l)
-	d.SetDeviceID(api.DeviceID(fmt.Sprintf("newDevice%d", len(l.Devices)+1)))
-	d.SetDeviceType(api.DeviceTypeMCP23008)
+	d.SetDeviceID(ctx, api.DeviceID(fmt.Sprintf("newDevice%d", len(l.Devices)+1)))
+	d.SetDeviceType(ctx, api.DeviceTypeMCP23008)
 	l.Devices = append(l.Devices, d)
 	l.OnModified()
 	return d

@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -54,7 +56,7 @@ func (p *binkyNetDevicePin) SetContainer(container *binkyNetConnectionPinList) {
 func (p *binkyNetDevicePin) GetDeviceID() api.DeviceID {
 	return p.DeviceID
 }
-func (p *binkyNetDevicePin) SetDeviceID(value api.DeviceID) error {
+func (p *binkyNetDevicePin) SetDeviceID(ctx context.Context, value api.DeviceID) error {
 	if p.DeviceID != value {
 		p.DeviceID = value
 		p.OnModified()
@@ -66,7 +68,7 @@ func (p *binkyNetDevicePin) SetDeviceID(value api.DeviceID) error {
 func (p *binkyNetDevicePin) GetIndex() api.DeviceIndex {
 	return p.Index
 }
-func (p *binkyNetDevicePin) SetIndex(value api.DeviceIndex) error {
+func (p *binkyNetDevicePin) SetIndex(ctx context.Context, value api.DeviceIndex) error {
 	if p.Index != value {
 		p.Index = value
 		p.OnModified()
