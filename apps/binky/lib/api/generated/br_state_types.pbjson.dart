@@ -99,11 +99,33 @@ const CommandStationState$json = const {
   '1': 'CommandStationState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.CommandStation', '10': 'model'},
+    const {'1': 'binkynet_command_station', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetCommandStationState', '10': 'binkynetCommandStation'},
   ],
 };
 
 /// Descriptor for `CommandStationState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWw=');
+final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWwSZwoYYmlua3luZXRfY29tbWFuZF9zdGF0aW9uGAIgASgLMi0uYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldENvbW1hbmRTdGF0aW9uU3RhdGVSFmJpbmt5bmV0Q29tbWFuZFN0YXRpb24=');
+@$core.Deprecated('Use binkyNetCommandStationStateDescriptor instead')
+const BinkyNetCommandStationState$json = const {
+  '1': 'BinkyNetCommandStationState',
+  '2': const [
+    const {'1': 'local_workers', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorkerState', '10': 'localWorkers'},
+  ],
+};
+
+/// Descriptor for `BinkyNetCommandStationState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetCommandStationStateDescriptor = $convert.base64Decode('ChtCaW5reU5ldENvbW1hbmRTdGF0aW9uU3RhdGUSTwoNbG9jYWxfd29ya2VycxgBIAMoCzIqLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRMb2NhbFdvcmtlclN0YXRlUgxsb2NhbFdvcmtlcnM=');
+@$core.Deprecated('Use binkyNetLocalWorkerStateDescriptor instead')
+const BinkyNetLocalWorkerState$json = const {
+  '1': 'BinkyNetLocalWorkerState',
+  '2': const [
+    const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorker', '10': 'model'},
+    const {'1': 'uptime', '3': 2, '4': 1, '5': 3, '10': 'uptime'},
+  ],
+};
+
+/// Descriptor for `BinkyNetLocalWorkerState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binkyNetLocalWorkerStateDescriptor = $convert.base64Decode('ChhCaW5reU5ldExvY2FsV29ya2VyU3RhdGUSOwoFbW9kZWwYASABKAsyJS5iaW5reXJhaWx3YXlzLnYxLkJpbmt5TmV0TG9jYWxXb3JrZXJSBW1vZGVsEhYKBnVwdGltZRgCIAEoA1IGdXB0aW1l');
 @$core.Deprecated('Use blockStateDescriptor instead')
 const BlockState$json = const {
   '1': 'BlockState',

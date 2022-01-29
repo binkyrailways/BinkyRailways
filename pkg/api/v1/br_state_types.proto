@@ -206,6 +206,24 @@ enum AutoLocState {
 message CommandStationState {
   // Model of the command station
   CommandStation model = 1;
+  // Status of binynet command station
+  BinkyNetCommandStationState binkynet_command_station = 2;
+}
+
+// State specific to BinkyNet command station
+message BinkyNetCommandStationState {
+  // Gets the state of local workers on the Binky network
+  // that this command station is attached to.
+  repeated BinkyNetLocalWorkerState local_workers = 1;
+}
+
+// State specific to BinkyNet local worker
+message BinkyNetLocalWorkerState {
+  // Model of the local worker
+  BinkyNetLocalWorker model = 1;
+
+  // Uptime in seconds
+  int64 uptime = 2;
 }
 
 // State of a single block

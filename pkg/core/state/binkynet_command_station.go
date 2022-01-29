@@ -15,25 +15,20 @@
 // Author Ewout Prangsma
 //
 
-package v1
+package state
 
 import (
-	context "context"
+	"context"
 
-	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	api "github.com/binkynet/BinkyNet/apis/v1"
 )
 
-// FromState converts a state command station to an API command station
-func (dst *CommandStationState) FromState(ctx context.Context, src state.CommandStation) error {
-	dst.Model = &CommandStation{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
-		return err
-	}
-	if bnCs, ok := src.(state.BinkyNetCommandStation); ok {
-		dst.BinkynetCommandStation = &BinkyNetCommandStationState{}
-		if err := dst.BinkynetCommandStation.FromState(ctx, bnCs); err != nil {
-			return err
-		}
-	}
-	return nil
+// BinkyNetCommandStation specifies the state of a binkynet command station.
+type BinkyNetCommandStation interface {
+	CommandStation
+
+	// GetLocalWorkerInfo fetches the last known info for a local worker with given ID.
+	GetLocalWorkerInfo(ctx context.Context, id string) (api.LocalWorkerInfo, bool)
+	// GetAllLocalWorkers fetches the last known info for all local workers.
+	GetAllLocalWorkers(ctx context.Context) []api.LocalWorkerInfo
 }

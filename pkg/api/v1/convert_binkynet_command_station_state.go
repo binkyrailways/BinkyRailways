@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,20 +20,27 @@ package v1
 import (
 	context "context"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 // FromState converts a state command station to an API command station
-func (dst *CommandStationState) FromState(ctx context.Context, src state.CommandStation) error {
-	dst.Model = &CommandStation{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
-		return err
-	}
-	if bnCs, ok := src.(state.BinkyNetCommandStation); ok {
-		dst.BinkynetCommandStation = &BinkyNetCommandStationState{}
-		if err := dst.BinkynetCommandStation.FromState(ctx, bnCs); err != nil {
-			return err
-		}
+func (dst *BinkyNetCommandStationState) FromState(ctx context.Context, src state.BinkyNetCommandStation) error {
+	if bnModel, ok := src.GetModel().(model.BinkyNetCommandStation); ok {
+		bnModel.GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
+			lwState := &BinkyNetLocalWorkerState{
+				Model: &BinkyNetLocalWorker{},
+			}
+			lwState.Model.FromModel(ctx, lw)
+			info, found := src.GetLocalWorkerInfo(ctx, lw.GetAlias())
+			if !found {
+				info, found = src.GetLocalWorkerInfo(ctx, lw.GetHardwareID())
+			}
+			if found {
+				lwState.Uptime = info.GetUptime()
+			}
+			dst.LocalWorkers = append(dst.LocalWorkers, lwState)
+		})
 	}
 	return nil
 }

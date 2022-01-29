@@ -24,6 +24,7 @@ import '../api.dart';
 import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';
+import './binkynet_localworkers_pane.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -69,10 +70,13 @@ class _RunPageState extends State<RunPage> {
                       "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
                   actions: _buildActions(context),
                 ),
-                body: const SplitView(
+                body: SplitView(
                   menuWidth: 300,
-                  menu: ControlPane(),
-                  content: RailwayCanvas(),
+                  menu: const ControlPane(),
+                  content: Column(children: const [
+                    Expanded(child: RailwayCanvas()),
+                    BinkyNetLocalWorkersPane(),
+                  ]),
                 ),
               );
             });

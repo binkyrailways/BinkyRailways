@@ -62,6 +62,9 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 				}
 			}
 			send(s.stateChangeBuilder(ctx, rwState))
+			rwState.ForEachCommandStation(func(b state.CommandStation) {
+				send(s.stateChangeBuilder(ctx, b))
+			})
 			rwState.ForEachLoc(func(b state.Loc) {
 				send(s.stateChangeBuilder(ctx, b))
 			})

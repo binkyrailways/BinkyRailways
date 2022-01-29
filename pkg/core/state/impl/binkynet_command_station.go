@@ -33,6 +33,12 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
+// BinkyNetCommandStation adds implementation functions to state.BinkyNetCommandStation.
+type BinkyNetCommandStation interface {
+	state.BinkyNetCommandStation
+	CommandStation
+}
+
 // binkyNetCommandStation implements the BinkyNetCommandStation.
 type binkyNetCommandStation struct {
 	commandStation
@@ -47,7 +53,7 @@ type binkyNetCommandStation struct {
 }
 
 // Create a new entity
-func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
+func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) BinkyNetCommandStation {
 	cs := &binkyNetCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
@@ -113,6 +119,9 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 					Str("id", update.Id).
 					Int64("uptime", update.Uptime).
 					Msg("local worker update")
+				cs.railway.Send(state.ActualStateChangedEvent{
+					Subject: cs,
+				})
 			case <-ctx.Done():
 				return nil
 			}
@@ -171,6 +180,16 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	})
 
 	return nil
+}
+
+// GetLocalWorkerInfo fetches the last known info for a local worker with given ID.
+func (cs *binkyNetCommandStation) GetLocalWorkerInfo(ctx context.Context, id string) (bn.LocalWorkerInfo, bool) {
+	return cs.manager.GetLocalWorkerInfo(id)
+}
+
+// GetAllLocalWorkers fetches the last known info for all local workers.
+func (cs *binkyNetCommandStation) GetAllLocalWorkers(ctx context.Context) []bn.LocalWorkerInfo {
+	return cs.manager.GetAllLocalWorkers()
 }
 
 // Enable/disable power on the railway
