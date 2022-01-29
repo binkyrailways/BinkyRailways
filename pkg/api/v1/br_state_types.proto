@@ -206,24 +206,19 @@ enum AutoLocState {
 message CommandStationState {
   // Model of the command station
   CommandStation model = 1;
-  // Status of binynet command station
-  BinkyNetCommandStationState binkynet_command_station = 2;
+  // Status of hardware modules connected to this command station
+  repeated HardwareModule hardware_modules = 2;
 }
 
-// State specific to BinkyNet command station
-message BinkyNetCommandStationState {
-  // Gets the state of local workers on the Binky network
-  // that this command station is attached to.
-  repeated BinkyNetLocalWorkerState local_workers = 1;
-}
-
-// State specific to BinkyNet local worker
-message BinkyNetLocalWorkerState {
-  // Model of the local worker
-  BinkyNetLocalWorker model = 1;
-
+// State specific a hardware module that is connected to the command station
+message HardwareModule {
+  // ID of the module
+  string id = 1;
   // Uptime in seconds
   int64 uptime = 2;
+  // Time of last update of this information.
+  // Formatted at RFC3339
+  string last_updated_at = 3;
 }
 
 // State of a single block

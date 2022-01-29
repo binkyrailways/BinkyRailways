@@ -93,11 +93,7 @@ generate: $(CACHEVOL) $(MODVOL)
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v0.5.7 \
+		github.com/binkynet/NetManager@v0.6.0 \
 		github.com/binkynet/BinkyNet@v0.11.0
 	go mod tidy
 
-update-gioui:
-	go get -u \
-		gioui.org \
-		gioui.org/x

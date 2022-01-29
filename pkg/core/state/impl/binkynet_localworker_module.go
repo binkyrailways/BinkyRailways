@@ -39,7 +39,7 @@ func (lw *binkyNetLocalWorkerModule) GetID() string {
 
 // Gets the uptime of the module
 func (lw *binkyNetLocalWorkerModule) GetUptime() time.Duration {
-	if info, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+	if info, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
 		return time.Duration(info.Uptime) * time.Second
 	}
 	return 0
@@ -50,9 +50,22 @@ func (lw *binkyNetLocalWorkerModule) HasUptime() bool {
 	return true
 }
 
+// Gets the time of last update of the information of this module
+func (lw *binkyNetLocalWorkerModule) GetLastUpdatedAt() time.Time {
+	if _, lastUpdateAt, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		return lastUpdateAt
+	}
+	return time.Time{}
+}
+
+// Does this module support last updated at data?
+func (lw *binkyNetLocalWorkerModule) HasLastUpdatedAt() bool {
+	return true
+}
+
 // Gets the version of the module
 func (lw *binkyNetLocalWorkerModule) GetVersion() string {
-	if info, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+	if info, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
 		return info.Version
 	}
 	return ""

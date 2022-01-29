@@ -19,21 +19,27 @@ import 'package:flutter/material.dart';
 
 import '../api.dart';
 
-class BinkyNetLocalWorkerPane extends StatelessWidget {
-  final BinkyNetLocalWorkerState lwState;
-  const BinkyNetLocalWorkerPane({Key? key, required this.lwState})
+class HardwareModulePane extends StatelessWidget {
+  final HardwareModule hardwareModule;
+  const HardwareModulePane({Key? key, required this.hardwareModule})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final color = (lwState.uptime > 0) ? Colors.green : Colors.red;
+    final lastUpdatedAt = DateTime.tryParse(hardwareModule.lastUpdatedAt);
+    final lastUpdatedSince = (lastUpdatedAt != null)
+        ? DateTime.now().difference(lastUpdatedAt)
+        : const Duration(days: 1);
+    final color = (lastUpdatedSince.inSeconds < 30)
+        ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.red)
+        : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.red);
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Text("${lwState.model.alias} up:${lwState.uptime}"),
+        child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
         onPressed: () {},
       ),
     );

@@ -33,12 +33,6 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// BinkyNetCommandStation adds implementation functions to state.BinkyNetCommandStation.
-type BinkyNetCommandStation interface {
-	state.BinkyNetCommandStation
-	CommandStation
-}
-
 // binkyNetCommandStation implements the BinkyNetCommandStation.
 type binkyNetCommandStation struct {
 	commandStation
@@ -53,7 +47,7 @@ type binkyNetCommandStation struct {
 }
 
 // Create a new entity
-func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) BinkyNetCommandStation {
+func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
 	cs := &binkyNetCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
@@ -180,16 +174,6 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	})
 
 	return nil
-}
-
-// GetLocalWorkerInfo fetches the last known info for a local worker with given ID.
-func (cs *binkyNetCommandStation) GetLocalWorkerInfo(ctx context.Context, id string) (bn.LocalWorkerInfo, bool) {
-	return cs.manager.GetLocalWorkerInfo(id)
-}
-
-// GetAllLocalWorkers fetches the last known info for all local workers.
-func (cs *binkyNetCommandStation) GetAllLocalWorkers(ctx context.Context) []bn.LocalWorkerInfo {
-	return cs.manager.GetAllLocalWorkers()
 }
 
 // Enable/disable power on the railway
@@ -414,13 +398,28 @@ func (cs *binkyNetCommandStation) Close(ctx context.Context) {
 // Iterate over all hardware modules this command station is in control of.
 func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareModule)) {
 	// Return all local workers
+	visited := make(map[string]struct{})
 	for _, info := range cs.manager.GetAllLocalWorkers() {
 		lwm := binkyNetLocalWorkerModule{
 			ID:      info.GetId(),
 			Manager: cs.manager,
 		}
+		visited[info.GetId()] = struct{}{}
 		cb(&lwm)
 	}
+	// Return all declared local workers
+	lws := cs.getCommandStation().GetLocalWorkers()
+	lws.ForEach(func(lw model.BinkyNetLocalWorker) {
+		if _, found := visited[lw.GetAlias()]; !found {
+			if _, found := visited[lw.GetHardwareID()]; !found {
+				lwm := binkyNetLocalWorkerModule{
+					ID:      lw.GetAlias(),
+					Manager: cs.manager,
+				}
+				cb(&lwm)
+			}
+		}
+	})
 }
 
 // createObjectAddress converts a model address into a BinkyNet object address.

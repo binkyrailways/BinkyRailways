@@ -574,21 +574,21 @@ class LocState extends $pb.GeneratedMessage {
 class CommandStationState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStationState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.CommandStation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.CommandStation.create)
-    ..aOM<BinkyNetCommandStationState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binkynetCommandStation', subBuilder: BinkyNetCommandStationState.create)
+    ..pc<HardwareModule>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareModules', $pb.PbFieldType.PM, subBuilder: HardwareModule.create)
     ..hasRequiredFields = false
   ;
 
   CommandStationState._() : super();
   factory CommandStationState({
     $1.CommandStation? model,
-    BinkyNetCommandStationState? binkynetCommandStation,
+    $core.Iterable<HardwareModule>? hardwareModules,
   }) {
     final _result = create();
     if (model != null) {
       _result.model = model;
     }
-    if (binkynetCommandStation != null) {
-      _result.binkynetCommandStation = binkynetCommandStation;
+    if (hardwareModules != null) {
+      _result.hardwareModules.addAll(hardwareModules);
     }
     return _result;
   }
@@ -625,110 +625,64 @@ class CommandStationState extends $pb.GeneratedMessage {
   $1.CommandStation ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  BinkyNetCommandStationState get binkynetCommandStation => $_getN(1);
-  @$pb.TagNumber(2)
-  set binkynetCommandStation(BinkyNetCommandStationState v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBinkynetCommandStation() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBinkynetCommandStation() => clearField(2);
-  @$pb.TagNumber(2)
-  BinkyNetCommandStationState ensureBinkynetCommandStation() => $_ensure(1);
+  $core.List<HardwareModule> get hardwareModules => $_getList(1);
 }
 
-class BinkyNetCommandStationState extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetCommandStationState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..pc<BinkyNetLocalWorkerState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkers', $pb.PbFieldType.PM, subBuilder: BinkyNetLocalWorkerState.create)
-    ..hasRequiredFields = false
-  ;
-
-  BinkyNetCommandStationState._() : super();
-  factory BinkyNetCommandStationState({
-    $core.Iterable<BinkyNetLocalWorkerState>? localWorkers,
-  }) {
-    final _result = create();
-    if (localWorkers != null) {
-      _result.localWorkers.addAll(localWorkers);
-    }
-    return _result;
-  }
-  factory BinkyNetCommandStationState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory BinkyNetCommandStationState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  BinkyNetCommandStationState clone() => BinkyNetCommandStationState()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  BinkyNetCommandStationState copyWith(void Function(BinkyNetCommandStationState) updates) => super.copyWith((message) => updates(message as BinkyNetCommandStationState)) as BinkyNetCommandStationState; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static BinkyNetCommandStationState create() => BinkyNetCommandStationState._();
-  BinkyNetCommandStationState createEmptyInstance() => create();
-  static $pb.PbList<BinkyNetCommandStationState> createRepeated() => $pb.PbList<BinkyNetCommandStationState>();
-  @$core.pragma('dart2js:noInline')
-  static BinkyNetCommandStationState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetCommandStationState>(create);
-  static BinkyNetCommandStationState? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.List<BinkyNetLocalWorkerState> get localWorkers => $_getList(0);
-}
-
-class BinkyNetLocalWorkerState extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetLocalWorkerState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.BinkyNetLocalWorker>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.BinkyNetLocalWorker.create)
+class HardwareModule extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HardwareModule', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uptime')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastUpdatedAt')
     ..hasRequiredFields = false
   ;
 
-  BinkyNetLocalWorkerState._() : super();
-  factory BinkyNetLocalWorkerState({
-    $1.BinkyNetLocalWorker? model,
+  HardwareModule._() : super();
+  factory HardwareModule({
+    $core.String? id,
     $fixnum.Int64? uptime,
+    $core.String? lastUpdatedAt,
   }) {
     final _result = create();
-    if (model != null) {
-      _result.model = model;
+    if (id != null) {
+      _result.id = id;
     }
     if (uptime != null) {
       _result.uptime = uptime;
     }
+    if (lastUpdatedAt != null) {
+      _result.lastUpdatedAt = lastUpdatedAt;
+    }
     return _result;
   }
-  factory BinkyNetLocalWorkerState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory BinkyNetLocalWorkerState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory HardwareModule.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HardwareModule.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  BinkyNetLocalWorkerState clone() => BinkyNetLocalWorkerState()..mergeFromMessage(this);
+  HardwareModule clone() => HardwareModule()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  BinkyNetLocalWorkerState copyWith(void Function(BinkyNetLocalWorkerState) updates) => super.copyWith((message) => updates(message as BinkyNetLocalWorkerState)) as BinkyNetLocalWorkerState; // ignore: deprecated_member_use
+  HardwareModule copyWith(void Function(HardwareModule) updates) => super.copyWith((message) => updates(message as HardwareModule)) as HardwareModule; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static BinkyNetLocalWorkerState create() => BinkyNetLocalWorkerState._();
-  BinkyNetLocalWorkerState createEmptyInstance() => create();
-  static $pb.PbList<BinkyNetLocalWorkerState> createRepeated() => $pb.PbList<BinkyNetLocalWorkerState>();
+  static HardwareModule create() => HardwareModule._();
+  HardwareModule createEmptyInstance() => create();
+  static $pb.PbList<HardwareModule> createRepeated() => $pb.PbList<HardwareModule>();
   @$core.pragma('dart2js:noInline')
-  static BinkyNetLocalWorkerState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetLocalWorkerState>(create);
-  static BinkyNetLocalWorkerState? _defaultInstance;
+  static HardwareModule getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HardwareModule>(create);
+  static HardwareModule? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.BinkyNetLocalWorker get model => $_getN(0);
+  $core.String get id => $_getSZ(0);
   @$pb.TagNumber(1)
-  set model($1.BinkyNetLocalWorker v) { setField(1, v); }
+  set id($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasModel() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearModel() => clearField(1);
-  @$pb.TagNumber(1)
-  $1.BinkyNetLocalWorker ensureModel() => $_ensure(0);
+  void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
   $fixnum.Int64 get uptime => $_getI64(1);
@@ -738,6 +692,15 @@ class BinkyNetLocalWorkerState extends $pb.GeneratedMessage {
   $core.bool hasUptime() => $_has(1);
   @$pb.TagNumber(2)
   void clearUptime() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get lastUpdatedAt => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set lastUpdatedAt($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLastUpdatedAt() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLastUpdatedAt() => clearField(3);
 }
 
 class BlockState extends $pb.GeneratedMessage {

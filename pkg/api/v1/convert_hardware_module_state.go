@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
 // Author Ewout Prangsma
 //
 
-package state
+package v1
 
 import (
-	"context"
+	context "context"
+	"time"
 
-	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
-// BinkyNetCommandStation specifies the state of a binkynet command station.
-type BinkyNetCommandStation interface {
-	CommandStation
-
-	// GetLocalWorkerInfo fetches the last known info for a local worker with given ID.
-	GetLocalWorkerInfo(ctx context.Context, id string) (api.LocalWorkerInfo, bool)
-	// GetAllLocalWorkers fetches the last known info for all local workers.
-	GetAllLocalWorkers(ctx context.Context) []api.LocalWorkerInfo
+// FromState converts a state hardware module to an API hardware module
+func (dst *HardwareModule) FromState(ctx context.Context, src state.HardwareModule) error {
+	dst.Id = src.GetID()
+	dst.Uptime = int64(src.GetUptime().Seconds())
+	dst.LastUpdatedAt = src.GetLastUpdatedAt().Format(time.RFC3339)
+	return nil
 }

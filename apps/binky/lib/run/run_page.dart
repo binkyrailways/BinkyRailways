@@ -24,7 +24,7 @@ import '../api.dart';
 import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';
-import './binkynet_localworkers_pane.dart';
+import 'hardware_modules_pane.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -75,7 +75,7 @@ class _RunPageState extends State<RunPage> {
                   menu: const ControlPane(),
                   content: Column(children: const [
                     Expanded(child: RailwayCanvas()),
-                    BinkyNetLocalWorkersPane(),
+                    HardwareModulesPane(),
                   ]),
                 ),
               );

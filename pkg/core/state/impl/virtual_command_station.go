@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	mimpl "github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
@@ -29,13 +30,20 @@ import (
 type virtualCommandStation struct {
 	commandStation
 
-	power boolProperty
+	createdAt time.Time
+	power     boolProperty
+}
+
+type virtualHardwareModule struct {
+	uptime        time.Duration
+	lastUpdatedAt time.Time
 }
 
 // Create a new entity
 func newVirtualCommandStation(railway Railway) CommandStation {
 	cs := &virtualCommandStation{
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
+		createdAt:      time.Now(),
 	}
 	cs.power.Configure(cs, railway, railway)
 	cs.power.SubscribeRequestChanges(func(ctx context.Context, value bool) {
@@ -103,6 +111,45 @@ func (cs *virtualCommandStation) TriggerDiscover(ctx context.Context, hardwareID
 }
 
 // Iterate over all hardware modules this command station is in control of.
-func (cs *virtualCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
-	// No modules
+func (cs *virtualCommandStation) ForEachHardwareModule(cb func(state.HardwareModule)) {
+	// Only 1
+	cb(&virtualHardwareModule{
+		uptime:        time.Since(cs.createdAt),
+		lastUpdatedAt: time.Now(),
+	})
+}
+
+// Gets the ID of the module
+func (hm *virtualHardwareModule) GetID() string {
+	return "virtual"
+}
+
+// Gets the uptime of the module
+func (hm *virtualHardwareModule) GetUptime() time.Duration {
+	return hm.uptime
+}
+
+// Does this module support uptime data?
+func (hm *virtualHardwareModule) HasUptime() bool {
+	return true
+}
+
+// Gets the time of last update of the information of this module
+func (hm *virtualHardwareModule) GetLastUpdatedAt() time.Time {
+	return hm.lastUpdatedAt
+}
+
+// Does this module support last updated at data?
+func (hm *virtualHardwareModule) HasLastUpdatedAt() bool {
+	return true
+}
+
+// Gets the version of the module
+func (hm *virtualHardwareModule) GetVersion() string {
+	return "0.0.0"
+}
+
+// Does this module support version data?
+func (hm *virtualHardwareModule) HasVersion() bool {
+	return true
 }

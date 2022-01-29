@@ -20,22 +20,22 @@ import 'package:provider/provider.dart';
 
 import '../models.dart';
 import '../api.dart';
-import './binkynet_localworker_pane.dart';
+import 'hardware_module_pane.dart';
 
-class BinkyNetLocalWorkersPane extends StatelessWidget {
-  const BinkyNetLocalWorkersPane({Key? key}) : super(key: key);
+class HardwareModulesPane extends StatelessWidget {
+  const HardwareModulesPane({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(builder: (context, state, child) {
-      final lws = _getLocalWorkers(state);
-      if (lws.isEmpty) {
-        return const Text("No local workers found");
+      final hws = _getHardwareModules(state);
+      if (hws.isEmpty) {
+        return const Text("No hardware modules found");
       }
-      lws.sort((a, b) => a.model.alias.compareTo(b.model.alias));
+      hws.sort((a, b) => a.id.compareTo(b.id));
       final List<Widget> children = [];
-      lws.forEach((e) {
-        children.add(BinkyNetLocalWorkerPane(lwState: e));
+      hws.forEach((e) {
+        children.add(HardwareModulePane(hardwareModule: e));
       });
       return Container(
         padding: const EdgeInsets.all(8),
@@ -44,17 +44,14 @@ class BinkyNetLocalWorkersPane extends StatelessWidget {
     });
   }
 
-  List<BinkyNetLocalWorkerState> _getLocalWorkers(StateModel stateModel) {
+  List<HardwareModule> _getHardwareModules(StateModel stateModel) {
     final css = stateModel.commandStations();
-    final bnCss = css
-        .where((cs) => cs.last.hasBinkynetCommandStation())
-        .map((bnCs) => bnCs.last.binkynetCommandStation.localWorkers)
-        .toList();
-    if (bnCss.isEmpty) {
+    final hmCss = css.map((bnCs) => bnCs.last.hardwareModules).toList();
+    if (hmCss.isEmpty) {
       return [];
     }
-    return bnCss.reduce((list, x) {
-      final List<BinkyNetLocalWorkerState> combined = [];
+    return hmCss.reduce((list, x) {
+      final List<HardwareModule> combined = [];
       combined.addAll(x);
       combined.addAll(list);
       return combined;

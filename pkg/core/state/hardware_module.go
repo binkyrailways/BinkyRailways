@@ -29,6 +29,11 @@ type HardwareModule interface {
 	// Does this module support uptime data?
 	HasUptime() bool
 
+	// Gets the time of last update of the information of this module
+	GetLastUpdatedAt() time.Time
+	// Does this module support last updated at data?
+	HasLastUpdatedAt() bool
+
 	// Gets the version of the module
 	GetVersion() string
 	// Does this module support version data?

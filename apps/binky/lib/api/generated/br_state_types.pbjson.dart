@@ -99,33 +99,24 @@ const CommandStationState$json = const {
   '1': 'CommandStationState',
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.CommandStation', '10': 'model'},
-    const {'1': 'binkynet_command_station', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetCommandStationState', '10': 'binkynetCommandStation'},
+    const {'1': 'hardware_modules', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.HardwareModule', '10': 'hardwareModules'},
   ],
 };
 
 /// Descriptor for `CommandStationState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWwSZwoYYmlua3luZXRfY29tbWFuZF9zdGF0aW9uGAIgASgLMi0uYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldENvbW1hbmRTdGF0aW9uU3RhdGVSFmJpbmt5bmV0Q29tbWFuZFN0YXRpb24=');
-@$core.Deprecated('Use binkyNetCommandStationStateDescriptor instead')
-const BinkyNetCommandStationState$json = const {
-  '1': 'BinkyNetCommandStationState',
+final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWwSSwoQaGFyZHdhcmVfbW9kdWxlcxgCIAMoCzIgLmJpbmt5cmFpbHdheXMudjEuSGFyZHdhcmVNb2R1bGVSD2hhcmR3YXJlTW9kdWxlcw==');
+@$core.Deprecated('Use hardwareModuleDescriptor instead')
+const HardwareModule$json = const {
+  '1': 'HardwareModule',
   '2': const [
-    const {'1': 'local_workers', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorkerState', '10': 'localWorkers'},
-  ],
-};
-
-/// Descriptor for `BinkyNetCommandStationState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetCommandStationStateDescriptor = $convert.base64Decode('ChtCaW5reU5ldENvbW1hbmRTdGF0aW9uU3RhdGUSTwoNbG9jYWxfd29ya2VycxgBIAMoCzIqLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRMb2NhbFdvcmtlclN0YXRlUgxsb2NhbFdvcmtlcnM=');
-@$core.Deprecated('Use binkyNetLocalWorkerStateDescriptor instead')
-const BinkyNetLocalWorkerState$json = const {
-  '1': 'BinkyNetLocalWorkerState',
-  '2': const [
-    const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorker', '10': 'model'},
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'uptime', '3': 2, '4': 1, '5': 3, '10': 'uptime'},
+    const {'1': 'last_updated_at', '3': 3, '4': 1, '5': 9, '10': 'lastUpdatedAt'},
   ],
 };
 
-/// Descriptor for `BinkyNetLocalWorkerState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetLocalWorkerStateDescriptor = $convert.base64Decode('ChhCaW5reU5ldExvY2FsV29ya2VyU3RhdGUSOwoFbW9kZWwYASABKAsyJS5iaW5reXJhaWx3YXlzLnYxLkJpbmt5TmV0TG9jYWxXb3JrZXJSBW1vZGVsEhYKBnVwdGltZRgCIAEoA1IGdXB0aW1l');
+/// Descriptor for `HardwareModule`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0');
 @$core.Deprecated('Use blockStateDescriptor instead')
 const BlockState$json = const {
   '1': 'BlockState',

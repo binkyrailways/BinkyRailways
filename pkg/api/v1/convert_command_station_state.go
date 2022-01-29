@@ -19,6 +19,8 @@ package v1
 
 import (
 	context "context"
+	"sort"
+	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -29,11 +31,13 @@ func (dst *CommandStationState) FromState(ctx context.Context, src state.Command
 	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
 		return err
 	}
-	if bnCs, ok := src.(state.BinkyNetCommandStation); ok {
-		dst.BinkynetCommandStation = &BinkyNetCommandStationState{}
-		if err := dst.BinkynetCommandStation.FromState(ctx, bnCs); err != nil {
-			return err
-		}
-	}
+	src.ForEachHardwareModule(func(hm state.HardwareModule) {
+		hmDst := &HardwareModule{}
+		hmDst.FromState(ctx, hm)
+		dst.HardwareModules = append(dst.HardwareModules, hmDst)
+	})
+	sort.Slice(dst.HardwareModules, func(i, j int) bool {
+		return strings.Compare(dst.HardwareModules[i].GetId(), dst.HardwareModules[j].GetId()) < 0
+	})
 	return nil
 }
