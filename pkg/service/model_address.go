@@ -50,15 +50,25 @@ func (s *service) ParseAddress(ctx context.Context, req *api.ParseAddressRequest
 			}, nil
 		}
 		// Search for localworker + object
+		isGlobal := parts[0] == bnapi.GlobalModuleID
 		foundLW := false
 		foundObject := false
 		rw.GetCommandStations().ForEach(func(csr model.CommandStationRef) {
 			if cs, err := csr.TryResolve(); err == nil {
 				if bnCs, ok := cs.(model.BinkyNetCommandStation); ok {
-					if lw, ok := bnCs.GetLocalWorkers().Get(parts[0]); ok {
-						foundLW = true
-						if _, ok := lw.GetObjects().Get(bnapi.ObjectID(parts[1])); ok {
-							foundObject = true
+					if isGlobal {
+						bnCs.GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
+							foundLW = true
+							if _, ok := lw.GetObjects().Get(bnapi.ObjectID(parts[1])); ok {
+								foundObject = true
+							}
+						})
+					} else {
+						if lw, ok := bnCs.GetLocalWorkers().Get(parts[0]); ok {
+							foundLW = true
+							if _, ok := lw.GetObjects().Get(bnapi.ObjectID(parts[1])); ok {
+								foundObject = true
+							}
 						}
 					}
 				}
