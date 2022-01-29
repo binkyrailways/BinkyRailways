@@ -47,6 +47,18 @@ class OutputComponent extends EntityComponent {
         RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
     // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
+    if (showActiveStatusText()) {
+      canvas.renderRotated(
+          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+          (canvas) {
+        final activeStatusText = isActive()
+            ? model.binaryOutput.activeText
+            : model.binaryOutput.inactiveText;
+        textPaint.render(
+            canvas, activeStatusText, Vector2(size.x / 2, size.y / 2),
+            anchor: fc.Anchor.center);
+      });
+    }
     canvas.restore();
 
     // Draw description
@@ -66,4 +78,6 @@ class OutputComponent extends EntityComponent {
 
   bool isActive() => true;
   bool showDescription() => isHovered;
+
+  bool showActiveStatusText() => false;
 }

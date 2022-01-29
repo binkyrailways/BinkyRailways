@@ -27,4 +27,12 @@ type BinaryOutput interface {
 	// Type of binary output
 	GetBinaryOutputType() BinaryOutputType
 	SetBinaryOutputType(ctx context.Context, value BinaryOutputType) error
+
+	// Text displayed when output is in active state
+	GetActiveText() string
+	SetActiveText(ctx context.Context, value string) error
+
+	// Text displayed when output is in inactive state
+	GetInactiveText() string
+	SetInactiveText(ctx context.Context, value string) error
 }

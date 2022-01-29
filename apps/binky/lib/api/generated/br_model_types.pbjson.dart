@@ -522,11 +522,13 @@ const BinaryOutput$json = const {
   '2': const [
     const {'1': 'address', '3': 1, '4': 1, '5': 9, '10': 'address'},
     const {'1': 'output_type', '3': 2, '4': 1, '5': 14, '6': '.binkyrailways.v1.BinaryOutputType', '10': 'outputType'},
+    const {'1': 'active_text', '3': 3, '4': 1, '5': 9, '10': 'activeText'},
+    const {'1': 'inactive_text', '3': 4, '4': 1, '5': 9, '10': 'inactiveText'},
   ],
 };
 
 /// Descriptor for `BinaryOutput`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binaryOutputDescriptor = $convert.base64Decode('CgxCaW5hcnlPdXRwdXQSGAoHYWRkcmVzcxgBIAEoCVIHYWRkcmVzcxJDCgtvdXRwdXRfdHlwZRgCIAEoDjIiLmJpbmt5cmFpbHdheXMudjEuQmluYXJ5T3V0cHV0VHlwZVIKb3V0cHV0VHlwZQ==');
+final $typed_data.Uint8List binaryOutputDescriptor = $convert.base64Decode('CgxCaW5hcnlPdXRwdXQSGAoHYWRkcmVzcxgBIAEoCVIHYWRkcmVzcxJDCgtvdXRwdXRfdHlwZRgCIAEoDjIiLmJpbmt5cmFpbHdheXMudjEuQmluYXJ5T3V0cHV0VHlwZVIKb3V0cHV0VHlwZRIfCgthY3RpdmVfdGV4dBgDIAEoCVIKYWN0aXZlVGV4dBIjCg1pbmFjdGl2ZV90ZXh0GAQgASgJUgxpbmFjdGl2ZVRleHQ=');
 @$core.Deprecated('Use routeDescriptor instead')
 const Route$json = const {
   '1': 'Route',

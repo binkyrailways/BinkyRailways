@@ -480,6 +480,10 @@ message BinaryOutput {
   string address = 1;
   // Type of output
   BinaryOutputType output_type = 2;
+  // Text shown when output is in active state
+  string active_text = 3;
+  // Text shown when output is in inactive state
+  string inactive_text = 4;
 }
 
 enum BinaryOutputType {

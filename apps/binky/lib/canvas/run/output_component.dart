@@ -48,4 +48,7 @@ class OutputComponent extends common.OutputComponent with Tappable {
     }
     return super.isActive();
   }
+
+  @override
+  bool showActiveStatusText() => true;
 }

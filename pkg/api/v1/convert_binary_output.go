@@ -21,12 +21,15 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"go.uber.org/multierr"
 )
 
 // FromModel converts a model BinaryOutput to an API BinaryOutput
 func (dst *BinaryOutput) FromModel(ctx context.Context, src model.BinaryOutput) error {
 	dst.Address = src.GetAddress().String()
 	dst.OutputType.FromModel(ctx, src.GetBinaryOutputType())
+	dst.ActiveText = src.GetActiveText()
+	dst.InactiveText = src.GetInactiveText()
 	return nil
 }
 
@@ -36,15 +39,13 @@ func (src *BinaryOutput) ToModel(ctx context.Context, dst model.BinaryOutput) er
 	if err != nil {
 		return err
 	}
-	if err := dst.SetAddress(ctx, addr); err != nil {
-		return err
-	}
 	bot, err := src.GetOutputType().ToModel(ctx)
 	if err != nil {
 		return err
 	}
-	if err := dst.SetBinaryOutputType(ctx, bot); err != nil {
-		return err
-	}
+	multierr.AppendInto(&err, dst.SetAddress(ctx, addr))
+	multierr.AppendInto(&err, dst.SetBinaryOutputType(ctx, bot))
+	multierr.AppendInto(&err, dst.SetActiveText(ctx, src.GetActiveText()))
+	multierr.AppendInto(&err, dst.SetInactiveText(ctx, src.GetInactiveText()))
 	return nil
 }

@@ -67,9 +67,15 @@ class _OutputSettings extends StatefulWidget {
 
 class _OutputSettingsState extends State<_OutputSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _activeTextController = TextEditingController();
+  final TextEditingController _inactiveTextController = TextEditingController();
 
   void _initConrollers() {
     _descriptionController.text = widget.output.description;
+    if (widget.output.hasBinaryOutput()) {
+      _activeTextController.text = widget.output.binaryOutput.activeText;
+      _inactiveTextController.text = widget.output.binaryOutput.inactiveText;
+    }
   }
 
   @override
@@ -86,30 +92,64 @@ class _OutputSettingsState extends State<_OutputSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
+    final List<Widget> children = [
+      const SettingsHeader(title: "General"),
+      SettingsTextField(
+          controller: _descriptionController,
+          label: "Description",
+          firstChild: true,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.description = value;
+            });
+          }),
+    ];
+    if (widget.output.hasBinaryOutput()) {
+      children.add(SettingsAddressField(
+          key: Key("${widget.output.id}/output/address"),
+          label: "Address",
+          address: widget.output.binaryOutput.address,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.binaryOutput.address = value;
+            });
+          }));
+      children.add(
         SettingsTextField(
-            controller: _descriptionController,
-            label: "Description",
-            firstChild: true,
+            controller: _activeTextController,
+            label: "Active text",
             onLostFocus: (value) async {
               await _update((update) {
-                update.description = value;
+                update.binaryOutput.activeText = value;
               });
             }),
-        const SettingsHeader(title: "Position"),
-        PositionSettings(
-            editorCtx: widget.editorCtx,
-            model: widget.model,
-            position: widget.output.position,
-            update: (editor) async {
+      );
+      children.add(
+        SettingsTextField(
+            controller: _inactiveTextController,
+            label: "Inactive text",
+            onLostFocus: (value) async {
               await _update((update) {
-                editor(update.position);
+                update.binaryOutput.inactiveText = value;
               });
             }),
-      ],
+      );
+    }
+    children.add(const SettingsHeader(title: "Position"));
+    children.add(
+      PositionSettings(
+          editorCtx: widget.editorCtx,
+          model: widget.model,
+          position: widget.output.position,
+          update: (editor) async {
+            await _update((update) {
+              editor(update.position);
+            });
+          }),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
     );
   }
 

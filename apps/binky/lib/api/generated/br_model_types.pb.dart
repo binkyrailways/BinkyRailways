@@ -2583,6 +2583,8 @@ class BinaryOutput extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinaryOutput', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..e<BinaryOutputType>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputType', $pb.PbFieldType.OE, defaultOrMaker: BinaryOutputType.BOT_DEFAULT, valueOf: BinaryOutputType.valueOf, enumValues: BinaryOutputType.values)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'activeText')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'inactiveText')
     ..hasRequiredFields = false
   ;
 
@@ -2590,6 +2592,8 @@ class BinaryOutput extends $pb.GeneratedMessage {
   factory BinaryOutput({
     $core.String? address,
     BinaryOutputType? outputType,
+    $core.String? activeText,
+    $core.String? inactiveText,
   }) {
     final _result = create();
     if (address != null) {
@@ -2597,6 +2601,12 @@ class BinaryOutput extends $pb.GeneratedMessage {
     }
     if (outputType != null) {
       _result.outputType = outputType;
+    }
+    if (activeText != null) {
+      _result.activeText = activeText;
+    }
+    if (inactiveText != null) {
+      _result.inactiveText = inactiveText;
     }
     return _result;
   }
@@ -2638,6 +2648,24 @@ class BinaryOutput extends $pb.GeneratedMessage {
   $core.bool hasOutputType() => $_has(1);
   @$pb.TagNumber(2)
   void clearOutputType() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get activeText => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set activeText($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasActiveText() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearActiveText() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get inactiveText => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set inactiveText($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasInactiveText() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearInactiveText() => clearField(4);
 }
 
 class Route extends $pb.GeneratedMessage {

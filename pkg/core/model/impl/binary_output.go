@@ -21,6 +21,7 @@ import (
 	"context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
 // BinaryOutput adds implementation methods to model.BinaryOutput
@@ -33,7 +34,9 @@ type binaryOutput struct {
 	output
 
 	Address          model.Address          `xml:"Address"`
-	BinaryOutputType model.BinaryOutputType `xml:BinaryOutputType"`
+	BinaryOutputType model.BinaryOutputType `xml:"BinaryOutputType"`
+	ActiveText       *string                `xml:"ActiveText,omitempty"`
+	InactiveText     *string                `xml:"InactiveText,omitempty"`
 }
 
 var _ BinaryOutput = &binaryOutput{}
@@ -89,6 +92,30 @@ func (bo *binaryOutput) SetBinaryOutputType(ctx context.Context, value model.Bin
 	}
 	if value != bo.BinaryOutputType {
 		bo.BinaryOutputType = value
+		bo.OnModified()
+	}
+	return nil
+}
+
+// Text displayed when output is in active state
+func (bo *binaryOutput) GetActiveText() string {
+	return refs.StringValue(bo.ActiveText, "")
+}
+func (bo *binaryOutput) SetActiveText(ctx context.Context, value string) error {
+	if bo.GetActiveText() != value {
+		bo.ActiveText = refs.NewString(value)
+		bo.OnModified()
+	}
+	return nil
+}
+
+// Text displayed when output is in inactive state
+func (bo *binaryOutput) GetInactiveText() string {
+	return refs.StringValue(bo.InactiveText, "")
+}
+func (bo *binaryOutput) SetInactiveText(ctx context.Context, value string) error {
+	if bo.GetInactiveText() != value {
+		bo.InactiveText = refs.NewString(value)
 		bo.OnModified()
 	}
 	return nil
