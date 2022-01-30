@@ -33,10 +33,13 @@ class AutomaticPane extends StatelessWidget {
             initialData: state.getCachedRailwayState(),
             builder: (context, snapshot) {
               final rwState = snapshot.data;
-              final onShade =
-                  (rwState?.automaticControlActual ?? false) ? 200 : 400;
-              final offShade =
-                  (rwState?.automaticControlActual ?? false) ? 400 : 200;
+              final acActual = rwState?.automaticControlActual ?? false;
+              final onStyle = ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green[200]),
+                  foregroundColor: MaterialStateProperty.all(Colors.black));
+              final offStyle = ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red[200]),
+                  foregroundColor: MaterialStateProperty.all(Colors.black));
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [
@@ -46,32 +49,42 @@ class AutomaticPane extends StatelessWidget {
                     ),
                     Row(children: [
                       Expanded(
-                          child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.green[onShade]),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () async {
-                          await state.setAutomaticControl(true);
-                        },
-                        child: const Text("Automatic"),
-                      )),
+                          child: acActual
+                              ? ElevatedButton(
+                                  style: offStyle,
+                                  onPressed: () async {
+                                    await state.setAutomaticControl(false);
+                                  },
+                                  child: const Text("Manual"),
+                                )
+                              : ElevatedButton.icon(
+                                  style: offStyle,
+                                  onPressed: () async {
+                                    await state.setAutomaticControl(false);
+                                  },
+                                  icon: const Icon(Icons.check_outlined),
+                                  label: const Text("Manual"),
+                                )),
                       Container(
                         width: 5,
                       ),
                       Expanded(
-                          child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red[offShade]),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () async {
-                          await state.setAutomaticControl(false);
-                        },
-                        child: const Text("Manual"),
-                      )),
+                          child: acActual
+                              ? ElevatedButton.icon(
+                                  style: onStyle,
+                                  onPressed: () async {
+                                    await state.setAutomaticControl(true);
+                                  },
+                                  icon: const Icon(Icons.check_outlined),
+                                  label: const Text("Automatic"),
+                                )
+                              : ElevatedButton(
+                                  style: onStyle,
+                                  onPressed: () async {
+                                    await state.setAutomaticControl(true);
+                                  },
+                                  child: const Text("Automatic"),
+                                )),
                     ]),
                   ]));
             });

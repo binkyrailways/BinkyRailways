@@ -33,8 +33,15 @@ class PowerPane extends StatelessWidget {
             initialData: state.getCachedRailwayState(),
             builder: (context, snapshot) {
               final rwState = snapshot.data;
-              final onShade = (rwState?.powerActual ?? false) ? 200 : 400;
-              final offShade = (rwState?.powerActual ?? false) ? 400 : 200;
+              final pwActual = rwState?.powerActual ?? false;
+              final onShade = (pwActual) ? 400 : 200;
+              final offShade = (pwActual) ? 200 : 400;
+              final onStyle = ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green[200]),
+                  foregroundColor: MaterialStateProperty.all(Colors.black));
+              final offStyle = ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red[200]),
+                  foregroundColor: MaterialStateProperty.all(Colors.black));
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [
@@ -44,32 +51,42 @@ class PowerPane extends StatelessWidget {
                     ),
                     Row(children: [
                       Expanded(
-                          child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.green[onShade]),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () async {
-                          await state.setPower(true);
-                        },
-                        child: const Text("On"),
-                      )),
+                          child: pwActual
+                              ? ElevatedButton(
+                                  style: offStyle,
+                                  onPressed: () async {
+                                    await state.setPower(false);
+                                  },
+                                  child: const Text("Off"),
+                                )
+                              : ElevatedButton.icon(
+                                  style: offStyle,
+                                  onPressed: () async {
+                                    await state.setPower(false);
+                                  },
+                                  icon: const Icon(Icons.check_outlined),
+                                  label: const Text("Off"),
+                                )),
                       Container(
                         width: 5,
                       ),
                       Expanded(
-                          child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red[offShade]),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black)),
-                        onPressed: () async {
-                          await state.setPower(false);
-                        },
-                        child: const Text("Off"),
-                      )),
+                          child: pwActual
+                              ? ElevatedButton.icon(
+                                  style: onStyle,
+                                  onPressed: () async {
+                                    await state.setPower(true);
+                                  },
+                                  icon: const Icon(Icons.check_outlined),
+                                  label: const Text("On"),
+                                )
+                              : ElevatedButton(
+                                  style: onStyle,
+                                  onPressed: () async {
+                                    await state.setPower(true);
+                                  },
+                                  child: const Text("On"),
+                                )),
                     ]),
                   ]));
             });
