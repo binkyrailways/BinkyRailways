@@ -36,6 +36,10 @@ class LocPane extends StatelessWidget {
                 return const Text("Loading...");
               }
               final locState = snapshot.data!.last;
+              final directionStyle = ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.grey[400]),
+                  foregroundColor: MaterialStateProperty.all(Colors.black));
+
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(children: [
@@ -67,18 +71,17 @@ class LocPane extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.keyboard_arrow_left),
-                          tooltip: "Reverse",
-                          color:
-                              _directionColor(locState, LocDirection.REVERSE),
+                        ElevatedButton(
+                          child: const Icon(Icons.keyboard_arrow_left),
+                          style: directionStyle,
                           onPressed: () async {
                             await state.setLocSpeedAndDirection(id,
                                 locState.speedRequested, LocDirection.REVERSE);
                           },
                         ),
+                        Container(width: 4),
                         Expanded(
-                          child: TextButton(
+                          child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.orange[400]),
@@ -91,11 +94,10 @@ class LocPane extends StatelessWidget {
                             child: const Text("Stop"),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.keyboard_arrow_right),
-                          tooltip: "Forward",
-                          color:
-                              _directionColor(locState, LocDirection.FORWARD),
+                        Container(width: 4),
+                        ElevatedButton(
+                          child: const Icon(Icons.keyboard_arrow_right),
+                          style: directionStyle,
                           onPressed: () async {
                             await state.setLocSpeedAndDirection(id,
                                 locState.speedRequested, LocDirection.FORWARD);
