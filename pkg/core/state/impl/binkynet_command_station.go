@@ -161,6 +161,19 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
+		actuals, cancel := cs.manager.SubscribeSensorActuals()
+		defer cancel()
+		for {
+			select {
+			case actual := <-actuals:
+				cs.onSensorActual(ctx, actual)
+			case <-ctx.Done():
+				return nil
+			}
+		}
+	})
+
+	g.Go(func() error {
 		actuals, cancel := cs.manager.SubscribeSwitchActuals()
 		defer cancel()
 		for {
@@ -312,6 +325,24 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 			}
 		}
 	})
+}
+
+// Process the update of a sensor on the track
+func (cs *binkyNetCommandStation) onSensorActual(ctx context.Context, actual bn.Sensor) {
+	objAddr := actual.GetAddress()
+	found := false
+	cs.ForEachSensor(func(sensor state.Sensor) {
+		if isAddressEqual(sensor.GetAddress(), objAddr) {
+			sensor.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
+			found = true
+		}
+	})
+	if !found {
+		cs.log.Info().
+			Str("address", string(objAddr)).
+			Int32("value", actual.GetActual().GetValue()).
+			Msg("Unknown sensor detected")
+	}
 }
 
 // Send the state of the binary switch towards the railway.
