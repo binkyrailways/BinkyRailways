@@ -38,7 +38,7 @@ class SensorComponent extends common.SensorComponent with Tappable {
       final sState = state.last;
       stateModel.clickVirtualSensor(sState.model.id);
     }
-    return true;
+    return false;
   }
 
   @override

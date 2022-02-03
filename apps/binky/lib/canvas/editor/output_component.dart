@@ -49,7 +49,7 @@ class OutputComponent extends common.OutputComponent
   @override
   bool onTapUp(TapUpInfo event) {
     editorCtx.select(EntitySelector.output(model));
-    return true;
+    return false;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.output) == model.id;

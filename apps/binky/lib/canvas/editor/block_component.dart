@@ -49,7 +49,7 @@ class BlockComponent extends common.BlockComponent
   @override
   bool onTapUp(TapUpInfo event) {
     editorCtx.select(EntitySelector.block(model));
-    return true;
+    return false;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.block) == model.id;

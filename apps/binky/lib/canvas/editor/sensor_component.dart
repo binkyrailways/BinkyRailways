@@ -49,7 +49,7 @@ class SensorComponent extends common.SensorComponent
   @override
   bool onTapUp(TapUpInfo event) {
     editorCtx.select(EntitySelector.sensor(model));
-    return true;
+    return false;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.sensor) == model.id;

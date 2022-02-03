@@ -49,7 +49,7 @@ class JunctionComponent extends common.JunctionComponent
   @override
   bool onTapUp(TapUpInfo event) {
     editorCtx.select(EntitySelector.junction(model));
-    return true;
+    return false;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.junction) == model.id;

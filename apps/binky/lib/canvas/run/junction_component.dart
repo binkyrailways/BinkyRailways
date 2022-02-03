@@ -38,7 +38,7 @@ class JunctionComponent extends common.JunctionComponent with Tappable {
       stateModel.setSwitchDirection(
           model.id, sw.switch_2.directionRequested.invert());
     }
-    return true;
+    return false;
   }
 
   @override

@@ -37,7 +37,7 @@ class OutputComponent extends common.OutputComponent with Tappable {
     if (sw.hasBinaryOutput()) {
       stateModel.setBinaryOutputActive(model.id, !sw.binaryOutput.activeActual);
     }
-    return true;
+    return false;
   }
 
   @override

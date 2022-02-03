@@ -32,7 +32,7 @@ class BlockComponent extends common.BlockComponent {
   @override
   bool onTapUp(TapUpInfo event) {
     game.showBlock(event.eventPosition.widget, state.last);
-    return true;
+    return false;
   }
 
   @override
