@@ -44,10 +44,14 @@ class SensorComponent extends EntityComponent {
 
     // Clip rrect
     final backgroundPaint = Paint()..color = backgroundColor();
+    final borderPaint = Paint()..color = Colors.black;
+    borderPaint.style = PaintingStyle.stroke;
     switch (model.shape) {
       case mapi.Shape.CIRCLE:
         canvas.drawCircle(
             Offset(size.x / 2, size.y / 2), minDim / 2, backgroundPaint);
+        canvas.drawCircle(
+            Offset(size.x / 2, size.y / 2), minDim / 2, borderPaint);
         break;
       case mapi.Shape.DIAMOND:
         var path = Path();
@@ -57,9 +61,11 @@ class SensorComponent extends EntityComponent {
         path.lineTo(0, size.y / 2); // middle-left
         path.close();
         canvas.drawPath(path, backgroundPaint);
+        canvas.drawPath(path, borderPaint);
         break;
       case mapi.Shape.SQUARE:
         canvas.drawRect(size.toRect(), backgroundPaint);
+        canvas.drawRect(size.toRect(), borderPaint);
         break;
       case mapi.Shape.TRIANGLE:
         var path = Path();
@@ -68,14 +74,15 @@ class SensorComponent extends EntityComponent {
         path.lineTo(0, size.y); // bottom-left
         path.close();
         canvas.drawPath(path, backgroundPaint);
+        canvas.drawPath(path, borderPaint);
         break;
       default:
         canvas.clipRRect(RRect.fromRectAndRadius(
             size.toRect(), Radius.circular(minDim / 3)));
         // Draw background
         canvas.drawPaint(backgroundPaint);
+        canvas.drawPaint(borderPaint);
     }
-    // Draw description
     canvas.restore();
 
     // Show description (if hovered)

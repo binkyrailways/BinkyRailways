@@ -53,7 +53,20 @@ class SensorComponent extends common.SensorComponent
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.sensor) == model.id;
+  _isPartOfSelectedRoute() {
+    final routeId = editorCtx.selector.idOf(EntityType.route);
+    if (routeId == null) {
+      return false;
+    }
+    final route = modelModel.getCachedRoute(routeId);
+    return (route != null) &&
+        (route.events.any((x) => x.sensor.id == model.id));
+  }
 
   @override
-  backgroundColor() => _isSelected() ? Colors.orange : super.backgroundColor();
+  backgroundColor() => _isSelected()
+      ? Colors.orange
+      : _isPartOfSelectedRoute()
+          ? Colors.cyan
+          : super.backgroundColor();
 }

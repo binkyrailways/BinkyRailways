@@ -43,8 +43,9 @@ class OutputComponent extends EntityComponent {
     canvas.save();
 
     // Clip rrect
-    canvas.clipRRect(
-        RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
+    final rrect =
+        RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
+    canvas.clipRRect(rrect);
     // Draw background
     canvas.drawPaint(Paint()..color = backgroundColor());
     if (showActiveStatusText()) {
@@ -59,6 +60,12 @@ class OutputComponent extends EntityComponent {
             anchor: fc.Anchor.center);
       });
     }
+    // Draw border
+    canvas.drawRRect(
+        rrect,
+        Paint()
+          ..color = Colors.black
+          ..style = PaintingStyle.stroke);
     canvas.restore();
 
     // Draw description
