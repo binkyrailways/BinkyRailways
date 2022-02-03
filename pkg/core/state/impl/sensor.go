@@ -46,7 +46,7 @@ func newSensor(en model.Sensor, railway Railway) sensor {
 
 // getSensor returns the entity as Sensor.
 func (s *sensor) Configure(railway Railway) {
-	s.active.Configure(s.active, s, railway, railway)
+	s.active.Configure(&s.active, s, railway, railway)
 }
 
 // Unique ID of the module containing this entity
@@ -73,7 +73,7 @@ func (s *sensor) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ 
 	if err != nil {
 		return err
 	}
-	cs.RegisterInput(s)
+	cs.RegisterSensor(s)
 
 	// Resolve destination blocks
 	s.railway.ForEachRoute(func(r state.Route) {

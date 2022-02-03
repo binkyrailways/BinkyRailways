@@ -331,16 +331,20 @@ func (cs *binkyNetCommandStation) onOutputActual(ctx context.Context, actual bn.
 func (cs *binkyNetCommandStation) onSensorActual(ctx context.Context, actual bn.Sensor) {
 	objAddr := actual.GetAddress()
 	found := false
+	notFound := 0
 	cs.ForEachSensor(func(sensor state.Sensor) {
 		if isAddressEqual(sensor.GetAddress(), objAddr) {
 			sensor.GetActive().SetActual(ctx, actual.GetActual().GetValue() != 0)
 			found = true
+		} else {
+			notFound++
 		}
 	})
 	if !found {
 		cs.log.Info().
 			Str("address", string(objAddr)).
 			Int32("value", actual.GetActual().GetValue()).
+			Int("sensors", notFound).
 			Msg("Unknown sensor detected")
 	}
 }
