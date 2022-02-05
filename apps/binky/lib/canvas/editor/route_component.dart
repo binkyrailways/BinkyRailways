@@ -30,21 +30,21 @@ import './module_game.dart';
 
 class RouteComponent extends common.RouteComponent {
   final EditorContext editorCtx;
-  final ModelModel modelModel;
   final ModuleGame game;
 
   RouteComponent(
       {required this.editorCtx,
-      required mapi.Route model,
+      required String routeId,
       required mapi.Module module,
       required List<mapi.Block> blocks,
       required List<mapi.Edge> edges,
       required List<mapi.Junction> junctions,
       required List<mapi.Sensor> sensors,
-      required this.modelModel,
+      required ModelModel modelModel,
       required this.game})
       : super(
-            model: model,
+            routeId: routeId,
+            modelModel: modelModel,
             module: module,
             blocks: blocks,
             edges: edges,
@@ -52,5 +52,5 @@ class RouteComponent extends common.RouteComponent {
             sensors: sensors);
 
   @override
-  isVisible() => editorCtx.selector.idOf(EntityType.route) == model.id;
+  isVisible() => editorCtx.selector.idOf(EntityType.route) == routeId;
 }

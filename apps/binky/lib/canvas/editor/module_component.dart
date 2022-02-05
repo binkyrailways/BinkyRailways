@@ -44,7 +44,7 @@ class ModuleComponent extends common.ModuleComponent {
       final route = await modelModel.getRoute(routeRef.id);
       add(RouteComponent(
           editorCtx: editorCtx,
-          model: route,
+          routeId: route.id,
           module: model,
           blocks: blocks,
           edges: edges,

@@ -23,18 +23,21 @@ import 'dart:math';
 
 import 'entity_component.dart';
 import '../api.dart' as mapi;
+import '../models.dart';
 
 class RouteComponent extends EntityComponent {
-  final mapi.Route model;
+  final String routeId;
   final mapi.Module module;
+  final ModelModel modelModel;
   final List<mapi.Block> blocks;
   final List<mapi.Edge> edges;
   final List<mapi.Junction> junctions;
   final List<mapi.Sensor> sensors;
 
   RouteComponent(
-      {required this.model,
+      {required this.routeId,
       required this.module,
+      required this.modelModel,
       required this.blocks,
       required this.edges,
       required this.junctions,
@@ -46,39 +49,43 @@ class RouteComponent extends EntityComponent {
   @override
   void render(Canvas canvas) {
     if (isVisible()) {
-      final linePaint = Paint()..color = Colors.black;
-      linePaint.style = PaintingStyle.stroke;
+      final route = modelModel.getCachedRoute(routeId);
+      if (route != null) {
+        final linePaint = Paint()..color = Colors.black;
+        linePaint.style = PaintingStyle.stroke;
 
-      canvas.save();
-      final start = _getFrom();
-      final end = _getTo();
-      final intermediates = _getIntermediates(start, end);
-      var path = Path();
-      path.moveTo(start.x, start.y);
-      for (var p in intermediates) {
-        path.lineTo(p.x, p.y);
+        canvas.save();
+        final start = _getFrom(route);
+        final end = _getTo(route);
+        final intermediates = _getIntermediates(route, start, end);
+        var path = Path();
+        path.moveTo(start.x, start.y);
+        for (var p in intermediates) {
+          path.lineTo(p.x, p.y);
+        }
+        path.lineTo(end.x, end.y);
+        canvas.drawPath(path, linePaint);
+        canvas.restore();
       }
-      path.lineTo(end.x, end.y);
-      canvas.drawPath(path, linePaint);
-      canvas.restore();
     }
   }
 
   bool isVisible() => false;
 
-  Vector2 _getFrom() => _getEndpoint(model.from);
-  Vector2 _getTo() => _getEndpoint(model.to);
+  Vector2 _getFrom(mapi.Route route) => _getEndpoint(route.from);
+  Vector2 _getTo(mapi.Route route) => _getEndpoint(route.to);
 
-  List<Vector2> _getIntermediates(Vector2 start, Vector2 end) {
+  List<Vector2> _getIntermediates(
+      mapi.Route route, Vector2 start, Vector2 end) {
     final List<Vector2> list = [];
-    for (var jws in model.crossingJunctions) {
+    for (var jws in route.crossingJunctions) {
       final junction = junctions.where((b) => b.id == jws.junction.id).toList();
       if (junction.isNotEmpty) {
         final p = _getCenter(junction.first.position);
         list.add(p);
       }
     }
-    for (var evt in model.events) {
+    for (var evt in route.events) {
       final sensor = sensors.where((b) => b.id == evt.sensor.id).toList();
       if (sensor.isNotEmpty) {
         final p = _getCenter(sensor.first.position);
