@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -33,13 +35,13 @@ type routeForLoc struct {
 }
 
 // Create a new entity
-func newRouteForLoc(loc state.Loc, route Route) RouteForLoc {
+func newRouteForLoc(ctx context.Context, loc state.Loc, route Route) RouteForLoc {
 	rs := &routeForLoc{
 		loc:       loc,
 		route:     route,
 		behaviors: make(map[string]state.RouteEventBehavior),
 	}
-	route.ForEachEvent(func(evt state.RouteEvent) {
+	route.ForEachEvent(ctx, func(evt state.RouteEvent) {
 		var first state.RouteEventBehavior
 		evt.ForEachBehavior(func(b state.RouteEventBehavior) {
 			if first != nil {

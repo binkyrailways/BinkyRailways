@@ -55,9 +55,9 @@ func (csr *criticalSectionRoutes) AllFree(ctx context.Context, allowedLoc state.
 	}
 	// Check blocks in the routes
 	for _, route := range csr.routes {
-		toBlock := route.GetTo()
+		toBlock := route.GetTo(ctx)
 		loc := toBlock.GetLockedBy(ctx)
-		if (loc != nil) && (loc != allowedLoc) && (loc.GetCurrentBlockEnterSide().GetActual(ctx) == route.GetToBlockSide()) {
+		if (loc != nil) && (loc != allowedLoc) && (loc.GetCurrentBlockEnterSide().GetActual(ctx) == route.GetToBlockSide(ctx)) {
 			// If the loc occupying the blokc cannot change direction, we may not enter this critical section.
 			if loc.GetChangeDirection(ctx) == model.ChangeDirectionAvoid {
 				return false

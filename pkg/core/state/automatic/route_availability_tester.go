@@ -79,7 +79,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 	}
 
 	// Is route closed?
-	if route.GetClosed() {
+	if route.GetClosed(ctx) {
 		return state.RouteOption{
 			Route:  route,
 			Reason: state.RouteImpossibleReasonClosed,
@@ -87,7 +87,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 	}
 
 	// Is target blocked closed?
-	toBlock := route.GetTo()
+	toBlock := route.GetTo(ctx)
 	if toBlock.GetClosed().GetActual(ctx) || toBlock.GetClosed().GetRequested(ctx) {
 		return state.RouteOption{
 			Route:  route,
@@ -126,7 +126,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 		}
 		if loc.GetChangeDirection(ctx) != model.ChangeDirectionAllow {
 			// Loc does not allow direction changes
-			if !route.GetFrom().GetIsDeadEnd(ctx) {
+			if !route.GetFrom(ctx).GetIsDeadEnd(ctx) {
 				return state.RouteOption{
 					Route:  route,
 					Reason: state.RouteImpossibleReasonDirectionChangeNeeded,
@@ -134,7 +134,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 			}
 			// Loc will reverse out of a dead end
 		}
-		if route.GetFrom().GetChangeDirection(ctx) != model.ChangeDirectionAllow {
+		if route.GetFrom(ctx).GetChangeDirection(ctx) != model.ChangeDirectionAllow {
 			// From block does not allowed direction changes
 			return state.RouteOption{
 				Route:  route,
@@ -144,7 +144,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 	}
 
 	// Check permissions
-	if !route.GetPermissions().Evaluate(ctx, loc) {
+	if !route.GetPermissions(ctx).Evaluate(ctx, loc) {
 		// Loc not allowed by permissions
 		return state.RouteOption{
 			Route:  route,
@@ -181,7 +181,7 @@ func (rt *baseRouteAvailabilityTester) HasTrafficInOppositeDirection(ctx context
 	if (loc != nil) && (loc != currentLoc) {
 		// Check current route
 		locRoute := loc.GetCurrentRoute().GetActual(ctx)
-		if (locRoute != nil) && (locRoute.GetRoute().GetTo() == toBlock) {
+		if (locRoute != nil) && (locRoute.GetRoute().GetTo(ctx) == toBlock) {
 			locEnterSide := loc.GetCurrentBlockEnterSide().GetActual(ctx)
 			if locEnterSide != toBlockSide {
 				// We found opposite traffic
@@ -193,7 +193,7 @@ func (rt *baseRouteAvailabilityTester) HasTrafficInOppositeDirection(ctx context
 		}
 		// Check next route
 		nextRoute := loc.GetNextRoute().GetActual(ctx)
-		if (nextRoute != nil) && (nextRoute.GetTo() == toBlock) {
+		if (nextRoute != nil) && (nextRoute.GetTo(ctx) == toBlock) {
 			locEnterSide := loc.GetCurrentBlockEnterSide().GetActual(ctx)
 			if locEnterSide != toBlockSide {
 				// We found opposite traffic
@@ -210,7 +210,7 @@ func (rt *baseRouteAvailabilityTester) HasTrafficInOppositeDirection(ctx context
 
 // Is the critical section for the given route free for the given loc?
 func (rt *baseRouteAvailabilityTester) IsCriticalSectionFree(ctx context.Context, route state.Route, loc state.Loc) bool {
-	return route.GetCriticalSection().AllFree(ctx, loc)
+	return route.GetCriticalSection(ctx).AllFree(ctx, loc)
 }
 
 // Is any of the sensors of the given route active?
@@ -228,7 +228,7 @@ func (rt *baseRouteAvailabilityTester) IsAnySensorActive(ctx context.Context, ro
 	// The loc has a current route.
 	// There must not be any active sensor that is not listed in the current route.
 	notContained := SensorPredicate(func(ctx context.Context, s state.Sensor) bool {
-		return !currentRoute.GetRoute().ContainsSensor(s)
+		return !currentRoute.GetRoute().ContainsSensor(ctx, s)
 	})
 	return isActive.And(notContained).Any(ctx, route)
 	//	return activeSensors.Any(x => !currentRoute.Route.Contains(x));
@@ -240,8 +240,8 @@ func (rt *baseRouteAvailabilityTester) hasTrafficInOppositeDirection(ctx context
 		// We've taken to long to find opposing traffic
 		return nil, false
 	}
-	toBlock := route.GetTo()
-	if rt.RouteAvailabilityTester.HasTrafficInOppositeDirection(ctx, toBlock, route.GetToBlockSide(), currentLoc) {
+	toBlock := route.GetTo(ctx)
+	if rt.RouteAvailabilityTester.HasTrafficInOppositeDirection(ctx, toBlock, route.GetToBlockSide(ctx), currentLoc) {
 		return toBlock, true
 	}
 

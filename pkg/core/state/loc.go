@@ -192,13 +192,13 @@ func GetMaximumSpeedForRoute(ctx context.Context, loc Loc, route Route) int {
 	} else {
 		speed = loc.GetMaximumSpeed(ctx)
 	}
-	routeSpeed := float64(route.GetSpeed()) / 100.0
+	routeSpeed := float64(route.GetSpeed(ctx)) / 100.0
 	return int(math.Max(float64(speed)*routeSpeed, float64(loc.GetSlowSpeed(ctx))))
 }
 
 // GetMediumSpeedForRoute returns the medium speed of the given loc on the given route.
 func GetMediumSpeedForRoute(ctx context.Context, loc Loc, route Route) int {
 	speed := loc.GetMediumSpeed(ctx)
-	routeSpeed := float64(route.GetSpeed()) / 100.0
+	routeSpeed := float64(route.GetSpeed(ctx)) / 100.0
 	return int(math.Max(float64(speed)*routeSpeed, float64(loc.GetSlowSpeed(ctx))))
 }

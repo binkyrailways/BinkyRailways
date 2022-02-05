@@ -87,8 +87,8 @@ func (rt *futureRouteAvailabilityTester) Clone() *futureRouteAvailabilityTester 
 }
 
 // Let the given loc take the given route.
-func (rt *futureRouteAvailabilityTester) TakeRoute(route state.Route, loc state.Loc) {
-	rt.locStates[loc.GetID()].ChangeTo(route.GetTo(), route.GetToBlockSide())
+func (rt *futureRouteAvailabilityTester) TakeRoute(ctx context.Context, route state.Route, loc state.Loc) {
+	rt.locStates[loc.GetID()].ChangeTo(route.GetTo(ctx), route.GetToBlockSide(ctx))
 }
 
 // Gets the current block of the given loc.
@@ -114,7 +114,7 @@ func (rt *futureRouteAvailabilityTester) getLockedBy(ctx context.Context, block 
 // Can the given route be locked for the given loc?
 // Returns: lockedBy, canLock
 func (rt *futureRouteAvailabilityTester) CanLock(ctx context.Context, route state.Route, loc state.Loc) (state.Loc, bool) {
-	lockedBy := rt.getLockedBy(ctx, route.GetTo())
+	lockedBy := rt.getLockedBy(ctx, route.GetTo(ctx))
 	return lockedBy, lockedBy == nil || lockedBy == loc
 }
 

@@ -71,9 +71,9 @@ func (s *autoRunLocState) selectNextState(ctx context.Context, route state.Route
 	}
 	if s.state == Initial {
 		var sensor state.Sensor
-		route.ForEachSensor(func(sx state.Sensor) {
+		route.ForEachSensor(ctx, func(sx state.Sensor) {
 			if sensor == nil {
-				if route.IsEnteringDestinationSensor(sx, s.loc) {
+				if route.IsEnteringDestinationSensor(ctx, sx, s.loc) {
 					sensor = sx
 				}
 			}
@@ -87,9 +87,9 @@ func (s *autoRunLocState) selectNextState(ctx context.Context, route state.Route
 	}
 	// Activate reached sensor
 	var sensor state.Sensor
-	route.ForEachSensor(func(sx state.Sensor) {
+	route.ForEachSensor(ctx, func(sx state.Sensor) {
 		if sensor == nil {
-			if route.IsReachedDestinationSensor(sx, s.loc) {
+			if route.IsReachedDestinationSensor(ctx, sx, s.loc) {
 				sensor = sx
 			}
 		}

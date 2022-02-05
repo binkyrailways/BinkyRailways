@@ -87,7 +87,7 @@ func newFutureAlternativeSet(ctx context.Context, live *liveRouteAvailabilityTes
 		autoLocs:       autoLocs.GetLocs(ctx, live.Railway),
 	}
 	tester := NewFutureRouteAvailabilityTester(ctx, live.Railway)
-	tester.TakeRoute(route, loc)
+	tester.TakeRoute(ctx, route, loc)
 	fas.alternatives = append(fas.alternatives, &futureAlternative{tester, 0})
 	return fas
 }
@@ -188,12 +188,12 @@ func (fa *futureAlternative) MoveLoc(ctx context.Context, genSet *futureAlternat
 		// Create alternate generations
 		for _, r := range possibleRoutes[1:] {
 			alternateState := fa.state.Clone()
-			alternateState.TakeRoute(r, loc)
+			alternateState.TakeRoute(ctx, r, loc)
 			genSet.Add(&futureAlternative{alternateState, fa.generation})
 		}
 	}
 	// Take the first route
 	firstRoute := possibleRoutes[0]
-	fa.state.TakeRoute(firstRoute, loc)
+	fa.state.TakeRoute(ctx, firstRoute, loc)
 	return true
 }

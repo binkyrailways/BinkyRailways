@@ -306,7 +306,7 @@ func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, se
 			anyRouteContainsBlock := false
 			for _, x := range locsWithRoutes {
 				rt := x.GetCurrentRoute().GetActual(ctx)
-				if rt.GetRoute().ContainsBlock(b) {
+				if rt.GetRoute().ContainsBlock(ctx, b) {
 					anyRouteContainsBlock = true
 					break
 				}
@@ -444,7 +444,7 @@ func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc stat
 	}
 
 	// The loc can continue (if a free route is found)
-	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute().GetTo(), route.GetRoute().GetToBlockSide().Invert(), true)
+	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute().GetTo(ctx), route.GetRoute().GetToBlockSide(ctx).Invert(), true)
 	if nextRoute == nil {
 		// No route available
 		return false
@@ -455,7 +455,7 @@ func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc stat
 	loc.GetNextRoute().SetActual(ctx, nextRoute)
 
 	// Set all junctions correct
-	nextRoute.Prepare()
+	nextRoute.Prepare(ctx)
 	return true
 }
 
@@ -519,23 +519,23 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 	// Lock the route
 	route.Lock(ctx, loc)
 	// Setup waiting after block (do this before assigning the route)
-	if route.GetTo().GetWaitPermissions().Evaluate(ctx, loc) {
+	if route.GetTo(ctx).GetWaitPermissions().Evaluate(ctx, loc) {
 		// Waiting allowed, gamble for it.
-		waitProbability := route.GetTo().GetWaitProbability(ctx)
+		waitProbability := route.GetTo(ctx).GetWaitProbability(ctx)
 		loc.GetWaitAfterCurrentRoute().SetActual(ctx, gamble(waitProbability))
 	} else {
 		// Waiting not allowed.
 		loc.GetWaitAfterCurrentRoute().SetActual(ctx, false)
 	}
 	// Assign the route
-	loc.GetCurrentRoute().SetActual(ctx, route.CreateStateForLoc(loc))
+	loc.GetCurrentRoute().SetActual(ctx, route.CreateStateForLoc(ctx, loc))
 
 	// Clear next route
 	loc.GetNextRoute().SetActual(ctx, nil)
 
 	// Should we change direction?
 	enteredSide := loc.GetCurrentBlockEnterSide().GetActual(ctx)
-	leavingSide := route.GetFromBlockSide()
+	leavingSide := route.GetFromBlockSide(ctx)
 	if enteredSide == leavingSide {
 		// Reverse direction
 		loc.GetDirection().SetRequested(ctx, loc.GetDirection().GetActual(ctx).Invert())
@@ -546,7 +546,7 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 		}
 
 		// When reversing, check the state of the target block
-		if loc.GetReversing().GetActual(ctx) && route.GetTo().GetChangeDirectionReversingLocs(ctx) {
+		if loc.GetReversing().GetActual(ctx) && route.GetTo(ctx).GetChangeDirectionReversingLocs(ctx) {
 			// We must stop at the target block
 			loc.GetWaitAfterCurrentRoute().SetActual(ctx, true)
 		}
@@ -556,7 +556,7 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 	loc.GetAutomaticState().SetActual(ctx, state.WaitingForAssignedRouteReady)
 
 	// Prepare the route?
-	route.Prepare()
+	route.Prepare(ctx)
 
 	// We're done
 	return 0
@@ -588,19 +588,24 @@ func (alc *automaticLocController) onReversingWaitingForDirectionChange(ctx cont
 // Check that the designated route is ready and if so, start the loc.
 func (alc *automaticLocController) onWaitingForRouteReady(ctx context.Context, loc state.Loc) time.Duration {
 	// Check state
-	log := alc.log.With().Str("loc", loc.GetID()).Logger()
+	log := alc.log.With().
+		Str("loc", loc.GetDescription()).
+		Logger()
 	st := loc.GetAutomaticState().GetActual(ctx)
 	if st != state.WaitingForAssignedRouteReady {
 		log.Warn().Str("state", st.String()).Msg("Cannot start running loc in this state.")
 		return maxDuration
 	}
 
+	// Collect state
+	route := loc.GetCurrentRoute().GetActual(ctx)
+	log = log.With().Str("route", route.GetRoute().GetDescription()).Logger()
+
 	// Log state
 	log.Trace().Msg("OnWaitingForRouteReady")
 
-	// If the route ready?
-	route := loc.GetCurrentRoute().GetActual(ctx)
-	if !route.GetRoute().GetIsPrepared() {
+	// Is the route ready?
+	if !route.GetRoute().GetIsPrepared(ctx) {
 		// Make sure we stop
 		loc.GetSpeed().SetRequested(ctx, 0)
 		// We're not ready yet
@@ -633,7 +638,7 @@ func (alc *automaticLocController) onEnterSensorActivated(ctx context.Context, l
 	log.Trace().Msg("OnEnterSensorActivated")
 
 	// Notify route selector
-	loc.GetRouteSelector(ctx).BlockEntered(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute().GetTo())
+	loc.GetRouteSelector(ctx).BlockEntered(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute().GetTo(ctx))
 
 	// Should we wait in the destination block?
 	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
@@ -646,7 +651,7 @@ func (alc *automaticLocController) onEnterSensorActivated(ctx context.Context, l
 		// The loc can continue (if a free route is found)
 		alc.chooseNextRoute(ctx, loc)
 		nextRoute := loc.GetNextRoute().GetActual(ctx)
-		if (nextRoute != nil) && nextRoute.GetIsPrepared() {
+		if (nextRoute != nil) && nextRoute.GetIsPrepared(ctx) {
 			// We have a next route, so we can continue our speed
 			if loc.GetIsLastEventBehaviorSpeedDefault(ctx) {
 				loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, nextRoute))
@@ -685,7 +690,7 @@ func (alc *automaticLocController) onEnteringDestination(ctx context.Context, lo
 
 	// The loc can continue (if a free route is found)
 	alc.chooseNextRoute(ctx, loc)
-	if state.HasNextRoute(ctx, loc) && loc.GetNextRoute().GetActual(ctx).GetIsPrepared() {
+	if state.HasNextRoute(ctx, loc) && loc.GetNextRoute().GetActual(ctx).GetIsPrepared(ctx) {
 		// We have a next route, so we can continue our speed
 		loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, loc.GetNextRoute().GetActual(ctx)))
 	}
@@ -707,7 +712,7 @@ func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, l
 	log.Trace().Msg("OnReachSensorActivated")
 
 	route := loc.GetCurrentRoute().GetActual(ctx)
-	currentBlock := route.GetRoute().GetTo()
+	currentBlock := route.GetRoute().GetTo(ctx)
 
 	// Notify route selector
 	loc.GetRouteSelector(ctx).BlockReached(ctx, loc, currentBlock)
@@ -722,7 +727,7 @@ func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, l
 
 	// Release the current route, except for the current block.
 	loc.GetCurrentBlock().SetActual(ctx, currentBlock)
-	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide())
+	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide(ctx))
 	route.GetRoute().Unlock(ctx, currentBlock)
 	// Make sure the current block is still locked
 	state.AssertLockedBy(ctx, currentBlock, loc)
@@ -753,7 +758,7 @@ func (alc *automaticLocController) onReachedDestination(ctx context.Context, loc
 
 	// Delay if we should wait
 	route := loc.GetCurrentRoute().GetActual(ctx)
-	currentBlock := route.GetRoute().GetTo()
+	currentBlock := route.GetRoute().GetTo(ctx)
 	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
 		delta := maxInt(0, currentBlock.GetMaximumWaitTime(ctx)-currentBlock.GetMinimumWaitTime(ctx))
 		secondsToWait := currentBlock.GetMinimumWaitTime(ctx)

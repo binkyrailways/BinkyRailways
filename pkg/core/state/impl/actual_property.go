@@ -29,9 +29,9 @@ import (
 // propertyBase contains the value of a property in a state object.
 // The value contains an actual value.
 type propertyBase struct {
-	Property   interface{}
-	Subject    state.Entity
-	Dispatcher state.EventDispatcher
+	Property   interface{}           `json:"-"`
+	Subject    state.Entity          `json:"-"`
+	Dispatcher state.EventDispatcher `json:"-"`
 	exclusive  util.Exclusive
 }
 

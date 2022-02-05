@@ -34,78 +34,78 @@ type Route interface {
 	// Speed of locs when going this route.
 	// This value is a percentage of the maximum / medium speed of the loc.
 	// <value>0..100</value>
-	GetSpeed() int
+	GetSpeed(context.Context) int
 
 	// Probability (in percentage) that a loc will take this route.
 	// When multiple routes are available to choose from the route with the highest probability will have the highest
 	// chance or being chosen.
 	// <value>0..100</value>
-	GetChooseProbability() int
+	GetChooseProbability(context.Context) int
 
 	// Gets the source block.
-	GetFrom() Block
+	GetFrom(context.Context) Block
 
 	// Side of the <see cref="From"/> block at which this route will leave that block.
-	GetFromBlockSide() model.BlockSide
+	GetFromBlockSide(context.Context) model.BlockSide
 
 	// Gets the destination block.
-	GetTo() Block
+	GetTo(context.Context) Block
 
 	// Side of the <see cref="To"/> block at which this route will enter that block.
-	GetToBlockSide() model.BlockSide
+	GetToBlockSide(context.Context) model.BlockSide
 
 	// Does this route require any switches to be in the non-straight state?
-	GetHasNonStraightSwitches() bool
+	GetHasNonStraightSwitches(context.Context) bool
 
 	// Is the given sensor listed as one of the "entering destination" sensors of this route?
-	IsEnteringDestinationSensor(Sensor, Loc) bool
+	IsEnteringDestinationSensor(context.Context, Sensor, Loc) bool
 
 	// Is the given sensor listed as one of the "entering destination" sensors of this route?
-	IsReachedDestinationSensor(Sensor, Loc) bool
+	IsReachedDestinationSensor(context.Context, Sensor, Loc) bool
 
 	// Does this route contains the given block (either as from, to or crossing)
-	ContainsBlock(Block) bool
+	ContainsBlock(context.Context, Block) bool
 
 	// Does this route contains the given sensor (either as entering or reached)
-	ContainsSensor(Sensor) bool
+	ContainsSensor(context.Context, Sensor) bool
 
 	// Does this route contains the given junction
-	ContainsJunction(Junction) bool
+	ContainsJunction(context.Context, Junction) bool
 
 	// Gets the number of sensors that are listed as entering/reached sensor of this route.
 	GetSensorCount(context.Context) int
 	// Gets all sensors that are listed as entering/reached sensor of this route.
-	ForEachSensor(func(Sensor))
+	ForEachSensor(context.Context, func(Sensor))
 
 	// All routes that must be free before this route can be taken.
-	GetCriticalSection() CriticalSectionRoutes
+	GetCriticalSection(context.Context) CriticalSectionRoutes
 
 	// Gets all events configured for this route.
-	ForEachEvent(func(RouteEvent))
+	ForEachEvent(context.Context, func(RouteEvent))
 
 	// Gets the predicate used to decide which locs are allowed to use this route.
-	GetPermissions() LocPredicate
+	GetPermissions(context.Context) LocPredicate
 
 	// Is this route open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.
-	GetClosed() bool
+	GetClosed(context.Context) bool
 
 	// Maximum time in seconds that this route should take.
 	// If a loc takes this route and exceeds this duration, a warning is given.
-	GetMaxDuration() int
+	GetMaxDuration(context.Context) int
 
 	// Prepare all junctions in this route, such that it can be taken.
-	Prepare()
+	Prepare(context.Context)
 
 	// Are all junctions set in the state required by this route?
-	GetIsPrepared() bool
+	GetIsPrepared(context.Context) bool
 
 	// Create a specific route state for the given loc.
-	CreateStateForLoc(loc Loc) RouteForLoc
+	CreateStateForLoc(ctx context.Context, loc Loc) RouteForLoc
 
 	// Fire the actions attached to the entering destination trigger.
-	FireEnteringDestinationTrigger(Loc)
+	FireEnteringDestinationTrigger(context.Context, Loc)
 
 	// Fire the actions attached to the destination reached trigger.
-	FireDestinationReachedTrigger(Loc)
+	FireDestinationReachedTrigger(context.Context, Loc)
 }

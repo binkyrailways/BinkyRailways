@@ -42,7 +42,7 @@ func maxInt(a, b int) int {
 // route: The route being investigated
 // locDirection: The direction the loc is facing in the From block of the given <see cref="route"/>.
 func isDirectionChangeNeeded(ctx context.Context, route state.Route, locDirection model.BlockSide) bool {
-	fromSide := route.GetFromBlockSide()
+	fromSide := route.GetFromBlockSide(ctx)
 	return (fromSide != locDirection)
 }
 

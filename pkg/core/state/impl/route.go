@@ -35,11 +35,12 @@ type route struct {
 	entity
 	lockable
 
-	from        Block
-	to          Block
-	events      []RouteEvent
-	permissions locPredicate
-	csr         *criticalSectionRoutes
+	from              Block
+	to                Block
+	events            []RouteEvent
+	crossingJunctions []JunctionWithState
+	permissions       locPredicate
+	csr               *criticalSectionRoutes
 }
 
 // Create a new entity
@@ -78,17 +79,31 @@ func (r *route) GetModel() model.Route {
 func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps state.Persistence) error {
 	// Resolve from, to
 	var err error
-	r.from, err = r.GetRailwayImpl().ResolveEndPoint(ctx, r.getRoute().GetFrom())
+	rw := r.GetRailwayImpl()
+	r.from, err = rw.ResolveEndPoint(ctx, r.getRoute().GetFrom())
 	if err != nil {
 		return err
 	}
-	r.to, err = r.GetRailwayImpl().ResolveEndPoint(ctx, r.getRoute().GetTo())
+	r.to, err = rw.ResolveEndPoint(ctx, r.getRoute().GetTo())
 	if err != nil {
 		return err
 	}
 
-	// Construct event states
+	// Construct crossing junctions
 	var merr error
+	r.getRoute().GetCrossingJunctions().ForEach(func(jws model.JunctionWithState) {
+		jwsImpl, err := newJunctionWithState(ctx, jws, rw)
+		if err != nil {
+			multierr.AppendInto(&merr, err)
+		} else {
+			r.crossingJunctions = append(r.crossingJunctions, jwsImpl)
+		}
+	})
+	if merr != nil {
+		return merr
+	}
+
+	// Construct event states
 	r.getRoute().GetEvents().ForEach(func(evt model.RouteEvent) {
 		if evt, err := newRouteEvent(ctx, evt, r.railway); err != nil {
 			multierr.AppendInto(&merr, err)
@@ -111,7 +126,7 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 // Speed of locs when going this route.
 // This value is a percentage of the maximum / medium speed of the loc.
 // <value>0..100</value>
-func (r *route) GetSpeed() int {
+func (r *route) GetSpeed(context.Context) int {
 	return r.getRoute().GetSpeed()
 }
 
@@ -119,37 +134,42 @@ func (r *route) GetSpeed() int {
 // When multiple routes are available to choose from the route with the highest probability will have the highest
 // chance or being chosen.
 // <value>0..100</value>
-func (r *route) GetChooseProbability() int {
+func (r *route) GetChooseProbability(context.Context) int {
 	return r.getRoute().GetChooseProbability()
 }
 
 // Gets the source block.
-func (r *route) GetFrom() state.Block {
+func (r *route) GetFrom(context.Context) state.Block {
 	return r.from
 }
 
 // Side of the <see cref="From"/> block at which this route will leave that block.
-func (r *route) GetFromBlockSide() model.BlockSide {
+func (r *route) GetFromBlockSide(context.Context) model.BlockSide {
 	return r.getRoute().GetFromBlockSide()
 }
 
 // Gets the destination block.
-func (r *route) GetTo() state.Block {
+func (r *route) GetTo(context.Context) state.Block {
 	return r.to
 }
 
 // Side of the <see cref="To"/> block at which this route will enter that block.
-func (r *route) GetToBlockSide() model.BlockSide {
+func (r *route) GetToBlockSide(context.Context) model.BlockSide {
 	return r.getRoute().GetToBlockSide()
 }
 
 // Does this route require any switches to be in the non-straight state?
-func (r *route) GetHasNonStraightSwitches() bool {
-	return false // TODO
+func (r *route) GetHasNonStraightSwitches(ctx context.Context) bool {
+	for _, jws := range r.crossingJunctions {
+		if jws.GetIsNonStraight(ctx) {
+			return true
+		}
+	}
+	return false
 }
 
 // Is the given sensor listed as one of the "entering destination" sensors of this route?
-func (r *route) IsEnteringDestinationSensor(sensor state.Sensor, loc state.Loc) bool {
+func (r *route) IsEnteringDestinationSensor(ctx context.Context, sensor state.Sensor, loc state.Loc) bool {
 	for _, evt := range r.events {
 		if evt.GetSensor() != sensor {
 			continue
@@ -170,7 +190,7 @@ func (r *route) IsEnteringDestinationSensor(sensor state.Sensor, loc state.Loc) 
 }
 
 // Is the given sensor listed as one of the "entering destination" sensors of this route?
-func (r *route) IsReachedDestinationSensor(sensor state.Sensor, loc state.Loc) bool {
+func (r *route) IsReachedDestinationSensor(ctx context.Context, sensor state.Sensor, loc state.Loc) bool {
 	for _, evt := range r.events {
 		if evt.GetSensor() != sensor {
 			continue
@@ -191,12 +211,12 @@ func (r *route) IsReachedDestinationSensor(sensor state.Sensor, loc state.Loc) b
 }
 
 // Does this route contains the given block (either as from, to or crossing)
-func (r *route) ContainsBlock(b state.Block) bool {
+func (r *route) ContainsBlock(ctx context.Context, b state.Block) bool {
 	return r.from == b || r.to == b
 }
 
 // Does this route contains the given sensor (either as entering or reached)
-func (r *route) ContainsSensor(s state.Sensor) bool {
+func (r *route) ContainsSensor(ctx context.Context, s state.Sensor) bool {
 	for _, x := range r.events {
 		if x.GetSensor() == s {
 			return true
@@ -206,70 +226,83 @@ func (r *route) ContainsSensor(s state.Sensor) bool {
 }
 
 // Does this route contains the given junction
-func (r *route) ContainsJunction(state.Junction) bool {
-	return false // TODO
+func (r *route) ContainsJunction(ctx context.Context, j state.Junction) bool {
+	jImpl, _ := j.(Junction)
+	for _, jws := range r.crossingJunctions {
+		if jws.Contains(ctx, jImpl) {
+			return true
+		}
+	}
+	return false
 }
 
 // Gets all sensors that are listed as entering/reached sensor of this route.
-func (r *route) ForEachSensor(cb func(state.Sensor)) {
+func (r *route) ForEachSensor(ctx context.Context, cb func(state.Sensor)) {
 	for _, x := range r.events {
 		cb(x.GetSensor())
 	}
 }
-func (r *route) GetSensorCount(context.Context) int {
+func (r *route) GetSensorCount(ctx context.Context) int {
 	return len(r.events)
 }
 
 // All routes that must be free before this route can be taken.
-func (r *route) GetCriticalSection() state.CriticalSectionRoutes {
+func (r *route) GetCriticalSection(ctx context.Context) state.CriticalSectionRoutes {
 	return r.csr
 }
 
 // Gets all events configured for this route.
-func (r *route) ForEachEvent(cb func(state.RouteEvent)) {
+func (r *route) ForEachEvent(ctx context.Context, cb func(state.RouteEvent)) {
 	for _, x := range r.events {
 		cb(x)
 	}
 }
 
 // Gets the predicate used to decide which locs are allowed to use this route.
-func (r *route) GetPermissions() state.LocPredicate {
+func (r *route) GetPermissions(ctx context.Context) state.LocPredicate {
 	return r.permissions
 }
 
 // Is this route open for traffic or not?
 // Setting to true, allows for maintance etc. on this route.
-func (r *route) GetClosed() bool {
+func (r *route) GetClosed(ctx context.Context) bool {
 	return r.getRoute().GetClosed()
 }
 
 // Maximum time in seconds that this route should take.
 // If a loc takes this route and exceeds this duration, a warning is given.
-func (r *route) GetMaxDuration() int {
+func (r *route) GetMaxDuration(ctx context.Context) int {
 	return r.getRoute().GetMaxDuration()
 }
 
 // Prepare all junctions in this route, such that it can be taken.
-func (r *route) Prepare() {
-	// TODO
+func (r *route) Prepare(ctx context.Context) {
+	for _, jws := range r.crossingJunctions {
+		jws.Prepare(ctx)
+	}
 }
 
 // Are all junctions set in the state required by this route?
-func (r *route) GetIsPrepared() bool {
-	return false // TODO
+func (r *route) GetIsPrepared(ctx context.Context) bool {
+	for _, jws := range r.crossingJunctions {
+		if !jws.GetIsPrepared(ctx) {
+			return false
+		}
+	}
+	return true
 }
 
 // Create a specific route state for the given loc.
-func (r *route) CreateStateForLoc(loc state.Loc) state.RouteForLoc {
-	return newRouteForLoc(loc, r)
+func (r *route) CreateStateForLoc(ctx context.Context, loc state.Loc) state.RouteForLoc {
+	return newRouteForLoc(ctx, loc, r)
 }
 
 // Fire the actions attached to the entering destination trigger.
-func (r *route) FireEnteringDestinationTrigger(state.Loc) {
+func (r *route) FireEnteringDestinationTrigger(ctx context.Context, loc state.Loc) {
 	// TODO
 }
 
 // Fire the actions attached to the destination reached trigger.
-func (r *route) FireDestinationReachedTrigger(state.Loc) {
+func (r *route) FireDestinationReachedTrigger(ctx context.Context, loc state.Loc) {
 	// TODO
 }

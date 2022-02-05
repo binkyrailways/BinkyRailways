@@ -77,8 +77,8 @@ func (s *sensor) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ 
 
 	// Resolve destination blocks
 	s.railway.ForEachRoute(func(r state.Route) {
-		if r.ContainsSensor(s) {
-			s.destinationBlocks = append(s.destinationBlocks, r.GetTo())
+		if r.ContainsSensor(ctx, s) {
+			s.destinationBlocks = append(s.destinationBlocks, r.GetTo(ctx))
 		}
 	})
 	if eb := s.getSensor().GetBlock(); eb != nil {

@@ -30,7 +30,7 @@ type sensors interface {
 	// Get total possible number of sensors
 	GetSensorCount(context.Context) int
 	// Iterate all sensors
-	ForEachSensor(func(state.Sensor))
+	ForEachSensor(context.Context, func(state.Sensor))
 }
 
 // Construct a predicate that requires both predicates to be true
@@ -43,7 +43,7 @@ func (p SensorPredicate) And(other SensorPredicate) SensorPredicate {
 // Get all sensors that match the given predicate
 func (p SensorPredicate) GetSensors(ctx context.Context, allSensors sensors) []state.Sensor {
 	result := make([]state.Sensor, 0, allSensors.GetSensorCount(ctx))
-	allSensors.ForEachSensor(func(r state.Sensor) {
+	allSensors.ForEachSensor(ctx, func(r state.Sensor) {
 		if p(ctx, r) {
 			result = append(result, r)
 		}
@@ -54,7 +54,7 @@ func (p SensorPredicate) GetSensors(ctx context.Context, allSensors sensors) []s
 // Is there at least 1 sensor that matches the predicate?
 func (p SensorPredicate) Any(ctx context.Context, allSensors sensors) bool {
 	result := false
-	allSensors.ForEachSensor(func(r state.Sensor) {
+	allSensors.ForEachSensor(ctx, func(r state.Sensor) {
 		if p(ctx, r) {
 			result = true
 		}
