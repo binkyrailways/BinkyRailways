@@ -40,8 +40,9 @@ type routeEventFields struct {
 	Behaviors routeEventBehaviorList `xml:"Behaviors"`
 }
 
-// SetModule initialize the entity
-func (re *routeEventFields) SetRouteEvent(value *routeEvent) {
+// setContainer initialize the entity
+func (re *routeEventFields) setContainer(value *routeEvent) {
+	re.moduleEntityContainer.SetContainer(value)
 	re.moduleEntity.SetContainer(value)
 	re.Behaviors.SetContainer(value)
 }
@@ -51,7 +52,7 @@ var _ RouteEvent = &routeEvent{}
 // newRouteEvent creates a new routeEvent instance.
 func newRouteEvent(sensor model.Sensor) *routeEvent {
 	re := &routeEvent{}
-	re.routeEventFields.SetContainer(re)
+	re.routeEventFields.setContainer(re)
 	re.SensorID = SensorRef(sensor.GetID())
 	return re
 }
@@ -66,7 +67,7 @@ func (re *routeEvent) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error
 	if err := d.DecodeElement(&re.routeEventFields, &start); err != nil {
 		return err
 	}
-	re.routeEventFields.SetContainer(re)
+	re.routeEventFields.setContainer(re)
 	return nil
 }
 

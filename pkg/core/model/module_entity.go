@@ -23,4 +23,6 @@ type ModuleEntity interface {
 
 	// Gets the containing module
 	GetModule() Module
+	// Gets the containing railway
+	GetRailway() Railway
 }

@@ -35,7 +35,10 @@ func (dst *RouteEventBehavior) FromModel(ctx context.Context, src model.RouteEve
 
 // ToModel converts an API RouteEventBehavior to a model RouteEventBehavior
 func (src *RouteEventBehavior) ToModel(ctx context.Context, dst model.RouteEventBehavior) error {
-	railway := dst.GetModule().GetPackage().GetRailway()
+	railway := dst.GetRailway()
+	if railway == nil {
+		return InvalidArgument("RouteEventBehavior has no railway reference")
+	}
 	lp, err := src.GetAppliesTo().ToModel(ctx, railway)
 	if err != nil {
 		return err

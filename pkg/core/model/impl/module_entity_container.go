@@ -45,6 +45,16 @@ func (me *moduleEntityContainer) GetModule() model.Module {
 	return me.container.GetModule()
 }
 
+// Gets the containing railway
+func (me *moduleEntityContainer) GetRailway() model.Railway {
+	if m := me.GetModule(); m != nil {
+		if pkg := m.GetPackage(); pkg != nil {
+			return pkg.GetRailway()
+		}
+	}
+	return nil
+}
+
 // Invoke when anything has changed
 func (me *moduleEntityContainer) OnModified() {
 	if me.container != nil {
