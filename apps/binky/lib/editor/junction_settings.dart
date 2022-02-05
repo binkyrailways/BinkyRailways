@@ -15,7 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
+import 'package:binky/icons.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
@@ -33,20 +34,40 @@ class JunctionSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final junctionId = selector.idOf(EntityType.junction) ?? "";
-        return FutureBuilder<Junction>(
-            future: model.getJunction(junctionId),
-            initialData: model.getCachedJunction(junctionId),
+        final moduleId = selector.idOf(EntityType.module) ?? "";
+        return FutureBuilder<List<Route>>(
+            future: _getRoutes(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var junction = snapshot.data!;
-              return _JunctionSettings(
-                  editorCtx: editorCtx, model: model, junction: junction);
+              final routes = snapshot.data!;
+              final junctionId = selector.idOf(EntityType.junction) ?? "";
+              return FutureBuilder<Junction>(
+                  future: model.getJunction(junctionId),
+                  initialData: model.getCachedJunction(junctionId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    var junction = snapshot.data!;
+                    return _JunctionSettings(
+                        editorCtx: editorCtx,
+                        model: model,
+                        junction: junction,
+                        routes: routes);
+                  });
             });
       });
     });
+  }
+
+  Future<List<Route>> _getRoutes(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final routeList = mod.routes.map((e) => model.getRoute(e.id));
+    final result = await Future.wait(routeList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
   }
 }
 
@@ -54,11 +75,14 @@ class _JunctionSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
   final Junction junction;
+  final List<Route> routes;
+
   const _JunctionSettings(
       {Key? key,
       required this.editorCtx,
       required this.model,
-      required this.junction})
+      required this.junction,
+      required this.routes})
       : super(key: key);
 
   @override
@@ -71,6 +95,7 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
       TextEditingController();
   final NumericValidator _switchDurationValidator =
       NumericValidator(minimum: 0, maximum: 10000);
+  final ScrollController _usedByScrollController = ScrollController();
 
   void _initConrollers() {
     _descriptionController.text = widget.junction.description;
@@ -197,6 +222,16 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
             });
           }),
     );
+    final usedBy = _buildUsedBy();
+    children.add(const SettingsHeader(title: "Used by"));
+    children.add(Expanded(
+      child: ListView.builder(
+          controller: _usedByScrollController,
+          itemCount: usedBy.length,
+          itemBuilder: (context, index) {
+            return usedBy[index];
+          }),
+    ));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -217,4 +252,20 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
                 value: e,
               ))
           .toList();
+
+  List<ListTile> _buildUsedBy() {
+    final junctionId = widget.junction.id;
+    final routes = widget.routes.where(
+        (r) => r.crossingJunctions.any((x) => x.junction.id == junctionId));
+    final items = routes
+        .map((r) => ListTile(
+              leading: BinkyIcons.route,
+              title: Text(r.description),
+              onTap: () {
+                widget.editorCtx.select(EntitySelector.route(r));
+              },
+            ))
+        .toList();
+    return items;
+  }
 }
