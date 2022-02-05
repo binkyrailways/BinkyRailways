@@ -20,6 +20,8 @@ package state
 import (
 	"context"
 	"fmt"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Lockable specifies a state that can be locked by a locomotive
@@ -60,9 +62,19 @@ func IsLockedBy(ctx context.Context, l Lockable, loc Loc) bool {
 func AssertLockedBy(ctx context.Context, l Lockable, loc Loc) {
 	if current := l.GetLockedBy(ctx); current != loc {
 		if current == nil {
-			panic(fmt.Sprintf("Object %v is not locked by %v", l, loc))
+			panic(fmt.Sprintf("Object %s is not locked by %s", describe(l), loc.GetDescription()))
 		} else {
-			panic(fmt.Sprintf("Object %v is not locked by %v but by %v", l, loc, current))
+			panic(fmt.Sprintf("Object %s is not locked by %s but by %s", describe(l), loc.GetDescription(), current.GetDescription()))
 		}
 	}
+}
+
+func describe(obj interface{}) string {
+	if obj == nil {
+		return "nil"
+	}
+	if wd, ok := obj.(model.WithDescription); ok {
+		return fmt.Sprintf("%s (%T)", wd.GetDescription(), obj)
+	}
+	return fmt.Sprintf("%T", obj)
 }

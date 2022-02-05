@@ -37,7 +37,7 @@ type JunctionWithState interface {
 	Contains(context.Context, Junction) bool
 
 	// Gets all entities that must be locked in order to lock me.
-	ForEachUnderlyingLockableEntities(context.Context, func(state.Lockable))
+	ForEachUnderlyingLockableEntities(context.Context, func(state.Lockable) error) error
 
 	// Is this junction for this state in the non-straight position?
 	GetIsNonStraight(context.Context) bool

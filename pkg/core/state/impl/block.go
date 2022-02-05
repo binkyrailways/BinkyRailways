@@ -44,7 +44,9 @@ func newBlock(en model.Block, railway Railway) Block {
 	b := &block{
 		entity: newEntity(en, railway),
 	}
-	b.lockable = newLockable(railway, func(ctx context.Context) {
+	b.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
+		return nil
+	}, func(ctx context.Context) {
 		// OnUnlock
 		b.updateClosed(ctx)
 	})

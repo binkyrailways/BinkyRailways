@@ -43,8 +43,8 @@ func (jws *passiveJunctionWithState) Contains(ctx context.Context, j Junction) b
 }
 
 // Gets all entities that must be locked in order to lock me.
-func (jws *passiveJunctionWithState) ForEachUnderlyingLockableEntities(ctx context.Context, cb func(state.Lockable)) {
-	cb(jws.Junction)
+func (jws *passiveJunctionWithState) ForEachUnderlyingLockableEntities(ctx context.Context, cb func(state.Lockable) error) error {
+	return cb(jws.Junction)
 }
 
 // Is this junction for this state in the non-straight position?

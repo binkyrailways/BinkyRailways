@@ -31,18 +31,19 @@ type Lockable interface {
 }
 
 type lockable struct {
-	Children   []state.Lockable
-	onUnlocked []func(context.Context)
+	iterateChildren func(context.Context, func(state.Lockable) error) error
+	onUnlocked      []func(context.Context)
 
 	exclusive util.Exclusive
 	lockedBy  Loc
 }
 
 // newLockable initializes a new lockable
-func newLockable(exclusive util.Exclusive, onUnlocked ...func(context.Context)) lockable {
+func newLockable(exclusive util.Exclusive, iterateChildren func(context.Context, func(state.Lockable) error) error, onUnlocked ...func(context.Context)) lockable {
 	return lockable{
-		exclusive:  exclusive,
-		onUnlocked: onUnlocked,
+		exclusive:       exclusive,
+		iterateChildren: iterateChildren,
+		onUnlocked:      onUnlocked,
 	}
 }
 
@@ -83,13 +84,13 @@ func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (lockedBy state
 			lockedBy, canLock = l.lockedBy, false
 			return nil
 		}
-		for _, c := range l.Children {
-			if lb, cl := c.CanLock(ctx, ownerImpl); !cl {
-				lockedBy, canLock = lb, cl
-				return nil
-			}
-		}
 		lockedBy, canLock = nil, true
+		l.iterateChildren(ctx, func(child state.Lockable) error {
+			if lb, cl := child.CanLock(ctx, ownerImpl); !cl && canLock {
+				lockedBy, canLock = lb, cl
+			}
+			return nil
+		})
 		return nil
 	})
 	return
@@ -107,12 +108,12 @@ func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 			return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
 		}
 		l.lockedBy = ownerImpl
-		for _, c := range l.Children {
-			if err := c.Lock(ctx, ownerImpl); err != nil {
+		return l.iterateChildren(ctx, func(child state.Lockable) error {
+			if err := child.Lock(ctx, ownerImpl); err != nil {
 				return err
 			}
-		}
-		return nil
+			return nil
+		})
 	})
 }
 
@@ -124,9 +125,10 @@ func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 			return nil
 		}
 		l.lockedBy = nil
-		for _, c := range l.Children {
-			c.Unlock(ctx, exclusion)
-		}
+		l.iterateChildren(ctx, func(child state.Lockable) error {
+			child.Unlock(ctx, exclusion)
+			return nil
+		})
 		for _, cb := range l.onUnlocked {
 			cb(ctx)
 		}

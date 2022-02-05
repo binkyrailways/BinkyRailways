@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -36,9 +38,11 @@ type junction struct {
 // Create a new entity
 func newJunction(en model.Junction, railway Railway) junction {
 	s := junction{
-		entity:   newEntity(en, railway),
-		lockable: newLockable(railway),
+		entity: newEntity(en, railway),
 	}
+	s.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
+		return nil
+	})
 	return s
 }
 

@@ -46,10 +46,21 @@ type route struct {
 // Create a new entity
 func newRoute(en model.Route, railway Railway) Route {
 	r := &route{
-		entity:   newEntity(en, railway),
-		lockable: newLockable(railway),
-		csr:      &criticalSectionRoutes{},
+		entity: newEntity(en, railway),
+		csr:    &criticalSectionRoutes{},
 	}
+	r.lockable = newLockable(railway, func(ctx context.Context, cb func(state.Lockable) error) error {
+		if r.from != nil {
+			cb(r.from)
+		}
+		if r.to != nil {
+			cb(r.to)
+		}
+		for _, jws := range r.crossingJunctions {
+			jws.ForEachUnderlyingLockableEntities(ctx, cb)
+		}
+		return nil
+	})
 	var err error
 	r.permissions, err = newLocPredicate(railway, en.GetPermissions())
 	if err != nil {
