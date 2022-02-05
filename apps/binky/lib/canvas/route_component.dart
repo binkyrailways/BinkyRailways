@@ -85,18 +85,29 @@ class RouteComponent extends EntityComponent {
         list.add(p);
       }
     }
-    list.sort((a, b) {
-      final da = (start.x - a.x).abs() * (start.y - a.y).abs();
-      final db = (start.x - b.x).abs() * (start.y - b.y).abs();
-      if (da < db) {
-        return -1;
+    final List<Vector2> ordered = [];
+    var p = start;
+    while (list.isNotEmpty) {
+      // Find the element with the shortest distance from p.
+      var shortestDistanceIndex = 0;
+      var shortestDistance = _distance(p, list[0]);
+      for (var i = 1; i < list.length; i++) {
+        final d = _distance(p, list[i]);
+        if (d < shortestDistance) {
+          shortestDistance = d;
+          shortestDistanceIndex = i;
+        }
       }
-      if (da > db) {
-        return 1;
-      }
-      return 0;
-    });
-    return list;
+      // Take the element with shortest distance and remove from list
+      p = list[shortestDistanceIndex];
+      ordered.add(p);
+      list.removeAt(shortestDistanceIndex);
+    }
+    return ordered;
+  }
+
+  double _distance(Vector2 a, Vector2 b) {
+    return a.distanceTo(b);
   }
 
   Vector2 _getEndpoint(mapi.Endpoint ep) {
