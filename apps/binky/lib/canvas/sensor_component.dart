@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/colors.dart';
 import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
@@ -97,7 +98,8 @@ class SensorComponent extends EntityComponent {
     }
   }
 
-  Color backgroundColor() => isActive() ? Colors.green : Colors.blueGrey;
+  Color backgroundColor() =>
+      isActive() ? BinkyColors.activeSensorBg : BinkyColors.inactiveSensorBg;
   Color textColor() => Colors.black;
 
   bool isActive() => true;

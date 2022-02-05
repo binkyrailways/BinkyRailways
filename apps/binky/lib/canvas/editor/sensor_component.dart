@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flutter/services.dart';
+import 'package:binky/colors.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Draggable;
 import 'package:flame/input.dart';
@@ -25,16 +27,19 @@ import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './position_draggable.dart';
+import './module_game.dart';
 
 class SensorComponent extends common.SensorComponent
     with Tappable, Draggable, PositionDraggable<mapi.Sensor> {
   final EditorContext editorCtx;
   final ModelModel modelModel;
+  final ModuleGame game;
 
   SensorComponent(
       {required this.editorCtx,
       required mapi.Sensor model,
-      required this.modelModel})
+      required this.modelModel,
+      required this.game})
       : super(model: model);
 
   @override
@@ -48,25 +53,76 @@ class SensorComponent extends common.SensorComponent
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntitySelector.sensor(model));
+    if (game.shiftPressed()) {
+      final info = _getSelectedRouteInfo();
+      final route = info.route;
+      if (route == null) {
+        return true;
+      }
+      if (info.event != null) {
+        // Already an event
+        return true;
+      }
+      // Add sensor to given route
+      modelModel.addRouteEvent(route.id, model.id);
+      return false;
+    } else {
+      editorCtx.select(EntitySelector.sensor(model));
+    }
     return false;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.sensor) == model.id;
-  _isPartOfSelectedRoute() {
+
+  _RouteInfo _getSelectedRouteInfo() {
     final routeId = editorCtx.selector.idOf(EntityType.route);
     if (routeId == null) {
-      return false;
+      return _RouteInfo(null, null);
     }
     final route = modelModel.getCachedRoute(routeId);
-    return (route != null) &&
-        (route.events.any((x) => x.sensor.id == model.id));
+    if (route == null) {
+      return _RouteInfo(null, null);
+    }
+    final events = route.events.where((x) => x.sensor.id == model.id).toList();
+    if (events.isEmpty) {
+      return _RouteInfo(route, null);
+    }
+    return _RouteInfo(route, events.first);
   }
 
   @override
-  backgroundColor() => _isSelected()
-      ? Colors.orange
-      : _isPartOfSelectedRoute()
-          ? Colors.cyan
-          : super.backgroundColor();
+  backgroundColor() {
+    if (_isSelected()) {
+      return BinkyColors.selectedBg;
+    }
+    final info = _getSelectedRouteInfo();
+    if (info.route == null) {
+      // There is no selected route
+      return super.backgroundColor();
+    }
+    final event = info.event;
+    if (event == null) {
+      // This sensor is not yet part of the selected route
+      if (isHovered && game.shiftPressed()) {
+        return Colors.purple;
+      }
+      return super.backgroundColor();
+    }
+    if (event.behaviors
+        .any((x) => x.stateBehavior == mapi.RouteStateBehavior.RSB_REACHED)) {
+      return BinkyColors.reachedSensorOfSelectedRouteBg;
+    }
+    if (event.behaviors
+        .any((x) => x.stateBehavior == mapi.RouteStateBehavior.RSB_ENTER)) {
+      return BinkyColors.enterSensorOfSelectedRouteBg;
+    }
+    return BinkyColors.partOfSelectedRouteBg;
+  }
+}
+
+class _RouteInfo {
+  final mapi.Route? route;
+  final mapi.RouteEvent? event;
+
+  _RouteInfo(this.route, this.event);
 }

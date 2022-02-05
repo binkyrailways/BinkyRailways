@@ -18,7 +18,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -29,6 +31,7 @@ class ModuleGame extends FlameGame
   final ModelModel modelModel;
   final String moduleId;
   final EditorContext editorCtx;
+  bool _shiftPressed = false;
 
   ModuleGame(
       {required this.editorCtx,
@@ -38,6 +41,24 @@ class ModuleGame extends FlameGame
   @override
   Color backgroundColor() => Colors.white;
 
+  @override
+  void onAttach() {
+    RawKeyboard.instance.addListener(_handleKeyEvent);
+    super.onAttach();
+  }
+
+  @override
+  void onDetach() {
+    RawKeyboard.instance.removeListener(_handleKeyEvent);
+    super.onDetach();
+  }
+
+  void _handleKeyEvent(RawKeyEvent event) {
+    _shiftPressed = event.isShiftPressed;
+  }
+
+  bool shiftPressed() => _shiftPressed;
+
   // Load the game components
   @override
   Future<void> onLoad() async {
@@ -45,7 +66,7 @@ class ModuleGame extends FlameGame
 
     final module = await modelModel.getModule(moduleId);
     final size = Vector2(module.width.toDouble(), module.height.toDouble());
-    final modComp = ModuleComponent(model: module);
+    final modComp = ModuleComponent(model: module, game: this);
     await modComp.loadChildren(editorCtx, modelModel);
     add(modComp);
 

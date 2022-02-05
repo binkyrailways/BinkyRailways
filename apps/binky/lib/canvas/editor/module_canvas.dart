@@ -34,6 +34,7 @@ class ModuleCanvas extends StatelessWidget {
     final moduleId = selector.idOf(EntityType.module) ?? "";
     return Consumer<ModelModel>(builder: (context, model, child) {
       return GameWidget(
+          autofocus: true,
           game: ModuleGame(
               editorCtx: editorCtx, modelModel: model, moduleId: moduleId));
     });

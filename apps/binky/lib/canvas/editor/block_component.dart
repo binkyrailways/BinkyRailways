@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/colors.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Draggable;
 import 'package:flame/input.dart';
@@ -73,9 +74,9 @@ class BlockComponent extends common.BlockComponent
 
   @override
   backgroundColor() => _isSelected()
-      ? Colors.orange
+      ? BinkyColors.selectedBg
       : _isSourceOfSelectedRoute() || _isDestinationOfSelectedRoute()
-          ? Colors.cyan
+          ? BinkyColors.partOfSelectedRouteBg
           : super.backgroundColor();
 
   @override
