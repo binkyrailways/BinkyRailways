@@ -73,55 +73,54 @@ class EditorPage extends StatefulWidget {
 class _EditorPageState extends State<EditorPage> {
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<ModelModel>(context, listen: false);
     return ChangeNotifierProvider<EditorContext>(
         create: (context) => EditorContext(),
-        child: Consumer<ModelModel>(builder: (context, model, child) {
-          return FutureBuilder<Railway>(
-              future: model.getRailway(),
-              builder: (context, snapshot) {
-                return Consumer<EditorContext>(
-                    builder: (context, editorCtx, child) {
-                  if (!snapshot.hasData) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        // Here we take the value from the MyHomePage object that was created by
-                        // the App.build method, and use it to set our appbar title.
-                        title: const Text("Binky Railways"),
-                      ),
-                      body: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Text('Loading railway...'),
-                            CircularProgressIndicator(value: null),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  var rw = snapshot.data!;
-                  final addSpeedDialChildren =
-                      _buildAddSpeedDialChildren(context, editorCtx, model);
+        child: FutureBuilder<Railway>(
+            future: model.getRailway(),
+            builder: (context, snapshot) {
+              return Consumer<EditorContext>(
+                  builder: (context, editorCtx, child) {
+                if (!snapshot.hasData) {
                   return Scaffold(
                     appBar: AppBar(
                       // Here we take the value from the MyHomePage object that was created by
                       // the App.build method, and use it to set our appbar title.
-                      title: Text(model.title()),
-                      leading: _buildLeading(context, editorCtx, model),
-                      actions: _buildActions(context, editorCtx, model),
+                      title: const Text("Binky Railways"),
                     ),
-                    body: _buildContent(context, editorCtx, model, rw),
-                    floatingActionButton: addSpeedDialChildren.isNotEmpty
-                        ? SpeedDial(
-                            icon: Icons.add,
-                            activeIcon: Icons.close_sharp,
-                            children: addSpeedDialChildren,
-                          )
-                        : null, // This trailing comma makes auto-formatting nicer for build methods.
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Text('Loading railway...'),
+                          CircularProgressIndicator(value: null),
+                        ],
+                      ),
+                    ),
                   );
-                });
+                }
+                var rw = snapshot.data!;
+                final addSpeedDialChildren =
+                    _buildAddSpeedDialChildren(context, editorCtx, model);
+                return Scaffold(
+                  appBar: AppBar(
+                    // Here we take the value from the MyHomePage object that was created by
+                    // the App.build method, and use it to set our appbar title.
+                    title: Text(model.title()),
+                    leading: _buildLeading(context, editorCtx, model),
+                    actions: _buildActions(context, editorCtx, model),
+                  ),
+                  body: _buildContent(context, editorCtx, model, rw),
+                  floatingActionButton: addSpeedDialChildren.isNotEmpty
+                      ? SpeedDial(
+                          icon: Icons.add,
+                          activeIcon: Icons.close_sharp,
+                          children: addSpeedDialChildren,
+                        )
+                      : null, // This trailing comma makes auto-formatting nicer for build methods.
+                );
               });
-        }));
+            }));
   }
 
   Widget _buildContent(BuildContext context, EditorContext editorCtx,
@@ -130,6 +129,7 @@ class _EditorPageState extends State<EditorPage> {
         model.isRailwayLoaded()) {
       editorCtx.select(EntitySelector.railway(), notify: false);
     }
+    final moduleId = editorCtx.selector.idOf(EntityType.module) ?? "";
     switch (editorCtx.selector.entityType) {
       case EntityType.railway:
         return SplitView(
@@ -142,10 +142,10 @@ class _EditorPageState extends State<EditorPage> {
           content: ModulesTree(withParents: false),
         );
       case EntityType.module:
-        return const SplitView(
-          menu: ModuleTree(),
-          content: ModuleCanvas(),
-          endMenu: ModuleSettings(),
+        return SplitView(
+          menu: const ModuleTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const ModuleSettings(),
           endMenuWidth: 300,
         );
       case EntityType.locs:
@@ -181,99 +181,99 @@ class _EditorPageState extends State<EditorPage> {
           content: CommandStationSettings(),
         );
       case EntityType.blocks:
-        return const SplitView(
-          menu: BlocksTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const BlocksTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.block:
-        return const SplitView(
-          menu: BlocksTree(),
-          content: ModuleCanvas(),
-          endMenu: BlockSettings(),
+        return SplitView(
+          menu: const BlocksTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const BlockSettings(),
           endMenuWidth: 300,
         );
       case EntityType.blockgroups:
-        return const SplitView(
-          menu: BlockGroupsTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const BlockGroupsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.blockgroup:
-        return const SplitView(
-          menu: BlockGroupsTree(),
-          content: ModuleCanvas(),
-          endMenu: BlockGroupSettings(),
+        return SplitView(
+          menu: const BlockGroupsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const BlockGroupSettings(),
           endMenuWidth: 300,
         );
       case EntityType.edges:
-        return const SplitView(
-          menu: EdgesTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const EdgesTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.edge:
-        return const SplitView(
-          menu: EdgesTree(),
-          content: ModuleCanvas(),
-          endMenu: EdgeSettings(),
+        return SplitView(
+          menu: const EdgesTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const EdgeSettings(),
           endMenuWidth: 300,
         );
       case EntityType.junctions:
-        return const SplitView(
-          menu: JunctionsTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const JunctionsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.junction:
-        return const SplitView(
-          menu: JunctionsTree(),
-          content: ModuleCanvas(),
-          endMenu: JunctionSettings(),
+        return SplitView(
+          menu: const JunctionsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const JunctionSettings(),
           endMenuWidth: 300,
         );
       case EntityType.outputs:
-        return const SplitView(
-          menu: OutputsTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const OutputsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.output:
-        return const SplitView(
-          menu: OutputsTree(),
-          content: ModuleCanvas(),
-          endMenu: OutputSettings(),
+        return SplitView(
+          menu: const OutputsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const OutputSettings(),
           endMenuWidth: 300,
         );
       case EntityType.routes:
-        return const SplitView(
-          menu: RoutesTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const RoutesTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.route:
-        return const SplitView(
-          menu: RoutesTree(),
-          content: ModuleCanvas(),
-          endMenu: RouteSettings(),
+        return SplitView(
+          menu: const RoutesTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const RouteSettings(),
           endMenuWidth: 300,
         );
       case EntityType.sensors:
-        return const SplitView(
-          menu: SensorsTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const SensorsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.sensor:
-        return const SplitView(
-          menu: SensorsTree(),
-          content: ModuleCanvas(),
-          endMenu: SensorSettings(),
+        return SplitView(
+          menu: const SensorsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const SensorSettings(),
           endMenuWidth: 300,
         );
       case EntityType.signals:
-        return const SplitView(
-          menu: SignalsTree(),
-          content: ModuleCanvas(),
+        return SplitView(
+          menu: const SignalsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
         );
       case EntityType.signal:
-        return const SplitView(
-          menu: SignalsTree(),
-          content: ModuleCanvas(),
-          endMenu: SignalSettings(),
+        return SplitView(
+          menu: const SignalsTree(),
+          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          endMenu: const SignalSettings(),
           endMenuWidth: 300,
         );
       case EntityType.binkynetlocalworkers:

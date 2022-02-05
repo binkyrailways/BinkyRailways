@@ -63,6 +63,7 @@ class ModuleGame extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    print("onLoad game");
 
     final module = await modelModel.getModule(moduleId);
     final size = Vector2(module.width.toDouble(), module.height.toDouble());

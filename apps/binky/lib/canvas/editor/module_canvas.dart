@@ -29,14 +29,13 @@ class ModuleCanvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editorCtx = Provider.of<EditorContext>(context);
+    final editorCtx = Provider.of<EditorContext>(context, listen: false);
+    final model = Provider.of<ModelModel>(context, listen: false);
     final selector = editorCtx.selector;
     final moduleId = selector.idOf(EntityType.module) ?? "";
-    return Consumer<ModelModel>(builder: (context, model, child) {
-      return GameWidget(
-          autofocus: true,
-          game: ModuleGame(
-              editorCtx: editorCtx, modelModel: model, moduleId: moduleId));
-    });
+    return GameWidget(
+        autofocus: true,
+        game: ModuleGame(
+            editorCtx: editorCtx, modelModel: model, moduleId: moduleId));
   }
 }
