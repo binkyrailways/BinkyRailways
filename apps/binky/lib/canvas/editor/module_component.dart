@@ -38,6 +38,8 @@ class ModuleComponent extends common.ModuleComponent {
     // Load routes
     final List<mapi.Block> blocks = [];
     final List<mapi.Edge> edges = [];
+    final List<mapi.Junction> junctions = [];
+    final List<mapi.Sensor> sensors = [];
     for (var routeRef in model.routes) {
       final route = await modelModel.getRoute(routeRef.id);
       add(RouteComponent(
@@ -46,6 +48,8 @@ class ModuleComponent extends common.ModuleComponent {
           module: model,
           blocks: blocks,
           edges: edges,
+          junctions: junctions,
+          sensors: sensors,
           modelModel: modelModel,
           game: game));
     }
@@ -64,6 +68,7 @@ class ModuleComponent extends common.ModuleComponent {
     // Load junctions
     for (var junctionRef in model.junctions) {
       final junction = await modelModel.getJunction(junctionRef.id);
+      junctions.add(junction);
       add(JunctionComponent(
           editorCtx: editorCtx, model: junction, modelModel: modelModel));
     }
@@ -76,6 +81,7 @@ class ModuleComponent extends common.ModuleComponent {
     // Load sensors
     for (var sensorRef in model.sensors) {
       final sensor = await modelModel.getSensor(sensorRef.id);
+      sensors.add(sensor);
       add(SensorComponent(
           editorCtx: editorCtx,
           model: sensor,

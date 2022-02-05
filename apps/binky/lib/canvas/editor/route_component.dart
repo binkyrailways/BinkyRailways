@@ -39,9 +39,17 @@ class RouteComponent extends common.RouteComponent {
       required mapi.Module module,
       required List<mapi.Block> blocks,
       required List<mapi.Edge> edges,
+      required List<mapi.Junction> junctions,
+      required List<mapi.Sensor> sensors,
       required this.modelModel,
       required this.game})
-      : super(model: model, module: module, blocks: blocks, edges: edges);
+      : super(
+            model: model,
+            module: module,
+            blocks: blocks,
+            edges: edges,
+            junctions: junctions,
+            sensors: sensors);
 
   @override
   isVisible() => editorCtx.selector.idOf(EntityType.route) == model.id;
