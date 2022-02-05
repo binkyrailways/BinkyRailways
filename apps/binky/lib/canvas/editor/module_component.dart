@@ -22,6 +22,7 @@ import '../../editor/editor_context.dart';
 import './block_component.dart';
 import './junction_component.dart';
 import './output_component.dart';
+import './route_component.dart';
 import './sensor_component.dart';
 import './module_game.dart';
 
@@ -34,11 +35,31 @@ class ModuleComponent extends common.ModuleComponent {
       EditorContext editorCtx, ModelModel modelModel) async {
     // Load background image (if any)
     await loadBackgroundImage(modelModel);
+    // Load routes
+    final List<mapi.Block> blocks = [];
+    final List<mapi.Edge> edges = [];
+    for (var routeRef in model.routes) {
+      final route = await modelModel.getRoute(routeRef.id);
+      add(RouteComponent(
+          editorCtx: editorCtx,
+          model: route,
+          module: model,
+          blocks: blocks,
+          edges: edges,
+          modelModel: modelModel,
+          game: game));
+    }
     // Load blocks
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
+      blocks.add(block);
       add(BlockComponent(
           editorCtx: editorCtx, model: block, modelModel: modelModel));
+    }
+    // Load edges
+    for (var edgeRef in model.edges) {
+      final edge = await modelModel.getEdge(edgeRef.id);
+      edges.add(edge);
     }
     // Load junctions
     for (var junctionRef in model.junctions) {
