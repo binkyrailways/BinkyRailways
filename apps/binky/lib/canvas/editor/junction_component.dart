@@ -53,20 +53,50 @@ class JunctionComponent extends common.JunctionComponent
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.junction) == model.id;
-  _isPartOfSelectedRoute() {
+
+  _RouteInfo _getSelectedRouteInfo() {
     final routeId = editorCtx.selector.idOf(EntityType.route);
     if (routeId == null) {
-      return false;
+      return _RouteInfo(null, null);
     }
     final route = modelModel.getCachedRoute(routeId);
-    return (route != null) &&
-        (route.crossingJunctions.any((x) => x.junction.id == model.id));
+    if (route == null) {
+      return _RouteInfo(null, null);
+    }
+    final junctions = (route.crossingJunctions
+        .where((x) => x.junction.id == model.id)).toList();
+    if (junctions.isEmpty) {
+      return _RouteInfo(null, null);
+    }
+    final dir = junctions.first.switchState.direction;
+    return _RouteInfo(route, dir);
   }
 
   @override
-  backgroundColor() => _isSelected()
-      ? Colors.orange
-      : _isPartOfSelectedRoute()
-          ? Colors.cyan
-          : super.backgroundColor();
+  backgroundColor() {
+    if (_isSelected()) {
+      return Colors.orange;
+    }
+    final info = _getSelectedRouteInfo();
+    if (info.route == null) {
+      return super.backgroundColor();
+    }
+    return Colors.cyan;
+  }
+
+  @override
+  mapi.SwitchDirection switchDirection() {
+    final info = _getSelectedRouteInfo();
+    if (info.direction == null) {
+      return mapi.SwitchDirection.STRAIGHT;
+    }
+    return info.direction!;
+  }
+}
+
+class _RouteInfo {
+  final mapi.Route? route;
+  final mapi.SwitchDirection? direction;
+
+  _RouteInfo(this.route, this.direction);
 }
