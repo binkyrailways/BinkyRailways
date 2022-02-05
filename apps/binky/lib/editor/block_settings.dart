@@ -15,7 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
+import 'package:binky/icons.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
@@ -33,20 +34,40 @@ class BlockSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final blockId = selector.idOf(EntityType.block) ?? "";
-        return FutureBuilder<Block>(
-            future: model.getBlock(blockId),
-            initialData: model.getCachedBlock(blockId),
+        final moduleId = selector.idOf(EntityType.module) ?? "";
+        return FutureBuilder<List<Route>>(
+            future: _getRoutes(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var block = snapshot.data!;
-              return _BlockSettings(
-                  editorCtx: editorCtx, model: model, block: block);
+              final routes = snapshot.data!;
+              final blockId = selector.idOf(EntityType.block) ?? "";
+              return FutureBuilder<Block>(
+                  future: model.getBlock(blockId),
+                  initialData: model.getCachedBlock(blockId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    var block = snapshot.data!;
+                    return _BlockSettings(
+                        editorCtx: editorCtx,
+                        model: model,
+                        block: block,
+                        routes: routes);
+                  });
             });
       });
     });
+  }
+
+  Future<List<Route>> _getRoutes(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final routeList = mod.routes.map((e) => model.getRoute(e.id));
+    final result = await Future.wait(routeList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
   }
 }
 
@@ -54,11 +75,14 @@ class _BlockSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
   final Block block;
+  final List<Route> routes;
+
   const _BlockSettings(
       {Key? key,
       required this.editorCtx,
       required this.model,
-      required this.block})
+      required this.block,
+      required this.routes})
       : super(key: key);
 
   @override
@@ -67,6 +91,7 @@ class _BlockSettings extends StatefulWidget {
 
 class _BlockSettingsState extends State<_BlockSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final ScrollController _usedByScrollController = ScrollController();
 
   void _initConrollers() {
     _descriptionController.text = widget.block.description;
@@ -86,6 +111,7 @@ class _BlockSettingsState extends State<_BlockSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final usedBy = _buildUsedBy();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -108,6 +134,15 @@ class _BlockSettingsState extends State<_BlockSettings> {
                 editor(update.position);
               });
             }),
+        const SettingsHeader(title: "Used by"),
+        Expanded(
+          child: ListView.builder(
+              controller: _usedByScrollController,
+              itemCount: usedBy.length,
+              itemBuilder: (context, index) {
+                return usedBy[index];
+              }),
+        ),
       ],
     );
   }
@@ -117,5 +152,21 @@ class _BlockSettingsState extends State<_BlockSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateBlock(update);
+  }
+
+  List<ListTile> _buildUsedBy() {
+    final blockId = widget.block.id;
+    final routes = widget.routes.where(
+        (r) => (r.from.block.id == blockId) || (r.to.block.id == blockId));
+    final items = routes
+        .map((r) => ListTile(
+              leading: BinkyIcons.route,
+              title: Text(r.description),
+              onTap: () {
+                widget.editorCtx.select(EntitySelector.route(r));
+              },
+            ))
+        .toList();
+    return items;
   }
 }
