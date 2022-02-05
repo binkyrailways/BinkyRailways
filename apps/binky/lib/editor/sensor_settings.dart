@@ -15,7 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/material.dart';
+import 'package:binky/icons.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
@@ -41,20 +42,30 @@ class SensorSettings extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               var blocks = snapshot.data!;
-              final sensorId = selector.idOf(EntityType.sensor) ?? "";
-              return FutureBuilder<Sensor>(
-                  future: model.getSensor(sensorId),
-                  initialData: model.getCachedSensor(sensorId),
+              return FutureBuilder<List<Route>>(
+                  future: _getRoutes(model, moduleId),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    var sensor = snapshot.data!;
-                    return _SensorSettings(
-                        editorCtx: editorCtx,
-                        model: model,
-                        blocks: blocks,
-                        sensor: sensor);
+                    var routes = snapshot.data!;
+                    final sensorId = selector.idOf(EntityType.sensor) ?? "";
+                    return FutureBuilder<Sensor>(
+                        future: model.getSensor(sensorId),
+                        initialData: model.getCachedSensor(sensorId),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          var sensor = snapshot.data!;
+                          return _SensorSettings(
+                              editorCtx: editorCtx,
+                              model: model,
+                              blocks: blocks,
+                              routes: routes,
+                              sensor: sensor);
+                        });
                   });
             });
       });
@@ -68,18 +79,28 @@ class SensorSettings extends StatelessWidget {
     result.sort((a, b) => a.description.compareTo(b.description));
     return result;
   }
+
+  Future<List<Route>> _getRoutes(ModelModel model, String moduleId) async {
+    final mod = await model.getModule(moduleId);
+    final routeList = mod.routes.map((e) => model.getRoute(e.id));
+    final result = await Future.wait(routeList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
+  }
 }
 
 class _SensorSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
   final List<Block> blocks;
+  final List<Route> routes;
   final Sensor sensor;
   const _SensorSettings(
       {Key? key,
       required this.editorCtx,
       required this.model,
       required this.blocks,
+      required this.routes,
       required this.sensor})
       : super(key: key);
 
@@ -89,6 +110,7 @@ class _SensorSettings extends StatefulWidget {
 
 class _SensorSettingsState extends State<_SensorSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final ScrollController _usedByScrollController = ScrollController();
 
   void _initConrollers() {
     _descriptionController.text = widget.sensor.description;
@@ -108,6 +130,7 @@ class _SensorSettingsState extends State<_SensorSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final usedBy = _buildUsedBy();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -164,6 +187,15 @@ class _SensorSettingsState extends State<_SensorSettings> {
           },
           items: _shapeItems,
         ),
+        const SettingsHeader(title: "Used by"),
+        Expanded(
+          child: ListView.builder(
+              controller: _usedByScrollController,
+              itemCount: usedBy.length,
+              itemBuilder: (context, index) {
+                return usedBy[index];
+              }),
+        ),
       ],
     );
   }
@@ -194,4 +226,29 @@ class _SensorSettingsState extends State<_SensorSettings> {
             value: e,
           ))
       .toList();
+
+  List<ListTile> _buildUsedBy() {
+    final routes = widget.routes
+        .where((r) => r.events.any((evt) => evt.sensor.id == widget.sensor.id));
+    final items = routes
+        .map((r) => ListTile(
+              leading: BinkyIcons.route,
+              title: Text(r.description),
+              onTap: () {
+                widget.editorCtx.select(EntitySelector.route(r));
+              },
+            ))
+        .toList();
+    final blocks = widget.blocks.where((b) => b.id == widget.sensor.block.id);
+    blocks.forEach((b) {
+      items.add(ListTile(
+        leading: BinkyIcons.block,
+        title: Text(b.description),
+        onTap: () {
+          widget.editorCtx.select(EntitySelector.block(b));
+        },
+      ));
+    });
+    return items;
+  }
 }
