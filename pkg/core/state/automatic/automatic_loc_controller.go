@@ -387,8 +387,22 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Loc, fromBlock state.Block, locDirection model.BlockSide, avoidDirectionChanges bool) state.Route {
 	// Gather possible routes.
 	routeFromFromBlock := getAllPossibleNonClosedRoutesFromBlock(fromBlock)
+	if true {
+		allRoutesFromFromBlock := routeFromFromBlock.GetRoutes(ctx, alc.railway)
+		alc.log.Debug().
+			Int("routeFromFromBlock", len(allRoutesFromFromBlock)).
+			Str("fromBlock", fromBlock.GetDescription()).
+			Msg("routeFromFromBlock")
+	}
 	routeOptions := routeFromFromBlock.And(func(ctx context.Context, r state.Route) bool {
-		return alc.routeAvailabilityTester.IsAvailableFor(ctx, r, loc, locDirection, avoidDirectionChanges).IsPossible
+		ro := alc.routeAvailabilityTester.IsAvailableFor(ctx, r, loc, locDirection, avoidDirectionChanges)
+		alc.log.Debug().
+			Str("loc", loc.GetDescription()).
+			Str("route", r.GetDescription()).
+			Bool("available", ro.IsPossible).
+			Str("reason", ro.GetReasonDescription()).
+			Msg("Route availability result")
+		return ro.IsPossible
 	})
 	possibleRoutes := routeOptions.GetRoutes(ctx, alc.railway)
 	//loc.LastRouteOptions.Actual = routeOptions.ToArray()

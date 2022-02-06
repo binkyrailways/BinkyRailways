@@ -27,7 +27,7 @@ import (
 // Gets a selection of all possible routes from the given block.
 func getAllPossibleRoutesFromBlock(fromBlock state.Block) state.RoutePredicate {
 	return func(ctx context.Context, r state.Route) bool {
-		return r.GetFrom(ctx).GetID() == fromBlock.GetID()
+		return r.GetFrom(ctx) == fromBlock
 	}
 }
 

@@ -184,6 +184,9 @@ func (b *block) GetReverseSides(context.Context) bool {
 
 // Is it allowed for locs to change direction in this block?
 func (b *block) GetChangeDirection(context.Context) model.ChangeDirection {
+	if b.deadEnd {
+		return model.ChangeDirectionAllow
+	}
 	return b.getBlock().GetChangeDirection()
 }
 
