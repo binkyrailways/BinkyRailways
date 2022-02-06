@@ -140,9 +140,11 @@ class _RoutesTreeState extends State<RoutesTree> {
 
   Future<List<Block>> getBlocks(ModelModel model, String moduleId) async {
     var rw = await model.getModule(moduleId);
-    return await Future.wait([
+    final allBlocks = await Future.wait([
       for (var x in rw.blocks) model.getBlock(x.id),
     ]);
+    allBlocks.sort(((a, b) => a.description.compareTo(b.description)));
+    return allBlocks;
   }
 
   Future<List<Route>> getRoutes(ModelModel model, String moduleId) async {
@@ -157,6 +159,7 @@ class _RoutesTreeState extends State<RoutesTree> {
               (r) => (r.to.block.id == blockId) || (r.from.block.id == blockId))
           .toList();
     }
+    allRoutes.sort(((a, b) => a.description.compareTo(b.description)));
     return allRoutes;
   }
 }
