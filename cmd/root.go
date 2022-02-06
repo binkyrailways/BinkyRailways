@@ -39,7 +39,9 @@ var (
 		app    service.Config
 		server server.Config
 	}
-	cliLog = zerolog.New(zerolog.NewConsoleWriter())
+	cliLog = zerolog.New(zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
+		w.TimeFormat = "15:04:05"
+	})).With().Timestamp().Logger()
 )
 
 func init() {
