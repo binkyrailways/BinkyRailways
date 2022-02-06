@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/dropdownmenuitems.dart';
+
 import '../components.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
@@ -178,18 +180,10 @@ class _LocSettingsState extends State<_LocSettings> {
                 widget.model.updateLoc(update);
               }
             },
-            items: _changeDirectionItems,
+            items: BinkyDropdownMenuItems.ChangeDirectionItems,
           ),
         ],
       ),
     );
   }
-
-  static final List<DropdownMenuItem<ChangeDirection>> _changeDirectionItems =
-      ChangeDirection.values
-          .map((e) => DropdownMenuItem<ChangeDirection>(
-                child: Text(e.name),
-                value: e,
-              ))
-          .toList();
 }

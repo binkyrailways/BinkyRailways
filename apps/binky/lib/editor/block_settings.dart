@@ -15,10 +15,12 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/dropdownmenuitems.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 
 import '../components.dart';
 import '../models.dart';
@@ -91,10 +93,21 @@ class _BlockSettings extends StatefulWidget {
 
 class _BlockSettingsState extends State<_BlockSettings> {
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _waitProbabilityController =
+      TextEditingController();
+  final TextEditingController _minWaitTimeController = TextEditingController();
+  final TextEditingController _maxWaitTimeController = TextEditingController();
   final ScrollController _usedByScrollController = ScrollController();
+  final NumericValidator _waitProbabilityValidator =
+      NumericValidator(minimum: 0, maximum: 100);
+  final NumericValidator _waitTimeValidator =
+      NumericValidator(minimum: 0, maximum: 360);
 
   void _initConrollers() {
     _descriptionController.text = widget.block.description;
+    _waitProbabilityController.text = widget.block.waitProbability.toString();
+    _minWaitTimeController.text = widget.block.minimumWaitTime.toString();
+    _maxWaitTimeController.text = widget.block.maximumWaitTime.toString();
   }
 
   @override
@@ -124,6 +137,51 @@ class _BlockSettingsState extends State<_BlockSettings> {
                 update.description = value;
               });
             }),
+        SettingsTextField(
+            controller: _waitProbabilityController,
+            validator: _waitProbabilityValidator.validate,
+            label: "Wait probability",
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.waitProbability = int.parse(value);
+              });
+            }),
+        Row(children: [
+          Expanded(
+            child: SettingsTextField(
+                controller: _minWaitTimeController,
+                validator: _waitTimeValidator.validate,
+                label: "Min wait time (sec)",
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.minimumWaitTime = int.parse(value);
+                  });
+                }),
+          ),
+          Expanded(
+            child: SettingsTextField(
+                controller: _maxWaitTimeController,
+                validator: _waitTimeValidator.validate,
+                label: "Max wait time (sec)",
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.maximumWaitTime = int.parse(value);
+                  });
+                }),
+          ),
+        ]),
+        SettingsDropdownField<ChangeDirection>(
+          label: "Change direction",
+          value: widget.block.changeDirection,
+          onChanged: (value) async {
+            if (value != null) {
+              await _update((update) {
+                update.changeDirection = value;
+              });
+            }
+          },
+          items: BinkyDropdownMenuItems.ChangeDirectionItems,
+        ),
         const SettingsHeader(title: "Position"),
         PositionSettings(
             editorCtx: widget.editorCtx,
