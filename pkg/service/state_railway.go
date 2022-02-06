@@ -60,6 +60,10 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 			}
 		})
 	}
+	if req.GetVirtual() {
+		// Change auto run (if needed)
+		s.railwayState.GetVirtualMode().SetAutoRun(req.GetAutoRun())
+	}
 	return s.GetRailwayState(ctx, &api.Empty{})
 }
 

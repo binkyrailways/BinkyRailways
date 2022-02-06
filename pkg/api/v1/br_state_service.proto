@@ -75,6 +75,8 @@ service StateService {
 message EnableRunModeRequest {
   // If set, run in virtual mode, otherwise live mode.
   bool virtual = 1;
+  // If set, automatic running is enabled.
+  bool auto_run = 2;
 }
 
 // Request arguments for GetStateChanges.

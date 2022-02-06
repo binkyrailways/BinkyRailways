@@ -68,7 +68,7 @@ class _RunPageState extends State<RunPage> {
                   // the App.build method, and use it to set our appbar title.
                   title: Text(
                       "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
-                  actions: _buildActions(context),
+                  actions: _buildActions(context, state),
                 ),
                 body: SplitView(
                   menuWidth: 300,
@@ -84,23 +84,58 @@ class _RunPageState extends State<RunPage> {
     );
   }
 
-  List<Widget>? _buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.stop_rounded),
-        tooltip: "Edit",
-        onPressed: () async {
-          final state = Provider.of<StateModel>(context, listen: false);
-          try {
-            await state.disableRunMode();
-          } catch (err) {
-            showErrorDialog(
-                context: context,
-                title: "Failed to close run mode",
-                content: Text("$err"));
-          }
-        },
-      ),
-    ];
+  List<Widget>? _buildActions(BuildContext context, StateModel state) {
+    final List<Widget> list = [];
+    final rwState = state.getCachedRailwayState();
+    if (rwState != null) {
+      if (rwState.isVirtualModeEnabled) {
+        if (!rwState.isVirtualAutorunEnabled) {
+          list.add(IconButton(
+            icon: const Icon(Icons.screen_share_outlined),
+            tooltip: "Activate auto run",
+            onPressed: () async {
+              try {
+                await state.enableRunMode(virtual: true, autoRun: true);
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to enable autorun mode",
+                    content: Text("$err"));
+              }
+            },
+          ));
+        } else {
+          list.add(IconButton(
+            icon: const Icon(Icons.stop_screen_share_outlined),
+            tooltip: "Stop auto run",
+            onPressed: () async {
+              try {
+                await state.enableRunMode(virtual: true, autoRun: false);
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to disable autorun mode",
+                    content: Text("$err"));
+              }
+            },
+          ));
+        }
+      }
+    }
+    list.add(IconButton(
+      icon: const Icon(Icons.stop_rounded),
+      tooltip: "Edit",
+      onPressed: () async {
+        try {
+          await state.disableRunMode();
+        } catch (err) {
+          showErrorDialog(
+              context: context,
+              title: "Failed to close run mode",
+              content: Text("$err"));
+        }
+      },
+    ));
+    return list;
   }
 }

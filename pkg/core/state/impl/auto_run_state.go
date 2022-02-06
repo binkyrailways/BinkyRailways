@@ -23,11 +23,13 @@ import (
 	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/rs/zerolog"
 )
 
 // autoRunState implements auto-run behavior in virtual mode.
 type autoRunState struct {
 	mutex   sync.Mutex
+	log     zerolog.Logger
 	railway Railway
 	enabled bool
 	cancel  context.CancelFunc
@@ -36,6 +38,7 @@ type autoRunState struct {
 // newAutoRunState constructs an autoRunState
 func newAutoRunState(railway Railway) *autoRunState {
 	return &autoRunState{
+		log:     railway.Logger().With().Str("component", "autorun").Logger(),
 		railway: railway,
 	}
 }
@@ -73,6 +76,11 @@ func (s *autoRunState) SetEnabled(value bool) error {
 
 // run until the given context is canceled
 func (s *autoRunState) run(ctx context.Context) {
+	log := s.log
+	log.Info().Msg("Starting auto run")
+	defer func() {
+		log.Info().Msg("Stopped auto run")
+	}()
 	// Build loc states
 	var locStates []*autoRunLocState
 	s.railway.ForEachLoc(func(loc state.Loc) {

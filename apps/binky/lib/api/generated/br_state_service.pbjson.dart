@@ -13,11 +13,12 @@ const EnableRunModeRequest$json = const {
   '1': 'EnableRunModeRequest',
   '2': const [
     const {'1': 'virtual', '3': 1, '4': 1, '5': 8, '10': 'virtual'},
+    const {'1': 'auto_run', '3': 2, '4': 1, '5': 8, '10': 'autoRun'},
   ],
 };
 
 /// Descriptor for `EnableRunModeRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List enableRunModeRequestDescriptor = $convert.base64Decode('ChRFbmFibGVSdW5Nb2RlUmVxdWVzdBIYCgd2aXJ0dWFsGAEgASgIUgd2aXJ0dWFs');
+final $typed_data.Uint8List enableRunModeRequestDescriptor = $convert.base64Decode('ChRFbmFibGVSdW5Nb2RlUmVxdWVzdBIYCgd2aXJ0dWFsGAEgASgIUgd2aXJ0dWFsEhkKCGF1dG9fcnVuGAIgASgIUgdhdXRvUnVu');
 @$core.Deprecated('Use getStateChangesRequestDescriptor instead')
 const GetStateChangesRequest$json = const {
   '1': 'GetStateChangesRequest',

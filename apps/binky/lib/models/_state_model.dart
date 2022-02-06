@@ -61,16 +61,18 @@ class StateModel extends ChangeNotifier {
   }
 
   // Enable run mode
-  Future<RailwayState> enableRunMode({bool virtual = false}) async {
+  Future<RailwayState> enableRunMode(
+      {bool virtual = false, bool autoRun = false}) async {
     final current = await getRailwayState();
-    if (current.isRunModeEnabled) {
+    if (current.isRunModeEnabled &&
+        (current.isVirtualAutorunEnabled == autoRun)) {
       // We're done
       return current;
     }
     // Enable run mode
     var stateClient = APIClient().stateClient();
-    final result =
-        await stateClient.enableRunMode(EnableRunModeRequest(virtual: virtual));
+    final result = await stateClient.enableRunMode(
+        EnableRunModeRequest(virtual: virtual, autoRun: autoRun));
     _railwayState = result;
     await _ensureFetchingChanges();
     // Notify listeners

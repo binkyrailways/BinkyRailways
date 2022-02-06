@@ -17,16 +17,21 @@ import 'br_model_types.pbenum.dart' as $1;
 class EnableRunModeRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EnableRunModeRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'virtual')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'autoRun')
     ..hasRequiredFields = false
   ;
 
   EnableRunModeRequest._() : super();
   factory EnableRunModeRequest({
     $core.bool? virtual,
+    $core.bool? autoRun,
   }) {
     final _result = create();
     if (virtual != null) {
       _result.virtual = virtual;
+    }
+    if (autoRun != null) {
+      _result.autoRun = autoRun;
     }
     return _result;
   }
@@ -59,6 +64,15 @@ class EnableRunModeRequest extends $pb.GeneratedMessage {
   $core.bool hasVirtual() => $_has(0);
   @$pb.TagNumber(1)
   void clearVirtual() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get autoRun => $_getBF(1);
+  @$pb.TagNumber(2)
+  set autoRun($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasAutoRun() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAutoRun() => clearField(2);
 }
 
 class GetStateChangesRequest extends $pb.GeneratedMessage {
