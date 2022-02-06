@@ -21,11 +21,12 @@ import (
 	"context"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Gets a Output by ID.
-func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Output, error) {
-	moduleID, outputID, err := api.SplitParentChildID(req.GetId())
+func (s *service) getOutput(ctx context.Context, id string) (model.Output, error) {
+	moduleID, outputID, err := api.SplitParentChildID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -36,6 +37,15 @@ func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Outpu
 	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
 		return nil, api.NotFound(outputID)
+	}
+	return output, nil
+}
+
+// Gets a Output by ID.
+func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Output, error) {
+	output, err := s.getOutput(ctx, req.GetId())
+	if err != nil {
+		return nil, err
 	}
 	var result api.Output
 	if err := result.FromModel(ctx, output); err != nil {
@@ -46,17 +56,9 @@ func (s *service) GetOutput(ctx context.Context, req *api.IDRequest) (*api.Outpu
 
 // Update a Output by ID.
 func (s *service) UpdateOutput(ctx context.Context, req *api.Output) (*api.Output, error) {
-	moduleID, outputID, err := api.SplitParentChildID(req.GetId())
+	output, err := s.getOutput(ctx, req.GetId())
 	if err != nil {
 		return nil, err
-	}
-	mod, err := s.getModule(ctx, moduleID)
-	if err != nil {
-		return nil, err
-	}
-	output, ok := mod.GetOutputs().Get(outputID)
-	if !ok {
-		return nil, api.NotFound(outputID)
 	}
 	if err := req.ToModel(ctx, output); err != nil {
 		return nil, err

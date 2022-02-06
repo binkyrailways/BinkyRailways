@@ -539,7 +539,8 @@ const Route$json = const {
     const {'1': 'from', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'from'},
     const {'1': 'to', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.Endpoint', '10': 'to'},
     const {'1': 'crossing_junctions', '3': 6, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionWithState', '10': 'crossingJunctions'},
-    const {'1': 'events', '3': 7, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteEvent', '10': 'events'},
+    const {'1': 'outputs', '3': 7, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputWithState', '10': 'outputs'},
+    const {'1': 'events', '3': 8, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteEvent', '10': 'events'},
     const {'1': 'speed', '3': 10, '4': 1, '5': 5, '10': 'speed'},
     const {'1': 'choose_probability', '3': 11, '4': 1, '5': 5, '10': 'chooseProbability'},
     const {'1': 'permissions', '3': 12, '4': 1, '5': 11, '6': '.binkyrailways.v1.LocStandardPredicate', '10': 'permissions'},
@@ -549,7 +550,7 @@ const Route$json = const {
 };
 
 /// Descriptor for `Route`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI0CgZldmVudHMYByADKAsyHC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlRXZlbnRSBmV2ZW50cxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRJICgtwZXJtaXNzaW9ucxgMIAEoCzImLmJpbmt5cmFpbHdheXMudjEuTG9jU3RhbmRhcmRQcmVkaWNhdGVSC3Blcm1pc3Npb25zEhYKBmNsb3NlZBgNIAEoCFIGY2xvc2VkEiEKDG1heF9kdXJhdGlvbhgOIAEoBVILbWF4RHVyYXRpb24=');
+final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI7CgdvdXRwdXRzGAcgAygLMiEuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRXaXRoU3RhdGVSB291dHB1dHMSNAoGZXZlbnRzGAggAygLMhwuYmlua3lyYWlsd2F5cy52MS5Sb3V0ZUV2ZW50UgZldmVudHMSFAoFc3BlZWQYCiABKAVSBXNwZWVkEi0KEmNob29zZV9wcm9iYWJpbGl0eRgLIAEoBVIRY2hvb3NlUHJvYmFiaWxpdHkSSAoLcGVybWlzc2lvbnMYDCABKAsyJi5iaW5reXJhaWx3YXlzLnYxLkxvY1N0YW5kYXJkUHJlZGljYXRlUgtwZXJtaXNzaW9ucxIWCgZjbG9zZWQYDSABKAhSBmNsb3NlZBIhCgxtYXhfZHVyYXRpb24YDiABKAVSC21heER1cmF0aW9u');
 @$core.Deprecated('Use routeRefDescriptor instead')
 const RouteRef$json = const {
   '1': 'RouteRef',
@@ -593,6 +594,27 @@ const SwitchWithState$json = const {
 
 /// Descriptor for `SwitchWithState`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List switchWithStateDescriptor = $convert.base64Decode('Cg9Td2l0Y2hXaXRoU3RhdGUSPwoJZGlyZWN0aW9uGAEgASgOMiEuYmlua3lyYWlsd2F5cy52MS5Td2l0Y2hEaXJlY3Rpb25SCWRpcmVjdGlvbg==');
+@$core.Deprecated('Use outputWithStateDescriptor instead')
+const OutputWithState$json = const {
+  '1': 'OutputWithState',
+  '2': const [
+    const {'1': 'output', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.OutputRef', '10': 'output'},
+    const {'1': 'binary_output_state', '3': 10, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinaryOutputWithState', '10': 'binaryOutputState'},
+  ],
+};
+
+/// Descriptor for `OutputWithState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List outputWithStateDescriptor = $convert.base64Decode('Cg9PdXRwdXRXaXRoU3RhdGUSMwoGb3V0cHV0GAEgASgLMhsuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRSZWZSBm91dHB1dBJXChNiaW5hcnlfb3V0cHV0X3N0YXRlGAogASgLMicuYmlua3lyYWlsd2F5cy52MS5CaW5hcnlPdXRwdXRXaXRoU3RhdGVSEWJpbmFyeU91dHB1dFN0YXRl');
+@$core.Deprecated('Use binaryOutputWithStateDescriptor instead')
+const BinaryOutputWithState$json = const {
+  '1': 'BinaryOutputWithState',
+  '2': const [
+    const {'1': 'active', '3': 1, '4': 1, '5': 8, '10': 'active'},
+  ],
+};
+
+/// Descriptor for `BinaryOutputWithState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List binaryOutputWithStateDescriptor = $convert.base64Decode('ChVCaW5hcnlPdXRwdXRXaXRoU3RhdGUSFgoGYWN0aXZlGAEgASgIUgZhY3RpdmU=');
 @$core.Deprecated('Use routeEventDescriptor instead')
 const RouteEvent$json = const {
   '1': 'RouteEvent',

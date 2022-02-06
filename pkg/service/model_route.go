@@ -152,6 +152,48 @@ func (s *service) RemoveRouteCrossingJunction(ctx context.Context, req *api.Remo
 	return &result, nil
 }
 
+// Adds an output (of type binary output) with given output ID & active status
+func (s *service) AddRouteBinaryOutput(ctx context.Context, req *api.AddRouteBinaryOutputRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	output, err := s.getOutput(ctx, req.GetOutputId())
+	if err != nil {
+		return nil, err
+	}
+	sw, ok := output.(model.BinaryOutput)
+	if !ok {
+		return nil, api.InvalidArgument("Output '%s' is not of type BinaryOutput", output.GetID())
+	}
+	if err := route.GetOutputs().AddBinaryOutput(sw, req.GetActive()); err != nil {
+		return nil, err
+	}
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Removes an output with given output ID.
+func (s *service) RemoveRouteOutput(ctx context.Context, req *api.RemoveRouteOutputRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	output, err := s.getOutput(ctx, req.GetOutputId())
+	if err != nil {
+		return nil, err
+	}
+	route.GetOutputs().Remove(output)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Adds an event to the given route
 func (s *service) AddRouteEvent(ctx context.Context, req *api.AddRouteEventRequest) (*api.Route, error) {
 	route, err := s.getRoute(ctx, req.GetRouteId())

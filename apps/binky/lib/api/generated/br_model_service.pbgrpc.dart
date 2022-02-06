@@ -191,6 +191,16 @@ class ModelServiceClient extends $grpc.Client {
           ($0.RemoveRouteCrossingJunctionRequest value) =>
               value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$addRouteBinaryOutput =
+      $grpc.ClientMethod<$0.AddRouteBinaryOutputRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/AddRouteBinaryOutput',
+          ($0.AddRouteBinaryOutputRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$removeRouteOutput =
+      $grpc.ClientMethod<$0.RemoveRouteOutputRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/RemoveRouteOutput',
+          ($0.RemoveRouteOutputRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
   static final _$addRouteEvent =
       $grpc.ClientMethod<$0.AddRouteEventRequest, $1.Route>(
           '/binkyrailways.v1.ModelService/AddRouteEvent',
@@ -490,6 +500,18 @@ class ModelServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$removeRouteCrossingJunction, request,
         options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> addRouteBinaryOutput(
+      $0.AddRouteBinaryOutputRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addRouteBinaryOutput, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> removeRouteOutput(
+      $0.RemoveRouteOutputRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$removeRouteOutput, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Route> addRouteEvent($0.AddRouteEventRequest request,
@@ -889,6 +911,22 @@ abstract class ModelServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.RemoveRouteCrossingJunctionRequest.fromBuffer(value),
             ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.AddRouteBinaryOutputRequest, $1.Route>(
+        'AddRouteBinaryOutput',
+        addRouteBinaryOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.AddRouteBinaryOutputRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RemoveRouteOutputRequest, $1.Route>(
+        'RemoveRouteOutput',
+        removeRouteOutput_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.RemoveRouteOutputRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.AddRouteEventRequest, $1.Route>(
         'AddRouteEvent',
         addRouteEvent_Pre,
@@ -1226,6 +1264,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return removeRouteCrossingJunction(call, await request);
   }
 
+  $async.Future<$1.Route> addRouteBinaryOutput_Pre($grpc.ServiceCall call,
+      $async.Future<$0.AddRouteBinaryOutputRequest> request) async {
+    return addRouteBinaryOutput(call, await request);
+  }
+
+  $async.Future<$1.Route> removeRouteOutput_Pre($grpc.ServiceCall call,
+      $async.Future<$0.RemoveRouteOutputRequest> request) async {
+    return removeRouteOutput(call, await request);
+  }
+
   $async.Future<$1.Route> addRouteEvent_Pre($grpc.ServiceCall call,
       $async.Future<$0.AddRouteEventRequest> request) async {
     return addRouteEvent(call, await request);
@@ -1385,6 +1433,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.AddRouteCrossingJunctionSwitchRequest request);
   $async.Future<$1.Route> removeRouteCrossingJunction(
       $grpc.ServiceCall call, $0.RemoveRouteCrossingJunctionRequest request);
+  $async.Future<$1.Route> addRouteBinaryOutput(
+      $grpc.ServiceCall call, $0.AddRouteBinaryOutputRequest request);
+  $async.Future<$1.Route> removeRouteOutput(
+      $grpc.ServiceCall call, $0.RemoveRouteOutputRequest request);
   $async.Future<$1.Route> addRouteEvent(
       $grpc.ServiceCall call, $0.AddRouteEventRequest request);
   $async.Future<$1.Route> removeRouteEvent(

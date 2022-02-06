@@ -2676,7 +2676,8 @@ class Route extends $pb.GeneratedMessage {
     ..aOM<Endpoint>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'from', subBuilder: Endpoint.create)
     ..aOM<Endpoint>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'to', subBuilder: Endpoint.create)
     ..pc<JunctionWithState>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'crossingJunctions', $pb.PbFieldType.PM, subBuilder: JunctionWithState.create)
-    ..pc<RouteEvent>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'events', $pb.PbFieldType.PM, subBuilder: RouteEvent.create)
+    ..pc<OutputWithState>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputWithState.create)
+    ..pc<RouteEvent>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'events', $pb.PbFieldType.PM, subBuilder: RouteEvent.create)
     ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chooseProbability', $pb.PbFieldType.O3)
     ..aOM<LocStandardPredicate>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'permissions', subBuilder: LocStandardPredicate.create)
@@ -2693,6 +2694,7 @@ class Route extends $pb.GeneratedMessage {
     Endpoint? from,
     Endpoint? to,
     $core.Iterable<JunctionWithState>? crossingJunctions,
+    $core.Iterable<OutputWithState>? outputs,
     $core.Iterable<RouteEvent>? events,
     $core.int? speed,
     $core.int? chooseProbability,
@@ -2718,6 +2720,9 @@ class Route extends $pb.GeneratedMessage {
     }
     if (crossingJunctions != null) {
       _result.crossingJunctions.addAll(crossingJunctions);
+    }
+    if (outputs != null) {
+      _result.outputs.addAll(outputs);
     }
     if (events != null) {
       _result.events.addAll(events);
@@ -2813,52 +2818,55 @@ class Route extends $pb.GeneratedMessage {
   $core.List<JunctionWithState> get crossingJunctions => $_getList(5);
 
   @$pb.TagNumber(7)
-  $core.List<RouteEvent> get events => $_getList(6);
+  $core.List<OutputWithState> get outputs => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $core.List<RouteEvent> get events => $_getList(7);
 
   @$pb.TagNumber(10)
-  $core.int get speed => $_getIZ(7);
+  $core.int get speed => $_getIZ(8);
   @$pb.TagNumber(10)
-  set speed($core.int v) { $_setSignedInt32(7, v); }
+  set speed($core.int v) { $_setSignedInt32(8, v); }
   @$pb.TagNumber(10)
-  $core.bool hasSpeed() => $_has(7);
+  $core.bool hasSpeed() => $_has(8);
   @$pb.TagNumber(10)
   void clearSpeed() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.int get chooseProbability => $_getIZ(8);
+  $core.int get chooseProbability => $_getIZ(9);
   @$pb.TagNumber(11)
-  set chooseProbability($core.int v) { $_setSignedInt32(8, v); }
+  set chooseProbability($core.int v) { $_setSignedInt32(9, v); }
   @$pb.TagNumber(11)
-  $core.bool hasChooseProbability() => $_has(8);
+  $core.bool hasChooseProbability() => $_has(9);
   @$pb.TagNumber(11)
   void clearChooseProbability() => clearField(11);
 
   @$pb.TagNumber(12)
-  LocStandardPredicate get permissions => $_getN(9);
+  LocStandardPredicate get permissions => $_getN(10);
   @$pb.TagNumber(12)
   set permissions(LocStandardPredicate v) { setField(12, v); }
   @$pb.TagNumber(12)
-  $core.bool hasPermissions() => $_has(9);
+  $core.bool hasPermissions() => $_has(10);
   @$pb.TagNumber(12)
   void clearPermissions() => clearField(12);
   @$pb.TagNumber(12)
-  LocStandardPredicate ensurePermissions() => $_ensure(9);
+  LocStandardPredicate ensurePermissions() => $_ensure(10);
 
   @$pb.TagNumber(13)
-  $core.bool get closed => $_getBF(10);
+  $core.bool get closed => $_getBF(11);
   @$pb.TagNumber(13)
-  set closed($core.bool v) { $_setBool(10, v); }
+  set closed($core.bool v) { $_setBool(11, v); }
   @$pb.TagNumber(13)
-  $core.bool hasClosed() => $_has(10);
+  $core.bool hasClosed() => $_has(11);
   @$pb.TagNumber(13)
   void clearClosed() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.int get maxDuration => $_getIZ(11);
+  $core.int get maxDuration => $_getIZ(12);
   @$pb.TagNumber(14)
-  set maxDuration($core.int v) { $_setSignedInt32(11, v); }
+  set maxDuration($core.int v) { $_setSignedInt32(12, v); }
   @$pb.TagNumber(14)
-  $core.bool hasMaxDuration() => $_has(11);
+  $core.bool hasMaxDuration() => $_has(12);
   @$pb.TagNumber(14)
   void clearMaxDuration() => clearField(14);
 }
@@ -3099,6 +3107,118 @@ class SwitchWithState extends $pb.GeneratedMessage {
   $core.bool hasDirection() => $_has(0);
   @$pb.TagNumber(1)
   void clearDirection() => clearField(1);
+}
+
+class OutputWithState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OutputWithState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOM<OutputRef>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'output', subBuilder: OutputRef.create)
+    ..aOM<BinaryOutputWithState>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binaryOutputState', subBuilder: BinaryOutputWithState.create)
+    ..hasRequiredFields = false
+  ;
+
+  OutputWithState._() : super();
+  factory OutputWithState({
+    OutputRef? output,
+    BinaryOutputWithState? binaryOutputState,
+  }) {
+    final _result = create();
+    if (output != null) {
+      _result.output = output;
+    }
+    if (binaryOutputState != null) {
+      _result.binaryOutputState = binaryOutputState;
+    }
+    return _result;
+  }
+  factory OutputWithState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory OutputWithState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  OutputWithState clone() => OutputWithState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  OutputWithState copyWith(void Function(OutputWithState) updates) => super.copyWith((message) => updates(message as OutputWithState)) as OutputWithState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static OutputWithState create() => OutputWithState._();
+  OutputWithState createEmptyInstance() => create();
+  static $pb.PbList<OutputWithState> createRepeated() => $pb.PbList<OutputWithState>();
+  @$core.pragma('dart2js:noInline')
+  static OutputWithState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OutputWithState>(create);
+  static OutputWithState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  OutputRef get output => $_getN(0);
+  @$pb.TagNumber(1)
+  set output(OutputRef v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasOutput() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearOutput() => clearField(1);
+  @$pb.TagNumber(1)
+  OutputRef ensureOutput() => $_ensure(0);
+
+  @$pb.TagNumber(10)
+  BinaryOutputWithState get binaryOutputState => $_getN(1);
+  @$pb.TagNumber(10)
+  set binaryOutputState(BinaryOutputWithState v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasBinaryOutputState() => $_has(1);
+  @$pb.TagNumber(10)
+  void clearBinaryOutputState() => clearField(10);
+  @$pb.TagNumber(10)
+  BinaryOutputWithState ensureBinaryOutputState() => $_ensure(1);
+}
+
+class BinaryOutputWithState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinaryOutputWithState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'active')
+    ..hasRequiredFields = false
+  ;
+
+  BinaryOutputWithState._() : super();
+  factory BinaryOutputWithState({
+    $core.bool? active,
+  }) {
+    final _result = create();
+    if (active != null) {
+      _result.active = active;
+    }
+    return _result;
+  }
+  factory BinaryOutputWithState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinaryOutputWithState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinaryOutputWithState clone() => BinaryOutputWithState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinaryOutputWithState copyWith(void Function(BinaryOutputWithState) updates) => super.copyWith((message) => updates(message as BinaryOutputWithState)) as BinaryOutputWithState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutputWithState create() => BinaryOutputWithState._();
+  BinaryOutputWithState createEmptyInstance() => create();
+  static $pb.PbList<BinaryOutputWithState> createRepeated() => $pb.PbList<BinaryOutputWithState>();
+  @$core.pragma('dart2js:noInline')
+  static BinaryOutputWithState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinaryOutputWithState>(create);
+  static BinaryOutputWithState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get active => $_getBF(0);
+  @$pb.TagNumber(1)
+  set active($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasActive() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearActive() => clearField(1);
 }
 
 class RouteEvent extends $pb.GeneratedMessage {

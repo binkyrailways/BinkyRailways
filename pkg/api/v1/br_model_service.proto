@@ -119,6 +119,10 @@ service ModelService {
   rpc AddRouteCrossingJunctionSwitch(AddRouteCrossingJunctionSwitchRequest) returns (Route);
   // Removes a crossing junction with given junction ID.
   rpc RemoveRouteCrossingJunction(RemoveRouteCrossingJunctionRequest) returns (Route);
+  // Adds an output (of type binary output) with given output ID & active status.
+  rpc AddRouteBinaryOutput(AddRouteBinaryOutputRequest) returns (Route);
+  // Removes an output with given output ID.
+  rpc RemoveRouteOutput(RemoveRouteOutputRequest) returns (Route);
   // Adds an event to the given route
   rpc AddRouteEvent(AddRouteEventRequest) returns (Route);
   // Remove an event from the given route
@@ -193,8 +197,24 @@ message AddRouteCrossingJunctionSwitchRequest {
 message RemoveRouteCrossingJunctionRequest {
    // ID of route to change
    string route_id = 1;
-   // ID of the junction (of type switch) to remove
+   // ID of the junction to remove
    string junction_id = 2;  
+}
+
+message AddRouteBinaryOutputRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the output (of type binary output) to add
+  string output_id = 2;
+  // Desired active status
+  bool active = 3;
+}
+
+message RemoveRouteOutputRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the output (of type binary output) to remove
+  string output_id = 2;
 }
 
 message AddRouteEventRequest {

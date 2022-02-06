@@ -272,6 +272,66 @@ class _RouteSettingsState extends State<_RouteSettings> {
       ),
     ));
 
+    final List<Widget> outputChildren = [];
+    for (var ows in widget.route.outputs) {
+      outputChildren.add(FutureBuilder<String>(
+          future: _formatOutputWithState(widget.model, ows),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const ListTile(
+                leading: BinkyIcons.output,
+                title: Text("Loading..."),
+              );
+            }
+            final description = snapshot.data!;
+            return ListTile(
+              title: Text(description),
+              trailing: GestureDetector(
+                child: const Icon(Icons.more_vert),
+                onTapDown: (TapDownDetails details) {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(details.globalPosition.dx,
+                        details.globalPosition.dy, 0, 0),
+                    items: [
+                      PopupMenuItem<String>(
+                          child: const Text('Remove'),
+                          onTap: () async {
+                            await widget.model.removeRouteOutput(
+                                widget.route.id, ows.output.id);
+                          }),
+                    ],
+                    elevation: 8.0,
+                  );
+                },
+              ),
+            );
+          }));
+    }
+    outputChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+      future: _addOutputWithStateList(widget.model),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text("Loading...");
+        }
+        return Container(
+            padding: const EdgeInsets.all(8),
+            child: DropdownButton<String>(
+              items: snapshot.data!,
+              onChanged: (value) {},
+              isDense: true,
+              hint: const Text("Add..."),
+            ));
+      },
+    ));
+    children.add(SettingsHeader(
+      title: "Output",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: outputChildren,
+      ),
+    ));
+
     final List<Widget> eventsChildren = [];
     widget.route.events.asMap().forEach((index, evt) {
       eventsChildren.add(FutureBuilder<String>(
@@ -485,6 +545,15 @@ class _RouteSettingsState extends State<_RouteSettings> {
     return junction.description;
   }
 
+  Future<String> _formatOutputWithState(
+      ModelModel modelModel, OutputWithState jws) async {
+    final output = await modelModel.getOutput(jws.output.id);
+    if (jws.hasBinaryOutputState()) {
+      return "${output.description} -> ${jws.binaryOutputState.active ? _formatActiveText(output.binaryOutput) : _formatInactiveText(output.binaryOutput)}";
+    }
+    return output.description;
+  }
+
   Future<List<DropdownMenuItem<String>>> _addJunctionWithStateList(
       ModelModel modelModel) async {
     final module = await modelModel.getModule(widget.route.moduleId);
@@ -519,6 +588,53 @@ class _RouteSettingsState extends State<_RouteSettings> {
       }
     }
     return result;
+  }
+
+  Future<List<DropdownMenuItem<String>>> _addOutputWithStateList(
+      ModelModel modelModel) async {
+    final module = await modelModel.getModule(widget.route.moduleId);
+    final outputIds = widget.route.outputs.map((cj) => cj.output.id).toList();
+    final allOutputIds = module.outputs.map((e) => e.id);
+    final allUnusedOutputIds =
+        allOutputIds.where((id) => !outputIds.contains(id));
+    final allUnusedOutputs = await Future.wait(
+        allUnusedOutputIds.map((id) => modelModel.getOutput(id)));
+    allUnusedOutputs.sort((a, b) => a.description.compareTo(b.description));
+
+    final List<DropdownMenuItem<String>> result = [];
+    for (var output in allUnusedOutputs) {
+      if (output.hasBinaryOutput()) {
+        result.add(DropdownMenuItem<String>(
+          value: output.id,
+          child: Text(
+              "${output.description} -> ${_formatActiveText(output.binaryOutput)}"),
+          onTap: () async {
+            await modelModel.addRouteBinaryOutput(
+                widget.route.id, output.id, true);
+          },
+        ));
+        result.add(DropdownMenuItem<String>(
+          value: output.id,
+          child: Text(
+              "${output.description} -> ${_formatInactiveText(output.binaryOutput)}"),
+          onTap: () async {
+            await modelModel.addRouteBinaryOutput(
+                widget.route.id, output.id, false);
+          },
+        ));
+      }
+    }
+    return result;
+  }
+
+  String _formatActiveText(BinaryOutput bo) {
+    final result = bo.activeText;
+    return result.isNotEmpty ? result : "Active";
+  }
+
+  String _formatInactiveText(BinaryOutput bo) {
+    final result = bo.inactiveText;
+    return result.isNotEmpty ? result : "Inactive";
   }
 
   Future<String> _formatRouteEvent(

@@ -509,8 +509,11 @@ message Route {
   // Set of junctions with their states that are crossed when taking this route.
   repeated JunctionWithState crossing_junctions = 6;
 
+  // Set of outputs with their states that are set when taking this route.
+  repeated OutputWithState outputs = 7;
+
   // Set of events that change the state of the route and it's running loc.
-  repeated RouteEvent events = 7;
+  repeated RouteEvent events = 8;
 
   // Speed of locs when going this route.
   // This value is a percentage of the maximum / medium speed of the loc.
@@ -575,6 +578,16 @@ message JunctionWithState {
 }
 
 message SwitchWithState { SwitchDirection direction = 1; }
+
+// Reference to an output with specific state
+message OutputWithState {
+  // Output reference
+  OutputRef output = 1;
+  // Desired state of binary output. Only set when output is of type binary-output.
+  BinaryOutputWithState binary_output_state = 10;
+}
+
+message BinaryOutputWithState { bool active = 1; }
 
 // RouteEvent specifies a sensor event in a route.
 message RouteEvent {

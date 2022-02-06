@@ -319,6 +319,142 @@ class RemoveRouteCrossingJunctionRequest extends $pb.GeneratedMessage {
   void clearJunctionId() => clearField(2);
 }
 
+class AddRouteBinaryOutputRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteBinaryOutputRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputId')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'active')
+    ..hasRequiredFields = false
+  ;
+
+  AddRouteBinaryOutputRequest._() : super();
+  factory AddRouteBinaryOutputRequest({
+    $core.String? routeId,
+    $core.String? outputId,
+    $core.bool? active,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (outputId != null) {
+      _result.outputId = outputId;
+    }
+    if (active != null) {
+      _result.active = active;
+    }
+    return _result;
+  }
+  factory AddRouteBinaryOutputRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddRouteBinaryOutputRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AddRouteBinaryOutputRequest clone() => AddRouteBinaryOutputRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AddRouteBinaryOutputRequest copyWith(void Function(AddRouteBinaryOutputRequest) updates) => super.copyWith((message) => updates(message as AddRouteBinaryOutputRequest)) as AddRouteBinaryOutputRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AddRouteBinaryOutputRequest create() => AddRouteBinaryOutputRequest._();
+  AddRouteBinaryOutputRequest createEmptyInstance() => create();
+  static $pb.PbList<AddRouteBinaryOutputRequest> createRepeated() => $pb.PbList<AddRouteBinaryOutputRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AddRouteBinaryOutputRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddRouteBinaryOutputRequest>(create);
+  static AddRouteBinaryOutputRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get outputId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set outputId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasOutputId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOutputId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get active => $_getBF(2);
+  @$pb.TagNumber(3)
+  set active($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasActive() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearActive() => clearField(3);
+}
+
+class RemoveRouteOutputRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteOutputRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputId')
+    ..hasRequiredFields = false
+  ;
+
+  RemoveRouteOutputRequest._() : super();
+  factory RemoveRouteOutputRequest({
+    $core.String? routeId,
+    $core.String? outputId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (outputId != null) {
+      _result.outputId = outputId;
+    }
+    return _result;
+  }
+  factory RemoveRouteOutputRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RemoveRouteOutputRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RemoveRouteOutputRequest clone() => RemoveRouteOutputRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RemoveRouteOutputRequest copyWith(void Function(RemoveRouteOutputRequest) updates) => super.copyWith((message) => updates(message as RemoveRouteOutputRequest)) as RemoveRouteOutputRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteOutputRequest create() => RemoveRouteOutputRequest._();
+  RemoveRouteOutputRequest createEmptyInstance() => create();
+  static $pb.PbList<RemoveRouteOutputRequest> createRepeated() => $pb.PbList<RemoveRouteOutputRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteOutputRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RemoveRouteOutputRequest>(create);
+  static RemoveRouteOutputRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get outputId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set outputId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasOutputId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOutputId() => clearField(2);
+}
+
 class AddRouteEventRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')

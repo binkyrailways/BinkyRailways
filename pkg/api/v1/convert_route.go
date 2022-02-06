@@ -38,6 +38,11 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 		jwsDst.FromModel(ctx, jws)
 		dst.CrossingJunctions = append(dst.CrossingJunctions, jwsDst)
 	})
+	src.GetOutputs().ForEach(func(ows model.OutputWithState) {
+		owsDst := &OutputWithState{}
+		owsDst.FromModel(ctx, ows)
+		dst.Outputs = append(dst.Outputs, owsDst)
+	})
 	src.GetEvents().ForEach(func(re model.RouteEvent) {
 		reDst := &RouteEvent{}
 		reDst.FromModel(ctx, re)
@@ -87,6 +92,9 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	if len(src.GetCrossingJunctions()) != dst.GetCrossingJunctions().GetCount() {
 		return InvalidArgument("Unexpected number of crossing junctions (got %d, expected %d)", len(src.GetCrossingJunctions()), dst.GetCrossingJunctions().GetCount())
 	}
+	if len(src.GetOutputs()) != dst.GetOutputs().GetCount() {
+		return InvalidArgument("Unexpected number of outputs (got %d, expected %d)", len(src.GetOutputs()), dst.GetOutputs().GetCount())
+	}
 	if len(src.GetEvents()) != dst.GetEvents().GetCount() {
 		return InvalidArgument("Unexpected number of events (got %d, expected %d)", len(src.GetEvents()), dst.GetEvents().GetCount())
 	}
@@ -105,6 +113,17 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 			return InvalidArgument("Unknown junction ID: '%s'", junctionID)
 		}
 		multierr.AppendInto(&err, x.ToModel(ctx, dstJws))
+	}
+	for _, x := range src.GetOutputs() {
+		_, outputID, err := SplitParentChildID(x.GetOutput().GetId())
+		if err != nil {
+			return err
+		}
+		dstOws, ok := dst.GetOutputs().Get(outputID)
+		if !ok {
+			return InvalidArgument("Unknown output ID: '%s'", outputID)
+		}
+		multierr.AppendInto(&err, x.ToModel(ctx, dstOws))
 	}
 	for _, x := range src.GetEvents() {
 		_, sensorID, err := SplitParentChildID(x.GetSensor().GetId())

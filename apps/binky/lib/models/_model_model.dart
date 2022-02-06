@@ -542,6 +542,34 @@ class ModelModel extends ChangeNotifier {
     return updated;
   }
 
+  // Add an output (of type binary output) to a given route.
+  Future<mapi.Route> addRouteBinaryOutput(
+      String routeId, String outputId, bool active) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated =
+        await modelClient.addRouteBinaryOutput(mapi.AddRouteBinaryOutputRequest(
+      routeId: routeId,
+      outputId: outputId,
+      active: active,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Remove an output from a given route.
+  Future<mapi.Route> removeRouteOutput(String routeId, String outputId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated =
+        await modelClient.removeRouteOutput(mapi.RemoveRouteOutputRequest(
+      routeId: routeId,
+      outputId: outputId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
   // Add an event to a route.
   Future<mapi.Route> addRouteEvent(String routeId, String sensorId) async {
     var modelClient = mapi.APIClient().modelClient();
