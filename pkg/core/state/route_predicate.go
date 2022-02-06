@@ -15,37 +15,46 @@
 // Author Ewout Prangsma
 //
 
-package automatic
+package state
 
 import (
 	"context"
-
-	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
 // Predicate for a route
 
-type RoutePredicate func(context.Context, state.Route) bool
+type RoutePredicate func(context.Context, Route) bool
 type routes interface {
 	// Get total possible number of routes
 	GetRouteCount(context.Context) int
 	// Iterate all routes
-	ForEachRoute(func(state.Route))
+	ForEachRoute(func(Route))
 }
 
 // Construct a predicate that requires both predicates to be true
 func (p RoutePredicate) And(other RoutePredicate) RoutePredicate {
-	return func(ctx context.Context, r state.Route) bool {
+	return func(ctx context.Context, r Route) bool {
 		return p(ctx, r) && other(ctx, r)
 	}
 }
 
 // Get all routes that match the given predicate
-func (p RoutePredicate) GetRoutes(ctx context.Context, allRoutes routes) []state.Route {
-	result := make([]state.Route, 0, allRoutes.GetRouteCount(ctx))
-	allRoutes.ForEachRoute(func(r state.Route) {
+func (p RoutePredicate) GetRoutes(ctx context.Context, allRoutes routes) []Route {
+	result := make([]Route, 0, allRoutes.GetRouteCount(ctx))
+	allRoutes.ForEachRoute(func(r Route) {
 		if p(ctx, r) {
 			result = append(result, r)
+		}
+	})
+	return result
+}
+
+// Is there at least one route that matches the given predicate?
+func (p RoutePredicate) AnyRoutes(ctx context.Context, allRoutes routes) bool {
+	result := false
+	allRoutes.ForEachRoute(func(r Route) {
+		if p(ctx, r) {
+			result = true
 		}
 	})
 	return result

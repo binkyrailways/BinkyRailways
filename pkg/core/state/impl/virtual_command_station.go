@@ -64,6 +64,11 @@ func (cs *virtualCommandStation) TryPrepareForUse(context.Context, state.UserInt
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (cs *virtualCommandStation) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Description of the underlying entity
 func (cs *virtualCommandStation) GetDescription() string {
 	return "Virtual"

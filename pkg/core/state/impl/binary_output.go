@@ -93,6 +93,11 @@ func (bo *binaryOutput) TryPrepareForUse(ctx context.Context, _ state.UserInterf
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (bo *binaryOutput) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Address of the entity
 func (bo *binaryOutput) GetAddress() model.Address {
 	return bo.getBinaryOutput().GetAddress()

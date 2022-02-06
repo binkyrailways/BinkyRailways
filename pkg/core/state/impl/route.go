@@ -134,6 +134,11 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (r *route) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Speed of locs when going this route.
 // This value is a percentage of the maximum / medium speed of the loc.
 // <value>0..100</value>

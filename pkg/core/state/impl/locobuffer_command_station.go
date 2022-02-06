@@ -53,6 +53,11 @@ func (cs *locoBufferCommandStation) TryPrepareForUse(context.Context, state.User
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (cs *locoBufferCommandStation) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Enable/disable power on the railway
 func (cs *locoBufferCommandStation) GetPower() state.BoolProperty {
 	return &cs.power

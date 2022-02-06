@@ -92,6 +92,11 @@ func (bo *stdSwitch) TryPrepareForUse(ctx context.Context, _ state.UserInterface
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (bo *stdSwitch) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Address of the entity
 func (bo *stdSwitch) GetAddress() model.Address {
 	return bo.getSwitch().GetAddress()

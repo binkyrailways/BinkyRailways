@@ -22,6 +22,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"go.uber.org/multierr"
 )
 
 // Block adds implementation functions to state.Block.
@@ -37,6 +38,9 @@ type block struct {
 	closed          boolProperty
 	state           state.BlockState
 	waitPermissions state.LocPredicate
+	junctions       []Junction
+	blockGroup      BlockGroup
+	deadEnd         bool
 }
 
 // Create a new entity
@@ -70,8 +74,63 @@ func (b *block) getBlock() model.Block {
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
-func (b *block) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
+func (b *block) TryPrepareForUse(ctx context.Context, ui state.UserInterface, _ state.Persistence) error {
+	// TODO
+	/*
+			            // Load state
+		            this.statePersistence = statePersistence;
+		            bool closed;
+		            if (statePersistence.TryGetBlockState(RailwayState, this, out closed))
+		            {
+		                Closed.Requested = closed;
+		            }
+		            var groupEntity = Entity.BlockGroup;
+		            blockGroup = (groupEntity != null) ? RailwayState.BlockGroupStates[groupEntity] : null;
+	*/
+	// Connect junctions
+	bModel := b.getBlock()
+	m := bModel.GetModule()
+	var merr error
+	m.GetJunctions().ForEach(func(j model.Junction) {
+		if j.GetBlock() == bModel {
+			if jState, err := b.railway.ResolveJunction(ctx, j); err != nil {
+				multierr.AppendInto(&merr, err)
+			} else {
+				b.junctions = append(b.junctions, jState)
+			}
+		}
+	})
+	if merr != nil {
+		return merr
+	}
+	// Connect block group
+	if bgModel := bModel.GetBlockGroup(); bgModel != nil {
+		if bgState, err := b.railway.ResolveBlockGroup(ctx, bgModel); err != nil {
+			return err
+		} else {
+			b.blockGroup = bgState
+		}
+	}
 	return nil
+}
+
+// Wrap up the preparation fase.
+func (b *block) FinalizePrepare(ctx context.Context) {
+	hasRoutesToBack := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
+		return r.GetToBlockSide(ctx) == model.BlockSideBack && r.GetTo(ctx) == b
+	}).AnyRoutes(ctx, b.railway)
+	hasRoutesToFront := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
+		return r.GetToBlockSide(ctx) == model.BlockSideFront && r.GetTo(ctx) == b
+	}).AnyRoutes(ctx, b.railway)
+	hasRoutesFromBack := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
+		return r.GetFromBlockSide(ctx) == model.BlockSideBack && r.GetFrom(ctx) == b
+	}).AnyRoutes(ctx, b.railway)
+	hasRoutesFromFront := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
+		return r.GetFromBlockSide(ctx) == model.BlockSideFront && r.GetFrom(ctx) == b
+	}).AnyRoutes(ctx, b.railway)
+
+	b.deadEnd = (hasRoutesToBack && !hasRoutesFromFront) ||
+		(hasRoutesToFront && !hasRoutesFromBack)
 }
 
 // Update the actual closed status
@@ -151,7 +210,7 @@ func (b *block) GetClosed() state.BoolProperty {
 
 // Can a loc only leave this block at the same side it got in?
 func (b *block) GetIsDeadEnd(context.Context) bool {
-	return false // TODO
+	return b.deadEnd
 }
 
 // Is this block considered a station?
@@ -162,7 +221,7 @@ func (b *block) GetIsStation(context.Context) bool {
 // Gets the state of the group this block belongs to.
 // Can be nil.
 func (b *block) GetBlockGroup(context.Context) state.BlockGroup {
-	return nil // TODO
+	return b.blockGroup
 }
 
 // Is there a loc waiting in this block?

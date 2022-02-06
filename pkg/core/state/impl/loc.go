@@ -131,6 +131,11 @@ func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ sta
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (l *loc) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // All settings of this loc will be reset, because the loc is taken of the track.
 func (l *loc) SubscribeBeforeReset(cb func(context.Context)) {
 	l.railway.Exclusive(context.Background(), func(ctx context.Context) error {

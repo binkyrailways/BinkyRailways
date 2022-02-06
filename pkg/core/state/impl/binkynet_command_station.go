@@ -189,6 +189,11 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (cs *binkyNetCommandStation) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Enable/disable power on the railway
 func (cs *binkyNetCommandStation) GetPower() state.BoolProperty {
 	return &cs.power

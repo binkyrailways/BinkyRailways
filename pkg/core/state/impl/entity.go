@@ -32,6 +32,8 @@ type Entity interface {
 	// Returns nil when the entity is successfully prepared,
 	// returns an error otherwise.
 	TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error
+	// Wrap up the preparation fase.
+	FinalizePrepare(context.Context)
 	// Set this entity's readiness for use in the live railway?
 	SetIsReadyForUse(value bool)
 }
@@ -87,7 +89,7 @@ func (e *entity) SetIsReadyForUse(value bool) {
 }
 
 // Try to prepare the entity for use.
-// Returns true when the entity is successfully prepared.
+// Returns nil when the entity is successfully prepared or an error otherwise.
 func prepareForUse(ctx context.Context, entity Entity, ui state.UserInterface, persistence state.Persistence) error {
 	if !entity.GetIsReadyForUse() {
 		if err := entity.TryPrepareForUse(ctx, ui, persistence); err != nil {
@@ -96,4 +98,11 @@ func prepareForUse(ctx context.Context, entity Entity, ui state.UserInterface, p
 		entity.SetIsReadyForUse(true)
 	}
 	return nil
+}
+
+// Wrap up preparation of the given entity.
+func finalizePrepare(ctx context.Context, entity Entity) {
+	if entity.GetIsReadyForUse() {
+		entity.FinalizePrepare(ctx)
+	}
 }

@@ -101,6 +101,11 @@ func (s *sensor) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ 
 	return nil
 }
 
+// Wrap up the preparation fase.
+func (s *sensor) FinalizePrepare(ctx context.Context) {
+	// TODO
+}
+
 // Address of the entity
 func (s *sensor) GetAddress() model.Address {
 	return s.getSensor().GetAddress()

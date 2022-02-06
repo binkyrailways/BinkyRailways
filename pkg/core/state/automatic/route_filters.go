@@ -25,28 +25,28 @@ import (
 )
 
 // Gets a selection of all possible routes from the given block.
-func getAllPossibleRoutesFromBlock(fromBlock state.Block) RoutePredicate {
+func getAllPossibleRoutesFromBlock(fromBlock state.Block) state.RoutePredicate {
 	return func(ctx context.Context, r state.Route) bool {
 		return r.GetFrom(ctx).GetID() == fromBlock.GetID()
 	}
 }
 
 // Gets a selection of all possible non-closed routes from the given block.
-func getAllPossibleNonClosedRoutesFromBlock(fromBlock state.Block) RoutePredicate {
+func getAllPossibleNonClosedRoutesFromBlock(fromBlock state.Block) state.RoutePredicate {
 	return getAllPossibleRoutesFromBlock(fromBlock).And(func(ctx context.Context, r state.Route) bool {
 		return !r.GetClosed(ctx)
 	})
 }
 
 // Gets a selection of all possible routes from the given block + side.
-func getAllPossibleRoutesFromBlockWithSide(fromBlock state.Block, fromBlockSide model.BlockSide) RoutePredicate {
+func getAllPossibleRoutesFromBlockWithSide(fromBlock state.Block, fromBlockSide model.BlockSide) state.RoutePredicate {
 	return getAllPossibleRoutesFromBlock(fromBlock).And(func(ctx context.Context, r state.Route) bool {
 		return r.GetFromBlockSide(ctx) == fromBlockSide
 	})
 }
 
 // Gets a selection of all possible non-closed routes from the given block + side.
-func getAllPossibleNonClosedRoutesFromBlockWithSide(fromBlock state.Block, fromBlockSide model.BlockSide) RoutePredicate {
+func getAllPossibleNonClosedRoutesFromBlockWithSide(fromBlock state.Block, fromBlockSide model.BlockSide) state.RoutePredicate {
 	return getAllPossibleRoutesFromBlockWithSide(fromBlock, fromBlockSide).And(func(ctx context.Context, r state.Route) bool {
 		return !r.GetClosed(ctx)
 	})

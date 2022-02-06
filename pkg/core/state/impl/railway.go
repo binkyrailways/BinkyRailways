@@ -42,8 +42,12 @@ type Railway interface {
 
 	// Try to resolve the given block into a block state.
 	ResolveBlock(context.Context, model.Block) (Block, error)
+	// Try to resolve the given block group into a block group state.
+	ResolveBlockGroup(context.Context, model.BlockGroup) (BlockGroup, error)
 	// Try to resolve the given endpoint into a block state.
 	ResolveEndPoint(context.Context, model.EndPoint) (Block, error)
+	// Try to resolve the given junction into a junction state.
+	ResolveJunction(context.Context, model.Junction) (Junction, error)
 	// Try to resolve the given sensor (model) into a sensor state.
 	ResolveSensor(context.Context, model.Sensor) (Sensor, error)
 	// Select a command station that can best drive the given entity
@@ -160,6 +164,8 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 	if err := prepareForUse(ctx, r, ui, persistence); err != nil {
 		return nil, err
 	}
+	// Wrap up preparation
+	finalizePrepare(ctx, r)
 
 	return r, nil
 }
@@ -226,6 +232,47 @@ func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, 
 	return err
 }
 
+// Wrap up the preparation fase.
+func (r *railway) FinalizePrepare(ctx context.Context) {
+	// Note that the order of preparation is important
+	r.ForEachCommandStation(func(x state.CommandStation) {
+		ix := x.(CommandStation)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachBlock(func(x state.Block) {
+		ix := x.(Block)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachBlockGroup(func(x state.BlockGroup) {
+		ix := x.(BlockGroup)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachJunction(func(x state.Junction) {
+		ix := x.(Junction)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachSensor(func(x state.Sensor) {
+		ix := x.(Sensor)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachSignal(func(x state.Signal) {
+		ix := x.(Signal)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachOutput(func(x state.Output) {
+		ix := x.(Output)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachRoute(func(x state.Route) {
+		ix := x.(Route)
+		finalizePrepare(ctx, ix)
+	})
+	r.ForEachLoc(func(x state.Loc) {
+		ix := x.(Loc)
+		finalizePrepare(ctx, ix)
+	})
+}
+
 // Try to resolve the given block (model) into a block state.
 func (r *railway) ResolveBlock(ctx context.Context, block model.Block) (Block, error) {
 	id := block.GetID()
@@ -237,12 +284,34 @@ func (r *railway) ResolveBlock(ctx context.Context, block model.Block) (Block, e
 	return nil, fmt.Errorf("Block '%s' not found", id)
 }
 
+// Try to resolve the given block group into a block group state.
+func (r *railway) ResolveBlockGroup(ctx context.Context, blockGroup model.BlockGroup) (BlockGroup, error) {
+	id := blockGroup.GetID()
+	for _, x := range r.blockGroups {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, fmt.Errorf("BlockGroup '%s' not found", id)
+}
+
 // Try to resolve the given endpoint into a block state.
 func (r *railway) ResolveEndPoint(ctx context.Context, endpoint model.EndPoint) (Block, error) {
 	if block, ok := endpoint.(model.Block); ok {
 		return r.ResolveBlock(ctx, block)
 	}
 	return nil, fmt.Errorf("Non block not implemented") // TODO
+}
+
+// Try to resolve the given junction (model) into a junction state.
+func (r *railway) ResolveJunction(ctx context.Context, junction model.Junction) (Junction, error) {
+	id := junction.GetID()
+	for _, x := range r.junctions {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, fmt.Errorf("Junction '%s' not found", id)
 }
 
 // Try to resolve the given sensor (model) into a sensor state.

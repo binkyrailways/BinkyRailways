@@ -40,6 +40,10 @@ func (b *builder) VisitBlock(x model.Block) interface{} {
 	return newBlock(x, b.Railway)
 }
 
+func (b *builder) VisitBlockGroup(x model.BlockGroup) interface{} {
+	return newBlockGroup(x, b.Railway)
+}
+
 func (b *builder) VisitLoc(x model.Loc) interface{} {
 	return newLoc(x, b.Railway)
 }
