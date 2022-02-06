@@ -126,7 +126,9 @@ func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 		}
 		l.lockedBy = nil
 		l.iterateChildren(ctx, func(child state.Lockable) error {
-			child.Unlock(ctx, exclusion)
+			if child != exclusion {
+				child.Unlock(ctx, exclusion)
+			}
 			return nil
 		})
 		for _, cb := range l.onUnlocked {

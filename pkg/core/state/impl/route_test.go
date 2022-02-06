@@ -157,4 +157,24 @@ func TestRouteLockink(t *testing.T) {
 	assert.Nil(t, rtState.GetLockedBy(ctx))
 	assert.Nil(t, b1State.GetLockedBy(ctx))
 	assert.Nil(t, b2State.GetLockedBy(ctx))
+
+	// Lock the route again for another loc (must succeed)
+	assert.NoError(t, rtState.Lock(ctx, l2State))
+
+	// Route, blocks & sw1 must still be locked
+	assert.Equal(t, l2State, sw1State.GetLockedBy(ctx))
+	assert.Nil(t, sw2State.GetLockedBy(ctx))
+	assert.Equal(t, l2State, rtState.GetLockedBy(ctx))
+	assert.Equal(t, l2State, b1State.GetLockedBy(ctx))
+	assert.Equal(t, l2State, b2State.GetLockedBy(ctx))
+
+	// Unlock the route except b2
+	rtState.Unlock(ctx, b2State)
+
+	// Route, blocks & sw1 must not be locked
+	assert.Nil(t, sw1State.GetLockedBy(ctx))
+	assert.Nil(t, sw2State.GetLockedBy(ctx))
+	assert.Nil(t, rtState.GetLockedBy(ctx))
+	assert.Nil(t, b1State.GetLockedBy(ctx))
+	assert.Equal(t, l2State, b2State.GetLockedBy(ctx))
 }

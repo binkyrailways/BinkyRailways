@@ -517,7 +517,10 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 	}
 
 	// Lock the route
-	route.Lock(ctx, loc)
+	if err := route.Lock(ctx, loc); err != nil {
+		log.Error().Err(err).Msg("Failed to lock route")
+		return maxDuration
+	}
 	// Setup waiting after block (do this before assigning the route)
 	if route.GetTo(ctx).GetWaitPermissions().Evaluate(ctx, loc) {
 		// Waiting allowed, gamble for it.
