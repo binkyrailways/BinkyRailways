@@ -35,7 +35,7 @@ type output struct {
 // Create a new entity
 func newOutput(en model.Output, railway Railway) output {
 	s := output{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("output", en.GetDescription()).Logger(), en, railway),
 	}
 	return s
 }

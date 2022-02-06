@@ -46,7 +46,7 @@ type route struct {
 // Create a new entity
 func newRoute(en model.Route, railway Railway) Route {
 	r := &route{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("route", en.GetDescription()).Logger(), en, railway),
 		csr:    &criticalSectionRoutes{},
 	}
 	r.lockable = newLockable(railway, func(ctx context.Context, cb func(state.Lockable) error) error {

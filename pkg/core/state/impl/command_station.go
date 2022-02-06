@@ -23,7 +23,6 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
-	"github.com/rs/zerolog"
 )
 
 // CommandStation adds implementation functions to state.CommandStation.
@@ -53,7 +52,6 @@ type CommandStation interface {
 // commandStation provides implementations for shared command station functions.
 type commandStation struct {
 	entity
-	log zerolog.Logger
 
 	addressSpaces []string
 	junctions     []state.Junction
@@ -67,8 +65,7 @@ type commandStation struct {
 // Create a new entity
 func newCommandStation(en model.CommandStation, railway Railway) commandStation {
 	return commandStation{
-		entity: newEntity(en, railway),
-		log:    railway.Logger(),
+		entity: newEntity(railway.Logger().With().Str("cs", en.GetDescription()).Logger(), en, railway),
 	}
 }
 

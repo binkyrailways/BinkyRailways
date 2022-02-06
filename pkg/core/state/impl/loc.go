@@ -68,7 +68,7 @@ type loc struct {
 // Create a new entity
 func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("loc", en.GetDescription()).Logger(), en, railway),
 	}
 	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, l, railway, railway)
 	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, l, railway, railway)

@@ -38,7 +38,7 @@ type junction struct {
 // Create a new entity
 func newJunction(en model.Junction, railway Railway) junction {
 	s := junction{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("junction", en.GetDescription()).Logger(), en, railway),
 	}
 	s.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
 		return nil

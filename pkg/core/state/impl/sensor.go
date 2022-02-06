@@ -39,7 +39,7 @@ type sensor struct {
 // Create a new entity
 func newSensor(en model.Sensor, railway Railway) sensor {
 	s := sensor{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("sensor", en.GetDescription()).Logger(), en, railway),
 	}
 	return s
 }

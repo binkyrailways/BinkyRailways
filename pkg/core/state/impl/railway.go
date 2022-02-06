@@ -82,7 +82,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 		exclusive: util.NewExclusive(),
 		log:       log,
 	}
-	r.entity = newEntity(entity, r)
+	r.entity = newEntity(log, entity, r)
 	r.power = powerProperty{
 		Railway: r,
 	}

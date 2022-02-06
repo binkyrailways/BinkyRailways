@@ -22,6 +22,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"go.uber.org/multierr"
 )
 
 // BlockGroup adds implementation functions to state.BlockGroup.
@@ -39,7 +40,7 @@ type blockGroup struct {
 // Create a new entity
 func newBlockGroup(en model.BlockGroup, railway Railway) BlockGroup {
 	bg := &blockGroup{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("blockGroup", en.GetDescription()).Logger(), en, railway),
 	}
 	return bg
 }
@@ -58,7 +59,20 @@ func (bg *blockGroup) GetModel() model.BlockGroup {
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (bg *blockGroup) TryPrepareForUse(ctx context.Context, ui state.UserInterface, _ state.Persistence) error {
-	// TODO
+	bgModel := bg.getBlockGroup()
+	var merr error
+	bgModel.GetModule().GetBlocks().ForEach(func(b model.Block) {
+		if b.GetBlockGroup() == bgModel {
+			if bState, err := bg.railway.ResolveBlock(ctx, b); err != nil {
+				multierr.AppendInto(&merr, err)
+			} else {
+				bg.blocks = append(bg.blocks, bState)
+			}
+		}
+	})
+	if merr != nil {
+		return merr
+	}
 	return nil
 }
 
@@ -81,12 +95,27 @@ func (bg *blockGroup) GetMinimumLocsInGroup(context.Context) int {
 
 /// Is the condition met to require the minimum number of locs in this group?
 func (bg *blockGroup) IsMinimumLocsInGroupEnabled(ctx context.Context) bool {
-	// TODO
-	return false
+	assignedLocs := 0
+	bg.railway.ForEachLoc(func(l state.Loc) {
+		if l.GetCanSetAutomaticControl(ctx) {
+			assignedLocs++
+		}
+	})
+	return assignedLocs >= bg.getBlockGroup().GetMinimumLocsOnTrackForMinimumLocsInGroupStart()
 }
 
 /// Are there enough locs in this group so that one lock can leave?
 func (bg *blockGroup) GetFirstLocCanLeave(ctx context.Context) bool {
-	// TODO
-	return true
+	// Do we have enough locs on the track?
+	if !bg.IsMinimumLocsInGroupEnabled(ctx) {
+		return true
+	}
+	// Ys we have, now enforce the minimum
+	waitingLocs := 0
+	for _, b := range bg.blocks {
+		if b.GetHasWaitingLoc(ctx) {
+			waitingLocs++
+		}
+	}
+	return waitingLocs > bg.GetMinimumLocsInGroup(ctx)
 }

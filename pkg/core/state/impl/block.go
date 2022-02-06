@@ -46,7 +46,7 @@ type block struct {
 // Create a new entity
 func newBlock(en model.Block, railway Railway) Block {
 	b := &block{
-		entity: newEntity(en, railway),
+		entity: newEntity(railway.Logger().With().Str("block", en.GetDescription()).Logger(), en, railway),
 	}
 	b.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
 		return nil
@@ -84,8 +84,6 @@ func (b *block) TryPrepareForUse(ctx context.Context, ui state.UserInterface, _ 
 		            {
 		                Closed.Requested = closed;
 		            }
-		            var groupEntity = Entity.BlockGroup;
-		            blockGroup = (groupEntity != null) ? RailwayState.BlockGroupStates[groupEntity] : null;
 	*/
 	// Connect junctions
 	bModel := b.getBlock()
@@ -131,6 +129,8 @@ func (b *block) FinalizePrepare(ctx context.Context) {
 
 	b.deadEnd = (hasRoutesToBack && !hasRoutesFromFront) ||
 		(hasRoutesToFront && !hasRoutesFromBack)
+
+	b.log.Debug().Bool("deadend", b.deadEnd).Msg("Block fully prepared")
 }
 
 // Update the actual closed status

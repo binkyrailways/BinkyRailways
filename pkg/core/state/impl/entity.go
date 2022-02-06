@@ -22,6 +22,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/rs/zerolog"
 )
 
 // Entity adds implementation functions to state.Entity.
@@ -39,6 +40,7 @@ type Entity interface {
 }
 
 type entity struct {
+	log     zerolog.Logger
 	entity  model.Entity
 	railway Railway
 
@@ -46,8 +48,9 @@ type entity struct {
 }
 
 // Create a new entity
-func newEntity(en model.Entity, railway Railway) entity {
+func newEntity(log zerolog.Logger, en model.Entity, railway Railway) entity {
 	return entity{
+		log:     log,
 		entity:  en,
 		railway: railway,
 	}
