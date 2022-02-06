@@ -332,15 +332,47 @@ class _RouteSettingsState extends State<_RouteSettings> {
                                 setState(() {});
                               },
                             ),
-                            TextButton(
-                              child: const Text("Add..."),
-                              onPressed: () async {
-                                await widget.model.addRouteEventBehavior(
-                                    widget.route.id, evt.sensor.id);
-                                // Rebuild dialog content
-                                setState(() {});
-                              },
-                            ),
+                            Row(children: [
+                              TextButton(
+                                child: const Text("Add..."),
+                                onPressed: () async {
+                                  await widget.model.addRouteEventBehavior(
+                                      widget.route.id, evt.sensor.id);
+                                  // Rebuild dialog content
+                                  setState(() {});
+                                },
+                              ),
+                              TextButton(
+                                child: const Text("Add Enter"),
+                                onPressed: () async {
+                                  final r = await widget.model
+                                      .addRouteEventBehavior(
+                                          widget.route.id, evt.sensor.id);
+                                  final updatedEvt = r.events.firstWhere(
+                                      (x) => x.sensor.id == evt.sensor.id);
+                                  updatedEvt.behaviors.last.stateBehavior =
+                                      RouteStateBehavior.RSB_ENTER;
+                                  await widget.model.updateRoute(r);
+                                  // Rebuild dialog content
+                                  setState(() {});
+                                },
+                              ),
+                              TextButton(
+                                child: const Text("Add Reached"),
+                                onPressed: () async {
+                                  final r = await widget.model
+                                      .addRouteEventBehavior(
+                                          widget.route.id, evt.sensor.id);
+                                  final updatedEvt = r.events.firstWhere(
+                                      (x) => x.sensor.id == evt.sensor.id);
+                                  updatedEvt.behaviors.last.stateBehavior =
+                                      RouteStateBehavior.RSB_REACHED;
+                                  await widget.model.updateRoute(r);
+                                  // Rebuild dialog content
+                                  setState(() {});
+                                },
+                              ),
+                            ]),
                           ],
                         );
                       }));
