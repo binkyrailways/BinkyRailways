@@ -41,6 +41,9 @@ type Route interface {
 	// Set of junctions with their states that are crossed when taking this route.
 	GetCrossingJunctions() JunctionWithStateSet
 
+	// Set of outputs with their states that are set when taking this route.
+	GetOutputs() OutputWithStateSet
+
 	// Set of events that change the state of the route and it's running loc.
 	GetEvents() RouteEventSet
 

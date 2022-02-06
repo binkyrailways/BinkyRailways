@@ -39,6 +39,13 @@ func (v *DefaultEntityVisitor) VisitBinaryOutput(x BinaryOutput) interface{} {
 	return nil
 }
 
+func (v *DefaultEntityVisitor) VisitBinaryOutputWithState(x BinaryOutputWithState) interface{} {
+	if v.defaultVisitor != nil {
+		return v.defaultVisitor.VisitOutputWithState(x)
+	}
+	return nil
+}
+
 func (v *DefaultEntityVisitor) VisitBinkyNetCommandStation(x BinkyNetCommandStation) interface{} {
 	if v.defaultVisitor != nil {
 		return v.defaultVisitor.VisitCommandStation(x)
@@ -155,6 +162,10 @@ func (v *DefaultEntityVisitor) VisitMqttCommandStation(x MqttCommandStation) int
 }
 
 func (v *DefaultEntityVisitor) VisitOutput(x Output) interface{} {
+	return nil
+}
+
+func (v *DefaultEntityVisitor) VisitOutputWithState(x OutputWithState) interface{} {
 	return nil
 }
 

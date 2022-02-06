@@ -42,6 +42,8 @@ const (
 	TypeBinaryOutput      = "BinaryOutput"
 	TypeClock4StageOutput = "Clock4StageOutput"
 
+	TypeBinaryOutputWithState = "BinaryOutputWithState"
+
 	TypeBinarySensor = "BinarySensor"
 
 	TypeLocAndPredicate                = "LocAndPredicate"

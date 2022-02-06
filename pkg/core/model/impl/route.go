@@ -41,6 +41,7 @@ type routeFields struct {
 	Closed                     *bool                `xml:"Closed"`
 	Events                     routeEventSet        `xml:"Events"`
 	CrossingJunctions          junctionWithStateSet `xml:"CrossingJunctions"`
+	Outputs                    outputWithStateSet   `xml:"Outputs"`
 	Permissions                locStandardPredicate `xml:"Permissions"`
 	EnteringDestinationTrigger actionTrigger        `xml:"EnteringDestinationTrigger"`
 	DestinationReachedTrigger  actionTrigger        `xml:"DestinationReachedTrigger"`
@@ -49,6 +50,7 @@ type routeFields struct {
 func (rf *routeFields) SetRoute(r *route) {
 	rf.Events.SetContainer(r)
 	rf.CrossingJunctions.SetContainer(r)
+	rf.Outputs.SetContainer(r)
 	rf.Permissions.SetContainer(r)
 	rf.EnteringDestinationTrigger.Initialize(r, "Entering destination")
 	rf.DestinationReachedTrigger.Initialize(r, "Destination reached")
@@ -151,6 +153,11 @@ func (r *route) SetToBlockSide(value model.BlockSide) error {
 // Set of junctions with their states that are crossed when taking this route.
 func (r *route) GetCrossingJunctions() model.JunctionWithStateSet {
 	return &r.CrossingJunctions
+}
+
+// Set of outputs with their states that are set when taking this route.
+func (r *route) GetOutputs() model.OutputWithStateSet {
+	return &r.Outputs
 }
 
 // Set of events that change the state of the route and it's running loc.

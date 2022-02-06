@@ -72,6 +72,9 @@ type Route interface {
 	// Does this route contains the given junction
 	ContainsJunction(context.Context, Junction) bool
 
+	// Does this route contains the given output
+	ContainsOutput(context.Context, Output) bool
+
 	// Gets the number of sensors that are listed as entering/reached sensor of this route.
 	GetSensorCount(context.Context) int
 	// Gets all sensors that are listed as entering/reached sensor of this route.

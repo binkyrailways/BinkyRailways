@@ -20,13 +20,11 @@ package model
 // EntityVisitor builds the visitor pattern.
 type EntityVisitor interface {
 	VisitAction(Action) interface{}
-	VisitBinaryOutput(BinaryOutput) interface{}
 	VisitBinarySensor(BinarySensor) interface{}
 	VisitBinkyNetCommandStation(BinkyNetCommandStation) interface{}
 	VisitBlock(Block) interface{}
 	VisitBlockGroup(BlockGroup) interface{}
 	VisitBlockSignal(BlockSignal) interface{}
-	VisitClock4StageOutput(Clock4StageOutput) interface{}
 	VisitCommandStation(CommandStation) interface{}
 	VisitCommandStationRef(CommandStationRef) interface{}
 	VisitDccOverRs232CommandStation(DccOverRs232CommandStation) interface{}
@@ -42,7 +40,6 @@ type EntityVisitor interface {
 	VisitModuleConnection(ModuleConnection) interface{}
 	VisitModuleRef(ModuleRef) interface{}
 	VisitMqttCommandStation(MqttCommandStation) interface{}
-	VisitOutput(Output) interface{}
 	VisitP50xCommandStation(P50xCommandStation) interface{}
 	VisitRailway(Railway) interface{}
 	VisitRoute(Route) interface{}
@@ -51,6 +48,13 @@ type EntityVisitor interface {
 	VisitSensor(Sensor) interface{}
 	VisitSignal(Signal) interface{}
 	VisitVirtualCommandStation(VirtualCommandStation) interface{}
+
+	// Outputs
+	VisitOutput(Output) interface{}
+	VisitOutputWithState(OutputWithState) interface{}
+	VisitBinaryOutput(BinaryOutput) interface{}
+	VisitBinaryOutputWithState(BinaryOutputWithState) interface{}
+	VisitClock4StageOutput(Clock4StageOutput) interface{}
 
 	// Junctions
 	VisitJunction(Junction) interface{}

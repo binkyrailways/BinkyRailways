@@ -39,6 +39,7 @@ type route struct {
 	to                Block
 	events            []RouteEvent
 	crossingJunctions []JunctionWithState
+	outputs           []OutputWithState
 	permissions       locPredicate
 	csr               *criticalSectionRoutes
 }
@@ -108,6 +109,19 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 			multierr.AppendInto(&merr, err)
 		} else {
 			r.crossingJunctions = append(r.crossingJunctions, jwsImpl)
+		}
+	})
+	if merr != nil {
+		return merr
+	}
+
+	// Construct outputs
+	r.getRoute().GetOutputs().ForEach(func(ows model.OutputWithState) {
+		owsImpl, err := newOutputWithState(ctx, ows, rw)
+		if err != nil {
+			multierr.AppendInto(&merr, err)
+		} else {
+			r.outputs = append(r.outputs, owsImpl)
 		}
 	})
 	if merr != nil {
@@ -252,6 +266,17 @@ func (r *route) ContainsJunction(ctx context.Context, j state.Junction) bool {
 	return false
 }
 
+// Does this route contains the given output
+func (r *route) ContainsOutput(ctx context.Context, o state.Output) bool {
+	oImpl, _ := o.(Output)
+	for _, ows := range r.outputs {
+		if ows.Contains(ctx, oImpl) {
+			return true
+		}
+	}
+	return false
+}
+
 // Gets all sensors that are listed as entering/reached sensor of this route.
 func (r *route) ForEachSensor(ctx context.Context, cb func(state.Sensor)) {
 	for _, x := range r.events {
@@ -296,11 +321,19 @@ func (r *route) Prepare(ctx context.Context) {
 	for _, jws := range r.crossingJunctions {
 		jws.Prepare(ctx)
 	}
+	for _, jws := range r.outputs {
+		jws.Prepare(ctx)
+	}
 }
 
 // Are all junctions set in the state required by this route?
 func (r *route) GetIsPrepared(ctx context.Context) bool {
 	for _, jws := range r.crossingJunctions {
+		if !jws.GetIsPrepared(ctx) {
+			return false
+		}
+	}
+	for _, jws := range r.outputs {
 		if !jws.GetIsPrepared(ctx) {
 			return false
 		}
