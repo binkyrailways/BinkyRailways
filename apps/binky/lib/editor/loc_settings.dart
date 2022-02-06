@@ -168,8 +168,28 @@ class _LocSettingsState extends State<_LocSettings> {
                 var update = loc.deepCopy()..maximumSpeed = int.parse(value);
                 widget.model.updateLoc(update);
               }),
+          SettingsDropdownField<ChangeDirection>(
+            label: "Change direction",
+            value: widget.loc.changeDirection,
+            onChanged: (value) async {
+              if (value != null) {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..changeDirection = value;
+                widget.model.updateLoc(update);
+              }
+            },
+            items: _changeDirectionItems,
+          ),
         ],
       ),
     );
   }
+
+  static final List<DropdownMenuItem<ChangeDirection>> _changeDirectionItems =
+      ChangeDirection.values
+          .map((e) => DropdownMenuItem<ChangeDirection>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }
