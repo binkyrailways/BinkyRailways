@@ -26,5 +26,5 @@ class BinkyColors {
 
   // Sensor
   static const Color activeSensorBg = Colors.green;
-  static const Color inactiveSensorBg = Colors.blueGrey;
+  static final Color inactiveSensorBg = Colors.blueGrey.withAlpha(64);
 }

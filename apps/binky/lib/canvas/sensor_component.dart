@@ -45,7 +45,7 @@ class SensorComponent extends EntityComponent {
 
     // Clip rrect
     final backgroundPaint = Paint()..color = backgroundColor();
-    final borderPaint = Paint()..color = Colors.black;
+    final borderPaint = Paint()..color = Colors.black.withAlpha(64);
     borderPaint.style = PaintingStyle.stroke;
     switch (model.shape) {
       case mapi.Shape.CIRCLE:
