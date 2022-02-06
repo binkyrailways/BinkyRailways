@@ -479,6 +479,17 @@ func (r *railway) GetRouteCount(context.Context) int {
 	return len(r.routes)
 }
 
+// Gets the state of the route with given ID.
+// Returns nil if not found
+func (r *railway) GetRoute(id string) (state.Route, error) {
+	for _, x := range r.routes {
+		if x.GetID() == id {
+			return x, nil
+		}
+	}
+	return nil, nil
+}
+
 // Gets the states of all sensors in this railway
 func (r *railway) ForEachSensor(cb func(state.Sensor)) {
 	for _, x := range r.sensors {

@@ -102,6 +102,9 @@ type Railway interface {
 	ForEachRoute(func(Route))
 	// Get the number of routes
 	GetRouteCount(context.Context) int
+	// Gets the state of the route with given ID.
+	// Returns nil if not found
+	GetRoute(id string) (Route, error)
 
 	// Gets the states of all sensors in this railway
 	ForEachSensor(func(Sensor))
