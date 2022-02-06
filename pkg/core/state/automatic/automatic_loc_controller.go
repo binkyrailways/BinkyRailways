@@ -384,17 +384,11 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 /// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
 /// <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
 /// <returns>Null if not route is available.</returns>
-func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Loc, fromBlock state.Block, locDirection model.BlockSide, avoidDirectionChanges bool) state.Route {
-	// Gather possible routes.
+func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Loc, currentRoute state.Route, fromBlock state.Block, locDirection model.BlockSide, avoidDirectionChanges bool) state.Route {
+	// Gather all non-closed routes from given from-block
 	routeFromFromBlock := getAllPossibleNonClosedRoutesFromBlock(fromBlock)
-	if true {
-		allRoutesFromFromBlock := routeFromFromBlock.GetRoutes(ctx, alc.railway)
-		alc.log.Debug().
-			Int("routeFromFromBlock", len(allRoutesFromFromBlock)).
-			Str("fromBlock", fromBlock.GetDescription()).
-			Msg("routeFromFromBlock")
-	}
-	routeOptions := routeFromFromBlock.And(func(ctx context.Context, r state.Route) bool {
+	// Filter out routes that are currently not available (for any reason)
+	possibleRouteOptions := routeFromFromBlock.And(func(ctx context.Context, r state.Route) bool {
 		ro := alc.routeAvailabilityTester.IsAvailableFor(ctx, r, loc, locDirection, avoidDirectionChanges)
 		alc.log.Debug().
 			Str("loc", loc.GetDescription()).
@@ -404,7 +398,29 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 			Msg("Route availability result")
 		return ro.IsPossible
 	})
-	possibleRoutes := routeOptions.GetRoutes(ctx, alc.railway)
+	// Filter out routes that have a conflicting output against the current route
+	locState := loc.GetAutomaticState().GetActual(ctx)
+	routeOptionsWithoutConflictingOutputs := possibleRouteOptions.And(func(ctx context.Context, r state.Route) bool {
+		if currentRoute == nil {
+			// No conflict because there is no current route
+			return true
+		}
+		if locState >= state.EnterSensorActivated {
+			// Loc is already reached destination (or further).
+			// We no longer care about conflicting outputs
+			return true
+		}
+		hasConflictingOutput := false
+		r.GetModel().GetOutputs().ForEach(func(ows model.OutputWithState) {
+			if !hasConflictingOutput {
+				if currentRoute.HasConflictingOutput(ctx, ows) {
+					hasConflictingOutput = true
+				}
+			}
+		})
+		return !hasConflictingOutput
+	})
+	possibleRoutes := routeOptionsWithoutConflictingOutputs.GetRoutes(ctx, alc.railway)
 	//loc.LastRouteOptions.Actual = routeOptions.ToArray()
 	// TODO ^^
 
@@ -458,7 +474,7 @@ func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc stat
 	}
 
 	// The loc can continue (if a free route is found)
-	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute().GetTo(ctx), route.GetRoute().GetToBlockSide(ctx).Invert(), true)
+	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute(), route.GetRoute().GetTo(ctx), route.GetRoute().GetToBlockSide(ctx).Invert(), true)
 	if nextRoute == nil {
 		// No route available
 		return false
@@ -522,8 +538,15 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 			return time.Minute
 		}
 
+		// Get current route
+		currentRouteForLoc := loc.GetCurrentRoute().GetActual(ctx)
+		var currentRoute state.Route
+		if currentRouteForLoc != nil {
+			currentRoute = currentRouteForLoc.GetRoute()
+		}
+
 		// Choose a next route now
-		route = alc.chooseRoute(ctx, loc, block, loc.GetCurrentBlockEnterSide().GetActual(ctx).Invert(), false)
+		route = alc.chooseRoute(ctx, loc, currentRoute, block, loc.GetCurrentBlockEnterSide().GetActual(ctx).Invert(), false)
 	}
 	if route == nil {
 		// No possible routes right now, try again

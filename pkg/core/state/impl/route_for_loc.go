@@ -60,11 +60,17 @@ func newRouteForLoc(ctx context.Context, loc state.Loc, route Route) RouteForLoc
 
 // Gets the loc for which this route state is
 func (rs *routeForLoc) GetLoc() state.Loc {
+	if rs == nil {
+		return nil
+	}
 	return rs.loc
 }
 
 // Gets the underlying route state
 func (rs *routeForLoc) GetRoute() state.Route {
+	if rs == nil {
+		return nil
+	}
 	return rs.route
 }
 

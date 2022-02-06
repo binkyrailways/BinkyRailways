@@ -22,6 +22,7 @@ import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 // Output specifies the state of a single output
 type Output interface {
 	ModuleEntity
+	Lockable
 
 	// Gets the underlying model
 	GetModel() model.Output

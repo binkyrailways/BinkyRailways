@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
 
@@ -43,9 +44,21 @@ func (ows *binaryOutputWithState) Contains(ctx context.Context, j Output) bool {
 	return ows.Output == j
 }
 
+// Returns true if this route has an output with a different state than the given state.
+func (ows *binaryOutputWithState) ConflictingsWith(ctx context.Context, target model.OutputWithState) bool {
+	if ows.Output.GetID() != target.GetID() {
+		// Different output
+		return false
+	}
+	bows, ok := target.(model.BinaryOutputWithState)
+	if !ok {
+		// Different type of OutputWithState
+		return false
+	}
+	return ows.Active != bows.GetActive()
+}
+
 // Gets all entities that must be locked in order to lock me.
 func (ows *binaryOutputWithState) ForEachUnderlyingLockableEntities(ctx context.Context, cb func(state.Lockable) error) error {
-	// TODO
-	return nil
-	//return cb(ows.Output)
+	return cb(ows.Output)
 }

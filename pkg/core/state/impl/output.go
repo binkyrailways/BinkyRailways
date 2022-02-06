@@ -18,6 +18,8 @@
 package impl
 
 import (
+	"context"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -30,6 +32,7 @@ type Output interface {
 
 type output struct {
 	entity
+	lockable
 }
 
 // Create a new entity
@@ -37,6 +40,9 @@ func newOutput(en model.Output, railway Railway) output {
 	s := output{
 		entity: newEntity(railway.Logger().With().Str("output", en.GetDescription()).Logger(), en, railway),
 	}
+	s.lockable = newLockable(railway, func(ctx context.Context, f func(state.Lockable) error) error {
+		return nil
+	})
 	return s
 }
 

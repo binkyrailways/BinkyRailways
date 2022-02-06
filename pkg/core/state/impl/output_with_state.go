@@ -36,6 +36,9 @@ type OutputWithState interface {
 	// Does this route contains the given output
 	Contains(context.Context, Output) bool
 
+	// Returns true if this route has an output with a different state than the given state.
+	ConflictingsWith(context.Context, model.OutputWithState) bool
+
 	// Gets all entities that must be locked in order to lock me.
 	ForEachUnderlyingLockableEntities(context.Context, func(state.Lockable) error) error
 }

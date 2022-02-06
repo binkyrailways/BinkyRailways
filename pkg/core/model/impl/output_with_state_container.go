@@ -39,7 +39,7 @@ func (oc *OutputWithStateContainer) UnmarshalXML(d *xml.Decoder, start xml.Start
 	// Create correct entity based on type
 	var ows OutputWithState
 	switch a.Value {
-	case TypeBinaryOutput:
+	case TypeBinaryOutputWithState:
 		ows = newBinaryOutputWithState()
 	default:
 		return fmt.Errorf("Unknown type: '%s'", a.Value)

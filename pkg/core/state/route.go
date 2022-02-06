@@ -75,6 +75,9 @@ type Route interface {
 	// Does this route contains the given output
 	ContainsOutput(context.Context, Output) bool
 
+	// Returns true if this route has an output with a different state than the given state.
+	HasConflictingOutput(context.Context, model.OutputWithState) bool
+
 	// Gets the number of sensors that are listed as entering/reached sensor of this route.
 	GetSensorCount(context.Context) int
 	// Gets all sensors that are listed as entering/reached sensor of this route.

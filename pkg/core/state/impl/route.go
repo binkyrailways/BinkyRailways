@@ -60,6 +60,9 @@ func newRoute(en model.Route, railway Railway) Route {
 		for _, jws := range r.crossingJunctions {
 			jws.ForEachUnderlyingLockableEntities(ctx, cb)
 		}
+		for _, ows := range r.outputs {
+			ows.ForEachUnderlyingLockableEntities(ctx, cb)
+		}
 		return nil
 	})
 	var err error
@@ -277,6 +280,16 @@ func (r *route) ContainsOutput(ctx context.Context, o state.Output) bool {
 	return false
 }
 
+// Returns true if this route has an output with a different state than the given state.
+func (r *route) HasConflictingOutput(ctx context.Context, target model.OutputWithState) bool {
+	for _, ows := range r.outputs {
+		if ows.ConflictingsWith(ctx, target) {
+			return true
+		}
+	}
+	return false
+}
+
 // Gets all sensors that are listed as entering/reached sensor of this route.
 func (r *route) ForEachSensor(ctx context.Context, cb func(state.Sensor)) {
 	for _, x := range r.events {
@@ -333,8 +346,8 @@ func (r *route) GetIsPrepared(ctx context.Context) bool {
 			return false
 		}
 	}
-	for _, jws := range r.outputs {
-		if !jws.GetIsPrepared(ctx) {
+	for _, ows := range r.outputs {
+		if !ows.GetIsPrepared(ctx) {
 			return false
 		}
 	}
