@@ -64,8 +64,10 @@ func NewAutomaticLocController(railway railway, log zerolog.Logger) (state.Autom
 	railway.ForEachJunction(func(junction state.Junction) {
 		if sw, ok := junction.(state.Switch); ok {
 			sw.GetDirection().SubscribeActualChanges(func(ctx context.Context, dir model.SwitchDirection) {
+
 				//alc.requestUpdate()
 				// TODOs
+				alc.trigger.Trigger()
 			})
 		}
 	})
@@ -113,7 +115,7 @@ func (alc *automaticLocController) run() {
 	}()
 	sensorActiveChanged := make(chan state.Sensor, 32)
 	defer close(sensorActiveChanged)
-	cancel := alc.railway.Subscribe(context.Background(), func(evt state.Event) {
+	/*cancel := alc.railway.Subscribe(context.Background(), func(evt state.Event) {
 		switch evt := evt.(type) {
 		case state.ActualStateChangedEvent:
 			log.Debug().Interface("event", evt).Msg("ActualStateChangedEvent")
@@ -122,7 +124,7 @@ func (alc *automaticLocController) run() {
 			}
 		}
 	})
-	defer cancel()
+	defer cancel()*/
 	delay := time.Second
 	for {
 		// Wait for trigger or heartbeat
