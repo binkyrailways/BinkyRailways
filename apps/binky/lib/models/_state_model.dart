@@ -141,6 +141,19 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<LocState> setLocFunctions(
+      String id, List<LocFunction> functions) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.setLocFunctions(SetLocFunctionsRequest(
+      id: id,
+      functions: functions,
+    ));
+    if (_locs.set(id, result)) {
+      notifyListeners();
+    }
+    return result;
+  }
+
   Future<LocState> setLocControlledAutomatically(
       String id, bool enabled) async {
     var stateClient = APIClient().stateClient();

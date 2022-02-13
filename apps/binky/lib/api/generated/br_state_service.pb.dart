@@ -559,6 +559,122 @@ class SetLocControlledAutomaticallyRequest extends $pb.GeneratedMessage {
   void clearEnabled() => clearField(2);
 }
 
+class SetLocFunctionsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetLocFunctionsRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..pc<LocFunction>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'functions', $pb.PbFieldType.PM, subBuilder: LocFunction.create)
+    ..hasRequiredFields = false
+  ;
+
+  SetLocFunctionsRequest._() : super();
+  factory SetLocFunctionsRequest({
+    $core.String? id,
+    $core.Iterable<LocFunction>? functions,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (functions != null) {
+      _result.functions.addAll(functions);
+    }
+    return _result;
+  }
+  factory SetLocFunctionsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetLocFunctionsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetLocFunctionsRequest clone() => SetLocFunctionsRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetLocFunctionsRequest copyWith(void Function(SetLocFunctionsRequest) updates) => super.copyWith((message) => updates(message as SetLocFunctionsRequest)) as SetLocFunctionsRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SetLocFunctionsRequest create() => SetLocFunctionsRequest._();
+  SetLocFunctionsRequest createEmptyInstance() => create();
+  static $pb.PbList<SetLocFunctionsRequest> createRepeated() => $pb.PbList<SetLocFunctionsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetLocFunctionsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetLocFunctionsRequest>(create);
+  static SetLocFunctionsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<LocFunction> get functions => $_getList(1);
+}
+
+class LocFunction extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocFunction', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'index', $pb.PbFieldType.O3)
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
+    ..hasRequiredFields = false
+  ;
+
+  LocFunction._() : super();
+  factory LocFunction({
+    $core.int? index,
+    $core.bool? value,
+  }) {
+    final _result = create();
+    if (index != null) {
+      _result.index = index;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
+  factory LocFunction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LocFunction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LocFunction clone() => LocFunction()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LocFunction copyWith(void Function(LocFunction) updates) => super.copyWith((message) => updates(message as LocFunction)) as LocFunction; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LocFunction create() => LocFunction._();
+  LocFunction createEmptyInstance() => create();
+  static $pb.PbList<LocFunction> createRepeated() => $pb.PbList<LocFunction>();
+  @$core.pragma('dart2js:noInline')
+  static LocFunction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LocFunction>(create);
+  static LocFunction? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get index => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set index($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIndex() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIndex() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get value => $_getBF(1);
+  @$pb.TagNumber(2)
+  set value($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
+}
+
 class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetSwitchDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')

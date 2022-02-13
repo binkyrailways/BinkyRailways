@@ -92,6 +92,28 @@ const SetLocControlledAutomaticallyRequest$json = const {
 
 /// Descriptor for `SetLocControlledAutomaticallyRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setLocControlledAutomaticallyRequestDescriptor = $convert.base64Decode('CiRTZXRMb2NDb250cm9sbGVkQXV0b21hdGljYWxseVJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhgKB2VuYWJsZWQYAiABKAhSB2VuYWJsZWQ=');
+@$core.Deprecated('Use setLocFunctionsRequestDescriptor instead')
+const SetLocFunctionsRequest$json = const {
+  '1': 'SetLocFunctionsRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'functions', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocFunction', '10': 'functions'},
+  ],
+};
+
+/// Descriptor for `SetLocFunctionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setLocFunctionsRequestDescriptor = $convert.base64Decode('ChZTZXRMb2NGdW5jdGlvbnNSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBI7CglmdW5jdGlvbnMYAiADKAsyHS5iaW5reXJhaWx3YXlzLnYxLkxvY0Z1bmN0aW9uUglmdW5jdGlvbnM=');
+@$core.Deprecated('Use locFunctionDescriptor instead')
+const LocFunction$json = const {
+  '1': 'LocFunction',
+  '2': const [
+    const {'1': 'index', '3': 1, '4': 1, '5': 5, '10': 'index'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 8, '10': 'value'},
+  ],
+};
+
+/// Descriptor for `LocFunction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List locFunctionDescriptor = $convert.base64Decode('CgtMb2NGdW5jdGlvbhIUCgVpbmRleBgBIAEoBVIFaW5kZXgSFAoFdmFsdWUYAiABKAhSBXZhbHVl');
 @$core.Deprecated('Use setSwitchDirectionRequestDescriptor instead')
 const SetSwitchDirectionRequest$json = const {
   '1': 'SetSwitchDirectionRequest',

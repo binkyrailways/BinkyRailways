@@ -76,6 +76,36 @@ func (s *service) SetLocControlledAutomatically(ctx context.Context, req *api.Se
 	return &result, nil
 }
 
+// Change functions of the loc.
+func (s *service) SetLocFunctions(ctx context.Context, req *api.SetLocFunctionsRequest) (*api.LocState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	locState, err := rwState.GetLoc(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	if locState == nil {
+		return nil, api.NotFound("Loc '%s'", req.GetId())
+	}
+	for _, lf := range req.GetFunctions() {
+		switch lf.GetIndex() {
+		case 0:
+			if err := locState.GetF0().SetRequested(ctx, lf.GetValue()); err != nil {
+				return nil, err
+			}
+		default:
+			return nil, api.InvalidArgument("Unknown function %s", lf.GetIndex())
+		}
+	}
+	var result api.LocState
+	if err := result.FromState(ctx, locState); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Assign a loc to a block
 func (s *service) AssignLocToBlock(ctx context.Context, req *api.AssignLocToBlockRequest) (*api.RailwayState, error) {
 	rwState, err := s.getRailwayState()

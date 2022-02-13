@@ -59,15 +59,34 @@ class LocPane extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     ),
-                    Slider(
-                      min: 0,
-                      max: locState.model.maximumSpeed.toDouble(),
-                      value: locState.speedRequested.toDouble(),
-                      label: locState.speedText,
-                      onChanged: (value) async {
-                        await state.setLocSpeedAndDirection(
-                            id, value.toInt(), locState.directionRequested);
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Slider(
+                            min: 0,
+                            max: locState.model.maximumSpeed.toDouble(),
+                            value: locState.speedRequested.toDouble(),
+                            label: locState.speedText,
+                            onChanged: (value) async {
+                              await state.setLocSpeedAndDirection(id,
+                                  value.toInt(), locState.directionRequested);
+                            },
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Icon(
+                            Icons.light_mode,
+                            color:
+                                locState.f0Actual ? Colors.yellow : Colors.grey,
+                          ),
+                          onTap: () async {
+                            await state.setLocFunctions(id, [
+                              LocFunction(
+                                  index: 0, value: !locState.f0Requested)
+                            ]);
+                          },
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
