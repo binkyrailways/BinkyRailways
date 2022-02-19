@@ -382,3 +382,35 @@ func (p *actualRouteForLocProperty) SubscribeActualChanges(cb func(context.Conte
 		return nil
 	})
 }
+
+// actualRouteOptionsProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualRouteOptionsProperty struct {
+	propertyBase
+	actual        state.RouteOptions
+	actualChanges []func(context.Context, state.RouteOptions)
+}
+
+func (p *actualRouteOptionsProperty) GetActual(ctx context.Context) state.RouteOptions {
+	return p.actual
+}
+func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.RouteOptions) error {
+	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+		if !p.actual.Equals(value) {
+			p.actual = value
+			for _, cb := range p.actualChanges {
+				cb(ctx, value)
+			}
+			p.SendActualStateChanged()
+		}
+		return nil
+	})
+}
+
+// Subscribe to actual changes
+func (p *actualRouteOptionsProperty) SubscribeActualChanges(cb func(context.Context, state.RouteOptions)) {
+	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+		p.actualChanges = append(p.actualChanges, cb)
+		return nil
+	})
+}

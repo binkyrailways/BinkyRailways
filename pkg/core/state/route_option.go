@@ -59,3 +59,11 @@ func (ro RouteOption) GetReasonDescription() string {
 func (ro RouteOption) String() string {
 	return fmt.Sprintf("%s - %s", ro.Route.GetDescription(), ro.GetReasonDescription())
 }
+
+// Equals returns true if the given route options have the same values.
+func (ro RouteOption) Equals(other RouteOption) bool {
+	return ro.Route == other.Route &&
+		ro.IsPossible == other.IsPossible &&
+		ro.Reason == other.Reason &&
+		ro.Extra == other.Extra
+}

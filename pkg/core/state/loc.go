@@ -105,7 +105,7 @@ type Loc interface {
 	GetStartNextRouteTime() ActualTimeProperty
 
 	// Route options as considered last by the automatic train controller.
-	//IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
+	GetLastRouteOptions() ActualRouteOptionsProperty
 
 	// Gets/sets a selector used to select the next route from a list of possible routes.
 	// If no route selector is set, a default will be created.
@@ -169,7 +169,7 @@ type Loc interface {
 
 	// Gets zero or more blocks that were recently visited by this loc.
 	// The first block was last visited.
-	ForEachRecentlyVisitedBlock(context.Context, func(Block))
+	ForEachRecentlyVisitedBlock(context.Context, func(context.Context, Block) error) error
 
 	// Behavior of the last event triggered by this loc.
 	GetLastEventBehavior(ctx context.Context) RouteEventBehavior

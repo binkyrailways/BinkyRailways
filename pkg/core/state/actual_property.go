@@ -148,3 +148,15 @@ type ActualRouteForLocProperty interface {
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, RouteForLoc))
 }
+
+// ActualRouteOptionsProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type ActualRouteOptionsProperty interface {
+	ActualProperty
+
+	// Gets / sets the actual value
+	GetActual(context.Context) RouteOptions
+	SetActual(context.Context, RouteOptions) error
+	// Subscribe to actual changes
+	SubscribeActualChanges(func(context.Context, RouteOptions))
+}

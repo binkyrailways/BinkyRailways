@@ -58,11 +58,13 @@ type loc struct {
 	f0                              boolProperty
 	controlledAutomatically         boolProperty
 	currentRoute                    actualRouteForLocProperty
+	lastRouteOptions                actualRouteOptionsProperty
 	lockedEntities                  []Lockable
 	lastEventBehavior               state.RouteEventBehavior
 	routeSelector                   state.RouteSelector
 	beforeReset                     []func(context.Context)
 	afterReset                      []func(context.Context)
+	recentlyVisitedBlocks           *recentlyVisitedBlocks
 }
 
 // Create a new entity
@@ -77,6 +79,7 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.currentBlock.Configure(&l.currentBlock, l, railway, railway)
 	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, l, railway, railway)
 	l.startNextRouteTime.Configure(&l.startNextRouteTime, l, railway, railway)
+	l.lastRouteOptions.Configure(&l.lastRouteOptions, l, railway, railway)
 	l.speed.loc = l
 	l.speedInSteps.Configure(l, railway, railway)
 	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
@@ -99,6 +102,7 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	})
 	l.controlledAutomatically.Configure(l, railway, railway)
 	l.currentRoute.Configure(l.currentRoute, l, railway, railway)
+	l.recentlyVisitedBlocks = newRecentlyVisitedBlocks(railway)
 	return l
 }
 
@@ -257,7 +261,9 @@ func (l *loc) GetStartNextRouteTime() state.ActualTimeProperty {
 }
 
 // Route options as considered last by the automatic train controller.
-//IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
+func (l *loc) GetLastRouteOptions() state.ActualRouteOptionsProperty {
+	return &l.lastRouteOptions
+}
 
 // Gets/sets a selector used to select the next route from a list of possible routes.
 // If no route selector is set, a default will be created.
@@ -466,8 +472,8 @@ func (l *loc) PersistState(ctx context.Context) {
 
 // Gets zero or more blocks that were recently visited by this loc.
 // The first block was last visited.
-func (l *loc) ForEachRecentlyVisitedBlock(ctx context.Context, cb func(state.Block)) {
-	// TODO
+func (l *loc) ForEachRecentlyVisitedBlock(ctx context.Context, cb func(context.Context, state.Block) error) error {
+	return l.recentlyVisitedBlocks.ForEach(ctx, cb)
 }
 
 // Get behavior of the last event triggered by this loc.

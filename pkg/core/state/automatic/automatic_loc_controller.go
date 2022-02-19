@@ -390,6 +390,7 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 	// Gather all non-closed routes from given from-block
 	routeFromFromBlock := getAllPossibleNonClosedRoutesFromBlock(fromBlock)
 	// Filter out routes that are currently not available (for any reason)
+	var routeOptions []state.RouteOption
 	possibleRouteOptions := routeFromFromBlock.And(func(ctx context.Context, r state.Route) bool {
 		ro := alc.routeAvailabilityTester.IsAvailableFor(ctx, r, loc, locDirection, avoidDirectionChanges)
 		alc.log.Debug().
@@ -398,6 +399,7 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 			Bool("available", ro.IsPossible).
 			Str("reason", ro.GetReasonDescription()).
 			Msg("Route availability result")
+		routeOptions = append(routeOptions, ro)
 		return ro.IsPossible
 	})
 	// Filter out routes that have a conflicting output against the current route
@@ -423,8 +425,7 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 		return !hasConflictingOutput
 	})
 	possibleRoutes := routeOptionsWithoutConflictingOutputs.GetRoutes(ctx, alc.railway)
-	//loc.LastRouteOptions.Actual = routeOptions.ToArray()
-	// TODO ^^
+	loc.GetLastRouteOptions().SetActual(ctx, routeOptions)
 
 	if len(possibleRoutes) > 0 {
 		// Use the route selector to choose a next route
