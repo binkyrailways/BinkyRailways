@@ -19,6 +19,7 @@ package cmd
 
 import (
 	"context"
+	"os"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
@@ -36,16 +37,23 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app    service.Config
-		server server.Config
+		app     service.Config
+		server  server.Config
+		logFile string
 	}
-	cliLog = zerolog.New(zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
-		w.TimeFormat = "15:04:05"
-	})).With().Timestamp().Logger()
+	cliLog = zerolog.New(newConsoleWriter()).With().Timestamp().Logger()
 )
+
+func newConsoleWriter() zerolog.ConsoleWriter {
+	return zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
+		w.TimeFormat = "15:04:05"
+	})
+}
 
 func init() {
 	f := RootCmd.Flags()
+	// Log arguments
+	f.StringVar(&rootArgs.logFile, "logfile", "./binkyrailways.log", "Path of log file")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
@@ -65,6 +73,18 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	if len(args) == 1 && rootArgs.app.RailwayPath == "" {
 		rootArgs.app.RailwayPath = args[0]
 	}
+
+	// Setup log file
+	logFile, err := os.Create(rootArgs.logFile)
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("Failed to open log file")
+	}
+	defer logFile.Close()
+	logWriter := zerolog.MultiLevelWriter(
+		newConsoleWriter(),
+		logFile,
+	)
+	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
 	// Construct the service
 	svc := service.New(rootArgs.app, service.Dependencies{

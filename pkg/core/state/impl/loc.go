@@ -95,6 +95,8 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	})
 	l.reversing.Configure(l.reversing, l, railway, railway)
 	l.f0.Configure(l, railway, railway)
+	l.f0.SetActual(context.Background(), true)
+	l.f0.SetRequested(context.Background(), true)
 	l.f0.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
@@ -103,6 +105,9 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.controlledAutomatically.Configure(l, railway, railway)
 	l.currentRoute.Configure(l.currentRoute, l, railway, railway)
 	l.recentlyVisitedBlocks = newRecentlyVisitedBlocks(railway)
+	l.currentBlock.SubscribeActualChanges(func(ctx context.Context, b state.Block) {
+		l.recentlyVisitedBlocks.Insert(ctx, b)
+	})
 	return l
 }
 
