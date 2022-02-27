@@ -72,6 +72,9 @@ service StateService {
 
   // Set the closed status of a block
   rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
+
+  // Trigger a hardware discovery request
+  rpc DiscoverHardware(DiscoverHardwareRequest) returns (DiscoverHardwareResponse);
 }
 
 // Request arguments for EnableRunMode.
@@ -186,4 +189,13 @@ message SetBlockClosedRequest {
   string id = 1;
   // Requested closed status
   bool closed = 2;
+}
+
+message DiscoverHardwareRequest {
+  // ID of the hardware module to trigger discovery on.
+  string hardware_module_id = 1;
+}
+
+message DiscoverHardwareResponse {
+  // Nothing yet
 }

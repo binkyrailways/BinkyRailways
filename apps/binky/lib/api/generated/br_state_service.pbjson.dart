@@ -179,3 +179,20 @@ const SetBlockClosedRequest$json = const {
 
 /// Descriptor for `SetBlockClosedRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setBlockClosedRequestDescriptor = $convert.base64Decode('ChVTZXRCbG9ja0Nsb3NlZFJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhYKBmNsb3NlZBgCIAEoCFIGY2xvc2Vk');
+@$core.Deprecated('Use discoverHardwareRequestDescriptor instead')
+const DiscoverHardwareRequest$json = const {
+  '1': 'DiscoverHardwareRequest',
+  '2': const [
+    const {'1': 'hardware_module_id', '3': 1, '4': 1, '5': 9, '10': 'hardwareModuleId'},
+  ],
+};
+
+/// Descriptor for `DiscoverHardwareRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List discoverHardwareRequestDescriptor = $convert.base64Decode('ChdEaXNjb3ZlckhhcmR3YXJlUmVxdWVzdBIsChJoYXJkd2FyZV9tb2R1bGVfaWQYASABKAlSEGhhcmR3YXJlTW9kdWxlSWQ=');
+@$core.Deprecated('Use discoverHardwareResponseDescriptor instead')
+const DiscoverHardwareResponse$json = const {
+  '1': 'DiscoverHardwareResponse',
+};
+
+/// Descriptor for `DiscoverHardwareResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List discoverHardwareResponseDescriptor = $convert.base64Decode('ChhEaXNjb3ZlckhhcmR3YXJlUmVzcG9uc2U=');

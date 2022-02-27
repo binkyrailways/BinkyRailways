@@ -16,7 +16,9 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../models.dart';
 import '../api.dart';
 
 class HardwareModulePane extends StatelessWidget {
@@ -40,7 +42,10 @@ class HardwareModulePane extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
         child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
-        onPressed: () {},
+        onPressed: () async {
+          final stateModel = Provider.of<StateModel>(context, listen: false);
+          await stateModel.discoverHardware(hardwareModule.id);
+        },
       ),
     );
   }

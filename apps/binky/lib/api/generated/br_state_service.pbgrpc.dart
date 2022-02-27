@@ -91,6 +91,12 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/SetBlockClosed',
           ($3.SetBlockClosedRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.BlockState.fromBuffer(value));
+  static final _$discoverHardware = $grpc.ClientMethod<
+          $3.DiscoverHardwareRequest, $3.DiscoverHardwareResponse>(
+      '/binkyrailways.v1.StateService/DiscoverHardware',
+      ($3.DiscoverHardwareRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $3.DiscoverHardwareResponse.fromBuffer(value));
 
   StateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -186,6 +192,12 @@ class StateServiceClient extends $grpc.Client {
       $3.SetBlockClosedRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setBlockClosed, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$3.DiscoverHardwareResponse> discoverHardware(
+      $3.DiscoverHardwareRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$discoverHardware, request, options: options);
   }
 }
 
@@ -316,6 +328,15 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $3.SetBlockClosedRequest.fromBuffer(value),
         ($2.BlockState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.DiscoverHardwareRequest,
+            $3.DiscoverHardwareResponse>(
+        'DiscoverHardware',
+        discoverHardware_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $3.DiscoverHardwareRequest.fromBuffer(value),
+        ($3.DiscoverHardwareResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$2.RailwayState> getRailwayState_Pre(
@@ -395,6 +416,12 @@ abstract class StateServiceBase extends $grpc.Service {
     return setBlockClosed(call, await request);
   }
 
+  $async.Future<$3.DiscoverHardwareResponse> discoverHardware_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$3.DiscoverHardwareRequest> request) async {
+    return discoverHardware(call, await request);
+  }
+
   $async.Future<$2.RailwayState> getRailwayState(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.RailwayState> enableRunMode(
@@ -425,4 +452,6 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.TakeLocOfTrackRequest request);
   $async.Future<$2.BlockState> setBlockClosed(
       $grpc.ServiceCall call, $3.SetBlockClosedRequest request);
+  $async.Future<$3.DiscoverHardwareResponse> discoverHardware(
+      $grpc.ServiceCall call, $3.DiscoverHardwareRequest request);
 }

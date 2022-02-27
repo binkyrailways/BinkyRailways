@@ -16,6 +16,8 @@
 //
 //
 
+import 'dart:ffi';
+
 import '../api.dart';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
@@ -58,6 +60,14 @@ class StateModel extends ChangeNotifier {
       notifyListeners();
     }
     return _railwayState!;
+  }
+
+  Future<DiscoverHardwareResponse> discoverHardware(
+      String hardwareModuleID) async {
+    var stateClient = APIClient().stateClient();
+    return await stateClient.discoverHardware(DiscoverHardwareRequest(
+      hardwareModuleId: hardwareModuleID,
+    ));
   }
 
   // Enable run mode

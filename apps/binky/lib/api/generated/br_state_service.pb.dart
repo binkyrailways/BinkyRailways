@@ -1027,3 +1027,79 @@ class SetBlockClosedRequest extends $pb.GeneratedMessage {
   void clearClosed() => clearField(2);
 }
 
+class DiscoverHardwareRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DiscoverHardwareRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareModuleId')
+    ..hasRequiredFields = false
+  ;
+
+  DiscoverHardwareRequest._() : super();
+  factory DiscoverHardwareRequest({
+    $core.String? hardwareModuleId,
+  }) {
+    final _result = create();
+    if (hardwareModuleId != null) {
+      _result.hardwareModuleId = hardwareModuleId;
+    }
+    return _result;
+  }
+  factory DiscoverHardwareRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DiscoverHardwareRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DiscoverHardwareRequest clone() => DiscoverHardwareRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DiscoverHardwareRequest copyWith(void Function(DiscoverHardwareRequest) updates) => super.copyWith((message) => updates(message as DiscoverHardwareRequest)) as DiscoverHardwareRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static DiscoverHardwareRequest create() => DiscoverHardwareRequest._();
+  DiscoverHardwareRequest createEmptyInstance() => create();
+  static $pb.PbList<DiscoverHardwareRequest> createRepeated() => $pb.PbList<DiscoverHardwareRequest>();
+  @$core.pragma('dart2js:noInline')
+  static DiscoverHardwareRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DiscoverHardwareRequest>(create);
+  static DiscoverHardwareRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get hardwareModuleId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set hardwareModuleId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasHardwareModuleId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearHardwareModuleId() => clearField(1);
+}
+
+class DiscoverHardwareResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DiscoverHardwareResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  DiscoverHardwareResponse._() : super();
+  factory DiscoverHardwareResponse() => create();
+  factory DiscoverHardwareResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DiscoverHardwareResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DiscoverHardwareResponse clone() => DiscoverHardwareResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DiscoverHardwareResponse copyWith(void Function(DiscoverHardwareResponse) updates) => super.copyWith((message) => updates(message as DiscoverHardwareResponse)) as DiscoverHardwareResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static DiscoverHardwareResponse create() => DiscoverHardwareResponse._();
+  DiscoverHardwareResponse createEmptyInstance() => create();
+  static $pb.PbList<DiscoverHardwareResponse> createRepeated() => $pb.PbList<DiscoverHardwareResponse>();
+  @$core.pragma('dart2js:noInline')
+  static DiscoverHardwareResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DiscoverHardwareResponse>(create);
+  static DiscoverHardwareResponse? _defaultInstance;
+}
+

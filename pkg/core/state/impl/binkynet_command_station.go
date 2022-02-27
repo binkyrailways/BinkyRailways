@@ -109,11 +109,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		defer cancel()
 		for {
 			select {
-			case update := <-updates:
-				cs.log.Debug().
-					Str("id", update.Id).
-					Int64("uptime", update.Uptime).
-					Msg("local worker update")
+			case <-updates:
 				cs.railway.Send(state.ActualStateChangedEvent{
 					Subject: cs,
 				})
