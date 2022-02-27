@@ -74,9 +74,11 @@ type actualBoolProperty struct {
 func (p *actualBoolProperty) GetActual(ctx context.Context) bool {
 	return p.actual
 }
-func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -85,6 +87,7 @@ func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) error {
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -106,9 +109,11 @@ type actualIntProperty struct {
 func (p *actualIntProperty) GetActual(ctx context.Context) int {
 	return p.actual
 }
-func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualIntProperty) SetActual(ctx context.Context, value int) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -117,6 +122,7 @@ func (p *actualIntProperty) SetActual(ctx context.Context, value int) error {
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -138,9 +144,11 @@ type actualTimeProperty struct {
 func (p *actualTimeProperty) GetActual(ctx context.Context) time.Time {
 	return p.actual
 }
-func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if !p.actual.Equal(value) {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -149,6 +157,7 @@ func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) err
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -170,9 +179,12 @@ type actualAutoLocStateProperty struct {
 func (p *actualAutoLocStateProperty) GetActual(ctx context.Context) state.AutoLocState {
 	return p.actual
 }
-func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.AutoLocState) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+
+func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.AutoLocState) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -181,6 +193,7 @@ func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -202,9 +215,11 @@ type actualLocDirectionProperty struct {
 func (p *actualLocDirectionProperty) GetActual(ctx context.Context) state.LocDirection {
 	return p.actual
 }
-func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.LocDirection) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.LocDirection) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -213,6 +228,7 @@ func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -234,9 +250,11 @@ type actualSwitchDirectionProperty struct {
 func (p *actualSwitchDirectionProperty) GetActual(ctx context.Context) model.SwitchDirection {
 	return p.actual
 }
-func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value model.SwitchDirection) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value model.SwitchDirection) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -245,6 +263,7 @@ func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value mod
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -266,9 +285,11 @@ type actualBlockSideProperty struct {
 func (p *actualBlockSideProperty) GetActual(ctx context.Context) model.BlockSide {
 	return p.actual
 }
-func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.BlockSide) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.BlockSide) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -277,6 +298,7 @@ func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.Blo
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -298,9 +320,11 @@ type actualBlockProperty struct {
 func (p *actualBlockProperty) GetActual(ctx context.Context) state.Block {
 	return p.actual
 }
-func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -309,6 +333,7 @@ func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) 
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -330,9 +355,11 @@ type actualRouteProperty struct {
 func (p *actualRouteProperty) GetActual(ctx context.Context) state.Route {
 	return p.actual
 }
-func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -341,6 +368,7 @@ func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) 
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -362,9 +390,11 @@ type actualRouteForLocProperty struct {
 func (p *actualRouteForLocProperty) GetActual(ctx context.Context) state.RouteForLoc {
 	return p.actual
 }
-func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -373,6 +403,7 @@ func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.R
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes
@@ -394,9 +425,11 @@ type actualRouteOptionsProperty struct {
 func (p *actualRouteOptionsProperty) GetActual(ctx context.Context) state.RouteOptions {
 	return p.actual
 }
-func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.RouteOptions) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.RouteOptions) (bool, error) {
+	changed := false
+	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if !p.actual.Equals(value) {
+			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
 				cb(ctx, value)
@@ -405,6 +438,7 @@ func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to actual changes

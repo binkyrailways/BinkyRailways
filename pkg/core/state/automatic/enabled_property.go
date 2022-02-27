@@ -45,8 +45,8 @@ func (p *enabledProperty) GetActual(ctx context.Context) bool {
 	})
 	return result
 }
-func (p *enabledProperty) SetActual(context.Context, bool) error {
-	return fmt.Errorf("Cannot change actual")
+func (p *enabledProperty) SetActual(context.Context, bool) (bool, error) {
+	return false, fmt.Errorf("Cannot change actual")
 }
 
 // Subscribe to actual changes

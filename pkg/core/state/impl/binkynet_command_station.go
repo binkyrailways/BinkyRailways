@@ -103,6 +103,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	ctx = bn.WithServiceInfoHost(ctx, serverHost)
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
+	g.Go(func() error { cs.runSendLocSpeedAndDirection(ctx); return nil })
 	g.Go(func() error {
 		updates, cancel := cs.manager.SubscribeLocalWorkerUpdates()
 		defer cancel()
@@ -219,7 +220,6 @@ func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.P
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
-	fmt.Println("SendLocSpeedAndDirection")
 	addr := cs.createObjectAddress(loc.GetAddress(ctx))
 	direction := bn.LocDirection_FORWARD
 	if loc.GetDirection().GetRequested(ctx) == state.LocDirectionReverse {
@@ -241,24 +241,38 @@ func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, 
 
 // Update the state from the railway in our memory state
 func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc) {
-	fmt.Println("ocLocActual")
 	objAddr := actual.GetAddress()
-	cs.log.Debug().Interface("addr", objAddr).Msg("Got loc actual")
+	found := false
 	cs.ForEachLoc(func(loc state.Loc) {
-		cs.log.Debug().Interface("loc-addr", loc.GetAddress(ctx)).Msg("loc X")
 		if isAddressEqual(loc.GetAddress(ctx), objAddr) {
+			found = true
+			changed := false
 			direction := state.LocDirectionForward
 			if actual.GetActual().GetDirection() == bn.LocDirection_REVERSE {
 				direction = state.LocDirectionReverse
 			}
-			loc.GetDirection().SetActual(ctx, direction)
-			loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps()))
-			loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0])
+			if c, _ := loc.GetDirection().SetActual(ctx, direction); c {
+				changed = true
+			}
+			if c, _ := loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps())); c {
+				changed = true
+			}
+			if c, _ := loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0]); c {
+				changed = true
+			}
 			// TODO other functions
-			cs.log.Debug().Interface("addr", objAddr).Msg("Updated loc actual")
-		} else {
+			if changed {
+				cs.log.Debug().
+					Interface("addr", objAddr).
+					Msg("Updated loc actual")
+			}
 		}
 	})
+	if !found {
+		cs.log.Info().
+			Interface("addr", objAddr).
+			Msg("Got unexpected loc actual")
+	}
 }
 
 // Send the state of the binary output towards the railway.
@@ -465,6 +479,23 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 // createObjectAddress converts a model address into a BinkyNet object address.
 func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.ObjectAddress {
 	return bn.ObjectAddress(addr.Value)
+}
+
+// runSendLocSpeedAndDirection keeps sending the speed & direction of all locs at regular
+// intervals.
+func (cs *binkyNetCommandStation) runSendLocSpeedAndDirection(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			// Context canceled
+			return
+		case <-time.After(time.Second * 2):
+			// Send again
+		}
+		for _, loc := range cs.locs {
+			cs.SendLocSpeedAndDirection(ctx, loc)
+		}
+	}
 }
 
 // isAddressEqual returns true if the given addresses are the same

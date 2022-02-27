@@ -36,7 +36,7 @@ var _ state.IntProperty = &speedProperty{}
 func (sp *speedProperty) GetActual(ctx context.Context) int {
 	return sp.convertFromSpeedSteps(ctx, sp.loc.GetSpeedInSteps().GetActual(ctx))
 }
-func (sp *speedProperty) SetActual(ctx context.Context, value int) error {
+func (sp *speedProperty) SetActual(ctx context.Context, value int) (bool, error) {
 	return sp.loc.GetSpeedInSteps().SetActual(ctx, sp.convertToSpeedSteps(ctx, value))
 }
 

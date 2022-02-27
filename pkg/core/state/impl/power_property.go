@@ -52,13 +52,16 @@ func (sp *powerProperty) GetActual(ctx context.Context) bool {
 	})
 	return csOff == 0 && csOn > 0
 }
-func (sp *powerProperty) SetActual(ctx context.Context, value bool) error {
-	return sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+func (sp *powerProperty) SetActual(ctx context.Context, value bool) (bool, error) {
+	changed := false
+	err := sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
 		actual := sp.GetActual(ctx)
 
 		var err error
 		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
-			multierr.AppendInto(&err, cs.GetPower().SetActual(ctx, value))
+			c, e := cs.GetPower().SetActual(ctx, value)
+			changed = changed || c
+			multierr.AppendInto(&err, e)
 		})
 		if err != nil {
 			return err
@@ -74,6 +77,7 @@ func (sp *powerProperty) SetActual(ctx context.Context, value bool) error {
 		}
 		return nil
 	})
+	return changed, err
 }
 
 // Subscribe to requested changes

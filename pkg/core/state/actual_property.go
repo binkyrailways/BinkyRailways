@@ -36,7 +36,7 @@ type ActualBoolProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) bool
-	SetActual(context.Context, bool) error
+	SetActual(context.Context, bool) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, bool))
 }
@@ -48,7 +48,7 @@ type ActualIntProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) int
-	SetActual(context.Context, int) error
+	SetActual(context.Context, int) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, int))
 }
@@ -60,7 +60,7 @@ type ActualTimeProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) time.Time
-	SetActual(context.Context, time.Time) error
+	SetActual(context.Context, time.Time) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, time.Time))
 }
@@ -72,7 +72,7 @@ type ActualAutoLocStateProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) AutoLocState
-	SetActual(context.Context, AutoLocState) error
+	SetActual(context.Context, AutoLocState) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, AutoLocState))
 }
@@ -84,7 +84,7 @@ type ActualLocDirectionProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) LocDirection
-	SetActual(context.Context, LocDirection) error
+	SetActual(context.Context, LocDirection) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, LocDirection))
 }
@@ -96,7 +96,7 @@ type ActualSwitchDirectionProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) model.SwitchDirection
-	SetActual(context.Context, model.SwitchDirection) error
+	SetActual(context.Context, model.SwitchDirection) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, model.SwitchDirection))
 }
@@ -108,7 +108,7 @@ type ActualBlockSideProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) model.BlockSide
-	SetActual(context.Context, model.BlockSide) error
+	SetActual(context.Context, model.BlockSide) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, model.BlockSide))
 }
@@ -120,7 +120,7 @@ type ActualBlockProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) Block
-	SetActual(context.Context, Block) error
+	SetActual(context.Context, Block) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, Block))
 }
@@ -132,7 +132,7 @@ type ActualRouteProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) Route
-	SetActual(context.Context, Route) error
+	SetActual(context.Context, Route) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, Route))
 }
@@ -144,7 +144,7 @@ type ActualRouteForLocProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) RouteForLoc
-	SetActual(context.Context, RouteForLoc) error
+	SetActual(context.Context, RouteForLoc) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, RouteForLoc))
 }
@@ -156,7 +156,7 @@ type ActualRouteOptionsProperty interface {
 
 	// Gets / sets the actual value
 	GetActual(context.Context) RouteOptions
-	SetActual(context.Context, RouteOptions) error
+	SetActual(context.Context, RouteOptions) (bool, error)
 	// Subscribe to actual changes
 	SubscribeActualChanges(func(context.Context, RouteOptions))
 }
