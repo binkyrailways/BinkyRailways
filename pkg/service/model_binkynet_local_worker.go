@@ -141,7 +141,7 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 	case api.BinkyNetObjectsGroupType_MGV93:
 		// Device must be of GPIO type
 		switch bnDev.GetDeviceType() {
-		case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017:
+		case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
 			firstPin = 1
 		default:
 			return nil, api.InvalidArgument("Invalid device type (%s) for object group type %s", bnDev.GetDeviceType(), req.GetType().String())

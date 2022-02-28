@@ -19,7 +19,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -28,6 +27,7 @@ import (
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/BinkyNet/loki"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 	"github.com/binkyrailways/BinkyRailways/pkg/server"
 	"github.com/binkyrailways/BinkyRailways/pkg/service"
 )
@@ -40,11 +40,9 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app      service.Config
-		server   server.Config
-		logFile  string
-		lokiHost string
-		lokiPort int
+		app     service.Config
+		server  server.Config
+		logFile string
 	}
 	cliLog = zerolog.New(newConsoleWriter()).With().Timestamp().Logger()
 )
@@ -62,8 +60,8 @@ func init() {
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
-	f.StringVar(&rootArgs.lokiHost, "loki-host", "127.0.0.1", "Hostname of loki")
-	f.IntVar(&rootArgs.lokiPort, "loki-port", 3100, "Port of loki")
+	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")
+	f.IntVar(&rootArgs.server.LokiPort, "loki-port", 13100, "Port to serve Loki requests on")
 	// Service arguments
 	f.StringVarP(&rootArgs.app.RailwayPath, "railway", "r", "", "Path of railway file")
 }
@@ -88,21 +86,14 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	}
 	defer logFile.Close()
 	var logWriter zerolog.LevelWriter
-	if rootArgs.lokiHost != "" {
-		lokiWriter, err := loki.NewLokiLogger(fmt.Sprintf("http://%s:%d/", rootArgs.lokiHost, rootArgs.lokiPort), "brw")
-		if err != nil {
-			cliLog.Fatal().Err(err).Msg("Failed to create Loki writer")
-		}
-		logWriter = zerolog.MultiLevelWriter(
-			newConsoleWriter(),
-			lokiWriter,
-		)
-	} else {
-		logWriter = zerolog.MultiLevelWriter(
-			newConsoleWriter(),
-			logFile,
-		)
+	lokiWriter, err := loki.NewLokiLogger(rootArgs.server.LokiURL, "brw", 0)
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("Failed to create Loki writer")
 	}
+	logWriter = zerolog.MultiLevelWriter(
+		newConsoleWriter(),
+		lokiWriter,
+	)
 
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
@@ -133,15 +124,19 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		}
 		return nil
 	})
-	if rootArgs.lokiHost != "" {
-		g.Go(func() error {
-			return api.RegisterServiceEntry(ctx, api.ServiceTypeLokiProvider, api.ServiceInfo{
-				ApiVersion: "v1",
-				ApiPort:    int32(rootArgs.lokiPort),
-				Secure:     false,
-			})
+	g.Go(func() error {
+		host, err := util.FindServerHostAddress(rootArgs.server.Host)
+		if err != nil {
+			cliLog.Fatal().Err(err).Msg("Failed to find server host")
+		}
+		cliLog.Info().Str("host", host).Msg("Registering loki service")
+		ctx := api.WithServiceInfoHost(ctx, host)
+		return api.RegisterServiceEntry(ctx, api.ServiceTypeLokiProvider, api.ServiceInfo{
+			ApiVersion: "v1",
+			ApiPort:    int32(rootArgs.server.LokiPort),
+			Secure:     false,
 		})
-	}
+	})
 	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}

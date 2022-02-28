@@ -34,7 +34,7 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 	dst.DeviceType.FromModel(ctx, src.GetDeviceType())
 	dst.Address = src.GetAddress()
 	switch src.GetDeviceType() {
-	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017:
+	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
 		dst.CanAddMgv93Group = true
 	default:
 		dst.CanAddMgv93Group = false

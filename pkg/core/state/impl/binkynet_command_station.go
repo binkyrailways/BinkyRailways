@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2021-2022 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package impl
 import (
 	"context"
 	"fmt"
-	"net"
 	"time"
 
 	bn "github.com/binkynet/BinkyNet/apis/v1"
@@ -31,6 +30,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // binkyNetCommandStation implements the BinkyNetCommandStation.
@@ -66,7 +66,7 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // returns an error otherwise.
 func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
 	var err error
-	serverHost, err := findServerHostAddress(cs.getCommandStation().GetServerHost())
+	serverHost, err := util.FindServerHostAddress(cs.getCommandStation().GetServerHost())
 	if err != nil {
 		return fmt.Errorf("failed to find server host: %w", err)
 	}
@@ -416,6 +416,13 @@ func (cs *binkyNetCommandStation) onUnknownLocalWorker(hardwareID string) {
 
 // Trigger discovery of locally attached devices on local worker
 func (cs *binkyNetCommandStation) TriggerDiscover(ctx context.Context, hardwareID string) error {
+	// Translate alias into hardware ID (if needed)
+	cs.getCommandStation().GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
+		if hardwareID == lw.GetAlias() {
+			hardwareID = lw.GetHardwareID()
+		}
+	})
+
 	go func() {
 		log := cs.log.With().Str("hardware_id", hardwareID).Logger()
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
@@ -508,50 +515,4 @@ func isAddressEqual(modelAddr model.Address, objAddr bn.ObjectAddress) bool {
 		return modelLocalAddr == objLocalAddr
 	}
 	return false
-}
-
-// findServerHostAddress tries to find the IP address of a network interface that
-// matches the given host address as best as possible.
-// E.g. If host == "1.2.3.0" and an interface with address "1.2.3.4" exists, that will be returned.
-func findServerHostAddress(host string) (string, error) {
-	// Parse host address
-	hostIP := net.ParseIP(host)
-	if hostIP == nil {
-		return "", fmt.Errorf("failed to parse host address: '%s'", host)
-	}
-
-	// Collect suitable interface addresses
-	intfs, err := net.Interfaces()
-	if err != nil {
-		return "", fmt.Errorf("failed to fetch network interfaces: %w", err)
-	}
-	var ipList []net.IP
-	for _, intf := range intfs {
-		if intf.Flags&net.FlagUp == 0 {
-			continue
-		}
-		if intf.Flags&net.FlagLoopback != 0 {
-			continue
-		}
-		if addrs, err := intf.Addrs(); err == nil {
-			for _, addr := range addrs {
-				if ip, _, err := net.ParseCIDR(addr.String()); err == nil && ip != nil && ip.To4() != nil {
-					ipList = append(ipList, ip)
-				}
-			}
-		}
-	}
-	// Find best address
-	for maskBits := 32; maskBits >= 0; maskBits-- {
-		mask := net.CIDRMask(maskBits, 32) // Assume IPv4
-		for _, ip := range ipList {
-			masked := ip.Mask(mask)
-			if masked.Equal(hostIP) {
-				// Found a good match
-				return ip.String(), nil
-			}
-		}
-	}
-
-	return "", fmt.Errorf("did not find a network interface matching address '%s'", host)
 }
