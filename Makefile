@@ -94,6 +94,6 @@ generate: $(CACHEVOL) $(MODVOL)
 update-modules:
 	go get \
 		github.com/binkynet/NetManager@v0.8.0 \
-		github.com/binkynet/BinkyNet@v0.14.4
+		github.com/binkynet/BinkyNet@v0.14.5
 	go mod tidy
 
