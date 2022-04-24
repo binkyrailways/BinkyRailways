@@ -97,17 +97,21 @@ class _BlockSettingsState extends State<_BlockSettings> {
       TextEditingController();
   final TextEditingController _minWaitTimeController = TextEditingController();
   final TextEditingController _maxWaitTimeController = TextEditingController();
+  final TextEditingController _waitPermissionsController =
+      TextEditingController();
   final ScrollController _usedByScrollController = ScrollController();
   final NumericValidator _waitProbabilityValidator =
       NumericValidator(minimum: 0, maximum: 100);
   final NumericValidator _waitTimeValidator =
       NumericValidator(minimum: 0, maximum: 360);
+  final PermissionValidator _permissionValidator = PermissionValidator();
 
   void _initConrollers() {
     _descriptionController.text = widget.block.description;
     _waitProbabilityController.text = widget.block.waitProbability.toString();
     _minWaitTimeController.text = widget.block.minimumWaitTime.toString();
     _maxWaitTimeController.text = widget.block.maximumWaitTime.toString();
+    _waitPermissionsController.text = widget.block.waitPermissions.toString();
   }
 
   @override
@@ -144,6 +148,15 @@ class _BlockSettingsState extends State<_BlockSettings> {
             onLostFocus: (value) async {
               await _update((update) {
                 update.waitProbability = int.parse(value);
+              });
+            }),
+        SettingsTextField(
+            controller: _waitPermissionsController,
+            validator: _permissionValidator.validate,
+            label: "Wait permissions",
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.waitPermissions = value;
               });
             }),
         Row(children: [

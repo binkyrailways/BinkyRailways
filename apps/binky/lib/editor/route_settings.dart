@@ -116,17 +116,20 @@ class _RouteSettingsState extends State<_RouteSettings> {
       NumericValidator(minimum: 1, maximum: 100);
   final TextEditingController _chooseProbabilityController =
       TextEditingController();
+  final TextEditingController _permissionsController = TextEditingController();
   final NumericValidator _chooseProbabilityValidator =
       NumericValidator(minimum: 0, maximum: 100);
   final TextEditingController _maxDurationController = TextEditingController();
   final NumericValidator _maxDurationValidator =
       NumericValidator(minimum: 0, maximum: 600);
+  final PermissionValidator _permissionValidator = PermissionValidator();
 
   void _initConrollers() {
     _speedController.text = widget.route.speed.toString();
     _chooseProbabilityController.text =
         widget.route.chooseProbability.toString();
     _maxDurationController.text = widget.route.maxDuration.toString();
+    _permissionsController.text = widget.route.permissions.toString();
   }
 
   @override
@@ -189,6 +192,16 @@ class _RouteSettingsState extends State<_RouteSettings> {
           onLostFocus: (value) async {
             await _update((update) {
               update.speed = int.parse(value);
+            });
+          }),
+      SettingsTextField(
+          key: Key("${widget.route.id}/route/permissions"),
+          controller: _permissionsController,
+          label: "Permissions",
+          validator: _permissionValidator.validate,
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.permissions = value;
             });
           }),
       SettingsTextField(

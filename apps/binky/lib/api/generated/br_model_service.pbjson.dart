@@ -50,6 +50,28 @@ const ParseAddressResult$json = const {
 
 /// Descriptor for `ParseAddressResult`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List parseAddressResultDescriptor = $convert.base64Decode('ChJQYXJzZUFkZHJlc3NSZXN1bHQSFAoFdmFsaWQYASABKAhSBXZhbGlkEhgKB21lc3NhZ2UYAiABKAlSB21lc3NhZ2USJwoPZm9ybWF0dGVkX3ZhbHVlGAMgASgJUg5mb3JtYXR0ZWRWYWx1ZQ==');
+@$core.Deprecated('Use parsePermissionRequestDescriptor instead')
+const ParsePermissionRequest$json = const {
+  '1': 'ParsePermissionRequest',
+  '2': const [
+    const {'1': 'value', '3': 1, '4': 1, '5': 9, '10': 'value'},
+  ],
+};
+
+/// Descriptor for `ParsePermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List parsePermissionRequestDescriptor = $convert.base64Decode('ChZQYXJzZVBlcm1pc3Npb25SZXF1ZXN0EhQKBXZhbHVlGAEgASgJUgV2YWx1ZQ==');
+@$core.Deprecated('Use parsePermissionResultDescriptor instead')
+const ParsePermissionResult$json = const {
+  '1': 'ParsePermissionResult',
+  '2': const [
+    const {'1': 'valid', '3': 1, '4': 1, '5': 8, '10': 'valid'},
+    const {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
+    const {'1': 'formatted_value', '3': 3, '4': 1, '5': 9, '10': 'formattedValue'},
+  ],
+};
+
+/// Descriptor for `ParsePermissionResult`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List parsePermissionResultDescriptor = $convert.base64Decode('ChVQYXJzZVBlcm1pc3Npb25SZXN1bHQSFAoFdmFsaWQYASABKAhSBXZhbGlkEhgKB21lc3NhZ2UYAiABKAlSB21lc3NhZ2USJwoPZm9ybWF0dGVkX3ZhbHVlGAMgASgJUg5mb3JtYXR0ZWRWYWx1ZQ==');
 @$core.Deprecated('Use addRouteCrossingJunctionSwitchRequestDescriptor instead')
 const AddRouteCrossingJunctionSwitchRequest$json = const {
   '1': 'AddRouteCrossingJunctionSwitchRequest',

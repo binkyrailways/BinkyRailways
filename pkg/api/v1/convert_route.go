@@ -21,6 +21,7 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/predicates"
 	"go.uber.org/multierr"
 )
 
@@ -50,15 +51,7 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 	})
 	dst.Speed = int32(src.GetSpeed())
 	dst.ChooseProbability = int32(src.GetChooseProbability())
-	if !src.GetPermissions().IsEmpty() {
-		perm, err := (&LocPredicate{}).FromModel(ctx, src.GetPermissions())
-		if err != nil {
-			return err
-		}
-		dst.Permissions = perm.GetStandard()
-	} else {
-		dst.Permissions = &LocStandardPredicate{}
-	}
+	dst.Permissions = predicates.GeneratePredicate(src.GetPermissions())
 	dst.Closed = src.GetClosed()
 	dst.MaxDuration = int32(src.GetMaxDuration())
 	return nil
@@ -78,14 +71,15 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 	if err != nil {
 		return err
 	}
-	if src.GetPermissions() != nil {
-		src := LocPredicate{Standard: src.GetPermissions()}
+	// Parse permissions
+	if src.GetPermissions() != predicates.GeneratePredicate(dst.GetPermissions()) {
+		// Permissions changes
 		railway := dst.GetModule().GetPackage().GetRailway()
-		lp, err := src.ToModel(ctx, railway)
+		perm, err := predicates.ParseStandardPredicate(src.GetPermissions(), railway)
 		if err != nil {
 			return err
 		}
-		if err := dst.SetPermissions(lp.(model.LocStandardPredicate)); err != nil {
+		if err := dst.SetPermissions(perm); err != nil {
 			return err
 		}
 	}

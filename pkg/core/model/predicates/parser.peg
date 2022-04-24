@@ -20,7 +20,7 @@ Input = p:Predicate EOF {
     return p, nil
 }
 
-Predicate = Whitespace p:(Loc / LocGroup / CanChangeDirection / Or / And / Standard) Whitespace {
+Predicate = Whitespace p:(All / Loc / LocGroup / CanChangeDirection / Or / And / Standard) Whitespace {
     return p, nil
 }
 
@@ -82,6 +82,10 @@ DecimalDigit = [0-9]
 NonZeroDecimalDigit = [1-9]
 
 HexDigit = [0-9a-f]i
+
+All = "all" {
+    return nil, nil
+}
 
 MemberOf = "memberOf"
 

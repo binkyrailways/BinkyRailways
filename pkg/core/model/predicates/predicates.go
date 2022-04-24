@@ -35,8 +35,33 @@ func ParsePredicate(predicate string, rw model.Railway) (model.LocPredicate, err
 	if err != nil {
 		return nil, err
 	}
+	if result == nil {
+		return nil, nil
+	}
 	if lp, ok := result.(model.LocPredicate); ok {
 		return lp, nil
 	}
 	return nil, fmt.Errorf("invalid result type %T", result)
+}
+
+// ParsePredicate parses a given predicate into a LocStandardPredicate.
+// Does not return nil unless there is an error.
+func ParseStandardPredicate(predicate string, rw model.Railway) (model.LocStandardPredicate, error) {
+	p, err := ParsePredicate(predicate, rw)
+	if err != nil {
+		return nil, err
+	}
+	// Do we have a predicate
+	if p == nil {
+		// No predicate
+		return rw.GetPredicateBuilder().CreateStandard(), nil
+	}
+	// Is the predicate already a standard predicate?
+	if ps, ok := p.(model.LocStandardPredicate); ok {
+		return ps, nil
+	}
+	// Wrap predicate into a standard predicate
+	ps := rw.GetPredicateBuilder().CreateStandard()
+	ps.GetIncludes().GetPredicates().Add(p)
+	return ps, nil
 }

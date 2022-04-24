@@ -28,7 +28,7 @@ import (
 // predicate that can then be parsed by ParsePredicate.
 func GeneratePredicate(p model.LocPredicate) string {
 	if p == nil {
-		return ""
+		return "all"
 	}
 	switch p := p.(type) {
 	case model.LocEqualsPredicate:
@@ -51,7 +51,7 @@ func GeneratePredicate(p model.LocPredicate) string {
 		includes := p.GetIncludes().GetPredicates().GetCount()
 		excludes := p.GetExcludes().GetPredicates().GetCount()
 		if includes == 0 && excludes == 0 {
-			return ""
+			return "all"
 		}
 		if includes == 0 {
 			return "except(" + generatePredicates(p.GetExcludes().GetPredicates(), "or", true) + ")"
@@ -70,7 +70,7 @@ func GeneratePredicate(p model.LocPredicate) string {
 // predicate set.
 func generatePredicates(p model.LocPredicateSet, op string, excludeBrackets bool) string {
 	if p == nil {
-		return ""
+		return "all"
 	}
 	list := make([]string, 0, p.GetCount())
 	p.ForEach(func(lp model.LocPredicate) {

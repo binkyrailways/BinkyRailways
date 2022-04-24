@@ -19,6 +19,7 @@ export 'components/_address_validator.dart';
 export 'components/_dialogs.dart';
 export 'components/_error_message.dart';
 export 'components/_numeric_validator.dart';
+export 'components/_permission_validator.dart';
 export 'components/_scrollable_form.dart';
 export 'components/_settings_addressfield.dart';
 export 'components/_settings_checkboxfield.dart';

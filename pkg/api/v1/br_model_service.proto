@@ -27,6 +27,8 @@ import "br_model_types.proto";
 service ModelService {
   // Try to parse an address
   rpc ParseAddress(ParseAddressRequest) returns (ParseAddressResult);
+  // Try to parse a permission
+  rpc ParsePermission(ParsePermissionRequest) returns (ParsePermissionResult);
 
   // Gets the current railway
   rpc GetRailway(Empty) returns (Railway);
@@ -182,6 +184,20 @@ message ParseAddressResult {
   // Error message in case of non-valid input
   string message = 2;
   // Formatted address in case of valid input
+  string formatted_value = 3;
+}
+
+message ParsePermissionRequest {
+  // Permission to parse
+  string value = 1;
+}
+
+message ParsePermissionResult {
+  // Was the input a valid permission?
+  bool valid = 1;
+  // Error message in case of non-valid input
+  string message = 2;
+  // Formatted permission in case of valid input
   string formatted_value = 3;
 }
 

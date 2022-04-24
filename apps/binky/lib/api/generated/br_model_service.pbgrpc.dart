@@ -21,6 +21,12 @@ class ModelServiceClient extends $grpc.Client {
           ($0.ParseAddressRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.ParseAddressResult.fromBuffer(value));
+  static final _$parsePermission =
+      $grpc.ClientMethod<$0.ParsePermissionRequest, $0.ParsePermissionResult>(
+          '/binkyrailways.v1.ModelService/ParsePermission',
+          ($0.ParsePermissionRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.ParsePermissionResult.fromBuffer(value));
   static final _$getRailway = $grpc.ClientMethod<$1.Empty, $1.Railway>(
       '/binkyrailways.v1.ModelService/GetRailway',
       ($1.Empty value) => value.writeToBuffer(),
@@ -293,6 +299,12 @@ class ModelServiceClient extends $grpc.Client {
       $0.ParseAddressRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$parseAddress, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ParsePermissionResult> parsePermission(
+      $0.ParsePermissionRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$parsePermission, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Railway> getRailway($1.Empty request,
@@ -627,6 +639,15 @@ abstract class ModelServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.ParseAddressRequest.fromBuffer(value),
             ($0.ParseAddressResult value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ParsePermissionRequest,
+            $0.ParsePermissionResult>(
+        'ParsePermission',
+        parsePermission_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.ParsePermissionRequest.fromBuffer(value),
+        ($0.ParsePermissionResult value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$1.Empty, $1.Railway>(
         'GetRailway',
         getRailway_Pre,
@@ -1062,6 +1083,12 @@ abstract class ModelServiceBase extends $grpc.Service {
     return parseAddress(call, await request);
   }
 
+  $async.Future<$0.ParsePermissionResult> parsePermission_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.ParsePermissionRequest> request) async {
+    return parsePermission(call, await request);
+  }
+
   $async.Future<$1.Railway> getRailway_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return getRailway(call, await request);
@@ -1363,6 +1390,8 @@ abstract class ModelServiceBase extends $grpc.Service {
 
   $async.Future<$0.ParseAddressResult> parseAddress(
       $grpc.ServiceCall call, $0.ParseAddressRequest request);
+  $async.Future<$0.ParsePermissionResult> parsePermission(
+      $grpc.ServiceCall call, $0.ParsePermissionRequest request);
   $async.Future<$1.Railway> getRailway(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$1.Railway> updateRailway(

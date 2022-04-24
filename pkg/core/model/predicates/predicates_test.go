@@ -29,10 +29,13 @@ import (
 
 func TestParsePredicate(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
-		for _, x := range []string{"", "  ", "\n", "  \t \n "} {
+		for _, x := range []string{"", "  ", "\n", "  \t \n ", "all"} {
 			result, err := ParsePredicate(x, nil)
 			assert.NoError(t, err, x)
 			assert.Nil(t, result, x)
+
+			gen := GeneratePredicate(result)
+			assert.Equal(t, "all", gen, x)
 		}
 	})
 

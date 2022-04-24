@@ -21,13 +21,14 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/predicates"
 	"go.uber.org/multierr"
 )
 
 // FromModel converts a model RouteEventBehavior to an API RouteEventBehavior
 func (dst *RouteEventBehavior) FromModel(ctx context.Context, src model.RouteEventBehavior) error {
 	var err error
-	dst.AppliesTo, err = dst.AppliesTo.FromModel(ctx, src.GetAppliesTo())
+	dst.AppliesTo = predicates.GeneratePredicate(src.GetAppliesTo())
 	multierr.AppendInto(&err, dst.StateBehavior.FromModel(ctx, src.GetStateBehavior()))
 	multierr.AppendInto(&err, dst.SpeedBehavior.FromModel(ctx, src.GetSpeedBehavior()))
 	return err
@@ -39,10 +40,6 @@ func (src *RouteEventBehavior) ToModel(ctx context.Context, dst model.RouteEvent
 	if railway == nil {
 		return InvalidArgument("RouteEventBehavior has no railway reference")
 	}
-	lp, err := src.GetAppliesTo().ToModel(ctx, railway)
-	if err != nil {
-		return err
-	}
 	stB, err := src.GetStateBehavior().ToModel(ctx)
 	if err != nil {
 		return err
@@ -51,7 +48,16 @@ func (src *RouteEventBehavior) ToModel(ctx context.Context, dst model.RouteEvent
 	if err != nil {
 		return err
 	}
-	multierr.AppendInto(&err, dst.SetAppliesTo(lp))
+	if src.GetAppliesTo() != predicates.GeneratePredicate(dst.GetAppliesTo()) {
+		// AppliesTo changes
+		perm, err := predicates.ParseStandardPredicate(src.GetAppliesTo(), railway)
+		if err != nil {
+			return err
+		}
+		if err := dst.SetAppliesTo(perm); err != nil {
+			return err
+		}
+	}
 	multierr.AppendInto(&err, dst.SetStateBehavior(stB))
 	multierr.AppendInto(&err, dst.SetSpeedBehavior(spB))
 	return nil

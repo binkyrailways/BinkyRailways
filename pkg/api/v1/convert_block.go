@@ -21,6 +21,7 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/predicates"
 )
 
 // FromModel converts a model block to an API block
@@ -46,15 +47,7 @@ func (dst *Block) FromModel(ctx context.Context, src model.Block) error {
 			Id: x.GetID(),
 		}
 	}
-	if !src.GetWaitPermissions().IsEmpty() {
-		perm, err := (&LocPredicate{}).FromModel(ctx, src.GetWaitPermissions())
-		if err != nil {
-			return err
-		}
-		dst.WaitPermissions = perm.GetStandard()
-	} else {
-		dst.WaitPermissions = &LocStandardPredicate{}
-	}
+	dst.WaitPermissions = predicates.GeneratePredicate(src.GetWaitPermissions())
 
 	return nil
 }
@@ -80,14 +73,14 @@ func (src *Block) ToModel(ctx context.Context, dst model.Block) error {
 	if err := dst.SetMaximumWaitTime(int(src.GetMaximumWaitTime())); err != nil {
 		return err
 	}
-	if src.GetWaitPermissions() != nil {
-		src := LocPredicate{Standard: src.GetWaitPermissions()}
+	if src.GetWaitPermissions() != predicates.GeneratePredicate(dst.GetWaitPermissions()) {
+		// Wait permissions changed
 		railway := dst.GetModule().GetPackage().GetRailway()
-		lp, err := src.ToModel(ctx, railway)
+		perm, err := predicates.ParseStandardPredicate(src.GetWaitPermissions(), railway)
 		if err != nil {
 			return err
 		}
-		if err := dst.SetWaitPermissions(lp.(model.LocStandardPredicate)); err != nil {
+		if err := dst.SetWaitPermissions(perm); err != nil {
 			return err
 		}
 	}
