@@ -28,7 +28,8 @@ type LocGroupEqualsPredicate interface {
 type locGroupEqualsPredicate struct {
 	locPredicate
 
-	GroupID locGroupRef `xml:"GroupId"`
+	GroupID locGroupRef    `xml:"GroupId"`
+	group   model.LocGroup `xml:"-"`
 }
 
 var _ model.LocGroupEqualsPredicate = &locGroupEqualsPredicate{}
@@ -68,15 +69,25 @@ func (p *locGroupEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 	})
 }
 
+// Gets the ID of the group to compare to.
+func (p *locGroupEqualsPredicate) GetGroupID() string {
+	return p.GroupID.GetID()
+}
+
 // Gets/Sets the loc to compare to.
 func (p *locGroupEqualsPredicate) GetGroup() model.LocGroup {
+	if p.group != nil {
+		return p.group
+	}
 	return p.GroupID.TryResolve()
 }
 func (p *locGroupEqualsPredicate) SetGroup(value model.LocGroup) error {
 	if value == nil {
 		p.GroupID.id = ""
+		p.group = nil
 	} else {
 		p.GroupID.id = value.GetID()
+		p.group = value
 	}
 	return nil
 }
@@ -85,6 +96,7 @@ func (p *locGroupEqualsPredicate) SetGroup(value model.LocGroup) error {
 func (p *locGroupEqualsPredicate) Clone() model.LocPredicate {
 	c := newLocGroupEqualsPredicate()
 	c.GroupID.id = p.GroupID.id
+	c.group = p.group
 	return c
 }
 

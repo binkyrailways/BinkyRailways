@@ -23,6 +23,9 @@ type LocGroupEqualsPredicate interface {
 	LocPredicate
 	ImplementsGroupEqualsPredicate()
 
+	// Gets the ID of the group to compare to.
+	GetGroupID() string
+
 	// Gets/Sets the group to compare to.
 	GetGroup() LocGroup
 	SetGroup(value LocGroup) error

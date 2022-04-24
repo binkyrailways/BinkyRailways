@@ -32,7 +32,8 @@ type LocEqualsPredicate interface {
 type locEqualsPredicate struct {
 	locPredicate
 
-	LocID string `xml:"LocId"`
+	LocID string    `xml:"LocId"`
+	loc   model.Loc `xml:"-"`
 }
 
 var _ model.LocEqualsPredicate = &locEqualsPredicate{}
@@ -58,10 +59,18 @@ func (p *locEqualsPredicate) SetContainer(parent ModuleEntityContainer) {
 	p.locPredicate.SetContainer(parent)
 }
 
+// Gets the ID of the loc to compare to.
+func (p *locEqualsPredicate) GetLocID() string {
+	return p.LocID
+}
+
 // Gets/Sets the loc to compare to.
 func (p *locEqualsPredicate) GetLoc() (model.Loc, error) {
 	if p.LocID == "" {
 		return nil, nil
+	}
+	if p.loc != nil {
+		return p.loc, nil
 	}
 	m, ok := p.GetModule().(Module)
 	if !ok {
@@ -79,8 +88,10 @@ func (p *locEqualsPredicate) GetLoc() (model.Loc, error) {
 func (p *locEqualsPredicate) SetLoc(value model.Loc) error {
 	if value == nil {
 		p.LocID = ""
+		p.loc = nil
 	} else {
 		p.LocID = value.GetID()
+		p.loc = value
 	}
 	return nil
 }
@@ -89,6 +100,7 @@ func (p *locEqualsPredicate) SetLoc(value model.Loc) error {
 func (p *locEqualsPredicate) Clone() model.LocPredicate {
 	c := newLocEqualsPredicate()
 	c.LocID = p.LocID
+	c.loc = p.loc
 	return c
 }
 

@@ -23,6 +23,9 @@ type LocEqualsPredicate interface {
 	LocPredicate
 	ImplementsEqualsPredicate()
 
+	// Gets the ID of the loc to compare to.
+	GetLocID() string
+
 	// Gets/Sets the loc to compare to.
 	GetLoc() (Loc, error)
 	SetLoc(value Loc) error

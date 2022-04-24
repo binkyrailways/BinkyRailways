@@ -44,7 +44,7 @@ clean:
 binaries: generate binaries-server
 
 .PHONY: binaries-server
-binaries-server: generate
+binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
 		-osarch="darwin/amd64 darwin/arm64" \
@@ -59,9 +59,10 @@ binaries-gui:
 
 bootstrap:
 	go get github.com/mitchellh/gox
+	go install github.com/mna/pigeon@v1.1.0
 
 test:
-	go test -v ./...
+	go test -v github.com/binkyrailways/BinkyRailways/pkg/...
 
 # Build docker builder image
 .PHONY: build-image
@@ -90,6 +91,9 @@ $(MODVOL):
 generate: $(CACHEVOL) $(MODVOL)
 #	$(DOCKERENV) ls -al /usr/lib/dart
 	$(DOCKERENV) go generate pkg/api/v1/doc.go
+
+pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
+	pigeon -o pkg/core/model/predicates/parser.go pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
