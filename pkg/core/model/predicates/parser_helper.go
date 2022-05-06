@@ -19,6 +19,7 @@ package predicates
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -26,9 +27,10 @@ import (
 // getLocByNamePredicate searches for the loc with given name and
 // wraps that in a LocEqualsPredicate.
 func getLocByNamePredicate(name string, rw model.Railway) (interface{}, error) {
-	var result model.Loc
+	var result, altResult model.Loc
 	addr, err := model.NewAddressFromString(name)
 	hasAddr := err == nil
+	upperName := strings.ToUpper(name)
 
 	rw.GetLocs().ForEach(func(lr model.LocRef) {
 		if result == nil {
@@ -40,11 +42,16 @@ func getLocByNamePredicate(name string, rw model.Railway) (interface{}, error) {
 				} else {
 					if loc.GetDescription() == name || loc.GetID() == name {
 						result = loc
+					} else if strings.ToUpper(loc.GetDescription()) == upperName {
+						altResult = loc
 					}
 				}
 			}
 		}
 	})
+	if result == nil {
+		result = altResult
+	}
 	if result == nil {
 		return nil, fmt.Errorf("loc '%s' not found", name)
 	}
@@ -55,14 +62,21 @@ func getLocByNamePredicate(name string, rw model.Railway) (interface{}, error) {
 // getLocGroupByNamePredicate searches for the loc group with given name and
 // wraps that in a LocGroupEqualsPredicate.
 func getLocGroupByNamePredicate(name string, rw model.Railway) (interface{}, error) {
-	var result model.LocGroup
+	var result, altResult model.LocGroup
+	upperName := strings.ToUpper(name)
+
 	rw.GetLocGroups().ForEach(func(lg model.LocGroup) {
 		if result == nil {
 			if lg.GetDescription() == name || lg.GetID() == name {
 				result = lg
+			} else if strings.ToUpper(lg.GetDescription()) == upperName {
+				altResult = lg
 			}
 		}
 	})
+	if result == nil {
+		result = altResult
+	}
 	if result == nil {
 		return nil, fmt.Errorf("loc group '%s' not found", name)
 	}

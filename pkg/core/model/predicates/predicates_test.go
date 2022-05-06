@@ -55,6 +55,12 @@ func TestParsePredicate(t *testing.T) {
 	l2.SetAddress(ctx, model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "2"))
 	l2.SetDescription("loc 2")
 	rw.GetLocs().Add(l2)
+	// Add loc 2 upper
+	l2u, err := pkg.AddNewLoc()
+	require.NoError(t, err)
+	l2u.SetAddress(ctx, model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "4"))
+	l2u.SetDescription("LOC 2")
+	rw.GetLocs().Add(l2u)
 	// Add group 1
 	lg1 := rw.GetLocGroups().AddNew()
 	lg1.SetDescription("group 1")
@@ -64,6 +70,11 @@ func TestParsePredicate(t *testing.T) {
 	lg2.SetDescription("group 2")
 	lg2.GetLocs().Add(l1)
 	lg2.GetLocs().Add(l2)
+	// Add group 2 upper
+	lg2u := rw.GetLocGroups().AddNew()
+	lg2u.SetDescription("GROUP 2")
+	lg2u.GetLocs().Add(l1)
+	lg2u.GetLocs().Add(l2u)
 
 	// Test package
 	t.Run("Test package", func(t *testing.T) {
@@ -91,6 +102,39 @@ func TestParsePredicate(t *testing.T) {
 		}
 	})
 
+	t.Run("Single loc, case sensitive", func(t *testing.T) {
+		for _, x := range []string{`"loc 2"`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lep, ok := result.(model.LocEqualsPredicate)
+			require.True(t, ok, x)
+			assert.Equal(t, l2.GetID(), lep.GetLocID(), x)
+
+			gen := GeneratePredicate(result)
+			assert.Equal(t, `"loc 2"`, gen)
+		}
+		for _, x := range []string{`"LOC 2"`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lep, ok := result.(model.LocEqualsPredicate)
+			require.True(t, ok, x)
+			assert.Equal(t, l2u.GetID(), lep.GetLocID(), x)
+
+			gen := GeneratePredicate(result)
+			assert.Equal(t, `"LOC 2"`, gen)
+		}
+	})
+
+	t.Run("Single loc, ignore case", func(t *testing.T) {
+		for _, x := range []string{`"loC 2"`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lep, ok := result.(model.LocEqualsPredicate)
+			require.True(t, ok, x)
+			assert.True(t, (l2.GetID() == lep.GetLocID()) || (l2u.GetID() == lep.GetLocID()))
+		}
+	})
+
 	t.Run("Single loc group", func(t *testing.T) {
 		for _, x := range []string{`memberOf("group 1")`} {
 			result, err := ParsePredicate(x, rw)
@@ -105,6 +149,33 @@ func TestParsePredicate(t *testing.T) {
 		for _, x := range []string{`memberOf("group 22")`} {
 			_, err := ParsePredicate(x, rw)
 			assert.Error(t, err, x)
+		}
+	})
+
+	t.Run("Single loc group, case sensitive", func(t *testing.T) {
+		for _, x := range []string{`memberOf("group 2")`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lgep, ok := result.(model.LocGroupEqualsPredicate)
+			require.True(t, ok, x)
+			assert.Equal(t, lg2.GetID(), lgep.GetGroupID(), x)
+		}
+		for _, x := range []string{`memberOf("GROUP 2")`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lgep, ok := result.(model.LocGroupEqualsPredicate)
+			require.True(t, ok, x)
+			assert.Equal(t, lg2u.GetID(), lgep.GetGroupID(), x)
+		}
+	})
+
+	t.Run("Single loc group, ignore case", func(t *testing.T) {
+		for _, x := range []string{`memberOf("groUP 2")`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lgep, ok := result.(model.LocGroupEqualsPredicate)
+			require.True(t, ok, x)
+			assert.True(t, (lg2.GetID() == lgep.GetGroupID()) || (lg2u.GetID() == lgep.GetGroupID()))
 		}
 	})
 
