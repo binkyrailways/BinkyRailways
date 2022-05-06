@@ -236,11 +236,12 @@ const LocGroup$json = const {
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'locs', '3': 3, '4': 3, '5': 11, '6': '.binkyrailways.v1.LocRef', '10': 'locs'},
   ],
 };
 
 /// Descriptor for `LocGroup`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List locGroupDescriptor = $convert.base64Decode('CghMb2NHcm91cBIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9u');
+final $typed_data.Uint8List locGroupDescriptor = $convert.base64Decode('CghMb2NHcm91cBIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEiwKBGxvY3MYAyADKAsyGC5iaW5reXJhaWx3YXlzLnYxLkxvY1JlZlIEbG9jcw==');
 @$core.Deprecated('Use locGroupRefDescriptor instead')
 const LocGroupRef$json = const {
   '1': 'LocGroupRef',

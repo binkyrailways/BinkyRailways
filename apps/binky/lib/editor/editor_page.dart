@@ -404,6 +404,18 @@ class _EditorPageState extends State<EditorPage> {
             },
           ),
         ];
+      case EntityType.locgroup:
+      case EntityType.locgroups:
+        return [
+          SpeedDialChild(
+            child: BinkyIcons.locGroup,
+            label: "Add loc group",
+            onTap: () async {
+              final added = await model.addLocGroup();
+              editorCtx.select(EntitySelector.locGroup(added));
+            },
+          ),
+        ];
       case EntityType.block:
       case EntityType.blocks:
         final moduleId = selector.idOf(EntityType.module);

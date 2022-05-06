@@ -214,6 +214,16 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Update the given loc group
+  Future<mapi.LocGroup> addLocGroup() async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addLocGroup(mapi.Empty());
+    _locGroups[added.id] = added;
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+    return added;
+  }
+
   // Gets a CommandStation by ID from cache
   mapi.CommandStation? getCachedCommandStation(String id) =>
       _commandStations[id];

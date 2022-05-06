@@ -55,7 +55,7 @@ class LocGroupsTree extends StatelessWidget {
                     final id = lg.id;
                     return ListTile(
                       leading: BinkyIcons.locGroup,
-                      title: Text(lg.description),
+                      title: Text("${lg.description} (${lg.locs.length})"),
                       onTap: () =>
                           editorCtx.select(EntitySelector.locGroup(lg)),
                       selected: selector.idOf(EntityType.locgroup) == id,

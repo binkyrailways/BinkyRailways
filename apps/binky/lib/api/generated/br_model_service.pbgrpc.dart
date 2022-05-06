@@ -76,6 +76,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateLocGroup',
       ($1.LocGroup value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value));
+  static final _$addLocGroup = $grpc.ClientMethod<$1.Empty, $1.LocGroup>(
+      '/binkyrailways.v1.ModelService/AddLocGroup',
+      ($1.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value));
   static final _$getCommandStation =
       $grpc.ClientMethod<$0.IDRequest, $1.CommandStation>(
           '/binkyrailways.v1.ModelService/GetCommandStation',
@@ -366,6 +370,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.LocGroup> updateLocGroup($1.LocGroup request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateLocGroup, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.LocGroup> addLocGroup($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addLocGroup, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.CommandStation> getCommandStation(
@@ -731,6 +740,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value),
+        ($1.LocGroup value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $1.LocGroup>(
+        'AddLocGroup',
+        addLocGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($1.LocGroup value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.CommandStation>(
         'GetCommandStation',
@@ -1149,6 +1165,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateLocGroup(call, await request);
   }
 
+  $async.Future<$1.LocGroup> addLocGroup_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return addLocGroup(call, await request);
+  }
+
   $async.Future<$1.CommandStation> getCommandStation_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getCommandStation(call, await request);
@@ -1411,6 +1432,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.LocGroup> updateLocGroup(
       $grpc.ServiceCall call, $1.LocGroup request);
+  $async.Future<$1.LocGroup> addLocGroup(
+      $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$1.CommandStation> getCommandStation(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.CommandStation> updateCommandStation(

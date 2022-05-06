@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../components.dart';
 import '../models.dart';
-import '../api.dart';
+import '../api.dart' hide Switch;
 import 'package:binky/editor/editor_context.dart';
 
 class LocGroupSettings extends StatelessWidget {
@@ -44,17 +44,43 @@ class LocGroupSettings extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             var cs = snapshot.data!;
-            return _LocGroupSettings(model: model, locGroup: cs);
+            return FutureBuilder<List<Loc>>(
+              future: _getAllLocs(model),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return ErrorMessage(
+                      title: "Failed to load all Locs", error: snapshot.error);
+                } else if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                var allLocs = snapshot.data!;
+                return _LocGroupSettings(
+                    model: model, locGroup: cs, allLocs: allLocs);
+              },
+            );
           });
     });
+  }
+
+  Future<List<Loc>> _getAllLocs(ModelModel model) async {
+    final rw = await model.getRailway();
+    final locList = rw.locs.map((e) => model.getLoc(e.id));
+    final result = await Future.wait(locList);
+    result.sort((a, b) => a.description.compareTo(b.description));
+    return result;
   }
 }
 
 class _LocGroupSettings extends StatefulWidget {
   final ModelModel model;
   final LocGroup locGroup;
+  final List<Loc> allLocs;
+
   const _LocGroupSettings(
-      {Key? key, required this.model, required this.locGroup})
+      {Key? key,
+      required this.model,
+      required this.locGroup,
+      required this.allLocs})
       : super(key: key);
 
   @override
@@ -95,6 +121,35 @@ class _LocGroupSettingsState extends State<_LocGroupSettings> {
               var update = cs.deepCopy()..description = value;
               widget.model.updateLocGroup(update);
             }),
+        const SettingsHeader(title: "Locs"),
+        Expanded(
+            child: ListView.builder(
+          itemCount: widget.allLocs.length,
+          itemBuilder: (context, index) {
+            final loc = widget.allLocs[index];
+            final isIncluded = widget.locGroup.locs.any((x) => x.id == loc.id);
+            return ListTile(
+              dense: true,
+              minLeadingWidth: 30,
+              leading: Switch(
+                value: isIncluded,
+                onChanged: (value) async {
+                  final update = widget.locGroup.deepCopy();
+                  if (value) {
+                    update.locs.add(LocRef(id: loc.id));
+                  } else {
+                    update.locs.removeWhere((x) => x.id == loc.id);
+                  }
+                  await widget.model.updateLocGroup(update);
+                },
+              ),
+              title: Text(loc.description),
+              subtitle: Text(
+                "${loc.owner} (${loc.address})",
+              ),
+            );
+          },
+        )),
       ],
     );
   }

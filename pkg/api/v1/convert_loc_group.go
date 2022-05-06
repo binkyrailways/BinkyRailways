@@ -27,6 +27,11 @@ import (
 func (dst *LocGroup) FromModel(ctx context.Context, src model.LocGroup) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	src.GetLocs().ForEach(func(lr model.LocRef) {
+		dst.Locs = append(dst.Locs, &LocRef{
+			Id: lr.GetID(),
+		})
+	})
 	return nil
 }
 
@@ -36,5 +41,28 @@ func (src *LocGroup) ToModel(ctx context.Context, dst model.LocGroup) error {
 		return InvalidArgument("Unexpected loc group ID: '%s'", src.GetId())
 	}
 	dst.SetDescription(src.GetDescription())
+	// Add locs from src to dst
+	validIDs := make(map[string]struct{})
+	for _, lr := range src.GetLocs() {
+		validIDs[lr.GetId()] = struct{}{}
+		if !dst.GetLocs().ContainsID(lr.GetId()) {
+			if dstLR, found := dst.GetRailway().GetLocs().Get(lr.GetId()); !found {
+				return InvalidArgument("Unknown loc with ID: '%s'", lr.GetId())
+			} else {
+				if dstLoc, err := dstLR.TryResolve(); err != nil {
+					return InvalidArgument("Failed to resolve loc with ID '%s': %w", lr.GetId(), err)
+				} else {
+					dst.GetLocs().Add(dstLoc)
+				}
+			}
+		}
+	}
+	// Remove locs from dst that are not found in src
+	dst.GetLocs().ForEach(func(lr model.LocRef) {
+		if _, isValid := validIDs[lr.GetID()]; !isValid {
+			// Remove
+			dst.GetLocs().Remove(lr)
+		}
+	})
 	return nil
 }

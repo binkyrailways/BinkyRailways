@@ -795,6 +795,7 @@ class LocGroup extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocGroup', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..pc<LocRef>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: LocRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -802,6 +803,7 @@ class LocGroup extends $pb.GeneratedMessage {
   factory LocGroup({
     $core.String? id,
     $core.String? description,
+    $core.Iterable<LocRef>? locs,
   }) {
     final _result = create();
     if (id != null) {
@@ -809,6 +811,9 @@ class LocGroup extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (locs != null) {
+      _result.locs.addAll(locs);
     }
     return _result;
   }
@@ -850,6 +855,9 @@ class LocGroup extends $pb.GeneratedMessage {
   $core.bool hasDescription() => $_has(1);
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.List<LocRef> get locs => $_getList(2);
 }
 
 class LocGroupRef extends $pb.GeneratedMessage {

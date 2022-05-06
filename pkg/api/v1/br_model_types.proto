@@ -168,6 +168,8 @@ message LocGroup {
   string id = 1;
   // Description of the loc group
   string description = 2;
+  // Locs included in this group
+  repeated LocRef locs = 3;
 }
 
 message LocGroupRef {

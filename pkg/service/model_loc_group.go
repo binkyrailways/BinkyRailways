@@ -37,7 +37,7 @@ func (s *service) getLocGroup(ctx context.Context, lgID string) (model.LocGroup,
 	return lg, nil
 }
 
-// Gets a loc by ID.
+// Gets a loc group by ID.
 func (s *service) GetLocGroup(ctx context.Context, req *api.IDRequest) (*api.LocGroup, error) {
 	lg, err := s.getLocGroup(ctx, req.GetId())
 	if err != nil {
@@ -50,7 +50,7 @@ func (s *service) GetLocGroup(ctx context.Context, req *api.IDRequest) (*api.Loc
 	return &result, nil
 }
 
-// Update a loc by ID.
+// Update a loc group by ID.
 func (s *service) UpdateLocGroup(ctx context.Context, req *api.LocGroup) (*api.LocGroup, error) {
 	lg, err := s.getLocGroup(ctx, req.GetId())
 	if err != nil {
@@ -59,6 +59,20 @@ func (s *service) UpdateLocGroup(ctx context.Context, req *api.LocGroup) (*api.L
 	if err := req.ToModel(ctx, lg); err != nil {
 		return nil, err
 	}
+	var result api.LocGroup
+	if err := result.FromModel(ctx, lg); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Add a loc group by ID.
+func (s *service) AddLocGroup(ctx context.Context, req *api.Empty) (*api.LocGroup, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	lg := rw.GetLocGroups().AddNew()
 	var result api.LocGroup
 	if err := result.FromModel(ctx, lg); err != nil {
 		return nil, err
