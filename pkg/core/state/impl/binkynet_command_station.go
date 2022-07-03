@@ -110,8 +110,11 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case <-updates:
-				cs.railway.Send(state.ActualStateChangedEvent{
-					Subject: cs,
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.railway.Send(state.ActualStateChangedEvent{
+						Subject: cs,
+					})
+					return nil
 				})
 			case <-ctx.Done():
 				return nil
@@ -124,7 +127,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.onPowerActual(ctx, actual)
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.onPowerActual(ctx, actual)
+					return nil
+				})
 			case <-ctx.Done():
 				return nil
 			}
@@ -136,7 +142,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.onLocActual(ctx, actual)
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.onLocActual(ctx, actual)
+					return nil
+				})
 			case <-ctx.Done():
 				return nil
 			}
@@ -148,10 +157,13 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.log.Debug().
-					Str("address", string(actual.Address)).
-					Msg("output actual update")
-				cs.onOutputActual(ctx, actual)
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.log.Debug().
+						Str("address", string(actual.Address)).
+						Msg("output actual update")
+					cs.onOutputActual(ctx, actual)
+					return nil
+				})
 			case <-ctx.Done():
 				return nil
 			}
@@ -163,7 +175,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.onSensorActual(ctx, actual)
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.onSensorActual(ctx, actual)
+					return nil
+				})
 			case <-ctx.Done():
 				return nil
 			}
@@ -176,7 +191,10 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.onSwitchActual(ctx, actual)
+				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+					cs.onSwitchActual(ctx, actual)
+					return nil
+				})
 			case <-ctx.Done():
 				return nil
 			}
