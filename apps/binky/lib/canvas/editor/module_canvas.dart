@@ -50,8 +50,9 @@ class ModuleCanvas extends StatelessWidget {
             ModuleGame.layersOverlay: game!.layersOverlayBuilder,
           },
         ),
-        Align(
-          alignment: Alignment.topRight,
+        Positioned(
+          right: 8,
+          top: 8,
           child: GestureDetector(
               child: const Icon(Icons.layers),
               onTapDown: (TapDownDetails details) {

@@ -73,6 +73,7 @@ class _LayersOverlayState extends State<LayersOverlay> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text("Visible layers"),
               Expanded(child: lv),
               Row(
                 children: [
@@ -82,9 +83,12 @@ class _LayersOverlayState extends State<LayersOverlay> {
                   TextButton(
                       child: const Text("None"),
                       onPressed: () => _selectNone(layers)),
-                  TextButton(
-                      child: const Text("Close"),
-                      onPressed: () => widget.onClose())
+                  Expanded(
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                              child: const Text("Close"),
+                              onPressed: () => widget.onClose())))
                 ],
               ),
             ],
