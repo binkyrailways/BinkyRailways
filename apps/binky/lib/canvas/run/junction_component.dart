@@ -21,6 +21,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
 import '../junction_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as api;
 import '../../models.dart';
 
@@ -28,17 +29,21 @@ class JunctionComponent extends common.JunctionComponent with Tappable {
   Holder<api.JunctionState> state;
   final StateModel stateModel;
 
-  JunctionComponent({required this.state, required this.stateModel})
-      : super(model: state.last.model);
+  JunctionComponent(ViewSettings viewSettings,
+      {required this.state, required this.stateModel})
+      : super(viewSettings, model: state.last.model);
 
   @override
   bool onTapUp(TapUpInfo event) {
-    final sw = state.last;
-    if (sw.hasSwitch_2()) {
-      stateModel.setSwitchDirection(
-          model.id, sw.switch_2.directionRequested.invert());
+    if (onVisibleLayer()) {
+      final sw = state.last;
+      if (sw.hasSwitch_2()) {
+        stateModel.setSwitchDirection(
+            model.id, sw.switch_2.directionRequested.invert());
+      }
+      return false;
     }
-    return false;
+    return true;
   }
 
   @override

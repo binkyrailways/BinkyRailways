@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/canvas/view_settings.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -71,6 +72,8 @@ class EditorPage extends StatefulWidget {
 }
 
 class _EditorPageState extends State<EditorPage> {
+  final ViewSettings _viewSettings = ViewSettings();
+
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<ModelModel>(context, listen: false);
@@ -144,7 +147,10 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.module:
         return SplitView(
           menu: const ModuleTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+            key: Key("edit-canvas-$moduleId"),
+            viewSettings: _viewSettings,
+          ),
           endMenu: const ModuleSettings(),
           endMenuWidth: 300,
         );
@@ -183,96 +189,116 @@ class _EditorPageState extends State<EditorPage> {
       case EntityType.blocks:
         return SplitView(
           menu: const BlocksTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+            key: Key("edit-canvas-$moduleId"),
+            viewSettings: _viewSettings,
+          ),
         );
       case EntityType.block:
         return SplitView(
           menu: const BlocksTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+            key: Key("edit-canvas-$moduleId"),
+            viewSettings: _viewSettings,
+          ),
           endMenu: const BlockSettings(),
           endMenuWidth: 300,
         );
       case EntityType.blockgroups:
         return SplitView(
           menu: const BlockGroupsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.blockgroup:
         return SplitView(
           menu: const BlockGroupsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const BlockGroupSettings(),
           endMenuWidth: 300,
         );
       case EntityType.edges:
         return SplitView(
           menu: const EdgesTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.edge:
         return SplitView(
           menu: const EdgesTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const EdgeSettings(),
           endMenuWidth: 300,
         );
       case EntityType.junctions:
         return SplitView(
           menu: const JunctionsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.junction:
         return SplitView(
           menu: const JunctionsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const JunctionSettings(),
           endMenuWidth: 300,
         );
       case EntityType.outputs:
         return SplitView(
           menu: const OutputsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.output:
         return SplitView(
           menu: const OutputsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const OutputSettings(),
           endMenuWidth: 300,
         );
       case EntityType.routes:
         return SplitView(
           menu: const RoutesTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.route:
         return SplitView(
           menu: const RoutesTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const RouteSettings(),
           endMenuWidth: 300,
         );
       case EntityType.sensors:
         return SplitView(
           menu: const SensorsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.sensor:
         return SplitView(
           menu: const SensorsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const SensorSettings(),
           endMenuWidth: 300,
         );
       case EntityType.signals:
         return SplitView(
           menu: const SignalsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
         );
       case EntityType.signal:
         return SplitView(
           menu: const SignalsTree(),
-          content: ModuleCanvas(key: Key("edit-canvas-$moduleId")),
+          content: ModuleCanvas(
+              key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const SignalSettings(),
           endMenuWidth: 300,
         );

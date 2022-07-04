@@ -21,6 +21,7 @@ import 'package:flame/input.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../output_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -31,11 +32,11 @@ class OutputComponent extends common.OutputComponent
   final EditorContext editorCtx;
   final ModelModel modelModel;
 
-  OutputComponent(
+  OutputComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required mapi.Output model,
       required this.modelModel})
-      : super(model: model);
+      : super(viewSettings, model: model);
 
   @override
   Future<void> savePosition(void Function(mapi.Position) editor) async {
@@ -48,8 +49,11 @@ class OutputComponent extends common.OutputComponent
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntitySelector.output(model));
-    return false;
+    if (onVisibleLayer()) {
+      editorCtx.select(EntitySelector.output(model));
+      return false;
+    }
+    return true;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.output) == model.id;

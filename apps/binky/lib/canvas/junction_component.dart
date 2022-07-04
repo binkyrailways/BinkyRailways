@@ -21,76 +21,82 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../api.dart' as mapi;
 
 class JunctionComponent extends EntityComponent {
   final mapi.Junction model;
 
-  JunctionComponent({required this.model}) {
+  JunctionComponent(ViewSettings viewSettings, {required this.model})
+      : super(viewSettings) {
     loadPosition(model.position);
   }
 
   @override
   void render(Canvas canvas) {
-    final minDim = min(size.x, size.y);
-    final fc.TextPaint textPaint = fc.TextPaint(
-      style: TextStyle(
-        fontSize: minDim * 0.8,
-        color: textColor(),
-        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-    canvas.save();
+    if (onVisibleLayer()) {
+      final minDim = min(size.x, size.y);
+      final fc.TextPaint textPaint = fc.TextPaint(
+        style: TextStyle(
+          fontSize: minDim * 0.8,
+          color: textColor(),
+          fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
+        ),
+      );
+      canvas.save();
 
-    // Clip rrect
-    canvas.clipRRect(
-        RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
-    // Draw background
-    canvas.drawPaint(Paint()..color = backgroundColor());
-    // Draw switch direction (if switch)
-    if (model.hasSwitch_6()) {
-      final strokeWith = minDim / 4;
-      final linePaint = Paint()
-        ..strokeWidth = strokeWith
-        ..color = switchColor();
-      final altLinePaint = Paint()
-        ..strokeWidth = strokeWith
-        ..color = altSwitchColor();
-      final y = size.y / 2;
-      if (switchDirection() == mapi.SwitchDirection.STRAIGHT) {
-        if (model.switch_6.isLeft) {
-          // turn left
-          canvas.drawLine(
-              Offset(size.x / 2, y), Offset(size.x, 0), altLinePaint);
+      // Clip rrect
+      canvas.clipRRect(
+          RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3)));
+      // Draw background
+      canvas.drawPaint(Paint()..color = backgroundColor());
+      // Draw switch direction (if switch)
+      if (model.hasSwitch_6()) {
+        final strokeWith = minDim / 4;
+        final linePaint = Paint()
+          ..strokeWidth = strokeWith
+          ..color = switchColor();
+        final altLinePaint = Paint()
+          ..strokeWidth = strokeWith
+          ..color = altSwitchColor();
+        final y = size.y / 2;
+        if (switchDirection() == mapi.SwitchDirection.STRAIGHT) {
+          if (model.switch_6.isLeft) {
+            // turn left
+            canvas.drawLine(
+                Offset(size.x / 2, y), Offset(size.x, 0), altLinePaint);
+          } else {
+            // turn right
+            canvas.drawLine(
+                Offset(size.x / 2, y), Offset(size.x, size.y), altLinePaint);
+          }
+          canvas.drawLine(Offset(0, y), Offset(size.x, y), linePaint);
         } else {
-          // turn right
           canvas.drawLine(
-              Offset(size.x / 2, y), Offset(size.x, size.y), altLinePaint);
+              Offset(size.x / 2, y), Offset(size.x, y), altLinePaint);
+          if (model.switch_6.isLeft) {
+            // turn left
+            canvas.drawLine(
+                Offset(size.x / 2, y), Offset(size.x, 0), linePaint);
+          } else {
+            // turn right
+            canvas.drawLine(
+                Offset(size.x / 2, y), Offset(size.x, size.y), linePaint);
+          }
+          canvas.drawLine(Offset(0, y), Offset(size.x / 2, y), linePaint);
         }
-        canvas.drawLine(Offset(0, y), Offset(size.x, y), linePaint);
-      } else {
-        canvas.drawLine(Offset(size.x / 2, y), Offset(size.x, y), altLinePaint);
-        if (model.switch_6.isLeft) {
-          // turn left
-          canvas.drawLine(Offset(size.x / 2, y), Offset(size.x, 0), linePaint);
-        } else {
-          // turn right
-          canvas.drawLine(
-              Offset(size.x / 2, y), Offset(size.x, size.y), linePaint);
-        }
-        canvas.drawLine(Offset(0, y), Offset(size.x / 2, y), linePaint);
       }
-    }
-    canvas.restore();
-    // Draw description
-    if (showDescription()) {
-      canvas.renderRotated(
-          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
-          (canvas) {
-        textPaint.render(
-            canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
-            anchor: fc.Anchor.center);
-      });
+      canvas.restore();
+      // Draw description
+      if (showDescription()) {
+        canvas.renderRotated(
+            getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+            (canvas) {
+          textPaint.render(canvas, model.description,
+              Vector2(size.x / 2, size.y / 2 + height),
+              anchor: fc.Anchor.center);
+        });
+      }
     }
   }
 

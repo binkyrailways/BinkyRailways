@@ -22,15 +22,22 @@ import 'package:provider/provider.dart';
 import '../../models.dart';
 
 import 'railway_game.dart';
+import '../view_settings.dart';
 
 class RailwayCanvas extends StatelessWidget {
-  const RailwayCanvas({Key? key}) : super(key: key);
+  final ViewSettings viewSettings;
+
+  const RailwayCanvas({Key? key, required this.viewSettings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(builder: (context, model, child) {
       return Consumer<StateModel>(builder: (context, state, child) {
-        return _RailwayCanvas(modelModel: model, stateModel: state);
+        return _RailwayCanvas(
+          modelModel: model,
+          stateModel: state,
+          viewSettings: viewSettings,
+        );
       });
     });
   }
@@ -39,9 +46,13 @@ class RailwayCanvas extends StatelessWidget {
 class _RailwayCanvas extends StatefulWidget {
   final ModelModel modelModel;
   final StateModel stateModel;
+  final ViewSettings viewSettings;
 
   const _RailwayCanvas(
-      {Key? key, required this.modelModel, required this.stateModel})
+      {Key? key,
+      required this.modelModel,
+      required this.stateModel,
+      required this.viewSettings})
       : super(key: key);
 
   @override
@@ -55,18 +66,36 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
   void initState() {
     super.initState();
     _game = RailwayGame(
-        modelModel: widget.modelModel, stateModel: widget.stateModel);
+        modelModel: widget.modelModel,
+        stateModel: widget.stateModel,
+        viewSettings: widget.viewSettings);
   }
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(
-      game: _game!,
-      loadingBuilder: (context) => const Text("Loading canvas..."),
-      errorBuilder: (context, err) => Text("Error: $err"),
-      overlayBuilderMap: {
-        RailwayGame.blockOverlay: _game!.blockOverlayBuilder,
-      },
+    return Stack(
+      children: [
+        GameWidget(
+          game: _game!,
+          loadingBuilder: (context) => const Text("Loading canvas..."),
+          errorBuilder: (context, err) => Text("Error: $err"),
+          overlayBuilderMap: {
+            RailwayGame.blockOverlay: _game!.blockOverlayBuilder,
+            RailwayGame.layersOverlay: _game!.layersOverlayBuilder,
+          },
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+              child: const Icon(Icons.layers),
+              onTapDown: (TapDownDetails details) {
+                _game!.showLayers(Vector2(
+                    details.localPosition.dx, details.localPosition.dy));
+              }),
+        ),
+      ],
     );
+
+    ;
   }
 }

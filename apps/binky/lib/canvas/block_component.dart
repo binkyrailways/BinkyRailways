@@ -21,52 +21,56 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../api.dart' as mapi;
 
 class BlockComponent extends EntityComponent with Tappable {
   final mapi.Block model;
 
-  BlockComponent({required this.model}) {
+  BlockComponent(ViewSettings viewSettings, {required this.model})
+      : super(viewSettings) {
     loadPosition(model.position);
   }
 
   @override
   void render(Canvas canvas) {
-    final minDim = min(size.x, size.y);
-    final TextPaint textPaint = TextPaint(
-      style: TextStyle(
-        fontSize: minDim * 0.8,
-        color: textColor(),
-        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
+    if (onVisibleLayer()) {
+      final minDim = min(size.x, size.y);
+      final TextPaint textPaint = TextPaint(
+        style: TextStyle(
+          fontSize: minDim * 0.8,
+          color: textColor(),
+          fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
+        ),
+      );
 
-    canvas.save();
+      canvas.save();
 
-    // Draw background
-    final rrect =
-        RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
-    canvas.clipRRect(rrect);
-    canvas.drawPaint(Paint()..color = backgroundColor());
-    // Draw front
-    final frontRect = model.reverseSides
-        ? Rect.fromLTRB(0, 0, minDim, minDim)
-        : Rect.fromLTRB(size.x - minDim, 0, size.x, minDim);
-    canvas.drawRect(frontRect, Paint()..color = frontColor());
-    // Draw description
-    canvas.renderRotated(
-        getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
-        (canvas) {
-      textPaint.render(canvas, description(), Vector2(size.x / 2, size.y / 2),
-          anchor: Anchor.center);
-    });
-    // Draw border
-    final borderPaint = Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke;
-    canvas.drawRRect(rrect, borderPaint);
+      // Draw background
+      final rrect =
+          RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
+      canvas.clipRRect(rrect);
+      canvas.drawPaint(Paint()..color = backgroundColor());
+      // Draw front
+      final frontRect = model.reverseSides
+          ? Rect.fromLTRB(0, 0, minDim, minDim)
+          : Rect.fromLTRB(size.x - minDim, 0, size.x, minDim);
+      canvas.drawRect(frontRect, Paint()..color = frontColor());
+      // Draw description
+      canvas.renderRotated(
+          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+          (canvas) {
+        textPaint.render(canvas, description(), Vector2(size.x / 2, size.y / 2),
+            anchor: Anchor.center);
+      });
+      // Draw border
+      final borderPaint = Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.stroke;
+      canvas.drawRRect(rrect, borderPaint);
 
-    canvas.restore();
+      canvas.restore();
+    }
   }
 
   Color backgroundColor() => Colors.grey;

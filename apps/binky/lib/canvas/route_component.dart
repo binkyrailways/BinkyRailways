@@ -22,6 +22,7 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../api.dart' as mapi;
 import '../models.dart';
 
@@ -34,14 +35,15 @@ class RouteComponent extends EntityComponent {
   final List<mapi.Junction> junctions;
   final List<mapi.Sensor> sensors;
 
-  RouteComponent(
+  RouteComponent(ViewSettings viewSettings,
       {required this.routeId,
       required this.module,
       required this.modelModel,
       required this.blocks,
       required this.edges,
       required this.junctions,
-      required this.sensors}) {
+      required this.sensors})
+      : super(viewSettings) {
     size.x = module.hasWidth() ? max(1, module.width.toDouble()) : 1;
     size.y = module.hasHeight() ? max(1, module.height.toDouble()) : 1;
   }

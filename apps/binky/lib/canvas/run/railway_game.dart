@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/api/generated/br_state_types.pb.dart';
+import 'package:binky/canvas/layers_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
@@ -25,17 +26,23 @@ import 'package:flutter/material.dart';
 import '../../models.dart';
 
 import './module_component.dart';
+import '../view_settings.dart';
 import 'block_overlay.dart';
 
 class RailwayGame extends FlameGame with HasHoverables, HasTappables {
   final ModelModel modelModel;
   final StateModel stateModel;
+  final ViewSettings viewSettings;
   BlockState? _block;
   Vector2? _overlayPosition;
 
   static const blockOverlay = "assignBlockToLoc";
+  static const layersOverlay = "layers";
 
-  RailwayGame({required this.modelModel, required this.stateModel});
+  RailwayGame(
+      {required this.modelModel,
+      required this.stateModel,
+      required this.viewSettings});
 
   @override
   Color backgroundColor() => const Color(0xFFFFFFFF);
@@ -78,6 +85,55 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
     );
   }
 
+  void showLayers(Vector2 position) {
+    _overlayPosition = position;
+    overlays.add(layersOverlay);
+  }
+
+  Widget layersOverlayBuilder(BuildContext buildContext, RailwayGame game) {
+    return Stack(
+      children: [
+        GestureDetector(
+          child: Container(
+            color: Colors.grey.withAlpha(128),
+          ),
+          onTap: () {
+            game.overlays.remove(layersOverlay);
+          },
+        ),
+        Positioned(
+          right: _overlayPosition?.x,
+          top: _overlayPosition?.y,
+          width: 400,
+          height: 300,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.white,
+            child: LayersOverlay(
+              modelModel: modelModel,
+              viewSettings: viewSettings,
+              buildLayers: () async {
+                final rw = await modelModel.getRailway();
+                final modules = await Future.wait(
+                    rw.modules.map((e) => modelModel.getModule(e.id)));
+                final Set<String> layers = {};
+                for (var m in modules) {
+                  layers.addAll(m.layers);
+                }
+                final result = layers.toList();
+                result.sort(((a, b) => a.compareTo(b)));
+                return result;
+              },
+              onClose: () {
+                game.overlays.remove(layersOverlay);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   // Load the game components
   @override
   Future<void> onLoad() async {
@@ -96,8 +152,8 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
         final maxY = y.toDouble() + (module.height.toDouble() * zoomFactor);
         size.x = max(size.x, maxX);
         size.y = max(size.y, maxY);
-        final modComp =
-            ModuleComponent(model: module, moduleRef: modRef, game: this);
+        final modComp = ModuleComponent(viewSettings,
+            model: module, moduleRef: modRef, game: this);
         modComp.scale = Vector2.all(zoomFactor);
         await modComp.loadChildren(modelModel, stateModel);
         add(modComp);

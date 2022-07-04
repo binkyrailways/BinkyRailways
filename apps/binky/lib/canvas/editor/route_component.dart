@@ -15,14 +15,8 @@
 // Author Ewout Prangsma
 //
 
-import 'package:flutter/services.dart';
-import 'package:binky/colors.dart';
-import 'package:flame/components.dart';
-import 'package:flutter/material.dart' hide Draggable;
-import 'package:flame/input.dart';
-import 'package:protobuf/protobuf.dart';
-
 import '../route_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -32,7 +26,7 @@ class RouteComponent extends common.RouteComponent {
   final EditorContext editorCtx;
   final ModuleGame game;
 
-  RouteComponent(
+  RouteComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required String routeId,
       required mapi.Module module,
@@ -42,7 +36,7 @@ class RouteComponent extends common.RouteComponent {
       required List<mapi.Sensor> sensors,
       required ModelModel modelModel,
       required this.game})
-      : super(
+      : super(viewSettings,
             routeId: routeId,
             modelModel: modelModel,
             module: module,

@@ -22,79 +22,83 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../api.dart' as mapi;
 
 class SensorComponent extends EntityComponent {
   final mapi.Sensor model;
 
-  SensorComponent({required this.model}) {
+  SensorComponent(ViewSettings viewSettings, {required this.model})
+      : super(viewSettings) {
     loadPosition(model.position);
   }
 
   @override
   void render(Canvas canvas) {
-    final minDim = min(size.x, size.y);
-    final fc.TextPaint textPaint = fc.TextPaint(
-      style: TextStyle(
-        fontSize: minDim * 0.8,
-        color: textColor(),
-        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-    canvas.save();
+    if (onVisibleLayer()) {
+      final minDim = min(size.x, size.y);
+      final fc.TextPaint textPaint = fc.TextPaint(
+        style: TextStyle(
+          fontSize: minDim * 0.8,
+          color: textColor(),
+          fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
+        ),
+      );
+      canvas.save();
 
-    // Clip rrect
-    final backgroundPaint = Paint()..color = backgroundColor();
-    final borderPaint = Paint()..color = Colors.black.withAlpha(64);
-    borderPaint.style = PaintingStyle.stroke;
-    switch (model.shape) {
-      case mapi.Shape.CIRCLE:
-        canvas.drawCircle(
-            Offset(size.x / 2, size.y / 2), minDim / 2, backgroundPaint);
-        canvas.drawCircle(
-            Offset(size.x / 2, size.y / 2), minDim / 2, borderPaint);
-        break;
-      case mapi.Shape.DIAMOND:
-        var path = Path();
-        path.moveTo(size.x / 2, 0); // top-center
-        path.lineTo(size.x, size.y / 2); // middle-right
-        path.lineTo(size.x / 2, size.y); // bottom-center
-        path.lineTo(0, size.y / 2); // middle-left
-        path.close();
-        canvas.drawPath(path, backgroundPaint);
-        canvas.drawPath(path, borderPaint);
-        break;
-      case mapi.Shape.SQUARE:
-        canvas.drawRect(size.toRect(), backgroundPaint);
-        canvas.drawRect(size.toRect(), borderPaint);
-        break;
-      case mapi.Shape.TRIANGLE:
-        var path = Path();
-        path.moveTo(size.x / 2, 0); // top-center
-        path.lineTo(size.x, size.y); // bottom-right
-        path.lineTo(0, size.y); // bottom-left
-        path.close();
-        canvas.drawPath(path, backgroundPaint);
-        canvas.drawPath(path, borderPaint);
-        break;
-      default:
-        canvas.clipRRect(RRect.fromRectAndRadius(
-            size.toRect(), Radius.circular(minDim / 3)));
-        // Draw background
-        canvas.drawPaint(backgroundPaint);
-        canvas.drawPaint(borderPaint);
-    }
-    canvas.restore();
+      // Clip rrect
+      final backgroundPaint = Paint()..color = backgroundColor();
+      final borderPaint = Paint()..color = Colors.black.withAlpha(64);
+      borderPaint.style = PaintingStyle.stroke;
+      switch (model.shape) {
+        case mapi.Shape.CIRCLE:
+          canvas.drawCircle(
+              Offset(size.x / 2, size.y / 2), minDim / 2, backgroundPaint);
+          canvas.drawCircle(
+              Offset(size.x / 2, size.y / 2), minDim / 2, borderPaint);
+          break;
+        case mapi.Shape.DIAMOND:
+          var path = Path();
+          path.moveTo(size.x / 2, 0); // top-center
+          path.lineTo(size.x, size.y / 2); // middle-right
+          path.lineTo(size.x / 2, size.y); // bottom-center
+          path.lineTo(0, size.y / 2); // middle-left
+          path.close();
+          canvas.drawPath(path, backgroundPaint);
+          canvas.drawPath(path, borderPaint);
+          break;
+        case mapi.Shape.SQUARE:
+          canvas.drawRect(size.toRect(), backgroundPaint);
+          canvas.drawRect(size.toRect(), borderPaint);
+          break;
+        case mapi.Shape.TRIANGLE:
+          var path = Path();
+          path.moveTo(size.x / 2, 0); // top-center
+          path.lineTo(size.x, size.y); // bottom-right
+          path.lineTo(0, size.y); // bottom-left
+          path.close();
+          canvas.drawPath(path, backgroundPaint);
+          canvas.drawPath(path, borderPaint);
+          break;
+        default:
+          canvas.clipRRect(RRect.fromRectAndRadius(
+              size.toRect(), Radius.circular(minDim / 3)));
+          // Draw background
+          canvas.drawPaint(backgroundPaint);
+          canvas.drawPaint(borderPaint);
+      }
+      canvas.restore();
 
-    // Show description (if hovered)
-    if (showDescription()) {
-      canvas.renderRotated(
-          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
-          (canvas) {
-        textPaint.render(
-            canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
-            anchor: fc.Anchor.center);
-      });
+      // Show description (if hovered)
+      if (showDescription()) {
+        canvas.renderRotated(
+            getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+            (canvas) {
+          textPaint.render(canvas, model.description,
+              Vector2(size.x / 2, size.y / 2 + height),
+              anchor: fc.Anchor.center);
+        });
+      }
     }
   }
 

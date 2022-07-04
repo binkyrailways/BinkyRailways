@@ -16,6 +16,7 @@
 //
 
 import '../module_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -28,8 +29,9 @@ import './module_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
   final ModuleGame game;
-  ModuleComponent({required mapi.Module model, required this.game})
-      : super(model: model);
+  ModuleComponent(ViewSettings viewSettings,
+      {required mapi.Module model, required this.game})
+      : super(viewSettings, model: model);
 
   Future<void> loadChildren(
       EditorContext editorCtx, ModelModel modelModel) async {
@@ -42,7 +44,7 @@ class ModuleComponent extends common.ModuleComponent {
     final List<mapi.Sensor> sensors = [];
     for (var routeRef in model.routes) {
       final route = await modelModel.getRoute(routeRef.id);
-      add(RouteComponent(
+      add(RouteComponent(viewSettings,
           editorCtx: editorCtx,
           routeId: route.id,
           module: model,
@@ -57,7 +59,7 @@ class ModuleComponent extends common.ModuleComponent {
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
       blocks.add(block);
-      add(BlockComponent(
+      add(BlockComponent(viewSettings,
           editorCtx: editorCtx, model: block, modelModel: modelModel));
     }
     // Load edges
@@ -69,20 +71,20 @@ class ModuleComponent extends common.ModuleComponent {
     for (var junctionRef in model.junctions) {
       final junction = await modelModel.getJunction(junctionRef.id);
       junctions.add(junction);
-      add(JunctionComponent(
+      add(JunctionComponent(viewSettings,
           editorCtx: editorCtx, model: junction, modelModel: modelModel));
     }
     // Load outputs
     for (var outputRef in model.outputs) {
       final output = await modelModel.getOutput(outputRef.id);
-      add(OutputComponent(
+      add(OutputComponent(viewSettings,
           editorCtx: editorCtx, model: output, modelModel: modelModel));
     }
     // Load sensors
     for (var sensorRef in model.sensors) {
       final sensor = await modelModel.getSensor(sensorRef.id);
       sensors.add(sensor);
-      add(SensorComponent(
+      add(SensorComponent(viewSettings,
           editorCtx: editorCtx,
           model: sensor,
           modelModel: modelModel,

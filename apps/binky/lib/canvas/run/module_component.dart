@@ -17,6 +17,7 @@
 
 import 'package:flame/components.dart';
 import '../module_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import './block_component.dart';
@@ -29,9 +30,9 @@ class ModuleComponent extends common.ModuleComponent {
   final mapi.ModuleRef moduleRef;
   final RailwayGame game;
 
-  ModuleComponent(
+  ModuleComponent(ViewSettings viewSettings,
       {required mapi.Module model, required this.moduleRef, required this.game})
-      : super(model: model) {
+      : super(viewSettings, model: model) {
     anchor = Anchor.center;
     width = model.width.toDouble();
     height = model.height.toDouble();
@@ -52,7 +53,7 @@ class ModuleComponent extends common.ModuleComponent {
     for (var blockRef in railway.blocks) {
       try {
         final blockState = await stateModel.getBlockState(blockRef.id);
-        add(BlockComponent(state: blockState, game: game));
+        add(BlockComponent(viewSettings, state: blockState, game: game));
       } catch (err) {
         print(err);
       }
@@ -60,7 +61,8 @@ class ModuleComponent extends common.ModuleComponent {
     for (var junctionRef in railway.junctions) {
       try {
         final junctionState = await stateModel.getJunctionState(junctionRef.id);
-        add(JunctionComponent(state: junctionState, stateModel: stateModel));
+        add(JunctionComponent(viewSettings,
+            state: junctionState, stateModel: stateModel));
       } catch (err) {
         print(err);
       }
@@ -68,7 +70,8 @@ class ModuleComponent extends common.ModuleComponent {
     for (var outputRef in railway.outputs) {
       try {
         final outputState = await stateModel.getOutputState(outputRef.id);
-        add(OutputComponent(state: outputState, stateModel: stateModel));
+        add(OutputComponent(viewSettings,
+            state: outputState, stateModel: stateModel));
       } catch (err) {
         print(err);
       }
@@ -76,7 +79,8 @@ class ModuleComponent extends common.ModuleComponent {
     for (var sensorRef in railway.sensors) {
       try {
         final sensorState = await stateModel.getSensorState(sensorRef.id);
-        add(SensorComponent(state: sensorState, stateModel: stateModel));
+        add(SensorComponent(viewSettings,
+            state: sensorState, stateModel: stateModel));
       } catch (err) {
         print(err);
       }

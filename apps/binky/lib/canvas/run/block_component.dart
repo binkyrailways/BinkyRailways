@@ -18,6 +18,7 @@
 import 'package:flame/input.dart';
 
 import '../block_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as sapi;
 import '../../models.dart';
 import './railway_game.dart';
@@ -26,13 +27,17 @@ class BlockComponent extends common.BlockComponent {
   final Holder<sapi.BlockState> state;
   final RailwayGame game;
 
-  BlockComponent({required this.state, required this.game})
-      : super(model: state.last.model);
+  BlockComponent(ViewSettings viewSettings,
+      {required this.state, required this.game})
+      : super(viewSettings, model: state.last.model);
 
   @override
   bool onTapUp(TapUpInfo event) {
-    game.showBlock(event.eventPosition.widget, state.last);
-    return false;
+    if (onVisibleLayer()) {
+      game.showBlock(event.eventPosition.widget, state.last);
+      return false;
+    }
+    return true;
   }
 
   @override

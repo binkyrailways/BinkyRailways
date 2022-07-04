@@ -23,6 +23,7 @@ import 'package:flame/input.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../sensor_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -35,12 +36,12 @@ class SensorComponent extends common.SensorComponent
   final ModelModel modelModel;
   final ModuleGame game;
 
-  SensorComponent(
+  SensorComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required mapi.Sensor model,
       required this.modelModel,
       required this.game})
-      : super(model: model);
+      : super(viewSettings, model: model);
 
   @override
   Future<void> savePosition(void Function(mapi.Position) editor) async {
@@ -53,23 +54,26 @@ class SensorComponent extends common.SensorComponent
 
   @override
   bool onTapUp(TapUpInfo event) {
-    if (game.shiftPressed()) {
-      final info = _getSelectedRouteInfo();
-      final route = info.route;
-      if (route == null) {
-        return true;
+    if (onVisibleLayer()) {
+      if (game.shiftPressed()) {
+        final info = _getSelectedRouteInfo();
+        final route = info.route;
+        if (route == null) {
+          return true;
+        }
+        if (info.event != null) {
+          // Already an event
+          return true;
+        }
+        // Add sensor to given route
+        modelModel.addRouteEvent(route.id, model.id);
+        return false;
+      } else {
+        editorCtx.select(EntitySelector.sensor(model));
       }
-      if (info.event != null) {
-        // Already an event
-        return true;
-      }
-      // Add sensor to given route
-      modelModel.addRouteEvent(route.id, model.id);
       return false;
-    } else {
-      editorCtx.select(EntitySelector.sensor(model));
     }
-    return false;
+    return true;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.sensor) == model.id;

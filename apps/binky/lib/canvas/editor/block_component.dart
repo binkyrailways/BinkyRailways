@@ -22,6 +22,7 @@ import 'package:flame/input.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../block_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -32,11 +33,11 @@ class BlockComponent extends common.BlockComponent
   final EditorContext editorCtx;
   final ModelModel modelModel;
 
-  BlockComponent(
+  BlockComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required mapi.Block model,
       required this.modelModel})
-      : super(model: model);
+      : super(viewSettings, model: model);
 
   @override
   Future<void> savePosition(void Function(mapi.Position) editor) async {
@@ -49,8 +50,11 @@ class BlockComponent extends common.BlockComponent
 
   @override
   bool onTapUp(TapUpInfo event) {
-    editorCtx.select(EntitySelector.block(model));
-    return false;
+    if (onVisibleLayer()) {
+      editorCtx.select(EntitySelector.block(model));
+      return false;
+    }
+    return true;
   }
 
   _isSelected() => editorCtx.selector.idOf(EntityType.block) == model.id;

@@ -15,12 +15,18 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/canvas/view_settings.dart';
 import 'package:flame/components.dart';
 import 'dart:math';
 
 import '../api.dart' as mapi;
 
 class EntityComponent extends PositionComponent with Hoverable {
+  final ViewSettings viewSettings;
+  String _layer = "";
+
+  EntityComponent(this.viewSettings);
+
   // Load the given position into this component
   void loadPosition(mapi.Position position) {
     anchor = Anchor.center;
@@ -29,6 +35,7 @@ class EntityComponent extends PositionComponent with Hoverable {
     x = (position.hasX() ? position.x.toDouble() : 0) + width / 2;
     y = (position.hasY() ? position.y.toDouble() : 0) + height / 2;
     angle = radians(position.rotation.toDouble());
+    _layer = position.layer;
   }
 
   // Gets the angle (in radians) to draw the description of this element.
@@ -38,4 +45,6 @@ class EntityComponent extends PositionComponent with Hoverable {
     final rotation = (modelRotation > 90 && modelRotation < 270) ? 180 : 0;
     return radians(rotation.toDouble());
   }
+
+  bool onVisibleLayer() => viewSettings.isLayerVisible(_layer);
 }

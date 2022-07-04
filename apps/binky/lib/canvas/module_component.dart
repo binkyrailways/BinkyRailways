@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../models.dart';
 import '../api.dart' as mapi;
 
@@ -30,7 +31,8 @@ class ModuleComponent extends EntityComponent {
   final mapi.Module model;
   ui.Image? _bgImage;
 
-  ModuleComponent({required this.model}) {
+  ModuleComponent(ViewSettings viewSettings, {required this.model})
+      : super(viewSettings) {
     size.x = model.hasWidth() ? max(1, model.width.toDouble()) : 1;
     size.y = model.hasHeight() ? max(1, model.height.toDouble()) : 1;
   }

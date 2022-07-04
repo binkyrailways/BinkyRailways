@@ -21,6 +21,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
 import '../output_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as api;
 import '../../models.dart';
 
@@ -28,16 +29,21 @@ class OutputComponent extends common.OutputComponent with Tappable {
   Holder<api.OutputState> state;
   final StateModel stateModel;
 
-  OutputComponent({required this.state, required this.stateModel})
-      : super(model: state.last.model);
+  OutputComponent(ViewSettings viewSettings,
+      {required this.state, required this.stateModel})
+      : super(viewSettings, model: state.last.model);
 
   @override
   bool onTapUp(TapUpInfo event) {
-    final sw = state.last;
-    if (sw.hasBinaryOutput()) {
-      stateModel.setBinaryOutputActive(model.id, !sw.binaryOutput.activeActual);
+    if (onVisibleLayer()) {
+      final sw = state.last;
+      if (sw.hasBinaryOutput()) {
+        stateModel.setBinaryOutputActive(
+            model.id, !sw.binaryOutput.activeActual);
+      }
+      return false;
     }
-    return false;
+    return true;
   }
 
   @override

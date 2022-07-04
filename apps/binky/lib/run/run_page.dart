@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/canvas/view_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,8 @@ class RunPage extends StatefulWidget {
 }
 
 class _RunPageState extends State<RunPage> {
+  final ViewSettings _viewSettings = ViewSettings();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RunContext>(
@@ -73,8 +76,11 @@ class _RunPageState extends State<RunPage> {
                 body: SplitView(
                   menuWidth: 300,
                   menu: const ControlPane(),
-                  content: Column(children: const [
-                    Expanded(child: RailwayCanvas()),
+                  content: Column(children: [
+                    Expanded(
+                        child: RailwayCanvas(
+                      viewSettings: _viewSettings,
+                    )),
                     HardwareModulesPane(),
                   ]),
                 ),

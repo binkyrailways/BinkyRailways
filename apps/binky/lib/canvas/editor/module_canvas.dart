@@ -21,11 +21,14 @@ import 'package:provider/provider.dart';
 
 import '../../models.dart';
 import '../../editor/editor_context.dart';
+import '../view_settings.dart';
 
 import 'module_game.dart';
 
 class ModuleCanvas extends StatelessWidget {
-  const ModuleCanvas({Key? key}) : super(key: key);
+  final ViewSettings viewSettings;
+
+  const ModuleCanvas({Key? key, required this.viewSettings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +36,30 @@ class ModuleCanvas extends StatelessWidget {
     final model = Provider.of<ModelModel>(context, listen: false);
     final selector = editorCtx.selector;
     final moduleId = selector.idOf(EntityType.module) ?? "";
-    return GameWidget(
-        autofocus: true,
-        game: ModuleGame(
-            editorCtx: editorCtx, modelModel: model, moduleId: moduleId));
+    final game = ModuleGame(
+        editorCtx: editorCtx,
+        modelModel: model,
+        moduleId: moduleId,
+        viewSettings: viewSettings);
+    return Stack(
+      children: [
+        GameWidget(
+          autofocus: true,
+          game: game,
+          overlayBuilderMap: {
+            ModuleGame.layersOverlay: game!.layersOverlayBuilder,
+          },
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+              child: const Icon(Icons.layers),
+              onTapDown: (TapDownDetails details) {
+                game.showLayers(Vector2(
+                    details.localPosition.dx, details.localPosition.dy));
+              }),
+        ),
+      ],
+    );
   }
 }

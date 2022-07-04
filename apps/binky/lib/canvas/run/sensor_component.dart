@@ -20,6 +20,7 @@ import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 
 import '../sensor_component.dart' as common;
+import '../view_settings.dart';
 import '../../api.dart' as api;
 import '../../models.dart';
 
@@ -27,18 +28,22 @@ class SensorComponent extends common.SensorComponent with Tappable {
   Holder<api.SensorState> state;
   final StateModel stateModel;
 
-  SensorComponent({required this.state, required this.stateModel})
-      : super(model: state.last.model);
+  SensorComponent(ViewSettings viewSettings,
+      {required this.state, required this.stateModel})
+      : super(viewSettings, model: state.last.model);
 
   @override
   bool onTapUp(TapUpInfo event) {
-    final rw = stateModel.getCachedRailwayState();
-    final isVirtualModeEnabled = rw?.isVirtualModeEnabled ?? false;
-    if (isVirtualModeEnabled) {
-      final sState = state.last;
-      stateModel.clickVirtualSensor(sState.model.id);
+    if (onVisibleLayer()) {
+      final rw = stateModel.getCachedRailwayState();
+      final isVirtualModeEnabled = rw?.isVirtualModeEnabled ?? false;
+      if (isVirtualModeEnabled) {
+        final sState = state.last;
+        stateModel.clickVirtualSensor(sState.model.id);
+      }
+      return false;
     }
-    return false;
+    return true;
   }
 
   @override

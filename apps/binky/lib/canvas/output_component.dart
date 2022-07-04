@@ -21,62 +21,66 @@ import 'package:flame/extensions.dart';
 import 'dart:math';
 
 import 'entity_component.dart';
+import 'view_settings.dart';
 import '../api.dart' as mapi;
 
 class OutputComponent extends EntityComponent {
   final mapi.Output model;
 
-  OutputComponent({required this.model}) {
+  OutputComponent(ViewSettings viewSettings, {required this.model})
+      : super(viewSettings) {
     loadPosition(model.position);
   }
 
   @override
   void render(Canvas canvas) {
-    final minDim = min(size.x, size.y);
-    final fc.TextPaint textPaint = fc.TextPaint(
-      style: TextStyle(
-        fontSize: minDim * 0.8,
-        color: textColor(),
-        fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-    canvas.save();
+    if (onVisibleLayer()) {
+      final minDim = min(size.x, size.y);
+      final fc.TextPaint textPaint = fc.TextPaint(
+        style: TextStyle(
+          fontSize: minDim * 0.8,
+          color: textColor(),
+          fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
+        ),
+      );
+      canvas.save();
 
-    // Clip rrect
-    final rrect =
-        RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
-    canvas.clipRRect(rrect);
-    // Draw background
-    canvas.drawPaint(Paint()..color = backgroundColor());
-    if (showActiveStatusText()) {
-      canvas.renderRotated(
-          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
-          (canvas) {
-        final activeStatusText = isActive()
-            ? model.binaryOutput.activeText
-            : model.binaryOutput.inactiveText;
-        textPaint.render(
-            canvas, activeStatusText, Vector2(size.x / 2, size.y / 2),
-            anchor: fc.Anchor.center);
-      });
-    }
-    // Draw border
-    canvas.drawRRect(
-        rrect,
-        Paint()
-          ..color = Colors.black
-          ..style = PaintingStyle.stroke);
-    canvas.restore();
+      // Clip rrect
+      final rrect =
+          RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
+      canvas.clipRRect(rrect);
+      // Draw background
+      canvas.drawPaint(Paint()..color = backgroundColor());
+      if (showActiveStatusText()) {
+        canvas.renderRotated(
+            getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+            (canvas) {
+          final activeStatusText = isActive()
+              ? model.binaryOutput.activeText
+              : model.binaryOutput.inactiveText;
+          textPaint.render(
+              canvas, activeStatusText, Vector2(size.x / 2, size.y / 2),
+              anchor: fc.Anchor.center);
+        });
+      }
+      // Draw border
+      canvas.drawRRect(
+          rrect,
+          Paint()
+            ..color = Colors.black
+            ..style = PaintingStyle.stroke);
+      canvas.restore();
 
-    // Draw description
-    if (showDescription()) {
-      canvas.renderRotated(
-          getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
-          (canvas) {
-        textPaint.render(
-            canvas, model.description, Vector2(size.x / 2, size.y / 2 + height),
-            anchor: fc.Anchor.center);
-      });
+      // Draw description
+      if (showDescription()) {
+        canvas.renderRotated(
+            getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
+            (canvas) {
+          textPaint.render(canvas, model.description,
+              Vector2(size.x / 2, size.y / 2 + height),
+              anchor: fc.Anchor.center);
+        });
+      }
     }
   }
 
