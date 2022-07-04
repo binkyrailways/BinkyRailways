@@ -211,6 +211,7 @@ class Module extends $pb.GeneratedMessage {
     ..pc<RouteRef>(105, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: RouteRef.create)
     ..pc<SensorRef>(106, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: SensorRef.create)
     ..pc<SignalRef>(107, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: SignalRef.create)
+    ..pPS(200, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'layers')
     ..hasRequiredFields = false
   ;
 
@@ -229,6 +230,7 @@ class Module extends $pb.GeneratedMessage {
     $core.Iterable<RouteRef>? routes,
     $core.Iterable<SensorRef>? sensors,
     $core.Iterable<SignalRef>? signals,
+    $core.Iterable<$core.String>? layers,
   }) {
     final _result = create();
     if (id != null) {
@@ -269,6 +271,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (signals != null) {
       _result.signals.addAll(signals);
+    }
+    if (layers != null) {
+      _result.layers.addAll(layers);
     }
     return _result;
   }
@@ -361,6 +366,9 @@ class Module extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(107)
   $core.List<SignalRef> get signals => $_getList(12);
+
+  @$pb.TagNumber(200)
+  $core.List<$core.String> get layers => $_getList(13);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {

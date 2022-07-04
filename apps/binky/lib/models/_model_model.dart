@@ -272,6 +272,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlock(value);
     _blocks[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -317,6 +319,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateBlockGroup(value);
     _blockGroups[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -363,6 +367,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateEdge(value);
     _edges[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -408,6 +414,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateJunction(value);
     _junctions[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -454,6 +462,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateOutput(value);
     _outputs[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -500,6 +510,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateRoute(value);
     _routes[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -656,6 +668,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateSensor(value);
     _sensors[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 
@@ -702,6 +716,8 @@ class ModelModel extends ChangeNotifier {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateSignal(value);
     _signals[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
     notifyListeners();
   }
 

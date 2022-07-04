@@ -216,6 +216,7 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
           editorCtx: widget.editorCtx,
           model: widget.model,
           position: widget.junction.position,
+          moduleId: widget.junction.moduleId,
           update: (editor) async {
             await _update((update) {
               editor(update.position);

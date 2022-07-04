@@ -104,6 +104,7 @@ class _SignalSettingsState extends State<_SignalSettings> {
             editorCtx: widget.editorCtx,
             model: widget.model,
             position: widget.signal.position,
+            moduleId: widget.signal.moduleId,
             update: (editor) async {
               await _update((update) {
                 editor(update.position);

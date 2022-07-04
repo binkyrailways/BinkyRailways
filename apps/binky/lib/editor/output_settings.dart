@@ -141,6 +141,7 @@ class _OutputSettingsState extends State<_OutputSettings> {
           editorCtx: widget.editorCtx,
           model: widget.model,
           position: widget.output.position,
+          moduleId: widget.output.moduleId,
           update: (editor) async {
             await _update((update) {
               editor(update.position);

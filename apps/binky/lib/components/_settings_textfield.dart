@@ -36,6 +36,8 @@ class SettingsTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool autocorrect;
   final String? Function(String?)? validator;
+  final Widget? prefix;
+  final Widget? suffix;
 
   const SettingsTextField({
     Key? key,
@@ -46,6 +48,8 @@ class SettingsTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.autocorrect = true,
     this.validator,
+    this.prefix,
+    this.suffix,
   }) : super(key: key);
 
   @override
@@ -64,6 +68,8 @@ class SettingsTextField extends StatelessWidget {
           decoration: InputDecoration(
             border: const UnderlineInputBorder(),
             label: Text(label),
+            prefix: prefix,
+            suffix: suffix,
           ),
         ),
         onFocusChange: (bool hasFocus) async {

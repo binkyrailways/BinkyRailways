@@ -26,6 +26,7 @@ class PositionSettings extends StatefulWidget {
   final EditorContext editorCtx;
   final ModelModel model;
   final Position position;
+  final String moduleId;
   final Future<void> Function(void Function(Position)) update;
 
   const PositionSettings(
@@ -33,6 +34,7 @@ class PositionSettings extends StatefulWidget {
       required this.editorCtx,
       required this.model,
       required this.position,
+      required this.moduleId,
       required this.update})
       : super(key: key);
 
@@ -134,15 +136,50 @@ class _PositionSettingsState extends State<PositionSettings> {
                   })),
           Expanded(
               child: SettingsTextField(
-                  controller: _layerController,
-                  label: "Layer",
-                  onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.layer = value;
-                    });
-                  })),
+            controller: _layerController,
+            label: "Layer",
+            onLostFocus: (value) async {
+              await widget.update((update) {
+                update.layer = value;
+              });
+            },
+            suffix: GestureDetector(
+              child: const Icon(Icons.arrow_drop_down),
+              onTapDown: (TapDownDetails details) async {
+                final layers = await _layers();
+                final items = layers
+                    .map(
+                      (e) => PopupMenuItem<String>(
+                        child: Text(e),
+                        onTap: () async {
+                          await widget.update((update) {
+                            update.layer = e;
+                          });
+                        },
+                      ),
+                    )
+                    .toList();
+                showMenu(
+                  context: context,
+                  useRootNavigator: true,
+                  position: RelativeRect.fromLTRB(
+                      details.globalPosition.dx,
+                      details.globalPosition.dy,
+                      details.globalPosition.dx,
+                      details.globalPosition.dy),
+                  items: items,
+                  elevation: 8.0,
+                );
+              },
+            ),
+          )),
         ]),
       ],
     );
+  }
+
+  Future<List<String>> _layers() async {
+    final mod = await widget.model.getModule(widget.moduleId);
+    return mod.layers;
   }
 }

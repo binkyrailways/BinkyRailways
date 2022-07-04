@@ -19,6 +19,7 @@ package v1
 
 import (
 	context "context"
+	"sort"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -31,10 +32,12 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 	dst.Height = int32(src.GetHeight())
 	dst.HasBackgroundImage = len(src.GetBackgroundImage()) > 0
 
+	layers := make(map[string]struct{})
 	src.GetBlocks().ForEach(func(x model.Block) {
 		dst.Blocks = append(dst.Blocks, &BlockRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
 	src.GetBlockGroups().ForEach(func(x model.BlockGroup) {
 		dst.BlockGroups = append(dst.BlockGroups, &BlockGroupRef{
@@ -45,16 +48,19 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 		dst.Edges = append(dst.Edges, &EdgeRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
 	src.GetJunctions().ForEach(func(x model.Junction) {
 		dst.Junctions = append(dst.Junctions, &JunctionRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
 	src.GetOutputs().ForEach(func(x model.Output) {
 		dst.Outputs = append(dst.Outputs, &OutputRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
 	src.GetRoutes().ForEach(func(x model.Route) {
 		dst.Routes = append(dst.Routes, &RouteRef{
@@ -65,12 +71,19 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
 		dst.Sensors = append(dst.Sensors, &SensorRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
 	src.GetSignals().ForEach(func(x model.Signal) {
 		dst.Signals = append(dst.Signals, &SignalRef{
 			Id: JoinParentChildID(src.GetID(), x.GetID()),
 		})
+		layers[x.GetLayer()] = struct{}{}
 	})
+	dst.Layers = make([]string, 0, len(layers))
+	for k := range layers {
+		dst.Layers = append(dst.Layers, k)
+	}
+	sort.Strings(dst.Layers)
 	return nil
 }
 

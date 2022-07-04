@@ -200,6 +200,7 @@ class _BlockSettingsState extends State<_BlockSettings> {
             editorCtx: widget.editorCtx,
             model: widget.model,
             position: widget.block.position,
+            moduleId: widget.block.moduleId,
             update: (editor) async {
               await _update((update) {
                 editor(update.position);

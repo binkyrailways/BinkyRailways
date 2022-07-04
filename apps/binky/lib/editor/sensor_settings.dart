@@ -170,6 +170,7 @@ class _SensorSettingsState extends State<_SensorSettings> {
             editorCtx: widget.editorCtx,
             model: widget.model,
             position: widget.sensor.position,
+            moduleId: widget.sensor.moduleId,
             update: (editor) async {
               await _update((update) {
                 editor(update.position);

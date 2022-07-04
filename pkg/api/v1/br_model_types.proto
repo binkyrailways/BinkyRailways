@@ -77,6 +77,9 @@ message Module {
   repeated SensorRef sensors = 106;
   // Signals of this module
   repeated SignalRef signals = 107;
+
+  // All layers used in this module
+  repeated string layers = 200;
 }
 
 // Reference to a module
