@@ -74,18 +74,20 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(), cs.onUnknownLocalWorker)
 	cs.manager, err = manager.New(manager.Dependencies{
 		Log:              cs.log,
-		ConfigRegistry:   registry,
 		ReconfigureQueue: cs.reconfigureQueue,
 	})
 	if err != nil {
 		return err
 	}
+	registry.ForEach(ctx, func(ctx context.Context, lw bn.LocalWorker) error {
+		return cs.manager.SetLocalWorkerRequest(ctx, lw)
+	})
+	//registry
 	cs.service, err = service.NewService(service.Config{
 		RequiredWorkerVersion: cs.getCommandStation().GetRequiredWorkerVersion(),
 	}, service.Dependencies{
-		Log:            cs.log,
-		Manager:        cs.manager,
-		ConfigRegistry: registry,
+		Log:     cs.log,
+		Manager: cs.manager,
 	})
 	if err != nil {
 		return err
@@ -105,7 +107,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error { cs.runSendLocSpeedAndDirection(ctx); return nil })
 	g.Go(func() error {
-		updates, cancel := cs.manager.SubscribeLocalWorkerUpdates()
+		updates, cancel := cs.manager.SubscribeLocalWorkerActuals(true, "")
 		defer cancel()
 		for {
 			select {
@@ -122,7 +124,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribePowerActuals()
+		actuals, cancel := cs.manager.SubscribePowerActuals(true)
 		defer cancel()
 		for {
 			select {
@@ -137,7 +139,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeLocActuals()
+		actuals, cancel := cs.manager.SubscribeLocActuals(true)
 		defer cancel()
 		for {
 			select {
@@ -152,7 +154,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeOutputActuals()
+		actuals, cancel := cs.manager.SubscribeOutputActuals(true, "")
 		defer cancel()
 		for {
 			select {
@@ -170,7 +172,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeSensorActuals()
+		actuals, cancel := cs.manager.SubscribeSensorActuals(true, "")
 		defer cancel()
 		for {
 			select {
@@ -186,7 +188,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	})
 
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeSwitchActuals()
+		actuals, cancel := cs.manager.SubscribeSwitchActuals(true, "")
 		defer cancel()
 		for {
 			select {

@@ -18,8 +18,9 @@
 package impl
 
 import (
+	"context"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
-	"github.com/binkynet/NetManager/service/config"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -33,7 +34,7 @@ type binkyNetConfigRegistry struct {
 }
 
 // Create a new registry
-func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet, onUnknownLocalWorker func(hardwareID string)) config.Registry {
+func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet, onUnknownLocalWorker func(hardwareID string)) *binkyNetConfigRegistry {
 	cs := &binkyNetConfigRegistry{
 		lwSet:                lwSet,
 		onUnknownLocalWorker: onUnknownLocalWorker,
@@ -99,4 +100,17 @@ func (r *binkyNetConfigRegistry) Get(hardwareID string) (api.LocalWorkerConfig, 
 		return api.LocalWorkerConfig{}, api.NotFound(hardwareID)
 	}
 	return result, nil
+}
+
+// Get returns the configuration for a worker with given hardware ID.
+func (r *binkyNetConfigRegistry) ForEach(ctx context.Context, cb func(context.Context, api.LocalWorker) error) error {
+	for id, cfg := range r.lwConfig {
+		if err := cb(ctx, api.LocalWorker{
+			Id:      id,
+			Request: &cfg,
+		}); err != nil {
+			return err
+		}
+	}
+	return nil
 }

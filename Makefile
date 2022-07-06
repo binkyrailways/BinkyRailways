@@ -31,7 +31,7 @@ DOCKERARGS := run -t --rm \
 
 DOCKERENV := docker $(DOCKERARGS)
 
-SOURCES := $(shell find . -name '*.go')
+SOURCES := $(shell find . -name '*.go') go.mod go.sum
 APISOURCES := $(shell find pkg/api -name '*.proto')
 APIGENSOURCES := $(shell find pkg/api -name '*.go')
 
@@ -97,7 +97,7 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v0.8.0 \
-		github.com/binkynet/BinkyNet@v0.14.5
+		github.com/binkynet/NetManager@v1.0.0 \
+		github.com/binkynet/BinkyNet@v1.0.0
 	go mod tidy
 
