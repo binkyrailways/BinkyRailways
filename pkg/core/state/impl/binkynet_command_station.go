@@ -80,6 +80,8 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		return err
 	}
 	registry.ForEach(ctx, func(ctx context.Context, lw bn.LocalWorker) error {
+		lw.Request.Hash = lw.GetRequest().Sha1()
+		cs.log.Info().Str("hash", lw.GetRequest().GetHash()).Msg("Setting local worker request")
 		return cs.manager.SetLocalWorkerRequest(ctx, lw)
 	})
 	//registry
