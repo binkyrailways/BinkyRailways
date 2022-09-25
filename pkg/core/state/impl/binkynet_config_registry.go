@@ -67,20 +67,24 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 				Type: objModel.GetObjectType(),
 			}
 			objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
-				conn := &api.Connection{
-					Key: cm.GetKey(),
-				}
-				cm.GetPins().ForEach(func(pm model.BinkyNetDevicePin) {
-					conn.Pins = append(conn.Pins, &api.DevicePin{
-						DeviceId: pm.GetDeviceID(),
-						Index:    pm.GetIndex(),
+				if allPinsHaveNoDevice(cm) {
+					// No device configured for this connection, ignore it
+				} else {
+					conn := &api.Connection{
+						Key: cm.GetKey(),
+					}
+					cm.GetPins().ForEach(func(pm model.BinkyNetDevicePin) {
+						conn.Pins = append(conn.Pins, &api.DevicePin{
+							DeviceId: pm.GetDeviceID(),
+							Index:    pm.GetIndex(),
+						})
 					})
-				})
-				conn.Configuration = make(map[api.ConfigKey]string)
-				cm.GetConfiguration().ForEach(func(k, v string) {
-					conn.Configuration[api.ConfigKey(k)] = v
-				})
-				o.Connections = append(o.Connections, conn)
+					conn.Configuration = make(map[api.ConfigKey]string)
+					cm.GetConfiguration().ForEach(func(k, v string) {
+						conn.Configuration[api.ConfigKey(k)] = v
+					})
+					o.Connections = append(o.Connections, conn)
+				}
 			})
 			lw.Objects = append(lw.Objects, o)
 		})
@@ -88,6 +92,18 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 		lwConfig[lwModel.GetHardwareID()] = lw
 	})
 	r.lwConfig = lwConfig
+}
+
+// allPinsHaveNoDevice returns true if all of the pins in the
+// given connection have an empty device ID.
+func allPinsHaveNoDevice(cm model.BinkyNetConnection) bool {
+	anyDevice := false
+	cm.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+		if pin.GetDeviceID() != "" {
+			anyDevice = true
+		}
+	})
+	return !anyDevice
 }
 
 // Get returns the configuration for a worker with given hardware ID.
