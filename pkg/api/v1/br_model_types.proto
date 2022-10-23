@@ -256,6 +256,8 @@ enum BinkyNetDeviceType {
   PCA9685 = 2;
   // DeviceTypePCF8574 is the device type of a General Purpose I/O
   PCF8574 = 3;
+  // DeviceTypeADS1115 is the device type of a A/D conversion
+  ADS1115 = 4;
 }
 
 message BinkyNetObject {

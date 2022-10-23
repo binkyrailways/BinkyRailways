@@ -41,22 +41,32 @@ class SplitView extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     if (screenWidth >= breakpoint) {
       // widescreen: optional menu on the left, content on the center, optional end menu on the right
-      final List<Widget> children = [];
+      final List<Widget> start = [];
+      final List<Widget> end = [];
+      var remainingWidth = screenWidth;
       if (menu != null) {
-        children.add(SizedBox(
+        start.add(SizedBox(
           width: menuWidth,
           child: menu,
         ));
-        children.add(Container(width: 0.5, color: Colors.black));
+        start.add(Container(width: 0.5, color: Colors.black));
+        remainingWidth = remainingWidth - (menuWidth + 0.5);
       }
-      children.add(Expanded(child: content));
       if (endMenu != null) {
-        children.add(Container(width: 0.5, color: Colors.black));
-        children.add(SizedBox(
+        end.add(Container(width: 0.5, color: Colors.black));
+        end.add(SizedBox(
           width: endMenuWidth,
           child: endMenu,
         ));
+        remainingWidth = remainingWidth - (endMenuWidth + 0.5);
       }
+      final List<Widget> children = [];
+      children.addAll(start);
+      children.add(SizedBox(
+        width: remainingWidth,
+        child: content,
+      ));
+      children.addAll(end);
       return Row(children: children);
     } else {
       // narrow screen: show content, menu inside drawer

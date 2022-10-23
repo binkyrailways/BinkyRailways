@@ -3,7 +3,7 @@ module github.com/binkyrailways/BinkyRailways
 go 1.17
 
 require (
-	github.com/binkynet/BinkyNet v1.0.1
+	github.com/binkynet/BinkyNet v1.3.1
 	github.com/binkynet/NetManager v1.0.1
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/davecgh/go-spew v1.1.1

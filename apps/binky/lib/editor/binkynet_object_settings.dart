@@ -18,6 +18,7 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 
 import '../components.dart';
 import '../models.dart';
@@ -130,6 +131,7 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
     return ScrollableForm(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: children,
     ));
   }
@@ -172,7 +174,7 @@ class _BinkyNetConnectionSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      SettingsHeader(title: "Connection: ${binkynetconnection.key}"),
+      SettingsHeader(title: "Connection: ${binkynetconnection.key.titleCase}"),
     ];
     final pins = binkynetconnection.pins;
     for (var i = 0; i < pins.length; i++) {
@@ -184,12 +186,16 @@ class _BinkyNetConnectionSettings extends StatelessWidget {
           update: _update));
     }
     final configuration = binkynetconnection.configuration;
-    configuration.forEach((key, value) {
-      children.add(_BinkyNetConfigKeyValueSettings(
-          binkynetconnection: binkynetconnection,
-          configKey: key,
-          update: _update));
-    });
+    final configurationKeys = configuration.keys.toList();
+    configurationKeys.sort();
+    for (var key in configurationKeys) {
+      children.add(Container(
+          padding: const EdgeInsets.only(left: 5),
+          child: _BinkyNetConfigKeyValueSettings(
+              binkynetconnection: binkynetconnection,
+              configKey: key,
+              update: _update)));
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -250,28 +256,33 @@ class _BinkyNetDevicePinSettingsState
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      SettingsTextField(
-          controller: _indexController,
-          label: "Pin",
-          validator: _indexValidator.validate,
-          onLostFocus: (value) async {
-            await _update((update) => {update.index = int.parse(value)});
-          }),
-      SettingsDropdownField<String>(
-        label: "Device ID",
-        value: widget.binkynetdevicepin.deviceId,
-        onChanged: (value) {
-          _update((x) {
-            if (value != null) {
-              x.deviceId = value;
-            }
-          });
-        },
-        items: _deviceIds(),
-      ),
+      Flexible(
+          flex: 67,
+          child: SettingsDropdownField<String>(
+            label: "Device ID",
+            value: widget.binkynetdevicepin.deviceId,
+            onChanged: (value) {
+              _update((x) {
+                if (value != null) {
+                  x.deviceId = value;
+                }
+              });
+            },
+            items: _deviceIds(),
+          )),
+      Flexible(
+          flex: 33,
+          child: SettingsTextField(
+              controller: _indexController,
+              label: "Device Pin",
+              validator: _indexValidator.validate,
+              onLostFocus: (value) async {
+                await _update((update) => {update.index = int.parse(value)});
+              })),
     ];
-    return Column(
+    return Row(
       children: children,
+      mainAxisSize: MainAxisSize.min,
     );
   }
 
@@ -336,15 +347,34 @@ class _BinkyNetConfigKeyValueSettingsState
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        SettingsTextField(
+      children: [_buildChild(context)],
+    );
+  }
+
+  Widget _buildChild(BuildContext context) {
+    switch (widget.configKey) {
+      case "debug":
+      case "invert":
+        var strValue =
+            (widget.binkynetconnection.configuration[widget.configKey] ?? "")
+                .toLowerCase();
+        var boolValue = (strValue == "true") || (strValue == "1");
+        return SettingsCheckBoxField(
+          label: "config: ${widget.configKey.titleCase}",
+          value: boolValue,
+          onChanged: (value) async {
+            await widget.update((update) =>
+                {update.configuration[widget.configKey] = value.toString()});
+          },
+        );
+      default:
+        return SettingsTextField(
             controller: _valueController,
-            label: widget.configKey,
+            label: "config: ${widget.configKey.titleCase}",
             onLostFocus: (value) async {
               await widget.update(
                   (update) => {update.configuration[widget.configKey] = value});
-            }),
-      ],
-    );
+            });
+    }
   }
 }

@@ -27,11 +27,12 @@ const BinkyNetDeviceType$json = const {
     const {'1': 'MCP23017', '2': 1},
     const {'1': 'PCA9685', '2': 2},
     const {'1': 'PCF8574', '2': 3},
+    const {'1': 'ADS1115', '2': 4},
   ],
 };
 
 /// Descriptor for `BinkyNetDeviceType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAM=');
+final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAMSCwoHQURTMTExNRAE');
 @$core.Deprecated('Use binkyNetObjectTypeDescriptor instead')
 const BinkyNetObjectType$json = const {
   '1': 'BinkyNetObjectType',

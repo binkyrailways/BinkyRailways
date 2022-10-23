@@ -29,12 +29,14 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType MCP23017 = BinkyNetDeviceType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MCP23017');
   static const BinkyNetDeviceType PCA9685 = BinkyNetDeviceType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PCA9685');
   static const BinkyNetDeviceType PCF8574 = BinkyNetDeviceType._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PCF8574');
+  static const BinkyNetDeviceType ADS1115 = BinkyNetDeviceType._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ADS1115');
 
   static const $core.List<BinkyNetDeviceType> values = <BinkyNetDeviceType> [
     MCP23008,
     MCP23017,
     PCA9685,
     PCF8574,
+    ADS1115,
   ];
 
   static final $core.Map<$core.int, BinkyNetDeviceType> _byValue = $pb.ProtobufEnum.initByValue(values);
