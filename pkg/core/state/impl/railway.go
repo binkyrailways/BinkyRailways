@@ -26,6 +26,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/state/eventlog"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 	"github.com/rs/zerolog"
 )
@@ -73,6 +74,7 @@ type railway struct {
 	signals                []Signal
 	outputs                []Output
 	automaticLocController state.AutomaticLocController
+	eventLogger            state.EventLogger
 }
 
 // New constructs and initializes state for the given railway.
@@ -224,6 +226,11 @@ func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, 
 		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 
+	if el, xerr := eventlog.NewEventLogger(ctx, r, r.log); xerr != nil {
+		multierr.AppendInto(&err, xerr)
+	} else {
+		r.eventLogger = el
+	}
 	if alc, xerr := automatic.NewAutomaticLocController(r, r.log); xerr != nil {
 		multierr.AppendInto(&err, xerr)
 	} else {

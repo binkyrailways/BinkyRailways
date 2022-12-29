@@ -17,12 +17,21 @@
 
 package state
 
-import "context"
+import (
+	"context"
+)
 
 // Event is implemented by all Event types.
 type Event interface {
 	// Just to ensure we can identify events.
 	implementsEvent()
+	// Format the event for event logger
+	LogFormat() []KeyValue
+}
+
+type KeyValue struct {
+	Key   string
+	Value string
 }
 
 // EventDispatcher is responsible for distributing events.
@@ -46,6 +55,15 @@ type ActualStateChangedEvent struct {
 // Implement Event interface
 func (e ActualStateChangedEvent) implementsEvent() {}
 
+// Format the event for event logger
+func (e ActualStateChangedEvent) LogFormat() []KeyValue {
+	return []KeyValue{
+		{"event", "actual-state-changed"},
+		{"subject-id", e.Subject.GetID()},
+		{"subject-description", e.Subject.GetDescription()},
+	}
+}
+
 // RequestedStateChangedEvent is raised when a requested state of a property of an
 // entity has changed.
 type RequestedStateChangedEvent struct {
@@ -58,6 +76,15 @@ type RequestedStateChangedEvent struct {
 // Implement Event interface
 func (e RequestedStateChangedEvent) implementsEvent() {}
 
+// Format the event for event logger
+func (e RequestedStateChangedEvent) LogFormat() []KeyValue {
+	return []KeyValue{
+		{"event", "requested-state-changed"},
+		{"subject-id", e.Subject.GetID()},
+		{"subject-description", e.Subject.GetDescription()},
+	}
+}
+
 // IdleChangedEvent is raised when the idle state of a commandstation has changed.
 type IdleChangedEvent struct {
 	// Subject holds the commandstation that has its idle state changed.
@@ -66,6 +93,15 @@ type IdleChangedEvent struct {
 
 // Implement Event interface
 func (e IdleChangedEvent) implementsEvent() {}
+
+// Format the event for event logger
+func (e IdleChangedEvent) LogFormat() []KeyValue {
+	return []KeyValue{
+		{"event", "idle-changed"},
+		{"subject-id", e.Subject.GetID()},
+		{"subject-description", e.Subject.GetDescription()},
+	}
+}
 
 // UnexpectedSensorActivatedEvent is raised when a sensor is activated that wa not expected
 // from the automatic control of the locs.
@@ -77,6 +113,15 @@ type UnexpectedSensorActivatedEvent struct {
 // Implement Event interface
 func (e UnexpectedSensorActivatedEvent) implementsEvent() {}
 
+// Format the event for event logger
+func (e UnexpectedSensorActivatedEvent) LogFormat() []KeyValue {
+	return []KeyValue{
+		{"event", "unexpected-sensor-activated"},
+		{"subject-id", e.Subject.GetID()},
+		{"subject-description", e.Subject.GetDescription()},
+	}
+}
+
 // UnknownBinkyNetLocalWorkerEvent is raised when a request is made for configuration
 // of an unknown local worker on the Binky Net.
 type UnknownBinkyNetLocalWorkerEvent struct {
@@ -86,3 +131,11 @@ type UnknownBinkyNetLocalWorkerEvent struct {
 
 // Implement Event interface
 func (e UnknownBinkyNetLocalWorkerEvent) implementsEvent() {}
+
+// Format the event for event logger
+func (e UnknownBinkyNetLocalWorkerEvent) LogFormat() []KeyValue {
+	return []KeyValue{
+		{"event", "unknown-binkynet-localworker"},
+		{"hardward-id", e.HardwareID},
+	}
+}
