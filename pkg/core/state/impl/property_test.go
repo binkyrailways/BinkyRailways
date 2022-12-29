@@ -94,7 +94,7 @@ func TestBoolProperty(t *testing.T) {
 		assert.Equal(t, p, x.Property)
 		return true
 	})).Return()
-	p.Configure(subject, dispatch, util.NewExclusive())
+	p.Configure("p", subject, dispatch, util.NewExclusive())
 
 	assert.False(t, p.GetActual(ctx))
 	changed, err := p.SetActual(ctx, true)
@@ -128,7 +128,7 @@ func TestSwitchDirectionProperty(t *testing.T) {
 		assert.Equal(t, p, x.Property)
 		return true
 	})).Return()
-	p.Configure(subject, dispatch, util.NewExclusive())
+	p.Configure("p", subject, dispatch, util.NewExclusive())
 
 	assert.False(t, p.GetActual(ctx) == model.SwitchDirectionStraight)
 	changed, err := p.SetActual(ctx, model.SwitchDirectionOff)

@@ -28,6 +28,9 @@ type Block interface {
 	ModuleEntity
 	Lockable
 
+	// Is this equal to other?
+	Equals(other Block) bool
+
 	// Gets the underlying model
 	GetModel() model.Block
 

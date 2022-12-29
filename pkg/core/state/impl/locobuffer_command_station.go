@@ -36,7 +36,7 @@ func newLocoBufferCommandStation(en model.LocoBufferCommandStation, railway Rail
 	cs := &locoBufferCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
-	cs.power.Configure(cs, railway, railway)
+	cs.power.Configure("power", cs, railway, railway)
 	return cs
 }
 

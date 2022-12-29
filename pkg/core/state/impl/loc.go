@@ -72,29 +72,29 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
 		entity: newEntity(railway.Logger().With().Str("loc", en.GetDescription()).Logger(), en, railway),
 	}
-	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, l, railway, railway)
-	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, l, railway, railway)
-	l.autoLocState.Configure(&l.autoLocState, l, railway, railway)
-	l.nextRoute.Configure(&l.nextRoute, l, railway, railway)
-	l.currentBlock.Configure(&l.currentBlock, l, railway, railway)
-	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, l, railway, railway)
-	l.startNextRouteTime.Configure(&l.startNextRouteTime, l, railway, railway)
-	l.lastRouteOptions.Configure(&l.lastRouteOptions, l, railway, railway)
+	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, "waitAfterCurrentRoute", l, railway, railway)
+	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, "durationExceedsCurrentRouteTime", l, railway, railway)
+	l.autoLocState.Configure(&l.autoLocState, "autoLocState", l, railway, railway)
+	l.nextRoute.Configure(&l.nextRoute, "nextRoute", l, railway, railway)
+	l.currentBlock.Configure(&l.currentBlock, "currentBlock", l, railway, railway)
+	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, "currentBlockEnterSide", l, railway, railway)
+	l.startNextRouteTime.Configure(&l.startNextRouteTime, "startNextRouteTime", l, railway, railway)
+	l.lastRouteOptions.Configure(&l.lastRouteOptions, "lastRouteOptions", l, railway, railway)
 	l.speed.loc = l
-	l.speedInSteps.Configure(l, railway, railway)
+	l.speedInSteps.Configure("speedInSteps", l, railway, railway)
 	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.direction.Configure(l, railway, railway)
+	l.direction.Configure("direction", l, railway, railway)
 	l.direction.SubscribeRequestChanges(func(ctx context.Context, value state.LocDirection) {
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.reversing.Configure(l.reversing, l, railway, railway)
-	l.f0.Configure(l, railway, railway)
+	l.reversing.Configure(&l.reversing, "reversing", l, railway, railway)
+	l.f0.Configure("f0", l, railway, railway)
 	l.f0.SetActual(context.Background(), true)
 	l.f0.SetRequested(context.Background(), true)
 	l.f0.SubscribeRequestChanges(func(ctx context.Context, value bool) {
@@ -102,8 +102,8 @@ func newLoc(en model.Loc, railway Railway) Loc {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
 	})
-	l.controlledAutomatically.Configure(l, railway, railway)
-	l.currentRoute.Configure(l.currentRoute, l, railway, railway)
+	l.controlledAutomatically.Configure("controlledAutomatically", l, railway, railway)
+	l.currentRoute.Configure(&l.currentRoute, "currentRoute", l, railway, railway)
 	l.recentlyVisitedBlocks = newRecentlyVisitedBlocks(railway)
 	l.currentBlock.SubscribeActualChanges(func(ctx context.Context, b state.Block) {
 		l.recentlyVisitedBlocks.Insert(ctx, b)

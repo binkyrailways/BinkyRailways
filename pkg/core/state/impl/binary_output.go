@@ -43,7 +43,7 @@ func newBinaryOutput(en model.BinaryOutput, railway Railway) BinaryOutput {
 	bo := &binaryOutput{
 		output: newOutput(en, railway),
 	}
-	bo.active.Configure(bo, railway, railway)
+	bo.active.Configure("active", bo, railway, railway)
 	bo.active.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		if bo.commandStation != nil {
 			bo.commandStation.SendOutputActive(ctx, bo)

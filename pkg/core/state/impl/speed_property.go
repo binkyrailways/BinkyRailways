@@ -32,6 +32,11 @@ type speedProperty struct {
 
 var _ state.IntProperty = &speedProperty{}
 
+// GetName returns the name of the property
+func (sp *speedProperty) GetName() string {
+	return "speed"
+}
+
 // Gets / sets the actual value
 func (sp *speedProperty) GetActual(ctx context.Context) int {
 	return sp.convertFromSpeedSteps(ctx, sp.loc.GetSpeedInSteps().GetActual(ctx))

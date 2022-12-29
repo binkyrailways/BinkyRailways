@@ -34,8 +34,8 @@ type boolProperty struct {
 }
 
 // Configure the values of the property
-func (p *boolProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualBoolProperty.Configure(p, subject, dispatcher, exclusive)
+func (p *boolProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualBoolProperty.Configure(p, name, subject, dispatcher, exclusive)
 }
 
 func (p *boolProperty) IsConsistent(ctx context.Context) bool {
@@ -74,8 +74,8 @@ type intProperty struct {
 }
 
 // Configure the values of the property
-func (p *intProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualIntProperty.Configure(p, subject, dispatcher, exclusive)
+func (p *intProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualIntProperty.Configure(p, name, subject, dispatcher, exclusive)
 }
 
 func (p *intProperty) IsConsistent(ctx context.Context) bool {
@@ -114,8 +114,8 @@ type locDirectionProperty struct {
 }
 
 // Configure the values of the property
-func (p *locDirectionProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualLocDirectionProperty.Configure(p, subject, dispatcher, exclusive)
+func (p *locDirectionProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualLocDirectionProperty.Configure(p, name, subject, dispatcher, exclusive)
 }
 
 func (p *locDirectionProperty) IsConsistent(ctx context.Context) bool {
@@ -154,8 +154,8 @@ type switchDirectionProperty struct {
 }
 
 // Configure the values of the property
-func (p *switchDirectionProperty) Configure(subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualSwitchDirectionProperty.Configure(p, subject, dispatcher, exclusive)
+func (p *switchDirectionProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.actualSwitchDirectionProperty.Configure(p, name, subject, dispatcher, exclusive)
 }
 
 func (p *switchDirectionProperty) IsConsistent(ctx context.Context) bool {

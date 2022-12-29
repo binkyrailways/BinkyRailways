@@ -51,7 +51,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 	cs := &binkyNetCommandStation{
 		commandStation: newCommandStation(en, railway),
 	}
-	cs.power.Configure(cs, railway, railway)
+	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
 }

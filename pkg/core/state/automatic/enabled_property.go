@@ -31,6 +31,11 @@ type enabledProperty struct {
 	requestChanges []func(context.Context, bool)
 }
 
+// GetName returns the name of the property
+func (sp *enabledProperty) GetName() string {
+	return "enabled"
+}
+
 // Is the request value equal to the actual value?
 func (p *enabledProperty) IsConsistent(ctx context.Context) bool {
 	return p.GetActual(ctx) == p.GetRequested(ctx)

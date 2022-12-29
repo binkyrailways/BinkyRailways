@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -29,18 +30,25 @@ import (
 // propertyBase contains the value of a property in a state object.
 // The value contains an actual value.
 type propertyBase struct {
-	Property   interface{}           `json:"-"`
+	Property   state.ActualProperty  `json:"-"`
+	Name       string                `json:"-"`
 	Subject    state.Entity          `json:"-"`
 	Dispatcher state.EventDispatcher `json:"-"`
 	exclusive  util.Exclusive
 }
 
 // Configure the values of the property
-func (p *propertyBase) Configure(property state.ActualProperty, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+func (p *propertyBase) Configure(property state.ActualProperty, name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
 	p.Property = property
+	p.Name = name
 	p.Subject = subject
 	p.Dispatcher = dispatcher
 	p.exclusive = exclusive
+}
+
+// Gets the name of the property
+func (p *propertyBase) GetName() string {
+	return p.Name
 }
 
 // SendActualStateChanged dispatches an ActualStateChangedEvent
@@ -63,18 +71,22 @@ func (p *propertyBase) SendRequestedStateChanged() {
 	}
 }
 
-// actualBoolProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualBoolProperty struct {
+// comparableActualProperty implements an actual property for comparable types.
+type comparableActualProperty[T comparable] struct {
 	propertyBase
-	actual        bool
-	actualChanges []func(context.Context, bool)
+	actual        T
+	actualChanges []func(context.Context, T)
 }
 
-func (p *actualBoolProperty) GetActual(ctx context.Context) bool {
+// Gets the actual value of the property as string
+func (p *comparableActualProperty[T]) GetValueAsString() string {
+	return fmt.Sprintf("%v", p.actual)
+}
+
+func (p *comparableActualProperty[T]) GetActual(ctx context.Context) T {
 	return p.actual
 }
-func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) (bool, error) {
+func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (bool, error) {
 	changed := false
 	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if p.actual != value {
@@ -91,341 +103,28 @@ func (p *actualBoolProperty) SetActual(ctx context.Context, value bool) (bool, e
 }
 
 // Subscribe to actual changes
-func (p *actualBoolProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+func (p *comparableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
 	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
 		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
 }
 
-// actualIntProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualIntProperty struct {
-	propertyBase
-	actual        int
-	actualChanges []func(context.Context, int)
+type equatable[T any] interface {
+	Equals(other T) bool
 }
 
-func (p *actualIntProperty) GetActual(ctx context.Context) int {
+// equatableActualProperty implements an actual property for comparable types.
+type equatableActualProperty[T equatable[T]] struct {
+	propertyBase
+	actual        T
+	actualChanges []func(context.Context, T)
+}
+
+func (p *equatableActualProperty[T]) GetActual(ctx context.Context) T {
 	return p.actual
 }
-func (p *actualIntProperty) SetActual(ctx context.Context, value int) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualIntProperty) SubscribeActualChanges(cb func(context.Context, int)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualTimeProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualTimeProperty struct {
-	propertyBase
-	actual        time.Time
-	actualChanges []func(context.Context, time.Time)
-}
-
-func (p *actualTimeProperty) GetActual(ctx context.Context) time.Time {
-	return p.actual
-}
-func (p *actualTimeProperty) SetActual(ctx context.Context, value time.Time) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if !p.actual.Equal(value) {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualTimeProperty) SubscribeActualChanges(cb func(context.Context, time.Time)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualAutoLocStateProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualAutoLocStateProperty struct {
-	propertyBase
-	actual        state.AutoLocState
-	actualChanges []func(context.Context, state.AutoLocState)
-}
-
-func (p *actualAutoLocStateProperty) GetActual(ctx context.Context) state.AutoLocState {
-	return p.actual
-}
-
-func (p *actualAutoLocStateProperty) SetActual(ctx context.Context, value state.AutoLocState) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualAutoLocStateProperty) SubscribeActualChanges(cb func(context.Context, state.AutoLocState)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualLocDirectionProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualLocDirectionProperty struct {
-	propertyBase
-	actual        state.LocDirection
-	actualChanges []func(context.Context, state.LocDirection)
-}
-
-func (p *actualLocDirectionProperty) GetActual(ctx context.Context) state.LocDirection {
-	return p.actual
-}
-func (p *actualLocDirectionProperty) SetActual(ctx context.Context, value state.LocDirection) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualLocDirectionProperty) SubscribeActualChanges(cb func(context.Context, state.LocDirection)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualSwitchDirectionProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualSwitchDirectionProperty struct {
-	propertyBase
-	actual        model.SwitchDirection
-	actualChanges []func(context.Context, model.SwitchDirection)
-}
-
-func (p *actualSwitchDirectionProperty) GetActual(ctx context.Context) model.SwitchDirection {
-	return p.actual
-}
-func (p *actualSwitchDirectionProperty) SetActual(ctx context.Context, value model.SwitchDirection) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualSwitchDirectionProperty) SubscribeActualChanges(cb func(context.Context, model.SwitchDirection)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualBlockSideProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualBlockSideProperty struct {
-	propertyBase
-	actual        model.BlockSide
-	actualChanges []func(context.Context, model.BlockSide)
-}
-
-func (p *actualBlockSideProperty) GetActual(ctx context.Context) model.BlockSide {
-	return p.actual
-}
-func (p *actualBlockSideProperty) SetActual(ctx context.Context, value model.BlockSide) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualBlockSideProperty) SubscribeActualChanges(cb func(context.Context, model.BlockSide)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualBlockProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualBlockProperty struct {
-	propertyBase
-	actual        state.Block
-	actualChanges []func(context.Context, state.Block)
-}
-
-func (p *actualBlockProperty) GetActual(ctx context.Context) state.Block {
-	return p.actual
-}
-func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualBlockProperty) SubscribeActualChanges(cb func(context.Context, state.Block)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualRouteProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualRouteProperty struct {
-	propertyBase
-	actual        state.Route
-	actualChanges []func(context.Context, state.Route)
-}
-
-func (p *actualRouteProperty) GetActual(ctx context.Context) state.Route {
-	return p.actual
-}
-func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualRouteProperty) SubscribeActualChanges(cb func(context.Context, state.Route)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualRouteForLocProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualRouteForLocProperty struct {
-	propertyBase
-	actual        state.RouteForLoc
-	actualChanges []func(context.Context, state.RouteForLoc)
-}
-
-func (p *actualRouteForLocProperty) GetActual(ctx context.Context) state.RouteForLoc {
-	return p.actual
-}
-func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) (bool, error) {
-	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if p.actual != value {
-			changed = true
-			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
-			}
-			p.SendActualStateChanged()
-		}
-		return nil
-	})
-	return changed, err
-}
-
-// Subscribe to actual changes
-func (p *actualRouteForLocProperty) SubscribeActualChanges(cb func(context.Context, state.RouteForLoc)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
-		return nil
-	})
-}
-
-// actualRouteOptionsProperty contains the value of a property in a state object.
-// The value contains an actual value.
-type actualRouteOptionsProperty struct {
-	propertyBase
-	actual        state.RouteOptions
-	actualChanges []func(context.Context, state.RouteOptions)
-}
-
-func (p *actualRouteOptionsProperty) GetActual(ctx context.Context) state.RouteOptions {
-	return p.actual
-}
-func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.RouteOptions) (bool, error) {
+func (p *equatableActualProperty[T]) SetActual(ctx context.Context, value T) (bool, error) {
 	changed := false
 	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
 		if !p.actual.Equals(value) {
@@ -442,9 +141,75 @@ func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.
 }
 
 // Subscribe to actual changes
-func (p *actualRouteOptionsProperty) SubscribeActualChanges(cb func(context.Context, state.RouteOptions)) {
+func (p *equatableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
 	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
 		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
+}
+
+// actualBoolProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualBoolProperty struct {
+	comparableActualProperty[bool]
+}
+
+// actualIntProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualIntProperty struct {
+	comparableActualProperty[int]
+}
+
+// actualTimeProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualTimeProperty struct {
+	comparableActualProperty[time.Time]
+}
+
+// actualAutoLocStateProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualAutoLocStateProperty struct {
+	comparableActualProperty[state.AutoLocState]
+}
+
+// actualLocDirectionProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualLocDirectionProperty struct {
+	comparableActualProperty[state.LocDirection]
+}
+
+// actualSwitchDirectionProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualSwitchDirectionProperty struct {
+	comparableActualProperty[model.SwitchDirection]
+}
+
+// actualBlockSideProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualBlockSideProperty struct {
+	comparableActualProperty[model.BlockSide]
+}
+
+// actualBlockProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualBlockProperty struct {
+	equatableActualProperty[state.Block]
+}
+
+// actualRouteProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualRouteProperty struct {
+	equatableActualProperty[state.Route]
+}
+
+// actualRouteForLocProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualRouteForLocProperty struct {
+	equatableActualProperty[state.RouteForLoc]
+}
+
+// actualRouteOptionsProperty contains the value of a property in a state object.
+// The value contains an actual value.
+type actualRouteOptionsProperty struct {
+	equatableActualProperty[state.RouteOptions]
 }

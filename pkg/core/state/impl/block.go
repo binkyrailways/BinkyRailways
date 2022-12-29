@@ -54,7 +54,7 @@ func newBlock(en model.Block, railway Railway) Block {
 		// OnUnlock
 		b.updateClosed(ctx)
 	})
-	b.closed.Configure(b, railway, railway)
+	b.closed.Configure("closed", b, railway, railway)
 	b.closed.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		b.updateClosed(ctx)
 	})
@@ -69,6 +69,11 @@ func newBlock(en model.Block, railway Railway) Block {
 // getBlock returns the entity as Block.
 func (b *block) getBlock() model.Block {
 	return b.GetEntity().(model.Block)
+}
+
+// Is this equal to other?
+func (b *block) Equals(other state.Block) bool {
+	return b == other
 }
 
 // Try to prepare the entity for use.

@@ -19,6 +19,7 @@ package state
 
 import (
 	"context"
+	"fmt"
 )
 
 // Event is implemented by all Event types.
@@ -57,8 +58,14 @@ func (e ActualStateChangedEvent) implementsEvent() {}
 
 // Format the event for event logger
 func (e ActualStateChangedEvent) LogFormat() []KeyValue {
+	value := ""
+	if x, ok := e.Property.(TypedActualProperty[any]); ok {
+		value = fmt.Sprintf("%v", x.GetActual(context.Background()))
+	}
 	return []KeyValue{
 		{"event", "actual-state-changed"},
+		{"property", e.Property.GetName()},
+		{"value", value},
 		{"subject-id", e.Subject.GetID()},
 		{"subject-description", e.Subject.GetDescription()},
 	}
@@ -80,6 +87,7 @@ func (e RequestedStateChangedEvent) implementsEvent() {}
 func (e RequestedStateChangedEvent) LogFormat() []KeyValue {
 	return []KeyValue{
 		{"event", "requested-state-changed"},
+		{"property", e.Property.GetName()},
 		{"subject-id", e.Subject.GetID()},
 		{"subject-description", e.Subject.GetDescription()},
 	}

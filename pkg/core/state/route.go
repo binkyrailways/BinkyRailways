@@ -28,6 +28,9 @@ type Route interface {
 	ModuleEntity
 	Lockable
 
+	// Is this equal to other?
+	Equals(other Route) bool
+
 	// Gets the underlying model
 	GetModel() model.Route
 

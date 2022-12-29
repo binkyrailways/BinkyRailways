@@ -88,6 +88,11 @@ func (r *route) GetModel() model.Route {
 	return r.getRoute()
 }
 
+// Is this equal to other?
+func (r *route) Equals(other state.Route) bool {
+	return r == other
+}
+
 // Try to prepare the entity for use.
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.

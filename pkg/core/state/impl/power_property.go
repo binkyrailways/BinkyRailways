@@ -36,6 +36,11 @@ type powerProperty struct {
 
 var _ state.BoolProperty = &powerProperty{}
 
+// GetName returns the name of the property
+func (sp *powerProperty) GetName() string {
+	return "power"
+}
+
 // Gets / sets the actual value
 func (sp *powerProperty) GetActual(ctx context.Context) bool {
 	csOn := 0

@@ -45,7 +45,7 @@ func newSwitch(en model.Switch, railway Railway) Switch {
 	bo := &stdSwitch{
 		junction: newJunction(en, railway),
 	}
-	bo.direction.Configure(bo, railway, railway)
+	bo.direction.Configure("direction", bo, railway, railway)
 	bo.direction.SetActual(context.Background(), model.SwitchDirectionStraight)
 	bo.direction.SetRequested(context.Background(), model.SwitchDirectionStraight)
 	bo.direction.SubscribeRequestChanges(func(ctx context.Context, value model.SwitchDirection) {

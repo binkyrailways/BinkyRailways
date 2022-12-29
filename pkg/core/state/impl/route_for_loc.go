@@ -58,6 +58,11 @@ func newRouteForLoc(ctx context.Context, loc state.Loc, route Route) RouteForLoc
 	return rs
 }
 
+// Is this equal to other?
+func (rs *routeForLoc) Equals(other state.RouteForLoc) bool {
+	return rs.GetLoc() == other.GetLoc() && rs.GetRoute() == other.GetRoute()
+}
+
 // Gets the loc for which this route state is
 func (rs *routeForLoc) GetLoc() state.Loc {
 	if rs == nil {
