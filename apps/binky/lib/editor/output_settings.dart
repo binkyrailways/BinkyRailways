@@ -114,6 +114,18 @@ class _OutputSettingsState extends State<_OutputSettings> {
               update.binaryOutput.address = value;
             });
           }));
+      children.add(SettingsDropdownField<BinaryOutputType>(
+        label: "Output type",
+        value: widget.output.binaryOutput.outputType,
+        onChanged: (value) {
+          _update((x) {
+            if (value != null) {
+              x.binaryOutput.outputType = value;
+            }
+          });
+        },
+        items: _outputTypeItems,
+      ));
       children.add(
         SettingsTextField(
             controller: _activeTextController,
@@ -160,4 +172,12 @@ class _OutputSettingsState extends State<_OutputSettings> {
     editor(update);
     await widget.model.updateOutput(update);
   }
+
+  static final List<DropdownMenuItem<BinaryOutputType>> _outputTypeItems =
+      BinaryOutputType.values
+          .map((e) => DropdownMenuItem<BinaryOutputType>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }
