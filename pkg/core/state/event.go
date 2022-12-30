@@ -62,9 +62,13 @@ func (e ActualStateChangedEvent) LogFormat() []KeyValue {
 	if x, ok := e.Property.(TypedActualProperty[any]); ok {
 		value = fmt.Sprintf("%v", x.GetActual(context.Background()))
 	}
+	propName := ""
+	if e.Property != nil {
+		propName = e.Property.GetName()
+	}
 	return []KeyValue{
 		{"event", "actual-state-changed"},
-		{"property", e.Property.GetName()},
+		{"property", propName},
 		{"value", value},
 		{"subject-id", e.Subject.GetID()},
 		{"subject-description", e.Subject.GetDescription()},
@@ -85,9 +89,13 @@ func (e RequestedStateChangedEvent) implementsEvent() {}
 
 // Format the event for event logger
 func (e RequestedStateChangedEvent) LogFormat() []KeyValue {
+	propName := ""
+	if e.Property != nil {
+		propName = e.Property.GetName()
+	}
 	return []KeyValue{
 		{"event", "requested-state-changed"},
-		{"property", e.Property.GetName()},
+		{"property", propName},
 		{"subject-id", e.Subject.GetID()},
 		{"subject-description", e.Subject.GetDescription()},
 	}
