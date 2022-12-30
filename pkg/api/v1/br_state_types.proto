@@ -219,6 +219,8 @@ message HardwareModule {
   // Time of last update of this information.
   // Formatted at RFC3339
   string last_updated_at = 3;
+  // Error messages related to this module
+  repeated string error_messages = 4;
 }
 
 // State of a single block

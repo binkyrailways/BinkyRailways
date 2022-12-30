@@ -633,6 +633,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uptime')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastUpdatedAt')
+    ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'errorMessages')
     ..hasRequiredFields = false
   ;
 
@@ -641,6 +642,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.String? id,
     $fixnum.Int64? uptime,
     $core.String? lastUpdatedAt,
+    $core.Iterable<$core.String>? errorMessages,
   }) {
     final _result = create();
     if (id != null) {
@@ -651,6 +653,9 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (lastUpdatedAt != null) {
       _result.lastUpdatedAt = lastUpdatedAt;
+    }
+    if (errorMessages != null) {
+      _result.errorMessages.addAll(errorMessages);
     }
     return _result;
   }
@@ -701,6 +706,9 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasLastUpdatedAt() => $_has(2);
   @$pb.TagNumber(3)
   void clearLastUpdatedAt() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.String> get errorMessages => $_getList(3);
 }
 
 class BlockState extends $pb.GeneratedMessage {

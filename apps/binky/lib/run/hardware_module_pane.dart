@@ -32,16 +32,20 @@ class HardwareModulePane extends StatelessWidget {
     final lastUpdatedSince = (lastUpdatedAt != null)
         ? DateTime.now().difference(lastUpdatedAt)
         : const Duration(days: 1);
-    final color = (lastUpdatedSince.inSeconds < 30)
-        ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.red)
-        : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.red);
+    final hasErrors = hardwareModule.errorMessages.isNotEmpty;
+    final color = hasErrors
+        ? Colors.redAccent
+        : (lastUpdatedSince.inSeconds < 30)
+            ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.purple)
+            : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.purple);
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
+        child: Text(
+            "${hardwareModule.id} up:${hardwareModule.uptime}${hasErrors ? " :" : ""}${hardwareModule.errorMessages.join(", ")}"),
         onPressed: () async {
           final stateModel = Provider.of<StateModel>(context, listen: false);
           await stateModel.discoverHardware(hardwareModule.id);

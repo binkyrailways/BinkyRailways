@@ -26,8 +26,9 @@ import (
 )
 
 type binkyNetLocalWorkerModule struct {
-	ID      string
-	Manager manager.Manager
+	ID            string
+	Manager       manager.Manager
+	ErrorMessages []string
 }
 
 var _ state.HardwareModule = &binkyNetLocalWorkerModule{}
@@ -74,4 +75,9 @@ func (lw *binkyNetLocalWorkerModule) GetVersion() string {
 // Does this module support version data?
 func (lw *binkyNetLocalWorkerModule) HasVersion() bool {
 	return true
+}
+
+// Get human readable error messages related to this module
+func (lw *binkyNetLocalWorkerModule) GetErrorMessages() []string {
+	return lw.ErrorMessages
 }

@@ -158,3 +158,8 @@ func (hm *virtualHardwareModule) GetVersion() string {
 func (hm *virtualHardwareModule) HasVersion() bool {
 	return true
 }
+
+// Get human readable error messages
+func (hm *virtualHardwareModule) GetErrorMessages() []string {
+	return nil
+}

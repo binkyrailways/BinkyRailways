@@ -112,11 +112,12 @@ const HardwareModule$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'uptime', '3': 2, '4': 1, '5': 3, '10': 'uptime'},
     const {'1': 'last_updated_at', '3': 3, '4': 1, '5': 9, '10': 'lastUpdatedAt'},
+    const {'1': 'error_messages', '3': 4, '4': 3, '5': 9, '10': 'errorMessages'},
   ],
 };
 
 /// Descriptor for `HardwareModule`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0');
+final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0EiUKDmVycm9yX21lc3NhZ2VzGAQgAygJUg1lcnJvck1lc3NhZ2Vz');
 @$core.Deprecated('Use blockStateDescriptor instead')
 const BlockState$json = const {
   '1': 'BlockState',

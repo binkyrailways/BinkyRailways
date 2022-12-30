@@ -38,4 +38,7 @@ type HardwareModule interface {
 	GetVersion() string
 	// Does this module support version data?
 	HasVersion() bool
+
+	// Human readable error messages related to this module
+	GetErrorMessages() []string
 }

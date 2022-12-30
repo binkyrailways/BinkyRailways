@@ -477,6 +477,21 @@ func (cs *binkyNetCommandStation) Close(ctx context.Context) {
 
 // Iterate over all hardware modules this command station is in control of.
 func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareModule)) {
+	// Collect all defined local workers
+	lws := cs.getCommandStation().GetLocalWorkers()
+	localWorkers := make([]model.BinkyNetLocalWorker, 0, lws.GetCount())
+	lws.ForEach(func(lw model.BinkyNetLocalWorker) {
+		localWorkers = append(localWorkers, lw)
+	})
+	getLW := func(id string) model.BinkyNetLocalWorker {
+		for _, lw := range localWorkers {
+			if lw.GetAlias() == id || lw.GetHardwareID() == id {
+				return lw
+			}
+		}
+		return nil
+	}
+
 	// Return all local workers
 	visited := make(map[string]struct{})
 	for _, info := range cs.manager.GetAllLocalWorkers() {
@@ -484,22 +499,30 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			ID:      info.GetId(),
 			Manager: cs.manager,
 		}
+		if lw := getLW(info.GetId()); lw != nil {
+			unconfigured := len(info.GetUnconfiguredObjectIds())
+			if unconfigured > 0 {
+				lwm.ErrorMessages = append(lwm.ErrorMessages, fmt.Sprintf("%d unconfigured objects", unconfigured))
+			}
+		} else {
+			lwm.ErrorMessages = []string{"Undefined local worker"}
+		}
 		visited[info.GetId()] = struct{}{}
 		cb(&lwm)
 	}
-	// Return all declared local workers
-	lws := cs.getCommandStation().GetLocalWorkers()
-	lws.ForEach(func(lw model.BinkyNetLocalWorker) {
+	// Return all declared local workers that were not yet returned
+	for _, lw := range localWorkers {
 		if _, found := visited[lw.GetAlias()]; !found {
 			if _, found := visited[lw.GetHardwareID()]; !found {
 				lwm := binkyNetLocalWorkerModule{
-					ID:      lw.GetAlias(),
-					Manager: cs.manager,
+					ID:            lw.GetAlias(),
+					Manager:       cs.manager,
+					ErrorMessages: []string{"Local worker not sending pings"},
 				}
 				cb(&lwm)
 			}
 		}
-	})
+	}
 }
 
 // createObjectAddress converts a model address into a BinkyNet object address.

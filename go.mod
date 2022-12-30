@@ -3,8 +3,8 @@ module github.com/binkyrailways/BinkyRailways
 go 1.18
 
 require (
-	github.com/binkynet/BinkyNet v1.3.1
-	github.com/binkynet/NetManager v1.0.1
+	github.com/binkynet/BinkyNet v1.3.3
+	github.com/binkynet/NetManager v1.0.2
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
@@ -17,10 +17,10 @@ require (
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/multierr v1.6.0
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
-	golang.org/x/net v0.0.0-20210525063256-abc453219eb5
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9
-	golang.org/x/text v0.3.6
+	golang.org/x/net v0.0.0-20220225172249-27dd8689420f
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
+	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a
+	golang.org/x/text v0.3.7
 	google.golang.org/grpc v1.36.0
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 )
@@ -34,13 +34,13 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/miekg/dns v1.1.40 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/prometheus/client_golang v1.12.2 // indirect
-	github.com/prometheus/client_model v0.2.0 // indirect
-	github.com/prometheus/common v0.32.1 // indirect
-	github.com/prometheus/procfs v0.7.3 // indirect
+	github.com/prometheus/client_golang v1.14.0 // indirect
+	github.com/prometheus/client_model v0.3.0 // indirect
+	github.com/prometheus/common v0.37.0 // indirect
+	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.1.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	google.golang.org/genproto v0.0.0-20210312152112-fc591d9ea70f // indirect
-	google.golang.org/protobuf v1.26.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
