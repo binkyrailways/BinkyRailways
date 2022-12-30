@@ -207,6 +207,9 @@ message BinkyNetCommandStation {
   // Gets the configuration of local workers on the Binky network
   // that this command station is attached to.
   repeated BinkyNetLocalWorkerRef local_workers = 4;
+
+	// If set, do not configure objects that are not used
+  bool exclude_unused_objects = 5;
 }
 
 // Configuration of a binky local worker

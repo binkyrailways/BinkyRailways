@@ -29,15 +29,19 @@ import (
 type binkyNetConfigRegistry struct {
 	lwSet                model.BinkyNetLocalWorkerSet
 	onUnknownLocalWorker func(hardwareID string)
+	isObjectUsed         func(model.BinkyNetObject) bool
 
 	lwConfig map[string]api.LocalWorkerConfig
 }
 
 // Create a new registry
-func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet, onUnknownLocalWorker func(hardwareID string)) *binkyNetConfigRegistry {
+func newBinkyNetConfigRegistry(lwSet model.BinkyNetLocalWorkerSet,
+	onUnknownLocalWorker func(hardwareID string),
+	isObjectUsed func(model.BinkyNetObject) bool) *binkyNetConfigRegistry {
 	cs := &binkyNetConfigRegistry{
 		lwSet:                lwSet,
 		onUnknownLocalWorker: onUnknownLocalWorker,
+		isObjectUsed:         isObjectUsed,
 	}
 	cs.Reconfigure()
 	return cs
@@ -62,6 +66,9 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 		})
 		// Add objects
 		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
+			if !r.isObjectUsed(objModel) {
+				return
+			}
 			o := &api.Object{
 				Id:   objModel.GetObjectID(),
 				Type: objModel.GetObjectType(),

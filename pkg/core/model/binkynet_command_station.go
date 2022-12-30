@@ -33,6 +33,10 @@ type BinkyNetCommandStation interface {
 	GetRequiredWorkerVersion() string
 	SetRequiredWorkerVersion(value string) error
 
+	// If set, do not configure objects that are not used
+	GetExcludeUnUsedObjects() bool
+	SetExcludeUnUsedObjects(value bool) error
+
 	// Gets the configuration of local workers on the Binky network
 	// that this command station is attached to.
 	GetLocalWorkers() BinkyNetLocalWorkerSet

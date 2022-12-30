@@ -60,4 +60,9 @@ type Module interface {
 
 	// Call the callback for each positioned item in the module
 	ForEachPositionedEntity(cb func(PositionedEntity))
+
+	// Call the given callback for all (non-empty) addresses configured in this
+	// module with the direction their being used.
+	// If addresses are used by multiple entities, they are enumerated multiple times.
+	ForEachAddressUsage(func(AddressUsage))
 }

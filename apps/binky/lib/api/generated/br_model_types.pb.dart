@@ -1045,6 +1045,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'grpcPort', $pb.PbFieldType.O3)
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiredWorkerVersion')
     ..pc<BinkyNetLocalWorkerRef>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkers', $pb.PbFieldType.PM, subBuilder: BinkyNetLocalWorkerRef.create)
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'excludeUnusedObjects')
     ..hasRequiredFields = false
   ;
 
@@ -1054,6 +1055,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     $core.int? grpcPort,
     $core.String? requiredWorkerVersion,
     $core.Iterable<BinkyNetLocalWorkerRef>? localWorkers,
+    $core.bool? excludeUnusedObjects,
   }) {
     final _result = create();
     if (serverHost != null) {
@@ -1067,6 +1069,9 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     }
     if (localWorkers != null) {
       _result.localWorkers.addAll(localWorkers);
+    }
+    if (excludeUnusedObjects != null) {
+      _result.excludeUnusedObjects = excludeUnusedObjects;
     }
     return _result;
   }
@@ -1120,6 +1125,15 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(4)
   $core.List<BinkyNetLocalWorkerRef> get localWorkers => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.bool get excludeUnusedObjects => $_getBF(4);
+  @$pb.TagNumber(5)
+  set excludeUnusedObjects($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasExcludeUnusedObjects() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearExcludeUnusedObjects() => clearField(5);
 }
 
 class BinkyNetLocalWorker extends $pb.GeneratedMessage {

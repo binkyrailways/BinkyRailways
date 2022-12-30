@@ -110,7 +110,7 @@ func (m *module) GetBlockGroups() model.BlockGroupSet {
 	return &m.BlockGroups
 }
 
-/// Gets all edges of this module.
+// / Gets all edges of this module.
 func (m *module) GetEdges() model.EdgeSet {
 	return &m.Edges
 }
@@ -186,6 +186,21 @@ func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 	m.Outputs.ForEach(func(item model.Output) { cb(item) })
 	m.Sensors.ForEach(func(item model.Sensor) { cb(item) })
 	m.Signals.ForEach(func(item model.Signal) { cb(item) })
+}
+
+// Call the given callback for all (non-empty) addresses configured in this
+// module with the direction their being used.
+// If addresses are used by multiple entities, they are enumerated multiple times.
+func (m *module) ForEachAddressUsage(cb func(model.AddressUsage)) {
+	cbHelper := func(item interface{}) {
+		if x, ok := item.(model.AddressEntity); ok {
+			x.ForEachAddressUsage(cb)
+		}
+	}
+	m.Junctions.ForEach(func(item model.Junction) { cbHelper(item) })
+	m.Outputs.ForEach(func(item model.Output) { cbHelper(item) })
+	m.Sensors.ForEach(func(item model.Sensor) { cbHelper(item) })
+	m.Signals.ForEach(func(item model.Signal) { cbHelper(item) })
 }
 
 // Upgrade to latest version

@@ -31,6 +31,7 @@ type BinkyNetCommandStation interface {
 const (
 	defaultGRPCPort              = 8823
 	defaultRequiredWorkerVersion = "1.0.0"
+	defaultExcludeUnUsedObjects  = true
 )
 
 type binkyNetCommandStation struct {
@@ -40,6 +41,7 @@ type binkyNetCommandStation struct {
 	GRPCPort              *int                   `xml:"GRPCPort,omitempty"`
 	RequiredWorkerVersion *string                `xml:"RequiredWorkerVersion,omitempty"`
 	LocalWorkers          binkyNetLocalWorkerSet `xml:"LocalWorkers,omitempty"`
+	ExcludeUnUsedObjects  *bool                  `xml:"ExcludeUnUsedObjects,omitempty"`
 }
 
 var _ model.BinkyNetCommandStation = &binkyNetCommandStation{}
@@ -105,6 +107,18 @@ func (cs *binkyNetCommandStation) GetRequiredWorkerVersion() string {
 func (cs *binkyNetCommandStation) SetRequiredWorkerVersion(value string) error {
 	if cs.GetRequiredWorkerVersion() != value {
 		cs.RequiredWorkerVersion = refs.NewString(value)
+		cs.OnModified()
+	}
+	return nil
+}
+
+// If set, do not configure objects that are not used
+func (cs *binkyNetCommandStation) GetExcludeUnUsedObjects() bool {
+	return refs.BoolValue(cs.ExcludeUnUsedObjects, defaultExcludeUnUsedObjects)
+}
+func (cs *binkyNetCommandStation) SetExcludeUnUsedObjects(value bool) error {
+	if cs.GetExcludeUnUsedObjects() != value {
+		cs.ExcludeUnUsedObjects = refs.NewBool(value)
 		cs.OnModified()
 	}
 	return nil

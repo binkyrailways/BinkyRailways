@@ -30,6 +30,7 @@ func (dst *BinkyNetCommandStation) FromModel(ctx context.Context, src model.Bink
 	dst.ServerHost = src.GetServerHost()
 	dst.GrpcPort = int32(src.GetGRPCPort())
 	dst.RequiredWorkerVersion = src.GetRequiredWorkerVersion()
+	dst.ExcludeUnusedObjects = src.GetExcludeUnUsedObjects()
 	src.GetLocalWorkers().ForEach(func(lw model.BinkyNetLocalWorker) {
 		dst.LocalWorkers = append(dst.LocalWorkers, &BinkyNetLocalWorkerRef{
 			Id: JoinParentChildID(src.GetID(), lw.GetID()),
@@ -45,5 +46,6 @@ func (src *BinkyNetCommandStation) ToModel(ctx context.Context, dst model.BinkyN
 	multierr.AppendInto(&err, dst.SetServerHost(src.GetServerHost()))
 	multierr.AppendInto(&err, dst.SetGRPCPort(int(src.GetGrpcPort())))
 	multierr.AppendInto(&err, dst.SetRequiredWorkerVersion(src.GetRequiredWorkerVersion()))
+	multierr.AppendInto(&err, dst.SetExcludeUnUsedObjects(src.GetExcludeUnusedObjects()))
 	return err
 }

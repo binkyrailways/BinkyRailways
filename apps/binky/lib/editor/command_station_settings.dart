@@ -132,6 +132,15 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
             await _update((update) =>
                 {update.binkynetCommandStation.requiredWorkerVersion = value});
           }));
+      children.add(SettingsCheckBoxField(
+        label: "Exclude unused objects",
+        value: cs.binkynetCommandStation.excludeUnusedObjects,
+        onChanged: (value) async {
+          await _update((update) {
+            update.binkynetCommandStation.excludeUnusedObjects = value;
+          });
+        },
+      ));
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

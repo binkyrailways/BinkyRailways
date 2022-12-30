@@ -71,7 +71,8 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		return fmt.Errorf("failed to find server host: %w", err)
 	}
 	cs.reconfigureQueue = make(chan string, 64)
-	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(), cs.onUnknownLocalWorker)
+	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(),
+		cs.onUnknownLocalWorker, cs.isObjectUsed)
 	cs.manager, err = manager.New(manager.Dependencies{
 		Log:              cs.log,
 		ReconfigureQueue: cs.reconfigureQueue,
@@ -521,6 +522,27 @@ func (cs *binkyNetCommandStation) runSendLocSpeedAndDirection(ctx context.Contex
 			cs.SendLocSpeedAndDirection(ctx, loc)
 		}
 	}
+}
+
+// Determine if the object is to be included in the configuration
+func (cs *binkyNetCommandStation) isObjectUsed(obj model.BinkyNetObject) bool {
+	if !cs.getCommandStation().GetExcludeUnUsedObjects() {
+		// We do not exclude anythin
+		return true
+	}
+	used := false
+	rw := cs.railway.GetModel()
+	objAddr := bn.JoinModuleLocal(obj.GetLocalWorker().GetAlias(), string(obj.GetObjectID()))
+	rw.GetModules().ForEach(func(mr model.ModuleRef) {
+		if module, err := mr.TryResolve(); err == nil {
+			module.ForEachAddressUsage(func(au model.AddressUsage) {
+				if isAddressEqual(au.Address, objAddr) {
+					used = true
+				}
+			})
+		}
+	})
+	return used
 }
 
 // isAddressEqual returns true if the given addresses are the same
