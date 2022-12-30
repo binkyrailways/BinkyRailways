@@ -32,53 +32,39 @@ type Property interface {
 	IsConsistent(context.Context) bool
 }
 
+// TypedProperty contains the value of a property in a state object.
+// The value contains a requested value and an actual value.
+type TypedProperty[T any] interface {
+	Property
+	TypedActualProperty[T]
+
+	// Gets / sets the requested value
+	GetRequested(context.Context) T
+	SetRequested(context.Context, T) error
+	// Subscribe to requested changes
+	SubscribeRequestChanges(func(context.Context, T))
+}
+
 // BoolProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type BoolProperty interface {
-	Property
-	ActualBoolProperty
-
-	// Gets / sets the requested value
-	GetRequested(context.Context) bool
-	SetRequested(context.Context, bool) error
-	// Subscribe to requested changes
-	SubscribeRequestChanges(func(context.Context, bool))
+	TypedProperty[bool]
 }
 
 // IntProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type IntProperty interface {
-	Property
-	ActualIntProperty
-
-	// Gets / sets the requested value
-	GetRequested(context.Context) int
-	SetRequested(context.Context, int) error
-	// Subscribe to requested changes
-	SubscribeRequestChanges(func(context.Context, int))
+	TypedProperty[int]
 }
 
 // LocDirectionProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type LocDirectionProperty interface {
-	Property
-	ActualLocDirectionProperty
-
-	// Gets / sets the requested value
-	GetRequested(context.Context) LocDirection
-	SetRequested(context.Context, LocDirection) error
-	// Subscribe to requested changes
-	SubscribeRequestChanges(func(context.Context, LocDirection))
+	TypedProperty[LocDirection]
 }
 
 // SwitchDirectionProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type SwitchDirectionProperty interface {
-	ActualSwitchDirectionProperty
-
-	// Gets / sets the requested value
-	GetRequested(context.Context) model.SwitchDirection
-	SetRequested(context.Context, model.SwitchDirection) error
-	// Subscribe to requested changes
-	SubscribeRequestChanges(func(context.Context, model.SwitchDirection))
+	TypedProperty[model.SwitchDirection]
 }
