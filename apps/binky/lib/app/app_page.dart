@@ -44,7 +44,11 @@ class _AppPageState extends State<AppPage> {
                   ? [
                       ErrorMessage(
                           title: "Failed to load railway state",
-                          error: snapshot.error)
+                          error: snapshot.error),
+                      TextButton(
+                        onPressed: () => state.getRailwayState(),
+                        child: const Text("Retry"),
+                      ),
                     ]
                   : [
                       const Text('Loading railway state...'),
