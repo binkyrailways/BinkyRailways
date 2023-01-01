@@ -44,8 +44,13 @@ class HardwareModulePane extends StatelessWidget {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Text(
-            "${hardwareModule.id} up:${hardwareModule.uptime}${hasErrors ? " :" : ""}${hardwareModule.errorMessages.join(", ")}"),
+        child: Tooltip(
+          message: hasErrors
+              ? hardwareModule.errorMessages.join(".\n")
+              : "No errors",
+          preferBelow: false,
+          child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
+        ),
         onPressed: () async {
           final stateModel = Provider.of<StateModel>(context, listen: false);
           await stateModel.discoverHardware(hardwareModule.id);
