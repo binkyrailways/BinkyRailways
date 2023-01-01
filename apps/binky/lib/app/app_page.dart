@@ -15,7 +15,10 @@
 // Author Ewout Prangsma
 //
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
 import '../api.dart';
@@ -40,11 +43,16 @@ class _AppPageState extends State<AppPage> {
           future: state.getRailwayState(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
+              final isUnavailable = snapshot.hasError &&
+                  snapshot.error is GrpcError &&
+                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
               final List<Widget> children = snapshot.hasError
                   ? [
                       ErrorMessage(
                           title: "Failed to load railway state",
-                          error: snapshot.error),
+                          error: isUnavailable
+                              ? "Cannot connect to server"
+                              : snapshot.error),
                       TextButton(
                         onPressed: () => state.getRailwayState(),
                         child: const Text("Retry"),
