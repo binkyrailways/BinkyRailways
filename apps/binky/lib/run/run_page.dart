@@ -18,6 +18,7 @@
 import 'package:binky/canvas/view_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../components.dart';
 import '../models.dart';
@@ -36,6 +37,20 @@ class RunPage extends StatefulWidget {
 
 class _RunPageState extends State<RunPage> {
   final ViewSettings _viewSettings = ViewSettings();
+
+  @override
+  void initState() {
+    //print("Activate wakelock");
+    Wakelock.enable();
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    //print("Deactivate wakelock");
+    Wakelock.disable();
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
