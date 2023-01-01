@@ -25,19 +25,20 @@ import './module_game.dart';
 class RouteComponent extends common.RouteComponent {
   final EditorContext editorCtx;
   final ModuleGame game;
+  final mapi.Route route;
 
   RouteComponent(ViewSettings viewSettings,
       {required this.editorCtx,
-      required String routeId,
       required mapi.Module module,
       required List<mapi.Block> blocks,
       required List<mapi.Edge> edges,
       required List<mapi.Junction> junctions,
       required List<mapi.Sensor> sensors,
       required ModelModel modelModel,
-      required this.game})
+      required this.game,
+      required this.route})
       : super(viewSettings,
-            routeId: routeId,
+            routeId: route.id,
             modelModel: modelModel,
             module: module,
             blocks: blocks,
@@ -46,5 +47,18 @@ class RouteComponent extends common.RouteComponent {
             sensors: sensors);
 
   @override
-  isVisible() => editorCtx.selector.idOf(EntityType.route) == routeId;
+  isVisible() {
+    if (editorCtx.selector.idOf(EntityType.route) == routeId) {
+      return true;
+    }
+    final selectedBlockId = editorCtx.selector.idOf(EntityType.block);
+    if (route.from.hasBlock() && (route.from.block.id == selectedBlockId)) {
+      return true;
+    }
+    if (route.to.hasBlock() && (route.to.block.id == selectedBlockId)) {
+      return true;
+    }
+
+    return false;
+  }
 }

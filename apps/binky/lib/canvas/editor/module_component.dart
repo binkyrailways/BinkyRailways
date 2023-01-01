@@ -46,14 +46,14 @@ class ModuleComponent extends common.ModuleComponent {
       final route = await modelModel.getRoute(routeRef.id);
       add(RouteComponent(viewSettings,
           editorCtx: editorCtx,
-          routeId: route.id,
           module: model,
           blocks: blocks,
           edges: edges,
           junctions: junctions,
           sensors: sensors,
           modelModel: modelModel,
-          game: game));
+          game: game,
+          route: route));
     }
     // Load blocks
     for (var blockRef in model.blocks) {

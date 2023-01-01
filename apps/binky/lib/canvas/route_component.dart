@@ -79,7 +79,7 @@ class RouteComponent extends EntityComponent {
 
   List<Vector2> _getIntermediates(
       mapi.Route route, Vector2 start, Vector2 end) {
-    final List<Vector2> list = [];
+    final List<Vector2> list = [start, end];
     for (var jws in route.crossingJunctions) {
       final junction = junctions.where((b) => b.id == jws.junction.id).toList();
       if (junction.isNotEmpty) {
