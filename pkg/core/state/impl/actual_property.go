@@ -124,10 +124,10 @@ type equatableActualProperty[T equatable[T]] struct {
 func (p *equatableActualProperty[T]) GetActual(ctx context.Context) T {
 	return p.actual
 }
-func (p *equatableActualProperty[T]) SetActual(ctx context.Context, value T) (bool, error) {
+func (p *equatableActualProperty[T]) setActual(ctx context.Context, value T, isEqual func(a, b T) bool) (bool, error) {
 	changed := false
 	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		if !p.actual.Equals(value) {
+		if !isEqual(p.actual, value) {
 			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
@@ -196,10 +196,34 @@ type actualBlockProperty struct {
 	equatableActualProperty[state.Block]
 }
 
+func (p *actualBlockProperty) SetActual(ctx context.Context, value state.Block) (bool, error) {
+	return p.equatableActualProperty.setActual(ctx, value, func(a, b state.Block) bool {
+		if a == nil && b == nil {
+			return true
+		}
+		if a == nil || b == nil {
+			return false
+		}
+		return a.Equals(b)
+	})
+}
+
 // actualRouteProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type actualRouteProperty struct {
 	equatableActualProperty[state.Route]
+}
+
+func (p *actualRouteProperty) SetActual(ctx context.Context, value state.Route) (bool, error) {
+	return p.equatableActualProperty.setActual(ctx, value, func(a, b state.Route) bool {
+		if a == nil && b == nil {
+			return true
+		}
+		if a == nil || b == nil {
+			return false
+		}
+		return a.Equals(b)
+	})
 }
 
 // actualRouteForLocProperty contains the value of a property in a state object.
@@ -208,8 +232,32 @@ type actualRouteForLocProperty struct {
 	equatableActualProperty[state.RouteForLoc]
 }
 
+func (p *actualRouteForLocProperty) SetActual(ctx context.Context, value state.RouteForLoc) (bool, error) {
+	return p.equatableActualProperty.setActual(ctx, value, func(a, b state.RouteForLoc) bool {
+		if a == nil && b == nil {
+			return true
+		}
+		if a == nil || b == nil {
+			return false
+		}
+		return a.Equals(b)
+	})
+}
+
 // actualRouteOptionsProperty contains the value of a property in a state object.
 // The value contains an actual value.
 type actualRouteOptionsProperty struct {
 	equatableActualProperty[state.RouteOptions]
+}
+
+func (p *actualRouteOptionsProperty) SetActual(ctx context.Context, value state.RouteOptions) (bool, error) {
+	return p.equatableActualProperty.setActual(ctx, value, func(a, b state.RouteOptions) bool {
+		if a == nil && b == nil {
+			return true
+		}
+		if a == nil || b == nil {
+			return false
+		}
+		return a.Equals(b)
+	})
 }
