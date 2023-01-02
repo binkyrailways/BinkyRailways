@@ -30,23 +30,23 @@ Loc = name:String {
     return getLocByNamePredicate(locName, rw)
 }
 
-LocGroup = MemberOf '(' name:String ')' {
+LocGroup = kwMemberOf '(' name:String ')' {
     rw := c.globalStore["railway"].(model.Railway)
     groupName := name.(string)
     return getLocGroupByNamePredicate(groupName, rw)
 }
 
-CanChangeDirection = "canChangeDirection" {
+CanChangeDirection = kwCanChangeDirection {
     rw := c.globalStore["railway"].(model.Railway)
     return getLocCanChangeDirectionPredicate(rw)
 }
 
-Or = '(' first:Predicate rest:("or" Predicate)* ')' {
+Or = '(' first:Predicate rest:(kwOr Predicate)* ')' {
     rw := c.globalStore["railway"].(model.Railway)
     return getLocOrPredicate(first, rest, rw)
 }
 
-And = '(' first:Predicate rest:("and" Predicate)* ')' {
+And = '(' first:Predicate rest:(kwAnd Predicate)* ')' {
     rw := c.globalStore["railway"].(model.Railway)
     return getLocAndPredicate(first, rest, rw)
 }
@@ -56,11 +56,11 @@ Standard = ps:((Only Except) / Only / Except) {
     return getLocStandardPredicate(ps, rw)
 }
 
-Only = "only" p:Or Whitespace {
+Only = kwOnly p:Or Whitespace {
     return only{predicates:p}, nil
 }
 
-Except = "except" p:Or Whitespace {
+Except = kwExcept p:Or Whitespace {
     return except{predicates:p}, nil
 }
 
@@ -83,11 +83,17 @@ NonZeroDecimalDigit = [1-9]
 
 HexDigit = [0-9a-f]i
 
-All = "all" {
+All = kwAll {
     return nil, nil
 }
 
-MemberOf = "memberOf"
+kwAll = "all"i
+kwAnd = "and"i
+kwCanChangeDirection = "canChangeDirection"i / "can change direction"i
+kwExcept = "except"i
+kwMemberOf = "memberOf"i / "member of"i
+kwOnly = "only"i
+kwOr = "or"i
 
 Whitespace = [ \t\n]*
 

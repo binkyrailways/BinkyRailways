@@ -29,7 +29,7 @@ import (
 
 func TestParsePredicate(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
-		for _, x := range []string{"", "  ", "\n", "  \t \n ", "all"} {
+		for _, x := range []string{"", "  ", "\n", "  \t \n ", "all", "All", "ALL"} {
 			result, err := ParsePredicate(x, nil)
 			assert.NoError(t, err, x)
 			assert.Nil(t, result, x)
@@ -136,7 +136,7 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("Single loc group", func(t *testing.T) {
-		for _, x := range []string{`memberOf("group 1")`} {
+		for _, x := range []string{`memberOf("group 1")`, `memberof("group 1")`, `member of("group 1")`} {
 			result, err := ParsePredicate(x, rw)
 			require.NoError(t, err, x)
 			lgep, ok := result.(model.LocGroupEqualsPredicate)
@@ -146,7 +146,7 @@ func TestParsePredicate(t *testing.T) {
 			gen := GeneratePredicate(result)
 			assert.Equal(t, `memberOf("group 1")`, gen)
 		}
-		for _, x := range []string{`memberOf("group 22")`} {
+		for _, x := range []string{`memberOf("group 22")`, `member Of("group 22")`} {
 			_, err := ParsePredicate(x, rw)
 			assert.Error(t, err, x)
 		}
@@ -180,7 +180,7 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("can change direction", func(t *testing.T) {
-		for _, x := range []string{`canChangeDirection`} {
+		for _, x := range []string{`canChangeDirection`, `CANCHANGEDIRECTION`, `canchangedirection`, `can Change direction`} {
 			result, err := ParsePredicate(x, rw)
 			require.NoError(t, err, x)
 			_, ok := result.(model.LocCanChangeDirectionPredicate)
@@ -203,14 +203,16 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("Or 2", func(t *testing.T) {
-		result, err := ParsePredicate(`("loc 1" or "dcc 2")`, rw)
-		require.NoError(t, err)
-		lop, ok := result.(model.LocOrPredicate)
-		require.True(t, ok)
-		assert.Equal(t, 2, lop.GetPredicates().GetCount())
+		for _, x := range []string{`("loc 1" or "dcc 2")`, `("loc 1" OR "dcc 2")`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err, x)
+			lop, ok := result.(model.LocOrPredicate)
+			require.True(t, ok)
+			assert.Equal(t, 2, lop.GetPredicates().GetCount())
 
-		gen := GeneratePredicate(result)
-		assert.Equal(t, `("loc 1" or "loc 2")`, gen)
+			gen := GeneratePredicate(result)
+			assert.Equal(t, `("loc 1" or "loc 2")`, gen)
+		}
 	})
 
 	t.Run("Or 3", func(t *testing.T) {
@@ -225,14 +227,16 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("And 2", func(t *testing.T) {
-		result, err := ParsePredicate(`("loc 1" and "dcc 2")`, rw)
-		require.NoError(t, err)
-		lop, ok := result.(model.LocAndPredicate)
-		require.True(t, ok)
-		assert.Equal(t, 2, lop.GetPredicates().GetCount())
+		for _, x := range []string{`("loc 1" and "dcc 2")`, `("loc 1" And "dcc 2")`} {
+			result, err := ParsePredicate(x, rw)
+			require.NoError(t, err)
+			lop, ok := result.(model.LocAndPredicate)
+			require.True(t, ok)
+			assert.Equal(t, 2, lop.GetPredicates().GetCount())
 
-		gen := GeneratePredicate(result)
-		assert.Equal(t, `("loc 1" and "loc 2")`, gen)
+			gen := GeneratePredicate(result)
+			assert.Equal(t, `("loc 1" and "loc 2")`, gen)
+		}
 	})
 
 	t.Run("And 3", func(t *testing.T) {
