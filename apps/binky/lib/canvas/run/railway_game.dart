@@ -54,35 +54,39 @@ class RailwayGame extends FlameGame with HasHoverables, HasTappables {
   }
 
   Widget blockOverlayBuilder(BuildContext buildContext, RailwayGame game) {
-    return Stack(
-      children: [
-        GestureDetector(
-          child: Container(
-            color: Colors.grey.withAlpha(128),
+    final pos = _overlayPosition ?? Vector2.zero();
+    return LayoutBuilder(
+        builder: (BuildContext ctx, BoxConstraints constraints) {
+      return Stack(
+        children: [
+          GestureDetector(
+            child: Container(
+              color: Colors.grey.withAlpha(128),
+            ),
+            onTap: () {
+              game.overlays.remove(blockOverlay);
+            },
           ),
-          onTap: () {
-            game.overlays.remove(blockOverlay);
-          },
-        ),
-        Positioned(
-          left: _overlayPosition?.x,
-          top: _overlayPosition?.y,
-          width: 400,
-          height: 300,
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            color: Colors.white,
-            child: BlockOverlay(
-              stateModel: stateModel,
-              block: _block!,
-              onClose: () {
-                game.overlays.remove(blockOverlay);
-              },
+          Positioned(
+            left: max(0.0, min(pos.x, constraints.maxWidth - 400)),
+            top: max(0.0, min(pos.y, constraints.maxHeight - 300)),
+            width: 400,
+            height: 300,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.white,
+              child: BlockOverlay(
+                stateModel: stateModel,
+                block: _block!,
+                onClose: () {
+                  game.overlays.remove(blockOverlay);
+                },
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   void showLayers(Vector2 position) {

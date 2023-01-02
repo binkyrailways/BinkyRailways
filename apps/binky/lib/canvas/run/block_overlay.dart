@@ -53,7 +53,7 @@ class _BlockOverlayState extends State<BlockOverlay> {
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             const Divider(),
           ];
-          if (locs.length > 0) {
+          if (locs.isNotEmpty) {
             children.add(
               Expanded(
                 child: ListView.builder(
@@ -61,7 +61,9 @@ class _BlockOverlayState extends State<BlockOverlay> {
                   itemBuilder: (context, index) {
                     final loc = locs[index].last;
                     return ListTile(
+                      dense: true,
                       title: Text(loc.model.description),
+                      subtitle: Text(loc.model.owner),
                       selectedTileColor: Colors.lightBlue,
                       selectedColor: Colors.orange,
                       selected: (loc.model.id == _selectedLocId),
