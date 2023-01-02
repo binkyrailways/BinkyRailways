@@ -15,8 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/editor/helper_texts.dart';
 import 'package:flutter/material.dart' hide Route;
-import 'package:flutter/services.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
@@ -199,6 +199,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
           controller: _permissionsController,
           label: "Permissions",
           validator: _permissionValidator.validate,
+          helperText: HelperTexts.permission,
           onLostFocus: (value) async {
             await _update((update) {
               update.permissions = value;

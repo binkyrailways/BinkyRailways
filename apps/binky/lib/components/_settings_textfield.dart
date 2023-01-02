@@ -38,6 +38,7 @@ class SettingsTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Widget? prefix;
   final Widget? suffix;
+  final String? helperText;
 
   const SettingsTextField({
     Key? key,
@@ -50,6 +51,7 @@ class SettingsTextField extends StatelessWidget {
     this.validator,
     this.prefix,
     this.suffix,
+    this.helperText,
   }) : super(key: key);
 
   @override
@@ -70,6 +72,7 @@ class SettingsTextField extends StatelessWidget {
             label: Text(label),
             prefix: prefix,
             suffix: suffix,
+            helperText: helperText,
           ),
         ),
         onFocusChange: (bool hasFocus) async {

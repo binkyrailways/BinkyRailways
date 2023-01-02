@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/dropdownmenuitems.dart';
+import 'package:binky/editor/helper_texts.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
@@ -129,93 +130,100 @@ class _BlockSettingsState extends State<_BlockSettings> {
   @override
   Widget build(BuildContext context) {
     final usedBy = _buildUsedBy();
+    final canWait = widget.block.waitProbability > 0;
+    final children = [
+      const SettingsHeader(title: "General"),
+      SettingsTextField(
+          controller: _descriptionController,
+          label: "Description",
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.description = value;
+            });
+          }),
+      SettingsTextField(
+          controller: _waitProbabilityController,
+          validator: _waitProbabilityValidator.validate,
+          label: "Wait probability",
+          onLostFocus: (value) async {
+            await _update((update) {
+              update.waitProbability = int.parse(value);
+            });
+          }),
+      canWait
+          ? SettingsTextField(
+              controller: _waitPermissionsController,
+              validator: _permissionValidator.validate,
+              label: "Wait permissions",
+              helperText: HelperTexts.permission,
+              onLostFocus: (value) async {
+                await _update((update) {
+                  update.waitPermissions = value;
+                });
+              })
+          : Container(),
+      canWait
+          ? Row(children: [
+              Expanded(
+                child: SettingsTextField(
+                    controller: _minWaitTimeController,
+                    validator: _waitTimeValidator.validate,
+                    label: "Min wait time (sec)",
+                    onLostFocus: (value) async {
+                      await _update((update) {
+                        update.minimumWaitTime = int.parse(value);
+                      });
+                    }),
+              ),
+              Expanded(
+                child: SettingsTextField(
+                    controller: _maxWaitTimeController,
+                    validator: _waitTimeValidator.validate,
+                    label: "Max wait time (sec)",
+                    onLostFocus: (value) async {
+                      await _update((update) {
+                        update.maximumWaitTime = int.parse(value);
+                      });
+                    }),
+              ),
+            ])
+          : Container(),
+      SettingsDropdownField<ChangeDirection>(
+        label: "Change direction",
+        value: widget.block.changeDirection,
+        onChanged: (value) async {
+          if (value != null) {
+            await _update((update) {
+              update.changeDirection = value;
+            });
+          }
+        },
+        items: BinkyDropdownMenuItems.ChangeDirectionItems,
+      ),
+      const SettingsHeader(title: "Position"),
+      PositionSettings(
+          editorCtx: widget.editorCtx,
+          model: widget.model,
+          position: widget.block.position,
+          moduleId: widget.block.moduleId,
+          update: (editor) async {
+            await _update((update) {
+              editor(update.position);
+            });
+          }),
+      const SettingsHeader(title: "Used by"),
+      Expanded(
+        child: ListView.builder(
+            controller: _usedByScrollController,
+            itemCount: usedBy.length,
+            itemBuilder: (context, index) {
+              return usedBy[index];
+            }),
+      ),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SettingsHeader(title: "General"),
-        SettingsTextField(
-            controller: _descriptionController,
-            label: "Description",
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
-            }),
-        SettingsTextField(
-            controller: _waitProbabilityController,
-            validator: _waitProbabilityValidator.validate,
-            label: "Wait probability",
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.waitProbability = int.parse(value);
-              });
-            }),
-        SettingsTextField(
-            controller: _waitPermissionsController,
-            validator: _permissionValidator.validate,
-            label: "Wait permissions",
-            onLostFocus: (value) async {
-              await _update((update) {
-                update.waitPermissions = value;
-              });
-            }),
-        Row(children: [
-          Expanded(
-            child: SettingsTextField(
-                controller: _minWaitTimeController,
-                validator: _waitTimeValidator.validate,
-                label: "Min wait time (sec)",
-                onLostFocus: (value) async {
-                  await _update((update) {
-                    update.minimumWaitTime = int.parse(value);
-                  });
-                }),
-          ),
-          Expanded(
-            child: SettingsTextField(
-                controller: _maxWaitTimeController,
-                validator: _waitTimeValidator.validate,
-                label: "Max wait time (sec)",
-                onLostFocus: (value) async {
-                  await _update((update) {
-                    update.maximumWaitTime = int.parse(value);
-                  });
-                }),
-          ),
-        ]),
-        SettingsDropdownField<ChangeDirection>(
-          label: "Change direction",
-          value: widget.block.changeDirection,
-          onChanged: (value) async {
-            if (value != null) {
-              await _update((update) {
-                update.changeDirection = value;
-              });
-            }
-          },
-          items: BinkyDropdownMenuItems.ChangeDirectionItems,
-        ),
-        const SettingsHeader(title: "Position"),
-        PositionSettings(
-            editorCtx: widget.editorCtx,
-            model: widget.model,
-            position: widget.block.position,
-            moduleId: widget.block.moduleId,
-            update: (editor) async {
-              await _update((update) {
-                editor(update.position);
-              });
-            }),
-        const SettingsHeader(title: "Used by"),
-        Expanded(
-          child: ListView.builder(
-              controller: _usedByScrollController,
-              itemCount: usedBy.length,
-              itemBuilder: (context, index) {
-                return usedBy[index];
-              }),
-        ),
-      ],
+      children: children,
     );
   }
 
