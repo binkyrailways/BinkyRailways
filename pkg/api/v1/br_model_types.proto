@@ -132,6 +132,8 @@ message Loc {
   string remarks = 4;
   // Address of the loc.
   string address = 5;
+  // URL of image of the loc
+  string image_url = 6;
 
   // Percentage of speed steps for the slowest speed of this loc.
   // Value between 1 and 100.

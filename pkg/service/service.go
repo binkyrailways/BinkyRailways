@@ -19,6 +19,9 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"net"
+	"strconv"
 	"sync"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
@@ -27,6 +30,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
 	"github.com/mattn/go-pubsub"
 	"github.com/rs/zerolog"
+	"google.golang.org/grpc/metadata"
 )
 
 // Config for the service
@@ -37,6 +41,8 @@ type Config struct {
 	ProjectBuild string
 	// Path to Railway file
 	RailwayPath string
+	// Port number our HTTP server is using
+	HTTPPort int
 }
 
 type Dependencies struct {
@@ -106,4 +112,24 @@ func (s *service) getRailwayState() (state.Railway, error) {
 		return nil, api.PreconditionFailed("Railway not in run mode")
 	}
 	return result, nil
+}
+
+// getHttpHost returns the server:port of the HTTP server this
+// process is running.
+// The server is derived from the authority found in the GRPC metadata
+// of the given context.
+func (s *service) getHttpHost(ctx context.Context) (string, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return "", fmt.Errorf("no GRPC metadata found")
+	}
+	auth := md[":authority"]
+	if len(auth) == 0 {
+		return "", fmt.Errorf("no authority found in GRPC metadata")
+	}
+	host, _, err := net.SplitHostPort(auth[0])
+	if err != nil {
+		return "", fmt.Errorf("invalid authority ('%s') found in GRPC metadata", auth)
+	}
+	return net.JoinHostPort(host, strconv.Itoa(s.HTTPPort)), nil
 }

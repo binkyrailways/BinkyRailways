@@ -47,12 +47,11 @@ type Loc interface {
 	// Sets the number of speed steps supported by this loc.
 	SetSpeedSteps(value int) error
 
-	/// <summary>
-	/// Gets/sets the image of the given loc.
-	/// </summary>
-	/// <value>Null if there is no image.</value>
-	/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
-	//Stream Image { get; set; }
+	// Gets the image (content) of this loc
+	GetImage() []byte
+	// Sets the image (content) of this loc
+	// Image must be png, bmp, gif, jpg, wmf or emf.
+	SetImage(value []byte) error
 
 	// Get if it is allowed for this loc to change direction.
 	GetChangeDirection() ChangeDirection

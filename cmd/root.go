@@ -59,6 +59,7 @@ func init() {
 	f.StringVar(&rootArgs.logFile, "logfile", "./binkyrailways.log", "Path of log file")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
+	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")
 	f.IntVar(&rootArgs.server.LokiPort, "loki-port", 13100, "Port to serve Loki requests on")
@@ -98,6 +99,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
 	// Construct the service
+	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
 	svc := service.New(rootArgs.app, service.Dependencies{
 		Logger: cliLog,
 	})

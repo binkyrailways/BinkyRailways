@@ -49,6 +49,10 @@ var (
 	_ Loc = &loc{}
 )
 
+const (
+	imageID = "Image"
+)
+
 // NewLoc initialize a new loc
 func NewLoc(p model.Package) Loc {
 	l := &loc{
@@ -167,12 +171,21 @@ func (l *loc) SetSpeedSteps(value int) error {
 	return nil
 }
 
-/// <summary>
-/// Gets/sets the image of the given loc.
-/// </summary>
-/// <value>Null if there is no image.</value>
-/// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
-//Stream Image { get; set; }
+// Gets the image (content) of this loc
+func (l *loc) GetImage() []byte {
+	img, _ := l.GetPackage().GetGenericPart(l, imageID)
+	return img
+}
+
+// Sets the image (content) of this loc
+// Image must be png, bmp, gif, jpg, wmf or emf.
+func (l *loc) SetImage(value []byte) error {
+	if len(value) == 0 {
+		return l.GetPackage().RemoveGenericPart(l, imageID)
+	} else {
+		return l.GetPackage().SetGenericPart(l, imageID, value)
+	}
+}
 
 // Get if it is allowed for this loc to change direction.
 func (l *loc) GetChangeDirection() model.ChangeDirection {

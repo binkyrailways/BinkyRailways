@@ -212,6 +212,7 @@ const Loc$json = const {
     const {'1': 'owner', '3': 3, '4': 1, '5': 9, '10': 'owner'},
     const {'1': 'remarks', '3': 4, '4': 1, '5': 9, '10': 'remarks'},
     const {'1': 'address', '3': 5, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'image_url', '3': 6, '4': 1, '5': 9, '10': 'imageUrl'},
     const {'1': 'slow_speed', '3': 100, '4': 1, '5': 5, '10': 'slowSpeed'},
     const {'1': 'medium_speed', '3': 101, '4': 1, '5': 5, '10': 'mediumSpeed'},
     const {'1': 'maximum_speed', '3': 102, '4': 1, '5': 5, '10': 'maximumSpeed'},
@@ -221,7 +222,7 @@ const Loc$json = const {
 };
 
 /// Descriptor for `Loc`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List locDescriptor = $convert.base64Decode('CgNMb2MSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgVvd25lchgDIAEoCVIFb3duZXISGAoHcmVtYXJrcxgEIAEoCVIHcmVtYXJrcxIYCgdhZGRyZXNzGAUgASgJUgdhZGRyZXNzEh0KCnNsb3dfc3BlZWQYZCABKAVSCXNsb3dTcGVlZBIhCgxtZWRpdW1fc3BlZWQYZSABKAVSC21lZGl1bVNwZWVkEiMKDW1heGltdW1fc3BlZWQYZiABKAVSDG1heGltdW1TcGVlZBIfCgtzcGVlZF9zdGVwcxhuIAEoBVIKc3BlZWRTdGVwcxJMChBjaGFuZ2VfZGlyZWN0aW9uGHggASgOMiEuYmlua3lyYWlsd2F5cy52MS5DaGFuZ2VEaXJlY3Rpb25SD2NoYW5nZURpcmVjdGlvbg==');
+final $typed_data.Uint8List locDescriptor = $convert.base64Decode('CgNMb2MSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgVvd25lchgDIAEoCVIFb3duZXISGAoHcmVtYXJrcxgEIAEoCVIHcmVtYXJrcxIYCgdhZGRyZXNzGAUgASgJUgdhZGRyZXNzEhsKCWltYWdlX3VybBgGIAEoCVIIaW1hZ2VVcmwSHQoKc2xvd19zcGVlZBhkIAEoBVIJc2xvd1NwZWVkEiEKDG1lZGl1bV9zcGVlZBhlIAEoBVILbWVkaXVtU3BlZWQSIwoNbWF4aW11bV9zcGVlZBhmIAEoBVIMbWF4aW11bVNwZWVkEh8KC3NwZWVkX3N0ZXBzGG4gASgFUgpzcGVlZFN0ZXBzEkwKEGNoYW5nZV9kaXJlY3Rpb24YeCABKA4yIS5iaW5reXJhaWx3YXlzLnYxLkNoYW5nZURpcmVjdGlvblIPY2hhbmdlRGlyZWN0aW9u');
 @$core.Deprecated('Use locRefDescriptor instead')
 const LocRef$json = const {
   '1': 'LocRef',

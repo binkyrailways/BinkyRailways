@@ -23,7 +23,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
-import '../api.dart';
+import '../api.dart' hide Image;
 import 'package:binky/editor/editor_context.dart';
 
 class LocSettings extends StatelessWidget {
@@ -98,6 +98,7 @@ class _LocSettingsState extends State<_LocSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = widget.loc.imageUrl.isNotEmpty;
     return ScrollableForm(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,6 +183,8 @@ class _LocSettingsState extends State<_LocSettings> {
             },
             items: BinkyDropdownMenuItems.ChangeDirectionItems,
           ),
+          const SettingsHeader(title: "Image"),
+          hasImage ? Image.network(widget.loc.imageUrl) : Container(),
         ],
       ),
     );

@@ -31,11 +31,12 @@ class APIClient {
         _modelClient = ModelServiceClient(channel),
         _stateClient = StateServiceClient(channel);
 
-  static final _instance = APIClient._initialize(ClientChannel('127.0.0.1',
-      port: 18034,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-      )));
+  static final _instance =
+      APIClient._initialize(ClientChannel('192.168.140.164', //'127.0.0.1',
+          port: 18034,
+          options: const ChannelOptions(
+            credentials: ChannelCredentials.insecure(),
+          )));
 
   factory APIClient() => _instance;
 

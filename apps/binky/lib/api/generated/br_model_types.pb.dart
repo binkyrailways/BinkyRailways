@@ -586,6 +586,7 @@ class Loc extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'owner')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'remarks')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageUrl')
     ..a<$core.int>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'slowSpeed', $pb.PbFieldType.O3)
     ..a<$core.int>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mediumSpeed', $pb.PbFieldType.O3)
     ..a<$core.int>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maximumSpeed', $pb.PbFieldType.O3)
@@ -601,6 +602,7 @@ class Loc extends $pb.GeneratedMessage {
     $core.String? owner,
     $core.String? remarks,
     $core.String? address,
+    $core.String? imageUrl,
     $core.int? slowSpeed,
     $core.int? mediumSpeed,
     $core.int? maximumSpeed,
@@ -622,6 +624,9 @@ class Loc extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (imageUrl != null) {
+      _result.imageUrl = imageUrl;
     }
     if (slowSpeed != null) {
       _result.slowSpeed = slowSpeed;
@@ -706,48 +711,57 @@ class Loc extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearAddress() => clearField(5);
 
+  @$pb.TagNumber(6)
+  $core.String get imageUrl => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set imageUrl($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasImageUrl() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearImageUrl() => clearField(6);
+
   @$pb.TagNumber(100)
-  $core.int get slowSpeed => $_getIZ(5);
+  $core.int get slowSpeed => $_getIZ(6);
   @$pb.TagNumber(100)
-  set slowSpeed($core.int v) { $_setSignedInt32(5, v); }
+  set slowSpeed($core.int v) { $_setSignedInt32(6, v); }
   @$pb.TagNumber(100)
-  $core.bool hasSlowSpeed() => $_has(5);
+  $core.bool hasSlowSpeed() => $_has(6);
   @$pb.TagNumber(100)
   void clearSlowSpeed() => clearField(100);
 
   @$pb.TagNumber(101)
-  $core.int get mediumSpeed => $_getIZ(6);
+  $core.int get mediumSpeed => $_getIZ(7);
   @$pb.TagNumber(101)
-  set mediumSpeed($core.int v) { $_setSignedInt32(6, v); }
+  set mediumSpeed($core.int v) { $_setSignedInt32(7, v); }
   @$pb.TagNumber(101)
-  $core.bool hasMediumSpeed() => $_has(6);
+  $core.bool hasMediumSpeed() => $_has(7);
   @$pb.TagNumber(101)
   void clearMediumSpeed() => clearField(101);
 
   @$pb.TagNumber(102)
-  $core.int get maximumSpeed => $_getIZ(7);
+  $core.int get maximumSpeed => $_getIZ(8);
   @$pb.TagNumber(102)
-  set maximumSpeed($core.int v) { $_setSignedInt32(7, v); }
+  set maximumSpeed($core.int v) { $_setSignedInt32(8, v); }
   @$pb.TagNumber(102)
-  $core.bool hasMaximumSpeed() => $_has(7);
+  $core.bool hasMaximumSpeed() => $_has(8);
   @$pb.TagNumber(102)
   void clearMaximumSpeed() => clearField(102);
 
   @$pb.TagNumber(110)
-  $core.int get speedSteps => $_getIZ(8);
+  $core.int get speedSteps => $_getIZ(9);
   @$pb.TagNumber(110)
-  set speedSteps($core.int v) { $_setSignedInt32(8, v); }
+  set speedSteps($core.int v) { $_setSignedInt32(9, v); }
   @$pb.TagNumber(110)
-  $core.bool hasSpeedSteps() => $_has(8);
+  $core.bool hasSpeedSteps() => $_has(9);
   @$pb.TagNumber(110)
   void clearSpeedSteps() => clearField(110);
 
   @$pb.TagNumber(120)
-  ChangeDirection get changeDirection => $_getN(9);
+  ChangeDirection get changeDirection => $_getN(10);
   @$pb.TagNumber(120)
   set changeDirection(ChangeDirection v) { setField(120, v); }
   @$pb.TagNumber(120)
-  $core.bool hasChangeDirection() => $_has(9);
+  $core.bool hasChangeDirection() => $_has(10);
   @$pb.TagNumber(120)
   void clearChangeDirection() => clearField(120);
 }

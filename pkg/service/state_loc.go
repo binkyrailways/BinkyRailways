@@ -46,8 +46,12 @@ func (s *service) SetLocSpeedAndDirection(ctx context.Context, req *api.SetLocSp
 	if err := locState.GetDirection().SetRequested(ctx, direction); err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState); err != nil {
+	if err := result.FromState(ctx, locState, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -69,8 +73,12 @@ func (s *service) SetLocControlledAutomatically(ctx context.Context, req *api.Se
 	if err := locState.GetControlledAutomatically().SetRequested(ctx, req.GetEnabled()); err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState); err != nil {
+	if err := result.FromState(ctx, locState, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -99,8 +107,12 @@ func (s *service) SetLocFunctions(ctx context.Context, req *api.SetLocFunctionsR
 			return nil, api.InvalidArgument("Unknown function %d", lf.GetIndex())
 		}
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState); err != nil {
+	if err := result.FromState(ctx, locState, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

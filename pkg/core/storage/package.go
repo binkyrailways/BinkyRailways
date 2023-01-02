@@ -26,6 +26,7 @@ import (
 	"io/ioutil"
 	"path"
 	"strings"
+	"sync"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
@@ -36,6 +37,7 @@ type packageImpl struct {
 	railway model.Railway
 
 	onError        impl.EventHandler
+	mutex          sync.Mutex
 	parts          map[string][]byte                 // uri -> data
 	loadedEntities map[string]model.PersistentEntity // uri -> entity
 	dirty          bool
@@ -146,6 +148,9 @@ func (p *packageImpl) AddNewBinkyNetCommandStation() (model.BinkyNetCommandStati
 	cs := impl.NewBinkyNetCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -156,6 +161,9 @@ func (p *packageImpl) AddNewLocoBufferCommandStation() (model.LocoBufferCommandS
 	cs := impl.NewLocoBufferCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -166,6 +174,9 @@ func (p *packageImpl) AddNewDccOverRs232CommandStation() (model.DccOverRs232Comm
 	cs := impl.NewDccOverRs232CommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -176,6 +187,9 @@ func (p *packageImpl) AddNewEcosCommandStation() (model.EcosCommandStation, erro
 	cs := impl.NewEcosCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -186,6 +200,9 @@ func (p *packageImpl) AddNewMqttCommandStation() (model.MqttCommandStation, erro
 	cs := impl.NewMqttCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -196,6 +213,9 @@ func (p *packageImpl) AddNewP50xCommandStation() (model.P50xCommandStation, erro
 	cs := impl.NewP50xCommandStation(p)
 	cs.SetPackage(p)
 	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = cs
 	p.dirty = true
 	return cs, nil
@@ -238,6 +258,9 @@ func (p *packageImpl) ForEachCommandStation(cb func(model.CommandStation)) error
 func (p *packageImpl) AddNewLoc() (model.Loc, error) {
 	result := impl.NewLoc(p)
 	uri := createPartURI(impl.PackageFolderLoc, result.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = result
 	p.dirty = true
 	return result, nil
@@ -280,6 +303,9 @@ func (p *packageImpl) ForEachLoc(cb func(model.Loc)) error {
 func (p *packageImpl) AddNewModule() (model.Module, error) {
 	result := impl.NewModule(p)
 	uri := createPartURI(impl.PackageFolderModule, result.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.loadedEntities[uri] = result
 	p.dirty = true
 	return result, nil
@@ -335,6 +361,8 @@ func (p *packageImpl) GetGenericPartIDs(entity model.PersistentEntity) []string 
 func (p *packageImpl) GetGenericPart(entity model.PersistentEntity, id string) ([]byte, error) {
 	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
 	// Already loaded?
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	if result, found := p.parts[uri]; found {
 		return result, nil
 	}
@@ -344,6 +372,9 @@ func (p *packageImpl) GetGenericPart(entity model.PersistentEntity, id string) (
 // Store a generic file part that belongs to the given entity by it's id.
 func (p *packageImpl) SetGenericPart(entity model.PersistentEntity, id string, data []byte) error {
 	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	p.parts[uri] = data
 	p.dirty = true
 	return nil
@@ -352,6 +383,8 @@ func (p *packageImpl) SetGenericPart(entity model.PersistentEntity, id string, d
 // Remove a generic file part that belongs to the given entity by it's id.
 func (p *packageImpl) RemoveGenericPart(entity model.PersistentEntity, id string) error {
 	uri := createPartURI(impl.PackageFolderGenericParts, path.Join(entity.GetID(), id))
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
 	if _, found := p.parts[uri]; found {
 		delete(p.parts, uri)
 		p.dirty = true
@@ -370,6 +403,9 @@ func (p *packageImpl) Save() error {
 
 // Save to disk.
 func (p *packageImpl) SaveAs(path string) error {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+
 	// Update all parts
 	if err := p.updateEntityParts(); err != nil {
 		return err
@@ -411,6 +447,9 @@ func (p *packageImpl) GetIsDirty() bool {
 // Read an entity in a given folder.
 // Returns: nil if not found
 func (p *packageImpl) ReadEntity(folder, id string, template ...model.PersistentEntity) (model.PersistentEntity, error) {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+
 	uri := createPartURI(folder, id)
 	// Already loaded?
 	if result, found := p.loadedEntities[uri]; found {

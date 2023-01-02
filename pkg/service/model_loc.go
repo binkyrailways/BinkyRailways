@@ -44,14 +44,30 @@ func (s *service) getLoc(ctx context.Context, locID string) (model.Loc, error) {
 	return loc, nil
 }
 
+// Get image of loc by id
+// Returns: image, contentType, error
+func (s *service) GetLocImage(ctx context.Context, locID string) ([]byte, string, error) {
+	loc, err := s.getLoc(ctx, locID)
+	if err != nil {
+		return nil, "", err
+	}
+	img := loc.GetImage()
+	// TODO detect content type
+	return img, "image/png", nil
+}
+
 // Gets a loc by ID.
 func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, error) {
 	loc, err := s.getLoc(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var result api.Loc
-	if err := result.FromModel(ctx, loc); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -63,11 +79,15 @@ func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error)
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	if err := req.ToModel(ctx, loc); err != nil {
 		return nil, err
 	}
 	var result api.Loc
-	if err := result.FromModel(ctx, loc); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -79,13 +99,17 @@ func (s *service) AddLoc(ctx context.Context, req *api.Empty) (*api.Loc, error) 
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	loc, err := rw.GetPackage().AddNewLoc()
 	if err != nil {
 		return nil, err
 	}
 	rw.GetLocs().Add(loc)
 	var result api.Loc
-	if err := result.FromModel(ctx, loc); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

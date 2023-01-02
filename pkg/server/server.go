@@ -26,6 +26,7 @@ import (
 	"net/url"
 	"strconv"
 
+	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -37,6 +38,8 @@ import (
 type Config struct {
 	// Host interface to listen on
 	Host string
+	// Port to listen on for HTTP requests
+	HTTPPort int
 	// Port to listen on for GRPC requests
 	GRPCPort int
 	// Port to listen on for Loki requests
@@ -56,6 +59,9 @@ type Server struct {
 type Service interface {
 	api.ModelServiceServer
 	api.StateServiceServer
+	// Get image of loc by id
+	// Returns: image, contentType, error
+	GetLocImage(ctx context.Context, locID string) ([]byte, string, error)
 }
 
 // New configures a new Server.
@@ -69,8 +75,15 @@ func New(cfg Config, log zerolog.Logger, service Service) (*Server, error) {
 
 // Run the server until the given context is canceled.
 func (s *Server) Run(ctx context.Context) error {
-	// Prepare GRPC listener
+	// Prepare HTTP listener
 	log := s.log
+	httpAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.HTTPPort))
+	httpLis, err := net.Listen("tcp", httpAddr)
+	if err != nil {
+		log.Fatal().Err(err).Msgf("failed to listen on address %s", httpAddr)
+	}
+
+	// Prepare GRPC listener
 	grpcAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.GRPCPort))
 	grpcLis, err := net.Listen("tcp", grpcAddr)
 	if err != nil {
@@ -89,6 +102,13 @@ func (s *Server) Run(ctx context.Context) error {
 	}
 	lokiSrv := &http.Server{Handler: httputil.NewSingleHostReverseProxy(lokiUrl)}
 
+	// Prepare HTTP server
+	httpRouter := echo.New()
+	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
+	httpSrv := http.Server{
+		Handler: httpRouter,
+	}
+
 	// Prepare GRPC server
 	grpcSrv := grpc.NewServer(
 	//grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
@@ -100,6 +120,13 @@ func (s *Server) Run(ctx context.Context) error {
 	reflection.Register(grpcSrv)
 
 	// Serve apis
+	log.Debug().Str("address", httpAddr).Msg("Serving HTTP")
+	go func() {
+		if err := httpSrv.Serve(httpLis); err != nil {
+			log.Fatal().Err(err).Msg("failed to serve HTTP server")
+		}
+		log.Debug().Str("address", grpcAddr).Msg("Done Serving HTTP")
+	}()
 	log.Debug().Str("address", grpcAddr).Msg("Serving gRPC")
 	go func() {
 		if err := grpcSrv.Serve(grpcLis); err != nil {
@@ -119,6 +146,7 @@ func (s *Server) Run(ctx context.Context) error {
 	<-ctx.Done()
 
 	log.Info().Msg("Closing GRPC server")
+	httpSrv.Shutdown(context.Background())
 	grpcSrv.GracefulStop()
 	lokiSrv.Shutdown(context.Background())
 

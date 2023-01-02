@@ -128,8 +128,12 @@ func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *
 		}
 		return &api.StateChange{CommandStation: &rs}
 	case state.Loc:
+		httpHost, err := s.getHttpHost(ctx)
+		if err != nil {
+			return nil
+		}
 		var rs api.LocState
-		if err := rs.FromState(ctx, x); err != nil {
+		if err := rs.FromState(ctx, x, httpHost); err != nil {
 			return nil
 		}
 		return &api.StateChange{Loc: &rs}
