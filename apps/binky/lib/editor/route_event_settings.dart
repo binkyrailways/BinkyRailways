@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/components.dart';
 import 'package:flutter/material.dart' hide Route;
 
 import '../models.dart';
@@ -92,6 +93,7 @@ class _BehaviorsDataSource extends DataTableSource {
   final List<RouteEventBehavior> items;
   final Future<void> Function(void Function(RouteEvent)) update;
   final Future<void> Function(int index) removeBehavior;
+  final PermissionValidator _permissionValidator = PermissionValidator();
 
   _BehaviorsDataSource({
     required this.model,
@@ -115,7 +117,15 @@ class _BehaviorsDataSource extends DataTableSource {
   DataRow getRow(int index) {
     final bhv = items[index];
     return DataRow(cells: [
-      const DataCell(Text("Loc predicate...")),
+      DataCell(TextFormField(
+        initialValue: bhv.appliesTo,
+        validator: _permissionValidator.validate,
+        onChanged: (value) async {
+          await update((update) {
+            update.behaviors[index].appliesTo = value;
+          });
+        },
+      )),
       DataCell(DropdownButton<RouteStateBehavior>(
         items: _routeStateBehaviorOptions(),
         value: bhv.stateBehavior,
