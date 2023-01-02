@@ -96,7 +96,7 @@ func (s *service) SetLocFunctions(ctx context.Context, req *api.SetLocFunctionsR
 				return nil, err
 			}
 		default:
-			return nil, api.InvalidArgument("Unknown function %s", lf.GetIndex())
+			return nil, api.InvalidArgument("Unknown function %d", lf.GetIndex())
 		}
 	}
 	var result api.LocState

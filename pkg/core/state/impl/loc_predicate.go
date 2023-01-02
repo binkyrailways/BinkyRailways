@@ -57,7 +57,13 @@ func newLocPredicate(railway state.Railway, p model.LocPredicate) (locPredicate,
 			return loc.GetID() == expected.GetID()
 		}, nil
 	case model.LocGroupEqualsPredicate:
-		expected := p.GetGroup().GetLocs()
+		group := p.GetGroup()
+		if group == nil {
+			return func(ctx context.Context, loc state.Loc) bool {
+				return false
+			}, nil
+		}
+		expected := group.GetLocs()
 		return func(ctx context.Context, loc state.Loc) bool {
 			return expected.ContainsID(loc.GetID())
 		}, nil

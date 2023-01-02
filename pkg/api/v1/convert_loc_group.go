@@ -50,7 +50,7 @@ func (src *LocGroup) ToModel(ctx context.Context, dst model.LocGroup) error {
 				return InvalidArgument("Unknown loc with ID: '%s'", lr.GetId())
 			} else {
 				if dstLoc, err := dstLR.TryResolve(); err != nil {
-					return InvalidArgument("Failed to resolve loc with ID '%s': %w", lr.GetId(), err)
+					return InvalidArgument("Failed to resolve loc with ID '%s': %s", lr.GetId(), err)
 				} else {
 					dst.GetLocs().Add(dstLoc)
 				}

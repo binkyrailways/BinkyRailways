@@ -45,7 +45,7 @@ func (src *BinkyNetObject) ToModel(ctx context.Context, dst model.BinkyNetObject
 		return InvalidArgument("Unexpected binkynet object ID: '%s'", src.GetId())
 	}
 	if len(src.GetConnections()) != dst.GetConnections().GetCount() {
-		return InvalidArgument("Unexpected number of connections in object '%s' (got %d, expected %d) %v", src.GetObjectId(), len(src.GetConnections()), dst.GetConnections().GetCount())
+		return InvalidArgument("Unexpected number of connections in object '%s' (got %d, expected %d)", src.GetObjectId(), len(src.GetConnections()), dst.GetConnections().GetCount())
 	}
 	var err error
 	multierr.AppendInto(&err, dst.SetObjectID(ctx, api.ObjectID(src.GetObjectId())))

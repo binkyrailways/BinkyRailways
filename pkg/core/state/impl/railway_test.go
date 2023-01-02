@@ -95,7 +95,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	// Check loc
 	rs.ForEachLoc(func(ls state.Loc) {
 		assert.Equal(t, l.GetID(), ls.GetID())
-		assert.Equal(t, "DCC 136", ls.GetAddress(ctx).String())
+		assert.Equal(t, "Dcc 136", ls.GetAddress(ctx).String())
 		assert.Equal(t, rs, ls.GetRailway())
 	})
 }
