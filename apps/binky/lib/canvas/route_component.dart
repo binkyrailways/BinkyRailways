@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/colors.dart';
+import 'package:binky/canvas/geometry.dart';
 import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
@@ -61,11 +61,11 @@ class RouteComponent extends EntityComponent {
         final end = _getTo(route);
         final intermediates = _getIntermediates(route, start, end);
         var path = Path();
-        path.moveTo(start.x, start.y);
+        path.moveTo(start[0].x, start[0].y);
         for (var p in intermediates) {
           path.lineTo(p.x, p.y);
         }
-        path.lineTo(end.x, end.y);
+        path.lineTo(end[0].x, end[0].y);
         canvas.drawPath(path, linePaint);
         canvas.restore();
       }
@@ -74,28 +74,36 @@ class RouteComponent extends EntityComponent {
 
   bool isVisible() => false;
 
-  Vector2 _getFrom(mapi.Route route) => _getEndpoint(route.from);
-  Vector2 _getTo(mapi.Route route) => _getEndpoint(route.to);
+  List<Vector2> _getFrom(mapi.Route route) => _getEndpoint(route.from);
+  List<Vector2> _getTo(mapi.Route route) => _getEndpoint(route.to);
 
   List<Vector2> _getIntermediates(
-      mapi.Route route, Vector2 start, Vector2 end) {
-    final List<Vector2> list = [start, end];
+      mapi.Route route, List<Vector2> start, List<Vector2> end) {
+    final List<Vector2> list = [];
+    list.add(end[0]);
+    final fromBB = _getEndpointBoundingBox(route.from);
+    final toBB = _getEndpointBoundingBox(route.to);
     for (var jws in route.crossingJunctions) {
       final junction = junctions.where((b) => b.id == jws.junction.id).toList();
       if (junction.isNotEmpty) {
-        final p = _getCenter(junction.first.position);
+        final p = Geometry.getCenter(junction.first.position);
         list.add(p);
       }
     }
     for (var evt in route.events) {
       final sensor = sensors.where((b) => b.id == evt.sensor.id).toList();
-      if (sensor.isNotEmpty) {
-        final p = _getCenter(sensor.first.position);
-        list.add(p);
+      if (sensor.isEmpty) {
+        continue;
       }
+      final r = Geometry.getBoundingBox(sensor.first.position);
+      if (r.overlaps(fromBB) || r.overlaps(toBB)) {
+        continue;
+      }
+      final p = Geometry.getCenter(sensor.first.position);
+      list.add(p);
     }
     final List<Vector2> ordered = [];
-    var p = start;
+    var p = start[0];
     while (list.isNotEmpty) {
       // Find the element with the shortest distance from p.
       var shortestDistanceIndex = 0;
@@ -119,27 +127,48 @@ class RouteComponent extends EntityComponent {
     return a.distanceTo(b);
   }
 
-  Vector2 _getEndpoint(mapi.Endpoint ep) {
+  List<Vector2> _getEndpoint(mapi.Endpoint ep) {
     if (ep.hasBlock()) {
       final block = blocks.where((b) => b.id == ep.block.id).toList();
       if (block.isEmpty) {
-        return fc.Vector2.zero();
+        return [fc.Vector2.zero()];
       }
-      return _getBlockPosition(block.first, ep.blockSide);
+      return [
+        _getBlockPosition(block.first, ep.blockSide),
+        _getBlockPosition(block.first, ep.blockSide.invert())
+      ];
     }
     if (ep.hasEdge()) {
       final edge = edges.where((b) => b.id == ep.edge.id).toList();
       if (edge.isEmpty) {
-        return fc.Vector2.zero();
+        return [fc.Vector2.zero()];
       }
-      return _getCenter(edge.first.position);
+      return [Geometry.getCenter(edge.first.position)];
     }
-    return fc.Vector2.zero();
+    return [fc.Vector2.zero()];
+  }
+
+  Rect _getEndpointBoundingBox(mapi.Endpoint ep) {
+    if (ep.hasBlock()) {
+      final block = blocks.where((b) => b.id == ep.block.id).toList();
+      if (block.isEmpty) {
+        return Rect.zero;
+      }
+      return Geometry.getBoundingBox(block.first.position);
+    }
+    if (ep.hasEdge()) {
+      final edge = edges.where((b) => b.id == ep.edge.id).toList();
+      if (edge.isEmpty) {
+        return Rect.zero;
+      }
+      return Geometry.getBoundingBox(edge.first.position);
+    }
+    return Rect.zero;
   }
 
   Vector2 _getBlockPosition(mapi.Block block, mapi.BlockSide side) {
     final position = block.position;
-    final center = _getCenter(position);
+    final center = Geometry.getCenter(position);
     final angle = radians(position.rotation.toDouble());
     var radius = max(1, position.width.toDouble()) / 2;
     if (side == mapi.BlockSide.BACK) {
@@ -151,13 +180,5 @@ class RouteComponent extends EntityComponent {
     final dx = cos(angle) * radius;
     final dy = sin(angle) * radius;
     return Vector2(center.x + dx, center.y + dy);
-  }
-
-  Vector2 _getCenter(mapi.Position position) {
-    final width = max(1, position.width.toDouble());
-    final height = max(1, position.height.toDouble());
-    final x = (position.hasX() ? position.x.toDouble() : 0) + width / 2;
-    final y = (position.hasY() ? position.y.toDouble() : 0) + height / 2;
-    return Vector2(x, y);
   }
 }

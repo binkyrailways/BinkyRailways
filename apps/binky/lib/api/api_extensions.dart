@@ -17,6 +17,16 @@
 
 import 'package:binky/api/generated/br_model_types.pbenum.dart';
 
+extension BlockSideExt on BlockSide {
+  BlockSide invert() {
+    if (this == BlockSide.FRONT) {
+      return BlockSide.BACK;
+    } else {
+      return BlockSide.FRONT;
+    }
+  }
+}
+
 extension SwitchDirectionExt on SwitchDirection {
   SwitchDirection invert() {
     if (this == SwitchDirection.STRAIGHT) {
