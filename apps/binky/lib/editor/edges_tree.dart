@@ -39,7 +39,8 @@ class EdgesTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var edges = snapshot.data!;
+              var edges = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
                   itemCount: edges.length + 2,
                   itemBuilder: (context, index) {

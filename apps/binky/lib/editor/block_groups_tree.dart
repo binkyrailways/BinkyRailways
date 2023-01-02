@@ -39,7 +39,8 @@ class BlockGroupsTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var blockGroups = snapshot.data!;
+              var blockGroups = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
                   itemCount: blockGroups.length + 2,
                   itemBuilder: (context, index) {

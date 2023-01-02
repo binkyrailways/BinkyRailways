@@ -40,7 +40,8 @@ class CommandStationsTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var css = snapshot.data!;
+              var css = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               final extra = withParents ? 1 : 0;
               return ListView.builder(
                   itemCount: css.length + extra,

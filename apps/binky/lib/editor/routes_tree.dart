@@ -64,7 +64,8 @@ class _RoutesTreeState extends State<RoutesTree> {
                     if (!snapshot.hasData) {
                       return const Text("Loading...");
                     }
-                    var routes = snapshot.data!;
+                    var routes = snapshot.data!
+                      ..sort((a, b) => a.description.compareTo(b.description));
                     return Column(
                       children: [
                         Expanded(

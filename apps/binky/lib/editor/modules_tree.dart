@@ -43,7 +43,8 @@ class ModulesTree extends StatelessWidget {
               } else if (!snapshot.hasData) {
                 return const Text("Loading module ...");
               }
-              var modules = snapshot.data!;
+              var modules = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               final extra = withParents ? 1 : 0;
               return ListView.builder(
                   itemCount: modules.length + extra,

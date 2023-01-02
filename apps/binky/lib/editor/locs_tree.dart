@@ -39,7 +39,8 @@ class LocsTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var locs = snapshot.data!;
+              var locs = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               final extra = withParents ? 1 : 0;
               return ListView.builder(
                   itemCount: locs.length + extra,

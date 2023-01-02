@@ -39,7 +39,8 @@ class OutputsTree extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text("Loading...");
               }
-              var outputs = snapshot.data!;
+              var outputs = snapshot.data!
+                ..sort((a, b) => a.description.compareTo(b.description));
               return ListView.builder(
                   itemCount: outputs.length + 2,
                   itemBuilder: (context, index) {
