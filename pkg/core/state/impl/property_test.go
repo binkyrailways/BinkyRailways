@@ -19,11 +19,13 @@ package impl
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -94,7 +96,7 @@ func TestBoolProperty(t *testing.T) {
 		assert.Equal(t, p, x.Property)
 		return true
 	})).Return()
-	p.Configure("p", subject, dispatch, util.NewExclusive())
+	p.Configure("p", subject, dispatch, util.NewExclusive(zerolog.New(os.Stdout)))
 
 	assert.False(t, p.GetActual(ctx))
 	changed, err := p.SetActual(ctx, true)
@@ -128,7 +130,7 @@ func TestSwitchDirectionProperty(t *testing.T) {
 		assert.Equal(t, p, x.Property)
 		return true
 	})).Return()
-	p.Configure("p", subject, dispatch, util.NewExclusive())
+	p.Configure("p", subject, dispatch, util.NewExclusive(zerolog.New(os.Stdout)))
 
 	assert.False(t, p.GetActual(ctx) == model.SwitchDirectionStraight)
 	changed, err := p.SetActual(ctx, model.SwitchDirectionOff)

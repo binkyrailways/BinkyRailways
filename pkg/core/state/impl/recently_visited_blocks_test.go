@@ -19,10 +19,12 @@ package impl
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -30,7 +32,7 @@ func TestRecentlyVisitedBlocks(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Empty test", func(t *testing.T) {
-		rvb := newRecentlyVisitedBlocks(util.NewExclusive())
+		rvb := newRecentlyVisitedBlocks(util.NewExclusive(zerolog.New(os.Stdout)))
 		count := 0
 		rvb.ForEach(ctx, func(c context.Context, b state.Block) error {
 			count++
@@ -40,7 +42,7 @@ func TestRecentlyVisitedBlocks(t *testing.T) {
 	})
 
 	t.Run("Insert test", func(t *testing.T) {
-		rvb := newRecentlyVisitedBlocks(util.NewExclusive())
+		rvb := newRecentlyVisitedBlocks(util.NewExclusive(zerolog.New(os.Stdout)))
 
 		b0 := &block{}
 		rvb.Insert(ctx, b0)
@@ -81,8 +83,8 @@ func TestRecentlyVisitedBlocks(t *testing.T) {
 	})
 
 	t.Run("CloneFrom test", func(t *testing.T) {
-		rvb := newRecentlyVisitedBlocks(util.NewExclusive())
-		source := newRecentlyVisitedBlocks(util.NewExclusive())
+		rvb := newRecentlyVisitedBlocks(util.NewExclusive(zerolog.New(os.Stdout)))
+		source := newRecentlyVisitedBlocks(util.NewExclusive(zerolog.New(os.Stdout)))
 
 		b0 := &block{}
 		b1 := &block{}

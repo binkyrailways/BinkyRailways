@@ -47,7 +47,17 @@ func (d *eventSubscription) Run() {
 
 // Send the given event to the callback
 func (d *eventSubscription) Send(evt state.Event) {
-	d.queue <- evt
+	// Try sync push into channel
+	select {
+	case d.queue <- evt:
+		// Ok
+		return
+	default:
+		// Try in go routine
+		go func() {
+			d.queue <- evt
+		}()
+	}
 }
 
 // Close the subscription

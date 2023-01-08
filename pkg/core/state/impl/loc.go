@@ -67,6 +67,11 @@ type loc struct {
 	recentlyVisitedBlocks           *recentlyVisitedBlocks
 }
 
+const (
+	getTimeout      = time.Millisecond
+	locResetTimeout = time.Millisecond * 5
+)
+
 // Create a new entity
 func newLoc(en model.Loc, railway Railway) Loc {
 	l := &loc{
@@ -147,7 +152,7 @@ func (l *loc) FinalizePrepare(ctx context.Context) {
 
 // All settings of this loc will be reset, because the loc is taken of the track.
 func (l *loc) SubscribeBeforeReset(cb func(context.Context)) {
-	l.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+	l.railway.Exclusive(context.Background(), subscribeTimeout, "SubscribeBeforeReset", func(ctx context.Context) error {
 		l.beforeReset = append(l.beforeReset, cb)
 		return nil
 	})
@@ -155,7 +160,7 @@ func (l *loc) SubscribeBeforeReset(cb func(context.Context)) {
 
 // All settings of this loc have been reset, because the loc is taken of the track.
 func (l *loc) SubscribeAfterReset(cb func(context.Context)) {
-	l.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+	l.railway.Exclusive(context.Background(), subscribeTimeout, "SubscribeAfterReset", func(ctx context.Context) error {
 		l.afterReset = append(l.afterReset, cb)
 		return nil
 	})
@@ -440,9 +445,8 @@ func (l *loc) GetCommandStationInfo(ctx context.Context) string {
 // Forcefully reset of settings of this loc.
 // This should be used when a loc is taken of the track.
 func (l *loc) Reset(ctx context.Context) {
-	ctx, cancel := context.WithCancel(ctx)
 	attempt := func() error {
-		return l.railway.Exclusive(ctx, func(ctx context.Context) error {
+		return l.railway.Exclusive(ctx, locResetTimeout, "locReset", func(ctx context.Context) error {
 			// Stop
 			l.GetSpeed().SetRequested(ctx, 0)
 			l.GetControlledAutomatically().SetRequested(ctx, false)
@@ -465,6 +469,7 @@ func (l *loc) Reset(ctx context.Context) {
 		})
 	}
 	go func() {
+		ctx, cancel := context.WithCancel(ctx)
 		defer cancel()
 		backoff.Retry(attempt, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(time.Second/10), 25), ctx))
 	}()
@@ -484,7 +489,7 @@ func (l *loc) ForEachRecentlyVisitedBlock(ctx context.Context, cb func(context.C
 // Get behavior of the last event triggered by this loc.
 func (l *loc) GetLastEventBehavior(ctx context.Context) state.RouteEventBehavior {
 	var result state.RouteEventBehavior
-	l.GetRailway().Exclusive(ctx, func(ctx context.Context) error {
+	l.GetRailway().Exclusive(ctx, getTimeout, "loc.GetLastEventBehavior", func(ctx context.Context) error {
 		result = l.lastEventBehavior
 		return nil
 	})
@@ -493,7 +498,7 @@ func (l *loc) GetLastEventBehavior(ctx context.Context) state.RouteEventBehavior
 
 // Set behavior of the last event triggered by this loc.
 func (l *loc) SetLastEventBehavior(ctx context.Context, value state.RouteEventBehavior) error {
-	return l.GetRailway().Exclusive(ctx, func(ctx context.Context) error {
+	return l.GetRailway().Exclusive(ctx, setActualTimeout, "loc.SetLastEventBehavior", func(ctx context.Context) error {
 		l.lastEventBehavior = value
 		return nil
 	})

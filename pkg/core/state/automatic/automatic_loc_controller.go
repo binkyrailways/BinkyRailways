@@ -142,7 +142,7 @@ func (alc *automaticLocController) run() {
 
 		// Update state of locs
 		var canClose bool
-		alc.railway.Exclusive(context.Background(), func(ctx context.Context) error {
+		alc.railway.Exclusive(context.Background(), time.Millisecond*5, "automaticLocController.run.updateLocStates", func(ctx context.Context) error {
 			if sensor != nil {
 				alc.onSensorActiveChanged(ctx, sensor)
 			}
@@ -380,12 +380,12 @@ func (alc *automaticLocController) updateLocStates(ctx context.Context) (time.Du
 	return nextDelay, false
 }
 
-/// Choose an available route from the given block.
-/// <param name="loc">The loc a route should be choosen for</param>
-/// <param name="fromBlock">The starting block of the route</param>
-/// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
-/// <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
-/// <returns>Null if not route is available.</returns>
+// / Choose an available route from the given block.
+// / <param name="loc">The loc a route should be choosen for</param>
+// / <param name="fromBlock">The starting block of the route</param>
+// / <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
+// / <param name="avoidDirectionChanges">If true, routes requiring a direction change will not be considered, unless there is no alternative.</param>
+// / <returns>Null if not route is available.</returns>
 func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Loc, currentRoute state.Route, fromBlock state.Block, locDirection model.BlockSide, avoidDirectionChanges bool) state.Route {
 	// Gather all non-closed routes from given from-block
 	routeFromFromBlock := getAllPossibleNonClosedRoutesFromBlock(fromBlock)
@@ -460,11 +460,11 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 	return nil
 }
 
-/// <summary>
-/// Try to choose a next route, unless the target block of the current route
-/// is set to wait.
-/// </summary>
-/// <returns>True if a next route has been chosen.</returns>
+// / <summary>
+// / Try to choose a next route, unless the target block of the current route
+// / is set to wait.
+// / </summary>
+// / <returns>True if a next route has been chosen.</returns>
 func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc state.Loc) bool {
 	// Should we wait in the destination block?
 	route := loc.GetCurrentRoute().GetActual(ctx)
@@ -898,7 +898,7 @@ func (alc *automaticLocController) isStopping(ctx context.Context) bool {
 	return !alc.enabled.GetRequested(ctx)
 }
 
-/// Should the given loc be controlled automatically?
+// / Should the given loc be controlled automatically?
 func (alc *automaticLocController) shouldControlAutomatically(ctx context.Context, loc state.Loc) bool {
 	return loc.GetControlledAutomatically().GetRequested(ctx) &&
 		!alc.isStopping(ctx)

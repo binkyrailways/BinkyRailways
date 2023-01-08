@@ -22,23 +22,27 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 // Exclusive implements exclusive access to a resource.
 type Exclusive interface {
 	// Exclusive runs the given function while holding an exclusive lock.
 	// This function allows nesting.
-	Exclusive(context.Context, func(context.Context) error) error
+	Exclusive(ctx context.Context, timeout time.Duration,
+		description string, run func(context.Context) error) error
 }
 
 // NewExclusive creates a new instance of Exclusive.
-func NewExclusive() Exclusive {
-	return &exclusive{}
+func NewExclusive(log zerolog.Logger) Exclusive {
+	return &exclusive{log: log}
 }
 
 type exclusive struct {
 	sync.Mutex
 	unique int64
+	log    zerolog.Logger
 }
 
 func init() {
@@ -48,7 +52,23 @@ func init() {
 
 // Exclusive runs the given function while holding an exclusive lock.
 // This function allows nesting.
-func (m *exclusive) Exclusive(ctx context.Context, cb func(context.Context) error) error {
+func (m *exclusive) Exclusive(ctx context.Context,
+	timeout time.Duration,
+	description string,
+	cb func(context.Context) error) error {
+	// Log timeout errors
+	start := time.Now()
+	defer func() {
+		elapsed := time.Since(start)
+		if elapsed > timeout {
+			m.log.Warn().
+				Str("description", description).
+				Dur("elapsed", elapsed).
+				Dur("timeout", timeout).
+				Msg("Exclusive operation timed out")
+		}
+	}()
+
 	// Does the caller already have exclusive access to me?
 	value, ok := ctx.Value(m).(int64)
 	if ok && value == m.unique {

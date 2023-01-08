@@ -19,20 +19,23 @@ package util
 
 import (
 	"context"
+	"os"
 	"testing"
+	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
 
 func TestExclusive(t *testing.T) {
-	e := NewExclusive()
+	e := NewExclusive(zerolog.New(os.Stdout))
 	require.NotNil(t, e)
 
 	// No nesting
 	var result int
-	err := e.Exclusive(context.Background(), func(ctx context.Context) error {
+	err := e.Exclusive(context.Background(), time.Millisecond, "", func(ctx context.Context) error {
 		result = 5
 		return nil
 	})
@@ -41,8 +44,8 @@ func TestExclusive(t *testing.T) {
 
 	// Nesting once
 	result = 0
-	err = e.Exclusive(context.Background(), func(ctx context.Context) error {
-		return e.Exclusive(ctx, func(ctx context.Context) error {
+	err = e.Exclusive(context.Background(), time.Millisecond, "", func(ctx context.Context) error {
+		return e.Exclusive(ctx, time.Millisecond, "", func(ctx context.Context) error {
 			result = 55
 			return nil
 		})
@@ -52,7 +55,7 @@ func TestExclusive(t *testing.T) {
 }
 
 func TestExclusiveConcurrent(t *testing.T) {
-	e := NewExclusive()
+	e := NewExclusive(zerolog.New(os.Stdout))
 	require.NotNil(t, e)
 
 	// No nesting
@@ -60,7 +63,7 @@ func TestExclusiveConcurrent(t *testing.T) {
 
 	adding := func(ctx context.Context) error {
 		for i := 0; i < 50000; i++ {
-			if err := e.Exclusive(ctx, func(ctx context.Context) error {
+			if err := e.Exclusive(ctx, time.Millisecond, "", func(ctx context.Context) error {
 				result++
 				return nil
 			}); err != nil {
@@ -72,7 +75,7 @@ func TestExclusiveConcurrent(t *testing.T) {
 
 	removing := func(ctx context.Context) error {
 		for i := 0; i < 50000; i++ {
-			if err := e.Exclusive(ctx, func(ctx context.Context) error {
+			if err := e.Exclusive(ctx, time.Millisecond, "", func(ctx context.Context) error {
 				result--
 				return nil
 			}); err != nil {

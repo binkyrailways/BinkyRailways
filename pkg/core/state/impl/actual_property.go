@@ -30,12 +30,18 @@ import (
 // propertyBase contains the value of a property in a state object.
 // The value contains an actual value.
 type propertyBase struct {
-	Property   state.ActualProperty  `json:"-"`
-	Name       string                `json:"-"`
-	Subject    state.Entity          `json:"-"`
-	Dispatcher state.EventDispatcher `json:"-"`
-	exclusive  util.Exclusive
+	Property         state.ActualProperty  `json:"-"`
+	Name             string                `json:"-"`
+	Subject          state.Entity          `json:"-"`
+	Dispatcher       state.EventDispatcher `json:"-"`
+	LastActualChange time.Time             `json:"-"`
+	exclusive        util.Exclusive
 }
+
+const (
+	setActualTimeout = time.Millisecond
+	subscribeTimeout = time.Millisecond
+)
 
 // Configure the values of the property
 func (p *propertyBase) Configure(property state.ActualProperty, name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
@@ -88,8 +94,9 @@ func (p *comparableActualProperty[T]) GetActual(ctx context.Context) T {
 }
 func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (bool, error) {
 	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	err := p.exclusive.Exclusive(ctx, setActualTimeout, "comparableActualProperty.SetActual", func(ctx context.Context) error {
 		if p.actual != value {
+			p.LastActualChange = time.Now()
 			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
@@ -104,7 +111,7 @@ func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (b
 
 // Subscribe to actual changes
 func (p *comparableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "SubscribeActualChanges", func(context.Context) error {
 		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})
@@ -126,8 +133,9 @@ func (p *equatableActualProperty[T]) GetActual(ctx context.Context) T {
 }
 func (p *equatableActualProperty[T]) setActual(ctx context.Context, value T, isEqual func(a, b T) bool) (bool, error) {
 	changed := false
-	err := p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	err := p.exclusive.Exclusive(ctx, setActualTimeout, "equatableActualProperty.SetActual", func(ctx context.Context) error {
 		if !isEqual(p.actual, value) {
+			p.LastActualChange = time.Now()
 			changed = true
 			p.actual = value
 			for _, cb := range p.actualChanges {
@@ -142,7 +150,7 @@ func (p *equatableActualProperty[T]) setActual(ctx context.Context, value T, isE
 
 // Subscribe to actual changes
 func (p *equatableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
-	p.exclusive.Exclusive(context.Background(), func(context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "SubscribeActualChanges", func(context.Context) error {
 		p.actualChanges = append(p.actualChanges, cb)
 		return nil
 	})

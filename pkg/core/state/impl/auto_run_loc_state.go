@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
@@ -37,6 +38,8 @@ type autoRunLocStates uint8
 const (
 	Initial autoRunLocStates = 0
 	Enter   autoRunLocStates = 1
+
+	autoRunLocStateTickTimeout = time.Millisecond * 5
 )
 
 // newAutoRunLocState constructs an auto run state for the given loc
@@ -49,7 +52,7 @@ func newAutoRunLocState(loc state.Loc, exclusive util.Exclusive) *autoRunLocStat
 
 // Tick performs a single step in the auto run behavior of the loc
 func (s *autoRunLocState) Tick(ctx context.Context) {
-	s.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	s.exclusive.Exclusive(ctx, autoRunLocStateTickTimeout, "autoRunLocStateTick", func(ctx context.Context) error {
 		if !s.loc.GetControlledAutomatically().GetActual(ctx) {
 			return nil
 		}

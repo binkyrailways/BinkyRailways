@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.uber.org/multierr"
 
@@ -81,7 +82,7 @@ type railway struct {
 func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state.UserInterface, persistence state.Persistence, virtual bool) (state.Railway, error) {
 	// Create
 	r := &railway{
-		exclusive: util.NewExclusive(),
+		exclusive: util.NewExclusive(log),
 		log:       log,
 	}
 	r.entity = newEntity(log, entity, r)
@@ -174,8 +175,8 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger, ui state
 
 // Exclusive runs the given function while holding an exclusive lock.
 // This function allows nesting.
-func (r *railway) Exclusive(ctx context.Context, cb func(context.Context) error) error {
-	return r.exclusive.Exclusive(ctx, cb)
+func (r *railway) Exclusive(ctx context.Context, timeout time.Duration, description string, cb func(context.Context) error) error {
+	return r.exclusive.Exclusive(ctx, timeout, description, cb)
 }
 
 // Get logger

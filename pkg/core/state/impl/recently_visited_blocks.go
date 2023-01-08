@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
@@ -29,6 +30,11 @@ type recentlyVisitedBlocks struct {
 	list      []state.Block
 }
 
+const (
+	updateRecentlyVisitedBlocksTimeout  = time.Millisecond
+	forEachRecentlyVisitedBlocksTimeout = time.Millisecond * 5
+)
+
 // newRecentlyVisitedBlocks constructs a new recently visited blocks list
 func newRecentlyVisitedBlocks(exclusive util.Exclusive) *recentlyVisitedBlocks {
 	return &recentlyVisitedBlocks{
@@ -38,7 +44,7 @@ func newRecentlyVisitedBlocks(exclusive util.Exclusive) *recentlyVisitedBlocks {
 
 // Insert the given block to the head to the list, removing any other instances.
 func (rvb *recentlyVisitedBlocks) Insert(ctx context.Context, block state.Block) {
-	rvb.exclusive.Exclusive(ctx, func(c context.Context) error {
+	rvb.exclusive.Exclusive(ctx, updateRecentlyVisitedBlocksTimeout, "recentlyVisitedBlocks.Insert", func(c context.Context) error {
 		// Removing existing instances of given block
 		for i := 0; i < len(rvb.list); {
 			if rvb.list[i] == block {
@@ -57,8 +63,8 @@ func (rvb *recentlyVisitedBlocks) Insert(ctx context.Context, block state.Block)
 
 // Make a clone of the list of recently visited blocks in the given source and store that in rvb.
 func (rvb *recentlyVisitedBlocks) CloneFrom(ctx context.Context, source *recentlyVisitedBlocks) {
-	rvb.exclusive.Exclusive(ctx, func(ctx context.Context) error {
-		source.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	rvb.exclusive.Exclusive(ctx, updateRecentlyVisitedBlocksTimeout, "recentlyVisitedBlocks.CloneFrom", func(ctx context.Context) error {
+		source.exclusive.Exclusive(ctx, updateRecentlyVisitedBlocksTimeout, "recentlyVisitedBlocks.CloneFrom", func(ctx context.Context) error {
 			rvb.list = append([]state.Block{}, source.list...)
 			return nil
 		})
@@ -68,7 +74,7 @@ func (rvb *recentlyVisitedBlocks) CloneFrom(ctx context.Context, source *recentl
 
 // Make a clone of the list of recently visited blocks in the given source and store that in rvb.
 func (rvb *recentlyVisitedBlocks) ForEach(ctx context.Context, cb func(context.Context, state.Block) error) error {
-	return rvb.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return rvb.exclusive.Exclusive(ctx, forEachRecentlyVisitedBlocksTimeout, "recentlyVisitedBlocks.ForEach", func(ctx context.Context) error {
 		for _, b := range rvb.list {
 			if err := cb(ctx, b); err != nil {
 				return err

@@ -45,7 +45,7 @@ func (sp *powerProperty) GetName() string {
 func (sp *powerProperty) GetActual(ctx context.Context) bool {
 	csOn := 0
 	csOff := 0
-	sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+	sp.Railway.Exclusive(ctx, getTimeout, "power(total).GetActual", func(ctx context.Context) error {
 		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
 			if cs.GetPower().GetActual(ctx) {
 				csOn++
@@ -59,7 +59,7 @@ func (sp *powerProperty) GetActual(ctx context.Context) bool {
 }
 func (sp *powerProperty) SetActual(ctx context.Context, value bool) (bool, error) {
 	changed := false
-	err := sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+	err := sp.Railway.Exclusive(ctx, setActualTimeout, "power.SetActual", func(ctx context.Context) error {
 		actual := sp.GetActual(ctx)
 
 		var err error
@@ -87,7 +87,7 @@ func (sp *powerProperty) SetActual(ctx context.Context, value bool) (bool, error
 
 // Subscribe to requested changes
 func (sp *powerProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
-	sp.Railway.Exclusive(context.Background(), func(c context.Context) error {
+	sp.Railway.Exclusive(context.Background(), subscribeTimeout, "power.SubscribeActualChanges", func(c context.Context) error {
 		sp.actualChanges = append(sp.actualChanges, cb)
 		return nil
 	})
@@ -98,7 +98,7 @@ func (sp *powerProperty) GetRequested(ctx context.Context) bool {
 	return sp.requested
 }
 func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
-	return sp.Railway.Exclusive(ctx, func(ctx context.Context) error {
+	return sp.Railway.Exclusive(ctx, setRequestTimeout, "power.SetRequested", func(ctx context.Context) error {
 		var err error
 		sp.Railway.ForEachCommandStation(func(cs state.CommandStation) {
 			multierr.AppendInto(&err, cs.GetPower().SetRequested(ctx, value))
@@ -126,7 +126,7 @@ func (sp *powerProperty) IsConsistent(ctx context.Context) bool {
 
 // Subscribe to requested changes
 func (sp *powerProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
-	sp.Railway.Exclusive(context.Background(), func(c context.Context) error {
+	sp.Railway.Exclusive(context.Background(), subscribeTimeout, "power.SubscribeRequestChanges", func(c context.Context) error {
 		sp.requestChanges = append(sp.requestChanges, cb)
 		return nil
 	})

@@ -20,6 +20,7 @@ package eventlog
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // enabledProperty implements Property for enabling the Event Logger
@@ -30,6 +31,10 @@ type enabledProperty struct {
 	requested      bool
 	requestChanges []func(context.Context, bool)
 }
+
+const (
+	updateEnabledPropertyTimeout = time.Millisecond
+)
 
 // GetName returns the name of the property
 func (sp *enabledProperty) GetName() string {
@@ -44,7 +49,7 @@ func (p *enabledProperty) IsConsistent(ctx context.Context) bool {
 // Gets / sets the actual value
 func (p *enabledProperty) GetActual(ctx context.Context) bool {
 	var result bool
-	p.eventLogger.railway.Exclusive(ctx, func(ctx context.Context) error {
+	p.eventLogger.railway.Exclusive(ctx, updateEnabledPropertyTimeout, "enabledProperty.GetActual", func(ctx context.Context) error {
 		result = p.actual
 		return nil
 	})
@@ -62,14 +67,14 @@ func (p *enabledProperty) SubscribeActualChanges(cb func(context.Context, bool))
 // Gets / sets the requested value
 func (p *enabledProperty) GetRequested(ctx context.Context) bool {
 	var result bool
-	p.eventLogger.railway.Exclusive(ctx, func(ctx context.Context) error {
+	p.eventLogger.railway.Exclusive(ctx, updateEnabledPropertyTimeout, "enabledProperty.GetRequested", func(ctx context.Context) error {
 		result = p.requested
 		return nil
 	})
 	return result
 }
 func (p *enabledProperty) SetRequested(ctx context.Context, value bool) error {
-	return p.eventLogger.railway.Exclusive(ctx, func(ctx context.Context) error {
+	return p.eventLogger.railway.Exclusive(ctx, updateEnabledPropertyTimeout, "enabledProperty.SetRequested", func(ctx context.Context) error {
 		if p.requested == value {
 			// Nothing to do
 			return nil
@@ -83,7 +88,7 @@ func (p *enabledProperty) SetRequested(ctx context.Context, value bool) error {
 
 // Subscribe to requested changes
 func (p *enabledProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
-	p.eventLogger.railway.Exclusive(context.Background(), func(c context.Context) error {
+	p.eventLogger.railway.Exclusive(context.Background(), updateEnabledPropertyTimeout, "enabledProperty.SubscribeRequestChanges", func(c context.Context) error {
 		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})

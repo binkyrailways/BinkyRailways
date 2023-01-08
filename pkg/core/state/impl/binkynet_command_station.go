@@ -39,17 +39,23 @@ type binkyNetCommandStation struct {
 
 	power boolProperty
 
-	reconfigureQueue chan string
-	manager          manager.Manager
-	service          service.Service
-	server           server.Server
-	cancel           context.CancelFunc
+	reconfigureQueue    chan string
+	manager             manager.Manager
+	service             service.Service
+	server              server.Server
+	cancel              context.CancelFunc
+	binaryOutputCounter map[bn.ObjectAddress]int
 }
+
+const (
+	onActualTimeout = time.Millisecond
+)
 
 // Create a new entity
 func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
 	cs := &binkyNetCommandStation{
-		commandStation: newCommandStation(en, railway),
+		commandStation:      newCommandStation(en, railway),
+		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
 	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
@@ -115,7 +121,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case <-updates:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onLocalWorkerActualChange", func(ctx context.Context) error {
 					cs.railway.Send(state.ActualStateChangedEvent{
 						Subject: cs,
 					})
@@ -132,7 +138,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onPowerActualChange", func(ctx context.Context) error {
 					cs.onPowerActual(ctx, actual)
 					return nil
 				})
@@ -147,7 +153,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onLocActualChange", func(ctx context.Context) error {
 					cs.onLocActual(ctx, actual)
 					return nil
 				})
@@ -162,7 +168,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onOutputActualChange", func(ctx context.Context) error {
 					cs.log.Debug().
 						Str("address", string(actual.Address)).
 						Msg("output actual update")
@@ -180,7 +186,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onSensorActualChange", func(ctx context.Context) error {
 					cs.onSensorActual(ctx, actual)
 					return nil
 				})
@@ -196,7 +202,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		for {
 			select {
 			case actual := <-actuals:
-				cs.railway.Exclusive(ctx, func(ctx context.Context) error {
+				cs.railway.Exclusive(ctx, onActualTimeout, "onSwitchActualChange", func(ctx context.Context) error {
 					cs.onSwitchActual(ctx, actual)
 					return nil
 				})
@@ -311,6 +317,10 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 	case model.BinaryOutputTypeTrackInverter:
+		// Record counter
+		cnt := cs.binaryOutputCounter[addr] + 1
+		cs.binaryOutputCounter[addr] = cnt
+
 		// Disconnect first
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
@@ -318,19 +328,35 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 				Value: int32(bn.TrackInverterStateNotConnected),
 			},
 		})
-		// Wait a bit
-		time.Sleep(time.Millisecond * 100)
-		// Reconnect to selected value
-		value := bn.TrackInverterStateDefault
-		if !bo.GetActive().GetRequested(ctx) {
-			value = bn.TrackInverterStateReverse
-		}
-		cs.manager.SetOutputRequest(bn.Output{
-			Address: addr,
-			Request: &bn.OutputState{
-				Value: int32(value),
-			},
-		})
+
+		// TODO convert to delayed event queue
+		go func() {
+			// Wait a bit
+			time.Sleep(time.Millisecond * 100)
+			// Claim exclusive access
+			cs.railway.Exclusive(context.Background(), setRequestTimeout, "trackInvert.Activate", func(ctx context.Context) error {
+				// Check counter
+				if cs.binaryOutputCounter[addr] != cnt {
+					// Counter changes, do not change
+					cs.log.Info().
+						Str("address", string(addr)).
+						Msg("TrackInverter counter changed, skip activating inverter")
+					return nil
+				}
+				// Reconnect to selected value
+				value := bn.TrackInverterStateDefault
+				if !bo.GetActive().GetRequested(ctx) {
+					value = bn.TrackInverterStateReverse
+				}
+				cs.manager.SetOutputRequest(bn.Output{
+					Address: addr,
+					Request: &bn.OutputState{
+						Value: int32(value),
+					},
+				})
+				return nil
+			})
+		}()
 	}
 }
 

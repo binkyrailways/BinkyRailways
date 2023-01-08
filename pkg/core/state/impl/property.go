@@ -19,10 +19,15 @@ package impl
 
 import (
 	"context"
+	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+)
+
+const (
+	setRequestTimeout = time.Millisecond
 )
 
 // BoolProperty contains the value of a property in a state object.
@@ -45,7 +50,7 @@ func (p *boolProperty) GetRequested(ctx context.Context) bool {
 	return p.requested
 }
 func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return p.exclusive.Exclusive(ctx, setRequestTimeout, "boolProperty.SetRequested."+p.Name, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
 			for _, cb := range p.requestChanges {
@@ -59,7 +64,7 @@ func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
 
 // Subscribe to requested changes
 func (p *boolProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
-	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "bool.SubscribeRequestChanges", func(c context.Context) error {
 		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
@@ -85,7 +90,7 @@ func (p *intProperty) GetRequested(ctx context.Context) int {
 	return p.requested
 }
 func (p *intProperty) SetRequested(ctx context.Context, value int) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return p.exclusive.Exclusive(ctx, setRequestTimeout, "int.SetRequested", func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
 			for _, cb := range p.requestChanges {
@@ -99,7 +104,7 @@ func (p *intProperty) SetRequested(ctx context.Context, value int) error {
 
 // Subscribe to requested changes
 func (p *intProperty) SubscribeRequestChanges(cb func(context.Context, int)) {
-	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "int.SubscribeRequestChanges", func(c context.Context) error {
 		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
@@ -125,7 +130,7 @@ func (p *locDirectionProperty) GetRequested(ctx context.Context) state.LocDirect
 	return p.requested
 }
 func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.LocDirection) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return p.exclusive.Exclusive(ctx, setRequestTimeout, "locDirection.SetRequested", func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
 			for _, cb := range p.requestChanges {
@@ -139,7 +144,7 @@ func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.Loc
 
 // Subscribe to requested changes
 func (p *locDirectionProperty) SubscribeRequestChanges(cb func(context.Context, state.LocDirection)) {
-	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "locDirection.SubscribeRequestChanges", func(c context.Context) error {
 		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})
@@ -165,7 +170,7 @@ func (p *switchDirectionProperty) GetRequested(ctx context.Context) model.Switch
 	return p.requested
 }
 func (p *switchDirectionProperty) SetRequested(ctx context.Context, value model.SwitchDirection) error {
-	return p.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return p.exclusive.Exclusive(ctx, setRequestTimeout, "switchDirection.SetRequested", func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
 			for _, cb := range p.requestChanges {
@@ -179,7 +184,7 @@ func (p *switchDirectionProperty) SetRequested(ctx context.Context, value model.
 
 // Subscribe to requested changes
 func (p *switchDirectionProperty) SubscribeRequestChanges(cb func(context.Context, model.SwitchDirection)) {
-	p.exclusive.Exclusive(context.Background(), func(c context.Context) error {
+	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "switchDirection.SubscribeRequestChanges", func(c context.Context) error {
 		p.requestChanges = append(p.requestChanges, cb)
 		return nil
 	})

@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
@@ -37,6 +38,12 @@ type lockable struct {
 	exclusive util.Exclusive
 	lockedBy  Loc
 }
+
+const (
+	canLockTimeout = time.Millisecond
+	lockTimeout    = time.Millisecond
+	unlockTimeout  = time.Millisecond
+)
 
 // newLockable initializes a new lockable
 func newLockable(exclusive util.Exclusive, iterateChildren func(context.Context, func(state.Lockable) error) error, onUnlocked ...func(context.Context)) lockable {
@@ -74,7 +81,7 @@ func (l *lockable) ValidateLockedBy(ctx context.Context, loc state.Loc) error {
 // Return true is this entity and all underlying entities are not locked.
 // Returns: lockedBy, canLock
 func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (lockedBy state.Loc, canLock bool) {
-	l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	l.exclusive.Exclusive(ctx, canLockTimeout, "CanLock", func(ctx context.Context) error {
 		ownerImpl, ok := owner.(Loc)
 		if !ok {
 			lockedBy, canLock = nil, false
@@ -99,7 +106,7 @@ func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (lockedBy state
 // Lock this state by the given owner.
 // Also lock all underlying entities.
 func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
-	return l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	return l.exclusive.Exclusive(ctx, lockTimeout, "Lock", func(ctx context.Context) error {
 		ownerImpl, ok := owner.(Loc)
 		if !ok {
 			return fmt.Errorf("owner does not implement Loc")
@@ -120,7 +127,7 @@ func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 // Unlock this state from the given owner.
 // Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
 func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
-	l.exclusive.Exclusive(ctx, func(ctx context.Context) error {
+	l.exclusive.Exclusive(ctx, unlockTimeout, "Unlock", func(ctx context.Context) error {
 		if l == exclusion {
 			return nil
 		}
