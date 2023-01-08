@@ -20,6 +20,7 @@ package util
 import (
 	"fmt"
 	"net"
+	"os"
 )
 
 // FindServerHostAddress tries to find the IP address of a network interface that
@@ -63,6 +64,16 @@ func FindServerHostAddress(host string) (string, error) {
 				return ip.String(), nil
 			}
 		}
+	}
+
+	// Fall back to environment variable (if set)
+	envVar := os.Getenv("BINKY_HOST_ADDRESS")
+	if envVar != "" {
+		hostIP := net.ParseIP(envVar)
+		if hostIP == nil {
+			return "", fmt.Errorf("failed to parse host address: '%s'", envVar)
+		}
+		return hostIP.String(), nil
 	}
 
 	return "", fmt.Errorf("did not find a network interface matching address '%s'", host)

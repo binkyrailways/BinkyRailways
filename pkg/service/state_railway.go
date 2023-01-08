@@ -46,7 +46,7 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 		if err != nil {
 			return nil, err
 		}
-		ctx := context.Background()
+		//ctx := context.Background()
 		s.cancelEventSubscription = s.railwayState.Subscribe(ctx, func(e state.Event) {
 			switch evt := e.(type) {
 			case state.ActualStateChangedEvent:

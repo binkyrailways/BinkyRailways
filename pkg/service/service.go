@@ -121,14 +121,17 @@ func (s *service) getRailwayState() (state.Railway, error) {
 func (s *service) getHttpHost(ctx context.Context) (string, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
+		panic("No grpc metadata")
 		return "", fmt.Errorf("no GRPC metadata found")
 	}
 	auth := md[":authority"]
 	if len(auth) == 0 {
+		fmt.Println("No authority")
 		return "", fmt.Errorf("no authority found in GRPC metadata")
 	}
 	host, _, err := net.SplitHostPort(auth[0])
 	if err != nil {
+		fmt.Printf("Invalid authority: %s\n", auth)
 		return "", fmt.Errorf("invalid authority ('%s') found in GRPC metadata", auth)
 	}
 	return net.JoinHostPort(host, strconv.Itoa(s.HTTPPort)), nil

@@ -47,7 +47,7 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	// If requested, send all state objects
 	if req.GetBootstrap() || req.GetBootstrapOnly() {
 		go func() {
-			ctx := context.Background()
+			//ctx := context.Background()
 			send := func(sc *api.StateChange) bool {
 				if sc == nil {
 					return true
