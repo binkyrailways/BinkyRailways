@@ -37,7 +37,9 @@ dependencies:
   retry: ^3.1.0
   flutter_speed_dial:
   expandable: ^5.0.1
-  popup_menu: 
+  popup_menu:
+    git: 
+      url: https://github.com/chinabrant/popup_menu.git
   get:
   recase: ^4.0.0
   search_choices: ^2.0.20
