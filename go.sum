@@ -54,6 +54,8 @@ github.com/binkynet/BinkyNet v1.3.4 h1:6Eetohp0P3YGK2am07g+AiSvFQ92XgPMMLrHlvAnJ
 github.com/binkynet/BinkyNet v1.3.4/go.mod h1:IGWTutjIzojoVPxVXRc1Ts1bAfyGxKw16u+zL4rqS1Q=
 github.com/binkynet/NetManager v1.0.2 h1:rQnxEG7yGD/7zKe3DM6jAsse042WGU743vdmSisKn84=
 github.com/binkynet/NetManager v1.0.2/go.mod h1:kb5Ve9mjc6V9MJnQd+vMjoknba+e5bdztldWcSyuUuY=
+github.com/binkynet/NetManager v1.0.3 h1:mBK1OuVcImURdrZLL1yA51FgXInu5VQfaJxGmmyPKaM=
+github.com/binkynet/NetManager v1.0.3/go.mod h1:kb5Ve9mjc6V9MJnQd+vMjoknba+e5bdztldWcSyuUuY=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c/go.mod h1:MKsuJmJgSg28kpZDP6UIiPt0e0Oz0kqKNGyRaWEPv84=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=

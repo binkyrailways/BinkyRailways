@@ -329,34 +329,30 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			},
 		})
 
-		// TODO convert to delayed event queue
-		go func() {
-			// Wait a bit
-			time.Sleep(time.Millisecond * 100)
-			// Claim exclusive access
-			cs.railway.Exclusive(context.Background(), setRequestTimeout, "trackInvert.Activate", func(ctx context.Context) error {
-				// Check counter
-				if cs.binaryOutputCounter[addr] != cnt {
-					// Counter changes, do not change
-					cs.log.Info().
-						Str("address", string(addr)).
-						Msg("TrackInverter counter changed, skip activating inverter")
-					return nil
-				}
-				// Reconnect to selected value
-				value := bn.TrackInverterStateDefault
-				if !bo.GetActive().GetRequested(ctx) {
-					value = bn.TrackInverterStateReverse
-				}
-				cs.manager.SetOutputRequest(bn.Output{
-					Address: addr,
-					Request: &bn.OutputState{
-						Value: int32(value),
-					},
-				})
+		// Do not block exclusive, so perform activation
+		// after 100ms async waiting.
+		util.Delayed(time.Millisecond*100, cs.railway, setRequestTimeout, "trackInvert.Activate", func(ctx context.Context) error {
+			// Check counter
+			if cs.binaryOutputCounter[addr] != cnt {
+				// Counter changes, do not change
+				cs.log.Info().
+					Str("address", string(addr)).
+					Msg("TrackInverter counter changed, skip activating inverter")
 				return nil
+			}
+			// Reconnect to selected value
+			value := bn.TrackInverterStateDefault
+			if !bo.GetActive().GetRequested(ctx) {
+				value = bn.TrackInverterStateReverse
+			}
+			cs.manager.SetOutputRequest(bn.Output{
+				Address: addr,
+				Request: &bn.OutputState{
+					Value: int32(value),
+				},
 			})
-		}()
+			return nil
+		})
 	}
 }
 
