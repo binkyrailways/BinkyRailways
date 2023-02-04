@@ -49,8 +49,9 @@ type Config struct {
 // Server runs the GRPC server for the service.
 type Server struct {
 	Config
-	service Service
-	log     zerolog.Logger
+	service     Service
+	log         zerolog.Logger
+	lokiHandler *lokiHandler
 }
 
 // Service expected by this server
@@ -65,9 +66,10 @@ type Service interface {
 // New configures a new Server.
 func New(cfg Config, log zerolog.Logger, service Service) (*Server, error) {
 	return &Server{
-		Config:  cfg,
-		service: service,
-		log:     log,
+		Config:      cfg,
+		service:     service,
+		log:         log,
+		lokiHandler: newLokiHandler(log),
 	}, nil
 }
 
@@ -144,6 +146,7 @@ func (s *Server) Run(ctx context.Context) error {
 		}
 		log.Debug().Str("address", lokiAddr).Msg("Done Serving Loki")
 	}()
+	go s.lokiHandler.Run(ctx)
 
 	// Wait until context closed
 	<-ctx.Done()
