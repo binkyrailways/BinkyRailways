@@ -20,6 +20,7 @@ package cmd
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
@@ -44,12 +45,12 @@ var (
 		server  server.Config
 		logFile string
 	}
-	cliLog = zerolog.New(newConsoleWriter()).With().Timestamp().Logger()
 )
 
 func newConsoleWriter() zerolog.ConsoleWriter {
+	zerolog.TimeFieldFormat = time.RFC3339Nano
 	return zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
-		w.TimeFormat = "15:04:05"
+		w.TimeFormat = "15:04:05.000"
 	})
 }
 
@@ -75,6 +76,9 @@ func SetVersionAndBuild(version, build string) {
 
 // Run the service
 func runRootCmd(cmd *cobra.Command, args []string) {
+	// Setup bare logger
+	cliLog := zerolog.New(newConsoleWriter()).With().Timestamp().Logger()
+
 	ctx := context.Background()
 	if len(args) == 1 && rootArgs.app.RailwayPath == "" {
 		rootArgs.app.RailwayPath = args[0]
@@ -95,7 +99,6 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		newConsoleWriter(),
 		lokiWriter,
 	)
-
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
 	// Construct the service

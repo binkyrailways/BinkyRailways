@@ -22,8 +22,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -96,11 +94,16 @@ func (s *Server) Run(ctx context.Context) error {
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to listen on address %s", lokiAddr)
 	}
-	lokiUrl, err := url.Parse(s.LokiURL)
+	/*lokiUrl, err := url.Parse(s.LokiURL)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to parse loki URL: %s", s.LokiURL)
+	}*/
+	lokiRouter := echo.New()
+	lokiRouter.POST("/loki/api/v1/push", s.handlePushLokiRequest)
+	lokiSrv := &http.Server{
+		Handler: lokiRouter,
+		//Handler: httputil.NewSingleHostReverseProxy(lokiUrl),
 	}
-	lokiSrv := &http.Server{Handler: httputil.NewSingleHostReverseProxy(lokiUrl)}
 
 	// Prepare HTTP server
 	httpRouter := echo.New()
