@@ -634,6 +634,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uptime')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastUpdatedAt')
     ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'errorMessages')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..hasRequiredFields = false
   ;
 
@@ -643,6 +644,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     $fixnum.Int64? uptime,
     $core.String? lastUpdatedAt,
     $core.Iterable<$core.String>? errorMessages,
+    $core.String? address,
   }) {
     final _result = create();
     if (id != null) {
@@ -656,6 +658,9 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (errorMessages != null) {
       _result.errorMessages.addAll(errorMessages);
+    }
+    if (address != null) {
+      _result.address = address;
     }
     return _result;
   }
@@ -709,6 +714,15 @@ class HardwareModule extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(4)
   $core.List<$core.String> get errorMessages => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.String get address => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set address($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasAddress() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAddress() => clearField(5);
 }
 
 class BlockState extends $pb.GeneratedMessage {

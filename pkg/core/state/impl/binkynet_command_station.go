@@ -120,8 +120,12 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		defer cancel()
 		for {
 			select {
-			case <-updates:
+			case lw := <-updates:
 				cs.railway.Exclusive(ctx, onActualTimeout, "onLocalWorkerActualChange", func(ctx context.Context) error {
+					_, remoteAddr, _, _ := cs.manager.GetLocalWorkerInfo(lw.GetId())
+					actual := lw.GetActual()
+					name := actual.GetId()
+					cs.railway.RegisterScrapeTarget(name, remoteAddr, int(actual.GetMetricsPort()), actual.GetMetricsSecure())
 					cs.railway.Send(state.ActualStateChangedEvent{
 						Subject: cs,
 					})

@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"github.com/binkynet/BinkyNet/loki"
+	"github.com/binkyrailways/BinkyRailways/pkg/metrics"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
 )
@@ -54,6 +55,10 @@ type lokiHandler struct {
 	path     string
 }
 
+var (
+	lokiHandlerCounter = metrics.MustRegisterCounter("loki", "push_requests_total", "Records total number of calls to loki push API")
+)
+
 func newLokiHandler(log zerolog.Logger) *lokiHandler {
 	now := time.Now().Local()
 	name := fmt.Sprintf("binkynet-%s.log", now.Format("2006-01-02-15-04"))
@@ -65,6 +70,7 @@ func newLokiHandler(log zerolog.Logger) *lokiHandler {
 }
 
 func (s *Server) handlePushLokiRequest(c echo.Context) error {
+	lokiHandlerCounter.Inc()
 	var streams loki.PushRequest
 	if err := c.Bind(&streams); err != nil {
 		s.log.Warn().Err(err).Msg("Bad push request")

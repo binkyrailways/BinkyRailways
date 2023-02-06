@@ -25,6 +25,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -110,6 +111,7 @@ func (s *Server) Run(ctx context.Context) error {
 	// Prepare HTTP server
 	httpRouter := echo.New()
 	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
+	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpSrv := http.Server{
 		Handler: httpRouter,
 	}
@@ -130,7 +132,7 @@ func (s *Server) Run(ctx context.Context) error {
 		if err := httpSrv.Serve(httpLis); err != nil {
 			log.Fatal().Err(err).Msg("failed to serve HTTP server")
 		}
-		log.Debug().Str("address", grpcAddr).Msg("Done Serving HTTP")
+		log.Debug().Str("address", httpAddr).Msg("Done Serving HTTP")
 	}()
 	log.Debug().Str("address", grpcAddr).Msg("Serving gRPC")
 	go func() {

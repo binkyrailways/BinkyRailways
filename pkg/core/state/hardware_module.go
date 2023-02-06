@@ -41,4 +41,9 @@ type HardwareModule interface {
 
 	// Human readable error messages related to this module
 	GetErrorMessages() []string
+
+	// Get IP address of this module (if any)
+	GetAddress() string
+	// Does this module support address?
+	HasAddress() bool
 }

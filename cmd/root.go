@@ -29,6 +29,7 @@ import (
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/BinkyNet/loki"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
 	"github.com/binkyrailways/BinkyRailways/pkg/server"
 	"github.com/binkyrailways/BinkyRailways/pkg/service"
 )
@@ -41,9 +42,13 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app     service.Config
-		server  server.Config
-		logFile string
+		app            service.Config
+		server         server.Config
+		logFile        string
+		promConfigPath string
+		promURL        string
+		// Host name of the host running this process as seen from prometheus
+		hostNameFromPrometheus string
 	}
 )
 
@@ -58,6 +63,10 @@ func init() {
 	f := RootCmd.Flags()
 	// Log arguments
 	f.StringVar(&rootArgs.logFile, "logfile", "./binkyrailways.log", "Path of log file")
+	// Prometheus config builder arguments
+	f.StringVar(&rootArgs.promConfigPath, "prom-config-path", "./scripts/prometheus.yml", "Path of prometheus config file")
+	f.StringVar(&rootArgs.promURL, "prom-url", "http://localhost:9090", "URL towards prometheus")
+	f.StringVar(&rootArgs.hostNameFromPrometheus, "hostname-from-prom", "host.docker.internal", "Host name of the host running this process as seen from prometheus")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
 	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
@@ -101,10 +110,18 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	)
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
+	// Construct the prometheus config builder
+	pcb, err := promconfig.NewPrometheusConfigBuilder(cliLog, rootArgs.promConfigPath, rootArgs.promURL)
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("Prometheus config builder construction failed")
+	}
+	pcb.RegisterTarget("binkyrailways", rootArgs.hostNameFromPrometheus, rootArgs.server.HTTPPort, false)
+
 	// Construct the service
 	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
 	svc := service.New(rootArgs.app, service.Dependencies{
-		Logger: cliLog,
+		Logger:                  cliLog,
+		PrometheusConfigBuilder: pcb,
 	})
 
 	// Construct the server

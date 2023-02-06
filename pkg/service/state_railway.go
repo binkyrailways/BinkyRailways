@@ -42,7 +42,7 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 	if s.railwayState == nil {
 		// Enable run state
 		var err error
-		s.railwayState, err = impl.New(ctx, s.railway, s.Logger, s, s, req.GetVirtual())
+		s.railwayState, err = impl.New(ctx, s.railway, s.Logger, s, s, s.PrometheusConfigBuilder, req.GetVirtual())
 		if err != nil {
 			return nil, err
 		}

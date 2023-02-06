@@ -40,7 +40,7 @@ func (lw *binkyNetLocalWorkerModule) GetID() string {
 
 // Gets the uptime of the module
 func (lw *binkyNetLocalWorkerModule) GetUptime() time.Duration {
-	if info, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+	if info, _, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
 		return time.Duration(info.Uptime) * time.Second
 	}
 	return 0
@@ -53,7 +53,7 @@ func (lw *binkyNetLocalWorkerModule) HasUptime() bool {
 
 // Gets the time of last update of the information of this module
 func (lw *binkyNetLocalWorkerModule) GetLastUpdatedAt() time.Time {
-	if _, lastUpdateAt, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+	if _, _, lastUpdateAt, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
 		return lastUpdateAt
 	}
 	return time.Time{}
@@ -66,7 +66,7 @@ func (lw *binkyNetLocalWorkerModule) HasLastUpdatedAt() bool {
 
 // Gets the version of the module
 func (lw *binkyNetLocalWorkerModule) GetVersion() string {
-	if info, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+	if info, _, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
 		return info.Version
 	}
 	return ""
@@ -80,4 +80,17 @@ func (lw *binkyNetLocalWorkerModule) HasVersion() bool {
 // Get human readable error messages related to this module
 func (lw *binkyNetLocalWorkerModule) GetErrorMessages() []string {
 	return lw.ErrorMessages
+}
+
+// Get the address of the module (if any)
+func (lw *binkyNetLocalWorkerModule) GetAddress() string {
+	if _, remoteAddr, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		return remoteAddr
+	}
+	return ""
+}
+
+// Does this module support address data?
+func (lw *binkyNetLocalWorkerModule) HasAddress() bool {
+	return true
 }

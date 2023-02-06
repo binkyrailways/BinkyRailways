@@ -28,6 +28,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
+	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
 	"github.com/mattn/go-pubsub"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc/metadata"
@@ -46,7 +47,8 @@ type Config struct {
 }
 
 type Dependencies struct {
-	Logger zerolog.Logger
+	Logger                  zerolog.Logger
+	PrometheusConfigBuilder *promconfig.PrometheusConfigBuilder
 }
 
 // New constructs a new service.

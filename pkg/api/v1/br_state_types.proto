@@ -221,6 +221,8 @@ message HardwareModule {
   string last_updated_at = 3;
   // Error messages related to this module
   repeated string error_messages = 4;
+  // IP address of this module (if any)
+  string address = 5;
 }
 
 // State of a single block

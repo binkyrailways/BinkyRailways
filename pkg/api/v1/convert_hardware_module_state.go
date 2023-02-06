@@ -30,5 +30,6 @@ func (dst *HardwareModule) FromState(ctx context.Context, src state.HardwareModu
 	dst.Uptime = int64(src.GetUptime().Seconds())
 	dst.LastUpdatedAt = src.GetLastUpdatedAt().Format(time.RFC3339)
 	dst.ErrorMessages = src.GetErrorMessages()
+	dst.Address = src.GetAddress()
 	return nil
 }

@@ -163,3 +163,13 @@ func (hm *virtualHardwareModule) HasVersion() bool {
 func (hm *virtualHardwareModule) GetErrorMessages() []string {
 	return nil
 }
+
+// Does this module support address data?
+func (hm *virtualHardwareModule) HasAddress() bool {
+	return false
+}
+
+// Gets the address of the module (if any)
+func (hm *virtualHardwareModule) GetAddress() string {
+	return ""
+}
