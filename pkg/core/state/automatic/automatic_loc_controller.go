@@ -41,6 +41,7 @@ func NewAutomaticLocController(railway railway, log zerolog.Logger) (state.Autom
 		autoLocs:                make(map[string]state.Loc),
 		routeAvailabilityTester: NewLiveRouteAvailabilityTester(railway),
 	}
+	alcEnabledGauge.Set(0)
 	alc.enabled.alc = alc
 
 	// Register on all state change events.
@@ -113,8 +114,10 @@ func (alc *automaticLocController) run() {
 	log := alc.log
 	alc.closing = false
 	alc.enabled.actual = true
+	alcEnabledGauge.Set(1)
 	defer func() {
 		log.Debug().Msg("alc run ended")
+		alcEnabledGauge.Set(0)
 		alc.enabled.actual = false
 	}()
 	sensorActiveChanged := make(chan state.Sensor, 32)

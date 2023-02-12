@@ -35,6 +35,18 @@ func MustRegisterCounter(subSubsystem, name, help string) prometheus.Counter {
 	return c
 }
 
+// MustRegisterCounterVec creates and registers a counterVec with given subSystem & name.
+func MustRegisterCounterVec(subSubsystem, name, help string, labels ...string) *prometheus.CounterVec {
+	c := prometheus.NewCounterVec(prometheus.CounterOpts{
+		Namespace: namespace,
+		Subsystem: subSubsystem,
+		Name:      name,
+		Help:      help,
+	}, labels)
+	prometheus.MustRegister(c)
+	return c
+}
+
 // MustRegisterGauge creates and registers a gauge with given subSystem & name.
 func MustRegisterGauge(subSubsystem, name, help string) prometheus.Gauge {
 	c := prometheus.NewGauge(prometheus.GaugeOpts{
@@ -43,6 +55,18 @@ func MustRegisterGauge(subSubsystem, name, help string) prometheus.Gauge {
 		Name:      name,
 		Help:      help,
 	})
+	prometheus.MustRegister(c)
+	return c
+}
+
+// MustRegisterGaugeVec creates and registers a gaugeVec with given subSystem & name.
+func MustRegisterGaugeVec(subSubsystem, name, help string, labels ...string) *prometheus.GaugeVec {
+	c := prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: namespace,
+		Subsystem: subSubsystem,
+		Name:      name,
+		Help:      help,
+	}, labels)
 	prometheus.MustRegister(c)
 	return c
 }

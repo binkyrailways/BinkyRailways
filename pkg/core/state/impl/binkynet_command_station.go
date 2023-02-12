@@ -314,6 +314,7 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 		if bo.GetActive().GetRequested(ctx) {
 			value = 1
 		}
+		requestedOutputValueGauge.WithLabelValues(string(addr)).Set(float64(value))
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
 			Request: &bn.OutputState{
@@ -326,10 +327,12 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 		cs.binaryOutputCounter[addr] = cnt
 
 		// Disconnect first
+		value := int32(bn.TrackInverterStateNotConnected)
+		requestedOutputValueGauge.WithLabelValues(string(addr)).Set(float64(value))
 		cs.manager.SetOutputRequest(bn.Output{
 			Address: addr,
 			Request: &bn.OutputState{
-				Value: int32(bn.TrackInverterStateNotConnected),
+				Value: value,
 			},
 		})
 
@@ -349,6 +352,7 @@ func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state
 			if !bo.GetActive().GetRequested(ctx) {
 				value = bn.TrackInverterStateReverse
 			}
+			requestedOutputValueGauge.WithLabelValues(string(addr)).Set(float64(value))
 			cs.manager.SetOutputRequest(bn.Output{
 				Address: addr,
 				Request: &bn.OutputState{
@@ -443,6 +447,7 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw st
 		// Unknown direction
 		return
 	}
+	requestedSwitchDirectionGauge.WithLabelValues(string(addr)).Set(float64(direction))
 	cs.manager.SetSwitchRequest(bn.Switch{
 		Address: addr,
 		Request: &bn.SwitchState{
