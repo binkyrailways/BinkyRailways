@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"encoding/xml"
 	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -32,7 +33,10 @@ type RouteEventBehavior interface {
 
 type routeEventBehavior struct {
 	moduleEntity
+	routeEventBehaviorFields
+}
 
+type routeEventBehaviorFields struct {
 	AppliesTo     LocPredicateContainer     `xml:"AppliesTo"`
 	StateBehavior *model.RouteStateBehavior `xml:"StateBehavior,omitempty"`
 	SpeedBehavior *model.LocSpeedBehavior   `xml:"SpeedBehavior,omitempty"`
@@ -45,6 +49,15 @@ func newRouteEventBehavior(appliesTo LocPredicate) *routeEventBehavior {
 	reb := &routeEventBehavior{}
 	reb.AppliesTo.LocPredicate = appliesTo
 	return reb
+}
+
+// UnmarshalXML unmarshals and connects the module.
+func (reb *routeEventBehavior) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	if err := d.DecodeElement(&reb.routeEventBehaviorFields, &start); err != nil {
+		return err
+	}
+	reb.AppliesTo.SetContainer(reb)
+	return nil
 }
 
 // Accept a visit by the given visitor

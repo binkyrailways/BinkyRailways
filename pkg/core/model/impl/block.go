@@ -42,13 +42,18 @@ type blockFields struct {
 	WaitPermissions              locStandardPredicate `xml:"WaitPermissions"`
 }
 
+func (bf *blockFields) SetBlock(b *block) {
+	bf.positionedModuleEntity.SetContainer(b)
+	bf.WaitPermissions.SetContainer(b)
+}
+
 var _ model.Block = &block{}
 
 // newBlock initialize a new block
 func newBlock() *block {
 	b := &block{}
 	b.positionedModuleEntity.Initialize(32, 16)
-	b.WaitPermissions.SetContainer(b)
+	b.SetBlock(b)
 	b.SetDescription("New block")
 	return b
 }
@@ -58,7 +63,7 @@ func (b *block) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if err := d.DecodeElement(&b.blockFields, &start); err != nil {
 		return err
 	}
-	b.blockFields.SetContainer(b)
+	b.blockFields.SetBlock(b)
 	return nil
 }
 

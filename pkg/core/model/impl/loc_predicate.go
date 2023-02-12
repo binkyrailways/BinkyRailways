@@ -30,3 +30,8 @@ type locPredicate struct {
 }
 
 //var _ model.LocPredicate = &locPredicate{}
+
+// SetContainer links this entity to its parent
+func (lp *locPredicate) SetContainer(value ModuleEntityContainer) {
+	lp.moduleEntityContainer.SetContainer(value)
+}
