@@ -48,6 +48,8 @@ class _BlockOverlayState extends State<BlockOverlay> {
             return const Text("Loading...");
           }
           final locs = snapshot.data!;
+          locs.sort((a, b) =>
+              a.last.model.description.compareTo(b.last.model.description));
           final List<Widget> children = [
             Text(widget.block.model.description,
                 style: const TextStyle(fontWeight: FontWeight.bold)),
