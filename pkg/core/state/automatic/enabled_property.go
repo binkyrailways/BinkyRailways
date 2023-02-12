@@ -75,13 +75,19 @@ func (p *enabledProperty) GetRequested(ctx context.Context) bool {
 }
 func (p *enabledProperty) SetRequested(ctx context.Context, value bool) error {
 	return p.alc.railway.Exclusive(ctx, updateEnabledPropertyTimeout, "enabledProperty.SetRequested", func(ctx context.Context) error {
+		if !p.IsConsistent(ctx) {
+			return fmt.Errorf("cannot change ALC enabled while actual differs")
+		}
 		if p.requested == value {
 			// Nothing to do
 			return nil
 		}
 		p.requested = value
-		p.actual = value
-		p.alc.Startup(ctx)
+		if value {
+			p.alc.Startup(ctx)
+		} else {
+			p.alc.Close(ctx)
+		}
 		return nil
 	})
 }

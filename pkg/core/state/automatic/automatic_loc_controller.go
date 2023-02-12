@@ -105,13 +105,17 @@ func (alc *automaticLocController) GetEnabled() state.BoolProperty {
 func (alc *automaticLocController) Close(ctx context.Context) {
 	alc.closing = true
 	alc.GetEnabled().SetRequested(ctx, false)
+	alc.trigger.Trigger()
 }
 
 // Run the automatic controller loop until automatic control is disabled.
 func (alc *automaticLocController) run() {
 	log := alc.log
+	alc.closing = false
+	alc.enabled.actual = true
 	defer func() {
 		log.Debug().Msg("alc run ended")
+		alc.enabled.actual = false
 	}()
 	sensorActiveChanged := make(chan state.Sensor, 32)
 	defer close(sensorActiveChanged)
