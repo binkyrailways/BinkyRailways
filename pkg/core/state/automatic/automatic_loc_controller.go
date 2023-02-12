@@ -409,6 +409,11 @@ func (alc *automaticLocController) chooseRoute(ctx context.Context, loc state.Lo
 			// No conflict because there is no current route
 			return true
 		}
+		if locState == state.AssignRoute {
+			// Loc is waiting to be assigned a route.
+			// We do not yet care about conflicting outputs
+			return true
+		}
 		if locState >= state.EnterSensorActivated {
 			// Loc is already reached destination (or further).
 			// We no longer care about conflicting outputs
