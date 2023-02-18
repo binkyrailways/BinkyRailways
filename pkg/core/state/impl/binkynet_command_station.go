@@ -115,6 +115,8 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { return cs.manager.Run(ctx) })
 	g.Go(func() error { return cs.server.Run(ctx) })
 	g.Go(func() error { cs.runSendLocSpeedAndDirection(ctx); return nil })
+	g.Go(func() error { cs.runSendOutputActive(ctx); return nil })
+	g.Go(func() error { cs.runSendSwitchDirection(ctx); return nil })
 	g.Go(func() error {
 		updates, cancel := cs.manager.SubscribeLocalWorkerActuals(true, "")
 		defer cancel()
@@ -306,6 +308,11 @@ func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc
 
 // Send the state of the binary output towards the railway.
 func (cs *binkyNetCommandStation) SendOutputActive(ctx context.Context, bo state.BinaryOutput) {
+	cs.sendOutputActive(ctx, bo, false)
+}
+
+// Send the state of the binary output towards the railway.
+func (cs *binkyNetCommandStation) sendOutputActive(ctx context.Context, bo state.BinaryOutput, currentOnly bool) {
 	addr := cs.createObjectAddress(bo.GetAddress())
 
 	switch bo.GetBinaryOutputType() {
@@ -574,6 +581,46 @@ func (cs *binkyNetCommandStation) runSendLocSpeedAndDirection(ctx context.Contex
 		}
 		for _, loc := range cs.locs {
 			cs.SendLocSpeedAndDirection(ctx, loc)
+		}
+	}
+}
+
+// runSendOutputActive keeps sending the active state of all outputs at regular
+// intervals.
+func (cs *binkyNetCommandStation) runSendOutputActive(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			// Context canceled
+			return
+		case <-time.After(time.Second * 2):
+			// Send again
+		}
+		for _, output := range cs.outputs {
+			if bo, ok := output.(state.BinaryOutput); ok {
+				if bo.GetBinaryOutputType() != model.BinaryOutputTypeTrackInverter {
+					cs.SendOutputActive(ctx, bo)
+				}
+			}
+		}
+	}
+}
+
+// runSendSwitchDirection keeps sending the direction of all switches at regular
+// intervals.
+func (cs *binkyNetCommandStation) runSendSwitchDirection(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			// Context canceled
+			return
+		case <-time.After(time.Second * 2):
+			// Send again
+		}
+		for _, junction := range cs.junctions {
+			if sw, ok := junction.(state.Switch); ok {
+				cs.SendSwitchDirection(ctx, sw)
+			}
 		}
 	}
 }

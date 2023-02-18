@@ -18,6 +18,7 @@
 package server
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"net/http"
@@ -94,7 +95,7 @@ func (h *lokiHandler) Run(ctx context.Context) {
 	dir := filepath.Dir(h.path)
 	os.MkdirAll(dir, 0744)
 	// Open file
-	f, err := os.OpenFile(h.path, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
+	logFile, err := os.OpenFile(h.path, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
 	if err != nil {
 		h.log.Error().Err(err).
 			Str("path", h.path).
@@ -102,18 +103,31 @@ func (h *lokiHandler) Run(ctx context.Context) {
 		return
 	}
 	// Prepare cleanup
-	defer f.Close()
-	defer close(h.requests)
+	bw := bufio.NewWriterSize(logFile, 1024)
+	defer func() {
+		bw.Flush()
+		logFile.Close()
+		close(h.requests)
+	}()
 	// Process requests
+	needSync := false
 	for {
 		var req loki.PushRequest
 		select {
 		case req = <-h.requests:
 			// Process request
+			needSync = true
 		case <-ctx.Done():
 			// Context canceled
 			h.log.Info().Msg("Loki handler closing (context canceled)")
 			return
+		case <-time.After(time.Second * 5):
+			// Flush after 2s of inactivity
+			if needSync {
+				logFile.Sync()
+				needSync = false
+			}
+			continue
 		}
 		for _, stream := range req.Streams {
 			header := formatStreamHeader(stream, false)
@@ -152,18 +166,19 @@ func (h *lokiHandler) Run(ctx context.Context) {
 				fmt.Println(msg)
 
 				// Write to file
-				f.WriteString(tsStr)
-				f.WriteString(" ")
+				bw.WriteString(tsStr)
+				bw.WriteString(" ")
 				// Level
-				f.WriteString(colorizeLevel(level, true))
-				f.WriteString(" ")
+				bw.WriteString(colorizeLevel(level, true))
+				bw.WriteString(" ")
 				// Job header
-				f.WriteString(fheader)
-				f.WriteString(" ")
+				bw.WriteString(fheader)
+				bw.WriteString(" ")
 				// Content
-				f.WriteString(msg)
-				f.WriteString("\n")
+				bw.WriteString(msg)
+				bw.WriteString("\n")
 			}
+			bw.Flush()
 		}
 	}
 }
