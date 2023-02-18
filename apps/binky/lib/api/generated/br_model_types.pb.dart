@@ -1897,6 +1897,8 @@ class BlockGroup extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minimumLocsInGroup', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minimumLocsOnTrack', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -1905,6 +1907,8 @@ class BlockGroup extends $pb.GeneratedMessage {
     $core.String? id,
     $core.String? description,
     $core.String? moduleId,
+    $core.int? minimumLocsInGroup,
+    $core.int? minimumLocsOnTrack,
   }) {
     final _result = create();
     if (id != null) {
@@ -1915,6 +1919,12 @@ class BlockGroup extends $pb.GeneratedMessage {
     }
     if (moduleId != null) {
       _result.moduleId = moduleId;
+    }
+    if (minimumLocsInGroup != null) {
+      _result.minimumLocsInGroup = minimumLocsInGroup;
+    }
+    if (minimumLocsOnTrack != null) {
+      _result.minimumLocsOnTrack = minimumLocsOnTrack;
     }
     return _result;
   }
@@ -1965,6 +1975,24 @@ class BlockGroup extends $pb.GeneratedMessage {
   $core.bool hasModuleId() => $_has(2);
   @$pb.TagNumber(3)
   void clearModuleId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minimumLocsInGroup => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minimumLocsInGroup($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMinimumLocsInGroup() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinimumLocsInGroup() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get minimumLocsOnTrack => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set minimumLocsOnTrack($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMinimumLocsOnTrack() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMinimumLocsOnTrack() => clearField(5);
 }
 
 class BlockGroupRef extends $pb.GeneratedMessage {

@@ -382,6 +382,13 @@ message BlockGroup {
   string description = 2;
   // ID of the module containing the block group
   string module_id = 3;
+
+  // The minimum number of locs that must be present in this group.
+	// Locs cannot leave if that results in a lower number of locs in this group.
+  int32 minimum_locs_in_group = 4;
+
+	// The minimum number of locs that must be on the track before the <see cref="MinimumLocsInGroup"/> becomes active.
+  int32 minimum_locs_on_track = 5;
 }
 
 // Reference to a BlockGroup

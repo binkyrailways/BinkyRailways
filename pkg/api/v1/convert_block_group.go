@@ -28,6 +28,8 @@ func (dst *BlockGroup) FromModel(ctx context.Context, src model.BlockGroup) erro
 	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
+	dst.MinimumLocsInGroup = int32(src.GetMinimumLocsInGroup())
+	dst.MinimumLocsOnTrack = int32(src.GetMinimumLocsOnTrackForMinimumLocsInGroupStart())
 	return nil
 }
 
@@ -37,6 +39,14 @@ func (src *BlockGroup) ToModel(ctx context.Context, dst model.BlockGroup) error 
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected block group ID: '%s'", src.GetId())
 	}
-	dst.SetDescription(src.GetDescription())
+	if err := dst.SetDescription(src.GetDescription()); err != nil {
+		return err
+	}
+	if err := dst.SetMinimumLocsInGroup(int(src.GetMinimumLocsInGroup())); err != nil {
+		return err
+	}
+	if err := dst.SetMinimumLocsOnTrackForMinimumLocsInGroupStart(int(src.GetMinimumLocsOnTrack())); err != nil {
+		return err
+	}
 	return nil
 }

@@ -417,11 +417,13 @@ const BlockGroup$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
+    const {'1': 'minimum_locs_in_group', '3': 4, '4': 1, '5': 5, '10': 'minimumLocsInGroup'},
+    const {'1': 'minimum_locs_on_track', '3': 5, '4': 1, '5': 5, '10': 'minimumLocsOnTrack'},
   ],
 };
 
 /// Descriptor for `BlockGroup`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List blockGroupDescriptor = $convert.base64Decode('CgpCbG9ja0dyb3VwEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SGwoJbW9kdWxlX2lkGAMgASgJUghtb2R1bGVJZA==');
+final $typed_data.Uint8List blockGroupDescriptor = $convert.base64Decode('CgpCbG9ja0dyb3VwEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SGwoJbW9kdWxlX2lkGAMgASgJUghtb2R1bGVJZBIxChVtaW5pbXVtX2xvY3NfaW5fZ3JvdXAYBCABKAVSEm1pbmltdW1Mb2NzSW5Hcm91cBIxChVtaW5pbXVtX2xvY3Nfb25fdHJhY2sYBSABKAVSEm1pbmltdW1Mb2NzT25UcmFjaw==');
 @$core.Deprecated('Use blockGroupRefDescriptor instead')
 const BlockGroupRef$json = const {
   '1': 'BlockGroupRef',
