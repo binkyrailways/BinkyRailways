@@ -32,10 +32,10 @@ type Loc interface {
 	GetModel() model.Loc
 
 	// All settings of this loc will be reset, because the loc is taken of the track.
-	SubscribeBeforeReset(func(context.Context))
+	SubscribeBeforeReset(func(context.Context)) context.CancelFunc
 
 	// All settings of this loc have been reset, because the loc is taken of the track.
-	SubscribeAfterReset(func(context.Context))
+	SubscribeAfterReset(func(context.Context)) context.CancelFunc
 
 	// Address of the entity
 	GetAddress(context.Context) model.Address

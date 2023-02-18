@@ -15,8 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';

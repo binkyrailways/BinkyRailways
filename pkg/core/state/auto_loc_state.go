@@ -97,3 +97,14 @@ func (s AutoLocState) String() string {
 		return fmt.Sprintf("Unknown (%d)", int(s))
 	}
 }
+
+// AcceptSensorSpeedBehavior returns true if it is acceptable in
+// the given state to honor a speed behavior change of a sensor.
+func (s AutoLocState) AcceptSensorSpeedBehavior() bool {
+	switch s {
+	case Running, EnterSensorActivated, EnteringDestination:
+		return true
+	default:
+		return false
+	}
+}

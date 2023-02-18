@@ -42,7 +42,7 @@ type TypedProperty[T any] interface {
 	GetRequested(context.Context) T
 	SetRequested(context.Context, T) error
 	// Subscribe to requested changes
-	SubscribeRequestChanges(func(context.Context, T))
+	SubscribeRequestChanges(func(context.Context, T)) context.CancelFunc
 }
 
 // BoolProperty contains the value of a property in a state object.

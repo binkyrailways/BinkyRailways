@@ -21,6 +21,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // enabledProperty implements Property for enabling the Automatic Loc Controller
@@ -29,7 +31,7 @@ type enabledProperty struct {
 
 	actual         bool
 	requested      bool
-	requestChanges []func(context.Context, bool)
+	requestChanges util.SliceWithIdEntries[func(context.Context, bool)]
 }
 
 const (
@@ -60,7 +62,7 @@ func (p *enabledProperty) SetActual(context.Context, bool) (bool, error) {
 }
 
 // Subscribe to actual changes
-func (p *enabledProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+func (p *enabledProperty) SubscribeActualChanges(cb func(context.Context, bool)) context.CancelFunc {
 	panic("Not support")
 }
 
@@ -93,9 +95,11 @@ func (p *enabledProperty) SetRequested(ctx context.Context, value bool) error {
 }
 
 // Subscribe to requested changes
-func (p *enabledProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+func (p *enabledProperty) SubscribeRequestChanges(cb func(context.Context, bool)) context.CancelFunc {
+	var cancel context.CancelFunc
 	p.alc.railway.Exclusive(context.Background(), updateEnabledPropertyTimeout, "enabledProperty.SubscribeRequestChanges", func(c context.Context) error {
-		p.requestChanges = append(p.requestChanges, cb)
+		cancel = p.requestChanges.Append(cb)
 		return nil
 	})
+	return cancel
 }

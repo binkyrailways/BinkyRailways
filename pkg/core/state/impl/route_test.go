@@ -80,7 +80,7 @@ func TestRouteLockink(t *testing.T) {
 	assert.NoError(t, rt.SetTo(b2))
 
 	// Create state
-	rs, err := New(ctx, r, log, nil, nil, true)
+	rs, err := New(ctx, r, log, nil, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 

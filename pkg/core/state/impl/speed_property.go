@@ -26,8 +26,7 @@ import (
 
 // speedProperty implements the speed using given speed in steps
 type speedProperty struct {
-	loc            Loc
-	requestChanges []func(context.Context, int)
+	loc Loc
 }
 
 var _ state.IntProperty = &speedProperty{}
@@ -46,8 +45,8 @@ func (sp *speedProperty) SetActual(ctx context.Context, value int) (bool, error)
 }
 
 // Subscribe to actual changes
-func (sp *speedProperty) SubscribeActualChanges(cb func(context.Context, int)) {
-	sp.loc.GetSpeedInSteps().SubscribeActualChanges(func(ctx context.Context, speedInSteps int) {
+func (sp *speedProperty) SubscribeActualChanges(cb func(context.Context, int)) context.CancelFunc {
+	return sp.loc.GetSpeedInSteps().SubscribeActualChanges(func(ctx context.Context, speedInSteps int) {
 		cb(ctx, sp.convertFromSpeedSteps(ctx, speedInSteps))
 	})
 }
@@ -61,8 +60,8 @@ func (sp *speedProperty) SetRequested(ctx context.Context, value int) error {
 }
 
 // Subscribe to requested changes
-func (sp *speedProperty) SubscribeRequestChanges(cb func(context.Context, int)) {
-	sp.loc.GetSpeedInSteps().SubscribeRequestChanges(func(ctx context.Context, speedInSteps int) {
+func (sp *speedProperty) SubscribeRequestChanges(cb func(context.Context, int)) context.CancelFunc {
+	return sp.loc.GetSpeedInSteps().SubscribeRequestChanges(func(ctx context.Context, speedInSteps int) {
 		cb(ctx, sp.convertFromSpeedSteps(ctx, speedInSteps))
 	})
 }

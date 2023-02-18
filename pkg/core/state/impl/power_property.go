@@ -19,19 +19,28 @@ package impl
 
 import (
 	"context"
+	"sync/atomic"
 
 	"go.uber.org/multierr"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
 
 // powerProperty implements the power for all command stations of a railway.
 type powerProperty struct {
 	Railway Railway
 
-	requested      bool
-	actualChanges  []func(context.Context, bool)
-	requestChanges []func(context.Context, bool)
+	requested            bool
+	lastActualChangesID  uint32
+	actualChanges        []callbackEntry
+	lastRequestChangesID uint32
+	requestChanges       []callbackEntry
+}
+
+type callbackEntry struct {
+	id uint32
+	cb func(context.Context, bool)
 }
 
 var _ state.BoolProperty = &powerProperty{}
@@ -72,8 +81,8 @@ func (sp *powerProperty) SetActual(ctx context.Context, value bool) (bool, error
 			return err
 		}
 		if actual != value {
-			for _, cb := range sp.actualChanges {
-				cb(ctx, value)
+			for _, entry := range sp.actualChanges {
+				entry.cb(ctx, value)
 			}
 			sp.Railway.Send(state.ActualStateChangedEvent{
 				Subject:  sp.Railway,
@@ -86,11 +95,21 @@ func (sp *powerProperty) SetActual(ctx context.Context, value bool) (bool, error
 }
 
 // Subscribe to requested changes
-func (sp *powerProperty) SubscribeActualChanges(cb func(context.Context, bool)) {
+func (sp *powerProperty) SubscribeActualChanges(cb func(context.Context, bool)) context.CancelFunc {
+	id := atomic.AddUint32(&sp.lastActualChangesID, 1)
 	sp.Railway.Exclusive(context.Background(), subscribeTimeout, "power.SubscribeActualChanges", func(c context.Context) error {
-		sp.actualChanges = append(sp.actualChanges, cb)
+		sp.actualChanges = append(sp.actualChanges, callbackEntry{
+			id: id,
+			cb: cb,
+		})
 		return nil
 	})
+	return func() {
+		sp.Railway.Exclusive(context.Background(), cancelSubscriptionTimeout, "SubscribeActualChanges.Cancel", func(context.Context) error {
+			sp.actualChanges = util.SliceExcept(sp.actualChanges, func(x callbackEntry) bool { return x.id == id })
+			return nil
+		})
+	}
 }
 
 // Gets / sets the requested value
@@ -108,8 +127,8 @@ func (sp *powerProperty) SetRequested(ctx context.Context, value bool) error {
 		}
 		if sp.requested != value {
 			sp.requested = value
-			for _, cb := range sp.requestChanges {
-				cb(ctx, value)
+			for _, entry := range sp.requestChanges {
+				entry.cb(ctx, value)
 			}
 			sp.Railway.Send(state.RequestedStateChangedEvent{
 				Subject:  sp.Railway,
@@ -125,9 +144,19 @@ func (sp *powerProperty) IsConsistent(ctx context.Context) bool {
 }
 
 // Subscribe to requested changes
-func (sp *powerProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+func (sp *powerProperty) SubscribeRequestChanges(cb func(context.Context, bool)) context.CancelFunc {
+	id := atomic.AddUint32(&sp.lastActualChangesID, 1)
 	sp.Railway.Exclusive(context.Background(), subscribeTimeout, "power.SubscribeRequestChanges", func(c context.Context) error {
-		sp.requestChanges = append(sp.requestChanges, cb)
+		sp.requestChanges = append(sp.requestChanges, callbackEntry{
+			id: id,
+			cb: cb,
+		})
 		return nil
 	})
+	return func() {
+		sp.Railway.Exclusive(context.Background(), cancelSubscriptionTimeout, "SubscribeRequestChanges.Cancel", func(context.Context) error {
+			sp.requestChanges = util.SliceExcept(sp.requestChanges, func(x callbackEntry) bool { return x.id == id })
+			return nil
+		})
+	}
 }

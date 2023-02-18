@@ -40,7 +40,7 @@ type TypedActualProperty[T interface{}] interface {
 	GetActual(context.Context) T
 	SetActual(context.Context, T) (bool, error)
 	// Subscribe to actual changes
-	SubscribeActualChanges(func(context.Context, T))
+	SubscribeActualChanges(func(context.Context, T)) context.CancelFunc
 }
 
 // ActualBoolProperty contains the value of a property in a state object.

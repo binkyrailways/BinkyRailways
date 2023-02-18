@@ -30,31 +30,30 @@ const (
 	setRequestTimeout = time.Millisecond
 )
 
-// BoolProperty contains the value of a property in a state object.
-// The value contains a requested value and an actual value.
-type boolProperty struct {
-	actualBoolProperty
-	requested      bool
-	requestChanges []func(context.Context, bool)
+// comparableProperty implements a property of generic type.
+type comparableProperty[T comparable] struct {
+	comparableActualProperty[T]
+	requested      T
+	requestChanges util.SliceWithIdEntries[func(context.Context, T)]
 }
 
 // Configure the values of the property
-func (p *boolProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualBoolProperty.Configure(p, name, subject, dispatcher, exclusive)
+func (p *comparableProperty[T]) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.comparableActualProperty.Configure(p, name, subject, dispatcher, exclusive)
 }
 
-func (p *boolProperty) IsConsistent(ctx context.Context) bool {
+func (p *comparableProperty[T]) IsConsistent(ctx context.Context) bool {
 	return p.GetActual(ctx) == p.GetRequested(ctx)
 }
-func (p *boolProperty) GetRequested(ctx context.Context) bool {
+func (p *comparableProperty[T]) GetRequested(ctx context.Context) T {
 	return p.requested
 }
-func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
-	return p.exclusive.Exclusive(ctx, setRequestTimeout, "boolProperty.SetRequested."+p.Name, func(ctx context.Context) error {
+func (p *comparableProperty[T]) SetRequested(ctx context.Context, value T) error {
+	return p.exclusive.Exclusive(ctx, setRequestTimeout, "comparableProperty.SetRequested."+p.Name, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value
 			for _, cb := range p.requestChanges {
-				cb(ctx, value)
+				cb.Value(ctx, value)
 			}
 			p.SendRequestedStateChanged()
 		}
@@ -63,129 +62,35 @@ func (p *boolProperty) SetRequested(ctx context.Context, value bool) error {
 }
 
 // Subscribe to requested changes
-func (p *boolProperty) SubscribeRequestChanges(cb func(context.Context, bool)) {
+func (p *comparableProperty[T]) SubscribeRequestChanges(cb func(context.Context, T)) context.CancelFunc {
+	var cancel context.CancelFunc
 	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "bool.SubscribeRequestChanges", func(c context.Context) error {
-		p.requestChanges = append(p.requestChanges, cb)
+		cancel = p.requestChanges.Append(cb)
 		return nil
 	})
+	return cancel
+}
+
+// BoolProperty contains the value of a property in a state object.
+// The value contains a requested value and an actual value.
+type boolProperty struct {
+	comparableProperty[bool]
 }
 
 // intProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type intProperty struct {
-	actualIntProperty
-	requested      int
-	requestChanges []func(context.Context, int)
-}
-
-// Configure the values of the property
-func (p *intProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualIntProperty.Configure(p, name, subject, dispatcher, exclusive)
-}
-
-func (p *intProperty) IsConsistent(ctx context.Context) bool {
-	return p.GetActual(ctx) == p.GetRequested(ctx)
-}
-func (p *intProperty) GetRequested(ctx context.Context) int {
-	return p.requested
-}
-func (p *intProperty) SetRequested(ctx context.Context, value int) error {
-	return p.exclusive.Exclusive(ctx, setRequestTimeout, "int.SetRequested", func(ctx context.Context) error {
-		if p.requested != value {
-			p.requested = value
-			for _, cb := range p.requestChanges {
-				cb(ctx, value)
-			}
-			p.SendRequestedStateChanged()
-		}
-		return nil
-	})
-}
-
-// Subscribe to requested changes
-func (p *intProperty) SubscribeRequestChanges(cb func(context.Context, int)) {
-	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "int.SubscribeRequestChanges", func(c context.Context) error {
-		p.requestChanges = append(p.requestChanges, cb)
-		return nil
-	})
+	comparableProperty[int]
 }
 
 // locDirectionProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type locDirectionProperty struct {
-	actualLocDirectionProperty
-	requested      state.LocDirection
-	requestChanges []func(context.Context, state.LocDirection)
-}
-
-// Configure the values of the property
-func (p *locDirectionProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualLocDirectionProperty.Configure(p, name, subject, dispatcher, exclusive)
-}
-
-func (p *locDirectionProperty) IsConsistent(ctx context.Context) bool {
-	return p.GetActual(ctx) == p.GetRequested(ctx)
-}
-func (p *locDirectionProperty) GetRequested(ctx context.Context) state.LocDirection {
-	return p.requested
-}
-func (p *locDirectionProperty) SetRequested(ctx context.Context, value state.LocDirection) error {
-	return p.exclusive.Exclusive(ctx, setRequestTimeout, "locDirection.SetRequested", func(ctx context.Context) error {
-		if p.requested != value {
-			p.requested = value
-			for _, cb := range p.requestChanges {
-				cb(ctx, value)
-			}
-			p.SendRequestedStateChanged()
-		}
-		return nil
-	})
-}
-
-// Subscribe to requested changes
-func (p *locDirectionProperty) SubscribeRequestChanges(cb func(context.Context, state.LocDirection)) {
-	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "locDirection.SubscribeRequestChanges", func(c context.Context) error {
-		p.requestChanges = append(p.requestChanges, cb)
-		return nil
-	})
+	comparableProperty[state.LocDirection]
 }
 
 // locDirectionProperty contains the value of a property in a state object.
 // The value contains a requested value and an actual value.
 type switchDirectionProperty struct {
-	actualSwitchDirectionProperty
-	requested      model.SwitchDirection
-	requestChanges []func(context.Context, model.SwitchDirection)
-}
-
-// Configure the values of the property
-func (p *switchDirectionProperty) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.actualSwitchDirectionProperty.Configure(p, name, subject, dispatcher, exclusive)
-}
-
-func (p *switchDirectionProperty) IsConsistent(ctx context.Context) bool {
-	return p.GetActual(ctx) == p.GetRequested(ctx)
-}
-func (p *switchDirectionProperty) GetRequested(ctx context.Context) model.SwitchDirection {
-	return p.requested
-}
-func (p *switchDirectionProperty) SetRequested(ctx context.Context, value model.SwitchDirection) error {
-	return p.exclusive.Exclusive(ctx, setRequestTimeout, "switchDirection.SetRequested", func(ctx context.Context) error {
-		if p.requested != value {
-			p.requested = value
-			for _, cb := range p.requestChanges {
-				cb(ctx, value)
-			}
-			p.SendRequestedStateChanged()
-		}
-		return nil
-	})
-}
-
-// Subscribe to requested changes
-func (p *switchDirectionProperty) SubscribeRequestChanges(cb func(context.Context, model.SwitchDirection)) {
-	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "switchDirection.SubscribeRequestChanges", func(c context.Context) error {
-		p.requestChanges = append(p.requestChanges, cb)
-		return nil
-	})
+	comparableProperty[model.SwitchDirection]
 }

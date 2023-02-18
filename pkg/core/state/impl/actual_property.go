@@ -39,8 +39,9 @@ type propertyBase struct {
 }
 
 const (
-	setActualTimeout = time.Millisecond
-	subscribeTimeout = time.Millisecond
+	setActualTimeout          = time.Millisecond
+	subscribeTimeout          = time.Millisecond
+	cancelSubscriptionTimeout = time.Millisecond * 5
 )
 
 // Configure the values of the property
@@ -81,7 +82,7 @@ func (p *propertyBase) SendRequestedStateChanged() {
 type comparableActualProperty[T comparable] struct {
 	propertyBase
 	actual        T
-	actualChanges []func(context.Context, T)
+	actualChanges util.SliceWithIdEntries[func(context.Context, T)]
 }
 
 // Gets the actual value of the property as string
@@ -99,8 +100,8 @@ func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (b
 			p.LastActualChange = time.Now()
 			changed = true
 			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
+			for _, entry := range p.actualChanges {
+				entry.Value(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
@@ -110,11 +111,13 @@ func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (b
 }
 
 // Subscribe to actual changes
-func (p *comparableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
+func (p *comparableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) context.CancelFunc {
+	var cancel context.CancelFunc
 	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "SubscribeActualChanges", func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
+		cancel = p.actualChanges.Append(cb)
 		return nil
 	})
+	return cancel
 }
 
 type equatable[T any] interface {
@@ -125,7 +128,7 @@ type equatable[T any] interface {
 type equatableActualProperty[T equatable[T]] struct {
 	propertyBase
 	actual        T
-	actualChanges []func(context.Context, T)
+	actualChanges util.SliceWithIdEntries[func(context.Context, T)]
 }
 
 func (p *equatableActualProperty[T]) GetActual(ctx context.Context) T {
@@ -138,8 +141,8 @@ func (p *equatableActualProperty[T]) setActual(ctx context.Context, value T, isE
 			p.LastActualChange = time.Now()
 			changed = true
 			p.actual = value
-			for _, cb := range p.actualChanges {
-				cb(ctx, value)
+			for _, entry := range p.actualChanges {
+				entry.Value(ctx, value)
 			}
 			p.SendActualStateChanged()
 		}
@@ -149,11 +152,13 @@ func (p *equatableActualProperty[T]) setActual(ctx context.Context, value T, isE
 }
 
 // Subscribe to actual changes
-func (p *equatableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) {
+func (p *equatableActualProperty[T]) SubscribeActualChanges(cb func(context.Context, T)) context.CancelFunc {
+	var cancel context.CancelFunc
 	p.exclusive.Exclusive(context.Background(), subscribeTimeout, "SubscribeActualChanges", func(context.Context) error {
-		p.actualChanges = append(p.actualChanges, cb)
+		cancel = p.actualChanges.Append(cb)
 		return nil
 	})
+	return cancel
 }
 
 // actualBoolProperty contains the value of a property in a state object.

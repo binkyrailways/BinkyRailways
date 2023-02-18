@@ -26,6 +26,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 	"github.com/cenkalti/backoff"
 )
 
@@ -62,8 +63,8 @@ type loc struct {
 	lockedEntities                  []Lockable
 	lastEventBehavior               state.RouteEventBehavior
 	routeSelector                   state.RouteSelector
-	beforeReset                     []func(context.Context)
-	afterReset                      []func(context.Context)
+	beforeReset                     util.SliceWithIdEntries[func(context.Context)]
+	afterReset                      util.SliceWithIdEntries[func(context.Context)]
 	recentlyVisitedBlocks           *recentlyVisitedBlocks
 }
 
@@ -151,19 +152,23 @@ func (l *loc) FinalizePrepare(ctx context.Context) {
 }
 
 // All settings of this loc will be reset, because the loc is taken of the track.
-func (l *loc) SubscribeBeforeReset(cb func(context.Context)) {
+func (l *loc) SubscribeBeforeReset(cb func(context.Context)) context.CancelFunc {
+	var cancel context.CancelFunc
 	l.railway.Exclusive(context.Background(), subscribeTimeout, "SubscribeBeforeReset", func(ctx context.Context) error {
-		l.beforeReset = append(l.beforeReset, cb)
+		cancel = l.beforeReset.Append(cb)
 		return nil
 	})
+	return cancel
 }
 
 // All settings of this loc have been reset, because the loc is taken of the track.
-func (l *loc) SubscribeAfterReset(cb func(context.Context)) {
+func (l *loc) SubscribeAfterReset(cb func(context.Context)) context.CancelFunc {
+	var cancel context.CancelFunc
 	l.railway.Exclusive(context.Background(), subscribeTimeout, "SubscribeAfterReset", func(ctx context.Context) error {
-		l.afterReset = append(l.afterReset, cb)
+		cancel = l.afterReset.Append(cb)
 		return nil
 	})
+	return cancel
 }
 
 // Address of the entity
@@ -453,7 +458,7 @@ func (l *loc) Reset(ctx context.Context) {
 
 			// Call before reset handlers
 			for _, cb := range l.beforeReset {
-				cb(ctx)
+				cb.Value(ctx)
 			}
 
 			// Disconnect from block
@@ -463,7 +468,7 @@ func (l *loc) Reset(ctx context.Context) {
 
 			// Call after reset handlers
 			for _, cb := range l.afterReset {
-				cb(ctx)
+				cb.Value(ctx)
 			}
 			return nil
 		})

@@ -43,42 +43,6 @@ func NewAutomaticLocController(railway railway, log zerolog.Logger) (state.Autom
 	}
 	alcEnabledGauge.Set(0)
 	alc.enabled.alc = alc
-
-	// Register on all state change events.
-	railway.ForEachLoc(func(loc state.Loc) {
-		loc.GetControlledAutomatically().SubscribeRequestChanges(func(ctx context.Context, value bool) {
-			alc.onLocControlledAutomaticallyChanged(ctx, loc, false, false)
-		})
-		/*
-			loc.BeforeReset += (s, x) => dispatcher.PostAction(() => OnLocControlledAutomaticallyChanged(loc, false, true));
-			loc.AfterReset += (s, x) => dispatcher.PostAction(() => OnAfterResetLoc(loc));
-		*/
-		// TODO
-	})
-
-	railway.ForEachSensor(func(sensor state.Sensor) {
-		sensor.GetActive().SubscribeActualChanges(func(ctx context.Context, value bool) {
-			alc.onSensorActiveChanged(ctx, sensor)
-		})
-	})
-
-	railway.ForEachJunction(func(junction state.Junction) {
-		if sw, ok := junction.(state.Switch); ok {
-			sw.GetDirection().SubscribeActualChanges(func(ctx context.Context, dir model.SwitchDirection) {
-
-				//alc.requestUpdate()
-				// TODOs
-				alc.trigger.Trigger()
-			})
-		}
-	})
-
-	/*
-	   // Register on all state change events.
-	   signals.AddRange(railwayState.SignalStates);
-	*/
-	//TODO
-
 	return alc, nil
 }
 
@@ -120,39 +84,101 @@ func (alc *automaticLocController) run() {
 		alcEnabledGauge.Set(0)
 		alc.enabled.actual = false
 	}()
-	sensorActiveChanged := make(chan state.Sensor, 32)
-	defer close(sensorActiveChanged)
-	/*cancel := alc.railway.Subscribe(context.Background(), func(evt state.Event) {
-		switch evt := evt.(type) {
-		case state.ActualStateChangedEvent:
-			log.Debug().Interface("event", evt).Msg("ActualStateChangedEvent")
-			if sensor, ok := evt.Subject.(state.Sensor); ok && sensor.GetActive() == evt.Property {
-				sensorActiveChanged <- sensor
+
+	// Subscribe to relevant events
+	var subscriptions []context.CancelFunc
+	actionsQueue := make(chan func(context.Context), 32)
+	// Unsubscription on end of run
+	defer func() {
+		for _, cancel := range subscriptions {
+			cancel()
+		}
+		close(actionsQueue)
+	}()
+
+	// Subscribe to loc events
+	alc.railway.ForEachLoc(func(loc state.Loc) {
+		// Subscribe to loc-controlled-automatically events
+		cancel := loc.GetControlledAutomatically().SubscribeRequestChanges(func(ctx context.Context, value bool) {
+			actionsQueue <- func(ctx context.Context) {
+				log.Trace().Msg("loc controlled automatically state changed")
+				alc.onLocControlledAutomaticallyChanged(ctx, loc, false, false)
 			}
+		})
+		subscriptions = append(subscriptions, cancel)
+
+		// Subscribe to loc-before-reset events
+		cancel = loc.SubscribeBeforeReset(func(ctx context.Context) {
+			actionsQueue <- func(ctx context.Context) {
+				log.Trace().Msg("loc before reset")
+				alc.onLocControlledAutomaticallyChanged(ctx, loc, false, true)
+			}
+		})
+		subscriptions = append(subscriptions, cancel)
+
+		// Subscribe to loc-after-reset events
+		cancel = loc.SubscribeAfterReset(func(ctx context.Context) {
+			actionsQueue <- func(ctx context.Context) {
+				log.Trace().Msg("loc after reset")
+				alc.onAfterResetLoc(ctx, loc)
+			}
+		})
+		subscriptions = append(subscriptions, cancel)
+	})
+
+	// Subscribe to sensor events
+	alc.railway.ForEachSensor(func(sensor state.Sensor) {
+		cancel := sensor.GetActive().SubscribeActualChanges(func(ctx context.Context, value bool) {
+			if sensor.GetActive().GetActual(ctx) {
+				// Sensor became active
+				actionsQueue <- func(ctx context.Context) {
+					log.Trace().Msg("sensor active changed")
+					alc.onSensorActivated(ctx, sensor)
+				}
+			}
+		})
+		subscriptions = append(subscriptions, cancel)
+	})
+
+	// Subscribe to signal actual changed events
+	alc.railway.ForEachJunction(func(junction state.Junction) {
+		if sw, ok := junction.(state.Switch); ok {
+			cancel := sw.GetDirection().SubscribeActualChanges(func(ctx context.Context, dir model.SwitchDirection) {
+				// Upon actual switch change, trigger update
+				log.Trace().Msg("switch actual changed")
+				alc.trigger.Trigger()
+			})
+			subscriptions = append(subscriptions, cancel)
 		}
 	})
-	defer cancel()*/
+
+	/*
+	   // Register on all state change events.
+	   signals.AddRange(railwayState.SignalStates);
+	*/
+	//TODO
+
 	delay := time.Second
 	for {
 		// Wait for trigger or heartbeat
-		var sensor state.Sensor
+		var action func(ctx context.Context)
 		select {
 		case <-alc.trigger.Done():
 			// Update triggered
-			log.Trace().Msg("alc triggered")
+		case action = <-actionsQueue:
+			// Execute given action in our loop
 		case <-time.After(delay):
 			// Heartbeat
-		case sensor = <-sensorActiveChanged:
-			// Sensor active property change
-			log.Trace().Msg("sensor active changed")
 		}
 
 		// Update state of locs
 		var canClose bool
 		alc.railway.Exclusive(context.Background(), time.Millisecond*5, "automaticLocController.run.updateLocStates", func(ctx context.Context) error {
-			if sensor != nil {
-				alc.onSensorActiveChanged(ctx, sensor)
+			// Process action (if any)
+			if action != nil {
+				action(ctx)
 			}
+			// Update automatic state of all locs
 			delay, canClose = alc.updateLocStates(ctx)
 			return nil
 		})
@@ -232,6 +258,17 @@ func (alc *automaticLocController) onLocControlledAutomaticallyChanged(ctx conte
 	}
 }
 
+// Loc has been reset.
+func (alc *automaticLocController) onAfterResetLoc(ctx context.Context, loc state.Loc) {
+	// Loc could have "occupied" sensors which have now been released.
+	// Update sensors.
+	alc.railway.ForEachSensor(func(s state.Sensor) {
+		if s.GetActive().GetActual(ctx) {
+			alc.onSensorActivated(ctx, s)
+		}
+	})
+}
+
 // removeLocFromAutomaticControl removes the loc from automatic control
 // This function must be called while holding the exclusive.
 func (alc *automaticLocController) removeLocFromAutomaticControl(ctx context.Context, loc state.Loc) {
@@ -240,31 +277,38 @@ func (alc *automaticLocController) removeLocFromAutomaticControl(ctx context.Con
 	loc.GetControlledAutomatically().SetActual(ctx, false)
 }
 
-// Active state of given sensor has changed.
-func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, sensor state.Sensor) {
+// Pair of loc with current route
+type locWithRoute struct {
+	Loc   state.Loc
+	Route state.RouteForLoc
+}
+
+// onSensorActivated is called when a given sensor became active.
+func (alc *automaticLocController) onSensorActivated(ctx context.Context, sensor state.Sensor) {
 	log := alc.log.With().Str("sensor", sensor.GetDescription()).Logger()
-	if !sensor.GetActive().GetActual(ctx) {
-		// Sensor became inactive
-		return
-	}
 
 	log.Trace().Msg("OnSensorActive")
-	var locsWithRoutes, locsWithSensor []state.Loc
+	var locsWithRoutes []locWithRoute
 	alc.railway.ForEachLoc(func(x state.Loc) {
-		if x.GetCurrentRoute().GetActual(ctx) != nil {
-			locsWithRoutes = append(locsWithRoutes, x)
+		if rt := x.GetCurrentRoute().GetActual(ctx); rt != nil {
+			locsWithRoutes = append(locsWithRoutes, locWithRoute{
+				Loc:   x,
+				Route: rt,
+			})
 		}
 	})
+	var locsWithSensor []locWithRoute
 	for _, x := range locsWithRoutes {
-		if x.GetCurrentRoute().GetActual(ctx).Contains(sensor) {
+		if x.Route.Contains(sensor) {
 			locsWithSensor = append(locsWithSensor, x)
 		}
 	}
 	ghost := true
 
 	// Update state of all locs
-	for _, loc := range locsWithSensor {
-		route := loc.GetCurrentRoute().GetActual(ctx)
+	for _, entry := range locsWithSensor {
+		loc := entry.Loc
+		route := entry.Route
 		behavior, found := route.TryGetBehavior(sensor)
 		if !found {
 			continue
@@ -292,18 +336,20 @@ func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, se
 			}
 		}
 
-		// Update speed
-		switch behavior.GetSpeedBehavior() {
-		case model.LocSpeedBehaviorNoChange:
-			// No change
-		case model.LocSpeedBehaviorDefault:
-			// This is handled in the applicable states
-		case model.LocSpeedBehaviorMaximum:
-			loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, route.GetRoute()))
-		case model.LocSpeedBehaviorMedium:
-			loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, route.GetRoute()))
-		case model.LocSpeedBehaviorMinimum:
-			loc.GetSpeed().SetRequested(ctx, loc.GetSlowSpeed(ctx))
+		// Update speed (if allowed)
+		if loc.GetAutomaticState().GetActual(ctx).AcceptSensorSpeedBehavior() {
+			switch behavior.GetSpeedBehavior() {
+			case model.LocSpeedBehaviorNoChange:
+				// No change
+			case model.LocSpeedBehaviorDefault:
+				// This is handled in the applicable states
+			case model.LocSpeedBehaviorMaximum:
+				loc.GetSpeed().SetRequested(ctx, state.GetMaximumSpeedForRoute(ctx, loc, route.GetRoute()))
+			case model.LocSpeedBehaviorMedium:
+				loc.GetSpeed().SetRequested(ctx, state.GetMediumSpeedForRoute(ctx, loc, route.GetRoute()))
+			case model.LocSpeedBehaviorMinimum:
+				loc.GetSpeed().SetRequested(ctx, loc.GetSlowSpeed(ctx))
+			}
 		}
 	}
 
@@ -314,7 +360,7 @@ func (alc *automaticLocController) onSensorActiveChanged(ctx context.Context, se
 		sensor.ForEachDestinationBlock(func(b state.Block) {
 			anyRouteContainsBlock := false
 			for _, x := range locsWithRoutes {
-				rt := x.GetCurrentRoute().GetActual(ctx)
+				rt := x.Route
 				if rt.GetRoute().ContainsBlock(ctx, b) {
 					anyRouteContainsBlock = true
 					break

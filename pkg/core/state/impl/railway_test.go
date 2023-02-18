@@ -40,14 +40,14 @@ func TestRailwayFromFile(t *testing.T) {
 
 	// Create state in non-virtual mode
 	t.Run("non-virtual mode", func(t *testing.T) {
-		st, err := New(ctx, p.GetRailway(), log, nil, nil, false)
+		st, err := New(ctx, p.GetRailway(), log, nil, nil, nil, false)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
 
 	// Create state in virtual mode
 	t.Run("virtual mode", func(t *testing.T) {
-		st, err := New(ctx, p.GetRailway(), log, nil, nil, true)
+		st, err := New(ctx, p.GetRailway(), log, nil, nil, nil, true)
 		require.NoError(t, err)
 		require.NotNil(t, st)
 	})
@@ -74,7 +74,7 @@ func TestRailwayVirtualMode(t *testing.T) {
 	assert.NoError(t, l.SetAddress(ctx, model.NewAddress(model.NewNetwork(model.AddressTypeDcc, ""), "136")))
 
 	// Create state
-	rs, err := New(ctx, r, log, nil, nil, true)
+	rs, err := New(ctx, r, log, nil, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 
@@ -111,7 +111,7 @@ func TestRailwayPower(t *testing.T) {
 	require.NotNil(t, r)
 
 	// Create state (virtual mode)
-	rs, err := New(ctx, r, log, nil, nil, true)
+	rs, err := New(ctx, r, log, nil, nil, nil, true)
 	assert.NoError(t, err)
 	require.NotNil(t, rs)
 
