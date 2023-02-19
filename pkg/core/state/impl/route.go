@@ -149,7 +149,7 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 	}
 
 	// Construct critical section
-	if err := r.csr.TryPrepareForUse(ctx, ui, ps); err != nil {
+	if err := r.csr.Build(ctx, r, rw); err != nil {
 		return err
 	}
 

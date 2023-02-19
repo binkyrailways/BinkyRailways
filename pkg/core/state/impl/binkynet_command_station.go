@@ -48,7 +48,8 @@ type binkyNetCommandStation struct {
 }
 
 const (
-	onActualTimeout = time.Millisecond
+	onActualTimeout       = time.Millisecond
+	netManagerChanTimeout = time.Second
 )
 
 // Create a new entity
@@ -118,7 +119,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	g.Go(func() error { cs.runSendOutputActive(ctx); return nil })
 	g.Go(func() error { cs.runSendSwitchDirection(ctx); return nil })
 	g.Go(func() error {
-		updates, cancel := cs.manager.SubscribeLocalWorkerActuals(true, "")
+		updates, cancel := cs.manager.SubscribeLocalWorkerActuals(true, netManagerChanTimeout, "")
 		defer cancel()
 		for {
 			select {
@@ -139,7 +140,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribePowerActuals(true)
+		actuals, cancel := cs.manager.SubscribePowerActuals(true, netManagerChanTimeout)
 		defer cancel()
 		for {
 			select {
@@ -154,7 +155,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeLocActuals(true)
+		actuals, cancel := cs.manager.SubscribeLocActuals(true, netManagerChanTimeout)
 		defer cancel()
 		for {
 			select {
@@ -169,7 +170,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeOutputActuals(true, "")
+		actuals, cancel := cs.manager.SubscribeOutputActuals(true, netManagerChanTimeout, "")
 		defer cancel()
 		for {
 			select {
@@ -187,7 +188,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeSensorActuals(true, "")
+		actuals, cancel := cs.manager.SubscribeSensorActuals(true, netManagerChanTimeout, "")
 		defer cancel()
 		for {
 			select {
@@ -203,7 +204,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	})
 
 	g.Go(func() error {
-		actuals, cancel := cs.manager.SubscribeSwitchActuals(true, "")
+		actuals, cancel := cs.manager.SubscribeSwitchActuals(true, netManagerChanTimeout, "")
 		defer cancel()
 		for {
 			select {
@@ -455,6 +456,7 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw st
 		return
 	}
 	requestedSwitchDirectionGauge.WithLabelValues(string(addr)).Set(float64(direction))
+	sendSwitchDirectionCounter.WithLabelValues(string(addr)).Inc()
 	cs.manager.SetSwitchRequest(bn.Switch{
 		Address: addr,
 		Request: &bn.SwitchState{

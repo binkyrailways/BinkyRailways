@@ -219,6 +219,15 @@ func (rt *baseRouteAvailabilityTester) IsAnySensorActive(ctx context.Context, ro
 	isActive := SensorPredicate(func(ctx context.Context, sensor state.Sensor) bool {
 		return sensor.GetActive().GetActual(ctx)
 	})
+	// Is current block is set, exclude all sensors that belong to this block
+	if currentBlock := loc.GetCurrentBlock().GetActual(ctx); currentBlock != nil {
+		currentBlockID := currentBlock.GetID()
+		isNotPartOfBlock := SensorPredicate(func(ctx context.Context, s state.Sensor) bool {
+			sensorBlock := s.GetModel().GetBlock()
+			return sensorBlock == nil || sensorBlock.GetID() != currentBlockID
+		})
+		isActive = isActive.And(isNotPartOfBlock)
+	}
 	currentRoute := loc.GetCurrentRoute().GetActual(ctx)
 	if currentRoute == nil {
 		// There must be no active sensor

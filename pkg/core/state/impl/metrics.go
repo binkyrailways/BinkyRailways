@@ -30,4 +30,6 @@ var (
 	requestedOutputValueGauge = metrics.MustRegisterGaugeVec(subSystem, "requested_output_value", "0, 1", "address")
 	// requestedSwitchDirectionGauge tracks request switch direction
 	requestedSwitchDirectionGauge = metrics.MustRegisterGaugeVec(subSystem, "requested_switch_direction", "0 is switch is set to straight, 1 if set to off", "address")
+	// sendSwitchDirectionCounter tracks the number of switch direction requests send to binkynet
+	sendSwitchDirectionCounter = metrics.MustRegisterGaugeVec(subSystem, "send_switch_direction_total", "number of send switch direction requests to binkynet", "address")
 )

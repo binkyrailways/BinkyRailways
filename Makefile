@@ -97,7 +97,7 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v1.1.1 \
+		github.com/binkynet/NetManager@v1.3.0 \
 		github.com/binkynet/BinkyNet@v1.4.0
 	go mod tidy
 

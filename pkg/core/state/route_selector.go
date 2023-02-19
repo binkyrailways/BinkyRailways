@@ -25,17 +25,17 @@ import (
 
 // Choose a next route for a loc.
 type RouteSelector interface {
-	/// Select one of the given possible routes.
-	/// Returns null if no route should be taken.
-	/// <param name="possibleRoutes">A list of routes to choose from</param>
-	/// <param name="loc">The loc to choose for</param>
-	/// <param name="fromBlock">The block from which the next route will leave</param>
-	/// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
+	// Select one of the given possible routes.
+	// Returns nil if no route should be taken.
+	// Param: possibleRoutes A list of routes to choose from
+	// Param: loc The loc to choose for
+	// Param: fromBlock The block from which the next route will leave
+	// Param: locDirection The direction the loc is facing in the fromBlock.
 	SelectRoute(ctx context.Context, possibleRoutes []Route, loc Loc, fromBlock Block, locDirection model.BlockSide) Route
 
-	/// Called when the loc has entered the given to-block of the current route.
+	// Called when the loc has entered the given to-block of the current route.
 	BlockEntered(ctx context.Context, loc Loc, block Block)
 
-	/// Called when the loc has reached the given to-block of the current route.
+	// Called when the loc has reached the given to-block of the current route.
 	BlockReached(ctx context.Context, loc Loc, block Block)
 }

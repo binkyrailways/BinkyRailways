@@ -30,11 +30,13 @@ type criticalSectionRoutes struct {
 
 var _ state.CriticalSectionRoutes = &criticalSectionRoutes{}
 
-// Try to prepare the entity for use.
-// Returns nil when the entity is successfully prepared,
-// returns an error otherwise.
-func (csr *criticalSectionRoutes) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
-	// TODO build route list
+// Build the set of critical routes from the given route.
+func (csr *criticalSectionRoutes) Build(ctx context.Context, route state.Route, rw state.Railway) error {
+	routes, err := buildCriticalSectionRoutes(ctx, route, rw)
+	if err != nil {
+		return nil
+	}
+	csr.routes = routes
 	return nil
 }
 
