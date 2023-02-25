@@ -18,6 +18,7 @@
 export 'components/_address_validator.dart';
 export 'components/_dialogs.dart';
 export 'components/_error_message.dart';
+export 'components/_icon_popup_menu_item.dart';
 export 'components/_numeric_validator.dart';
 export 'components/_permission_validator.dart';
 export 'components/_more_popup_menu.dart';

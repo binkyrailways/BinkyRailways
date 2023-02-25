@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/api.dart';
+import 'package:binky/components.dart';
 import 'package:binky/components/_more_popup_menu.dart';
 import 'package:binky/editor/editor_context.dart';
 import 'package:binky/run/run_context.dart';
@@ -77,8 +78,8 @@ class LocsTree extends StatelessWidget {
                 final actions = _buildActions(context, state, loc, isAssigned);
                 final icon = canBeControlledAutomatically
                     ? autoControlled
-                        ? Icons.computer
-                        : Icons.person
+                        ? Icons.auto_mode
+                        : Icons.sports_esports
                     : Icons.more_horiz;
                 return ListTile(
                   minLeadingWidth: 30,
@@ -124,13 +125,15 @@ class LocsTree extends StatelessWidget {
 
     if (canBeControlledAutomatically) {
       if (loc.controlledAutomaticallyRequested) {
-        actions.add(PopupMenuItem(
+        actions.add(IconPopupMenuItem(
+            icon: const Icon(Icons.sports_esports),
             child: const Text("Control manually"),
             onTap: () async {
               await state.setLocControlledAutomatically(loc.model.id, false);
             }));
       } else {
-        actions.add(PopupMenuItem(
+        actions.add(IconPopupMenuItem(
+            icon: const Icon(Icons.auto_mode),
             child: const Text("Control automatically"),
             onTap: () async {
               await state.setLocControlledAutomatically(loc.model.id, true);
@@ -139,20 +142,21 @@ class LocsTree extends StatelessWidget {
     }
 
     if (isAssigned) {
-      actions.add(PopupMenuItem(
+      actions.add(IconPopupMenuItem(
+          icon: const Icon(Icons.cancel),
           child: const Text('Take of track'),
           onTap: () async {
             await state.takeLocOfTrack(loc.model.id);
           }));
-    } else {
-      actions.add(PopupMenuItem(
-          child: const Text('Edit'),
-          onTap: () {
-            final editorCtx =
-                Provider.of<EditorContext>(context, listen: false);
-            editorCtx.select(EntitySelector.loc(loc.model));
-          }));
     }
+
+    actions.add(IconPopupMenuItem(
+        icon: const Icon(Icons.edit),
+        child: const Text('Edit'),
+        onTap: () {
+          final editorCtx = Provider.of<EditorContext>(context, listen: false);
+          editorCtx.select(EntitySelector.loc(loc.model));
+        }));
 
     return actions;
   }
