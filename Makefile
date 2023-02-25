@@ -55,7 +55,18 @@ binaries-server: generate pkg/core/model/predicates/parser.go
 
 .PHONY: binaries-gui
 binaries-gui: 
-	cd apps/binky ; flutter build macos
+	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
+		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
+		LC_TIME="en_US.UTF-8" LC_ALL= \
+		cd apps/binky ; flutter build macos
+		open apps/binky/build/macos/Build/Products/Release/
+
+.PHONY: develop-gui
+develop-gui: 
+	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
+		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
+		LC_TIME="en_US.UTF-8" LC_ALL= \
+		cd apps/binky ; flutter run -d macos
 
 bootstrap:
 	go get github.com/mitchellh/gox
