@@ -381,6 +381,7 @@ class _EditorPageState extends State<EditorPage> {
               }
             },
           ),
+          const VerticalDivider(),
           IconButton(
             icon: const Icon(Icons.play_arrow_rounded),
             tooltip: "Run",
