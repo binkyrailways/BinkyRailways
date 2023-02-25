@@ -61,6 +61,67 @@ class IDRequest extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 }
 
+class SubIDRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubIDRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'subId')
+    ..hasRequiredFields = false
+  ;
+
+  SubIDRequest._() : super();
+  factory SubIDRequest({
+    $core.String? id,
+    $core.String? subId,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (subId != null) {
+      _result.subId = subId;
+    }
+    return _result;
+  }
+  factory SubIDRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubIDRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubIDRequest clone() => SubIDRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubIDRequest copyWith(void Function(SubIDRequest) updates) => super.copyWith((message) => updates(message as SubIDRequest)) as SubIDRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SubIDRequest create() => SubIDRequest._();
+  SubIDRequest createEmptyInstance() => create();
+  static $pb.PbList<SubIDRequest> createRepeated() => $pb.PbList<SubIDRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SubIDRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubIDRequest>(create);
+  static SubIDRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get subId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set subId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSubId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSubId() => clearField(2);
+}
+
 class ParseAddressRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ParseAddressRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')

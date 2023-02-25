@@ -28,6 +28,17 @@ const IDRequest$json = const {
 
 /// Descriptor for `IDRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List iDRequestDescriptor = $convert.base64Decode('CglJRFJlcXVlc3QSDgoCaWQYASABKAlSAmlk');
+@$core.Deprecated('Use subIDRequestDescriptor instead')
+const SubIDRequest$json = const {
+  '1': 'SubIDRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'sub_id', '3': 2, '4': 1, '5': 9, '10': 'subId'},
+  ],
+};
+
+/// Descriptor for `SubIDRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subIDRequestDescriptor = $convert.base64Decode('CgxTdWJJRFJlcXVlc3QSDgoCaWQYASABKAlSAmlkEhUKBnN1Yl9pZBgCIAEoCVIFc3ViSWQ=');
 @$core.Deprecated('Use parseAddressRequestDescriptor instead')
 const ParseAddressRequest$json = const {
   '1': 'ParseAddressRequest',

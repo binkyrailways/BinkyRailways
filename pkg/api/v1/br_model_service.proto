@@ -162,17 +162,22 @@ service ModelService {
   // Gets a BinkyNetLocalWorker by ID.
   rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
   // Update a BinkyNetLocalWorker by ID.
-  rpc UpdateBinkyNetLocalWorker(BinkyNetLocalWorker)
-      returns (BinkyNetLocalWorker);
+  rpc UpdateBinkyNetLocalWorker(BinkyNetLocalWorker) returns (BinkyNetLocalWorker);
+  // Delete the BinkyNetLocalWorker with the given ID.
+  rpc DeleteBinkyNetLocalWorker(IDRequest) returns (CommandStation);
   // Adds a new BinkyNetLocalWorker to the command station identified by given
   // by ID.
   rpc AddBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
   // Adds a new BinkyNetDevice to the binkynet local worker identified by given
   // by ID.
   rpc AddBinkyNetDevice(IDRequest) returns (BinkyNetDevice);
+  // Delete the BinkyNetDevice with the given SubID in local worker with given id.
+  rpc DeleteBinkyNetDevice(SubIDRequest) returns (BinkyNetLocalWorker);
   // Adds a new BinkyNetObject to the binkynet local worker identified by given
   // by ID.
   rpc AddBinkyNetObject(IDRequest) returns (BinkyNetObject);
+  // Delete the BinkyNetObject with the given SubID in local worker with given id.
+  rpc DeleteBinkyNetObject(SubIDRequest) returns (BinkyNetLocalWorker);
   // Adds one or more new BinkyNetObject to the binkynet local worker identified by given
   // by ID and attach them to the given device.
   rpc AddBinkyNetObjectsGroup(AddBinkyNetObjectsGroupRequest) returns (BinkyNetLocalWorker);
@@ -180,6 +185,12 @@ service ModelService {
 
 // Request by ID
 message IDRequest { string id = 1; }
+
+// Request by ID and SubID
+message SubIDRequest { 
+  string id = 1; 
+  string sub_id = 2;
+}
 
 message ParseAddressRequest {
   // Address to parse

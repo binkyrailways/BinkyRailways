@@ -283,6 +283,11 @@ class ModelServiceClient extends $grpc.Client {
           ($1.BinkyNetLocalWorker value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.BinkyNetLocalWorker.fromBuffer(value));
+  static final _$deleteBinkyNetLocalWorker =
+      $grpc.ClientMethod<$0.IDRequest, $1.CommandStation>(
+          '/binkyrailways.v1.ModelService/DeleteBinkyNetLocalWorker',
+          ($0.IDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.CommandStation.fromBuffer(value));
   static final _$addBinkyNetLocalWorker =
       $grpc.ClientMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
           '/binkyrailways.v1.ModelService/AddBinkyNetLocalWorker',
@@ -294,11 +299,23 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/AddBinkyNetDevice',
           ($0.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.BinkyNetDevice.fromBuffer(value));
+  static final _$deleteBinkyNetDevice =
+      $grpc.ClientMethod<$0.SubIDRequest, $1.BinkyNetLocalWorker>(
+          '/binkyrailways.v1.ModelService/DeleteBinkyNetDevice',
+          ($0.SubIDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $1.BinkyNetLocalWorker.fromBuffer(value));
   static final _$addBinkyNetObject =
       $grpc.ClientMethod<$0.IDRequest, $1.BinkyNetObject>(
           '/binkyrailways.v1.ModelService/AddBinkyNetObject',
           ($0.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.BinkyNetObject.fromBuffer(value));
+  static final _$deleteBinkyNetObject =
+      $grpc.ClientMethod<$0.SubIDRequest, $1.BinkyNetLocalWorker>(
+          '/binkyrailways.v1.ModelService/DeleteBinkyNetObject',
+          ($0.SubIDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $1.BinkyNetLocalWorker.fromBuffer(value));
   static final _$addBinkyNetObjectsGroup = $grpc.ClientMethod<
           $0.AddBinkyNetObjectsGroupRequest, $1.BinkyNetLocalWorker>(
       '/binkyrailways.v1.ModelService/AddBinkyNetObjectsGroup',
@@ -635,6 +652,13 @@ class ModelServiceClient extends $grpc.Client {
         options: options);
   }
 
+  $grpc.ResponseFuture<$1.CommandStation> deleteBinkyNetLocalWorker(
+      $0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBinkyNetLocalWorker, request,
+        options: options);
+  }
+
   $grpc.ResponseFuture<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker(
       $0.IDRequest request,
       {$grpc.CallOptions? options}) {
@@ -648,10 +672,22 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addBinkyNetDevice, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.BinkyNetLocalWorker> deleteBinkyNetDevice(
+      $0.SubIDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBinkyNetDevice, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.BinkyNetObject> addBinkyNetObject(
       $0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addBinkyNetObject, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.BinkyNetLocalWorker> deleteBinkyNetObject(
+      $0.SubIDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBinkyNetObject, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup(
@@ -1110,6 +1146,13 @@ abstract class ModelServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $1.BinkyNetLocalWorker.fromBuffer(value),
             ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.CommandStation>(
+        'DeleteBinkyNetLocalWorker',
+        deleteBinkyNetLocalWorker_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.CommandStation value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.BinkyNetLocalWorker>(
         'AddBinkyNetLocalWorker',
         addBinkyNetLocalWorker_Pre,
@@ -1124,6 +1167,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.BinkyNetDevice value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.SubIDRequest, $1.BinkyNetLocalWorker>(
+        'DeleteBinkyNetDevice',
+        deleteBinkyNetDevice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.SubIDRequest.fromBuffer(value),
+        ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.BinkyNetObject>(
         'AddBinkyNetObject',
         addBinkyNetObject_Pre,
@@ -1131,6 +1181,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
         ($1.BinkyNetObject value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.SubIDRequest, $1.BinkyNetLocalWorker>(
+        'DeleteBinkyNetObject',
+        deleteBinkyNetObject_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.SubIDRequest.fromBuffer(value),
+        ($1.BinkyNetLocalWorker value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.AddBinkyNetObjectsGroupRequest,
             $1.BinkyNetLocalWorker>(
         'AddBinkyNetObjectsGroup',
@@ -1451,6 +1508,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateBinkyNetLocalWorker(call, await request);
   }
 
+  $async.Future<$1.CommandStation> deleteBinkyNetLocalWorker_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteBinkyNetLocalWorker(call, await request);
+  }
+
   $async.Future<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return addBinkyNetLocalWorker(call, await request);
@@ -1461,9 +1523,19 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBinkyNetDevice(call, await request);
   }
 
+  $async.Future<$1.BinkyNetLocalWorker> deleteBinkyNetDevice_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.SubIDRequest> request) async {
+    return deleteBinkyNetDevice(call, await request);
+  }
+
   $async.Future<$1.BinkyNetObject> addBinkyNetObject_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return addBinkyNetObject(call, await request);
+  }
+
+  $async.Future<$1.BinkyNetLocalWorker> deleteBinkyNetObject_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.SubIDRequest> request) async {
+    return deleteBinkyNetObject(call, await request);
   }
 
   $async.Future<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup_Pre(
@@ -1584,12 +1656,18 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> updateBinkyNetLocalWorker(
       $grpc.ServiceCall call, $1.BinkyNetLocalWorker request);
+  $async.Future<$1.CommandStation> deleteBinkyNetLocalWorker(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> addBinkyNetLocalWorker(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.BinkyNetDevice> addBinkyNetDevice(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.BinkyNetLocalWorker> deleteBinkyNetDevice(
+      $grpc.ServiceCall call, $0.SubIDRequest request);
   $async.Future<$1.BinkyNetObject> addBinkyNetObject(
       $grpc.ServiceCall call, $0.IDRequest request);
+  $async.Future<$1.BinkyNetLocalWorker> deleteBinkyNetObject(
+      $grpc.ServiceCall call, $0.SubIDRequest request);
   $async.Future<$1.BinkyNetLocalWorker> addBinkyNetObjectsGroup(
       $grpc.ServiceCall call, $0.AddBinkyNetObjectsGroupRequest request);
 }

@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/components.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +79,17 @@ class BinkyNetDevicesTree extends StatelessWidget {
                       onTap: () => editorCtx
                           .select(EntitySelector.binkynetDevice(lw, device)),
                       selected: selector.idOf(EntityType.binkynetdevice) == id,
+                      trailing: MorePopupMenu<String>(
+                        items: [
+                          PopupMenuItem<String>(
+                              child: const Text('Remove'),
+                              onTap: () async {
+                                await model.deleteBinkyNetDevice(lw, device);
+                                editorCtx
+                                    .select(EntitySelector.binkynetDevices(lw));
+                              }),
+                        ],
+                      ),
                     );
                   });
             });

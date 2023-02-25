@@ -97,6 +97,32 @@ func (s *service) AddBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest
 	return &result, nil
 }
 
+// Delete a BinkyNetLocalWorker by ID.
+func (s *service) DeleteBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest) (*api.CommandStation, error) {
+	csID, lwID, err := api.SplitParentChildID(req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	cs, err := s.getCommandStation(ctx, csID)
+	if err != nil {
+		return nil, err
+	}
+	bncs, ok := cs.(model.BinkyNetCommandStation)
+	if !ok {
+		return nil, api.NotFound(lwID)
+	}
+	lw, ok := bncs.GetLocalWorkers().Get(lwID)
+	if !ok {
+		return nil, api.NotFound(lwID)
+	}
+	bncs.GetLocalWorkers().Remove(lw)
+	var result api.CommandStation
+	if err := result.FromModel(ctx, cs); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Adds a new BinkyNetDevice to the local worker identified by given by ID.
 func (s *service) AddBinkyNetDevice(ctx context.Context, req *api.IDRequest) (*api.BinkyNetDevice, error) {
 	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
@@ -111,6 +137,29 @@ func (s *service) AddBinkyNetDevice(ctx context.Context, req *api.IDRequest) (*a
 	return &result, nil
 }
 
+// Delete a BinkyNetDevice by ID.
+func (s *service) DeleteBinkyNetDevice(ctx context.Context, req *api.SubIDRequest) (*api.BinkyNetLocalWorker, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var dev model.BinkyNetDevice
+	lw.GetDevices().ForEach(func(x model.BinkyNetDevice) {
+		if x.GetID() == req.GetSubId() {
+			dev = x
+		}
+	})
+	if dev == nil {
+		return nil, fmt.Errorf("device '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
+	}
+	lw.GetDevices().Remove(dev)
+	var result api.BinkyNetLocalWorker
+	if err := result.FromModel(ctx, lw); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Adds a new BinkyNetObject to the local worker identified by given by ID.
 func (s *service) AddBinkyNetObject(ctx context.Context, req *api.IDRequest) (*api.BinkyNetObject, error) {
 	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
@@ -120,6 +169,29 @@ func (s *service) AddBinkyNetObject(ctx context.Context, req *api.IDRequest) (*a
 	bnObj := lw.GetObjects().AddNew(ctx)
 	var result api.BinkyNetObject
 	if err := result.FromModel(ctx, bnObj); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Delete a BinkyNetObject by ID.
+func (s *service) DeleteBinkyNetObject(ctx context.Context, req *api.SubIDRequest) (*api.BinkyNetLocalWorker, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var obj model.BinkyNetObject
+	lw.GetObjects().ForEach(func(x model.BinkyNetObject) {
+		if x.GetID() == req.GetSubId() {
+			obj = x
+		}
+	})
+	if obj == nil {
+		return nil, fmt.Errorf("object '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
+	}
+	lw.GetObjects().Remove(obj)
+	var result api.BinkyNetLocalWorker
+	if err := result.FromModel(ctx, lw); err != nil {
 		return nil, err
 	}
 	return &result, nil

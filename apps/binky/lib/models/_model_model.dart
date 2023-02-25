@@ -825,6 +825,16 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given local worker
+  Future<void> deleteBinkyNetLocalWorker(mapi.BinkyNetLocalWorker value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated = await modelClient
+        .deleteBinkyNetLocalWorker(mapi.IDRequest(id: value.id));
+    _binkynetLocalWorkers.remove(value.id);
+    _commandStations[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Add a new device to a binkynet local worker
   Future<mapi.BinkyNetDevice> addBinkyNetDevice(String localWorkerId) async {
     var modelClient = mapi.APIClient().modelClient();
@@ -836,6 +846,15 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given binkynet device from the given local worker
+  Future<void> deleteBinkyNetDevice(
+      mapi.BinkyNetLocalWorker lw, mapi.BinkyNetDevice value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    _binkynetLocalWorkers[lw.id] = await modelClient
+        .deleteBinkyNetDevice(mapi.SubIDRequest(id: lw.id, subId: value.id));
+    notifyListeners();
+  }
+
   // Add a new object to a binkynet local worker
   Future<mapi.BinkyNetObject> addBinkyNetObject(String localWorkerId) async {
     var modelClient = mapi.APIClient().modelClient();
@@ -845,6 +864,15 @@ class ModelModel extends ChangeNotifier {
         .getBinkyNetLocalWorker(mapi.IDRequest(id: localWorkerId));
     notifyListeners();
     return added;
+  }
+
+  // Delete the given binkynet object from the given local worker
+  Future<void> deleteBinkyNetObject(
+      mapi.BinkyNetLocalWorker lw, mapi.BinkyNetObject value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    _binkynetLocalWorkers[lw.id] = await modelClient
+        .deleteBinkyNetObject(mapi.SubIDRequest(id: lw.id, subId: value.id));
+    notifyListeners();
   }
 
   // Add a new object to a binkynet local worker
