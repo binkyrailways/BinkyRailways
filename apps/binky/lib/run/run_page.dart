@@ -96,7 +96,7 @@ class _RunPageState extends State<RunPage> {
                         child: RailwayCanvas(
                       viewSettings: _viewSettings,
                     )),
-                    HardwareModulesPane(),
+                    const HardwareModulesPane(),
                   ]),
                 ),
               );
