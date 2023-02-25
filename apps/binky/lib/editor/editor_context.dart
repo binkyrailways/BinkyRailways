@@ -229,20 +229,17 @@ class EntitySelector {
   }
 }
 
-class EditorContext extends ChangeNotifier {
-  EntitySelector selector = EntitySelector.initial();
+abstract class EditorContext extends ChangeNotifier {
+  // Gets the current entity selector
+  EntitySelector get selector;
 
-  bool get canGoBack => selector.parent != null;
+  // If set, goBack can be called successfully.
+  bool get canGoBack;
 
-  void goBack() {
-    selector = selector.parent ?? selector;
-    notifyListeners();
-  }
+  // If set, the program is in running state
+  bool get isRunningState;
 
-  void select(EntitySelector selector, {bool notify = true}) {
-    this.selector = selector;
-    if (notify) {
-      notifyListeners();
-    }
-  }
+  void goBack();
+
+  void select(EntitySelector selector, {bool notify = true});
 }

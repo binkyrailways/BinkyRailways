@@ -98,6 +98,7 @@ class _LocSettingsState extends State<_LocSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final editorCtx = Provider.of<EditorContext>(context);
     final hasImage = widget.loc.imageUrl.isNotEmpty;
     return ScrollableForm(
       child: Column(
@@ -125,6 +126,7 @@ class _LocSettingsState extends State<_LocSettings> {
           SettingsAddressField(
               address: widget.loc.address,
               label: "Address",
+              disabled: editorCtx.isRunningState,
               onLostFocus: (value) async {
                 final loc = await widget.model.getLoc(widget.loc.id);
                 var update = loc.deepCopy()..address = value;
@@ -135,6 +137,7 @@ class _LocSettingsState extends State<_LocSettings> {
               label: "Speed steps",
               keyboardType: TextInputType.number,
               validator: _speedStepsValidator.validate,
+              disabled: editorCtx.isRunningState,
               onLostFocus: (value) async {
                 final loc = await widget.model.getLoc(widget.loc.id);
                 var update = loc.deepCopy()..speedSteps = int.parse(value);

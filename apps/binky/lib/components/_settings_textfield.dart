@@ -39,6 +39,7 @@ class SettingsTextField extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final String? helperText;
+  final bool disabled;
 
   const SettingsTextField({
     Key? key,
@@ -52,6 +53,7 @@ class SettingsTextField extends StatelessWidget {
     this.prefix,
     this.suffix,
     this.helperText,
+    this.disabled = false,
   }) : super(key: key);
 
   @override
@@ -67,12 +69,14 @@ class SettingsTextField extends StatelessWidget {
           autocorrect: autocorrect,
           validator: validator,
           autovalidateMode: AutovalidateMode.always,
+          readOnly: disabled,
           decoration: InputDecoration(
             border: const UnderlineInputBorder(),
             label: Text(label),
             prefix: prefix,
             suffix: suffix,
             helperText: helperText,
+            filled: disabled,
           ),
         ),
         onFocusChange: (bool hasFocus) async {

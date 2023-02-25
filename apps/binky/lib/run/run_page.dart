@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/canvas/view_settings.dart';
+import 'package:binky/run/run_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
@@ -27,6 +28,8 @@ import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';
 import 'hardware_modules_pane.dart';
+import '../editor/editor_context.dart';
+import './run_editor_context.dart';
 
 class RunPage extends StatefulWidget {
   const RunPage({Key? key}) : super(key: key);
@@ -54,58 +57,67 @@ class _RunPageState extends State<RunPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<RunContext>(
-      create: (context) => RunContext(),
-      child: Consumer<StateModel>(builder: (context, state, child) {
-        return FutureBuilder<RailwayState>(
-            future: state.getRailwayState(),
-            initialData: state.getCachedRailwayState(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+    return ChangeNotifierProvider<EditorContext>(
+      create: (context) => RunEditorContext(),
+      child: ChangeNotifierProvider<RunContext>(
+        create: (context) => RunContext(),
+        child: Consumer<StateModel>(builder: (context, state, child) {
+          return FutureBuilder<RailwayState>(
+              future: state.getRailwayState(),
+              initialData: state.getCachedRailwayState(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      // Here we take the value from the MyHomePage object that was created by
+                      // the App.build method, and use it to set our appbar title.
+                      title: const Text("Binky Railways"),
+                    ),
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Text('Loading railway...'),
+                          CircularProgressIndicator(value: null),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                var rwState = snapshot.data!;
+                final editorCtx = Provider.of<EditorContext>(context);
+                final selector = editorCtx.selector;
+                final hasEditor = selector.entityType != EntityType.unknown;
                 return Scaffold(
                   appBar: AppBar(
                     // Here we take the value from the MyHomePage object that was created by
                     // the App.build method, and use it to set our appbar title.
-                    title: const Text("Binky Railways"),
+                    title: Text(
+                        "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
+                    actions: _buildActions(context, state, editorCtx),
                   ),
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const <Widget>[
-                        Text('Loading railway...'),
-                        CircularProgressIndicator(value: null),
-                      ],
-                    ),
+                  body: SplitView(
+                    menuWidth: 300,
+                    menu: const ControlPane(),
+                    endMenu: hasEditor ? const RunEditor() : null,
+                    endMenuWidth: hasEditor ? 300 : 0,
+                    content: Column(children: [
+                      Expanded(
+                          child: RailwayCanvas(
+                        viewSettings: _viewSettings,
+                      )),
+                      const HardwareModulesPane(),
+                    ]),
                   ),
                 );
-              }
-              var rwState = snapshot.data!;
-              return Scaffold(
-                appBar: AppBar(
-                  // Here we take the value from the MyHomePage object that was created by
-                  // the App.build method, and use it to set our appbar title.
-                  title: Text(
-                      "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
-                  actions: _buildActions(context, state),
-                ),
-                body: SplitView(
-                  menuWidth: 300,
-                  menu: const ControlPane(),
-                  content: Column(children: [
-                    Expanded(
-                        child: RailwayCanvas(
-                      viewSettings: _viewSettings,
-                    )),
-                    const HardwareModulesPane(),
-                  ]),
-                ),
-              );
-            });
-      }),
+              });
+        }),
+      ),
     );
   }
 
-  List<Widget>? _buildActions(BuildContext context, StateModel state) {
+  List<Widget>? _buildActions(
+      BuildContext context, StateModel state, EditorContext editorCtx) {
     final List<Widget> list = [];
     final rwState = state.getCachedRailwayState();
     if (rwState != null) {
@@ -142,6 +154,23 @@ class _RunPageState extends State<RunPage> {
           ));
         }
       }
+    }
+    if (editorCtx.selector.entityType == EntityType.unknown) {
+      list.add(IconButton(
+        icon: const Icon(Icons.edit_note),
+        tooltip: "Show inline editor",
+        onPressed: () {
+          editorCtx.select(EntitySelector.locs());
+        },
+      ));
+    } else {
+      list.add(IconButton(
+        icon: const Icon(Icons.edit_off),
+        tooltip: "Hide inline editor",
+        onPressed: () {
+          editorCtx.select(EntitySelector.initial());
+        },
+      ));
     }
     list.add(IconButton(
       icon: const Icon(Icons.stop_rounded),

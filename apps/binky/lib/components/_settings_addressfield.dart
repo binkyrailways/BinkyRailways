@@ -22,12 +22,14 @@ class SettingsAddressField extends StatefulWidget {
   final String address;
   final String label;
   final SettingsTextFieldLostFocus onLostFocus;
+  final bool disabled;
 
   const SettingsAddressField({
     Key? key,
     required this.address,
     required this.label,
     required this.onLostFocus,
+    this.disabled = false,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,7 @@ class _SettingsAddressFieldState extends State<SettingsAddressField> {
       label: widget.label,
       onLostFocus: widget.onLostFocus,
       validator: _addressValidator.validate,
+      disabled: widget.disabled,
     );
   }
 }

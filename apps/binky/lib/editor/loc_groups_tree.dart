@@ -61,15 +61,17 @@ class LocGroupsTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.locGroup(lg)),
                       selected: selector.idOf(EntityType.locgroup) == id,
-                      trailing: MorePopupMenu<String>(
-                        items: [
-                          PopupMenuItem<String>(
-                              child: const Text('Remove'),
-                              onTap: () async {
-                                await model.deleteLocGroup(lg);
-                              }),
-                        ],
-                      ),
+                      trailing: editorCtx.isRunningState
+                          ? null
+                          : MorePopupMenu<String>(
+                              items: [
+                                PopupMenuItem<String>(
+                                    child: const Text('Remove'),
+                                    onTap: () async {
+                                      await model.deleteLocGroup(lg);
+                                    }),
+                              ],
+                            ),
                     );
                   });
             });

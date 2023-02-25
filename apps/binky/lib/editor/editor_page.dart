@@ -78,7 +78,7 @@ class _EditorPageState extends State<EditorPage> {
   Widget build(BuildContext context) {
     final model = Provider.of<ModelModel>(context, listen: false);
     return ChangeNotifierProvider<EditorContext>(
-        create: (context) => EditorContext(),
+        create: (context) => _EditorPageContext(),
         child: FutureBuilder<Railway>(
             future: model.getRailway(),
             builder: (context, snapshot) {
@@ -730,6 +730,32 @@ class _EditorPageState extends State<EditorPage> {
         return [];
       default:
         return [];
+    }
+  }
+}
+
+class _EditorPageContext extends ChangeNotifier implements EditorContext {
+  @override
+  EntitySelector selector = EntitySelector.initial();
+
+  @override
+  bool get canGoBack => selector.parent != null;
+
+  // If set, the program is in running state
+  @override
+  bool get isRunningState => false;
+
+  @override
+  void goBack() {
+    selector = selector.parent ?? selector;
+    notifyListeners();
+  }
+
+  @override
+  void select(EntitySelector selector, {bool notify = true}) {
+    this.selector = selector;
+    if (notify) {
+      notifyListeners();
     }
   }
 }
