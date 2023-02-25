@@ -18,7 +18,7 @@
 import 'package:flutter/material.dart';
 
 class RunContext extends ChangeNotifier {
-  String? selectedLocId = null;
+  String? selectedLocId;
 
   void selectLoc(String? value) {
     selectedLocId = value;

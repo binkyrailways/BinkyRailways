@@ -19,13 +19,26 @@ import 'package:flutter/material.dart';
 
 class MorePopupMenu<T> extends StatelessWidget {
   final List<PopupMenuItem<T>> items;
+  final IconData icon;
+  final double? iconSize;
+  final Color? iconColor;
 
-  const MorePopupMenu({Key? key, required this.items}) : super(key: key);
+  const MorePopupMenu(
+      {Key? key,
+      required this.items,
+      this.icon = Icons.more_vert,
+      this.iconSize,
+      this.iconColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: const Icon(Icons.more_vert),
+      child: Icon(
+        icon,
+        size: iconSize,
+        color: iconColor,
+      ),
       onTapDown: (TapDownDetails details) {
         showMenu<T>(
           context: context,

@@ -15,7 +15,11 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/api.dart';
+import 'package:binky/components/_more_popup_menu.dart';
+import 'package:binky/editor/editor_context.dart';
 import 'package:binky/run/run_context.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,66 +70,96 @@ class LocsTree extends StatelessWidget {
                 final stateText = loc.stateText;
                 final canBeControlledAutomatically =
                     loc.canBeControlledAutomatically;
+                final autoControlled = loc.controlledAutomaticallyActual;
+                final autoControlledConsistent =
+                    loc.controlledAutomaticallyActual ==
+                        loc.controlledAutomaticallyRequested;
+                final actions = _buildActions(context, state, loc, isAssigned);
+                final icon = canBeControlledAutomatically
+                    ? autoControlled
+                        ? Icons.computer
+                        : Icons.person
+                    : Icons.more_horiz;
                 return ListTile(
                   minLeadingWidth: 30,
                   dense: true,
                   visualDensity: VisualDensity.compact,
-                  leading: canBeControlledAutomatically
-                      ? GestureDetector(
-                          child: Icon(
-                            loc.controlledAutomaticallyActual
-                                ? Icons.computer
-                                : Icons.person,
-                            color: loc.controlledAutomaticallyActual ==
-                                    loc.controlledAutomaticallyRequested
-                                ? Colors.black
-                                : Colors.orange,
-                            size: 24,
-                          ),
-                          onTap: () async {
-                            await state.setLocControlledAutomatically(
-                                loc.model.id,
-                                !loc.controlledAutomaticallyRequested);
-                          },
+                  leading: (actions.isNotEmpty)
+                      ? MorePopupMenu(
+                          icon: icon,
+                          iconColor: canBeControlledAutomatically &&
+                                  !autoControlledConsistent
+                              ? Colors.orange
+                              : null,
+                          iconSize: 24,
+                          items: actions,
                         )
-                      : const Icon(
-                          Icons.indeterminate_check_box_outlined,
-                          size: 24,
-                        ),
-                  title: Text(loc.model.description),
+                      : Icon(icon, size: 24),
+                  title: Row(children: [
+                    Text(loc.model.description),
+                    Expanded(child: Container()),
+                    SizedBox(
+                        width: 24,
+                        height: 6,
+                        child: LinearProgressIndicator(
+                            color: _getSpeedColor(loc.speedActual / 100),
+                            value: loc.speedActual / 100)),
+                  ]),
                   subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
                   selected: selectedLocId == loc.model.id,
                   onTap: () {
                     runCtx.selectLoc(loc.model.id);
                   },
-                  trailing: isAssigned
-                      ? GestureDetector(
-                          child: const Icon(Icons.more_vert),
-                          onTapDown: (TapDownDetails details) {
-                            showMenu(
-                              context: context,
-                              useRootNavigator: true,
-                              position: RelativeRect.fromLTRB(
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy,
-                                  details.globalPosition.dx,
-                                  details.globalPosition.dy),
-                              items: [
-                                PopupMenuItem<String>(
-                                    child: const Text('Take of track'),
-                                    onTap: () async {
-                                      await state.takeLocOfTrack(loc.model.id);
-                                    }),
-                              ],
-                              elevation: 8.0,
-                            );
-                          },
-                        )
-                      : null,
                 );
               }
             });
       },
     );
+  }
+
+  List<PopupMenuItem<String>> _buildActions(
+      BuildContext context, StateModel state, LocState loc, bool isAssigned) {
+    final canBeControlledAutomatically = loc.canBeControlledAutomatically;
+    final List<PopupMenuItem<String>> actions = [];
+
+    if (canBeControlledAutomatically) {
+      if (loc.controlledAutomaticallyRequested) {
+        actions.add(PopupMenuItem(
+            child: const Text("Control manually"),
+            onTap: () async {
+              await state.setLocControlledAutomatically(loc.model.id, false);
+            }));
+      } else {
+        actions.add(PopupMenuItem(
+            child: const Text("Control automatically"),
+            onTap: () async {
+              await state.setLocControlledAutomatically(loc.model.id, true);
+            }));
+      }
+    }
+
+    if (isAssigned) {
+      actions.add(PopupMenuItem(
+          child: const Text('Take of track'),
+          onTap: () async {
+            await state.takeLocOfTrack(loc.model.id);
+          }));
+    } else {
+      actions.add(PopupMenuItem(
+          child: const Text('Edit'),
+          onTap: () {
+            final editorCtx =
+                Provider.of<EditorContext>(context, listen: false);
+            editorCtx.select(EntitySelector.loc(loc.model));
+          }));
+    }
+
+    return actions;
+  }
+
+  Color _getSpeedColor(double speed) {
+    return Colors.green
+        .darken(1.0 - speed)
+        .withAlpha(96 + (speed * 100).round());
   }
 }
