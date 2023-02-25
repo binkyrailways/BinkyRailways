@@ -32,38 +32,39 @@ class RunEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
     final selector = editorCtx.selector;
+    final theme = Theme.of(context);
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            IconButton(
-              tooltip: "Edit locs",
-              onPressed: () {
-                editorCtx.select(EntitySelector.locs());
-              },
-              icon: BinkyIcons.loc,
-            ),
-            IconButton(
-              tooltip: "Edit loc groups",
-              onPressed: () {
-                editorCtx.select(EntitySelector.locGroups());
-              },
-              icon: BinkyIcons.locGroup,
-            ),
-            Expanded(child: Container()),
-            IconButton(
-              onPressed: () {
-                editorCtx.select(EntitySelector.initial());
-              },
-              icon: const Icon(Icons.close),
-            ),
-          ],
-        ),
-        Expanded(
-          child: _buildContent(context, selector),
-        ),
-      ],
+    return Theme(
+      data: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(primary: Colors.lightGreen),
+      ),
+      child: Column(
+        children: [
+          AppBar(
+            title: const Text("Inline edit"),
+            primary: false,
+            actions: [
+              IconButton(
+                tooltip: "Edit locs",
+                onPressed: () {
+                  editorCtx.select(EntitySelector.locs());
+                },
+                icon: BinkyIcons.loc,
+              ),
+              IconButton(
+                tooltip: "Edit loc groups",
+                onPressed: () {
+                  editorCtx.select(EntitySelector.locGroups());
+                },
+                icon: BinkyIcons.locGroup,
+              ),
+            ],
+          ),
+          Expanded(
+            child: _buildContent(context, selector),
+          ),
+        ],
+      ),
     );
   }
 
