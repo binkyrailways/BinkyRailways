@@ -79,3 +79,17 @@ func (s *service) AddLocGroup(ctx context.Context, req *api.Empty) (*api.LocGrou
 	}
 	return &result, nil
 }
+
+// Delete a loc group by ID.
+func (s *service) DeleteLocGroup(ctx context.Context, req *api.IDRequest) (*api.Empty, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	locGroup, ok := rw.GetLocGroups().Get(req.GetId())
+	if !ok {
+		return nil, api.NotFound("Loc: %s", req.GetId())
+	}
+	rw.GetLocGroups().Remove(locGroup)
+	return &api.Empty{}, nil
+}

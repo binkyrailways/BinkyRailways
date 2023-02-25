@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/components.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,15 @@ class LocsTree extends StatelessWidget {
                       subtitle: Text(loc.address),
                       onTap: () => editorCtx.select(EntitySelector.loc(loc)),
                       selected: selector.idOf(EntityType.loc) == id,
+                      trailing: MorePopupMenu<String>(
+                        items: [
+                          PopupMenuItem<String>(
+                              child: const Text('Remove'),
+                              onTap: () async {
+                                await model.deleteLoc(loc);
+                              }),
+                        ],
+                      ),
                     );
                   });
             });

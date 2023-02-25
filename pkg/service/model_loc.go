@@ -114,3 +114,24 @@ func (s *service) AddLoc(ctx context.Context, req *api.Empty) (*api.Loc, error) 
 	}
 	return &result, nil
 }
+
+// Delete a loc by ID.
+func (s *service) DeleteLoc(ctx context.Context, req *api.IDRequest) (*api.Empty, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	locRef, ok := rw.GetLocs().Get(req.GetId())
+	if !ok {
+		return nil, api.NotFound("Loc: %s", req.GetId())
+	}
+	loc, err := locRef.TryResolve()
+	if err != nil {
+		return nil, err
+	}
+	rw.GetLocs().Remove(locRef)
+	if err := rw.GetPackage().Remove(loc); err != nil {
+		return nil, err
+	}
+	return &api.Empty{}, nil
+}

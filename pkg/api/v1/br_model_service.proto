@@ -45,6 +45,8 @@ service ModelService {
   rpc UpdateModule(Module) returns (Module);
   // Adds a new module.
   rpc AddModule(Empty) returns (Module);
+  // Delete the module with the given ID.
+  rpc DeleteModule(IDRequest) returns (Empty);
 
   // Gets a loc by ID.
   rpc GetLoc(IDRequest) returns (Loc);
@@ -52,6 +54,8 @@ service ModelService {
   rpc UpdateLoc(Loc) returns (Loc);
   // Adds a new loc.
   rpc AddLoc(Empty) returns (Loc);
+  // Delete the loc with the given ID.
+  rpc DeleteLoc(IDRequest) returns (Empty);
 
   // Gets a loc group by ID.
   rpc GetLocGroup(IDRequest) returns (LocGroup);
@@ -59,6 +63,8 @@ service ModelService {
   rpc UpdateLocGroup(LocGroup) returns (LocGroup);
   // Adds a new loc group.
   rpc AddLocGroup(Empty) returns (LocGroup);
+  // Delete the loc group with the given ID.
+  rpc DeleteLocGroup(IDRequest) returns (Empty);
 
   // Gets a command station by ID.
   rpc GetCommandStation(IDRequest) returns (CommandStation);

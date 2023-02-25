@@ -109,3 +109,24 @@ func (s *service) AddModule(ctx context.Context, req *api.Empty) (*api.Module, e
 	}
 	return &result, nil
 }
+
+// Delete a module by ID.
+func (s *service) DeleteModule(ctx context.Context, req *api.IDRequest) (*api.Empty, error) {
+	rw, err := s.getRailway()
+	if err != nil {
+		return nil, err
+	}
+	modRef, ok := rw.GetModules().Get(req.GetId())
+	if !ok {
+		return nil, api.NotFound("Module: %s", req.GetId())
+	}
+	module, err := modRef.TryResolve()
+	if err != nil {
+		return nil, err
+	}
+	rw.GetModules().Remove(modRef)
+	if err := rw.GetPackage().Remove(module); err != nil {
+		return nil, err
+	}
+	return &api.Empty{}, nil
+}

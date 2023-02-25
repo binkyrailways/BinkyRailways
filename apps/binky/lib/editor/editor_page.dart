@@ -369,6 +369,19 @@ class _EditorPageState extends State<EditorPage> {
             },
           ),
           IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () async {
+              try {
+                await model.reloadAll();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to reload all",
+                    content: Text("$err"));
+              }
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.play_arrow_rounded),
             tooltip: "Run",
             onPressed: () async {

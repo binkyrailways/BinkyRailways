@@ -16,11 +16,11 @@
 //
 
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/components.dart';
 import 'package:binky/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components.dart';
 import '../models.dart';
 import '../api.dart';
 
@@ -64,6 +64,15 @@ class ModulesTree extends StatelessWidget {
                       onTap: () =>
                           editorCtx.select(EntitySelector.module(module, null)),
                       selected: selector.idOf(EntityType.module) == id,
+                      trailing: MorePopupMenu<String>(
+                        items: [
+                          PopupMenuItem<String>(
+                              child: const Text('Remove'),
+                              onTap: () async {
+                                await model.deleteModule(module);
+                              }),
+                        ],
+                      ),
                     );
                   });
             });

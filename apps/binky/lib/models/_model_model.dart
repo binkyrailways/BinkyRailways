@@ -42,6 +42,32 @@ class ModelModel extends ChangeNotifier {
 
   ModelModel();
 
+  // Flush all caches and force a reload.
+  Future<void> reloadAll() async {
+    // Clear all caches
+    _railway = null;
+    _modules.clear();
+    _images.clear();
+    _moduleBackgroundImages.clear();
+    _locs.clear();
+    _locGroups.clear();
+    _commandStations.clear();
+    _blocks.clear();
+    _blockGroups.clear();
+    _edges.clear();
+    _junctions.clear();
+    _outputs.clear();
+    _routes.clear();
+    _sensors.clear();
+    _signals.clear();
+    _binkynetLocalWorkers.clear();
+
+    // Reload
+    var modelClient = mapi.APIClient().modelClient();
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+  }
+
   // Is a railway already loaded?
   bool isRailwayLoaded() => _railway != null;
 
@@ -154,6 +180,16 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given module
+  Future<void> deleteModule(mapi.Module value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final id = value.id;
+    await modelClient.deleteModule(mapi.IDRequest(id: id));
+    _modules.remove(id);
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+  }
+
   // Gets a loc by ID from cache
   mapi.Loc? getCachedLoc(String id) => _locs[id];
 
@@ -189,6 +225,16 @@ class ModelModel extends ChangeNotifier {
     return added;
   }
 
+  // Delete the given loc
+  Future<void> deleteLoc(mapi.Loc value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final id = value.id;
+    await modelClient.deleteLoc(mapi.IDRequest(id: id));
+    _locs.remove(id);
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+  }
+
   // Gets a loc group by ID from cache
   mapi.LocGroup? getCachedLocGroup(String id) => _locGroups[id];
 
@@ -222,6 +268,16 @@ class ModelModel extends ChangeNotifier {
     _railway = await modelClient.getRailway(mapi.Empty());
     notifyListeners();
     return added;
+  }
+
+  // Delete the given loc group
+  Future<void> deleteLocGroup(mapi.LocGroup value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final id = value.id;
+    await modelClient.deleteLocGroup(mapi.IDRequest(id: id));
+    _locGroups.remove(id);
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
   }
 
   // Gets a CommandStation by ID from cache

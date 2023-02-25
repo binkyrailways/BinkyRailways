@@ -56,6 +56,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddModule',
       ($1.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Module.fromBuffer(value));
+  static final _$deleteModule = $grpc.ClientMethod<$0.IDRequest, $1.Empty>(
+      '/binkyrailways.v1.ModelService/DeleteModule',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
   static final _$getLoc = $grpc.ClientMethod<$0.IDRequest, $1.Loc>(
       '/binkyrailways.v1.ModelService/GetLoc',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -68,6 +72,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddLoc',
       ($1.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Loc.fromBuffer(value));
+  static final _$deleteLoc = $grpc.ClientMethod<$0.IDRequest, $1.Empty>(
+      '/binkyrailways.v1.ModelService/DeleteLoc',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
   static final _$getLocGroup = $grpc.ClientMethod<$0.IDRequest, $1.LocGroup>(
       '/binkyrailways.v1.ModelService/GetLocGroup',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -80,6 +88,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/AddLocGroup',
       ($1.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.LocGroup.fromBuffer(value));
+  static final _$deleteLocGroup = $grpc.ClientMethod<$0.IDRequest, $1.Empty>(
+      '/binkyrailways.v1.ModelService/DeleteLocGroup',
+      ($0.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
   static final _$getCommandStation =
       $grpc.ClientMethod<$0.IDRequest, $1.CommandStation>(
           '/binkyrailways.v1.ModelService/GetCommandStation',
@@ -347,6 +359,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addModule, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Empty> deleteModule($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteModule, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.Loc> getLoc($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getLoc, request, options: options);
@@ -362,6 +379,11 @@ class ModelServiceClient extends $grpc.Client {
     return $createUnaryCall(_$addLoc, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.Empty> deleteLoc($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteLoc, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.LocGroup> getLocGroup($0.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getLocGroup, request, options: options);
@@ -375,6 +397,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.LocGroup> addLocGroup($1.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addLocGroup, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Empty> deleteLocGroup($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteLocGroup, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.CommandStation> getCommandStation(
@@ -706,6 +733,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($1.Module value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Empty>(
+        'DeleteModule',
+        deleteModule_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Loc>(
         'GetLoc',
         getLoc_Pre,
@@ -727,6 +761,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($1.Loc value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Empty>(
+        'DeleteLoc',
+        deleteLoc_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.LocGroup>(
         'GetLocGroup',
         getLocGroup_Pre,
@@ -748,6 +789,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($1.LocGroup value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Empty>(
+        'DeleteLocGroup',
+        deleteLocGroup_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.CommandStation>(
         'GetCommandStation',
         getCommandStation_Pre,
@@ -1140,6 +1188,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addModule(call, await request);
   }
 
+  $async.Future<$1.Empty> deleteModule_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteModule(call, await request);
+  }
+
   $async.Future<$1.Loc> getLoc_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getLoc(call, await request);
@@ -1155,6 +1208,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addLoc(call, await request);
   }
 
+  $async.Future<$1.Empty> deleteLoc_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteLoc(call, await request);
+  }
+
   $async.Future<$1.LocGroup> getLocGroup_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getLocGroup(call, await request);
@@ -1168,6 +1226,11 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.LocGroup> addLocGroup_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return addLocGroup(call, await request);
+  }
+
+  $async.Future<$1.Empty> deleteLocGroup_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return deleteLocGroup(call, await request);
   }
 
   $async.Future<$1.CommandStation> getCommandStation_Pre(
@@ -1425,15 +1488,21 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$1.Module> updateModule(
       $grpc.ServiceCall call, $1.Module request);
   $async.Future<$1.Module> addModule($grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.Empty> deleteModule(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Loc> getLoc($grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Loc> updateLoc($grpc.ServiceCall call, $1.Loc request);
   $async.Future<$1.Loc> addLoc($grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.Empty> deleteLoc(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.LocGroup> getLocGroup(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.LocGroup> updateLocGroup(
       $grpc.ServiceCall call, $1.LocGroup request);
   $async.Future<$1.LocGroup> addLocGroup(
       $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.Empty> deleteLocGroup(
+      $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.CommandStation> getCommandStation(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.CommandStation> updateCommandStation(
