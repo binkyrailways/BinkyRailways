@@ -47,7 +47,11 @@ func newBlock(en model.Block, railway Railway) Block {
 	b := &block{
 		entity: newEntity(railway.Logger().With().Str("block", en.GetDescription()).Logger(), en, railway),
 	}
-	b.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
+	b.lockable = newLockable(railway, b, func(ctx context.Context, cb func(state.Lockable) error) error {
+		// iterate children
+		for _, x := range b.junctions {
+			cb(x)
+		}
 		return nil
 	}, func(ctx context.Context) {
 		// OnUnlock

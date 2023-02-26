@@ -81,6 +81,32 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.waitAfterCurrentRoute.Configure(&l.waitAfterCurrentRoute, "waitAfterCurrentRoute", l, railway, railway)
 	l.durationExceedsCurrentRouteTime.Configure(&l.durationExceedsCurrentRouteTime, "durationExceedsCurrentRouteTime", l, railway, railway)
 	l.autoLocState.Configure(&l.autoLocState, "autoLocState", l, railway, railway)
+	l.autoLocState.SubscribeActualChanges(func(ctx context.Context, newState state.AutoLocState) {
+		route := l.GetCurrentRoute().GetActual(ctx)
+		switch newState {
+		case state.Running:
+			// Setup max duration exceeds time
+			if route == nil {
+				// Set to MaxValue
+				l.GetDurationExceedsCurrentRouteTime().SetActual(ctx, time.Now().AddDate(100, 0, 0))
+			} else {
+				// Set to now + max duration of route
+				l.GetDurationExceedsCurrentRouteTime().SetActual(ctx, time.Now().Add(time.Second*time.Duration(route.GetRoute().GetMaxDuration(ctx))))
+			}
+		case state.AssignRoute, state.ReachedDestination:
+			// Reset max duration exceeds time
+			l.GetDurationExceedsCurrentRouteTime().SetActual(ctx, time.Now().AddDate(100, 0, 0))
+		}
+		// Trigger actions
+		if route != nil {
+			switch newState {
+			case state.EnteringDestination:
+				route.GetRoute().FireEnteringDestinationTrigger(ctx, l)
+			case state.ReachedDestination:
+				route.GetRoute().FireDestinationReachedTrigger(ctx, l)
+			}
+		}
+	})
 	l.nextRoute.Configure(&l.nextRoute, "nextRoute", l, railway, railway)
 	l.currentBlock.Configure(&l.currentBlock, "currentBlock", l, railway, railway)
 	l.currentBlockEnterSide.Configure(&l.currentBlockEnterSide, "currentBlockEnterSide", l, railway, railway)
@@ -109,6 +135,17 @@ func newLoc(en model.Loc, railway Railway) Loc {
 		}
 	})
 	l.controlledAutomatically.Configure("controlledAutomatically", l, railway, railway)
+	l.controlledAutomatically.SubscribeActualChanges(func(ctx context.Context, newValue bool) {
+		if !newValue {
+			// Unlock next route (if needed)
+			route := l.GetNextRoute().GetActual(ctx)
+			if route != nil {
+				l.GetNextRoute().SetActual(ctx, nil)
+				block := l.GetCurrentBlock().GetActual(ctx)
+				route.Unlock(ctx, block)
+			}
+		}
+	})
 	l.currentRoute.Configure(&l.currentRoute, "currentRoute", l, railway, railway)
 	l.recentlyVisitedBlocks = newRecentlyVisitedBlocks(railway)
 	l.currentBlock.SubscribeActualChanges(func(ctx context.Context, b state.Block) {
@@ -474,7 +511,7 @@ func (l *loc) Reset(ctx context.Context) {
 		})
 	}
 	go func() {
-		ctx, cancel := context.WithCancel(ctx)
+		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		backoff.Retry(attempt, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(time.Second/10), 25), ctx))
 	}()

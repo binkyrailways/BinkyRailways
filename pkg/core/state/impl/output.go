@@ -36,11 +36,11 @@ type output struct {
 }
 
 // Create a new entity
-func newOutput(en model.Output, railway Railway) output {
+func newOutput(en model.Output, this state.Lockable, railway Railway) output {
 	s := output{
 		entity: newEntity(railway.Logger().With().Str("output", en.GetDescription()).Logger(), en, railway),
 	}
-	s.lockable = newLockable(railway, func(ctx context.Context, f func(state.Lockable) error) error {
+	s.lockable = newLockable(railway, this, func(ctx context.Context, f func(state.Lockable) error) error {
 		return nil
 	})
 	return s

@@ -32,6 +32,7 @@ type Lockable interface {
 }
 
 type lockable struct {
+	this            state.Lockable
 	iterateChildren func(context.Context, func(state.Lockable) error) error
 	onUnlocked      []func(context.Context)
 
@@ -46,8 +47,9 @@ const (
 )
 
 // newLockable initializes a new lockable
-func newLockable(exclusive util.Exclusive, iterateChildren func(context.Context, func(state.Lockable) error) error, onUnlocked ...func(context.Context)) lockable {
+func newLockable(exclusive util.Exclusive, this state.Lockable, iterateChildren func(context.Context, func(state.Lockable) error) error, onUnlocked ...func(context.Context)) lockable {
 	return lockable{
+		this:            this,
 		exclusive:       exclusive,
 		iterateChildren: iterateChildren,
 		onUnlocked:      onUnlocked,
@@ -70,9 +72,9 @@ func (l *lockable) ValidateLockedBy(ctx context.Context, loc state.Loc) error {
 	current := l.lockedBy
 	if current != loc {
 		if current == nil {
-			return fmt.Errorf("Expect object to be locked by '%s', but is not locked at all", loc.GetDescription())
+			return fmt.Errorf("expect object to be locked by '%s', but is not locked at all", loc.GetDescription())
 		}
-		return fmt.Errorf("Expect object to be locked by '%s', but it is not locked by '%s'", loc.GetDescription(), current.GetDescription())
+		return fmt.Errorf("expect object to be locked by '%s', but it is not locked by '%s'", loc.GetDescription(), current.GetDescription())
 	}
 	return nil
 }
@@ -107,20 +109,38 @@ func (l *lockable) CanLock(ctx context.Context, owner state.Loc) (lockedBy state
 // Also lock all underlying entities.
 func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 	return l.exclusive.Exclusive(ctx, lockTimeout, "Lock", func(ctx context.Context) error {
+		if owner == nil {
+			return fmt.Errorf("cannot Lock with nil owner")
+		}
 		ownerImpl, ok := owner.(Loc)
 		if !ok {
 			return fmt.Errorf("owner does not implement Loc")
 		}
-		if lockedBy, canLock := l.CanLock(ctx, ownerImpl); !canLock {
-			return fmt.Errorf("Already locked by %s", lockedBy.GetDescription())
+		// Lock if not already locked
+		var lockedNow []state.Lockable
+		if l.lockedBy != ownerImpl {
+			if lockedBy, canLock := l.CanLock(ctx, ownerImpl); !canLock {
+				return fmt.Errorf("already locked by %s", lockedBy.GetDescription())
+			}
+			// Lock myself
+			l.lockedBy = ownerImpl
+			ownerImpl.AddLockedEntity(ctx, l.this)
+			lockedNow = append(lockedNow, l.this)
 		}
-		l.lockedBy = ownerImpl
-		return l.iterateChildren(ctx, func(child state.Lockable) error {
+		if err := l.iterateChildren(ctx, func(child state.Lockable) error {
 			if err := child.Lock(ctx, ownerImpl); err != nil {
 				return err
 			}
+			lockedNow = append(lockedNow, child)
 			return nil
-		})
+		}); err != nil {
+			// Underlying lock failed, unlock everything
+			for _, x := range lockedNow {
+				x.Unlock(ctx, nil)
+			}
+			return err
+		}
+		return nil
 	})
 }
 
@@ -128,19 +148,46 @@ func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 // Also unlock all underlying entities except the given exclusion and the underlying entities of the given exclusion.
 func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 	l.exclusive.Exclusive(ctx, unlockTimeout, "Unlock", func(ctx context.Context) error {
-		if l == exclusion {
+		if l.lockedBy == nil {
+			// Not locked, we're done
 			return nil
 		}
-		l.lockedBy = nil
+		// Unlock children
 		l.iterateChildren(ctx, func(child state.Lockable) error {
-			if child != exclusion {
-				child.Unlock(ctx, exclusion)
-			}
+			child.Unlock(ctx, exclusion)
 			return nil
 		})
+		// Unlock me
+		if !l.excludeMe(ctx, exclusion) {
+			l.lockedBy.RemoveLockedEntity(ctx, l.this)
+			l.lockedBy = nil
+		}
+		// TODO
+		//		OnActualStateChanged();
 		for _, cb := range l.onUnlocked {
 			cb(ctx)
 		}
 		return nil
 	})
+}
+
+// Should this state (l) be excluded given the exclusion?
+func (l *lockable) excludeMe(ctx context.Context, exclusion state.Lockable) bool {
+	if exclusion == nil {
+		return false
+	}
+	if exclusion == l.this {
+		return true
+	}
+	if impl, ok := exclusion.(*lockable); ok {
+		contains := false
+		impl.iterateChildren(ctx, func(l state.Lockable) error {
+			if l == exclusion {
+				contains = true
+			}
+			return nil
+		})
+		return contains
+	}
+	return false
 }

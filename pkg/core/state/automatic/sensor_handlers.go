@@ -237,6 +237,9 @@ func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, l
 	// Release the current route, except for the current block.
 	loc.GetCurrentBlock().SetActual(ctx, currentBlock)
 	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide(ctx))
+	// Test that current block is locked
+	state.AssertLockedBy(ctx, currentBlock, loc)
+	// Unlock the route
 	route.GetRoute().Unlock(ctx, currentBlock)
 	// Make sure the current block is still locked
 	state.AssertLockedBy(ctx, currentBlock, loc)

@@ -42,9 +42,8 @@ var _ Switch = &stdSwitch{}
 
 // Create a new entity
 func newSwitch(en model.Switch, railway Railway) Switch {
-	bo := &stdSwitch{
-		junction: newJunction(en, railway),
-	}
+	bo := &stdSwitch{}
+	bo.junction = newJunction(en, bo, railway)
 	bo.direction.Configure("direction", bo, railway, railway)
 	bo.direction.SetActual(context.Background(), model.SwitchDirectionStraight)
 	bo.direction.SetRequested(context.Background(), model.SwitchDirectionStraight)

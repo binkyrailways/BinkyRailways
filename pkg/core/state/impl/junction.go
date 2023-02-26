@@ -36,11 +36,11 @@ type junction struct {
 }
 
 // Create a new entity
-func newJunction(en model.Junction, railway Railway) junction {
+func newJunction(en model.Junction, this state.Lockable, railway Railway) junction {
 	s := junction{
 		entity: newEntity(railway.Logger().With().Str("junction", en.GetDescription()).Logger(), en, railway),
 	}
-	s.lockable = newLockable(railway, func(c context.Context, f func(state.Lockable) error) error {
+	s.lockable = newLockable(railway, this, func(c context.Context, f func(state.Lockable) error) error {
 		return nil
 	})
 	return s

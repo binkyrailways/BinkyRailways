@@ -50,7 +50,8 @@ func newRoute(en model.Route, railway Railway) Route {
 		entity: newEntity(railway.Logger().With().Str("route", en.GetDescription()).Logger(), en, railway),
 		csr:    &criticalSectionRoutes{},
 	}
-	r.lockable = newLockable(railway, func(ctx context.Context, cb func(state.Lockable) error) error {
+	r.lockable = newLockable(railway, r, func(ctx context.Context, cb func(state.Lockable) error) error {
+		// iterate children
 		if r.from != nil {
 			cb(r.from)
 		}
