@@ -87,13 +87,13 @@ func (bg *blockGroup) ForEachBlock(cb func(state.Block)) {
 	}
 }
 
-/// The minimum number of locs that must be present in this group.
-/// Locs cannot leave if that results in a lower number of locs in this group.
+// / The minimum number of locs that must be present in this group.
+// / Locs cannot leave if that results in a lower number of locs in this group.
 func (bg *blockGroup) GetMinimumLocsInGroup(context.Context) int {
 	return bg.getBlockGroup().GetMinimumLocsInGroup()
 }
 
-/// Is the condition met to require the minimum number of locs in this group?
+// / Is the condition met to require the minimum number of locs in this group?
 func (bg *blockGroup) IsMinimumLocsInGroupEnabled(ctx context.Context) bool {
 	assignedLocs := 0
 	bg.railway.ForEachLoc(func(l state.Loc) {
@@ -104,13 +104,13 @@ func (bg *blockGroup) IsMinimumLocsInGroupEnabled(ctx context.Context) bool {
 	return assignedLocs >= bg.getBlockGroup().GetMinimumLocsOnTrackForMinimumLocsInGroupStart()
 }
 
-/// Are there enough locs in this group so that one lock can leave?
+// / Are there enough locs in this group so that one lock can leave?
 func (bg *blockGroup) GetFirstLocCanLeave(ctx context.Context) bool {
 	// Do we have enough locs on the track?
 	if !bg.IsMinimumLocsInGroupEnabled(ctx) {
 		return true
 	}
-	// Ys we have, now enforce the minimum
+	// Yes we have, now enforce the minimum
 	waitingLocs := 0
 	for _, b := range bg.blocks {
 		if b.GetHasWaitingLoc(ctx) {

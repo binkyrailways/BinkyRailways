@@ -271,6 +271,20 @@ func (b *block) GetBlockGroup(context.Context) state.BlockGroup {
 }
 
 // Is there a loc waiting in this block?
-func (b *block) GetHasWaitingLoc(context.Context) bool {
-	return false // TODO
+func (b *block) GetHasWaitingLoc(ctx context.Context) bool {
+	if b.GetState(ctx) != state.BlockStateOccupied {
+		return false
+	}
+	loc := b.GetLockedBy(ctx)
+	if loc == nil {
+		return false
+	}
+	automaticState := loc.GetAutomaticState().GetActual(ctx)
+	switch automaticState {
+	case state.AssignRoute:
+		return loc.GetSpeed().GetRequested(ctx) == 0
+	case state.WaitingForDestinationTimeout, state.WaitingForDestinationGroupMinimum:
+		return true
+	}
+	return false
 }
