@@ -50,7 +50,12 @@ class BlockComponent extends EntityComponent with Tappable {
       final rrect =
           RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 3));
       canvas.clipRRect(rrect);
-      canvas.drawPaint(Paint()..color = backgroundColor());
+      final bgColors = backgroundColors();
+      canvas.drawPaint(Paint()
+        ..shader = bgColors
+            .asGradient(model.reverseSides)
+            .createShader(size.toRect()));
+
       // Draw front
       final frontRect = model.reverseSides
           ? Rect.fromLTRB(0, 0, minDim, minDim)
@@ -73,8 +78,30 @@ class BlockComponent extends EntityComponent with Tappable {
     }
   }
 
-  Color backgroundColor() => Colors.grey;
+  BlockColors backgroundColors() => BlockColors(Colors.lightBlue, Colors.grey);
   Color frontColor() => Colors.green;
   Color textColor() => Colors.black;
   String description() => model.description;
+}
+
+// Colors of a block
+class BlockColors {
+  // Color for the front of the block
+  final Color front;
+  // Color for the back of the block
+  final Color back;
+
+  BlockColors(this.front, this.back);
+
+  BlockColors.single(Color c)
+      : front = c,
+        back = c;
+
+  LinearGradient asGradient(bool reverseSides) {
+    if (reverseSides) {
+      return LinearGradient(colors: [front, back]);
+    } else {
+      return LinearGradient(colors: [back, front]);
+    }
+  }
 }

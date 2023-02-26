@@ -211,6 +211,15 @@ class _BlockSettingsState extends State<_BlockSettings> {
               editor(update.position);
             });
           }),
+      SettingsCheckBoxField(
+        label: "Reverse sides",
+        value: widget.block.reverseSides,
+        onChanged: (bool value) async {
+          await _update((update) {
+            update.reverseSides = value;
+          });
+        },
+      ),
       const SettingsHeader(title: "Used by"),
       Expanded(
         child: ListView.builder(
