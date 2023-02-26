@@ -89,6 +89,7 @@ message LocState {
   BlockRef current_block = 24;
 
   // Gets the side at which the current block was entered.
+  BlockSide current_block_enter_side = 25;
   // GetCurrentBlockEnterSide() ActualBlockSideProperty
 
   // Time when this loc will start it's next route.
@@ -236,7 +237,7 @@ message BlockState {
   // ForEachSensor(context.Context, func(Sensor))
 
   // Gets the current state of this block
-  // GetState(context.Context) BlockState
+  BlockStateState state = 3;
 
   // Is this block closed for traffic?
   bool closed_actual = 10;
@@ -248,6 +249,33 @@ message BlockState {
   bool is_station = 21;
   // Is there a loc waiting in this block?
   bool has_waiting_loc = 22;
+}
+
+// BlockStateState describes the current state of a block.
+enum BlockStateState {
+  	// BlockStateFree means the block is available, but not occupied, not claimed
+	FREE = 0;
+
+	// BlockStateOccupied means the block is occupied by a loc, which is expected
+	OCCUPIED = 1;
+
+	// BlockStateOccupiedUnexpected means a sensor of this block is active, which is unexpected
+	OCCUPIEDUNEXPECTED = 2;
+
+	// BlockStateDestination means the block is locked by a coming loc.
+	// That loc is now taking a route that leads to this block.
+	DESTINATION = 3;
+
+	// BlockStateEntering means the block is locked by a coming loc.
+	// That loc is now entering this block.
+	ENTERING = 4;
+
+	// BlockStateLocked means the block is locked by a coming loc.
+	// That loc's next route will lead to this block.
+	LOCKED = 5;
+
+	// BlockStateClosed means the block has been taken out of use
+	CLOSED = 6;
 }
 
 // State of a single block group

@@ -248,6 +248,7 @@ class LocState extends $pb.GeneratedMessage {
     ..aOB(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCurrentRouteDurationExceeded')
     ..aOM<$1.RouteRef>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextRoute', subBuilder: $1.RouteRef.create)
     ..aOM<$1.BlockRef>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlock', subBuilder: $1.BlockRef.create)
+    ..e<$1.BlockSide>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlockEnterSide', $pb.PbFieldType.OE, defaultOrMaker: $1.BlockSide.FRONT, valueOf: $1.BlockSide.valueOf, enumValues: $1.BlockSide.values)
     ..a<$core.int>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedActual', $pb.PbFieldType.O3)
     ..a<$core.int>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedRequested', $pb.PbFieldType.O3)
     ..aOS(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedText')
@@ -274,6 +275,7 @@ class LocState extends $pb.GeneratedMessage {
     $core.bool? isCurrentRouteDurationExceeded,
     $1.RouteRef? nextRoute,
     $1.BlockRef? currentBlock,
+    $1.BlockSide? currentBlockEnterSide,
     $core.int? speedActual,
     $core.int? speedRequested,
     $core.String? speedText,
@@ -316,6 +318,9 @@ class LocState extends $pb.GeneratedMessage {
     }
     if (currentBlock != null) {
       _result.currentBlock = currentBlock;
+    }
+    if (currentBlockEnterSide != null) {
+      _result.currentBlockEnterSide = currentBlockEnterSide;
     }
     if (speedActual != null) {
       _result.speedActual = speedActual;
@@ -471,102 +476,111 @@ class LocState extends $pb.GeneratedMessage {
   @$pb.TagNumber(24)
   $1.BlockRef ensureCurrentBlock() => $_ensure(9);
 
+  @$pb.TagNumber(25)
+  $1.BlockSide get currentBlockEnterSide => $_getN(10);
+  @$pb.TagNumber(25)
+  set currentBlockEnterSide($1.BlockSide v) { setField(25, v); }
+  @$pb.TagNumber(25)
+  $core.bool hasCurrentBlockEnterSide() => $_has(10);
+  @$pb.TagNumber(25)
+  void clearCurrentBlockEnterSide() => clearField(25);
+
   @$pb.TagNumber(50)
-  $core.int get speedActual => $_getIZ(10);
+  $core.int get speedActual => $_getIZ(11);
   @$pb.TagNumber(50)
-  set speedActual($core.int v) { $_setSignedInt32(10, v); }
+  set speedActual($core.int v) { $_setSignedInt32(11, v); }
   @$pb.TagNumber(50)
-  $core.bool hasSpeedActual() => $_has(10);
+  $core.bool hasSpeedActual() => $_has(11);
   @$pb.TagNumber(50)
   void clearSpeedActual() => clearField(50);
 
   @$pb.TagNumber(51)
-  $core.int get speedRequested => $_getIZ(11);
+  $core.int get speedRequested => $_getIZ(12);
   @$pb.TagNumber(51)
-  set speedRequested($core.int v) { $_setSignedInt32(11, v); }
+  set speedRequested($core.int v) { $_setSignedInt32(12, v); }
   @$pb.TagNumber(51)
-  $core.bool hasSpeedRequested() => $_has(11);
+  $core.bool hasSpeedRequested() => $_has(12);
   @$pb.TagNumber(51)
   void clearSpeedRequested() => clearField(51);
 
   @$pb.TagNumber(52)
-  $core.String get speedText => $_getSZ(12);
+  $core.String get speedText => $_getSZ(13);
   @$pb.TagNumber(52)
-  set speedText($core.String v) { $_setString(12, v); }
+  set speedText($core.String v) { $_setString(13, v); }
   @$pb.TagNumber(52)
-  $core.bool hasSpeedText() => $_has(12);
+  $core.bool hasSpeedText() => $_has(13);
   @$pb.TagNumber(52)
   void clearSpeedText() => clearField(52);
 
   @$pb.TagNumber(53)
-  $core.String get stateText => $_getSZ(13);
+  $core.String get stateText => $_getSZ(14);
   @$pb.TagNumber(53)
-  set stateText($core.String v) { $_setString(13, v); }
+  set stateText($core.String v) { $_setString(14, v); }
   @$pb.TagNumber(53)
-  $core.bool hasStateText() => $_has(13);
+  $core.bool hasStateText() => $_has(14);
   @$pb.TagNumber(53)
   void clearStateText() => clearField(53);
 
   @$pb.TagNumber(54)
-  $core.int get speedInStepsActual => $_getIZ(14);
+  $core.int get speedInStepsActual => $_getIZ(15);
   @$pb.TagNumber(54)
-  set speedInStepsActual($core.int v) { $_setSignedInt32(14, v); }
+  set speedInStepsActual($core.int v) { $_setSignedInt32(15, v); }
   @$pb.TagNumber(54)
-  $core.bool hasSpeedInStepsActual() => $_has(14);
+  $core.bool hasSpeedInStepsActual() => $_has(15);
   @$pb.TagNumber(54)
   void clearSpeedInStepsActual() => clearField(54);
 
   @$pb.TagNumber(55)
-  $core.int get speedInStepsRequested => $_getIZ(15);
+  $core.int get speedInStepsRequested => $_getIZ(16);
   @$pb.TagNumber(55)
-  set speedInStepsRequested($core.int v) { $_setSignedInt32(15, v); }
+  set speedInStepsRequested($core.int v) { $_setSignedInt32(16, v); }
   @$pb.TagNumber(55)
-  $core.bool hasSpeedInStepsRequested() => $_has(15);
+  $core.bool hasSpeedInStepsRequested() => $_has(16);
   @$pb.TagNumber(55)
   void clearSpeedInStepsRequested() => clearField(55);
 
   @$pb.TagNumber(56)
-  LocDirection get directionActual => $_getN(16);
+  LocDirection get directionActual => $_getN(17);
   @$pb.TagNumber(56)
   set directionActual(LocDirection v) { setField(56, v); }
   @$pb.TagNumber(56)
-  $core.bool hasDirectionActual() => $_has(16);
+  $core.bool hasDirectionActual() => $_has(17);
   @$pb.TagNumber(56)
   void clearDirectionActual() => clearField(56);
 
   @$pb.TagNumber(57)
-  LocDirection get directionRequested => $_getN(17);
+  LocDirection get directionRequested => $_getN(18);
   @$pb.TagNumber(57)
   set directionRequested(LocDirection v) { setField(57, v); }
   @$pb.TagNumber(57)
-  $core.bool hasDirectionRequested() => $_has(17);
+  $core.bool hasDirectionRequested() => $_has(18);
   @$pb.TagNumber(57)
   void clearDirectionRequested() => clearField(57);
 
   @$pb.TagNumber(60)
-  $core.bool get isReversing => $_getBF(18);
+  $core.bool get isReversing => $_getBF(19);
   @$pb.TagNumber(60)
-  set isReversing($core.bool v) { $_setBool(18, v); }
+  set isReversing($core.bool v) { $_setBool(19, v); }
   @$pb.TagNumber(60)
-  $core.bool hasIsReversing() => $_has(18);
+  $core.bool hasIsReversing() => $_has(19);
   @$pb.TagNumber(60)
   void clearIsReversing() => clearField(60);
 
   @$pb.TagNumber(70)
-  $core.bool get f0Actual => $_getBF(19);
+  $core.bool get f0Actual => $_getBF(20);
   @$pb.TagNumber(70)
-  set f0Actual($core.bool v) { $_setBool(19, v); }
+  set f0Actual($core.bool v) { $_setBool(20, v); }
   @$pb.TagNumber(70)
-  $core.bool hasF0Actual() => $_has(19);
+  $core.bool hasF0Actual() => $_has(20);
   @$pb.TagNumber(70)
   void clearF0Actual() => clearField(70);
 
   @$pb.TagNumber(71)
-  $core.bool get f0Requested => $_getBF(20);
+  $core.bool get f0Requested => $_getBF(21);
   @$pb.TagNumber(71)
-  set f0Requested($core.bool v) { $_setBool(20, v); }
+  set f0Requested($core.bool v) { $_setBool(21, v); }
   @$pb.TagNumber(71)
-  $core.bool hasF0Requested() => $_has(20);
+  $core.bool hasF0Requested() => $_has(21);
   @$pb.TagNumber(71)
   void clearF0Requested() => clearField(71);
 }
@@ -729,6 +743,7 @@ class BlockState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$1.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Block.create)
     ..aOM<$1.LocRef>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lockedBy', subBuilder: $1.LocRef.create)
+    ..e<BlockStateState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'state', $pb.PbFieldType.OE, defaultOrMaker: BlockStateState.FREE, valueOf: BlockStateState.valueOf, enumValues: BlockStateState.values)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedRequested')
     ..aOB(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isDeadend')
@@ -741,6 +756,7 @@ class BlockState extends $pb.GeneratedMessage {
   factory BlockState({
     $1.Block? model,
     $1.LocRef? lockedBy,
+    BlockStateState? state,
     $core.bool? closedActual,
     $core.bool? closedRequested,
     $core.bool? isDeadend,
@@ -753,6 +769,9 @@ class BlockState extends $pb.GeneratedMessage {
     }
     if (lockedBy != null) {
       _result.lockedBy = lockedBy;
+    }
+    if (state != null) {
+      _result.state = state;
     }
     if (closedActual != null) {
       _result.closedActual = closedActual;
@@ -814,48 +833,57 @@ class BlockState extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $1.LocRef ensureLockedBy() => $_ensure(1);
 
+  @$pb.TagNumber(3)
+  BlockStateState get state => $_getN(2);
+  @$pb.TagNumber(3)
+  set state(BlockStateState v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasState() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearState() => clearField(3);
+
   @$pb.TagNumber(10)
-  $core.bool get closedActual => $_getBF(2);
+  $core.bool get closedActual => $_getBF(3);
   @$pb.TagNumber(10)
-  set closedActual($core.bool v) { $_setBool(2, v); }
+  set closedActual($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(10)
-  $core.bool hasClosedActual() => $_has(2);
+  $core.bool hasClosedActual() => $_has(3);
   @$pb.TagNumber(10)
   void clearClosedActual() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get closedRequested => $_getBF(3);
+  $core.bool get closedRequested => $_getBF(4);
   @$pb.TagNumber(11)
-  set closedRequested($core.bool v) { $_setBool(3, v); }
+  set closedRequested($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(11)
-  $core.bool hasClosedRequested() => $_has(3);
+  $core.bool hasClosedRequested() => $_has(4);
   @$pb.TagNumber(11)
   void clearClosedRequested() => clearField(11);
 
   @$pb.TagNumber(20)
-  $core.bool get isDeadend => $_getBF(4);
+  $core.bool get isDeadend => $_getBF(5);
   @$pb.TagNumber(20)
-  set isDeadend($core.bool v) { $_setBool(4, v); }
+  set isDeadend($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(20)
-  $core.bool hasIsDeadend() => $_has(4);
+  $core.bool hasIsDeadend() => $_has(5);
   @$pb.TagNumber(20)
   void clearIsDeadend() => clearField(20);
 
   @$pb.TagNumber(21)
-  $core.bool get isStation => $_getBF(5);
+  $core.bool get isStation => $_getBF(6);
   @$pb.TagNumber(21)
-  set isStation($core.bool v) { $_setBool(5, v); }
+  set isStation($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(21)
-  $core.bool hasIsStation() => $_has(5);
+  $core.bool hasIsStation() => $_has(6);
   @$pb.TagNumber(21)
   void clearIsStation() => clearField(21);
 
   @$pb.TagNumber(22)
-  $core.bool get hasWaitingLoc => $_getBF(6);
+  $core.bool get hasWaitingLoc => $_getBF(7);
   @$pb.TagNumber(22)
-  set hasWaitingLoc($core.bool v) { $_setBool(6, v); }
+  set hasWaitingLoc($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(22)
-  $core.bool hasHasWaitingLoc() => $_has(6);
+  $core.bool hasHasWaitingLoc() => $_has(7);
   @$pb.TagNumber(22)
   void clearHasWaitingLoc() => clearField(22);
 }

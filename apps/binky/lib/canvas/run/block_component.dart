@@ -15,7 +15,10 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/api/generated/br_model_types.pb.dart';
+import 'package:binky/api/generated/br_state_types.pb.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/material.dart';
 
 import '../block_component.dart' as common;
 import '../view_settings.dart';
@@ -55,4 +58,69 @@ class BlockComponent extends common.BlockComponent {
     }
     return "${bs.model.description}$suffix";
   }
+
+  @override
+  common.BlockColors backgroundColors() {
+    final bs = state.last;
+    final blockState = bs.state;
+    final locId = bs.hasLockedBy() ? bs.lockedBy.id : "";
+    final loc = (locId.isNotEmpty)
+        ? game.stateModel.getCachedLocState(locId)?.last
+        : null;
+    final currentBlockId = (loc != null) ? loc.currentBlock.id : "";
+    final currentRouteId = (loc != null) ? loc.currentRoute.id : "";
+    final currentRoute = (currentRouteId.isNotEmpty)
+        ? game.modelModel.getCachedRoute(currentRouteId, load: true)
+        : null;
+
+    switch (blockState) {
+      case BlockStateState.FREE:
+        return common.BlockColors.single(Colors.white);
+      case BlockStateState.OCCUPIEDUNEXPECTED:
+        return common.BlockColors.single(Colors.orange);
+      case BlockStateState.OCCUPIED:
+        if (loc == null) {
+          return common.BlockColors.single(Colors.red);
+        }
+        if ((currentRoute == null) ||
+            ((currentBlockId == bs.model.id) &&
+                (currentRoute.to.block.id == bs.model.id))) {
+          if (loc.currentBlockEnterSide == BlockSide.BACK) {
+            return common.BlockColors(Colors.red, Colors.grey);
+          } else {
+            return common.BlockColors(Colors.grey, Colors.red);
+          }
+        }
+        if (currentRoute.from.blockSide == BlockSide.FRONT) {
+          return common.BlockColors(Colors.red, Colors.grey);
+        }
+        return common.BlockColors(Colors.grey, Colors.red);
+      case BlockStateState.DESTINATION:
+        if (loc == null) {
+          return common.BlockColors.single(Colors.brown);
+        }
+        if (currentRoute == null) {
+          return common.BlockColors.single(Colors.yellow);
+        }
+        if (currentRoute.to.blockSide == BlockSide.BACK) {
+          return common.BlockColors(Colors.yellow, Colors.grey);
+        }
+        return common.BlockColors(Colors.grey, Colors.yellow);
+      case BlockStateState.ENTERING:
+        if ((loc == null) || (currentRoute == null)) {
+          return common.BlockColors.single(_greenYellow);
+        }
+        if (currentRoute.to.blockSide == BlockSide.BACK) {
+          return common.BlockColors(_greenYellow, Colors.grey);
+        }
+        return common.BlockColors(Colors.grey, _greenYellow);
+      case BlockStateState.LOCKED:
+        return common.BlockColors.single(Colors.cyan);
+      case BlockStateState.CLOSED:
+        return common.BlockColors.single(Colors.grey);
+    }
+    return super.backgroundColors();
+  }
+
+  final Color _greenYellow = const Color.fromARGB(255, 173, 255, 47);
 }

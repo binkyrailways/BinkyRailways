@@ -55,3 +55,28 @@ class AutoLocState extends $pb.ProtobufEnum {
   const AutoLocState._($core.int v, $core.String n) : super(v, n);
 }
 
+class BlockStateState extends $pb.ProtobufEnum {
+  static const BlockStateState FREE = BlockStateState._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'FREE');
+  static const BlockStateState OCCUPIED = BlockStateState._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'OCCUPIED');
+  static const BlockStateState OCCUPIEDUNEXPECTED = BlockStateState._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'OCCUPIEDUNEXPECTED');
+  static const BlockStateState DESTINATION = BlockStateState._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'DESTINATION');
+  static const BlockStateState ENTERING = BlockStateState._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ENTERING');
+  static const BlockStateState LOCKED = BlockStateState._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LOCKED');
+  static const BlockStateState CLOSED = BlockStateState._(6, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'CLOSED');
+
+  static const $core.List<BlockStateState> values = <BlockStateState> [
+    FREE,
+    OCCUPIED,
+    OCCUPIEDUNEXPECTED,
+    DESTINATION,
+    ENTERING,
+    LOCKED,
+    CLOSED,
+  ];
+
+  static final $core.Map<$core.int, BlockStateState> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BlockStateState? valueOf($core.int value) => _byValue[value];
+
+  const BlockStateState._($core.int v, $core.String n) : super(v, n);
+}
+

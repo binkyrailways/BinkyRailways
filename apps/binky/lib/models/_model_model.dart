@@ -545,7 +545,13 @@ class ModelModel extends ChangeNotifier {
   }
 
   // Gets a Route by ID from cache
-  mapi.Route? getCachedRoute(String id) => _routes[id];
+  mapi.Route? getCachedRoute(String id, {bool load = false}) {
+    final result = _routes[id];
+    if ((result == null) && load) {
+      getRoute(id);
+    }
+    return result;
+  }
 
   // Gets a Route by ID
   Future<mapi.Route> getRoute(String id) async {

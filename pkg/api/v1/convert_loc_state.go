@@ -35,21 +35,22 @@ func (dst *LocState) FromState(ctx context.Context, src state.Loc, httpHost stri
 	dst.AutomaticState.FromState(ctx, src.GetAutomaticState().GetActual(ctx))
 	if x := src.GetCurrentRoute().GetActual(ctx); x != nil {
 		dst.CurrentRoute = &RouteRef{
-			Id: x.GetRoute().GetID(),
+			Id: JoinParentChildID(x.GetRoute().GetModuleID(), x.GetRoute().GetID()),
 		}
 	}
 	dst.WaitAfterCurrentRoute = src.GetWaitAfterCurrentRoute().GetActual(ctx)
 	dst.IsCurrentRouteDurationExceeded = src.GetIsCurrentRouteDurationExceeded(ctx)
 	if x := src.GetNextRoute().GetActual(ctx); x != nil {
 		dst.NextRoute = &RouteRef{
-			Id: x.GetID(),
+			Id: JoinParentChildID(x.GetModuleID(), x.GetID()),
 		}
 	}
 	if x := src.GetCurrentBlock().GetActual(ctx); x != nil {
 		dst.CurrentBlock = &BlockRef{
-			Id: x.GetID(),
+			Id: JoinParentChildID(x.GetModuleID(), x.GetID()),
 		}
 	}
+	dst.CurrentBlockEnterSide.FromModel(ctx, src.GetCurrentBlockEnterSide().GetActual(ctx))
 	dst.SpeedActual = int32(src.GetSpeed().GetActual(ctx))
 	dst.SpeedRequested = int32(src.GetSpeed().GetRequested(ctx))
 	dst.SpeedText = src.GetSpeedText(ctx)

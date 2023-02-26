@@ -36,7 +36,6 @@ type block struct {
 	lockable
 
 	closed          boolProperty
-	state           state.BlockState
 	waitPermissions state.LocPredicate
 	junctions       []Junction
 	blockGroup      BlockGroup
@@ -207,8 +206,43 @@ func (b *block) ForEachSensor(ctx context.Context, cb func(state.Sensor)) {
 }
 
 // Gets the current state of this block
-func (b *block) GetState(context.Context) state.BlockState {
-	return b.state
+func (b *block) GetState(ctx context.Context) state.BlockState {
+	loc := b.GetLockedBy(ctx)
+	if loc != nil {
+		// Locked
+		if loc.GetCurrentBlock().GetActual(ctx) == b {
+			// Block is in use
+			return state.BlockStateOccupied
+		}
+		currentRoute := loc.GetCurrentRoute().GetActual(ctx)
+		if (currentRoute != nil) && (currentRoute.GetRoute().GetTo(ctx) == b) {
+			if loc.GetAutomaticState().GetActual(ctx) == state.EnteringDestination {
+				// Loc is entering this block
+				return state.BlockStateEntering
+			}
+			// Loc is on route to this block
+			return state.BlockStateDestination
+		}
+		return state.BlockStateLocked
+	}
+
+	// Closed?
+	if b.GetClosed().GetActual(ctx) {
+		return state.BlockStateClosed
+	}
+
+	// Not locked
+	anySensorActive := false
+	b.ForEachSensor(ctx, func(s state.Sensor) {
+		if !anySensorActive && s.GetActive().GetActual(ctx) {
+			anySensorActive = true
+		}
+	})
+	if anySensorActive {
+		return state.BlockStateOccupiedUnexpected
+	}
+
+	return state.BlockStateFree
 }
 
 // Is this block closed for traffic?
