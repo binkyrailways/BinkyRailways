@@ -21,6 +21,7 @@ import '../components.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../models.dart';
 import '../api.dart' hide Image;
@@ -187,6 +188,19 @@ class _LocSettingsState extends State<_LocSettings> {
             items: BinkyDropdownMenuItems.ChangeDirectionItems,
           ),
           const SettingsHeader(title: "Image"),
+          IconButton(
+            onPressed: () async {
+              final result = await FilePicker.platform
+                  .pickFiles(type: FileType.image, withData: true);
+              if (result != null) {
+                final data = result.files.single.bytes;
+                if (data != null) {
+                  await widget.model.updateLocImage(widget.loc, data.toList());
+                }
+              }
+            },
+            icon: Icon(Icons.file_upload),
+          ),
           hasImage ? Image.network(widget.loc.imageUrl) : Container(),
         ],
       ),

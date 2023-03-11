@@ -93,6 +93,26 @@ func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error)
 	return &result, nil
 }
 
+// Update image of a loc by ID.
+func (s *service) UpdateLocImage(ctx context.Context, req *api.ImageIDRequest) (*api.Loc, error) {
+	loc, err := s.getLoc(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := loc.SetImage(req.GetImage()); err != nil {
+		return nil, err
+	}
+	var result api.Loc
+	if err := result.FromModel(ctx, loc, httpHost); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Add a new loc.
 func (s *service) AddLoc(ctx context.Context, req *api.Empty) (*api.Loc, error) {
 	rw, err := s.getRailway()

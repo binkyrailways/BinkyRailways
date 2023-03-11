@@ -68,6 +68,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/UpdateLoc',
       ($1.Loc value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Loc.fromBuffer(value));
+  static final _$updateLocImage = $grpc.ClientMethod<$0.ImageIDRequest, $1.Loc>(
+      '/binkyrailways.v1.ModelService/UpdateLocImage',
+      ($0.ImageIDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Loc.fromBuffer(value));
   static final _$addLoc = $grpc.ClientMethod<$1.Empty, $1.Loc>(
       '/binkyrailways.v1.ModelService/AddLoc',
       ($1.Empty value) => value.writeToBuffer(),
@@ -389,6 +393,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Loc> updateLoc($1.Loc request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateLoc, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Loc> updateLocImage($0.ImageIDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateLocImage, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Loc> addLoc($1.Empty request,
@@ -789,6 +798,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $1.Loc.fromBuffer(value),
+        ($1.Loc value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ImageIDRequest, $1.Loc>(
+        'UpdateLocImage',
+        updateLocImage_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ImageIDRequest.fromBuffer(value),
         ($1.Loc value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$1.Empty, $1.Loc>(
         'AddLoc',
@@ -1260,6 +1276,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateLoc(call, await request);
   }
 
+  $async.Future<$1.Loc> updateLocImage_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.ImageIDRequest> request) async {
+    return updateLocImage(call, await request);
+  }
+
   $async.Future<$1.Loc> addLoc_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return addLoc(call, await request);
@@ -1564,6 +1585,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Loc> getLoc($grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$1.Loc> updateLoc($grpc.ServiceCall call, $1.Loc request);
+  $async.Future<$1.Loc> updateLocImage(
+      $grpc.ServiceCall call, $0.ImageIDRequest request);
   $async.Future<$1.Loc> addLoc($grpc.ServiceCall call, $1.Empty request);
   $async.Future<$1.Empty> deleteLoc(
       $grpc.ServiceCall call, $0.IDRequest request);

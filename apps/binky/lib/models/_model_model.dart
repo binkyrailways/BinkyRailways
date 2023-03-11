@@ -19,6 +19,8 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 
+import 'package:binky/api/generated/br_model_service.pb.dart';
+
 import '../api.dart' as mapi;
 import 'package:flutter/material.dart';
 
@@ -211,6 +213,18 @@ class ModelModel extends ChangeNotifier {
   Future<void> updateLoc(mapi.Loc value) async {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.updateLoc(value);
+    _locs[updated.id] = updated;
+    notifyListeners();
+  }
+
+  // Update the image of the given loc
+  Future<void> updateLocImage(mapi.Loc value, List<int> image) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final req = ImageIDRequest(
+      id: value.id,
+      image: image,
+    );
+    var updated = await modelClient.updateLocImage(req);
     _locs[updated.id] = updated;
     notifyListeners();
   }

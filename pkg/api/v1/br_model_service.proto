@@ -52,6 +52,8 @@ service ModelService {
   rpc GetLoc(IDRequest) returns (Loc);
   // Update a loc by ID.
   rpc UpdateLoc(Loc) returns (Loc);
+  // Update the image of a loc by ID.
+  rpc UpdateLocImage(ImageIDRequest) returns (Loc);
   // Adds a new loc.
   rpc AddLoc(Empty) returns (Loc);
   // Delete the loc with the given ID.
@@ -190,6 +192,12 @@ message IDRequest { string id = 1; }
 message SubIDRequest { 
   string id = 1; 
   string sub_id = 2;
+}
+
+// Request by ID with image
+message ImageIDRequest {
+  string id = 1;
+  bytes image = 2;
 }
 
 message ParseAddressRequest {

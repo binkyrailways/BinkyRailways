@@ -15,7 +15,7 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/api.dart';
+import 'package:binky/api.dart' hide Image;
 import 'package:binky/components.dart';
 import 'package:binky/components/_more_popup_menu.dart';
 import 'package:binky/editor/editor_context.dart';
@@ -81,6 +81,7 @@ class LocsTree extends StatelessWidget {
                         ? Icons.auto_mode
                         : Icons.sports_esports
                     : Icons.more_horiz;
+                final hasImage = loc.model.imageUrl.isNotEmpty;
                 return ListTile(
                   minLeadingWidth: 30,
                   dense: true,
@@ -96,16 +97,26 @@ class LocsTree extends StatelessWidget {
                           items: actions,
                         )
                       : Icon(icon, size: 24),
-                  title: Row(children: [
-                    Text(loc.model.description),
-                    Expanded(child: Container()),
-                    SizedBox(
-                        width: 24,
-                        height: 6,
-                        child: LinearProgressIndicator(
-                            color: _getSpeedColor(loc.speedActual / 100),
-                            value: loc.speedActual / 100)),
-                  ]),
+                  title: LayoutBuilder(
+                    builder: (context, constraints) => Row(children: [
+                      SizedBox(
+                        width: constraints.maxWidth - 90,
+                        child: Text(loc.model.description,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                      Expanded(child: Container()),
+                      hasImage
+                          ? Image.network(loc.model.imageUrl, width: 60)
+                          : Container(),
+                      const SizedBox(width: 6),
+                      SizedBox(
+                          width: 24,
+                          height: 6,
+                          child: LinearProgressIndicator(
+                              color: _getSpeedColor(loc.speedActual / 100),
+                              value: loc.speedActual / 100)),
+                    ]),
+                  ),
                   subtitle: (stateText.isNotEmpty) ? Text(loc.stateText) : null,
                   selected: selectedLocId == loc.model.id,
                   onTap: () {
