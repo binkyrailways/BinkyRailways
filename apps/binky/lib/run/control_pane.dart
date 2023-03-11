@@ -23,7 +23,6 @@ import '../components.dart';
 import './automatic_pane.dart';
 import './power_pane.dart';
 import './locs_tree.dart';
-import './loc_pane.dart';
 
 class ControlPane extends StatelessWidget {
   const ControlPane({Key? key}) : super(key: key);
@@ -31,18 +30,12 @@ class ControlPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RunContext>(builder: (context, runCtx, child) {
-      final List<Widget> children = [
-        const PowerPane(),
-        const AutomaticPane(),
-        const SettingsDivider(),
-        const Expanded(child: LocsTree()),
-      ];
-      final selectedLocId = runCtx.selectedLocId;
-      if (selectedLocId != null) {
-        children.add(const SettingsDivider());
-        children.add(LocPane(id: selectedLocId));
-      }
-      return Column(children: children);
+      return Column(children: const [
+        PowerPane(),
+        AutomaticPane(),
+        SettingsDivider(),
+        Expanded(child: LocsTree()),
+      ]);
     });
   }
 }

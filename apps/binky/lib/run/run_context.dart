@@ -21,7 +21,11 @@ class RunContext extends ChangeNotifier {
   String? selectedLocId;
 
   void selectLoc(String? value) {
-    selectedLocId = value;
+    if (selectedLocId == value) {
+      selectedLocId = null;
+    } else {
+      selectedLocId = value;
+    }
     notifyListeners();
   }
 }
