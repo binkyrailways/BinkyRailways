@@ -76,6 +76,10 @@ class BinkyNetDevicesTree extends StatelessWidget {
                     return ListTile(
                       leading: BinkyIcons.binkynetdevice,
                       title: Text(device.deviceId),
+                      subtitle: withParents
+                          ? null
+                          : Text(
+                              "addr=${device.address}, type=${device.deviceType}"),
                       onTap: () => editorCtx
                           .select(EntitySelector.binkynetDevice(lw, device)),
                       selected: selector.idOf(EntityType.binkynetdevice) == id,
