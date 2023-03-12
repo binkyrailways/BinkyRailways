@@ -24,6 +24,7 @@ import 'package:wakelock/wakelock.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';
+import './locs_tree.dart';
 import './control_pane.dart';
 import './run_context.dart';
 import '../canvas/run/railway_canvas.dart';
@@ -99,10 +100,11 @@ class _RunPageState extends State<RunPage> {
                     ),
                     body: SplitView(
                       menuWidth: 300,
-                      menu: const ControlPane(),
+                      menu: const LocsTree(),
                       endMenu: hasEditor ? const RunEditor() : null,
                       endMenuWidth: hasEditor ? 300 : 0,
                       content: Column(children: [
+                        const ControlPane(),
                         Expanded(
                             child: RailwayCanvas(
                           viewSettings: _viewSettings,

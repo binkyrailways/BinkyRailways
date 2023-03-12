@@ -34,8 +34,6 @@ class PowerPane extends StatelessWidget {
             builder: (context, snapshot) {
               final rwState = snapshot.data;
               final pwActual = rwState?.powerActual ?? false;
-              final onShade = (pwActual) ? 400 : 200;
-              final offShade = (pwActual) ? 200 : 400;
               final onStyle = ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green[200]),
                   foregroundColor: MaterialStateProperty.all(Colors.black));
@@ -44,50 +42,57 @@ class PowerPane extends StatelessWidget {
                   foregroundColor: MaterialStateProperty.all(Colors.black));
               return Container(
                   padding: const EdgeInsets.all(8),
-                  child: Column(children: [
-                    Container(
-                      child: Text(_getPowerText(rwState)),
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                    ),
-                    Row(children: [
-                      Expanded(
-                          child: pwActual
-                              ? ElevatedButton(
-                                  style: offStyle,
-                                  onPressed: () async {
-                                    await state.setPower(false);
-                                  },
-                                  child: const Text("Off"),
-                                )
-                              : ElevatedButton.icon(
-                                  style: offStyle,
-                                  onPressed: () async {
-                                    await state.setPower(false);
-                                  },
-                                  icon: const Icon(Icons.check_outlined),
-                                  label: const Text("Off"),
-                                )),
-                      Container(
-                        width: 5,
+                  child: Row(children: [
+                    Expanded(
+                        child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _getPowerText(rwState),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Expanded(
-                          child: pwActual
-                              ? ElevatedButton.icon(
-                                  style: onStyle,
-                                  onPressed: () async {
-                                    await state.setPower(true);
-                                  },
-                                  icon: const Icon(Icons.check_outlined),
-                                  label: const Text("On"),
-                                )
-                              : ElevatedButton(
-                                  style: onStyle,
-                                  onPressed: () async {
-                                    await state.setPower(true);
-                                  },
-                                  child: const Text("On"),
-                                )),
-                    ]),
+                      padding: const EdgeInsets.all(8),
+                    )),
+                    Expanded(
+                        child: pwActual
+                            ? ElevatedButton(
+                                style: offStyle,
+                                onPressed: () async {
+                                  await state.setPower(false);
+                                },
+                                child: const Text("Off",
+                                    overflow: TextOverflow.ellipsis),
+                              )
+                            : ElevatedButton.icon(
+                                style: offStyle,
+                                onPressed: () async {
+                                  await state.setPower(false);
+                                },
+                                icon: const Icon(Icons.check_outlined),
+                                label: const Text("Off",
+                                    overflow: TextOverflow.ellipsis),
+                              )),
+                    Container(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: pwActual
+                            ? ElevatedButton.icon(
+                                style: onStyle,
+                                onPressed: () async {
+                                  await state.setPower(true);
+                                },
+                                icon: const Icon(Icons.check_outlined),
+                                label: const Text("On",
+                                    overflow: TextOverflow.ellipsis),
+                              )
+                            : ElevatedButton(
+                                style: onStyle,
+                                onPressed: () async {
+                                  await state.setPower(true);
+                                },
+                                child: const Text("On",
+                                    overflow: TextOverflow.ellipsis),
+                              )),
                   ]));
             });
       },

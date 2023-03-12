@@ -19,10 +19,8 @@ import 'package:binky/run/run_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components.dart';
 import './automatic_pane.dart';
 import './power_pane.dart';
-import './locs_tree.dart';
 
 class ControlPane extends StatelessWidget {
   const ControlPane({Key? key}) : super(key: key);
@@ -30,12 +28,13 @@ class ControlPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RunContext>(builder: (context, runCtx, child) {
-      return Column(children: const [
-        PowerPane(),
-        AutomaticPane(),
-        SettingsDivider(),
-        Expanded(child: LocsTree()),
-      ]);
+      return LayoutBuilder(builder: (context, constraints) {
+        return Row(children: [
+          SizedBox(width: constraints.maxWidth / 2, child: const PowerPane()),
+          SizedBox(
+              width: constraints.maxWidth / 2, child: const AutomaticPane()),
+        ]);
+      });
     });
   }
 }

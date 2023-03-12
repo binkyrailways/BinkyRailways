@@ -15,18 +15,22 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/api.dart' hide Image;
-import 'package:binky/editor/editor_context.dart';
 import 'package:binky/run/run_context.dart';
-import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
 import './locs_tree_card.dart';
 
-class LocsTree extends StatelessWidget {
+class LocsTree extends StatefulWidget {
   const LocsTree({Key? key}) : super(key: key);
+
+  @override
+  State<LocsTree> createState() => _LocsTreeState();
+}
+
+class _LocsTreeState extends State<LocsTree> {
+  bool _showUnassigned = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +45,34 @@ class LocsTree extends StatelessWidget {
         final unassignedLocs =
             allLocs.where((x) => !x.canBeControlledAutomatically).toList();
         return ListView.builder(
-            itemCount: allLocs.length + 2,
+            itemCount:
+                _showUnassigned ? allLocs.length + 2 : assignedLocs.length + 2,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return ListTile(
-                    dense: true,
-                    minLeadingWidth: 30,
                     trailing: const Text(""),
                     title: Text(
                       "Assigned locs (${assignedLocs.length})",
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                      style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
                     ));
               } else if (index == 1 + assignedLocs.length) {
                 return ListTile(
-                    dense: true,
-                    minLeadingWidth: 30,
-                    trailing: const Text(""),
+                    trailing: GestureDetector(
+                        onTap: () => setState(() {
+                              _showUnassigned = !_showUnassigned;
+                            }),
+                        child: Icon(
+                          _showUnassigned
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        )),
                     title: Text(
                       "Unassigned locs (${unassignedLocs.length})",
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                      style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
                     ));
               } else {
                 index = index - 1;

@@ -42,50 +42,57 @@ class AutomaticPane extends StatelessWidget {
                   foregroundColor: MaterialStateProperty.all(Colors.black));
               return Container(
                   padding: const EdgeInsets.all(8),
-                  child: Column(children: [
-                    Container(
-                      child: Text(_getAutomaticText(rwState)),
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                    ),
-                    Row(children: [
-                      Expanded(
-                          child: acActual
-                              ? ElevatedButton(
-                                  style: offStyle,
-                                  onPressed: () async {
-                                    await state.setAutomaticControl(false);
-                                  },
-                                  child: const Text("Manual"),
-                                )
-                              : ElevatedButton.icon(
-                                  style: offStyle,
-                                  onPressed: () async {
-                                    await state.setAutomaticControl(false);
-                                  },
-                                  icon: const Icon(Icons.check_outlined),
-                                  label: const Text("Manual"),
-                                )),
-                      Container(
-                        width: 5,
+                  child: Row(children: [
+                    Expanded(
+                        child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _getAutomaticText(rwState),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Expanded(
-                          child: acActual
-                              ? ElevatedButton.icon(
-                                  style: onStyle,
-                                  onPressed: () async {
-                                    await state.setAutomaticControl(true);
-                                  },
-                                  icon: const Icon(Icons.check_outlined),
-                                  label: const Text("Automatic"),
-                                )
-                              : ElevatedButton(
-                                  style: onStyle,
-                                  onPressed: () async {
-                                    await state.setAutomaticControl(true);
-                                  },
-                                  child: const Text("Automatic"),
-                                )),
-                    ]),
+                      padding: const EdgeInsets.all(8),
+                    )),
+                    Expanded(
+                        child: acActual
+                            ? ElevatedButton(
+                                style: offStyle,
+                                onPressed: () async {
+                                  await state.setAutomaticControl(false);
+                                },
+                                child: const Text("Manual",
+                                    overflow: TextOverflow.ellipsis),
+                              )
+                            : ElevatedButton.icon(
+                                style: offStyle,
+                                onPressed: () async {
+                                  await state.setAutomaticControl(false);
+                                },
+                                icon: const Icon(Icons.check_outlined),
+                                label: const Text("Manual",
+                                    overflow: TextOverflow.ellipsis),
+                              )),
+                    Container(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: acActual
+                            ? ElevatedButton.icon(
+                                style: onStyle,
+                                onPressed: () async {
+                                  await state.setAutomaticControl(true);
+                                },
+                                icon: const Icon(Icons.check_outlined),
+                                label: const Text("Automatic",
+                                    overflow: TextOverflow.ellipsis),
+                              )
+                            : ElevatedButton(
+                                style: onStyle,
+                                onPressed: () async {
+                                  await state.setAutomaticControl(true);
+                                },
+                                child: const Text("Automatic",
+                                    overflow: TextOverflow.ellipsis),
+                              )),
                   ]));
             });
       },
