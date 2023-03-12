@@ -18,6 +18,7 @@
 import 'package:flutter/material.dart';
 
 class BinkyIcons {
+  // Type icons
   static const Icon binkynetdevice = Icon(Icons.device_hub);
   static const Icon binkynetlocalworker = Icon(Icons.developer_board);
   static const Icon binkynetobject = Icon(Icons.emoji_objects);
@@ -34,4 +35,10 @@ class BinkyIcons {
   static const Icon route = Icon(Icons.arrow_right_alt);
   static const Icon sensor = Icon(Icons.sensors);
   static const Icon signal = Icon(Icons.traffic);
+}
+
+class BinkyIconsData {
+  static const IconData controlledAutomatically = Icons.auto_fix_normal;
+  static const IconData controlleManually = Icons.person;
+  static const IconData unassigned = Icons.bedtime;
 }

@@ -17,7 +17,9 @@
 
 import 'package:binky/api.dart' hide Image;
 import 'package:binky/editor/editor_context.dart';
+import 'package:binky/icons.dart';
 import 'package:binky/run/run_context.dart';
+import 'package:binky/util.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,17 +54,8 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
   Widget build(BuildContext context) {
     final loc = widget.loc;
     final stateText = loc.stateText;
-    final canBeControlledAutomatically = loc.canBeControlledAutomatically;
-    final autoControlled = loc.controlledAutomaticallyActual;
-    final autoControlledConsistent = loc.controlledAutomaticallyActual ==
-        loc.controlledAutomaticallyRequested;
     final actions =
         _buildActions(context, widget.state, loc, widget.isAssigned);
-    final icon = canBeControlledAutomatically
-        ? autoControlled
-            ? Icons.auto_mode
-            : Icons.sports_esports
-        : Icons.room;
     final hasImage = loc.model.imageUrl.isNotEmpty;
     const statusSize = 32.0;
 
@@ -113,14 +106,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                     height: statusSize,
                     child: Stack(alignment: Alignment.center, children: [
                       _buildSpeedIndicator(),
-                      Icon(
-                        icon,
-                        size: 24,
-                        color: canBeControlledAutomatically &&
-                                !autoControlledConsistent
-                            ? Colors.orange.shade300
-                            : Colors.blue.shade300,
-                      ),
+                      _buildStateIcon(),
                     ]),
                   ),
                 ]),
@@ -186,14 +172,14 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
     if (canBeControlledAutomatically) {
       if (loc.controlledAutomaticallyRequested) {
         actions.add(_buildAction(
-            icon: Icons.sports_esports,
+            icon: BinkyIconsData.controlleManually,
             tooltip: "Control manually",
             onPressed: () async {
               await state.setLocControlledAutomatically(loc.model.id, false);
             }));
       } else {
         actions.add(_buildAction(
-            icon: Icons.auto_mode,
+            icon: BinkyIconsData.controlledAutomatically,
             tooltip: "Control automatically",
             onPressed: () async {
               await state.setLocControlledAutomatically(loc.model.id, true);
@@ -322,6 +308,30 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
       );
     }
     return indicator;
+  }
+
+  Widget _buildStateIcon() {
+    final loc = widget.loc;
+    final canBeControlledAutomatically = loc.canBeControlledAutomatically;
+    final autoControlled = loc.controlledAutomaticallyActual;
+    final autoControlledConsistent = loc.controlledAutomaticallyActual ==
+        loc.controlledAutomaticallyRequested;
+    final stateData = canBeControlledAutomatically
+        ? autoControlled
+            ? Pair(BinkyIconsData.controlledAutomatically,
+                "Controlled automatically")
+            : Pair(BinkyIconsData.controlleManually, "Controlled manually")
+        : Pair(BinkyIconsData.unassigned, "Not assigned to track");
+
+    final icon = Icon(
+      stateData.first,
+      size: 24,
+      color: canBeControlledAutomatically && !autoControlledConsistent
+          ? Colors.orange.shade300
+          : Colors.blue.shade300,
+    );
+
+    return Tooltip(message: stateData.second, child: icon);
   }
 
   Color _getSpeedColor(double speed) {

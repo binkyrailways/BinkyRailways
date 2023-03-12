@@ -71,7 +71,9 @@ class BlockComponent extends EntityComponent with Tappable {
       // Draw border
       final borderPaint = Paint()
         ..color = Colors.black
-        ..style = PaintingStyle.stroke;
+        ..style = PaintingStyle.stroke
+        ..isAntiAlias = true
+        ..strokeWidth = 4;
       canvas.drawRRect(rrect, borderPaint);
 
       canvas.restore();
