@@ -94,13 +94,17 @@ func (s *service) DeleteOutput(ctx context.Context, req *api.IDRequest) (*api.Mo
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
 		return nil, api.NotFound(outputID)
 	}
 	mod.GetOutputs().Remove(output)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

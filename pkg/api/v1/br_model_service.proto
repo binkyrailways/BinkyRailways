@@ -43,6 +43,8 @@ service ModelService {
   rpc GetModuleBackgroundImage(IDRequest) returns (Image);
   // Update a module by ID.
   rpc UpdateModule(Module) returns (Module);
+  // Update the background image of a module by ID.
+  rpc UpdateModuleBackgroundImage(ImageIDRequest) returns (Module);
   // Adds a new module.
   rpc AddModule(Empty) returns (Module);
   // Delete the module with the given ID.

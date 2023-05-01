@@ -60,6 +60,8 @@ message Module {
   int32 height = 4;
   // Does this module have a background image
   bool has_background_image = 5;
+  // URL of background image of the module
+  string background_image_url = 6;
 
   // Blocks of this module
   repeated BlockRef blocks = 100;

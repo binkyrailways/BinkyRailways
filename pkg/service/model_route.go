@@ -94,13 +94,17 @@ func (s *service) DeleteRoute(ctx context.Context, req *api.IDRequest) (*api.Mod
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	route, ok := mod.GetRoutes().Get(routeID)
 	if !ok {
 		return nil, api.NotFound(routeID)
 	}
 	mod.GetRoutes().Remove(route)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

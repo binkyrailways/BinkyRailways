@@ -92,13 +92,17 @@ func (s *service) DeleteBlockGroup(ctx context.Context, req *api.IDRequest) (*ap
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	blockGroup, ok := mod.GetBlockGroups().Get(blockGroupID)
 	if !ok {
 		return nil, api.NotFound(blockGroupID)
 	}
 	mod.GetBlockGroups().Remove(blockGroup)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

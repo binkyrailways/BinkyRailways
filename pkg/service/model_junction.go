@@ -94,13 +94,17 @@ func (s *service) DeleteJunction(ctx context.Context, req *api.IDRequest) (*api.
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
 		return nil, api.NotFound(junctionID)
 	}
 	mod.GetJunctions().Remove(junction)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

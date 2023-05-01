@@ -18,10 +18,11 @@
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../components.dart';
 import '../models.dart';
-import '../api.dart';
+import '../api.dart' hide Image;
 import 'package:binky/editor/editor_context.dart';
 
 class ModuleSettings extends StatelessWidget {
@@ -78,6 +79,7 @@ class _ModuleSettingsState extends State<_ModuleSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = widget.module.backgroundImageUrl.isNotEmpty;
     return Column(
       children: <Widget>[
         SettingsTextField(
@@ -89,6 +91,29 @@ class _ModuleSettingsState extends State<_ModuleSettings> {
               var update = module.deepCopy()..description = value;
               widget.model.updateModule(update);
             }),
+        Row(
+          children: [
+            const SettingsHeader(title: "Image"),
+            Expanded(child: Container()),
+            IconButton(
+              onPressed: () async {
+                final result = await FilePicker.platform
+                    .pickFiles(type: FileType.image, withData: true);
+                if (result != null) {
+                  final data = result.files.single.bytes;
+                  if (data != null) {
+                    await widget.model.updateModuleBackgroundImage(
+                        widget.module, data.toList());
+                  }
+                }
+              },
+              icon: const Icon(Icons.file_upload),
+            ),
+          ],
+        ),
+        hasImage
+            ? Image.network(widget.module.backgroundImageUrl)
+            : Container(),
       ],
     );
   }

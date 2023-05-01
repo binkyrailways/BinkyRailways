@@ -172,6 +172,19 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Update the background image of the given module
+  Future<void> updateModuleBackgroundImage(
+      mapi.Module value, List<int> image) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final req = ImageIDRequest(
+      id: value.id,
+      image: image,
+    );
+    var updated = await modelClient.updateModuleBackgroundImage(req);
+    _modules[updated.id] = updated;
+    notifyListeners();
+  }
+
   // Add a new module
   Future<mapi.Module> addModule() async {
     var modelClient = mapi.APIClient().modelClient();

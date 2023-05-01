@@ -92,13 +92,17 @@ func (s *service) DeleteEdge(ctx context.Context, req *api.IDRequest) (*api.Modu
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	edge, ok := mod.GetEdges().Get(edgeID)
 	if !ok {
 		return nil, api.NotFound(edgeID)
 	}
 	mod.GetEdges().Remove(edge)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

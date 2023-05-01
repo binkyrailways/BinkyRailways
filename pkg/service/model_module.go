@@ -55,8 +55,12 @@ func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Modul
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -82,11 +86,35 @@ func (s *service) UpdateModule(ctx context.Context, req *api.Module) (*api.Modul
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	if err := req.ToModel(ctx, mod); err != nil {
 		return nil, err
 	}
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Update background image of a module by ID.
+func (s *service) UpdateModuleBackgroundImage(ctx context.Context, req *api.ImageIDRequest) (*api.Module, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := mod.SetBackgroundImage(req.GetImage()); err != nil {
+		return nil, err
+	}
+	var result api.Module
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -98,13 +126,17 @@ func (s *service) AddModule(ctx context.Context, req *api.Empty) (*api.Module, e
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	mod, err := rw.GetPackage().AddNewModule()
 	if err != nil {
 		return nil, err
 	}
 	rw.GetModules().Add(mod)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

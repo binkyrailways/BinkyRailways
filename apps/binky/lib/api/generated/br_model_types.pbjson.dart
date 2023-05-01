@@ -161,6 +161,7 @@ const Module$json = const {
     const {'1': 'width', '3': 3, '4': 1, '5': 5, '10': 'width'},
     const {'1': 'height', '3': 4, '4': 1, '5': 5, '10': 'height'},
     const {'1': 'has_background_image', '3': 5, '4': 1, '5': 8, '10': 'hasBackgroundImage'},
+    const {'1': 'background_image_url', '3': 6, '4': 1, '5': 9, '10': 'backgroundImageUrl'},
     const {'1': 'blocks', '3': 100, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'blocks'},
     const {'1': 'blockGroups', '3': 101, '4': 3, '5': 11, '6': '.binkyrailways.v1.BlockGroupRef', '10': 'blockGroups'},
     const {'1': 'edges', '3': 102, '4': 3, '5': 11, '6': '.binkyrailways.v1.EdgeRef', '10': 'edges'},
@@ -174,7 +175,7 @@ const Module$json = const {
 };
 
 /// Descriptor for `Module`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIyCgZibG9ja3MYZCADKAsyGi5iaW5reXJhaWx3YXlzLnYxLkJsb2NrUmVmUgZibG9ja3MSQQoLYmxvY2tHcm91cHMYZSADKAsyHy5iaW5reXJhaWx3YXlzLnYxLkJsb2NrR3JvdXBSZWZSC2Jsb2NrR3JvdXBzEi8KBWVkZ2VzGGYgAygLMhkuYmlua3lyYWlsd2F5cy52MS5FZGdlUmVmUgVlZGdlcxI7CglqdW5jdGlvbnMYZyADKAsyHS5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uUmVmUglqdW5jdGlvbnMSNQoHb3V0cHV0cxhoIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuT3V0cHV0UmVmUgdvdXRwdXRzEjIKBnJvdXRlcxhpIAMoCzIaLmJpbmt5cmFpbHdheXMudjEuUm91dGVSZWZSBnJvdXRlcxI1CgdzZW5zb3JzGGogAygLMhsuYmlua3lyYWlsd2F5cy52MS5TZW5zb3JSZWZSB3NlbnNvcnMSNQoHc2lnbmFscxhrIAMoCzIbLmJpbmt5cmFpbHdheXMudjEuU2lnbmFsUmVmUgdzaWduYWxzEhcKBmxheWVycxjIASADKAlSBmxheWVycw==');
+final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode('CgZNb2R1bGUSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgV3aWR0aBgDIAEoBVIFd2lkdGgSFgoGaGVpZ2h0GAQgASgFUgZoZWlnaHQSMAoUaGFzX2JhY2tncm91bmRfaW1hZ2UYBSABKAhSEmhhc0JhY2tncm91bmRJbWFnZRIwChRiYWNrZ3JvdW5kX2ltYWdlX3VybBgGIAEoCVISYmFja2dyb3VuZEltYWdlVXJsEjIKBmJsb2NrcxhkIAMoCzIaLmJpbmt5cmFpbHdheXMudjEuQmxvY2tSZWZSBmJsb2NrcxJBCgtibG9ja0dyb3VwcxhlIAMoCzIfLmJpbmt5cmFpbHdheXMudjEuQmxvY2tHcm91cFJlZlILYmxvY2tHcm91cHMSLwoFZWRnZXMYZiADKAsyGS5iaW5reXJhaWx3YXlzLnYxLkVkZ2VSZWZSBWVkZ2VzEjsKCWp1bmN0aW9ucxhnIAMoCzIdLmJpbmt5cmFpbHdheXMudjEuSnVuY3Rpb25SZWZSCWp1bmN0aW9ucxI1CgdvdXRwdXRzGGggAygLMhsuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRSZWZSB291dHB1dHMSMgoGcm91dGVzGGkgAygLMhouYmlua3lyYWlsd2F5cy52MS5Sb3V0ZVJlZlIGcm91dGVzEjUKB3NlbnNvcnMYaiADKAsyGy5iaW5reXJhaWx3YXlzLnYxLlNlbnNvclJlZlIHc2Vuc29ycxI1CgdzaWduYWxzGGsgAygLMhsuYmlua3lyYWlsd2F5cy52MS5TaWduYWxSZWZSB3NpZ25hbHMSFwoGbGF5ZXJzGMgBIAMoCVIGbGF5ZXJz');
 @$core.Deprecated('Use moduleRefDescriptor instead')
 const ModuleRef$json = const {
   '1': 'ModuleRef',

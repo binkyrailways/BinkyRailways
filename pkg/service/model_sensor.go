@@ -94,13 +94,17 @@ func (s *service) DeleteSensor(ctx context.Context, req *api.IDRequest) (*api.Mo
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	sensor, ok := mod.GetSensors().Get(sensorID)
 	if !ok {
 		return nil, api.NotFound(sensorID)
 	}
 	mod.GetSensors().Remove(sensor)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil

@@ -203,6 +203,7 @@ class Module extends $pb.GeneratedMessage {
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'width', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'height', $pb.PbFieldType.O3)
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hasBackgroundImage')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'backgroundImageUrl')
     ..pc<BlockRef>(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: BlockRef.create)
     ..pc<BlockGroupRef>(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, protoName: 'blockGroups', subBuilder: BlockGroupRef.create)
     ..pc<EdgeRef>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'edges', $pb.PbFieldType.PM, subBuilder: EdgeRef.create)
@@ -222,6 +223,7 @@ class Module extends $pb.GeneratedMessage {
     $core.int? width,
     $core.int? height,
     $core.bool? hasBackgroundImage,
+    $core.String? backgroundImageUrl,
     $core.Iterable<BlockRef>? blocks,
     $core.Iterable<BlockGroupRef>? blockGroups,
     $core.Iterable<EdgeRef>? edges,
@@ -247,6 +249,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (hasBackgroundImage != null) {
       _result.hasBackgroundImage = hasBackgroundImage;
+    }
+    if (backgroundImageUrl != null) {
+      _result.backgroundImageUrl = backgroundImageUrl;
     }
     if (blocks != null) {
       _result.blocks.addAll(blocks);
@@ -343,32 +348,41 @@ class Module extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearHasBackgroundImage() => clearField(5);
 
+  @$pb.TagNumber(6)
+  $core.String get backgroundImageUrl => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set backgroundImageUrl($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasBackgroundImageUrl() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBackgroundImageUrl() => clearField(6);
+
   @$pb.TagNumber(100)
-  $core.List<BlockRef> get blocks => $_getList(5);
+  $core.List<BlockRef> get blocks => $_getList(6);
 
   @$pb.TagNumber(101)
-  $core.List<BlockGroupRef> get blockGroups => $_getList(6);
+  $core.List<BlockGroupRef> get blockGroups => $_getList(7);
 
   @$pb.TagNumber(102)
-  $core.List<EdgeRef> get edges => $_getList(7);
+  $core.List<EdgeRef> get edges => $_getList(8);
 
   @$pb.TagNumber(103)
-  $core.List<JunctionRef> get junctions => $_getList(8);
+  $core.List<JunctionRef> get junctions => $_getList(9);
 
   @$pb.TagNumber(104)
-  $core.List<OutputRef> get outputs => $_getList(9);
+  $core.List<OutputRef> get outputs => $_getList(10);
 
   @$pb.TagNumber(105)
-  $core.List<RouteRef> get routes => $_getList(10);
+  $core.List<RouteRef> get routes => $_getList(11);
 
   @$pb.TagNumber(106)
-  $core.List<SensorRef> get sensors => $_getList(11);
+  $core.List<SensorRef> get sensors => $_getList(12);
 
   @$pb.TagNumber(107)
-  $core.List<SignalRef> get signals => $_getList(12);
+  $core.List<SignalRef> get signals => $_getList(13);
 
   @$pb.TagNumber(200)
-  $core.List<$core.String> get layers => $_getList(13);
+  $core.List<$core.String> get layers => $_getList(14);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {

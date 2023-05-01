@@ -151,7 +151,14 @@ func (m *module) GetBackgroundImage() []byte {
 	return nil
 }
 func (m *module) SetBackgroundImage(value []byte) error {
-	return fmt.Errorf("Not implemented")
+	if pkg := m.GetPackage(); pkg != nil {
+		if len(value) == 0 {
+			return m.GetPackage().RemoveGenericPart(m, moduleBackgroundImageID)
+		} else {
+			return m.GetPackage().SetGenericPart(m, moduleBackgroundImageID, value)
+		}
+	}
+	return fmt.Errorf("no package set in module")
 }
 
 // Gets the horizontal size (in pixels) of this entity.

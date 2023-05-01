@@ -19,18 +19,22 @@ package v1
 
 import (
 	context "context"
+	fmt "fmt"
 	"sort"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // FromModel converts a model module to an API module
-func (dst *Module) FromModel(ctx context.Context, src model.Module) error {
+func (dst *Module) FromModel(ctx context.Context, src model.Module, httpHost string) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
 	dst.Width = int32(src.GetWidth())
 	dst.Height = int32(src.GetHeight())
 	dst.HasBackgroundImage = len(src.GetBackgroundImage()) > 0
+	if len(src.GetBackgroundImage()) > 0 {
+		dst.BackgroundImageUrl = fmt.Sprintf("http://%s/loc/%s/image", httpHost, src.GetID())
+	}
 
 	layers := make(map[string]struct{})
 	src.GetBlocks().ForEach(func(x model.Block) {

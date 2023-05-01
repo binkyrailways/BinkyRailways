@@ -92,13 +92,17 @@ func (s *service) DeleteBlock(ctx context.Context, req *api.IDRequest) (*api.Mod
 	if err != nil {
 		return nil, err
 	}
+	httpHost, err := s.getHttpHost(ctx)
+	if err != nil {
+		return nil, err
+	}
 	block, ok := mod.GetBlocks().Get(blockID)
 	if !ok {
 		return nil, api.NotFound(blockID)
 	}
 	mod.GetBlocks().Remove(block)
 	var result api.Module
-	if err := result.FromModel(ctx, mod); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost); err != nil {
 		return nil, err
 	}
 	return &result, nil
