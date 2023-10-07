@@ -69,6 +69,7 @@ func init() {
 	f.StringVar(&rootArgs.hostNameFromPrometheus, "hostname-from-prom", "host.docker.internal", "Host name of the host running this process as seen from prometheus")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
+	f.StringVar(&rootArgs.server.PublishedHost, "published-host", "", "Address of the current host that we publish on")
 	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")
@@ -110,6 +111,15 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	)
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
+	// Find our external host address
+	if rootArgs.server.PublishedHost == "" {
+		publishedHost, err := util.FindServerHostAddress(rootArgs.server.Host)
+		if err != nil {
+			cliLog.Fatal().Err(err).Msg("Failed to find server host")
+		}
+		rootArgs.server.PublishedHost = publishedHost
+	}
+
 	// Construct the prometheus config builder
 	pcb, err := promconfig.NewPrometheusConfigBuilder(cliLog, rootArgs.promConfigPath, rootArgs.promURL)
 	if err != nil {
@@ -147,10 +157,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		return nil
 	})
 	g.Go(func() error {
-		host, err := util.FindServerHostAddress(rootArgs.server.Host)
-		if err != nil {
-			cliLog.Fatal().Err(err).Msg("Failed to find server host")
-		}
+		host := rootArgs.server.PublishedHost
 		cliLog.Info().Str("host", host).Msg("Registering loki service")
 		ctx := api.WithServiceInfoHost(ctx, host)
 		return api.RegisterServiceEntry(ctx, api.ServiceTypeLokiProvider, api.ServiceInfo{
@@ -159,6 +166,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 			Secure:     false,
 		})
 	})
+	cliLog.Info().Msgf("Starting server... visit http://%s:%d or binkyrailways://%s to open app.", rootArgs.server.PublishedHost, rootArgs.server.HTTPPort, rootArgs.server.PublishedHost)
 	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}

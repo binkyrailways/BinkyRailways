@@ -37,6 +37,8 @@ import (
 type Config struct {
 	// Host interface to listen on
 	Host string
+	// Address of the current host that we publish on
+	PublishedHost string
 	// Port to listen on for HTTP requests
 	HTTPPort int
 	// Port to listen on for GRPC requests

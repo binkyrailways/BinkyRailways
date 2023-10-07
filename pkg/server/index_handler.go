@@ -19,6 +19,7 @@ package server
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -26,11 +27,11 @@ import (
 const (
 	indexHTML = `<html>
 <body>
-Open <a href="binkyrailways://localhost:18083">BinkyRailways</a>.
+Open <a href="binkyrailways://%HOST%">BinkyRailways</a>.
 </body>
 </html>`
 )
 
 func (s *Server) handleGetIndex(c echo.Context) error {
-	return c.HTML(http.StatusOK, indexHTML)
+	return c.HTML(http.StatusOK, strings.Replace(indexHTML, "%HOST", s.PublishedHost, -1))
 }
