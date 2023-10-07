@@ -15,9 +15,12 @@
 // Author Ewout Prangsma
 //
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
+import 'package:app_links/app_links.dart';
 
 import '../api.dart';
 
@@ -34,6 +37,48 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+  String _title = "Testing";
+
+  @override
+  void initState() {
+    super.initState();
+
+    initDeepLinks();
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+
+    super.dispose();
+  }
+
+  Future<void> initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Check initial link if app was in cold state (terminated)
+    final appLink = await _appLinks.getInitialAppLink();
+    if (appLink != null) {
+      print('getInitialAppLink: $appLink');
+      openAppLink(appLink);
+    }
+
+    // Handle link when app is in warm state (front or background)
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      print('onAppLink: $uri');
+      openAppLink(uri);
+    });
+  }
+
+  void openAppLink(Uri uri) {
+    setState(() {
+      _title = uri.toString();
+      APIClient.reload(uri);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(builder: (context, state, child) {
@@ -64,7 +109,7 @@ class _AppPageState extends State<AppPage> {
                 appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
                   // the App.build method, and use it to set our appbar title.
-                  title: const Text("Binky Railways"),
+                  title: Text("Binky Railways '$_title'"),
                 ),
                 body: Center(
                   child: Column(

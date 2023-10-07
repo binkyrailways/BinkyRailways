@@ -31,7 +31,7 @@ class APIClient {
         _modelClient = ModelServiceClient(channel),
         _stateClient = StateServiceClient(channel);
 
-  static final _instance = APIClient._initialize(ClientChannel('127.0.0.1',
+  static var _instance = APIClient._initialize(ClientChannel('127.0.0.1',
       port: 18034,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),
@@ -42,6 +42,17 @@ class APIClient {
   ModelServiceClient modelClient() => _modelClient;
 
   StateServiceClient stateClient() => _stateClient;
+
+  static void reload(Uri uri) {
+    final newInstance = APIClient._initialize(ClientChannel(uri.host,
+        port: 18034,
+        options: const ChannelOptions(
+          credentials: ChannelCredentials.insecure(),
+        )));
+    final oldInstance = _instance;
+    _instance = newInstance;
+    oldInstance.shutdown();
+  }
 
   void shutdown() {
     _channel.shutdown();
