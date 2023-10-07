@@ -47,7 +47,7 @@ binaries: generate binaries-server
 binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
-		-osarch="darwin/amd64 darwin/arm64" \
+		-osarch="darwin/amd64 darwin/arm64 linux/amd64 linux/arm64" \
 		-ldflags="-X main.projectVersion=${VERSION} -X main.projectBuild=${COMMIT}" \
 		-output="bin/{{.OS}}/{{.Arch}}/binky-server" \
 		-tags="netgo" \
