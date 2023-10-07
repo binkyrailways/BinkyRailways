@@ -110,6 +110,7 @@ func (s *Server) Run(ctx context.Context) error {
 
 	// Prepare HTTP server
 	httpRouter := echo.New()
+	httpRouter.GET("/", s.handleGetIndex)
 	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
 	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpSrv := http.Server{
