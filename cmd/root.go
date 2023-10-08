@@ -75,7 +75,7 @@ func init() {
 	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")
 	f.IntVar(&rootArgs.server.LokiPort, "loki-port", 13100, "Port to serve Loki requests on")
 	// Service arguments
-	f.StringVarP(&rootArgs.app.RailwayPath, "railway", "r", "", "Path of railway file")
+	f.StringVar(&rootArgs.app.RailwayStoragePath, "storage-path", "./Fixtures", "Path of railway files")
 }
 
 // SetVersionAndBuild configures project version & build number
@@ -88,11 +88,7 @@ func SetVersionAndBuild(version, build string) {
 func runRootCmd(cmd *cobra.Command, args []string) {
 	// Setup bare logger
 	cliLog := zerolog.New(newConsoleWriter()).With().Timestamp().Logger()
-
 	ctx := context.Background()
-	if len(args) == 1 && rootArgs.app.RailwayPath == "" {
-		rootArgs.app.RailwayPath = args[0]
-	}
 
 	// Setup log file
 	logFile, err := os.Create(rootArgs.logFile)
@@ -129,10 +125,13 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 
 	// Construct the service
 	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
-	svc := service.New(rootArgs.app, service.Dependencies{
+	svc, err := service.New(rootArgs.app, service.Dependencies{
 		Logger:                  cliLog,
 		PrometheusConfigBuilder: pcb,
 	})
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("Service construction failed")
+	}
 
 	// Construct the server
 	svr, err := server.New(rootArgs.server, cliLog, svc)

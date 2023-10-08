@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"path/filepath"
 	"strconv"
 	"sync"
 
@@ -40,8 +41,8 @@ type Config struct {
 	ProjectVersion string
 	// Commit hash of the build of the project
 	ProjectBuild string
-	// Path to Railway file
-	RailwayPath string
+	// Path to Railway storage folder
+	RailwayStoragePath string
 	// Port number our HTTP server is using
 	HTTPPort int
 }
@@ -52,17 +53,22 @@ type Dependencies struct {
 }
 
 // New constructs a new service.
-func New(cfg Config, deps Dependencies) *service {
+func New(cfg Config, deps Dependencies) (*service, error) {
+	if cfg.RailwayStoragePath == "" {
+		return nil, fmt.Errorf("RailwayStoragePath is empty")
+	}
 	s := &service{
 		Config:       cfg,
 		Dependencies: deps,
 		stateChanges: pubsub.New(),
 	}
 
-	if cfg.RailwayPath != "" {
-		s.openRailway(cfg.RailwayPath)
-	}
-	return s
+	/*
+	   TODO open default railway
+	   	if cfg.RailwayPath != "" {
+	   		s.openRailway(cfg.RailwayPath)
+	   	}*/
+	return s, nil
 }
 
 // service implements the railway service.
@@ -72,10 +78,15 @@ type service struct {
 
 	mutex                   sync.Mutex
 	railway                 model.Railway
+	railwayEntryName        string
 	railwayState            state.Railway
 	cancelEventSubscription context.CancelFunc
 	stateChanges            *pubsub.PubSub
 }
+
+const (
+	railwayExt = ".brw"
+)
 
 // Run the service
 func (s *service) Run(ctx context.Context) error {
@@ -83,18 +94,20 @@ func (s *service) Run(ctx context.Context) error {
 	return nil
 }
 
-// Open a new railway
-func (s *service) openRailway(path string) error {
-	s.Logger.Info().Str("path", path).Msg("Loading railway")
+// Open a new railway from the storage folder.
+func (s *service) openRailway(name string) error {
+	s.Logger.Info().Str("name", name).Msg("Loading railway")
+	path := filepath.Join(s.RailwayStoragePath, name+railwayExt)
 	pkg, err := storage.NewPackageFromFile(path)
 	if err != nil {
 		s.Logger.Error().Err(err).Str("path", path).Msg("Failed to load railway")
-		return err
+		return fmt.Errorf("failed to load railway '%s': %w", name, err)
 	}
 	pkg.OnError().Add(func(i interface{}) {
 		s.Logger.Error().Msgf("%v", i)
 	})
 	s.railway = pkg.GetRailway()
+	s.railwayEntryName = name
 	return nil
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2023 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,18 @@
 // Author Ewout Prangsma
 //
 
-export 'models/_model_model.dart';
-export 'models/_state_model.dart';
-export 'models/_storage_model.dart';
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+// List of railway entries in storage.
+message RailwayEntryList {
+  repeated RailwayEntry items = 1;
+}
+
+// Single railway entry in storage.
+message RailwayEntry {
+  string name = 1;
+}

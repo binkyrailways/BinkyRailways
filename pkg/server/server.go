@@ -62,6 +62,7 @@ type Server struct {
 type Service interface {
 	api.ModelServiceServer
 	api.StateServiceServer
+	api.StorageServiceServer
 	// Get image of loc by id
 	// Returns: image, contentType, error
 	GetLocImage(ctx context.Context, locID string) ([]byte, string, error)
@@ -137,6 +138,7 @@ func (s *Server) Run(ctx context.Context) error {
 	)
 	api.RegisterModelServiceServer(grpcSrv, s.service)
 	api.RegisterStateServiceServer(grpcSrv, s.service)
+	api.RegisterStorageServiceServer(grpcSrv, s.service)
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcSrv)
 

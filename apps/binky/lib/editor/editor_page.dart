@@ -356,7 +356,23 @@ class _EditorPageState extends State<EditorPage> {
       default:
         return [
           IconButton(
+            icon: const Icon(Icons.undo),
+            tooltip: "Close",
+            onPressed: () async {
+              try {
+                await model.closeRailway();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to close railway",
+                    content: Text("$err"));
+              }
+            },
+          ),
+          const VerticalDivider(),
+          IconButton(
             icon: const Icon(Icons.save),
+            tooltip: "Save changes",
             onPressed: () async {
               try {
                 await model.save();
@@ -370,6 +386,7 @@ class _EditorPageState extends State<EditorPage> {
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
+            tooltip: "Reload",
             onPressed: () async {
               try {
                 await model.reloadAll();

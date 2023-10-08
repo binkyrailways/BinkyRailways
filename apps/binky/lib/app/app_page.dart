@@ -28,6 +28,7 @@ import '../components.dart';
 import '../models.dart';
 import '../editor/editor_page.dart';
 import '../run/run_page.dart';
+import '../storage/storage_page.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({Key? key}) : super(key: key);
@@ -81,6 +82,55 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<ModelModel>(builder: (context, model, child) {
+      return FutureBuilder<RailwayEntry>(
+          future: model.getRailwayEntry(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              final isUnavailable = snapshot.hasError &&
+                  snapshot.error is GrpcError &&
+                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
+              final List<Widget> children = snapshot.hasError
+                  ? [
+                      ErrorMessage(
+                          title: "Failed to load railway entry",
+                          error: isUnavailable
+                              ? "Cannot connect to server"
+                              : snapshot.error),
+                      TextButton(
+                        onPressed: () => model.getRailwayEntry(),
+                        child: const Text("Retry"),
+                      ),
+                    ]
+                  : [
+                      const Text('Loading railway entry...'),
+                      const CircularProgressIndicator(value: null)
+                    ];
+              return Scaffold(
+                appBar: AppBar(
+                  // Here we take the value from the MyHomePage object that was created by
+                  // the App.build method, and use it to set our appbar title.
+                  title: Text("Binky Railways '$_title'"),
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: children,
+                  ),
+                ),
+              );
+            }
+            var rwEntry = snapshot.data!;
+            if (rwEntry.name.isNotEmpty) {
+              return _buildForLoadedEntry(context);
+            } else {
+              return const StoragePage();
+            }
+          });
+    });
+  }
+
+  Widget _buildForLoadedEntry(BuildContext context) {
     return Consumer<StateModel>(builder: (context, state, child) {
       return FutureBuilder<RailwayState>(
           future: state.getRailwayState(),

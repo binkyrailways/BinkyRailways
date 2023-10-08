@@ -19,17 +19,20 @@ import 'package:grpc/grpc.dart';
 
 import "./generated/br_model_service.pbgrpc.dart";
 import './generated/br_state_service.pbgrpc.dart';
+import './generated/br_storage_service.pbgrpc.dart';
 
 class APIClient {
   final ClientChannel _channel;
 
   final ModelServiceClient _modelClient;
   final StateServiceClient _stateClient;
+  final StorageServiceClient _storageClient;
 
   APIClient._initialize(ClientChannel channel)
       : _channel = channel,
         _modelClient = ModelServiceClient(channel),
-        _stateClient = StateServiceClient(channel);
+        _stateClient = StateServiceClient(channel),
+        _storageClient = StorageServiceClient(channel);
 
   static var _instance = APIClient._initialize(ClientChannel('127.0.0.1',
       port: 18034,
@@ -44,6 +47,8 @@ class APIClient {
   ModelServiceClient modelClient() => _modelClient;
 
   StateServiceClient stateClient() => _stateClient;
+
+  StorageServiceClient storageClient() => _storageClient;
 
   static void reload(Uri uri) {
     final newInstance = APIClient._initialize(ClientChannel(uri.host,

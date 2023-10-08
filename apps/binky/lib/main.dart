@@ -27,6 +27,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => ModelModel()),
         ChangeNotifierProvider(create: (context) => StateModel()),
+        ChangeNotifierProvider(create: (context) => StorageModel()),
       ],
       child: const BinkyApp(),
     ),

@@ -23,6 +23,40 @@ import (
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 )
 
+// Load a new railway entry from storage
+func (s *service) LoadRailway(ctx context.Context, req *api.RailwayEntry) (*api.Railway, error) {
+	// First disable any state we may have.
+	if _, err := s.DisableRunMode(ctx, nil); err != nil {
+		return nil, err
+	}
+	// Open the new railway
+	if err := s.openRailway(req.GetName()); err != nil {
+		return nil, err
+	}
+	// Return opened railway
+	return s.GetRailway(ctx, nil)
+}
+
+// Close the currently loaded railway entry.
+func (s *service) CloseRailway(ctx context.Context, req *api.Empty) (*api.Empty, error) {
+	// First disable any state we may have.
+	if _, err := s.DisableRunMode(ctx, nil); err != nil {
+		return nil, err
+	}
+	s.railway = nil
+	s.railwayEntryName = ""
+	s.railwayState = nil
+	return &api.Empty{}, nil
+}
+
+// Gets the current loaded railway entry.
+// If no entry is loaded, the returned entry is empty.
+func (s *service) GetRailwayEntry(ctx context.Context, req *api.Empty) (*api.RailwayEntry, error) {
+	return &api.RailwayEntry{
+		Name: s.railwayEntryName,
+	}, nil
+}
+
 // Gets the current railway
 func (s *service) GetRailway(ctx context.Context, req *api.Empty) (*api.Railway, error) {
 	rw, err := s.getRailway()

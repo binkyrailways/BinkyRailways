@@ -20,11 +20,14 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:binky/api/generated/br_model_service.pb.dart';
+import 'package:binky/api/generated/br_storage_service.pbgrpc.dart';
+import 'package:binky/api/generated/br_storage_types.pb.dart';
 
 import '../api.dart' as mapi;
 import 'package:flutter/material.dart';
 
 class ModelModel extends ChangeNotifier {
+  mapi.RailwayEntry? _railwayEntry;
   mapi.Railway? _railway;
   final Map<String, mapi.Module> _modules = {};
   final Map<int, ui.Image> _images = {};
@@ -48,6 +51,7 @@ class ModelModel extends ChangeNotifier {
   Future<void> reloadAll() async {
     // Clear all caches
     _railway = null;
+    _railwayEntry = null;
     _modules.clear();
     _images.clear();
     _moduleBackgroundImages.clear();
@@ -66,12 +70,21 @@ class ModelModel extends ChangeNotifier {
 
     // Reload
     var modelClient = mapi.APIClient().modelClient();
-    _railway = await modelClient.getRailway(mapi.Empty());
+    _railwayEntry = await modelClient.getRailwayEntry(mapi.Empty());
+    if (loadedRailwayEntryName().isNotEmpty) {
+      _railway = await modelClient.getRailway(mapi.Empty());
+    } else {
+      _railway = null;
+    }
     notifyListeners();
   }
 
+  // Gets the name of the loaded entry (if any).
+  String loadedRailwayEntryName() => _railwayEntry?.name ?? "";
+
   // Is a railway already loaded?
-  bool isRailwayLoaded() => _railway != null;
+  bool isRailwayLoaded() =>
+      loadedRailwayEntryName().isNotEmpty && _railway != null;
 
   // Is the currently loaded railway modified since last save?
   bool isRailwayModified() => _railway?.dirty ?? false;
@@ -87,6 +100,30 @@ class ModelModel extends ChangeNotifier {
     return "${_railway?.description ?? '<no railway loaded>'}${_railway?.dirty ?? false ? "*" : ""}";
   }
 
+  // Load the given railway entry and make it current.
+  Future<void> loadRailway(RailwayEntry entry) async {
+    var modelClient = mapi.APIClient().modelClient();
+    await modelClient.loadRailway(entry);
+    await reloadAll();
+  }
+
+  // Create a new railway entry and load it.
+  Future<void> createAndLoadRailway(String name) async {
+    var storageClient = mapi.APIClient().storageClient();
+    final entry =
+        await storageClient.createRailwayEntry(CreateRailwayEntryRequest(
+      name: name,
+    ));
+    await loadRailway(entry);
+  }
+
+  // Close the current railway.
+  Future<void> closeRailway() async {
+    var modelClient = mapi.APIClient().modelClient();
+    await modelClient.closeRailway(mapi.Empty());
+    await reloadAll();
+  }
+
   // Save changes made in the model
   Future<void> save() async {
     requireRailwayLoaded();
@@ -97,6 +134,13 @@ class ModelModel extends ChangeNotifier {
   }
 
   mapi.Railway? getCachedRailway() => _railway;
+
+  Future<mapi.RailwayEntry> getRailwayEntry() async {
+    var modelClient = mapi.APIClient().modelClient();
+    _railwayEntry = await modelClient.getRailwayEntry(mapi.Empty());
+    notifyListeners();
+    return _railwayEntry!;
+  }
 
   Future<mapi.Railway> getRailway() async {
     if (_railway == null) {

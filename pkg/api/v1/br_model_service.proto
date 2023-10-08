@@ -22,6 +22,7 @@ package binkyrailways.v1;
 option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
 
 import "br_model_types.proto";
+import "br_storage_types.proto";
 
 // ModelService is used to get & modify the model of the current railway.
 service ModelService {
@@ -30,6 +31,13 @@ service ModelService {
   // Try to parse a permission
   rpc ParsePermission(ParsePermissionRequest) returns (ParsePermissionResult);
 
+  // Load the given railway entry
+  rpc LoadRailway(RailwayEntry) returns (Railway);
+  // Close the currently loaded railway entry.
+  rpc CloseRailway(Empty) returns (Empty);
+  // Gets the current loaded railway entry. 
+  // If no entry is loaded, the returned entry is empty.
+  rpc GetRailwayEntry(Empty) returns (RailwayEntry);
   // Gets the current railway
   rpc GetRailway(Empty) returns (Railway);
   // Update the current railway

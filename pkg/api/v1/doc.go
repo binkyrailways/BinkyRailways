@@ -17,5 +17,5 @@
 
 package v1
 
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/  --gofast_out=Mgithub.com/golang/protobuf/ptypes/timestamp/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:. ./br_model_service.proto ./br_state_service.proto ./br_model_types.proto ./br_state_types.proto
-//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/ --dart_out=grpc:../../../apps/binky/lib/api/generated/ ./br_model_service.proto ./br_state_service.proto ./br_model_types.proto ./br_state_types.proto
+//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/  --gofast_out=Mgithub.com/golang/protobuf/ptypes/timestamp/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative:. ./br_model_service.proto ./br_state_service.proto ./br_model_types.proto ./br_state_types.proto ./br_storage_types.proto ./br_storage_service.proto
+//go:generate protoc -I .:../../../:../../../proto_vendor/:../../../proto_vendor/github.com/gogo/protobuf/protobuf/ --dart_out=grpc:../../../apps/binky/lib/api/generated/ ./br_model_service.proto ./br_state_service.proto ./br_model_types.proto ./br_state_types.proto ./br_storage_types.proto ./br_storage_service.proto
