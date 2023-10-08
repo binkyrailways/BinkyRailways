@@ -33,8 +33,10 @@ class APIClient {
 
   static var _instance = APIClient._initialize(ClientChannel('127.0.0.1',
       port: 18034,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+      options: ChannelOptions(
+        credentials: ChannelCredentials.secure(
+          onBadCertificate: (certificate, host) => true,
+        ),
       )));
 
   factory APIClient() => _instance;
@@ -46,8 +48,10 @@ class APIClient {
   static void reload(Uri uri) {
     final newInstance = APIClient._initialize(ClientChannel(uri.host,
         port: 18034,
-        options: const ChannelOptions(
-          credentials: ChannelCredentials.insecure(),
+        options: ChannelOptions(
+          credentials: ChannelCredentials.secure(
+            onBadCertificate: (certificate, host) => true,
+          ),
         )));
     final oldInstance = _instance;
     _instance = newInstance;

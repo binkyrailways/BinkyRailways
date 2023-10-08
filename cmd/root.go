@@ -166,7 +166,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 			Secure:     false,
 		})
 	})
-	cliLog.Info().Msgf("Starting server... visit http://%s:%d or binkyrailways://%s to open app.", rootArgs.server.PublishedHost, rootArgs.server.HTTPPort, rootArgs.server.PublishedHost)
+	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHost, rootArgs.server.HTTPPort, rootArgs.server.PublishedHost, rootArgs.server.GRPCPort)
 	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}
