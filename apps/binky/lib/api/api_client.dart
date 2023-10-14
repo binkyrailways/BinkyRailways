@@ -15,32 +15,30 @@
 // Author Ewout Prangsma
 //
 
-import 'package:grpc/grpc.dart';
+import 'package:grpc/src/client/channel.dart' as intf show ClientChannel;
+
+import 'api_channel.dart'
+    if (dart.library.io) 'api_channel_grpc.dart'
+    if (dart.library.html) 'api_channel_web.dart';
 
 import "./generated/br_model_service.pbgrpc.dart";
 import './generated/br_state_service.pbgrpc.dart';
 import './generated/br_storage_service.pbgrpc.dart';
 
 class APIClient {
-  final ClientChannel _channel;
+  final intf.ClientChannel _channel;
 
   final ModelServiceClient _modelClient;
   final StateServiceClient _stateClient;
   final StorageServiceClient _storageClient;
 
-  APIClient._initialize(ClientChannel channel)
+  APIClient._initialize(intf.ClientChannel channel)
       : _channel = channel,
         _modelClient = ModelServiceClient(channel),
         _stateClient = StateServiceClient(channel),
         _storageClient = StorageServiceClient(channel);
 
-  static var _instance = APIClient._initialize(ClientChannel('127.0.0.1',
-      port: 18034,
-      options: ChannelOptions(
-        credentials: ChannelCredentials.secure(
-          onBadCertificate: (certificate, host) => true,
-        ),
-      )));
+  static var _instance = APIClient._initialize(createChannel('127.0.0.1'));
 
   factory APIClient() => _instance;
 
@@ -51,13 +49,7 @@ class APIClient {
   StorageServiceClient storageClient() => _storageClient;
 
   static void reload(Uri uri) {
-    final newInstance = APIClient._initialize(ClientChannel(uri.host,
-        port: 18034,
-        options: ChannelOptions(
-          credentials: ChannelCredentials.secure(
-            onBadCertificate: (certificate, host) => true,
-          ),
-        )));
+    final newInstance = APIClient._initialize(createChannel(uri.host));
     final oldInstance = _instance;
     _instance = newInstance;
     oldInstance.shutdown();

@@ -25,7 +25,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
@@ -122,15 +124,6 @@ func (s *Server) Run(ctx context.Context) error {
 		//Handler: httputil.NewSingleHostReverseProxy(lokiUrl),
 	}
 
-	// Prepare HTTP server
-	httpRouter := echo.New()
-	httpRouter.GET("/", s.handleGetIndex)
-	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
-	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
-	httpSrv := http.Server{
-		Handler: httpRouter,
-	}
-
 	// Prepare GRPC server
 	grpcSrv := grpc.NewServer(
 	//grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
@@ -141,6 +134,24 @@ func (s *Server) Run(ctx context.Context) error {
 	api.RegisterStorageServiceServer(grpcSrv, s.service)
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcSrv)
+	wrappedGrpc := grpcweb.WrapServer(grpcSrv)
+
+	// Prepare HTTP server
+	httpRouter := echo.New()
+	//httpRouter.GET("/", s.handleGetIndex)
+	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
+	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+	httpRouter.Use(middleware.Static("./pkg/server/web"))
+	httpSrv := http.Server{
+		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+			if wrappedGrpc.IsGrpcWebRequest(req) {
+				wrappedGrpc.ServeHTTP(resp, req)
+				return
+			}
+			// Fall back to other servers.
+			httpRouter.ServeHTTP(resp, req)
+		}),
+	}
 
 	// Serve apis
 	log.Debug().Str("address", httpAddr).Msg("Serving HTTP")
