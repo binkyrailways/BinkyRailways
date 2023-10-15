@@ -137,8 +137,11 @@ class ModelModel extends ChangeNotifier {
 
   Future<mapi.RailwayEntry> getRailwayEntry() async {
     var modelClient = mapi.APIClient().modelClient();
-    _railwayEntry = await modelClient.getRailwayEntry(mapi.Empty());
-    notifyListeners();
+    final entry = await modelClient.getRailwayEntry(mapi.Empty());
+    if (_railwayEntry?.name != entry.name) {
+      _railwayEntry = entry;
+      notifyListeners();
+    }
     return _railwayEntry!;
   }
 

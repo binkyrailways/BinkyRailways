@@ -95,6 +95,16 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
   }
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    _serverHostController.dispose();
+    _grpcPortController.dispose();
+    _serialPortController.dispose();
+    _requiredVersionController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant _CommandStationSettings oldWidget) {
     _initControllers();
     super.didUpdateWidget(oldWidget);
