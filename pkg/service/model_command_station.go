@@ -76,3 +76,45 @@ func (s *service) UpdateCommandStation(ctx context.Context, req *api.CommandStat
 	}
 	return &result, nil
 }
+
+// Add a bidib CommandStation.
+func (s *service) AddBidibCommandStation(ctx context.Context, req *api.Empty) (*api.CommandStation, error) {
+	log := s.Logger.With().Logger()
+	rw, err := s.getRailway()
+	if err != nil {
+		log.Debug().Err(err).Msg("Failed to load railway")
+		return nil, err
+	}
+	cs, err := rw.GetPackage().AddNewBidibCommandStation()
+	if err != nil {
+		log.Debug().Err(err).Msg("Failed to add bidib commandstation to package")
+		return nil, err
+	}
+	rw.GetCommandStations().Add(cs)
+	var result api.CommandStation
+	if err := result.FromModel(ctx, cs); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Add a binkynet CommandStation.
+func (s *service) AddBinkyNetCommandStation(ctx context.Context, req *api.Empty) (*api.CommandStation, error) {
+	log := s.Logger.With().Logger()
+	rw, err := s.getRailway()
+	if err != nil {
+		log.Debug().Err(err).Msg("Failed to load railway")
+		return nil, err
+	}
+	cs, err := rw.GetPackage().AddNewBinkyNetCommandStation()
+	if err != nil {
+		log.Debug().Err(err).Msg("Failed to add binkynet commandstation to package")
+		return nil, err
+	}
+	rw.GetCommandStations().Add(cs)
+	var result api.CommandStation
+	if err := result.FromModel(ctx, cs); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

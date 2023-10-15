@@ -82,6 +82,10 @@ service ModelService {
   rpc GetCommandStation(IDRequest) returns (CommandStation);
   // Update a command station  by ID.
   rpc UpdateCommandStation(CommandStation) returns (CommandStation);
+  // Adds a new bidib command station.
+  rpc AddBidibCommandStation(Empty) returns (CommandStation);
+  // Adds a new binkynet command station.
+  rpc AddBinkyNetCommandStation(Empty) returns (CommandStation);
 
   // Gets a block by ID.
   rpc GetBlock(IDRequest) returns (Block);

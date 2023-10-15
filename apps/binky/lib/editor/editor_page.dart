@@ -437,6 +437,26 @@ class _EditorPageState extends State<EditorPage> {
       BuildContext context, EditorContext editorCtx, ModelModel model) {
     final selector = editorCtx.selector;
     switch (selector.entityType) {
+      case EntityType.commandstation:
+      case EntityType.commandstations:
+        return [
+          SpeedDialChild(
+            child: BinkyIcons.commandstation,
+            label: "Add Bidib CommandStation",
+            onTap: () async {
+              final added = await model.addBidibCommandStation();
+              editorCtx.select(EntitySelector.commandStation(added, null));
+            },
+          ),
+          SpeedDialChild(
+            child: BinkyIcons.commandstation,
+            label: "Add BinkyNet CommandStation",
+            onTap: () async {
+              final added = await model.addBinkyNetCommandStation();
+              editorCtx.select(EntitySelector.commandStation(added, null));
+            },
+          ),
+        ];
       case EntityType.module:
       case EntityType.modules:
         return [

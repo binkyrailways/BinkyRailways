@@ -32,6 +32,13 @@ func (v *DefaultEntityVisitor) VisitAction(x Action) interface{} {
 	return nil
 }
 
+func (v *DefaultEntityVisitor) VisitBidibNetCommandStation(x BidibCommandStation) interface{} {
+	if v.defaultVisitor != nil {
+		return v.defaultVisitor.VisitCommandStation(x)
+	}
+	return nil
+}
+
 func (v *DefaultEntityVisitor) VisitBinaryOutput(x BinaryOutput) interface{} {
 	if v.defaultVisitor != nil {
 		return v.defaultVisitor.VisitOutput(x)

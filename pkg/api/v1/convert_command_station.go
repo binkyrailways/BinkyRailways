@@ -34,6 +34,11 @@ func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStati
 		if err := dst.BinkynetCommandStation.FromModel(ctx, bncs); err != nil {
 			return err
 		}
+	} else if bcs, ok := src.(model.BidibCommandStation); ok {
+		dst.BidibCommandStation = &BidibCommandStation{}
+		if err := dst.BidibCommandStation.FromModel(ctx, bcs); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -50,6 +55,13 @@ func (src *CommandStation) ToModel(ctx context.Context, dst model.CommandStation
 			return InvalidArgument("Expected BinkynetCommandStation")
 		}
 		if err := src.BinkynetCommandStation.ToModel(ctx, bncs); err != nil {
+			return err
+		}
+	} else if bcs, ok := dst.(model.BidibCommandStation); ok {
+		if src.GetBidibCommandStation() == nil {
+			return InvalidArgument("Expected BidibCommandStation")
+		}
+		if err := src.BidibCommandStation.ToModel(ctx, bcs); err != nil {
 			return err
 		}
 	}

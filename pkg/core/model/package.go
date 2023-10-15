@@ -30,6 +30,9 @@ type Package interface {
 	// Remove the given entity from this package
 	Remove(PersistentEntity) error
 
+	// Add a new Bidib command station.
+	AddNewBidibCommandStation() (BidibCommandStation, error)
+
 	// Add a new BinkyNet command station.
 	AddNewBinkyNetCommandStation() (BinkyNetCommandStation, error)
 

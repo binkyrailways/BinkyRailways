@@ -143,6 +143,19 @@ func (p *packageImpl) Remove(model.PersistentEntity) error {
 	return nil
 }
 
+// Add a new Bidib command station.
+func (p *packageImpl) AddNewBidibCommandStation() (model.BidibCommandStation, error) {
+	cs := impl.NewBidibCommandStation(p)
+	cs.SetPackage(p)
+	uri := createPartURI(impl.PackageFolderCommandStation, cs.GetID())
+
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+	p.loadedEntities[uri] = cs
+	p.dirty = true
+	return cs, nil
+}
+
 // Add a new BinkyNet command station.
 func (p *packageImpl) AddNewBinkyNetCommandStation() (model.BinkyNetCommandStation, error) {
 	cs := impl.NewBinkyNetCommandStation(p)

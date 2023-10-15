@@ -189,6 +189,8 @@ message CommandStation {
   string id = 1;
   // Description of the command station
   string description = 2;
+  // Settings of bidib command station
+  BidibCommandStation bidib_command_station = 11;
   // Settings of binkynet command station
   BinkyNetCommandStation binkynet_command_station = 10;
 }
@@ -196,6 +198,9 @@ message CommandStation {
 message CommandStationRef {
   // ID of the command station
   string id = 1;
+}
+
+message BidibCommandStation {
 }
 
 message BinkyNetCommandStation {

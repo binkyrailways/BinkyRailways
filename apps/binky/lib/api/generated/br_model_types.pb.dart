@@ -948,6 +948,7 @@ class CommandStation extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOM<BinkyNetCommandStation>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binkynetCommandStation', subBuilder: BinkyNetCommandStation.create)
+    ..aOM<BidibCommandStation>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bidibCommandStation', subBuilder: BidibCommandStation.create)
     ..hasRequiredFields = false
   ;
 
@@ -956,6 +957,7 @@ class CommandStation extends $pb.GeneratedMessage {
     $core.String? id,
     $core.String? description,
     BinkyNetCommandStation? binkynetCommandStation,
+    BidibCommandStation? bidibCommandStation,
   }) {
     final _result = create();
     if (id != null) {
@@ -966,6 +968,9 @@ class CommandStation extends $pb.GeneratedMessage {
     }
     if (binkynetCommandStation != null) {
       _result.binkynetCommandStation = binkynetCommandStation;
+    }
+    if (bidibCommandStation != null) {
+      _result.bidibCommandStation = bidibCommandStation;
     }
     return _result;
   }
@@ -1018,6 +1023,17 @@ class CommandStation extends $pb.GeneratedMessage {
   void clearBinkynetCommandStation() => clearField(10);
   @$pb.TagNumber(10)
   BinkyNetCommandStation ensureBinkynetCommandStation() => $_ensure(2);
+
+  @$pb.TagNumber(11)
+  BidibCommandStation get bidibCommandStation => $_getN(3);
+  @$pb.TagNumber(11)
+  set bidibCommandStation(BidibCommandStation v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasBidibCommandStation() => $_has(3);
+  @$pb.TagNumber(11)
+  void clearBidibCommandStation() => clearField(11);
+  @$pb.TagNumber(11)
+  BidibCommandStation ensureBidibCommandStation() => $_ensure(3);
 }
 
 class CommandStationRef extends $pb.GeneratedMessage {
@@ -1065,6 +1081,35 @@ class CommandStationRef extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+}
+
+class BidibCommandStation extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BidibCommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  BidibCommandStation._() : super();
+  factory BidibCommandStation() => create();
+  factory BidibCommandStation.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BidibCommandStation.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BidibCommandStation clone() => BidibCommandStation()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BidibCommandStation copyWith(void Function(BidibCommandStation) updates) => super.copyWith((message) => updates(message as BidibCommandStation)) as BidibCommandStation; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BidibCommandStation create() => BidibCommandStation._();
+  BidibCommandStation createEmptyInstance() => create();
+  static $pb.PbList<BidibCommandStation> createRepeated() => $pb.PbList<BidibCommandStation>();
+  @$core.pragma('dart2js:noInline')
+  static BidibCommandStation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BidibCommandStation>(create);
+  static BidibCommandStation? _defaultInstance;
 }
 
 class BinkyNetCommandStation extends $pb.GeneratedMessage {

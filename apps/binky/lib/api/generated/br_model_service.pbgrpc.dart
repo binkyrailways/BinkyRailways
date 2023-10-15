@@ -125,6 +125,16 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/UpdateCommandStation',
           ($2.CommandStation value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.CommandStation.fromBuffer(value));
+  static final _$addBidibCommandStation =
+      $grpc.ClientMethod<$2.Empty, $2.CommandStation>(
+          '/binkyrailways.v1.ModelService/AddBidibCommandStation',
+          ($2.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.CommandStation.fromBuffer(value));
+  static final _$addBinkyNetCommandStation =
+      $grpc.ClientMethod<$2.Empty, $2.CommandStation>(
+          '/binkyrailways.v1.ModelService/AddBinkyNetCommandStation',
+          ($2.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.CommandStation.fromBuffer(value));
   static final _$getBlock = $grpc.ClientMethod<$0.IDRequest, $2.Block>(
       '/binkyrailways.v1.ModelService/GetBlock',
       ($0.IDRequest value) => value.writeToBuffer(),
@@ -481,6 +491,20 @@ class ModelServiceClient extends $grpc.Client {
       $2.CommandStation request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateCommandStation, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.CommandStation> addBidibCommandStation(
+      $2.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBidibCommandStation, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$2.CommandStation> addBinkyNetCommandStation(
+      $2.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinkyNetCommandStation, request,
+        options: options);
   }
 
   $grpc.ResponseFuture<$2.Block> getBlock($0.IDRequest request,
@@ -930,6 +954,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $2.CommandStation.fromBuffer(value),
+        ($2.CommandStation value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.Empty, $2.CommandStation>(
+        'AddBidibCommandStation',
+        addBidibCommandStation_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
+        ($2.CommandStation value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.Empty, $2.CommandStation>(
+        'AddBinkyNetCommandStation',
+        addBinkyNetCommandStation_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
         ($2.CommandStation value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.IDRequest, $2.Block>(
         'GetBlock',
@@ -1410,6 +1448,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return updateCommandStation(call, await request);
   }
 
+  $async.Future<$2.CommandStation> addBidibCommandStation_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.Empty> request) async {
+    return addBidibCommandStation(call, await request);
+  }
+
+  $async.Future<$2.CommandStation> addBinkyNetCommandStation_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.Empty> request) async {
+    return addBinkyNetCommandStation(call, await request);
+  }
+
   $async.Future<$2.Block> getBlock_Pre(
       $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
     return getBlock(call, await request);
@@ -1699,6 +1747,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$2.CommandStation> updateCommandStation(
       $grpc.ServiceCall call, $2.CommandStation request);
+  $async.Future<$2.CommandStation> addBidibCommandStation(
+      $grpc.ServiceCall call, $2.Empty request);
+  $async.Future<$2.CommandStation> addBinkyNetCommandStation(
+      $grpc.ServiceCall call, $2.Empty request);
   $async.Future<$2.Block> getBlock(
       $grpc.ServiceCall call, $0.IDRequest request);
   $async.Future<$2.Block> updateBlock($grpc.ServiceCall call, $2.Block request);

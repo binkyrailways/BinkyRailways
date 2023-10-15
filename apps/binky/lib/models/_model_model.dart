@@ -377,6 +377,26 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new bidib command station
+  Future<mapi.CommandStation> addBidibCommandStation() async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBidibCommandStation(mapi.Empty());
+    _commandStations[added.id] = added;
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+    return added;
+  }
+
+  // Add a new binkynet command station
+  Future<mapi.CommandStation> addBinkyNetCommandStation() async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBinkyNetCommandStation(mapi.Empty());
+    _commandStations[added.id] = added;
+    _railway = await modelClient.getRailway(mapi.Empty());
+    notifyListeners();
+    return added;
+  }
+
   // Gets a block by ID from cache
   mapi.Block? getCachedBlock(String id) => _blocks[id];
 

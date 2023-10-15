@@ -48,6 +48,8 @@ func (pec *PersistentEntityContainer) UnmarshalXML(d *xml.Decoder, start xml.Sta
 	case TypeRailway:
 		// Railway must have been initialized before
 		entity = pec.PersistentEntity
+	case TypeBidibCommandStation:
+		entity = NewBidibCommandStation(nil)
 	case TypeBinkyNetCommandStation:
 		entity = NewBinkyNetCommandStation(nil)
 	case TypeLocoBufferCommandStation:

@@ -56,6 +56,10 @@ func (b *builder) VisitSwitch(x model.Switch) interface{} {
 	return newSwitch(x, b.Railway)
 }
 
+func (b *builder) VisitBidibCommandStation(x model.BidibCommandStation) interface{} {
+	return newBidibCommandStation(x, b.Railway)
+}
+
 func (b *builder) VisitBinkyNetCommandStation(x model.BinkyNetCommandStation) interface{} {
 	return newBinkyNetCommandStation(x, b.Railway)
 }

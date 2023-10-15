@@ -20,6 +20,7 @@ package model
 // EntityVisitor builds the visitor pattern.
 type EntityVisitor interface {
 	VisitAction(Action) interface{}
+	VisitBidibNetCommandStation(BidibCommandStation) interface{}
 	VisitBinarySensor(BinarySensor) interface{}
 	VisitBinkyNetCommandStation(BinkyNetCommandStation) interface{}
 	VisitBlock(Block) interface{}
