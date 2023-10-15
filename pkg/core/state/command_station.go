@@ -30,6 +30,9 @@ type CommandStation interface {
 	// Gets the underlying model
 	GetModel() model.CommandStation
 
+	// Gets the underlying model reference
+	GetModelRef() model.CommandStationRef
+
 	// Junctions driven by this command station
 	ForEachJunction(func(Junction))
 

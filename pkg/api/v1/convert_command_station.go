@@ -26,9 +26,10 @@ import (
 )
 
 // FromModel converts a model command station to an API command station
-func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStation) error {
+func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStation, srcRef model.CommandStationRef) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	dst.AddressSpaces = srcRef.GetAddressSpaces()
 	if bncs, ok := src.(model.BinkyNetCommandStation); ok {
 		dst.BinkynetCommandStation = &BinkyNetCommandStation{}
 		if err := dst.BinkynetCommandStation.FromModel(ctx, bncs); err != nil {
@@ -44,11 +45,12 @@ func (dst *CommandStation) FromModel(ctx context.Context, src model.CommandStati
 }
 
 // ToModel converts an API command station to a model command station
-func (src *CommandStation) ToModel(ctx context.Context, dst model.CommandStation) error {
+func (src *CommandStation) ToModel(ctx context.Context, dst model.CommandStation, dstRef model.CommandStationRef) error {
 	if src.GetId() != dst.GetID() {
 		return InvalidArgument("Unexpected command station ID: '%s'", src.GetId())
 	}
 	var err error
+	multierr.AppendInto(&err, dstRef.SetAddressSpaces(src.GetAddressSpaces()))
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	if bncs, ok := dst.(model.BinkyNetCommandStation); ok {
 		if src.GetBinkynetCommandStation() == nil {

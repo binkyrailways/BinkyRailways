@@ -53,6 +53,7 @@ type CommandStation interface {
 type commandStation struct {
 	entity
 
+	csRef         model.CommandStationRef
 	addressSpaces []string
 	junctions     []state.Junction
 	locs          []state.Loc
@@ -64,8 +65,14 @@ type commandStation struct {
 
 // Create a new entity
 func newCommandStation(en model.CommandStation, railway Railway) commandStation {
+	csRef, found := railway.GetModel().GetCommandStations().Get(en.GetID())
+	if !found {
+		panic("Command station ref not found")
+	}
 	return commandStation{
-		entity: newEntity(railway.Logger().With().Str("cs", en.GetDescription()).Logger(), en, railway),
+		csRef:         csRef,
+		entity:        newEntity(railway.Logger().With().Str("cs", en.GetDescription()).Logger(), en, railway),
+		addressSpaces: csRef.GetAddressSpaces(),
 	}
 }
 
@@ -77,6 +84,11 @@ func (cs *commandStation) getCommandStation() model.CommandStation {
 // Gets the underlying model
 func (cs *commandStation) GetModel() model.CommandStation {
 	return cs.getCommandStation()
+}
+
+// Gets the underlying model
+func (cs *commandStation) GetModelRef() model.CommandStationRef {
+	return cs.csRef
 }
 
 // Can this command station be used to serve the given network?

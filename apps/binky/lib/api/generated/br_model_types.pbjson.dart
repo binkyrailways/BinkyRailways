@@ -262,13 +262,14 @@ const CommandStation$json = const {
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'address_spaces', '3': 3, '4': 3, '5': 9, '10': 'addressSpaces'},
     const {'1': 'bidib_command_station', '3': 11, '4': 1, '5': 11, '6': '.binkyrailways.v1.BidibCommandStation', '10': 'bidibCommandStation'},
     const {'1': 'binkynet_command_station', '3': 10, '4': 1, '5': 11, '6': '.binkyrailways.v1.BinkyNetCommandStation', '10': 'binkynetCommandStation'},
   ],
 };
 
 /// Descriptor for `CommandStation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commandStationDescriptor = $convert.base64Decode('Cg5Db21tYW5kU3RhdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uElkKFWJpZGliX2NvbW1hbmRfc3RhdGlvbhgLIAEoCzIlLmJpbmt5cmFpbHdheXMudjEuQmlkaWJDb21tYW5kU3RhdGlvblITYmlkaWJDb21tYW5kU3RhdGlvbhJiChhiaW5reW5ldF9jb21tYW5kX3N0YXRpb24YCiABKAsyKC5iaW5reXJhaWx3YXlzLnYxLkJpbmt5TmV0Q29tbWFuZFN0YXRpb25SFmJpbmt5bmV0Q29tbWFuZFN0YXRpb24=');
+final $typed_data.Uint8List commandStationDescriptor = $convert.base64Decode('Cg5Db21tYW5kU3RhdGlvbhIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEiUKDmFkZHJlc3Nfc3BhY2VzGAMgAygJUg1hZGRyZXNzU3BhY2VzElkKFWJpZGliX2NvbW1hbmRfc3RhdGlvbhgLIAEoCzIlLmJpbmt5cmFpbHdheXMudjEuQmlkaWJDb21tYW5kU3RhdGlvblITYmlkaWJDb21tYW5kU3RhdGlvbhJiChhiaW5reW5ldF9jb21tYW5kX3N0YXRpb24YCiABKAsyKC5iaW5reXJhaWx3YXlzLnYxLkJpbmt5TmV0Q29tbWFuZFN0YXRpb25SFmJpbmt5bmV0Q29tbWFuZFN0YXRpb24=');
 @$core.Deprecated('Use commandStationRefDescriptor instead')
 const CommandStationRef$json = const {
   '1': 'CommandStationRef',

@@ -64,6 +64,8 @@ class _CommandStationSettings extends StatefulWidget {
 }
 
 class _CommandStationSettingsState extends State<_CommandStationSettings> {
+  final TextEditingController _addressSpacesController =
+      TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _serverHostController = TextEditingController();
   final TextEditingController _grpcPortController = TextEditingController();
@@ -76,6 +78,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
   _initControllers() {
     final cs = widget.commandStation;
     _descriptionController.text = cs.description;
+    _addressSpacesController.text = cs.addressSpaces.join(",");
     if (cs.hasBinkynetCommandStation()) {
       final bnCs = cs.binkynetCommandStation;
       _serverHostController.text = bnCs.serverHost;
@@ -96,6 +99,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
 
   @override
   void dispose() {
+    _addressSpacesController.dispose();
     _descriptionController.dispose();
     _serverHostController.dispose();
     _grpcPortController.dispose();
@@ -167,6 +171,17 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
                 {update.bidibCommandStation.serialPortName = value});
           }));
     }
+    children.add(const SettingsHeader(title: "Advanced"));
+    children.add(SettingsTextField(
+        controller: _addressSpacesController,
+        label: "Address spaces (',' seperated)",
+        onLostFocus: (value) async {
+          await _update((update) {
+            update.addressSpaces.clear();
+            update.addressSpaces.addAll(value.split(','));
+          });
+        }));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,

@@ -32,7 +32,7 @@ func (s *service) getBinkyNetLocalWorker(ctx context.Context, fullLocalWorkerID 
 	if err != nil {
 		return nil, err
 	}
-	cs, err := s.getCommandStation(ctx, csID)
+	cs, _, err := s.getCommandStation(ctx, csID)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (s *service) UpdateBinkyNetLocalWorker(ctx context.Context, req *api.BinkyN
 
 // Adds a new BinkyNetLocalWorker to the command station identified by given by ID.
 func (s *service) AddBinkyNetLocalWorker(ctx context.Context, req *api.IDRequest) (*api.BinkyNetLocalWorker, error) {
-	cs, err := s.getCommandStation(ctx, req.GetId())
+	cs, _, err := s.getCommandStation(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (s *service) DeleteBinkyNetLocalWorker(ctx context.Context, req *api.IDRequ
 	if err != nil {
 		return nil, err
 	}
-	cs, err := s.getCommandStation(ctx, csID)
+	cs, csRef, err := s.getCommandStation(ctx, csID)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (s *service) DeleteBinkyNetLocalWorker(ctx context.Context, req *api.IDRequ
 	}
 	bncs.GetLocalWorkers().Remove(lw)
 	var result api.CommandStation
-	if err := result.FromModel(ctx, cs); err != nil {
+	if err := result.FromModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	return &result, nil

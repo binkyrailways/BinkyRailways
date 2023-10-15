@@ -28,7 +28,7 @@ import (
 // FromState converts a state command station to an API command station
 func (dst *CommandStationState) FromState(ctx context.Context, src state.CommandStation) error {
 	dst.Model = &CommandStation{}
-	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
+	if err := dst.Model.FromModel(ctx, src.GetModel(), src.GetModelRef()); err != nil {
 		return err
 	}
 	src.ForEachHardwareModule(func(hm state.HardwareModule) {

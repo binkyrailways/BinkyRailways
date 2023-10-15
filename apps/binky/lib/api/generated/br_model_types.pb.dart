@@ -947,6 +947,7 @@ class CommandStation extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..pPS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'addressSpaces')
     ..aOM<BinkyNetCommandStation>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binkynetCommandStation', subBuilder: BinkyNetCommandStation.create)
     ..aOM<BidibCommandStation>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bidibCommandStation', subBuilder: BidibCommandStation.create)
     ..hasRequiredFields = false
@@ -956,6 +957,7 @@ class CommandStation extends $pb.GeneratedMessage {
   factory CommandStation({
     $core.String? id,
     $core.String? description,
+    $core.Iterable<$core.String>? addressSpaces,
     BinkyNetCommandStation? binkynetCommandStation,
     BidibCommandStation? bidibCommandStation,
   }) {
@@ -965,6 +967,9 @@ class CommandStation extends $pb.GeneratedMessage {
     }
     if (description != null) {
       _result.description = description;
+    }
+    if (addressSpaces != null) {
+      _result.addressSpaces.addAll(addressSpaces);
     }
     if (binkynetCommandStation != null) {
       _result.binkynetCommandStation = binkynetCommandStation;
@@ -1013,27 +1018,30 @@ class CommandStation extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearDescription() => clearField(2);
 
+  @$pb.TagNumber(3)
+  $core.List<$core.String> get addressSpaces => $_getList(2);
+
   @$pb.TagNumber(10)
-  BinkyNetCommandStation get binkynetCommandStation => $_getN(2);
+  BinkyNetCommandStation get binkynetCommandStation => $_getN(3);
   @$pb.TagNumber(10)
   set binkynetCommandStation(BinkyNetCommandStation v) { setField(10, v); }
   @$pb.TagNumber(10)
-  $core.bool hasBinkynetCommandStation() => $_has(2);
+  $core.bool hasBinkynetCommandStation() => $_has(3);
   @$pb.TagNumber(10)
   void clearBinkynetCommandStation() => clearField(10);
   @$pb.TagNumber(10)
-  BinkyNetCommandStation ensureBinkynetCommandStation() => $_ensure(2);
+  BinkyNetCommandStation ensureBinkynetCommandStation() => $_ensure(3);
 
   @$pb.TagNumber(11)
-  BidibCommandStation get bidibCommandStation => $_getN(3);
+  BidibCommandStation get bidibCommandStation => $_getN(4);
   @$pb.TagNumber(11)
   set bidibCommandStation(BidibCommandStation v) { setField(11, v); }
   @$pb.TagNumber(11)
-  $core.bool hasBidibCommandStation() => $_has(3);
+  $core.bool hasBidibCommandStation() => $_has(4);
   @$pb.TagNumber(11)
   void clearBidibCommandStation() => clearField(11);
   @$pb.TagNumber(11)
-  BidibCommandStation ensureBidibCommandStation() => $_ensure(3);
+  BidibCommandStation ensureBidibCommandStation() => $_ensure(4);
 }
 
 class CommandStationRef extends $pb.GeneratedMessage {

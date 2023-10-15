@@ -189,6 +189,8 @@ message CommandStation {
   string id = 1;
   // Description of the command station
   string description = 2;
+  // The names of address spaces served by this command station
+  repeated string address_spaces = 3;
   // Settings of bidib command station
   BidibCommandStation bidib_command_station = 11;
   // Settings of binkynet command station

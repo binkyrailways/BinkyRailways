@@ -25,37 +25,37 @@ import (
 )
 
 // Gets a command station by ID.
-func (s *service) getCommandStation(ctx context.Context, csID string) (model.CommandStation, error) {
+func (s *service) getCommandStation(ctx context.Context, csID string) (model.CommandStation, model.CommandStationRef, error) {
 	log := s.Logger.With().Str("cs_id", csID).Logger()
 	rw, err := s.getRailway()
 	if err != nil {
 		log.Debug().Err(err).Msg("Failed to load railway")
-		return nil, err
+		return nil, nil, err
 	}
 	csRef, ok := rw.GetCommandStations().Get(csID)
 	if !ok {
 		log.Debug().Err(err).Msg("Command station not found")
-		return nil, api.NotFound("Command station: %s", csID)
+		return nil, nil, api.NotFound("Command station: %s", csID)
 	}
 	cs, err := csRef.TryResolve()
 	if err != nil {
-		return nil, api.NotFound("Failed to resolve command station '%s': %s", csID, err)
+		return nil, nil, api.NotFound("Failed to resolve command station '%s': %s", csID, err)
 	}
 	if cs == nil {
 		log.Debug().Err(err).Msg("Failed to resolve command station")
-		return nil, api.NotFound("Failed to resolve command station: %s", csID)
+		return nil, nil, api.NotFound("Failed to resolve command station: %s", csID)
 	}
-	return cs, nil
+	return cs, csRef, nil
 }
 
 // Gets a CommandStation by ID.
 func (s *service) GetCommandStation(ctx context.Context, req *api.IDRequest) (*api.CommandStation, error) {
-	cs, err := s.getCommandStation(ctx, req.GetId())
+	cs, csRef, err := s.getCommandStation(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
 	var result api.CommandStation
-	if err := result.FromModel(ctx, cs); err != nil {
+	if err := result.FromModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -63,15 +63,15 @@ func (s *service) GetCommandStation(ctx context.Context, req *api.IDRequest) (*a
 
 // Update a CommandStation by ID.
 func (s *service) UpdateCommandStation(ctx context.Context, req *api.CommandStation) (*api.CommandStation, error) {
-	cs, err := s.getCommandStation(ctx, req.GetId())
+	cs, csRef, err := s.getCommandStation(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	if err := req.ToModel(ctx, cs); err != nil {
+	if err := req.ToModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	var result api.CommandStation
-	if err := result.FromModel(ctx, cs); err != nil {
+	if err := result.FromModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -90,9 +90,9 @@ func (s *service) AddBidibCommandStation(ctx context.Context, req *api.Empty) (*
 		log.Debug().Err(err).Msg("Failed to add bidib commandstation to package")
 		return nil, err
 	}
-	rw.GetCommandStations().Add(cs)
+	csRef := rw.GetCommandStations().Add(cs)
 	var result api.CommandStation
-	if err := result.FromModel(ctx, cs); err != nil {
+	if err := result.FromModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -111,9 +111,9 @@ func (s *service) AddBinkyNetCommandStation(ctx context.Context, req *api.Empty)
 		log.Debug().Err(err).Msg("Failed to add binkynet commandstation to package")
 		return nil, err
 	}
-	rw.GetCommandStations().Add(cs)
+	csRef := rw.GetCommandStations().Add(cs)
 	var result api.CommandStation
-	if err := result.FromModel(ctx, cs); err != nil {
+	if err := result.FromModel(ctx, cs, csRef); err != nil {
 		return nil, err
 	}
 	return &result, nil
