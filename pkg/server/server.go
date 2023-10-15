@@ -27,7 +27,6 @@ import (
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
@@ -50,6 +49,8 @@ type Config struct {
 	LokiPort int
 	// URL to proxy loki requests to
 	LokiURL string
+	// If set, the web application is served from live filesystem instead of embedding.
+	WebDevelopment bool
 }
 
 // Server runs the GRPC server for the service.
@@ -141,7 +142,7 @@ func (s *Server) Run(ctx context.Context) error {
 	//httpRouter.GET("/", s.handleGetIndex)
 	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
 	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
-	httpRouter.Use(middleware.Static("./pkg/server/web"))
+	httpRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
 	httpSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {
