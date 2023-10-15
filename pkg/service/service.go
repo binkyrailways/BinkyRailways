@@ -45,6 +45,8 @@ type Config struct {
 	RailwayStoragePath string
 	// Port number our HTTP server is using
 	HTTPPort int
+	// If set, our HTTP server is using TLS
+	HTTPSecure bool
 }
 
 type Dependencies struct {

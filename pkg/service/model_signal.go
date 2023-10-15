@@ -88,7 +88,7 @@ func (s *service) DeleteSignal(ctx context.Context, req *api.IDRequest) (*api.Mo
 	}
 	mod.GetSignals().Remove(signal)
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil

@@ -102,7 +102,7 @@ func (s *service) DeleteBlockGroup(ctx context.Context, req *api.IDRequest) (*ap
 	}
 	mod.GetBlockGroups().Remove(blockGroup)
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil

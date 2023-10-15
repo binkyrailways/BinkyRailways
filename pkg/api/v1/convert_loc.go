@@ -25,14 +25,18 @@ import (
 )
 
 // FromModel converts a model loc to an API loc
-func (dst *Loc) FromModel(ctx context.Context, src model.Loc, httpHost string) error {
+func (dst *Loc) FromModel(ctx context.Context, src model.Loc, httpHost string, httpSecure bool) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
 	dst.Owner = src.GetOwner()
 	dst.Remarks = src.GetRemarks()
 	dst.Address = src.GetAddress().String()
 	if len(src.GetImage()) > 0 {
-		dst.ImageUrl = fmt.Sprintf("http://%s/loc/%s/image", httpHost, src.GetID())
+		scheme := "http"
+		if httpSecure {
+			scheme = "https"
+		}
+		dst.ImageUrl = fmt.Sprintf("%s://%s/loc/%s/image", scheme, httpHost, src.GetID())
 	}
 	dst.SlowSpeed = int32(src.GetSlowSpeed())
 	dst.MediumSpeed = int32(src.GetMediumSpeed())

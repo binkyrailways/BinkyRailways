@@ -51,7 +51,7 @@ func (s *service) SetLocSpeedAndDirection(ctx context.Context, req *api.SetLocSp
 		return nil, err
 	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState, httpHost); err != nil {
+	if err := result.FromState(ctx, locState, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -78,7 +78,7 @@ func (s *service) SetLocControlledAutomatically(ctx context.Context, req *api.Se
 		return nil, err
 	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState, httpHost); err != nil {
+	if err := result.FromState(ctx, locState, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -112,7 +112,7 @@ func (s *service) SetLocFunctions(ctx context.Context, req *api.SetLocFunctionsR
 		return nil, err
 	}
 	var result api.LocState
-	if err := result.FromState(ctx, locState, httpHost); err != nil {
+	if err := result.FromState(ctx, locState, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil

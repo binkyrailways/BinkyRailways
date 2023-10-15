@@ -126,6 +126,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 
 	// Construct the service
 	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
+	rootArgs.app.HTTPSecure = true
 	svc, err := service.New(rootArgs.app, service.Dependencies{
 		Logger:                  cliLog,
 		PrometheusConfigBuilder: pcb,

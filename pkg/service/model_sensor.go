@@ -104,7 +104,7 @@ func (s *service) DeleteSensor(ctx context.Context, req *api.IDRequest) (*api.Mo
 	}
 	mod.GetSensors().Remove(sensor)
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil

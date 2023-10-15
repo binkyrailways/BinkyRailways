@@ -24,9 +24,9 @@ import (
 )
 
 // FromState converts a state loc to an API loc
-func (dst *LocState) FromState(ctx context.Context, src state.Loc, httpHost string) error {
+func (dst *LocState) FromState(ctx context.Context, src state.Loc, httpHost string, httpSecure bool) error {
 	dst.Model = &Loc{}
-	if err := dst.Model.FromModel(ctx, src.GetModel(), httpHost); err != nil {
+	if err := dst.Model.FromModel(ctx, src.GetModel(), httpHost, httpSecure); err != nil {
 		return err
 	}
 	dst.ControlledAutomaticallyActual = src.GetControlledAutomatically().GetActual(ctx)

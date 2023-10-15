@@ -26,14 +26,18 @@ import (
 )
 
 // FromModel converts a model module to an API module
-func (dst *Module) FromModel(ctx context.Context, src model.Module, httpHost string) error {
+func (dst *Module) FromModel(ctx context.Context, src model.Module, httpHost string, httpSecure bool) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
 	dst.Width = int32(src.GetWidth())
 	dst.Height = int32(src.GetHeight())
 	dst.HasBackgroundImage = len(src.GetBackgroundImage()) > 0
 	if len(src.GetBackgroundImage()) > 0 {
-		dst.BackgroundImageUrl = fmt.Sprintf("http://%s/loc/%s/image", httpHost, src.GetID())
+		scheme := "http"
+		if httpSecure {
+			scheme = "https"
+		}
+		dst.BackgroundImageUrl = fmt.Sprintf("%s://%s/loc/%s/image", scheme, httpHost, src.GetID())
 	}
 
 	layers := make(map[string]struct{})

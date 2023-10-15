@@ -60,7 +60,7 @@ func (s *service) GetModule(ctx context.Context, req *api.IDRequest) (*api.Modul
 		return nil, err
 	}
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -94,7 +94,7 @@ func (s *service) UpdateModule(ctx context.Context, req *api.Module) (*api.Modul
 		return nil, err
 	}
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -114,7 +114,7 @@ func (s *service) UpdateModuleBackgroundImage(ctx context.Context, req *api.Imag
 		return nil, err
 	}
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -136,7 +136,7 @@ func (s *service) AddModule(ctx context.Context, req *api.Empty) (*api.Module, e
 	}
 	rw.GetModules().Add(mod)
 	var result api.Module
-	if err := result.FromModel(ctx, mod, httpHost); err != nil {
+	if err := result.FromModel(ctx, mod, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil

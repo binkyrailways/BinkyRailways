@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +24,7 @@ import '../models.dart';
 import "app/app_page.dart";
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     MultiProvider(
       providers: [
@@ -47,5 +50,16 @@ class BinkyApp extends StatelessWidget {
       ),
       home: const AppPage(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) {
+        //add your certificate verification logic here
+        return true;
+      };
   }
 }

@@ -133,7 +133,7 @@ func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *
 			return nil
 		}
 		var rs api.LocState
-		if err := rs.FromState(ctx, x, httpHost); err != nil {
+		if err := rs.FromState(ctx, x, httpHost, s.HTTPSecure); err != nil {
 			return nil
 		}
 		return &api.StateChange{Loc: &rs}

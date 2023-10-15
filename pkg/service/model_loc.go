@@ -67,7 +67,7 @@ func (s *service) GetLoc(ctx context.Context, req *api.IDRequest) (*api.Loc, err
 		return nil, err
 	}
 	var result api.Loc
-	if err := result.FromModel(ctx, loc, httpHost); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -87,7 +87,7 @@ func (s *service) UpdateLoc(ctx context.Context, req *api.Loc) (*api.Loc, error)
 		return nil, err
 	}
 	var result api.Loc
-	if err := result.FromModel(ctx, loc, httpHost); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -107,7 +107,7 @@ func (s *service) UpdateLocImage(ctx context.Context, req *api.ImageIDRequest) (
 		return nil, err
 	}
 	var result api.Loc
-	if err := result.FromModel(ctx, loc, httpHost); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -129,7 +129,7 @@ func (s *service) AddLoc(ctx context.Context, req *api.Empty) (*api.Loc, error) 
 	}
 	rw.GetLocs().Add(loc)
 	var result api.Loc
-	if err := result.FromModel(ctx, loc, httpHost); err != nil {
+	if err := result.FromModel(ctx, loc, httpHost, s.HTTPSecure); err != nil {
 		return nil, err
 	}
 	return &result, nil
