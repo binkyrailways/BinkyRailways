@@ -21,17 +21,18 @@ import (
 	context "context"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"go.uber.org/multierr"
 )
 
 // FromModel converts a model bidib command station to an API bidib command station
 func (dst *BidibCommandStation) FromModel(ctx context.Context, src model.BidibCommandStation) error {
-	//	dst.ServerHost = src.GetServerHost()
+	dst.SerialPortName = src.GetComPortName()
 	return nil
 }
 
 // ToModel converts an API bidib command station to a model bidib command station
 func (src *BidibCommandStation) ToModel(ctx context.Context, dst model.BidibCommandStation) error {
 	var err error
-	//multierr.AppendInto(&err, dst.SetServerHost(src.GetServerHost()))
+	multierr.AppendInto(&err, dst.SetComPortName(src.GetSerialPortName()))
 	return err
 }

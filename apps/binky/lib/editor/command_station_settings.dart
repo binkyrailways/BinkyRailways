@@ -67,6 +67,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _serverHostController = TextEditingController();
   final TextEditingController _grpcPortController = TextEditingController();
+  final TextEditingController _serialPortController = TextEditingController();
   final TextEditingController _requiredVersionController =
       TextEditingController();
   final NumericValidator _grpcPortValidator =
@@ -80,6 +81,10 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
       _serverHostController.text = bnCs.serverHost;
       _grpcPortController.text = bnCs.grpcPort.toString();
       _requiredVersionController.text = bnCs.requiredWorkerVersion;
+    }
+    if (cs.hasBidibCommandStation()) {
+      final bdCs = cs.bidibCommandStation;
+      _serialPortController.text = bdCs.serialPortName;
     }
   }
 
@@ -141,6 +146,16 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
           });
         },
       ));
+    }
+    if (cs.hasBidibCommandStation()) {
+      children.add(const SettingsHeader(title: "Bidib"));
+      children.add(SettingsTextField(
+          controller: _serialPortController,
+          label: "Serial port name",
+          onLostFocus: (value) async {
+            await _update((update) =>
+                {update.bidibCommandStation.serialPortName = value});
+          }));
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

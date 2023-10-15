@@ -282,10 +282,13 @@ final $typed_data.Uint8List commandStationRefDescriptor = $convert.base64Decode(
 @$core.Deprecated('Use bidibCommandStationDescriptor instead')
 const BidibCommandStation$json = const {
   '1': 'BidibCommandStation',
+  '2': const [
+    const {'1': 'serial_port_name', '3': 1, '4': 1, '5': 9, '10': 'serialPortName'},
+  ],
 };
 
 /// Descriptor for `BidibCommandStation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List bidibCommandStationDescriptor = $convert.base64Decode('ChNCaWRpYkNvbW1hbmRTdGF0aW9u');
+final $typed_data.Uint8List bidibCommandStationDescriptor = $convert.base64Decode('ChNCaWRpYkNvbW1hbmRTdGF0aW9uEigKEHNlcmlhbF9wb3J0X25hbWUYASABKAlSDnNlcmlhbFBvcnROYW1l');
 @$core.Deprecated('Use binkyNetCommandStationDescriptor instead')
 const BinkyNetCommandStation$json = const {
   '1': 'BinkyNetCommandStation',

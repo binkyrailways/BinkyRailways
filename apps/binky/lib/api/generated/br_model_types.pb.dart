@@ -1085,11 +1085,20 @@ class CommandStationRef extends $pb.GeneratedMessage {
 
 class BidibCommandStation extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BidibCommandStation', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serialPortName')
     ..hasRequiredFields = false
   ;
 
   BidibCommandStation._() : super();
-  factory BidibCommandStation() => create();
+  factory BidibCommandStation({
+    $core.String? serialPortName,
+  }) {
+    final _result = create();
+    if (serialPortName != null) {
+      _result.serialPortName = serialPortName;
+    }
+    return _result;
+  }
   factory BidibCommandStation.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory BidibCommandStation.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -1110,6 +1119,15 @@ class BidibCommandStation extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static BidibCommandStation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BidibCommandStation>(create);
   static BidibCommandStation? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get serialPortName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set serialPortName($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSerialPortName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSerialPortName() => clearField(1);
 }
 
 class BinkyNetCommandStation extends $pb.GeneratedMessage {
