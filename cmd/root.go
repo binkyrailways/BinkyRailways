@@ -70,6 +70,7 @@ func init() {
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
 	f.StringVar(&rootArgs.server.PublishedHost, "published-host", "", "Address of the current host that we publish on")
+	f.StringVar(&rootArgs.server.CertificatePath, "certificate-path", "cert.json", "Certificate file path")
 	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "http://127.0.0.1:3100", "URL of loki")

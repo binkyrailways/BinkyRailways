@@ -27,12 +27,16 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
+	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
 	"math/big"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 type CA struct {
@@ -40,9 +44,65 @@ type CA struct {
 	PrivateKey  interface{}
 }
 
+type certificateStorage struct {
+	CA struct {
+		Public  string `json:"publicKey"`
+		Private string `json:"privateKey"`
+	} `json:"ca"`
+	Certificate struct {
+		Public  string `json:"publicKey"`
+		Private string `json:"privateKey"`
+	} `json:"certificate"`
+}
+
+// loadCertificateFromFile tries to load a certificate info from file
+func loadCertificateFromFile(path string) (certificateStorage, error) {
+	var result certificateStorage
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return result, err
+	}
+	if err := json.Unmarshal(content, &result); err != nil {
+		return result, err
+	}
+	return result, nil
+}
+
+// saveCertificateToFile saves a certificate info to file
+func saveCertificateToFile(info certificateStorage, path string) error {
+	content, err := json.Marshal(info)
+	if err != nil {
+		return fmt.Errorf("failed to marshal certificate info: %w", err)
+	}
+	if err := os.WriteFile(path, content, 0644); err != nil {
+		return fmt.Errorf("failed to write certificate info: %w", err)
+	}
+	return nil
+}
+
 // createSelfSignedCertificate creates a self-signed TLS certificate and
 // returns a tls Config with that certificate.
-func createSelfSignedCertificate(publishedHost string) (*tls.Config, error) {
+func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath string) (*tls.Config, error) {
+	// Try to load from file first
+	stg, err := loadCertificateFromFile(storagePath)
+	if err == nil {
+		if result, err := func() (*tls.Config, error) {
+			// Load certificate
+			cert, err := tls.X509KeyPair([]byte(stg.Certificate.Public), []byte(stg.Certificate.Private))
+			if err != nil {
+				return nil, fmt.Errorf("failed to load certificate: %w", err)
+			}
+			return &tls.Config{
+				Certificates: []tls.Certificate{cert},
+			}, nil
+
+		}(); err == nil {
+			return result, nil
+		} else {
+			log.Warn().Err(err).Msg("Failed to load certificate from storage, creating new one")
+		}
+	}
+
 	// Create a CA
 	pubCA, privCA, err := createCertificate(publishedHost, nil)
 	if err != nil {
@@ -60,6 +120,15 @@ func createSelfSignedCertificate(publishedHost string) (*tls.Config, error) {
 	cert, err := tls.X509KeyPair([]byte(pub), []byte(priv))
 	if err != nil {
 		return nil, fmt.Errorf("failed to load certificate: %w", err)
+	}
+	// Save to storage
+	stg = certificateStorage{}
+	stg.CA.Public = pubCA
+	stg.CA.Private = privCA
+	stg.Certificate.Public = pub
+	stg.Certificate.Private = priv
+	if err := saveCertificateToFile(stg, storagePath); err != nil {
+		log.Error().Err(err).Msg("Failed to save certificate")
 	}
 	return &tls.Config{
 		Certificates: []tls.Certificate{cert},

@@ -41,6 +41,8 @@ type Config struct {
 	Host string
 	// Address of the current host that we publish on
 	PublishedHost string
+	// File path used to store TLS certificate
+	CertificatePath string
 	// Port to listen on for HTTP requests
 	HTTPPort int
 	// Port to listen on for GRPC requests
@@ -87,7 +89,7 @@ func (s *Server) Run(ctx context.Context) error {
 	log := s.log
 
 	// Prepare TLS config
-	tlsCfg, err := createSelfSignedCertificate(s.PublishedHost)
+	tlsCfg, err := createSelfSignedCertificate(log, s.PublishedHost, s.CertificatePath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to prepare self signed certificate")
 	}
