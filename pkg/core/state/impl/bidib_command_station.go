@@ -96,7 +96,9 @@ func (cs *bidibCommandStation) GetIdle(context.Context) bool {
 
 // sendPowerToNode sets the given node and all its children
 // in the given power state.
-func sendPowerToNode(node *host.Node, enabled bool) {
+// Returns: numberOfNodesUpdated
+func sendPowerToNode(node *host.Node, enabled bool) int {
+	result := 0
 	if node != nil {
 		if cs := node.Cs(); cs != nil {
 			if enabled {
@@ -104,31 +106,39 @@ func sendPowerToNode(node *host.Node, enabled bool) {
 			} else {
 				cs.Off()
 			}
+			result++
 		}
 		node.ForEachChild(func(child *host.Node) {
-			sendPowerToNode(child, enabled)
+			result += sendPowerToNode(child, enabled)
 		})
 	}
+	return result
 }
 
 // Send the requested power state.
 func (cs *bidibCommandStation) sendPower(ctx context.Context, enabled bool) {
 	log := cs.log
 	log.Debug().Msg("send power to nodes")
-	sendPowerToNode(cs.host.GetRootNode(), enabled)
+	if sendPowerToNode(cs.host.GetRootNode(), enabled) > 0 {
+		cs.power.SetActual(ctx, enabled)
+	}
 }
 
 // sendDriveToNode sends a drive command to the given node
 // and all its children.
-func (cs *bidibCommandStation) sendDriveToNode(node *host.Node, opts host.DriveOptions) {
+// Returns: numberOfNodesUpdated
+func (cs *bidibCommandStation) sendDriveToNode(node *host.Node, opts host.DriveOptions) int {
+	result := 0
 	if node != nil {
 		if cs := node.Cs(); cs != nil {
 			cs.Drive(opts)
+			result++
 		}
 		node.ForEachChild(func(child *host.Node) {
-			cs.sendDriveToNode(child, opts)
+			result += cs.sendDriveToNode(child, opts)
 		})
 	}
+	return result
 }
 
 // Send the speed and direction of the given loc towards the railway.
@@ -166,18 +176,24 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 	}
 
 	// Get speed
-	opts.Speed = uint8(locState.GetSpeedInSteps().GetRequested(ctx))
+	speedInSteps := locState.GetSpeedInSteps().GetRequested(ctx)
+	opts.Speed = uint8(speedInSteps)
 	opts.OutputSpeed = true
 
 	// Get direction
 	opts.DirectionForward = locState.GetDirection().GetRequested(ctx) == state.LocDirectionForward
 
 	// Get flags
-	opts.Flags = make(bidib.DccFlags, 1)
-	opts.Flags.Set(0, locState.GetF0().GetRequested(ctx))
+	opts.Flags = make(bidib.DccFlags, 5)
+	f0 := locState.GetF0().GetRequested(ctx)
+	opts.Flags.Set(0, f0)
+	opts.OutputF1_F4 = true
 
 	log.Debug().Msg("send drive to nodes")
-	cs.sendDriveToNode(cs.host.GetRootNode(), opts)
+	if cs.sendDriveToNode(cs.host.GetRootNode(), opts) > 0 {
+		locState.GetSpeedInSteps().SetActual(ctx, speedInSteps)
+		locState.GetF0().SetActual(ctx, f0)
+	}
 }
 
 // Send the state of the binary output towards the railway.
