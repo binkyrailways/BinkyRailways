@@ -30,6 +30,8 @@ service ModelService {
   rpc ParseAddress(ParseAddressRequest) returns (ParseAddressResult);
   // Try to parse a permission
   rpc ParsePermission(ParsePermissionRequest) returns (ParsePermissionResult);
+  // Return a list of available serial ports
+  rpc GetSerialPorts(Empty) returns (SerialPortList);
 
   // Load the given railway entry
   rpc LoadRailway(RailwayEntry) returns (Railway);
@@ -197,6 +199,11 @@ service ModelService {
   // Adds one or more new BinkyNetObject to the binkynet local worker identified by given
   // by ID and attach them to the given device.
   rpc AddBinkyNetObjectsGroup(AddBinkyNetObjectsGroupRequest) returns (BinkyNetLocalWorker);
+}
+
+// Response for GetSerialPorts.
+message SerialPortList {
+  repeated string ports = 1;
 }
 
 // Request by ID

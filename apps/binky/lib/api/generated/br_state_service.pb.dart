@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'br_state_types.pb.dart' as $3;
 
 import 'br_state_types.pbenum.dart' as $3;
-import 'br_model_types.pbenum.dart' as $2;
+import 'br_model_types.pbenum.dart' as $1;
 
 class EnableRunModeRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EnableRunModeRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
@@ -678,14 +678,14 @@ class LocFunction extends $pb.GeneratedMessage {
 class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetSwitchDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
-    ..e<$2.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $2.SwitchDirection.STRAIGHT, valueOf: $2.SwitchDirection.valueOf, enumValues: $2.SwitchDirection.values)
+    ..e<$1.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
   SetSwitchDirectionRequest._() : super();
   factory SetSwitchDirectionRequest({
     $core.String? id,
-    $2.SwitchDirection? direction,
+    $1.SwitchDirection? direction,
   }) {
     final _result = create();
     if (id != null) {
@@ -727,9 +727,9 @@ class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $2.SwitchDirection get direction => $_getN(1);
+  $1.SwitchDirection get direction => $_getN(1);
   @$pb.TagNumber(2)
-  set direction($2.SwitchDirection v) { setField(2, v); }
+  set direction($1.SwitchDirection v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDirection() => $_has(1);
   @$pb.TagNumber(2)
@@ -848,7 +848,7 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AssignLocToBlockRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockId')
-    ..e<$2.BlockSide>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: $2.BlockSide.FRONT, valueOf: $2.BlockSide.valueOf, enumValues: $2.BlockSide.values)
+    ..e<$1.BlockSide>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: $1.BlockSide.FRONT, valueOf: $1.BlockSide.valueOf, enumValues: $1.BlockSide.values)
     ..hasRequiredFields = false
   ;
 
@@ -856,7 +856,7 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   factory AssignLocToBlockRequest({
     $core.String? locId,
     $core.String? blockId,
-    $2.BlockSide? blockSide,
+    $1.BlockSide? blockSide,
   }) {
     final _result = create();
     if (locId != null) {
@@ -910,9 +910,9 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   void clearBlockId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $2.BlockSide get blockSide => $_getN(2);
+  $1.BlockSide get blockSide => $_getN(2);
   @$pb.TagNumber(3)
-  set blockSide($2.BlockSide v) { setField(3, v); }
+  set blockSide($1.BlockSide v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBlockSide() => $_has(2);
   @$pb.TagNumber(3)

@@ -18,6 +18,16 @@ const BinkyNetObjectsGroupType$json = const {
 
 /// Descriptor for `BinkyNetObjectsGroupType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List binkyNetObjectsGroupTypeDescriptor = $convert.base64Decode('ChhCaW5reU5ldE9iamVjdHNHcm91cFR5cGUSCQoFTUdWOTMQAA==');
+@$core.Deprecated('Use serialPortListDescriptor instead')
+const SerialPortList$json = const {
+  '1': 'SerialPortList',
+  '2': const [
+    const {'1': 'ports', '3': 1, '4': 3, '5': 9, '10': 'ports'},
+  ],
+};
+
+/// Descriptor for `SerialPortList`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List serialPortListDescriptor = $convert.base64Decode('Cg5TZXJpYWxQb3J0TGlzdBIUCgVwb3J0cxgBIAMoCVIFcG9ydHM=');
 @$core.Deprecated('Use iDRequestDescriptor instead')
 const IDRequest$json = const {
   '1': 'IDRequest',

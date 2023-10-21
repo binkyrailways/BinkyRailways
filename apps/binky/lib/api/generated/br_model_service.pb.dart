@@ -9,10 +9,51 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_model_types.pbenum.dart' as $2;
+import 'br_model_types.pbenum.dart' as $1;
 import 'br_model_service.pbenum.dart';
 
 export 'br_model_service.pbenum.dart';
+
+class SerialPortList extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SerialPortList', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ports')
+    ..hasRequiredFields = false
+  ;
+
+  SerialPortList._() : super();
+  factory SerialPortList({
+    $core.Iterable<$core.String>? ports,
+  }) {
+    final _result = create();
+    if (ports != null) {
+      _result.ports.addAll(ports);
+    }
+    return _result;
+  }
+  factory SerialPortList.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SerialPortList.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SerialPortList clone() => SerialPortList()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SerialPortList copyWith(void Function(SerialPortList) updates) => super.copyWith((message) => updates(message as SerialPortList)) as SerialPortList; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SerialPortList create() => SerialPortList._();
+  SerialPortList createEmptyInstance() => create();
+  static $pb.PbList<SerialPortList> createRepeated() => $pb.PbList<SerialPortList>();
+  @$core.pragma('dart2js:noInline')
+  static SerialPortList getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SerialPortList>(create);
+  static SerialPortList? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$core.String> get ports => $_getList(0);
+}
 
 class IDRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IDRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
@@ -431,7 +472,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteCrossingJunctionSwitchRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctionId')
-    ..e<$2.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $2.SwitchDirection.STRAIGHT, valueOf: $2.SwitchDirection.valueOf, enumValues: $2.SwitchDirection.values)
+    ..e<$1.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
@@ -439,7 +480,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   factory AddRouteCrossingJunctionSwitchRequest({
     $core.String? routeId,
     $core.String? junctionId,
-    $2.SwitchDirection? direction,
+    $1.SwitchDirection? direction,
   }) {
     final _result = create();
     if (routeId != null) {
@@ -493,9 +534,9 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   void clearJunctionId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $2.SwitchDirection get direction => $_getN(2);
+  $1.SwitchDirection get direction => $_getN(2);
   @$pb.TagNumber(3)
-  set direction($2.SwitchDirection v) { setField(3, v); }
+  set direction($1.SwitchDirection v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasDirection() => $_has(2);
   @$pb.TagNumber(3)

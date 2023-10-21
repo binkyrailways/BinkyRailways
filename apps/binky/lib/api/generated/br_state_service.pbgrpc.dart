@@ -10,25 +10,25 @@ import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
-import 'br_model_types.pb.dart' as $2;
+import 'br_model_types.pb.dart' as $1;
 import 'br_state_types.pb.dart' as $3;
 import 'br_state_service.pb.dart' as $4;
 export 'br_state_service.pb.dart';
 
 class StateServiceClient extends $grpc.Client {
   static final _$getRailwayState =
-      $grpc.ClientMethod<$2.Empty, $3.RailwayState>(
+      $grpc.ClientMethod<$1.Empty, $3.RailwayState>(
           '/binkyrailways.v1.StateService/GetRailwayState',
-          ($2.Empty value) => value.writeToBuffer(),
+          ($1.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $3.RailwayState.fromBuffer(value));
   static final _$enableRunMode =
       $grpc.ClientMethod<$4.EnableRunModeRequest, $3.RailwayState>(
           '/binkyrailways.v1.StateService/EnableRunMode',
           ($4.EnableRunModeRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $3.RailwayState.fromBuffer(value));
-  static final _$disableRunMode = $grpc.ClientMethod<$2.Empty, $3.RailwayState>(
+  static final _$disableRunMode = $grpc.ClientMethod<$1.Empty, $3.RailwayState>(
       '/binkyrailways.v1.StateService/DisableRunMode',
-      ($2.Empty value) => value.writeToBuffer(),
+      ($1.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $3.RailwayState.fromBuffer(value));
   static final _$getStateChanges =
       $grpc.ClientMethod<$4.GetStateChangesRequest, $4.StateChange>(
@@ -103,7 +103,7 @@ class StateServiceClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$3.RailwayState> getRailwayState($2.Empty request,
+  $grpc.ResponseFuture<$3.RailwayState> getRailwayState($1.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getRailwayState, request, options: options);
   }
@@ -114,7 +114,7 @@ class StateServiceClient extends $grpc.Client {
     return $createUnaryCall(_$enableRunMode, request, options: options);
   }
 
-  $grpc.ResponseFuture<$3.RailwayState> disableRunMode($2.Empty request,
+  $grpc.ResponseFuture<$3.RailwayState> disableRunMode($1.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$disableRunMode, request, options: options);
   }
@@ -205,12 +205,12 @@ abstract class StateServiceBase extends $grpc.Service {
   $core.String get $name => 'binkyrailways.v1.StateService';
 
   StateServiceBase() {
-    $addMethod($grpc.ServiceMethod<$2.Empty, $3.RailwayState>(
+    $addMethod($grpc.ServiceMethod<$1.Empty, $3.RailwayState>(
         'GetRailwayState',
         getRailwayState_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($3.RailwayState value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$4.EnableRunModeRequest, $3.RailwayState>(
         'EnableRunMode',
@@ -220,12 +220,12 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $4.EnableRunModeRequest.fromBuffer(value),
         ($3.RailwayState value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.Empty, $3.RailwayState>(
+    $addMethod($grpc.ServiceMethod<$1.Empty, $3.RailwayState>(
         'DisableRunMode',
         disableRunMode_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($3.RailwayState value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$4.GetStateChangesRequest, $4.StateChange>(
         'GetStateChanges',
@@ -340,7 +340,7 @@ abstract class StateServiceBase extends $grpc.Service {
   }
 
   $async.Future<$3.RailwayState> getRailwayState_Pre(
-      $grpc.ServiceCall call, $async.Future<$2.Empty> request) async {
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return getRailwayState(call, await request);
   }
 
@@ -350,7 +350,7 @@ abstract class StateServiceBase extends $grpc.Service {
   }
 
   $async.Future<$3.RailwayState> disableRunMode_Pre(
-      $grpc.ServiceCall call, $async.Future<$2.Empty> request) async {
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return disableRunMode(call, await request);
   }
 
@@ -423,11 +423,11 @@ abstract class StateServiceBase extends $grpc.Service {
   }
 
   $async.Future<$3.RailwayState> getRailwayState(
-      $grpc.ServiceCall call, $2.Empty request);
+      $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$3.RailwayState> enableRunMode(
       $grpc.ServiceCall call, $4.EnableRunModeRequest request);
   $async.Future<$3.RailwayState> disableRunMode(
-      $grpc.ServiceCall call, $2.Empty request);
+      $grpc.ServiceCall call, $1.Empty request);
   $async.Stream<$4.StateChange> getStateChanges(
       $grpc.ServiceCall call, $4.GetStateChangesRequest request);
   $async.Future<$3.RailwayState> setPower(
