@@ -173,7 +173,7 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 	opts.Flags = make(bidib.DccFlags, 1)
 	opts.Flags.Set(0, locState.GetF0().GetRequested(ctx))
 
-	log.Debug().Msg("send power to nodes")
+	log.Debug().Msg("send drive to nodes")
 	cs.sendDriveToNode(cs.host.GetRootNode(), opts)
 }
 
