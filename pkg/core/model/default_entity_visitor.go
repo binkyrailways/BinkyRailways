@@ -32,7 +32,7 @@ func (v *DefaultEntityVisitor) VisitAction(x Action) interface{} {
 	return nil
 }
 
-func (v *DefaultEntityVisitor) VisitBidibNetCommandStation(x BidibCommandStation) interface{} {
+func (v *DefaultEntityVisitor) VisitBidibCommandStation(x BidibCommandStation) interface{} {
 	if v.defaultVisitor != nil {
 		return v.defaultVisitor.VisitCommandStation(x)
 	}

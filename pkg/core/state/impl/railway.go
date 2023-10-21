@@ -156,11 +156,21 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger,
 		r.commandStations = append(r.commandStations, st)
 	} else {
 		entity.GetCommandStations().ForEach(func(csRef model.CommandStationRef) {
-			if cs, _ := csRef.TryResolve(); cs != nil {
+			if cs, err := csRef.TryResolve(); cs != nil {
 				if st, ok := cs.Accept(builder).(CommandStation); ok {
 					st.SetAddressSpaces(csRef.GetAddressSpaces())
 					r.commandStations = append(r.commandStations, st)
+				} else {
+					log.Error().Err(err).
+						Str("id", csRef.GetID()).
+						Strs("addrSpaces", csRef.GetAddressSpaces()).
+						Msg("Failed to build commandstation state")
 				}
+			} else if err != nil {
+				log.Error().Err(err).
+					Str("id", csRef.GetID()).
+					Strs("addrSpaces", csRef.GetAddressSpaces()).
+					Msg("Failed to resolve commandstation")
 			}
 		})
 	}
@@ -199,9 +209,13 @@ func (r *railway) Logger() zerolog.Logger {
 // returns an error otherwise.
 func (r *railway) TryPrepareForUse(ctx context.Context, ui state.UserInterface, persistence state.Persistence) error {
 	var err error
+	log := r.log
 	// Note that the order of preparation is important
 	r.ForEachCommandStation(func(x state.CommandStation) {
 		ix := x.(CommandStation)
+		log.Debug().
+			Str("cs", ix.GetDescription()).
+			Msg("Preparing commandstation")
 		multierr.AppendInto(&err, prepareForUse(ctx, ix, ui, persistence))
 	})
 	r.ForEachBlock(func(x state.Block) {
@@ -412,23 +426,23 @@ func (r *railway) SelectCommandStation(ctx context.Context, entity model.Address
 		Str("address", addr.String()).
 		Int("supported", len(supportsCS)).
 		Int("exact", len(exactCS)).
-		Msg("Command stations found for loc")
+		Msg("Command stations found for entity")
 	// Choose command station
 	if len(exactCS) == 1 {
 		// Found exactly 1 command station to support it (exactly)
 		return exactCS[0], nil
 	}
 	if len(exactCS) > 1 {
-		return nil, fmt.Errorf("Found multiple command stations that supports '%s' exactly", entity.GetDescription())
+		return nil, fmt.Errorf("found multiple command stations that supports '%s' exactly", entity.GetDescription())
 	}
 	if len(supportsCS) == 1 {
 		// Found exactly 1 command station to support it
 		return supportsCS[0], nil
 	}
 	if len(supportsCS) > 1 {
-		return nil, fmt.Errorf("Found multiple command stations that supports '%s'", entity.GetDescription())
+		return nil, fmt.Errorf("found multiple command stations that supports '%s'", entity.GetDescription())
 	}
-	return nil, fmt.Errorf("Found no command station that supports '%s'", entity.GetDescription())
+	return nil, fmt.Errorf("found no command station that supports '%s'", entity.GetDescription())
 }
 
 // Unknown sensor has been detected.

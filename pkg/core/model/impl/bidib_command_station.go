@@ -53,7 +53,7 @@ func (cs *bidibCommandStation) GetEntityType() string {
 
 // Accept a visit by the given visitor
 func (cs *bidibCommandStation) Accept(v model.EntityVisitor) interface{} {
-	return v.VisitBidibNetCommandStation(cs)
+	return v.VisitBidibCommandStation(cs)
 }
 
 // What types of addresses does this command station support?

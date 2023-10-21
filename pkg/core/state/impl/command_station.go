@@ -111,8 +111,8 @@ func (cs *commandStation) Supports(entity model.AddressEntity, network model.Net
 	// There is a match in type, look for an exact match
 	addressSpace := strings.ToLower(network.AddressSpace)
 	if addressSpace == "" {
-		// No address space specified, so no exact match
-		return true, false
+		// No address space specified, so no exact match unless cs has no address spaces specified
+		return true, len(cs.addressSpaces) == 0
 	}
 	cs.log.Debug().
 		Str("locAddrSpace", addressSpace).
