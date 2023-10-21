@@ -114,6 +114,10 @@ func (cs *commandStation) Supports(entity model.AddressEntity, network model.Net
 		// No address space specified, so no exact match
 		return true, false
 	}
+	cs.log.Debug().
+		Str("locAddrSpace", addressSpace).
+		Strs("csAddrSpaces", cs.addressSpaces).
+		Msg("Trying address space match")
 	exactMatch := false
 	for _, x := range cs.addressSpaces {
 		if strings.ToLower(x) == addressSpace {

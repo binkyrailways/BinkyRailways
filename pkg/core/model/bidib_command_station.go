@@ -21,4 +21,7 @@ package model
 // bidib interface connected to RS232.
 type BidibCommandStation interface {
 	SerialPortCommandStation
+
+	// Interface marker
+	IsBidibCommandStation()
 }

@@ -41,6 +41,11 @@ func NewBidibCommandStation(p model.Package) BidibCommandStation {
 	return cs
 }
 
+// Interface marker
+func (cs *bidibCommandStation) IsBidibCommandStation() {
+	// Nothing here
+}
+
 // GetEntityType returns the type of this entity
 func (cs *bidibCommandStation) GetEntityType() string {
 	return TypeBidibCommandStation

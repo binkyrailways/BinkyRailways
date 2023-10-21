@@ -356,38 +356,42 @@ func (r *railway) ResolveCommandStation(ctx context.Context, cs model.CommandSta
 
 // Select a command station that can best drive the given entity
 func (r *railway) SelectCommandStation(ctx context.Context, entity model.AddressEntity) (CommandStation, error) {
+	log := r.log
+
 	addr := entity.GetAddress()
 	if addr.IsEmpty() {
 		// No address
 		return nil, nil
 	}
-	// Lookup preferred command station
-	var prefCS model.CommandStation
-	var err error
-	switch addr.Network.Type {
-	case model.AddressTypeBinkyNet:
-		prefCS, err = r.GetModel().GetPreferredBinkyNetCommandStation()
-	case model.AddressTypeDcc:
-		prefCS, err = r.GetModel().GetPreferredDccCommandStation()
-	case model.AddressTypeLocoNet:
-		prefCS, err = r.GetModel().GetPreferredLocoNetCommandStation()
-	case model.AddressTypeMotorola:
-		prefCS, err = r.GetModel().GetPreferredMotorolaCommandStation()
-	case model.AddressTypeMfx:
-		prefCS, err = r.GetModel().GetPreferredMfxCommandStation()
-	case model.AddressTypeMqtt:
-		prefCS, err = r.GetModel().GetPreferredMqttCommandStation()
-	default:
-		return nil, fmt.Errorf("Unknown network type: '%s'", addr.Network.Type)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if prefCS != nil {
-		if cs, err := r.ResolveCommandStation(ctx, prefCS); err == nil {
-			if supports, _ := cs.Supports(entity, addr.Network); supports {
-				// Preferred command station suppports the entity, use it.
-				return cs, nil
+	// Lookup preferred command station in case there is no address space
+	if addr.Network.AddressSpace == "" {
+		var prefCS model.CommandStation
+		var err error
+		switch addr.Network.Type {
+		case model.AddressTypeBinkyNet:
+			prefCS, err = r.GetModel().GetPreferredBinkyNetCommandStation()
+		case model.AddressTypeDcc:
+			prefCS, err = r.GetModel().GetPreferredDccCommandStation()
+		case model.AddressTypeLocoNet:
+			prefCS, err = r.GetModel().GetPreferredLocoNetCommandStation()
+		case model.AddressTypeMotorola:
+			prefCS, err = r.GetModel().GetPreferredMotorolaCommandStation()
+		case model.AddressTypeMfx:
+			prefCS, err = r.GetModel().GetPreferredMfxCommandStation()
+		case model.AddressTypeMqtt:
+			prefCS, err = r.GetModel().GetPreferredMqttCommandStation()
+		default:
+			return nil, fmt.Errorf("Unknown network type: '%s'", addr.Network.Type)
+		}
+		if err != nil {
+			return nil, err
+		}
+		if prefCS != nil {
+			if cs, err := r.ResolveCommandStation(ctx, prefCS); err == nil {
+				if supports, _ := cs.Supports(entity, addr.Network); supports {
+					// Preferred command station suppports the entity, use it.
+					return cs, nil
+				}
 			}
 		}
 	}
@@ -404,6 +408,11 @@ func (r *railway) SelectCommandStation(ctx context.Context, entity model.Address
 			exactCS = append(exactCS, cs)
 		}
 	}
+	log.Debug().
+		Str("address", addr.String()).
+		Int("supported", len(supportsCS)).
+		Int("exact", len(exactCS)).
+		Msg("Command stations found for loc")
 	// Choose command station
 	if len(exactCS) == 1 {
 		// Found exactly 1 command station to support it (exactly)

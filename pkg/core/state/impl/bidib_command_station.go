@@ -45,6 +45,7 @@ func newBidibCommandStation(en model.BidibCommandStation, railway Railway) Comma
 	}
 	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
+	cs.log.Debug().Msg("Created bidib commandstation state")
 	return cs
 }
 
@@ -57,8 +58,8 @@ func (cs *bidibCommandStation) getCommandStation() model.BidibCommandStation {
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (cs *bidibCommandStation) TryPrepareForUse(context.Context, state.UserInterface, state.Persistence) error {
-	log := cs.log
 	portName := cs.getCommandStation().GetComPortName()
+	log := cs.log.With().Str("port", portName).Logger()
 	if portName == "" {
 		return fmt.Errorf("serial port not set")
 	}
@@ -67,11 +68,13 @@ func (cs *bidibCommandStation) TryPrepareForUse(context.Context, state.UserInter
 			PortName: portName,
 		},
 	}
+	log.Debug().Msg("Preparing bidib host")
 	h, err := host.New(cfg, log)
 	if err != nil {
 		return fmt.Errorf("failed to initialize bidib host: %w", err)
 	}
 	cs.host = h
+	log.Debug().Msg("Prepared bidib host")
 
 	return nil
 }

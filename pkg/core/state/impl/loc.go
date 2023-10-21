@@ -179,6 +179,11 @@ func (l *loc) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ sta
 	if l.commandStation == nil {
 		return fmt.Errorf("Loc does not have a commandstation attached.")
 	}
+	l.log.Debug().
+		Str("loc", l.GetDescription()).
+		Str("addrSpace", l.GetAddress(ctx).Network.AddressSpace).
+		Str("cs", l.commandStation.GetDescription()).
+		Msg("Found commandstation for loc")
 	l.commandStation.RegisterLoc(l)
 	return nil
 }
