@@ -9,6 +9,9 @@ ORGPATH := github.com/binkyrailways
 REPONAME := BinkyRailways
 REPOPATH := $(ORGPATH)/$(REPONAME)
 
+BINKYHOST := 192.168.77.1
+BINKYHOSTUSER := pi
+
 ifndef GOOS
 	GOOS := $(shell go env GOOS)
 endif
@@ -47,7 +50,7 @@ binaries: generate binaries-server
 binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
-		-osarch="darwin/arm64 linux/amd64 linux/arm64" \
+		-osarch="darwin/arm64 linux/amd64 linux/arm linux/arm64" \
 		-ldflags="-X main.projectVersion=${VERSION} -X main.projectBuild=${COMMIT}" \
 		-output="bin/{{.OS}}/{{.Arch}}/binky-server" \
 		-tags="netgo" \
@@ -58,7 +61,7 @@ binaries-gui:
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter build macos
+		cd apps/binky ; flutter build web ; flutter build macos
 		open apps/binky/build/macos/Build/Products/Release/
 
 .PHONY: develop-gui
@@ -111,4 +114,8 @@ update-modules:
 		github.com/binkynet/NetManager@v1.3.0 \
 		github.com/binkynet/BinkyNet@v1.4.0
 	go mod tidy
+
+deploy:
+	scp scripts/binkyrailways.service $(BINKYHOSTUSER)@$(BINKYHOST):/home/$(BINKYHOSTUSER)/binkyrailways.service
+	scp bin/linux/arm/binky-server $(BINKYHOSTUSER)@$(BINKYHOST):/home/$(BINKYHOSTUSER)/binky-server
 
