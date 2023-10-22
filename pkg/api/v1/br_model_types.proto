@@ -160,8 +160,19 @@ message Loc {
   // Is it allowed for this loc to change direction?
   ChangeDirection change_direction = 120;
 
+  // Type of vehicle.
+  VehicleType vehicle_type = 121;
+
   // Gets the names of all functions supported by this loc.
   //	GetFunctions() LocFunctions
+}
+
+// Type of vehicle.
+enum VehicleType {
+  // LOC indicates a locomotive.
+  LOC = 0;
+  // CAR indicates a car.
+  CAR = 1;
 }
 
 // Reference to a loc

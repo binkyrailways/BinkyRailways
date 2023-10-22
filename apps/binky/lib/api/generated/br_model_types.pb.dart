@@ -606,6 +606,7 @@ class Loc extends $pb.GeneratedMessage {
     ..a<$core.int>(102, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maximumSpeed', $pb.PbFieldType.O3)
     ..a<$core.int>(110, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedSteps', $pb.PbFieldType.O3)
     ..e<ChangeDirection>(120, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'changeDirection', $pb.PbFieldType.OE, defaultOrMaker: ChangeDirection.ALLOW, valueOf: ChangeDirection.valueOf, enumValues: ChangeDirection.values)
+    ..e<VehicleType>(121, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vehicleType', $pb.PbFieldType.OE, defaultOrMaker: VehicleType.LOC, valueOf: VehicleType.valueOf, enumValues: VehicleType.values)
     ..hasRequiredFields = false
   ;
 
@@ -622,6 +623,7 @@ class Loc extends $pb.GeneratedMessage {
     $core.int? maximumSpeed,
     $core.int? speedSteps,
     ChangeDirection? changeDirection,
+    VehicleType? vehicleType,
   }) {
     final _result = create();
     if (id != null) {
@@ -656,6 +658,9 @@ class Loc extends $pb.GeneratedMessage {
     }
     if (changeDirection != null) {
       _result.changeDirection = changeDirection;
+    }
+    if (vehicleType != null) {
+      _result.vehicleType = vehicleType;
     }
     return _result;
   }
@@ -778,6 +783,15 @@ class Loc extends $pb.GeneratedMessage {
   $core.bool hasChangeDirection() => $_has(10);
   @$pb.TagNumber(120)
   void clearChangeDirection() => clearField(120);
+
+  @$pb.TagNumber(121)
+  VehicleType get vehicleType => $_getN(11);
+  @$pb.TagNumber(121)
+  set vehicleType(VehicleType v) { setField(121, v); }
+  @$pb.TagNumber(121)
+  $core.bool hasVehicleType() => $_has(11);
+  @$pb.TagNumber(121)
+  void clearVehicleType() => clearField(121);
 }
 
 class LocRef extends $pb.GeneratedMessage {

@@ -70,4 +70,9 @@ type Loc interface {
 	GetRemarks() string
 	// Sets remarks (free text) about this loc.
 	SetRemarks(value string) error
+
+	// Gets the type of vehicle this loc is.
+	GetVehicleType() VehicleType
+	// Sets the type of vehicle this loc is.
+	SetVehicleType(value VehicleType) error
 }

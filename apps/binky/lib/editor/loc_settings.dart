@@ -123,6 +123,18 @@ class _LocSettingsState extends State<_LocSettings> {
                 var update = loc.deepCopy()..owner = value;
                 widget.model.updateLoc(update);
               }),
+          SettingsDropdownField<VehicleType>(
+            label: "Vehicle type",
+            value: widget.loc.vehicleType,
+            onChanged: (value) async {
+              if (value != null) {
+                final loc = await widget.model.getLoc(widget.loc.id);
+                var update = loc.deepCopy()..vehicleType = value;
+                widget.model.updateLoc(update);
+              }
+            },
+            items: BinkyDropdownMenuItems.VehicleTypeItems,
+          ),
           const SettingsHeader(title: "Controller"),
           SettingsAddressField(
               address: widget.loc.address,

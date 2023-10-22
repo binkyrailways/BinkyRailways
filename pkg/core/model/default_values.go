@@ -71,6 +71,9 @@ const DefaultLocOwner = ""
 // Default value of <see cref="ILoc.Remarks"/>
 const DefaultLocRemarks = ""
 
+// Default value of <see cref="Loc.VehicleType"/>
+const DefaultLocVehicleType = VehicleTypeLoc
+
 // Default value of <see cref="IRoute.Speed"/>
 const DefaultRouteSpeed = 100
 

@@ -19,6 +19,17 @@ const ChangeDirection$json = const {
 
 /// Descriptor for `ChangeDirection`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List changeDirectionDescriptor = $convert.base64Decode('Cg9DaGFuZ2VEaXJlY3Rpb24SCQoFQUxMT1cQABIJCgVBVk9JRBAB');
+@$core.Deprecated('Use vehicleTypeDescriptor instead')
+const VehicleType$json = const {
+  '1': 'VehicleType',
+  '2': const [
+    const {'1': 'LOC', '2': 0},
+    const {'1': 'CAR', '2': 1},
+  ],
+};
+
+/// Descriptor for `VehicleType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List vehicleTypeDescriptor = $convert.base64Decode('CgtWZWhpY2xlVHlwZRIHCgNMT0MQABIHCgNDQVIQAQ==');
 @$core.Deprecated('Use binkyNetDeviceTypeDescriptor instead')
 const BinkyNetDeviceType$json = const {
   '1': 'BinkyNetDeviceType',
@@ -219,11 +230,12 @@ const Loc$json = const {
     const {'1': 'maximum_speed', '3': 102, '4': 1, '5': 5, '10': 'maximumSpeed'},
     const {'1': 'speed_steps', '3': 110, '4': 1, '5': 5, '10': 'speedSteps'},
     const {'1': 'change_direction', '3': 120, '4': 1, '5': 14, '6': '.binkyrailways.v1.ChangeDirection', '10': 'changeDirection'},
+    const {'1': 'vehicle_type', '3': 121, '4': 1, '5': 14, '6': '.binkyrailways.v1.VehicleType', '10': 'vehicleType'},
   ],
 };
 
 /// Descriptor for `Loc`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List locDescriptor = $convert.base64Decode('CgNMb2MSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgVvd25lchgDIAEoCVIFb3duZXISGAoHcmVtYXJrcxgEIAEoCVIHcmVtYXJrcxIYCgdhZGRyZXNzGAUgASgJUgdhZGRyZXNzEhsKCWltYWdlX3VybBgGIAEoCVIIaW1hZ2VVcmwSHQoKc2xvd19zcGVlZBhkIAEoBVIJc2xvd1NwZWVkEiEKDG1lZGl1bV9zcGVlZBhlIAEoBVILbWVkaXVtU3BlZWQSIwoNbWF4aW11bV9zcGVlZBhmIAEoBVIMbWF4aW11bVNwZWVkEh8KC3NwZWVkX3N0ZXBzGG4gASgFUgpzcGVlZFN0ZXBzEkwKEGNoYW5nZV9kaXJlY3Rpb24YeCABKA4yIS5iaW5reXJhaWx3YXlzLnYxLkNoYW5nZURpcmVjdGlvblIPY2hhbmdlRGlyZWN0aW9u');
+final $typed_data.Uint8List locDescriptor = $convert.base64Decode('CgNMb2MSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIUCgVvd25lchgDIAEoCVIFb3duZXISGAoHcmVtYXJrcxgEIAEoCVIHcmVtYXJrcxIYCgdhZGRyZXNzGAUgASgJUgdhZGRyZXNzEhsKCWltYWdlX3VybBgGIAEoCVIIaW1hZ2VVcmwSHQoKc2xvd19zcGVlZBhkIAEoBVIJc2xvd1NwZWVkEiEKDG1lZGl1bV9zcGVlZBhlIAEoBVILbWVkaXVtU3BlZWQSIwoNbWF4aW11bV9zcGVlZBhmIAEoBVIMbWF4aW11bVNwZWVkEh8KC3NwZWVkX3N0ZXBzGG4gASgFUgpzcGVlZFN0ZXBzEkwKEGNoYW5nZV9kaXJlY3Rpb24YeCABKA4yIS5iaW5reXJhaWx3YXlzLnYxLkNoYW5nZURpcmVjdGlvblIPY2hhbmdlRGlyZWN0aW9uEkAKDHZlaGljbGVfdHlwZRh5IAEoDjIdLmJpbmt5cmFpbHdheXMudjEuVmVoaWNsZVR5cGVSC3ZlaGljbGVUeXBl');
 @$core.Deprecated('Use locRefDescriptor instead')
 const LocRef$json = const {
   '1': 'LocRef',

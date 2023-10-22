@@ -42,6 +42,7 @@ type loc struct {
 	ChangeDirection model.ChangeDirection
 	Owner           string
 	Remarks         string
+	VehicleType     model.VehicleType
 	Functions       locFunctions `xml:"Functions"`
 }
 
@@ -63,6 +64,7 @@ func NewLoc(p model.Package) Loc {
 		ChangeDirection: model.DefaultLocChangeDirection,
 		Owner:           model.DefaultLocOwner,
 		Remarks:         model.DefaultLocRemarks,
+		VehicleType:     model.DefaultLocVehicleType,
 	}
 	l.EnsureID()
 	l.SetPackage(p)
@@ -234,9 +236,25 @@ func (l *loc) SetRemarks(value string) error {
 	return nil
 }
 
+// Gets the type of vehicle this loc is.
+func (l *loc) GetVehicleType() model.VehicleType {
+	return l.VehicleType
+}
+
+// Sets the type of vehicle this loc is.
+func (l *loc) SetVehicleType(value model.VehicleType) error {
+	if l.VehicleType != value {
+		l.VehicleType = value
+		l.OnModified()
+	}
+	return nil
+}
+
 // Upgrade to latest version
 func (l *loc) Upgrade() {
-	// Empty on purpose
+	if l.VehicleType == "" {
+		l.VehicleType = model.DefaultLocVehicleType
+	}
 }
 
 // GetRailway returns the containing railway

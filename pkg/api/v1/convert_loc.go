@@ -45,6 +45,9 @@ func (dst *Loc) FromModel(ctx context.Context, src model.Loc, httpHost string, h
 	if err := dst.ChangeDirection.FromModel(ctx, src.GetChangeDirection()); err != nil {
 		return err
 	}
+	if err := dst.VehicleType.FromModel(ctx, src.GetVehicleType()); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -70,5 +73,10 @@ func (src *Loc) ToModel(ctx context.Context, dst model.Loc) error {
 		return err
 	}
 	dst.SetChangeDirection(cd)
+	vt, err := src.GetVehicleType().ToModel(ctx)
+	if err != nil {
+		return err
+	}
+	dst.SetVehicleType(vt)
 	return nil
 }

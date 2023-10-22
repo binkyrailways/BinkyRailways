@@ -24,6 +24,21 @@ class ChangeDirection extends $pb.ProtobufEnum {
   const ChangeDirection._($core.int v, $core.String n) : super(v, n);
 }
 
+class VehicleType extends $pb.ProtobufEnum {
+  static const VehicleType LOC = VehicleType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LOC');
+  static const VehicleType CAR = VehicleType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'CAR');
+
+  static const $core.List<VehicleType> values = <VehicleType> [
+    LOC,
+    CAR,
+  ];
+
+  static final $core.Map<$core.int, VehicleType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static VehicleType? valueOf($core.int value) => _byValue[value];
+
+  const VehicleType._($core.int v, $core.String n) : super(v, n);
+}
+
 class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType MCP23008 = BinkyNetDeviceType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MCP23008');
   static const BinkyNetDeviceType MCP23017 = BinkyNetDeviceType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MCP23017');

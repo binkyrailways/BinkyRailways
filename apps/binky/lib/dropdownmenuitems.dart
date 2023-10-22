@@ -28,4 +28,12 @@ class BinkyDropdownMenuItems {
                 value: e,
               ))
           .toList();
+
+  static final List<DropdownMenuItem<VehicleType>> VehicleTypeItems =
+      VehicleType.values
+          .map((e) => DropdownMenuItem<VehicleType>(
+                child: Text(ReCase(e.name).titleCase),
+                value: e,
+              ))
+          .toList();
 }
