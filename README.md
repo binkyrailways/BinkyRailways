@@ -2,7 +2,7 @@
 
 BinkyRailways is a program to automate running model trains.
 
-It is being used by [Team Zwitserleven](https://teamzwitserleven.nl).
+It is being used by [Team Zwitserleven](https://www.teamzwitserleven.nl).
 
 ## Building
 
