@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace BinkyRailways.WinApp.Controls.VirtualCanvas
 {
@@ -279,7 +280,7 @@ namespace BinkyRailways.WinApp.Controls.VirtualCanvas
                 var visibleRect = e.VisibleRectangle;
                 SetupDrawItemsTransform(g, ref visibleRect);
 
-                foreach (VCItemPlacement placement in items)
+                foreach (VCItemPlacement placement in items.OrderBy(x => x.Item.Priority))
                 {
                     if (placement.Item.Visible)
                     {

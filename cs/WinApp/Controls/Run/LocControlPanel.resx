@@ -264,6 +264,36 @@
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
+  <data name="cbShowAll.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbShowAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbShowAll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 3</value>
+  </data>
+  <data name="cbShowAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 17</value>
+  </data>
+  <data name="cbShowAll.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="cbShowAll.Text" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="&gt;&gt;cbShowAll.Name" xml:space="preserve">
+    <value>cbShowAll</value>
+  </data>
+  <data name="&gt;&gt;cbShowAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbShowAll.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbShowAll.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="cbF13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -292,7 +322,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF13.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="cbF8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +352,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF8.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="cbF7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -352,7 +382,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF7.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbF6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -382,7 +412,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF6.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cbF5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -412,7 +442,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF5.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="cbF4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -442,7 +472,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF4.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbF3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -472,7 +502,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="cbF2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -502,7 +532,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="cbF0.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -532,7 +562,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF0.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="cbF1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -562,7 +592,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF1.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="cbF9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -592,7 +622,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF9.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="cbF10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -622,7 +652,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF10.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="cbF11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -652,7 +682,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF11.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="cbF12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -682,7 +712,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF12.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="cbF14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -712,7 +742,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF14.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="cbF15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -742,7 +772,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF15.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="cbF16.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -772,7 +802,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbF16.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -802,7 +832,7 @@
     <value>4</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbF13" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF8" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF7" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF6" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF4" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF3" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF0" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="cbF1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF9" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF10" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF11" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF12" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF14" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF15" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF16" Row="4" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,20,AutoSize,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbShowAll" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF13" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF8" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF7" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF6" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF4" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF3" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF0" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="cbF1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF9" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbF10" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF11" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF12" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbF14" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbF15" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbF16" Row="4" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,20,AutoSize,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tlpTop.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -826,7 +856,7 @@
     <value>locImage</value>
   </data>
   <data name="&gt;&gt;locImage.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Run.LocImage, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Run.LocImage, BinkyRailways, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;locImage.Parent" xml:space="preserve">
     <value>tlpTop</value>
@@ -892,7 +922,7 @@
     <value>0</value>
   </data>
   <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cmdForward" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbSpeed" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="cmdReverse" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmdStop" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel1" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="tlpTop" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33334,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cmdForward" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbSpeed" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="cmdReverse" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmdStop" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel1" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="tlpTop" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,33334,Percent,33,33333,Percent,33,33333" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

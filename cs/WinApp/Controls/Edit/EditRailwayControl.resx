@@ -151,7 +151,7 @@
     <value>tvItems</value>
   </data>
   <data name="&gt;&gt;tvItems.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.TreeViewX, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.TreeViewX, BinkyRailways, Version=1.2.0.3, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tvItems.Parent" xml:space="preserve">
     <value>innerSplitContainer.Panel1</value>
@@ -190,7 +190,7 @@
     <value>viewEditor</value>
   </data>
   <data name="&gt;&gt;viewEditor.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.RailwayViewEditorControl, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.RailwayViewEditorControl, BinkyRailways, Version=1.2.0.3, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;viewEditor.Parent" xml:space="preserve">
     <value>innerSplitContainer.Panel2</value>
@@ -259,7 +259,7 @@
     <value>propertyGrid</value>
   </data>
   <data name="&gt;&gt;propertyGrid.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.Settings.SettingsPropertyGrid, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.Settings.SettingsPropertyGrid, BinkyRailways, Version=1.2.0.3, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;propertyGrid.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -327,6 +327,12 @@
   <data name="tbAddModuleConnection.Text" xml:space="preserve">
     <value>Module connection</value>
   </data>
+  <data name="tbAddBinkyNet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 22</value>
+  </data>
+  <data name="tbAddBinkyNet.Text" xml:space="preserve">
+    <value>BinkyNet</value>
+  </data>
   <data name="tbAddLocoBuffer.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 22</value>
   </data>
@@ -344,12 +350,6 @@
   </data>
   <data name="tbAddEcos.Text" xml:space="preserve">
     <value>ECoS</value>
-  </data>
-  <data name="tbAddMqtt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
-  </data>
-  <data name="tbAddMqtt.Text" xml:space="preserve">
-    <value>MQTT</value>
   </data>
   <data name="tbbAddP50x.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 22</value>
@@ -496,7 +496,7 @@
     <value>validationResultsControl</value>
   </data>
   <data name="&gt;&gt;validationResultsControl.Type" xml:space="preserve">
-    <value>BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl, BinkyRailways, Version=1.1.0.60, Culture=neutral, PublicKeyToken=null</value>
+    <value>BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl, BinkyRailways, Version=1.2.0.3, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;validationResultsControl.Parent" xml:space="preserve">
     <value>tlpMain</value>
@@ -609,10 +609,16 @@
   <data name="&gt;&gt;tbAddEcos.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbAddMqtt.Name" xml:space="preserve">
-    <value>tbAddMqtt</value>
+  <data name="&gt;&gt;tbAddBinkyNet.Name" xml:space="preserve">
+    <value>tbAddBinkyNet</value>
   </data>
-  <data name="&gt;&gt;tbAddMqtt.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbAddBinkyNet.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbbAddP50x.Name" xml:space="preserve">
+    <value>tbbAddP50x</value>
+  </data>
+  <data name="&gt;&gt;tbbAddP50x.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbEdit.Name" xml:space="preserve">
@@ -655,12 +661,6 @@
     <value>tbRunVirtual</value>
   </data>
   <data name="&gt;&gt;tbRunVirtual.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbbAddP50x.Name" xml:space="preserve">
-    <value>tbbAddP50x</value>
-  </data>
-  <data name="&gt;&gt;tbbAddP50x.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

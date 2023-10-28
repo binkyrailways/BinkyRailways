@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using BinkyRailways.Core.Model;
+using BinkyRailways.Core.Server;
 using BinkyRailways.Core.State;
 using BinkyRailways.Core.State.Impl;
 using BinkyRailways.Core.Util;
@@ -13,7 +14,7 @@ using BinkyRailways.WinApp.Preferences;
 
 namespace BinkyRailways.WinApp
 {
-    internal class AppState
+    internal class AppState : IDisposable
     {
         private const string PackageMutexPrefix = "3FC9EE3A-5D01-40F4-A116-6876E78BDB6F-";
 
@@ -25,6 +26,7 @@ namespace BinkyRailways.WinApp
 
         private readonly IStateUserInterface ui;
         private readonly IStatePersistence statePersistence;
+        private readonly IServer server;
         private readonly MainForm mainForm;
         private IPackage package;
         private IRailwayState railwayState;
@@ -44,6 +46,7 @@ namespace BinkyRailways.WinApp
             this.mainForm = mainForm;
             var persistence = new StatePersistence();
             statePersistence = persistence;
+            server = new Core.Server.Impl.Server();
         }
 
         /// <summary>
@@ -213,6 +216,7 @@ namespace BinkyRailways.WinApp
             packageMutex = valueMutex;
             PackageChanged.Fire(this);
             PackagePath = (value == null) ? null : packagePath;
+            server.Railway = (value == null) ? null : value.Railway;
         }
 
         /// <summary>
@@ -230,6 +234,7 @@ namespace BinkyRailways.WinApp
                         railwayState.Dispose();
                     }
                     railwayState = value;
+                    server.RailwayState = value;
                     if (value != null)
                     {
                         value.PrepareForUse(ui, statePersistence);
@@ -349,6 +354,14 @@ namespace BinkyRailways.WinApp
             catch (Exception ex)
             {
             }
+        }
+
+        /// <summary>
+        /// Cleanup
+        /// </summary>
+        public void Dispose()
+        {
+            server.Dispose();
         }
 
         /// <summary>

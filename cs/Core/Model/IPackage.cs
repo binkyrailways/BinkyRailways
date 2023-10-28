@@ -34,9 +34,9 @@ namespace BinkyRailways.Core.Model
         IEcosCommandStation AddNewEcosCommandStation();
 
         /// <summary>
-        /// Add a new MQTT command station.
+        /// Add a new BinkyNet command station.
         /// </summary>
-        IMqttCommandStation AddNewMqttCommandStation();
+        IBinkyNetCommandStation AddNewBinkyNetCommandStation();
 
         /// <summary>
         /// Add a new P50x command station.

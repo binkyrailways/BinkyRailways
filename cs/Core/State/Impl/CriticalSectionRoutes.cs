@@ -16,6 +16,11 @@ namespace BinkyRailways.Core.State.Impl
         private readonly List<IRouteState> routes;
 
         /// <summary>
+        /// Is this section empty?
+        /// </summary>
+        public bool IsEmpty => routes.Count == 0;
+
+        /// <summary>
         /// Default ctor
         /// </summary>
         internal CriticalSectionRoutes(IEnumerable<IRouteState> routes)

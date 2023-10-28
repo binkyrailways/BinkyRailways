@@ -27,19 +27,29 @@ namespace BinkyRailways.Core.State.Automatic
         /// <param name="loc">The loc a route should be choosen for</param>
         /// <param name="locDirection">The direction the loc is facing in the From block of the given <see cref="route"/>.</param>
         /// <param name="avoidDirectionChanges">If true, the route is considered not available if a direction change is needed.</param>
+        /// <param name="generationDelta">If larger than 0, look this number of generation less far in the future.</param>
         /// <returns>True if the route can be locked and no sensor in the route is active (outside current route).</returns>
-        public override IRouteOption IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges)
+        public override IRouteOption IsAvailableFor(IRouteState route, ILocState loc, Model.BlockSide locDirection, bool avoidDirectionChanges, int generationDelta)
         {
             // Perform standard testing first
-            var result = base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges);
+            var result = base.IsAvailableFor(route, loc, locDirection, avoidDirectionChanges, generationDelta);
             if (!result.IsPossible)
             {
                 return result;
             }
 
+            // If last resort, we're ok when critical section is empty.
+            if (generationDelta > 0)
+            {
+                if (route.CriticalSection.IsEmpty)
+                {
+                    return result;
+                }
+            }
+
             // Now test future possibilities of the entire railway to detect possible deadlocks.
             var genSet = new FutureAlternativeSet(this, route, loc);
-            if (!genSet.Test())
+            if (!genSet.Test(generationDelta))
             {
                 // Not Ok
                 return new RouteOption(route, RouteImpossibleReason.DeadLock);
@@ -83,8 +93,9 @@ namespace BinkyRailways.Core.State.Automatic
             /// Run the future generation test.
             /// </summary>
             /// <returns>True if there is a dead-lock free future or the test loc has reached a station.</returns>
-            public bool Test()
+            public bool Test(int generationDelta)
             {
+                var minGenerations = this.minGenerations - generationDelta;
                 while (alternatives.Count > 0)
                 {
                     var g = alternatives[0];
@@ -200,7 +211,7 @@ namespace BinkyRailways.Core.State.Automatic
                 var locDirection = currentBlockEnterSide.Invert();
                 var avoidDirectionChanges = (loc.ChangeDirection == ChangeDirection.Avoid);
                 var routeFromFromBlock = state.RailwayState.GetAllPossibleNonClosedRoutesFromBlock(currentBlock);
-                var routeOptions = routeFromFromBlock.Select(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges)).ToList();
+                var routeOptions = routeFromFromBlock.Select(x => state.IsAvailableFor(x, loc, locDirection, avoidDirectionChanges, 0)).ToList();
                 var possibleRoutes = routeOptions.Where(x => x.IsPossible).Select(x => x.Route).ToList();
 
                 // If no routes, then return

@@ -133,6 +133,11 @@ namespace BinkyRailways.Core.State
         IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
 
         /// <summary>
+        /// Possible deadlock detected set by the automatic loc controller.
+        /// </summary>
+        IActualStateProperty<bool> PossibleDeadlock { get; }
+
+        /// <summary>
         /// Gets/sets a selector used to select the next route from a list of possible routes.
         /// If no route selector is set, a default will be created.
         /// </summary>

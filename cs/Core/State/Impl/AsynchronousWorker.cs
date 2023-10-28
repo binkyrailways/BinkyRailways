@@ -32,7 +32,7 @@ namespace BinkyRailways.Core.State.Impl
         /// <summary>
         /// Default ctor
         /// </summary>
-        internal AsynchronousWorker(string threadName)
+        public AsynchronousWorker(string threadName)
         {
             this.threadName = threadName;
             log = LogManager.GetLogger(threadName);

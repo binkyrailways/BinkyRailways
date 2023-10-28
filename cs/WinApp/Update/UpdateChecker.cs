@@ -13,8 +13,8 @@ namespace BinkyRailways.WinApp.Update
         public event EventHandler<PropertyEventArgs<Version>> UpdateAvailable;
 
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
-        private VersionInfo versionInfo;
-        private const string VersionInfoUrl = "http://www.binkyrailways.net/download/version.xml";
+        private GithubReleaseInfo versionInfo;
+        private const string latestReleaseUrl = "https://api.github.com/repos/binkyrailways/BinkyRailways/releases/latest";
 
         /// <summary>
         /// Check for updates now
@@ -23,7 +23,7 @@ namespace BinkyRailways.WinApp.Update
         {
             try
             {
-                versionInfo = new VersionInfo(VersionInfoUrl);
+                versionInfo = new GithubReleaseInfo(latestReleaseUrl);
                 if ((versionInfo.Version > GetType().Assembly.GetName().Version) && !string.IsNullOrEmpty(versionInfo.SetupUrl))
                 {
                     // There is a new version

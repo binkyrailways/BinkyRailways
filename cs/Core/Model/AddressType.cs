@@ -6,6 +6,6 @@
         LocoNet,
         Motorola,
         Mfx,
-        Mqtt
+        BinkyNet
     }
 }

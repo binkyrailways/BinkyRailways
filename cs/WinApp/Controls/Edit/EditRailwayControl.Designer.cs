@@ -49,7 +49,8 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbAddLocoBuffer = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddDccOverRs232 = new System.Windows.Forms.ToolStripMenuItem();
             this.tbAddEcos = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbAddMqtt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbAddBinkyNet = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbbAddP50x = new System.Windows.Forms.ToolStripMenuItem();
             this.tbEdit = new System.Windows.Forms.ToolStripButton();
             this.tbImport = new System.Windows.Forms.ToolStripButton();
             this.tbArchive = new System.Windows.Forms.ToolStripButton();
@@ -59,7 +60,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             this.tbRunVirtual = new System.Windows.Forms.ToolStripMenuItem();
             this.validationResultsControl = new BinkyRailways.WinApp.Controls.Edit.ValidationResultsControl();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tbbAddP50x = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -185,10 +185,10 @@ namespace BinkyRailways.WinApp.Controls.Edit
             // tbAddCommandStation
             // 
             this.tbAddCommandStation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tbAddBinkyNet,
             this.tbAddLocoBuffer,
             this.tbAddDccOverRs232,
             this.tbAddEcos,
-            this.tbAddMqtt,
             this.tbbAddP50x});
             this.tbAddCommandStation.Name = "tbAddCommandStation";
             resources.ApplyResources(this.tbAddCommandStation, "tbAddCommandStation");
@@ -211,11 +211,17 @@ namespace BinkyRailways.WinApp.Controls.Edit
             resources.ApplyResources(this.tbAddEcos, "tbAddEcos");
             this.tbAddEcos.Click += new System.EventHandler(this.tbAddEcos_Click);
             // 
-            // tbAddMqtt
+            // tbAddBinkyNet
             // 
-            this.tbAddMqtt.Name = "tbAddMqtt";
-            resources.ApplyResources(this.tbAddMqtt, "tbAddMqtt");
-            this.tbAddMqtt.Click += new System.EventHandler(this.tbAddMqtt_Click);
+            this.tbAddBinkyNet.Name = "tbAddBinkyNet";
+            resources.ApplyResources(this.tbAddBinkyNet, "tbAddBinkyNet");
+            this.tbAddBinkyNet.Click += new System.EventHandler(this.tbAddBinkyNet_Click);
+            // 
+            // tbbAddP50x
+            // 
+            this.tbbAddP50x.Name = "tbbAddP50x";
+            resources.ApplyResources(this.tbbAddP50x, "tbbAddP50x");
+            this.tbbAddP50x.Click += new System.EventHandler(this.tbbAddP50x_Click);
             // 
             // tbEdit
             // 
@@ -280,12 +286,6 @@ namespace BinkyRailways.WinApp.Controls.Edit
             resources.ApplyResources(this.contextMenuStrip, "contextMenuStrip");
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.OnContextMenuStripOpening);
             // 
-            // tbbAddP50x
-            // 
-            this.tbbAddP50x.Name = "tbbAddP50x";
-            resources.ApplyResources(this.tbbAddP50x, "tbbAddP50x");
-            this.tbbAddP50x.Click += new System.EventHandler(this.tbbAddP50x_Click);
-            // 
             // EditRailwayControl
             // 
             resources.ApplyResources(this, "$this");
@@ -335,7 +335,7 @@ namespace BinkyRailways.WinApp.Controls.Edit
         private ToolStripMenuItem tbAddDccOverRs232;
         private ToolStripMenuItem tbAddEcos;
         private ContextMenuStrip contextMenuStrip;
-        private ToolStripMenuItem tbAddMqtt;
+        private ToolStripMenuItem tbAddBinkyNet;
         private ToolStripMenuItem tbbAddP50x;
 
     }
