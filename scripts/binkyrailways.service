@@ -1,0 +1,12 @@
+[Unit]
+Description=BinkyRailways
+After=network.target
+After=dnsmasq.service
+Requires=dnsmasq.service
+
+[Service]
+ExecStart=/home/pi/binky-server --prom-config-path=/home/pi/prometheus.yml --storage-path=/home/pi/binky-storage --certificate-path=/home/pi/binky-cert.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

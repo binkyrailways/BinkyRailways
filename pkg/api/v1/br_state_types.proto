@@ -1,0 +1,336 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+import "br_model_types.proto";
+
+// Railway contrains a description of a single model railway.
+message RailwayState {
+  // Model of the railway
+  Railway model = 1;
+  // Set when the server is in run mode (otherwise editing mode)
+  bool is_run_mode_enabled = 2;
+  // Set when the server is in run mode with virtual mode enabled
+  bool is_virtual_mode_enabled = 3;
+  // Set when the server is in run mode with virtual auto run enabled
+  bool is_virtual_autorun_enabled = 4;
+  // Is the actual power status on?
+  bool power_actual = 10;
+  // Is the requested power status on?
+  bool power_requested = 11;
+  // Is the automatic controller currently active?
+  bool automatic_control_actual = 12;
+  // Is the automatic controller requested to become active?
+  bool automatic_control_requested = 13;
+
+  repeated BlockRef blocks = 50;
+  repeated BlockGroupRef block_groups = 51;
+  repeated CommandStationRef command_stations = 52;
+  repeated JunctionRef junctions = 53;
+  repeated LocRef locs = 54;
+  repeated OutputRef outputs = 55;
+  repeated RouteRef routes = 56;
+  repeated SensorRef sensors = 57;
+  repeated SignalRef signals = 58;
+}
+
+// State of a single loc
+message LocState {
+  // Model of the loc
+  Loc model = 1;
+
+  // If set, this loc is currently controlled automatically.
+  bool controlled_automatically_actual = 10;
+  // If set, this loc wants to be controlled automatically.
+  bool controlled_automatically_requested = 11;
+  // Is it allowed to set the ControlledAutomatically property to true?
+  bool can_be_controlled_automatically = 12;
+
+  // The current state of this loc in the automatic loc controller.
+  AutoLocState automatic_state = 13;
+
+  // Gets the route that this loc is currently taking.
+  // Do not assign this property directly, instead use the assign methods.
+  RouteRef current_route = 18;
+
+  // Should the loc wait when the current route has finished?
+  bool wait_after_current_route = 20;
+
+  // Time when this loc will exceed the maximum duration of the current route.
+  // GetDurationExceedsCurrentRouteTime() ActualTimeProperty
+
+  // Is the maximum duration of the current route this loc is taken exceeded?
+  bool is_current_route_duration_exceeded = 22;
+
+  // Gets the route that this loc will take when the current route has finished.
+  // This property is only set by the automatic loc controller.
+  RouteRef next_route = 23;
+
+  // Gets the block that the loc is currently in.
+  BlockRef current_block = 24;
+
+  // Gets the side at which the current block was entered.
+  BlockSide current_block_enter_side = 25;
+  // GetCurrentBlockEnterSide() ActualBlockSideProperty
+
+  // Time when this loc will start it's next route.
+  // GetStartNextRouteTime() ActualTimeProperty
+
+  // Route options as considered last by the automatic train controller.
+  // IActualStateProperty<IRouteOption[]> LastRouteOptions { get; }
+
+  // Gets/sets a selector used to select the next route from a list of possible
+  // routes. If no route selector is set, a default will be created.
+  // IRouteSelector RouteSelector { get; set; }
+
+  // Current speed of this loc as percentage of the speed steps of the loc.
+  // Value between 0 and 100.
+  // Setting this value will result in a request to its command station to alter
+  // the speed.
+  int32 speed_actual = 50;
+  int32 speed_requested = 51;
+
+  // Gets a human readable representation of the speed of the loc.
+  string speed_text = 52;
+
+  // Gets a human readable representation of the state of the loc.
+  string state_text = 53;
+
+  // Gets the actual speed of the loc in speed steps
+  // Value between 0 and the maximum number of speed steps supported by this
+  // loc. Setting this value will result in a request to its command station to
+  // alter the speed.
+  int32 speed_in_steps_actual = 54;
+  int32 speed_in_steps_requested = 55;
+
+  // Current direction of this loc.
+  // Setting this value will result in a request to its command station to alter
+  // the direction.
+  LocDirection direction_actual = 56;
+  LocDirection direction_requested = 57;
+
+  // Is this loc reversing out of a dead end?
+  // This can only be true for locs that are not allowed to change
+  // direction.
+  bool is_reversing = 60;
+
+  // Directional lighting of the loc.
+  // Setting this value will result in a request to its command station to alter
+  // the value.
+  bool f0_actual = 70;
+  bool f0_requested = 71;
+}
+
+// Direction of a loc
+enum LocDirection {
+  FORWARD = 0;
+  REVERSE = 1;
+}
+
+enum AutoLocState {
+  // Loc has not been assigned a route, but is ready to be assigned and run that
+  // route. If the loc is no longer is automatic mode, it will be removed from
+  // the automatic loc controller. If no suitable route can be found, the loc
+  // will stay in this state. When the loc has been assigned a route, the route
+  // will be prepared and the state will change to <see
+  // cref="WaitingForAssignedRouteReady"/>.
+  ASSIGNROUTE = 0;
+
+  // The loc that was reversing is changing direction back to normal.
+  // Once the direction is consistent, the state will change to <see
+  // cref="AssignRoute"/>.
+  REVERSINGWAITINGFORDIRECTIONCHANGE = 1;
+
+  // The loc has been assigned a route and it waiting for this route to
+  // become ready. Typically all junctions in the route will be set in the
+  // correct position now. When the route is ready, the state will change to
+  // <see cref="Running"/>.
+  WAITINGFORASSIGNEDROUTEREADY = 2;
+
+  // The loc is running the assigned route.
+  // The state of the loc will not change until a sensor trigger is
+  // received.
+  RUNNING = 3;
+
+  // The loc has triggered one of the 'entering destination' sensors of the
+  // assigned route. No changes are made to the loc state when switching to
+  // this state.
+  ENTERSENSORACTIVATED = 4;
+
+  // The loc has triggered one of the 'entering destination' sensors of the
+  // assigned route. The state of the loc will not change until a 'reached
+  // destination' sensor trigger is received.
+  ENTERINGDESTINATION = 5;
+
+  // The loc has triggered one of the 'reached destination' sensors of the
+  // assigned route. No changes are made to the loc state when switching to
+  // this state.
+  REACHEDSENSORACTIVATED = 6;
+
+  // The loc has triggered one of the 'reached destination' sensors of the
+  // assigned route. If the destination let's the loc wait, a timeout is
+  // started and the state is changed to <see
+  // cref="WaitingForDestinationTimeout"/>. Otherwise the state will change
+  // to <see cref="AssignRoute"/>. If the loc is no longer is automatic
+  // mode, it will be removed from the automatic loc controller.
+  REACHEDDESTINATION = 7;
+
+  // The loc has stopped at the destination and is waiting for a timeout
+  // until it can be assigned a new route.
+  WAITINGFORDESTINATIONTIMEOUT = 8;
+
+  // The loc has stopped at the destination and is waiting for a requirement
+  // on the group that contains the destination block.
+  WAITINGFORDESTINATIONGROUPMINIMUM = 9;
+}
+
+// State of a single command station
+message CommandStationState {
+  // Model of the command station
+  CommandStation model = 1;
+  // Status of hardware modules connected to this command station
+  repeated HardwareModule hardware_modules = 2;
+}
+
+// State specific a hardware module that is connected to the command station
+message HardwareModule {
+  // ID of the module
+  string id = 1;
+  // Uptime in seconds
+  int64 uptime = 2;
+  // Time of last update of this information.
+  // Formatted at RFC3339
+  string last_updated_at = 3;
+  // Error messages related to this module
+  repeated string error_messages = 4;
+  // IP address of this module (if any)
+  string address = 5;
+}
+
+// State of a single block
+message BlockState {
+  // Model of the block
+  Block model = 1;
+  // If set, contains the loc that has locked this block
+  LocRef locked_by = 2;
+  // Gets all sensors that are either an "entering" or a "reached" sensor for a
+  // route that leads to this block.
+  // ForEachSensor(context.Context, func(Sensor))
+
+  // Gets the current state of this block
+  BlockStateState state = 3;
+
+  // Is this block closed for traffic?
+  bool closed_actual = 10;
+  bool closed_requested = 11;
+
+  // Can a loc only leave this block at the same side it got in?
+  bool is_deadend = 20;
+  // Is this block considered a station?
+  bool is_station = 21;
+  // Is there a loc waiting in this block?
+  bool has_waiting_loc = 22;
+}
+
+// BlockStateState describes the current state of a block.
+enum BlockStateState {
+  	// BlockStateFree means the block is available, but not occupied, not claimed
+	FREE = 0;
+
+	// BlockStateOccupied means the block is occupied by a loc, which is expected
+	OCCUPIED = 1;
+
+	// BlockStateOccupiedUnexpected means a sensor of this block is active, which is unexpected
+	OCCUPIEDUNEXPECTED = 2;
+
+	// BlockStateDestination means the block is locked by a coming loc.
+	// That loc is now taking a route that leads to this block.
+	DESTINATION = 3;
+
+	// BlockStateEntering means the block is locked by a coming loc.
+	// That loc is now entering this block.
+	ENTERING = 4;
+
+	// BlockStateLocked means the block is locked by a coming loc.
+	// That loc's next route will lead to this block.
+	LOCKED = 5;
+
+	// BlockStateClosed means the block has been taken out of use
+	CLOSED = 6;
+}
+
+// State of a single block group
+message BlockGroupState {
+  // Model of the block group
+  BlockGroup model = 1;
+}
+
+// State of a single junction
+message JunctionState {
+  // Model of the junction
+  Junction model = 1;
+  // Set if junction is a switch
+  SwitchState switch = 2;
+}
+
+// Switch specialization of junction
+message SwitchState {
+  // Actual direction of switch
+  SwitchDirection direction_actual = 1;
+  // Requested direction of switch
+  SwitchDirection direction_requested = 2;
+}
+
+// State of a single output
+message OutputState {
+  // Model of the output
+  Output model = 1;
+  // Set if output is a binary output
+  BinaryOutputState binary_output = 2;
+}
+
+message BinaryOutputState {
+  // Actual active state
+  bool active_actual = 1;
+  // Requested active state
+  bool active_requested = 2;
+}
+
+// State of a single route
+message RouteState {
+  // Model of the route
+  Route model = 1;
+}
+
+// State of a single sensor
+message SensorState {
+  // Model of the sensor
+  Sensor model = 1;
+  // Is the sensor indicating an active input?
+  bool active = 2;
+}
+
+// State of a single signal
+message SignalState {
+  // Model of the route
+  Signal model = 1;
+}

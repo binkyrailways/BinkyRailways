@@ -1,0 +1,325 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+import "br_model_types.proto";
+import "br_storage_types.proto";
+
+// ModelService is used to get & modify the model of the current railway.
+service ModelService {
+  // Try to parse an address
+  rpc ParseAddress(ParseAddressRequest) returns (ParseAddressResult);
+  // Try to parse a permission
+  rpc ParsePermission(ParsePermissionRequest) returns (ParsePermissionResult);
+  // Return a list of available serial ports
+  rpc GetSerialPorts(Empty) returns (SerialPortList);
+
+  // Load the given railway entry
+  rpc LoadRailway(RailwayEntry) returns (Railway);
+  // Close the currently loaded railway entry.
+  rpc CloseRailway(Empty) returns (Empty);
+  // Gets the current loaded railway entry. 
+  // If no entry is loaded, the returned entry is empty.
+  rpc GetRailwayEntry(Empty) returns (RailwayEntry);
+  // Gets the current railway
+  rpc GetRailway(Empty) returns (Railway);
+  // Update the current railway
+  rpc UpdateRailway(Railway) returns (Railway);
+  // Save changes to disk
+  rpc Save(Empty) returns (Empty);
+
+  // Gets a module by ID.
+  rpc GetModule(IDRequest) returns (Module);
+  // Get the background image of a module by ID.
+  rpc GetModuleBackgroundImage(IDRequest) returns (Image);
+  // Update a module by ID.
+  rpc UpdateModule(Module) returns (Module);
+  // Update the background image of a module by ID.
+  rpc UpdateModuleBackgroundImage(ImageIDRequest) returns (Module);
+  // Adds a new module.
+  rpc AddModule(Empty) returns (Module);
+  // Delete the module with the given ID.
+  rpc DeleteModule(IDRequest) returns (Empty);
+
+  // Gets a loc by ID.
+  rpc GetLoc(IDRequest) returns (Loc);
+  // Update a loc by ID.
+  rpc UpdateLoc(Loc) returns (Loc);
+  // Update the image of a loc by ID.
+  rpc UpdateLocImage(ImageIDRequest) returns (Loc);
+  // Adds a new loc.
+  rpc AddLoc(Empty) returns (Loc);
+  // Delete the loc with the given ID.
+  rpc DeleteLoc(IDRequest) returns (Empty);
+
+  // Gets a loc group by ID.
+  rpc GetLocGroup(IDRequest) returns (LocGroup);
+  // Update a loc group by ID.
+  rpc UpdateLocGroup(LocGroup) returns (LocGroup);
+  // Adds a new loc group.
+  rpc AddLocGroup(Empty) returns (LocGroup);
+  // Delete the loc group with the given ID.
+  rpc DeleteLocGroup(IDRequest) returns (Empty);
+
+  // Gets a command station by ID.
+  rpc GetCommandStation(IDRequest) returns (CommandStation);
+  // Update a command station  by ID.
+  rpc UpdateCommandStation(CommandStation) returns (CommandStation);
+  // Adds a new bidib command station.
+  rpc AddBidibCommandStation(Empty) returns (CommandStation);
+  // Adds a new binkynet command station.
+  rpc AddBinkyNetCommandStation(Empty) returns (CommandStation);
+
+  // Gets a block by ID.
+  rpc GetBlock(IDRequest) returns (Block);
+  // Update a block by ID.
+  rpc UpdateBlock(Block) returns (Block);
+  // Adds a new block in the module identified by given by ID.
+  rpc AddBlock(IDRequest) returns (Block);
+  // Delete the block with the given ID.
+  rpc DeleteBlock(IDRequest) returns (Module);
+
+  // Gets a block group by ID.
+  rpc GetBlockGroup(IDRequest) returns (BlockGroup);
+  // Update a block group by ID.
+  rpc UpdateBlockGroup(BlockGroup) returns (BlockGroup);
+  // Adds a new block group in the module identified by given by ID.
+  rpc AddBlockGroup(IDRequest) returns (BlockGroup);
+  // Delete the block group with the given ID.
+  rpc DeleteBlockGroup(IDRequest) returns (Module);
+
+  // Gets an edge by ID.
+  rpc GetEdge(IDRequest) returns (Edge);
+  // Update an edge by ID.
+  rpc UpdateEdge(Edge) returns (Edge);
+  // Adds a new edge in the module identified by given by ID.
+  rpc AddEdge(IDRequest) returns (Edge);
+  // Delete the edge with the given ID.
+  rpc DeleteEdge(IDRequest) returns (Module);
+
+  // Gets a Junction by ID.
+  rpc GetJunction(IDRequest) returns (Junction);
+  // Update a Junction by ID.
+  rpc UpdateJunction(Junction) returns (Junction);
+  // Adds a new junction of type switch in the module identified by given by ID.
+  rpc AddSwitch(IDRequest) returns (Junction);
+  // Delete the junction with the given ID.
+  rpc DeleteJunction(IDRequest) returns (Module);
+
+  // Gets a Output by ID.
+  rpc GetOutput(IDRequest) returns (Output);
+  // Update a Output by ID.
+  rpc UpdateOutput(Output) returns (Output);
+  // Adds a new output of type binary output in the module identified by given
+  // by ID.
+  rpc AddBinaryOutput(IDRequest) returns (Output);
+  // Delete the output with the given ID.
+  rpc DeleteOutput(IDRequest) returns (Module);
+
+  // Gets a Route by ID.
+  rpc GetRoute(IDRequest) returns (Route);
+  // Update a Route by ID.
+  rpc UpdateRoute(Route) returns (Route);
+  // Adds a new block in the module identified by given by ID.
+  rpc AddRoute(IDRequest) returns (Route);
+  // Delete the route with the given ID.
+  rpc DeleteRoute(IDRequest) returns (Module);
+  // Adds a crossing junction (of type switch) with given junction ID & switch direction.
+  rpc AddRouteCrossingJunctionSwitch(AddRouteCrossingJunctionSwitchRequest) returns (Route);
+  // Removes a crossing junction with given junction ID.
+  rpc RemoveRouteCrossingJunction(RemoveRouteCrossingJunctionRequest) returns (Route);
+  // Adds an output (of type binary output) with given output ID & active status.
+  rpc AddRouteBinaryOutput(AddRouteBinaryOutputRequest) returns (Route);
+  // Removes an output with given output ID.
+  rpc RemoveRouteOutput(RemoveRouteOutputRequest) returns (Route);
+  // Adds an event to the given route
+  rpc AddRouteEvent(AddRouteEventRequest) returns (Route);
+  // Remove an event from the given route
+  rpc RemoveRouteEvent(RemoveRouteEventRequest) returns (Route);
+  // Adds a behavior to an event in the given route
+  rpc AddRouteEventBehavior(AddRouteEventBehaviorRequest) returns (Route);
+  // Remove a behavior from an event in the given route
+  rpc RemoveRouteEventBehavior(RemoveRouteEventBehaviorRequest) returns (Route);
+
+  // Gets a Sensor by ID.
+  rpc GetSensor(IDRequest) returns (Sensor);
+  // Update a Sensor by ID.
+  rpc UpdateSensor(Sensor) returns (Sensor);
+  // Adds a new sensor of type binary sensor in the module identified by given
+  // by ID.
+  rpc AddBinarySensor(IDRequest) returns (Sensor);
+  // Delete the sensor with the given ID.
+  rpc DeleteSensor(IDRequest) returns (Module);
+
+  // Gets a Signal by ID.
+  rpc GetSignal(IDRequest) returns (Signal);
+  // Update a Signal by ID.
+  rpc UpdateSignal(Signal) returns (Signal);
+  // Delete the signal with the given ID.
+  rpc DeleteSignal(IDRequest) returns (Module);
+
+  // Gets a BinkyNetLocalWorker by ID.
+  rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
+  // Update a BinkyNetLocalWorker by ID.
+  rpc UpdateBinkyNetLocalWorker(BinkyNetLocalWorker) returns (BinkyNetLocalWorker);
+  // Delete the BinkyNetLocalWorker with the given ID.
+  rpc DeleteBinkyNetLocalWorker(IDRequest) returns (CommandStation);
+  // Adds a new BinkyNetLocalWorker to the command station identified by given
+  // by ID.
+  rpc AddBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
+  // Adds a new BinkyNetDevice to the binkynet local worker identified by given
+  // by ID.
+  rpc AddBinkyNetDevice(IDRequest) returns (BinkyNetDevice);
+  // Delete the BinkyNetDevice with the given SubID in local worker with given id.
+  rpc DeleteBinkyNetDevice(SubIDRequest) returns (BinkyNetLocalWorker);
+  // Adds a new BinkyNetObject to the binkynet local worker identified by given
+  // by ID.
+  rpc AddBinkyNetObject(IDRequest) returns (BinkyNetObject);
+  // Delete the BinkyNetObject with the given SubID in local worker with given id.
+  rpc DeleteBinkyNetObject(SubIDRequest) returns (BinkyNetLocalWorker);
+  // Adds one or more new BinkyNetObject to the binkynet local worker identified by given
+  // by ID and attach them to the given device.
+  rpc AddBinkyNetObjectsGroup(AddBinkyNetObjectsGroupRequest) returns (BinkyNetLocalWorker);
+}
+
+// Response for GetSerialPorts.
+message SerialPortList {
+  repeated string ports = 1;
+}
+
+// Request by ID
+message IDRequest { string id = 1; }
+
+// Request by ID and SubID
+message SubIDRequest { 
+  string id = 1; 
+  string sub_id = 2;
+}
+
+// Request by ID with image
+message ImageIDRequest {
+  string id = 1;
+  bytes image = 2;
+}
+
+message ParseAddressRequest {
+  // Address to parse
+  string value = 1;
+}
+
+message ParseAddressResult {
+  // Was the input a valid address?
+  bool valid = 1;
+  // Error message in case of non-valid input
+  string message = 2;
+  // Formatted address in case of valid input
+  string formatted_value = 3;
+}
+
+message ParsePermissionRequest {
+  // Permission to parse
+  string value = 1;
+}
+
+message ParsePermissionResult {
+  // Was the input a valid permission?
+  bool valid = 1;
+  // Error message in case of non-valid input
+  string message = 2;
+  // Formatted permission in case of valid input
+  string formatted_value = 3;
+}
+
+message AddRouteCrossingJunctionSwitchRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the junction (of type switch) to add
+  string junction_id = 2;
+  // Direction of the switch to add
+  SwitchDirection direction = 3;
+}
+
+message RemoveRouteCrossingJunctionRequest {
+   // ID of route to change
+   string route_id = 1;
+   // ID of the junction to remove
+   string junction_id = 2;  
+}
+
+message AddRouteBinaryOutputRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the output (of type binary output) to add
+  string output_id = 2;
+  // Desired active status
+  bool active = 3;
+}
+
+message RemoveRouteOutputRequest {
+  // ID of route to change
+  string route_id = 1;
+  // ID of the output (of type binary output) to remove
+  string output_id = 2;
+}
+
+message AddRouteEventRequest {
+  // ID of the route to add an event to
+  string route_id = 1;
+  // ID of sensor to add event for
+  string sensor_id = 2;
+}
+
+message RemoveRouteEventRequest {
+  // ID of the route to remove an event from
+  string route_id = 1;
+  // ID of sensor to remove event for 
+  string sensor_id = 2;
+}
+
+message AddRouteEventBehaviorRequest {
+  // ID of the route to add an event to
+  string route_id = 1;
+  // ID of sensor to add a behavior for
+  string sensor_id = 2;
+}
+
+message RemoveRouteEventBehaviorRequest {
+  // ID of the route to remove an event from
+  string route_id = 1;
+  // ID of sensor to remove behavior for 
+  string sensor_id = 2;
+  // Index of the behavior to removed
+  int32 index = 3;
+}
+
+message AddBinkyNetObjectsGroupRequest {
+  // ID of the local worker to create objects in.
+  string local_worker_id = 1;
+  // ID of the device to attach objects to.
+  string device_id = 2;
+  // Type of group
+  BinkyNetObjectsGroupType type = 3;
+}
+
+enum BinkyNetObjectsGroupType {
+  MGV93 = 0;
+}

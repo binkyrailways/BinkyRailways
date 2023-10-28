@@ -1,0 +1,201 @@
+// Copyright 2021-2022 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+import "br_state_types.proto";
+import "br_model_types.proto";
+
+// StateService is used to get & modify the running state of the current
+// railway.
+service StateService {
+  // Gets the current railway state
+  rpc GetRailwayState(Empty) returns (RailwayState);
+
+  // Enable the run mode of the process.
+  rpc EnableRunMode(EnableRunModeRequest) returns (RailwayState);
+  // Disable the run mode of the process, switching back to edit mode.
+  rpc DisableRunMode(Empty) returns (RailwayState);
+
+  // Fetch state changes when they happen
+  rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
+
+  // Change the requested power state
+  rpc SetPower(SetPowerRequest) returns (RailwayState);
+
+  // Change the requested automatic controller state
+  rpc SetAutomaticControl(SetAutomaticControlRequest) returns (RailwayState);
+
+  // Change the speed and direction of a loc
+  rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
+      returns (LocState);
+
+  // Change the automatic controlled state of a loc
+  rpc SetLocControlledAutomatically(SetLocControlledAutomaticallyRequest)
+      returns (LocState);
+
+  // Change functions of a loc
+  rpc SetLocFunctions(SetLocFunctionsRequest) returns (LocState);
+
+  // Change the direction of a junction of type switch
+  rpc SetSwitchDirection(SetSwitchDirectionRequest) returns (JunctionState);
+
+  // Change the active state of an output of type binary output
+  rpc SetBinaryOutputActive(SetBinaryOutputActiveRequest) returns (OutputState);
+
+  // Click on an entity in virtual mode
+  rpc ClickVirtualSensor(ClickVirtualSensorRequest) returns (RailwayState);
+
+  // Assign a loc to a block
+  rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
+
+  // Remove a loc from the track
+  rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
+
+  // Set the closed status of a block
+  rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
+
+  // Trigger a hardware discovery request
+  rpc DiscoverHardware(DiscoverHardwareRequest) returns (DiscoverHardwareResponse);
+}
+
+// Request arguments for EnableRunMode.
+message EnableRunModeRequest {
+  // If set, run in virtual mode, otherwise live mode.
+  bool virtual = 1;
+  // If set, automatic running is enabled.
+  bool auto_run = 2;
+}
+
+// Request arguments for GetStateChanges.
+message GetStateChangesRequest {
+  // If set, all state objects will be send to the stream before state changes
+  // are passed.
+  bool bootstrap = 1;
+  // If set, only all state objects will be send to the stream, after which the
+  // stream is closed.
+  bool bootstrap_only = 2;
+}
+
+// State change of a single object.
+// Only one of the fields is set;
+message StateChange {
+  RailwayState railway = 1;
+  LocState loc = 2;
+  CommandStationState commandStation = 3;
+  BlockState block = 4;
+  BlockGroupState blockGroup = 5;
+  JunctionState junction = 6;
+  OutputState output = 7;
+  RouteState route = 8;
+  SensorState sensor = 9;
+  SignalState signal = 10;
+}
+
+message SetPowerRequest {
+  // Is set, power will be turned on, otherwise power will be turned off.
+  bool enabled = 1;
+}
+
+message SetAutomaticControlRequest {
+  // If set, automatic control will be turned on, otherwise it will be turned
+  // off.
+  bool enabled = 1;
+}
+
+message SetLocSpeedAndDirectionRequest {
+  // ID of the loc
+  string id = 1;
+  // New speed of the loc
+  int32 speed = 2;
+  // New direction of the loc
+  LocDirection direction = 3;
+}
+
+message SetLocControlledAutomaticallyRequest {
+  // ID of the loc
+  string id = 1;
+  // Enable/disable automatic control of this loc
+  bool enabled = 2;
+}
+
+message SetLocFunctionsRequest {
+  // ID of the loc
+  string id = 1;
+  // Functions to set
+  repeated LocFunction functions = 2;
+}
+
+message LocFunction {
+  // Function number (0...)
+  int32 index = 1;
+  // Value for the function
+  bool value = 2;
+}
+
+message SetSwitchDirectionRequest {
+  // ID of the junction (of type switch)
+  string id = 1;
+  // New direction of the switch
+  SwitchDirection direction = 2;
+}
+
+message SetBinaryOutputActiveRequest {
+  // ID of the output (of type binary output)
+  string id = 1;
+  // Request active state
+  bool active = 2;
+}
+
+message ClickVirtualSensorRequest {
+  // ID of the sensor
+  string id = 1;
+}
+
+message AssignLocToBlockRequest {
+  // ID of loc to assign
+  string loc_id = 1;
+  // ID of block to assign to
+  string block_id = 2;
+  // Side of the block that the loc is facing
+  BlockSide block_side = 3;
+}
+
+message TakeLocOfTrackRequest {
+  // ID of loc to take of the track
+  string loc_id = 1;
+}
+
+message SetBlockClosedRequest {
+  // ID of the block
+  string id = 1;
+  // Requested closed status
+  bool closed = 2;
+}
+
+message DiscoverHardwareRequest {
+  // ID of the hardware module to trigger discovery on.
+  string hardware_module_id = 1;
+}
+
+message DiscoverHardwareResponse {
+  // Nothing yet
+}

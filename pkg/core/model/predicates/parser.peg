@@ -1,0 +1,100 @@
+{
+package predicates
+
+import (
+    "strconv"
+
+    "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
+
+type only struct {
+    predicates interface{}
+}
+type except struct {
+    predicates interface{}
+}
+
+}
+
+Input = p:Predicate EOF {
+    return p, nil
+}
+
+Predicate = Whitespace p:(All / Loc / LocGroup / CanChangeDirection / Or / And / Standard) Whitespace {
+    return p, nil
+}
+
+Loc = name:String {
+    rw := c.globalStore["railway"].(model.Railway)
+    locName := name.(string)
+    return getLocByNamePredicate(locName, rw)
+}
+
+LocGroup = kwMemberOf '(' name:String ')' {
+    rw := c.globalStore["railway"].(model.Railway)
+    groupName := name.(string)
+    return getLocGroupByNamePredicate(groupName, rw)
+}
+
+CanChangeDirection = kwCanChangeDirection {
+    rw := c.globalStore["railway"].(model.Railway)
+    return getLocCanChangeDirectionPredicate(rw)
+}
+
+Or = '(' first:Predicate rest:(kwOr Predicate)* ')' {
+    rw := c.globalStore["railway"].(model.Railway)
+    return getLocOrPredicate(first, rest, rw)
+}
+
+And = '(' first:Predicate rest:(kwAnd Predicate)* ')' {
+    rw := c.globalStore["railway"].(model.Railway)
+    return getLocAndPredicate(first, rest, rw)
+}
+
+Standard = ps:((Only Except) / Only / Except) {
+    rw := c.globalStore["railway"].(model.Railway)
+    return getLocStandardPredicate(ps, rw)
+}
+
+Only = kwOnly p:Or Whitespace {
+    return only{predicates:p}, nil
+}
+
+Except = kwExcept p:Or Whitespace {
+    return except{predicates:p}, nil
+}
+
+String = '"' ( !EscapedChar . / '\\' EscapeSequence )* '"' {
+    c.text = bytes.Replace(c.text, []byte(`\/`), []byte(`/`), -1)
+    return strconv.Unquote(string(c.text))
+}
+
+EscapedChar = [\x00-\x1f"\\]
+
+EscapeSequence = SingleCharEscape / UnicodeEscape
+
+SingleCharEscape = ["\\/bfnrt]
+
+UnicodeEscape = 'u' HexDigit HexDigit HexDigit HexDigit
+
+DecimalDigit = [0-9]
+
+NonZeroDecimalDigit = [1-9]
+
+HexDigit = [0-9a-f]i
+
+All = kwAll {
+    return nil, nil
+}
+
+kwAll = "all"i
+kwAnd = "and"i
+kwCanChangeDirection = "canChangeDirection"i / "can change direction"i
+kwExcept = "except"i
+kwMemberOf = "memberOf"i / "member of"i
+kwOnly = "only"i
+kwOr = "or"i
+
+Whitespace = [ \t\n]*
+
+EOF = !.

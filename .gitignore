@@ -6,5 +6,7 @@ obj/
 *.user
 /Build
 .vs
+binkyrailways.log
+logs
 packages
 

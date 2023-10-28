@@ -1,0 +1,735 @@
+// Copyright 2021 Ewout Prangsma
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Author Ewout Prangsma
+//
+
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+// Empty message
+message Empty {}
+
+// Raw image content
+message Image {
+  // Base64 encoded image data
+  string content_base64 = 1;
+}
+
+// Railway contrains a description of a single model railway.
+message Railway {
+  // Unique ID of the railway
+  string id = 1;
+  // Human readable description of the railway
+  string description = 2;
+  // Does the railway have unsaved changed?
+  bool dirty = 3;
+  // Modules visible on this railway
+  repeated ModuleRef modules = 100;
+  // Locs visible on this railway
+  repeated LocRef locs = 101;
+  // Loc groups visible on this railway
+  repeated LocGroupRef locGroups = 102;
+  // Command stations visible on this railway;
+  repeated CommandStationRef commandStations = 103;
+}
+
+// Module of a railway
+message Module {
+  // Unique ID of the module
+  string id = 1;
+  // Human readable description of the module
+  string description = 2;
+  // Horizontal size (in pixels).
+  int32 width = 3;
+  // Vertical size (in pixels).
+  int32 height = 4;
+  // Does this module have a background image
+  bool has_background_image = 5;
+  // URL of background image of the module
+  string background_image_url = 6;
+
+  // Blocks of this module
+  repeated BlockRef blocks = 100;
+  // Blocks of this module
+  repeated BlockGroupRef blockGroups = 101;
+  // Edges of this module
+  repeated EdgeRef edges = 102;
+  // Junctions of this module
+  repeated JunctionRef junctions = 103;
+  // Outputs of this module
+  repeated OutputRef outputs = 104;
+  // Routes of this module
+  repeated RouteRef routes = 105;
+  // Sensors of this module
+  repeated SensorRef sensors = 106;
+  // Signals of this module
+  repeated SignalRef signals = 107;
+
+  // All layers used in this module
+  repeated string layers = 200;
+}
+
+// Reference to a module
+message ModuleRef {
+  // ID of the module
+  string id = 1;
+  // Position of the module
+  Position position = 2;
+  // Zoom factor of the module (100 == 100%)
+  int32 zoom_factor = 3;
+  // If locked, the module cannot be moved.
+  bool locked = 4;
+}
+
+// Visual position on a grid
+message Position {
+  // Horizontal offset from left of the screen (in pixels).
+  int32 x = 1;
+  // Vertical offset from top of the screen (in pixels).
+  int32 y = 2;
+  // Horizontal size (in pixels).
+  int32 width = 3;
+  // Vertical size (in pixels).
+  int32 height = 4;
+  // Rotation in degrees.
+  int32 rotation = 5;
+  // Optional layer.
+  string layer = 6;
+}
+
+// ChangeDirection specifies if it is allowed / should be avoided to change
+// direction in a block, or is it allowed / should is be avoided that a loc
+// changes direction?
+enum ChangeDirection {
+  // ALLOW indicates that changing direction is allowed
+  ALLOW = 0;
+  // AVOID indicates that changing direction should be avoided
+  AVOID = 1;
+}
+
+// Information of a locomotive
+message Loc {
+  // Unique ID of the loc
+  string id = 1;
+  // Description of the loc
+  string description = 2;
+  // Name of the person that owns this loc.
+  string owner = 3;
+  // Remarks (free text) about this loc.
+  string remarks = 4;
+  // Address of the loc.
+  string address = 5;
+  // URL of image of the loc
+  string image_url = 6;
+
+  // Percentage of speed steps for the slowest speed of this loc.
+  // Value between 1 and 100.
+  int32 slow_speed = 100;
+  // Percentage of speed steps for the medium speed of this loc.
+  // Value between 1 and 100.
+  int32 medium_speed = 101;
+  // Percentage of speed steps for the maximum speed of this loc.
+  // Value between 1 and 100.
+  int32 maximum_speed = 102;
+
+  // Number of speed steps supported by this loc.
+  int32 speed_steps = 110;
+
+  /// <summary>
+  /// Gets/sets the image of the given loc.
+  /// </summary>
+  /// <value>Null if there is no image.</value>
+  /// <remarks>Image must be png, bmp, gif, jpg, wmf or emf</remarks>
+  // Stream Image { get; set; }
+
+  // Is it allowed for this loc to change direction?
+  ChangeDirection change_direction = 120;
+
+  // Type of vehicle.
+  VehicleType vehicle_type = 121;
+
+  // Gets the names of all functions supported by this loc.
+  //	GetFunctions() LocFunctions
+}
+
+// Type of vehicle.
+enum VehicleType {
+  // LOC indicates a locomotive.
+  LOC = 0;
+  // CAR indicates a car.
+  CAR = 1;
+}
+
+// Reference to a loc
+message LocRef {
+  // ID of the loc
+  string id = 1;
+}
+
+message LocGroup {
+  // ID of the loc group
+  string id = 1;
+  // Description of the loc group
+  string description = 2;
+  // Locs included in this group
+  repeated LocRef locs = 3;
+}
+
+message LocGroupRef {
+  // ID of the loc group
+  string id = 1;
+}
+
+message CommandStation {
+  // ID of the command station
+  string id = 1;
+  // Description of the command station
+  string description = 2;
+  // The names of address spaces served by this command station
+  repeated string address_spaces = 3;
+  // Settings of bidib command station
+  BidibCommandStation bidib_command_station = 11;
+  // Settings of binkynet command station
+  BinkyNetCommandStation binkynet_command_station = 10;
+}
+
+message CommandStationRef {
+  // ID of the command station
+  string id = 1;
+}
+
+message BidibCommandStation {
+  // Name of serial port device to which the bidib interface is connected
+  string serial_port_name = 1;
+}
+
+message BinkyNetCommandStation {
+  // Network host address (defaults to 0.0.0.0)
+  string server_host = 1;
+
+  // Network Port of the command station
+  int32 grpc_port = 2;
+
+  // The required version of local workers
+  string required_worker_version = 3;
+
+  // Gets the configuration of local workers on the Binky network
+  // that this command station is attached to.
+  repeated BinkyNetLocalWorkerRef local_workers = 4;
+
+	// If set, do not configure objects that are not used
+  bool exclude_unused_objects = 5;
+}
+
+// Configuration of a binky local worker
+message BinkyNetLocalWorker {
+  // ID of the local worker
+  string id = 1;
+  // Description of the local worker
+  string description = 2;
+  // ID of the command station containing this worker
+  string command_station_id = 3;
+
+  // Hardware ID of the local worker.
+  string hardware_id = 4;
+  // Optional alias for the local worker.
+  string alias = 5;
+
+  // Set of devices that must be configured on this local worker.
+  repeated BinkyNetDevice devices = 10;
+  // Set of real world objects controlled by the local worker
+  repeated BinkyNetObject objects = 11;
+}
+
+message BinkyNetLocalWorkerRef {
+  // ID of the local worker
+  string id = 1;
+}
+
+message BinkyNetDevice {
+  // ID of this object
+  string id = 1;
+  // ID of the device in the BinkyNet.
+  string device_id = 2;
+  // Type of the device
+  BinkyNetDeviceType device_type = 3;
+  // Address of the device
+  string address = 4;
+  // If set, this device supports adding an object group of type MGV93
+  bool can_add_mgv93_group = 10;
+}
+
+enum BinkyNetDeviceType {
+  // DeviceTypeMCP23008 is the device type of a General Purpose I/O
+  MCP23008 = 0;
+  // DeviceTypeMCP23017 is the device type of a General Purpose I/O
+  MCP23017 = 1;
+  // DeviceTypePCA9685 is the device type of a Pulse Width Modulation device
+  PCA9685 = 2;
+  // DeviceTypePCF8574 is the device type of a General Purpose I/O
+  PCF8574 = 3;
+  // DeviceTypeADS1115 is the device type of a A/D conversion
+  ADS1115 = 4;
+}
+
+message BinkyNetObject {
+  // ID of this object
+  string id = 1;
+
+  // ID of the object in the binky network.
+  string object_id = 2;
+  // Type of the object
+  BinkyNetObjectType object_type = 3;
+
+  // Connections to devices used by this object
+  // The keys used in this map are specific to the type of object.
+  repeated BinkyNetConnection connections = 4;
+}
+
+enum BinkyNetObjectType {
+  // ObjectTypeBinarySensor is the object type of a single-bit on/off sensor
+  BINARYSENSOR = 0;
+  // ObjectTypeBinaryOutput is the object type of a single-bit on/off output
+  BINARYOUTPUT = 1;
+  // ObjectTypeServoSwitch is the object type of a servo driven switch, with an
+  // option phase switching relay.
+  SERVOSWITCH = 2;
+  // ObjectTypeRelaySwitch is the object type of a double relay driven switch,
+  // with an option phase switching relay.
+  RELAYSWITCH = 3;
+  // ObjectTypeTrackInverter is the object type of a four relay based track
+  // power inverter.
+  TRACKINVERTER = 4;
+}
+
+// BinkyNetConnection represents a connection from a BinkyNetObject to a
+// BinkyNetDevice.
+message BinkyNetConnection {
+  // Key is specific to the type of device.
+  string key = 1;
+
+  // The pins of devices to connect to.
+  repeated BinkyNetDevicePin pins = 2;
+
+  // Gets optional configuration for this connection.
+  map<string, string> configuration = 3;
+}
+
+// BinkyNetDevicePin identifies a hardware device and an index within that
+// hardware address.
+message BinkyNetDevicePin {
+  // ID of the device that this connection refers to.
+  string device_id = 1;
+
+  // Index on the device (1...)
+  uint32 index = 2;
+}
+
+// Block on the track
+message Block {
+  // ID of the block
+  string id = 1;
+  // Description of the block
+  string description = 2;
+  // ID of the module containing the block
+  string module_id = 3;
+  // Position of the block
+  Position position = 4;
+
+  // Probability (in percentage) that a loc that is allowed to wait in this
+  // block will actually wait. When set to 0, no locs will wait (unless there is
+  // no route available). When set to 100, all locs (that are allowed) will
+  // wait.
+  int32 wait_probability = 10;
+
+  // Minimum amount of time to wait (if <see cref="WaitProbability"/> is set) in
+  // seconds.
+  int32 minimum_wait_time = 11;
+
+  // Maximum amount of time to wait (if <see cref="WaitProbability"/> is set) in
+  // seconds.
+  int32 maximum_wait_time = 12;
+
+  // Gets the predicate used to decide which locs are allowed to wait in this
+  // block.
+  string wait_permissions = 13;
+
+  // By default the front of the block is on the right of the block.
+  // When this property is set, that is reversed to the left of the block.
+  // Setting this property will only alter the display behavior of the block.
+  bool reverse_sides = 14;
+
+  // Is it allowed for locs to change direction in this block?
+  ChangeDirection change_direction = 15;
+
+  // Must reversing locs change direction (back to normal) in this block?
+  bool change_direction_reversing_locs = 16;
+
+  // Determines how the system decides if this block is part of a station
+  // StationMode station_mode = 17;
+
+  // Is this block considered a station?
+  bool is_station = 18;
+
+  // The block group that this block belongs to (if any).
+  BlockGroupRef block_group = 19;
+}
+
+// Reference to a Block
+message BlockRef {
+  // ID of the block
+  string id = 1;
+}
+
+// Group of blocks on the track
+message BlockGroup {
+  // ID of the block group
+  string id = 1;
+  // Description of the block group
+  string description = 2;
+  // ID of the module containing the block group
+  string module_id = 3;
+
+  // The minimum number of locs that must be present in this group.
+	// Locs cannot leave if that results in a lower number of locs in this group.
+  int32 minimum_locs_in_group = 4;
+
+	// The minimum number of locs that must be on the track before the <see cref="MinimumLocsInGroup"/> becomes active.
+  int32 minimum_locs_on_track = 5;
+}
+
+// Reference to a BlockGroup
+message BlockGroupRef {
+  // ID of the block group
+  string id = 1;
+}
+
+// Edge of a module on the track
+message Edge {
+  // ID of the edge
+  string id = 1;
+  // Description of the edge
+  string description = 2;
+  // ID of the module containing the edge
+  string module_id = 3;
+  // Position of the edge
+  Position position = 4;
+}
+
+// Reference to an Edge
+message EdgeRef {
+  // ID of the edge
+  string id = 1;
+}
+
+// Junction on the track
+message Junction {
+  // ID of the Junction
+  string id = 1;
+  // Description of the Junction
+  string description = 2;
+  // ID of the module containing the Junction
+  string module_id = 3;
+  // Position of the Junction
+  Position position = 4;
+  // The block that this junction belongs to.
+  // When set, this junction is considered lock if the block is locked.
+  BlockRef block = 5;
+  // Set when this junction is of type switch.
+  Switch switch = 6;
+}
+
+// Reference to a Junction
+message JunctionRef {
+  // ID of the Junction
+  string id = 1;
+}
+
+// Switch specialization of a Junction
+message Switch {
+  // Address of the switch
+  string address = 1;
+
+  // Does this switch send a feedback when switched?
+  bool has_feedback = 2;
+  // Address of the feedback unit of the entity
+  string feedback_address = 3;
+
+  // Time (in ms) it takes for the switch to move from one direction to the
+  // other? This property is only used when <see cref="HasFeedback"/> is false.
+  int32 switch_duration = 4;
+
+  // If set, the straight/off commands are inverted.
+  bool invert = 5;
+  // If there is a different feedback address and this is set, the straight/off
+  // feedback states are inverted.
+  bool invert_feedback = 6;
+
+  // At which direction should the switch be initialized?
+  SwitchDirection initial_direction = 7;
+
+  // Is this switch turning left?
+  // Otherwise it is turning right.
+  bool is_left = 8;
+}
+
+enum SwitchDirection {
+  // STRAIGHT indicates the switch in its straight position
+  STRAIGHT = 0;
+  // OFF indicates the switch in its off position
+  OFF = 1;
+}
+
+// Output on the track
+message Output {
+  // ID of the Output
+  string id = 1;
+  // Description of the Output
+  string description = 2;
+  // ID of the module containing the Output
+  string module_id = 3;
+  // Position of the Output
+  Position position = 4;
+  // Set when this output is of type binary output.
+  BinaryOutput binary_output = 5;
+}
+
+// Reference to a Output
+message OutputRef {
+  // ID of the Output
+  string id = 1;
+}
+
+// Sub type of Output
+message BinaryOutput {
+  // Output address
+  string address = 1;
+  // Type of output
+  BinaryOutputType output_type = 2;
+  // Text shown when output is in active state
+  string active_text = 3;
+  // Text shown when output is in inactive state
+  string inactive_text = 4;
+}
+
+enum BinaryOutputType {
+  // DEFAULT indicates a standard on/off switch
+  BOT_DEFAULT = 0;
+  // TRACKINVERTER indicates a digital track inverter
+  BOT_TRACKINVERTER = 1;
+}
+
+// Route on the track
+message Route {
+  // ID of the Route
+  string id = 1;
+  // Description of the Route
+  string description = 2;
+  // ID of the module containing the Route
+  string module_id = 3;
+  // Start of the route
+  Endpoint from = 4;
+  // End of the route
+  Endpoint to = 5;
+
+  // Set of junctions with their states that are crossed when taking this route.
+  repeated JunctionWithState crossing_junctions = 6;
+
+  // Set of outputs with their states that are set when taking this route.
+  repeated OutputWithState outputs = 7;
+
+  // Set of events that change the state of the route and it's running loc.
+  repeated RouteEvent events = 8;
+
+  // Speed of locs when going this route.
+  // This value is a percentage of the maximum / medium speed of the loc.
+  // <value>0..100</value>
+  int32 speed = 10;
+
+  // Probability (in percentage) that a loc will take this route.
+  // When multiple routes are available to choose from the route with the
+  // highest probability will have the highest chance or being chosen.
+  // <value>0..100</value>
+  int32 choose_probability = 11;
+
+  /// Gets the predicate used to decide which locs are allowed to use this
+  /// route.
+  string permissions = 12;
+
+  // Is this rout open for traffic or not?
+  // Setting to true, allows for maintance etc. on this route.
+  bool closed = 13;
+
+  // Maximum time in seconds that this route should take.
+  // If a loc takes this route and exceeds this duration, a warning is given.
+  int32 max_duration = 14;
+
+  // Trigger fired when a loc has starts entering the destination of this route.
+  // GetEnteringDestinationTrigger() ActionTrigger
+
+  // Trigger fired when a loc has reached the destination of this route.
+  // GetDestinationReachedTrigger() ActionTrigger
+}
+
+// Reference to a Route
+message RouteRef {
+  // ID of the Route
+  string id = 1;
+}
+
+// Side of a block
+enum BlockSide {
+  // FRONT indicates the end of normal driving direction
+  FRONT = 0;
+  // BACK indicates the begining of normal driving direction
+  BACK = 1;
+}
+
+// Source or destination of a route
+message Endpoint {
+  // Set if endpoint is a block
+  BlockRef block = 1;
+  // Set if endpoint is an edge
+  EdgeRef edge = 2;
+  // Set if endpoint is a block
+  BlockSide block_side = 3;
+}
+
+// Reference to a junction with specific state
+message JunctionWithState {
+  // Junction reference
+  JunctionRef junction = 1;
+  // Desired state of switch. Only set when junction is of type switch.
+  SwitchWithState switch_state = 10;
+}
+
+message SwitchWithState { SwitchDirection direction = 1; }
+
+// Reference to an output with specific state
+message OutputWithState {
+  // Output reference
+  OutputRef output = 1;
+  // Desired state of binary output. Only set when output is of type binary-output.
+  BinaryOutputWithState binary_output_state = 10;
+}
+
+message BinaryOutputWithState { bool active = 1; }
+
+// RouteEvent specifies a sensor event in a route.
+message RouteEvent {
+  // Sensor that triggers the event
+  SensorRef sensor = 1;
+  // Gets the list of behaviors to choose from.
+  // The first matching behavior is used.
+  repeated RouteEventBehavior behaviors = 2;
+}
+
+message RouteEventBehavior {
+  // Predicate used to select the locs to which this event applies.
+  string applies_to = 1;
+
+  // How is the state of the route changed.
+  RouteStateBehavior state_behavior = 2;
+
+  // How is the speed of the occupying loc changed.
+  LocSpeedBehavior speed_behavior = 3;
+}
+
+enum RouteStateBehavior {
+  // NOCHANGE indicates that the state does not change
+  RSB_NOCHANGE = 0;
+  // ENTER indicates that the loc has entered the To block.
+  RSB_ENTER = 1;
+  // REACHED indicates that the loc has reached the To block.
+  RSB_REACHED = 2;
+}
+
+enum LocSpeedBehavior {
+  // LocSpeedBehaviorDefault indicates the speed change is controlled by state
+  // behavior
+  LSB_DEFAULT = 0;
+  // LocSpeedBehaviorNoChange indicates no change in speed
+  LSB_NOCHANGE = 1;
+  // LocSpeedBehaviorMedium indicates that the speed is set to medium speed.
+  LSB_MEDIUM = 2;
+  // LocSpeedBehaviorMinimum indicates that the speed is set to minimum speed.
+  LSB_MINIMUM = 3;
+  // LocSpeedBehaviorMaximum indicates that the speed is set to maximum speed.
+  LSB_MAXIMUM = 4;
+}
+
+// Sensor on the track
+message Sensor {
+  // ID of the Sensor
+  string id = 1;
+  // Description of the Sensor
+  string description = 2;
+  // ID of the module containing the Sensor
+  string module_id = 3;
+  // Position of the Sensor
+  Position position = 4;
+  // Address of the sensor
+  string address = 5;
+  // The block that this sensor belongs to.
+  // When set, this connection is used in the loc-to-block assignment process.
+  BlockRef block = 6;
+  // Shape used to visualize this sensor
+  Shape shape = 7;
+  // Set when this sensor is of type binary sensor.
+  BinarySensor binary_sensor = 8;
+}
+
+enum Shape {
+  // Circle
+  CIRCLE = 0;
+  // Triangle
+  TRIANGLE = 1;
+  // Square
+  SQUARE = 2;
+  // Diamond
+  DIAMOND = 3;
+}
+
+// Reference to a Sensor
+message SensorRef {
+  // ID of the Sensor
+  string id = 1;
+}
+
+// Sub type of Sensor
+message BinarySensor {
+  // No additional fields
+}
+
+// Signal on the track
+message Signal {
+  // ID of the Signal
+  string id = 1;
+  // Description of the Signal
+  string description = 2;
+  // ID of the module containing the Signal
+  string module_id = 3;
+  // Position of the Signal
+  Position position = 4;
+}
+
+// Reference to a Signal
+message SignalRef {
+  // ID of the Signal
+  string id = 1;
+}
