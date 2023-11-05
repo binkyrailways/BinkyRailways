@@ -61,6 +61,7 @@ type Server struct {
 	service     Service
 	log         zerolog.Logger
 	lokiHandler *lokiHandler
+	publicCAPem string
 }
 
 // Service expected by this server
@@ -89,10 +90,11 @@ func (s *Server) Run(ctx context.Context) error {
 	log := s.log
 
 	// Prepare TLS config
-	tlsCfg, err := createSelfSignedCertificate(log, s.PublishedHost, s.CertificatePath)
+	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHost, s.CertificatePath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to prepare self signed certificate")
 	}
+	s.publicCAPem = pubCA
 
 	// Prepare HTTP listener
 	httpAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.HTTPPort))
@@ -144,6 +146,7 @@ func (s *Server) Run(ctx context.Context) error {
 	//httpRouter.GET("/", s.handleGetIndex)
 	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
 	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+	httpRouter.GET("/tls/cert.pem", s.handleGetCACert)
 	httpRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
 	httpSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {

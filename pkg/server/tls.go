@@ -81,8 +81,8 @@ func saveCertificateToFile(info certificateStorage, path string) error {
 }
 
 // createSelfSignedCertificate creates a self-signed TLS certificate and
-// returns a tls Config with that certificate.
-func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath string) (*tls.Config, error) {
+// returns <a tls Config with that certificate>, <ca pem encoded>, <error>.
+func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath string) (*tls.Config, string, error) {
 	// Try to load from file first
 	stg, err := loadCertificateFromFile(storagePath)
 	if err == nil {
@@ -97,7 +97,7 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath 
 			}, nil
 
 		}(); err == nil {
-			return result, nil
+			return result, stg.CA.Public, nil
 		} else {
 			log.Warn().Err(err).Msg("Failed to load certificate from storage, creating new one")
 		}
@@ -106,20 +106,20 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath 
 	// Create a CA
 	pubCA, privCA, err := createCertificate(publishedHost, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create CA: %w", err)
+		return nil, "", fmt.Errorf("failed to create CA: %w", err)
 	}
 	ca, err := loadCAFromPEM(pubCA, privCA)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load CA: %w", err)
+		return nil, "", fmt.Errorf("failed to load CA: %w", err)
 	}
 	// Create cert
 	pub, priv, err := createCertificate(publishedHost, &ca)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create certificate: %w", err)
+		return nil, "", fmt.Errorf("failed to create certificate: %w", err)
 	}
 	cert, err := tls.X509KeyPair([]byte(pub), []byte(priv))
 	if err != nil {
-		return nil, fmt.Errorf("failed to load certificate: %w", err)
+		return nil, "", fmt.Errorf("failed to load certificate: %w", err)
 	}
 	// Save to storage
 	stg = certificateStorage{}
@@ -132,7 +132,7 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath 
 	}
 	return &tls.Config{
 		Certificates: []tls.Certificate{cert},
-	}, nil
+	}, pubCA, nil
 }
 
 // loadCAFromPEM parses the given public & private key of a x509 certificate.
