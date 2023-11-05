@@ -18,10 +18,15 @@
 import 'package:grpc/src/client/channel.dart' as intf show ClientChannel;
 import 'package:grpc/grpc.dart' as grpc;
 
-intf.ClientChannel createChannel(String host) => grpc.ClientChannel(host,
-    port: 18034,
-    options: grpc.ChannelOptions(
-      credentials: grpc.ChannelCredentials.secure(
-        onBadCertificate: (certificate, host) => true,
-      ),
-    ));
+intf.ClientChannel createChannel(String host, int port) =>
+    grpc.ClientChannel(host,
+        port: port,
+        options: grpc.ChannelOptions(
+          credentials: grpc.ChannelCredentials.secure(
+            onBadCertificate: (certificate, host) => true,
+          ),
+        ));
+
+String defaultChannelHost() => "127.0.0.1";
+
+int defaultChannelPort() => 18034;

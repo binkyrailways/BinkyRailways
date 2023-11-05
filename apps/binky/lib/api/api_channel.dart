@@ -17,5 +17,9 @@
 
 import 'package:grpc/src/client/channel.dart' as intf show ClientChannel;
 
-intf.ClientChannel createChannel(String host) =>
-    throw UnsupportedError("not implemenets");
+intf.ClientChannel createChannel(String host, int port) =>
+    throw UnsupportedError("not implemented");
+
+String defaultChannelHost() => throw UnsupportedError("not implemented");
+
+int defaultChannelPort() => throw UnsupportedError("not implemented");
