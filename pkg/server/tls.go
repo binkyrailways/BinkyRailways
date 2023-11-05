@@ -226,6 +226,7 @@ func parsePrivateKey(der []byte) (crypto.PrivateKey, error) {
 // Create a TLS x509 certificate.
 // Returns: publicKey, privateKey, error
 func createCertificate(publishedHost string, ca *CA) (string, string, error) {
+	isCA := ca == nil
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to generated ECDSA key: %w", err)
@@ -233,6 +234,9 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 
 	notBefore := time.Now()
 	notAfter := notBefore.Add(time.Hour * 24 * 30)
+	if isCA {
+		notAfter = notBefore.AddDate(25, 0, 0)
+	}
 
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
@@ -243,6 +247,9 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 	var subject pkix.Name
 	subject.CommonName = publishedHost
 	subject.Organization = []string{"BinkyRailways"}
+	if isCA {
+		subject.Organization[0] += " (CA)"
+	}
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject:      subject,
@@ -254,7 +261,7 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 		BasicConstraintsValid: true,
 	}
 
-	if ca == nil {
+	if isCA {
 		template.IsCA = true
 		template.KeyUsage |= x509.KeyUsageCertSign
 	}
