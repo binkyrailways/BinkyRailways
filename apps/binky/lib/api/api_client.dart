@@ -38,7 +38,8 @@ class APIClient {
         _stateClient = StateServiceClient(channel),
         _storageClient = StorageServiceClient(channel);
 
-  static var _instance = APIClient._initialize(createChannel('127.0.0.1'));
+  static var _instance = APIClient._initialize(
+      createChannel(defaultChannelHost(), defaultChannelPort()));
 
   factory APIClient() => _instance;
 
@@ -49,7 +50,8 @@ class APIClient {
   StorageServiceClient storageClient() => _storageClient;
 
   static void reload(Uri uri) {
-    final newInstance = APIClient._initialize(createChannel(uri.host));
+    final newInstance =
+        APIClient._initialize(createChannel(uri.host, uri.port));
     final oldInstance = _instance;
     _instance = newInstance;
     oldInstance.shutdown();

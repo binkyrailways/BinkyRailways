@@ -17,6 +17,11 @@
 
 import 'package:grpc/src/client/channel.dart' as intf show ClientChannel;
 import 'package:grpc/grpc_web.dart';
+import 'dart:html';
 
-intf.ClientChannel createChannel(String host) =>
-    GrpcWebClientChannel.xhr(Uri.parse("https://$host:18033"));
+intf.ClientChannel createChannel(String host, int port) =>
+    GrpcWebClientChannel.xhr(Uri.parse("https://$host:$port"));
+
+String defaultChannelHost() => window.location.hostname ?? "127.0.0.1";
+
+int defaultChannelPort() => int.parse(window.location.port);
