@@ -39,17 +39,21 @@ import (
 type Config struct {
 	// Host interface to listen on
 	Host string
-	// Address of the current host that we publish on
-	PublishedHost string
+	// IP Address of the current host that we publish on
+	PublishedHostIP string
+	// Full DNS name of the current host that we publish on
+	PublishedHostDNSName string
 	// File path used to store TLS certificate
 	CertificatePath string
 	// Port to listen on for HTTP requests
 	HTTPPort int
+	// Port to listen on for HTTPS requests
+	HTTPSPort int
 	// Port to listen on for GRPC requests
 	GRPCPort int
 	// Port to listen on for Loki requests
 	LokiPort int
-	// URL to proxy loki requests to
+	// URL to proxy loki requests to (do not proxy if empty)
 	LokiURL string
 	// If set, the web application is served from live filesystem instead of embedding.
 	WebDevelopment bool
@@ -90,7 +94,7 @@ func (s *Server) Run(ctx context.Context) error {
 	log := s.log
 
 	// Prepare TLS config
-	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHost, s.CertificatePath)
+	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHostIP, s.PublishedHostDNSName, s.CertificatePath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to prepare self signed certificate")
 	}
@@ -102,7 +106,14 @@ func (s *Server) Run(ctx context.Context) error {
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to listen on address %s", httpAddr)
 	}
-	httpsLis := tls.NewListener(httpLis, tlsCfg)
+
+	// Prepare HTTPS listener
+	httpsAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.HTTPSPort))
+	httpsLisRaw, err := net.Listen("tcp", httpsAddr)
+	if err != nil {
+		log.Fatal().Err(err).Msgf("failed to listen on address %s", httpsAddr)
+	}
+	httpsLis := tls.NewListener(httpsLisRaw, tlsCfg)
 
 	// Prepare GRPC listener
 	grpcAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.GRPCPort))
@@ -118,15 +129,10 @@ func (s *Server) Run(ctx context.Context) error {
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to listen on address %s", lokiAddr)
 	}
-	/*lokiUrl, err := url.Parse(s.LokiURL)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to parse loki URL: %s", s.LokiURL)
-	}*/
 	lokiRouter := echo.New()
 	lokiRouter.POST("/loki/api/v1/push", s.handlePushLokiRequest)
 	lokiSrv := &http.Server{
 		Handler: lokiRouter,
-		//Handler: httputil.NewSingleHostReverseProxy(lokiUrl),
 	}
 
 	// Prepare GRPC server
@@ -141,31 +147,46 @@ func (s *Server) Run(ctx context.Context) error {
 	reflection.Register(grpcSrv)
 	wrappedGrpc := grpcweb.WrapServer(grpcSrv)
 
-	// Prepare HTTP server
-	httpRouter := echo.New()
+	// Prepare HTTPS server
+	httpsRouter := echo.New()
 	//httpRouter.GET("/", s.handleGetIndex)
-	httpRouter.GET("/loc/:id/image", s.handleGetLocImage)
-	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
-	httpRouter.GET("/tls/cert.pem", s.handleGetCACert)
-	httpRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
-	httpSrv := http.Server{
+	httpsRouter.GET("/loc/:id/image", s.handleGetLocImage)
+	httpsRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+	httpsRouter.GET("/tls/ca.pem", s.handleGetCACert)
+	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
+	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {
 				wrappedGrpc.ServeHTTP(resp, req)
 				return
 			}
 			// Fall back to other servers.
-			httpRouter.ServeHTTP(resp, req)
+			httpsRouter.ServeHTTP(resp, req)
 		}),
+	}
+
+	// Prepare HTTP server
+	httpRouter := echo.New()
+	httpRouter.GET("/", s.handleInsecureGetIndex)
+	httpRouter.GET("/tls/ca.pem", s.handleGetCACert)
+	httpSrv := http.Server{
+		Handler: httpRouter,
 	}
 
 	// Serve apis
 	log.Debug().Str("address", httpAddr).Msg("Serving HTTP")
 	go func() {
-		if err := httpSrv.Serve(httpsLis); err != nil {
+		if err := httpSrv.Serve(httpLis); err != nil {
 			log.Fatal().Err(err).Msg("failed to serve HTTP server")
 		}
 		log.Debug().Str("address", httpAddr).Msg("Done Serving HTTP")
+	}()
+	log.Debug().Str("address", httpsAddr).Msg("Serving HTTPS")
+	go func() {
+		if err := httpsSrv.Serve(httpsLis); err != nil {
+			log.Fatal().Err(err).Msg("failed to serve HTTPS server")
+		}
+		log.Debug().Str("address", httpsAddr).Msg("Done Serving HTTPS")
 	}()
 	log.Debug().Str("address", grpcAddr).Msg("Serving gRPC")
 	go func() {
@@ -187,7 +208,7 @@ func (s *Server) Run(ctx context.Context) error {
 	<-ctx.Done()
 
 	log.Info().Msg("Closing GRPC server")
-	httpSrv.Shutdown(context.Background())
+	httpsSrv.Shutdown(context.Background())
 	grpcSrv.GracefulStop()
 	lokiSrv.Shutdown(context.Background())
 

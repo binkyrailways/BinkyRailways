@@ -82,6 +82,7 @@ func (cs *bidibCommandStation) TryPrepareForUse(context.Context, state.UserInter
 // Wrap up the preparation fase.
 func (cs *bidibCommandStation) FinalizePrepare(ctx context.Context) {
 	// TODO
+	cs.log.Debug().Msg("FinalizePrepare on bidid command station")
 }
 
 // Enable/disable power on the railway
@@ -118,9 +119,12 @@ func sendPowerToNode(node *host.Node, enabled bool) int {
 // Send the requested power state.
 func (cs *bidibCommandStation) sendPower(ctx context.Context, enabled bool) {
 	log := cs.log
-	log.Debug().Msg("send power to nodes")
-	if sendPowerToNode(cs.host.GetRootNode(), enabled) > 0 {
+	log.Debug().Msg("sending power to nodes...")
+	if cnt := sendPowerToNode(cs.host.GetRootNode(), enabled); cnt > 0 {
 		cs.power.SetActual(ctx, enabled)
+		log.Debug().Int("nodes", cnt).Msg("sent power to nodes")
+	} else {
+		log.Error().Msg("Did not sent power to any node!")
 	}
 }
 
@@ -155,6 +159,7 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 			Msg("loc address is not of type DCC")
 		return
 	}
+	log = log.With().Str("addr", addr.String()).Logger()
 	dccAddr, err := strconv.Atoi(addr.Value)
 	if err != nil {
 		log.Error().
@@ -164,6 +169,7 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 		return
 	}
 	opts.DccAddress = uint16(dccAddr)
+	log = log.With().Int("dcc-addr", dccAddr).Logger()
 
 	// Detect dcc format
 	switch locState.GetSpeedSteps(ctx) {
@@ -179,6 +185,7 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 	speedInSteps := locState.GetSpeedInSteps().GetRequested(ctx)
 	opts.Speed = uint8(speedInSteps)
 	opts.OutputSpeed = true
+	log = log.With().Int("speed", speedInSteps).Logger()
 
 	// Get direction
 	opts.DirectionForward = locState.GetDirection().GetRequested(ctx) == state.LocDirectionForward
@@ -189,10 +196,13 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 	opts.Flags.Set(0, f0)
 	opts.OutputF1_F4 = true
 
-	log.Debug().Msg("send drive to nodes")
-	if cs.sendDriveToNode(cs.host.GetRootNode(), opts) > 0 {
+	log.Debug().Msg("sending drive to nodes...")
+	if cnt := cs.sendDriveToNode(cs.host.GetRootNode(), opts); cnt > 0 {
 		locState.GetSpeedInSteps().SetActual(ctx, speedInSteps)
 		locState.GetF0().SetActual(ctx, f0)
+		log.Debug().Int("nodes", cnt).Msg("sent drive to nodes")
+	} else {
+		log.Error().Msg("Did not sent drive to any node!")
 	}
 }
 

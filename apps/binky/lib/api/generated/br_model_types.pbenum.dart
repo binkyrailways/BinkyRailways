@@ -45,6 +45,7 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType PCA9685 = BinkyNetDeviceType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PCA9685');
   static const BinkyNetDeviceType PCF8574 = BinkyNetDeviceType._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PCF8574');
   static const BinkyNetDeviceType ADS1115 = BinkyNetDeviceType._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ADS1115');
+  static const BinkyNetDeviceType BINKYCARSENSOR = BinkyNetDeviceType._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BINKYCARSENSOR');
 
   static const $core.List<BinkyNetDeviceType> values = <BinkyNetDeviceType> [
     MCP23008,
@@ -52,6 +53,7 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
     PCA9685,
     PCF8574,
     ADS1115,
+    BINKYCARSENSOR,
   ];
 
   static final $core.Map<$core.int, BinkyNetDeviceType> _byValue = $pb.ProtobufEnum.initByValue(values);
@@ -66,6 +68,7 @@ class BinkyNetObjectType extends $pb.ProtobufEnum {
   static const BinkyNetObjectType SERVOSWITCH = BinkyNetObjectType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SERVOSWITCH');
   static const BinkyNetObjectType RELAYSWITCH = BinkyNetObjectType._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RELAYSWITCH');
   static const BinkyNetObjectType TRACKINVERTER = BinkyNetObjectType._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TRACKINVERTER');
+  static const BinkyNetObjectType MAGNETICSWITCH = BinkyNetObjectType._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MAGNETICSWITCH');
 
   static const $core.List<BinkyNetObjectType> values = <BinkyNetObjectType> [
     BINARYSENSOR,
@@ -73,6 +76,7 @@ class BinkyNetObjectType extends $pb.ProtobufEnum {
     SERVOSWITCH,
     RELAYSWITCH,
     TRACKINVERTER,
+    MAGNETICSWITCH,
   ];
 
   static final $core.Map<$core.int, BinkyNetObjectType> _byValue = $pb.ProtobufEnum.initByValue(values);

@@ -46,7 +46,7 @@ clean:
 .PHONY: binaries
 binaries: generate binaries-server
 
-.PHONY: binaries-server
+.PHONY: binaries-server 
 binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
@@ -57,11 +57,18 @@ binaries-server: generate pkg/core/model/predicates/parser.go
 		github.com/binkyrailways/BinkyRailways
 
 .PHONY: binaries-gui
-binaries-gui: 
+binaries-gui: binaries-web binaries-macos
+
+.PHONY: binaries-web
+binaries-web: 
+	cd apps/binky ; flutter build web --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/
+
+.PHONY: binaries-macos
+binaries-macos: 
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter build web ; flutter build macos
+		cd apps/binky ; flutter build macos
 		open apps/binky/build/macos/Build/Products/Release/
 
 .PHONY: develop-gui
@@ -111,8 +118,8 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v1.3.0 \
-		github.com/binkynet/BinkyNet@v1.4.0
+		github.com/binkynet/NetManager@v1.4.0 \
+		github.com/binkynet/BinkyNet@v1.7.0
 	go mod tidy
 
 deploy:
@@ -121,6 +128,7 @@ deploy:
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl daemon-reload
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl stop binkyrailways
 	scp bin/linux/arm/binky-server $(BINKYHOSTUSER)@$(BINKYHOST):/home/$(BINKYHOSTUSER)/binky-server
+	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo touch /home/$(BINKYHOSTUSER)/binky-server.env
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl restart binkyrailways
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl enable binkyrailways
 

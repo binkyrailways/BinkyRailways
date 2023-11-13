@@ -19,7 +19,6 @@ export 'br_state_types.pbenum.dart';
 
 class RailwayState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RailwayState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Railway>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Railway.create)
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRunModeEnabled')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualModeEnabled')
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
@@ -41,7 +40,6 @@ class RailwayState extends $pb.GeneratedMessage {
 
   RailwayState._() : super();
   factory RailwayState({
-    $1.Railway? model,
     $core.bool? isRunModeEnabled,
     $core.bool? isVirtualModeEnabled,
     $core.bool? isVirtualAutorunEnabled,
@@ -60,9 +58,6 @@ class RailwayState extends $pb.GeneratedMessage {
     $core.Iterable<$1.SignalRef>? signals,
   }) {
     final _result = create();
-    if (model != null) {
-      _result.model = model;
-    }
     if (isRunModeEnabled != null) {
       _result.isRunModeEnabled = isRunModeEnabled;
     }
@@ -134,106 +129,95 @@ class RailwayState extends $pb.GeneratedMessage {
   static RailwayState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RailwayState>(create);
   static RailwayState? _defaultInstance;
 
-  @$pb.TagNumber(1)
-  $1.Railway get model => $_getN(0);
-  @$pb.TagNumber(1)
-  set model($1.Railway v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasModel() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearModel() => clearField(1);
-  @$pb.TagNumber(1)
-  $1.Railway ensureModel() => $_ensure(0);
-
   @$pb.TagNumber(2)
-  $core.bool get isRunModeEnabled => $_getBF(1);
+  $core.bool get isRunModeEnabled => $_getBF(0);
   @$pb.TagNumber(2)
-  set isRunModeEnabled($core.bool v) { $_setBool(1, v); }
+  set isRunModeEnabled($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(2)
-  $core.bool hasIsRunModeEnabled() => $_has(1);
+  $core.bool hasIsRunModeEnabled() => $_has(0);
   @$pb.TagNumber(2)
   void clearIsRunModeEnabled() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.bool get isVirtualModeEnabled => $_getBF(2);
+  $core.bool get isVirtualModeEnabled => $_getBF(1);
   @$pb.TagNumber(3)
-  set isVirtualModeEnabled($core.bool v) { $_setBool(2, v); }
+  set isVirtualModeEnabled($core.bool v) { $_setBool(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasIsVirtualModeEnabled() => $_has(2);
+  $core.bool hasIsVirtualModeEnabled() => $_has(1);
   @$pb.TagNumber(3)
   void clearIsVirtualModeEnabled() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.bool get isVirtualAutorunEnabled => $_getBF(3);
+  $core.bool get isVirtualAutorunEnabled => $_getBF(2);
   @$pb.TagNumber(4)
-  set isVirtualAutorunEnabled($core.bool v) { $_setBool(3, v); }
+  set isVirtualAutorunEnabled($core.bool v) { $_setBool(2, v); }
   @$pb.TagNumber(4)
-  $core.bool hasIsVirtualAutorunEnabled() => $_has(3);
+  $core.bool hasIsVirtualAutorunEnabled() => $_has(2);
   @$pb.TagNumber(4)
   void clearIsVirtualAutorunEnabled() => clearField(4);
 
   @$pb.TagNumber(10)
-  $core.bool get powerActual => $_getBF(4);
+  $core.bool get powerActual => $_getBF(3);
   @$pb.TagNumber(10)
-  set powerActual($core.bool v) { $_setBool(4, v); }
+  set powerActual($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(10)
-  $core.bool hasPowerActual() => $_has(4);
+  $core.bool hasPowerActual() => $_has(3);
   @$pb.TagNumber(10)
   void clearPowerActual() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get powerRequested => $_getBF(5);
+  $core.bool get powerRequested => $_getBF(4);
   @$pb.TagNumber(11)
-  set powerRequested($core.bool v) { $_setBool(5, v); }
+  set powerRequested($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(11)
-  $core.bool hasPowerRequested() => $_has(5);
+  $core.bool hasPowerRequested() => $_has(4);
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.bool get automaticControlActual => $_getBF(6);
+  $core.bool get automaticControlActual => $_getBF(5);
   @$pb.TagNumber(12)
-  set automaticControlActual($core.bool v) { $_setBool(6, v); }
+  set automaticControlActual($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(12)
-  $core.bool hasAutomaticControlActual() => $_has(6);
+  $core.bool hasAutomaticControlActual() => $_has(5);
   @$pb.TagNumber(12)
   void clearAutomaticControlActual() => clearField(12);
 
   @$pb.TagNumber(13)
-  $core.bool get automaticControlRequested => $_getBF(7);
+  $core.bool get automaticControlRequested => $_getBF(6);
   @$pb.TagNumber(13)
-  set automaticControlRequested($core.bool v) { $_setBool(7, v); }
+  set automaticControlRequested($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(13)
-  $core.bool hasAutomaticControlRequested() => $_has(7);
+  $core.bool hasAutomaticControlRequested() => $_has(6);
   @$pb.TagNumber(13)
   void clearAutomaticControlRequested() => clearField(13);
 
   @$pb.TagNumber(50)
-  $core.List<$1.BlockRef> get blocks => $_getList(8);
+  $core.List<$1.BlockRef> get blocks => $_getList(7);
 
   @$pb.TagNumber(51)
-  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(9);
+  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(8);
 
   @$pb.TagNumber(52)
-  $core.List<$1.CommandStationRef> get commandStations => $_getList(10);
+  $core.List<$1.CommandStationRef> get commandStations => $_getList(9);
 
   @$pb.TagNumber(53)
-  $core.List<$1.JunctionRef> get junctions => $_getList(11);
+  $core.List<$1.JunctionRef> get junctions => $_getList(10);
 
   @$pb.TagNumber(54)
-  $core.List<$1.LocRef> get locs => $_getList(12);
+  $core.List<$1.LocRef> get locs => $_getList(11);
 
   @$pb.TagNumber(55)
-  $core.List<$1.OutputRef> get outputs => $_getList(13);
+  $core.List<$1.OutputRef> get outputs => $_getList(12);
 
   @$pb.TagNumber(56)
-  $core.List<$1.RouteRef> get routes => $_getList(14);
+  $core.List<$1.RouteRef> get routes => $_getList(13);
 
   @$pb.TagNumber(57)
-  $core.List<$1.SensorRef> get sensors => $_getList(15);
+  $core.List<$1.SensorRef> get sensors => $_getList(14);
 
   @$pb.TagNumber(58)
-  $core.List<$1.SignalRef> get signals => $_getList(16);
+  $core.List<$1.SignalRef> get signals => $_getList(15);
 }
 
 class LocState extends $pb.GeneratedMessage {

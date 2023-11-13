@@ -15,23 +15,23 @@
 // Author Ewout Prangsma
 //
 
-package server
+package model
 
-import (
-	"net/http"
-	"strings"
+// BinkyNetObjectConfiguration represents configuration for an object.
+type BinkyNetObjectConfiguration interface {
+	// Get number of entries
+	GetCount() int
 
-	"github.com/labstack/echo/v4"
-)
+	// Get value by key
+	Get(key string) (string, bool)
 
-const (
-	indexHTML = `<html>
-<body>
-Open <a href="binkyrailways://%HOST%">BinkyRailways</a>.
-</body>
-</html>`
-)
+	// Invoke the callback for configuration key/value pair.
+	ForEach(cb func(key, value string))
 
-func (s *Server) handleGetIndex(c echo.Context) error {
-	return c.HTML(http.StatusOK, strings.Replace(indexHTML, "%HOST", s.PublishedHost, -1))
+	// Remove the value for the given key.
+	// Returns true if it was removed, false otherwise
+	Remove(key string) bool
+
+	// Set a given key/value pair
+	Set(key, value string)
 }

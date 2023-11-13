@@ -87,6 +87,9 @@ class _RunPageState extends State<RunPage> {
                     );
                   }
                   var rwState = snapshot.data!;
+                  final rwModel = model.getCachedRailway();
+                  final rwDescription =
+                      rwModel != null ? rwModel.description : "";
                   final editorCtx = Provider.of<EditorContext>(context);
                   final selector = editorCtx.selector;
                   final hasEditor = selector.entityType != EntityType.unknown;
@@ -95,7 +98,7 @@ class _RunPageState extends State<RunPage> {
                       // Here we take the value from the MyHomePage object that was created by
                       // the App.build method, and use it to set our appbar title.
                       title: Text(
-                          "${rwState.model.description} [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
+                          "$rwDescription [${rwState.isVirtualModeEnabled ? "virtual" : "live"}]"),
                       actions: _buildActions(context, model, state, editorCtx),
                     ),
                     body: SplitView(

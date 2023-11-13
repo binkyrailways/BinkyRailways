@@ -1524,6 +1524,7 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objectId')
     ..e<BinkyNetObjectType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objectType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectType.BINARYSENSOR, valueOf: BinkyNetObjectType.valueOf, enumValues: BinkyNetObjectType.values)
     ..pc<BinkyNetConnection>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'connections', $pb.PbFieldType.PM, subBuilder: BinkyNetConnection.create)
+    ..m<$core.String, $core.String>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'configuration', entryClassName: 'BinkyNetObject.ConfigurationEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('binkyrailways.v1'))
     ..hasRequiredFields = false
   ;
 
@@ -1533,6 +1534,7 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     $core.String? objectId,
     BinkyNetObjectType? objectType,
     $core.Iterable<BinkyNetConnection>? connections,
+    $core.Map<$core.String, $core.String>? configuration,
   }) {
     final _result = create();
     if (id != null) {
@@ -1546,6 +1548,9 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     }
     if (connections != null) {
       _result.connections.addAll(connections);
+    }
+    if (configuration != null) {
+      _result.configuration.addAll(configuration);
     }
     return _result;
   }
@@ -1599,6 +1604,9 @@ class BinkyNetObject extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(4)
   $core.List<BinkyNetConnection> get connections => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.Map<$core.String, $core.String> get configuration => $_getMap(4);
 }
 
 class BinkyNetConnection extends $pb.GeneratedMessage {

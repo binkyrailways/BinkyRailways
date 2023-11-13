@@ -32,10 +32,10 @@ func (dst *RailwayState) FromState(ctx context.Context, src state.Railway) error
 	}
 	dst.IsRunModeEnabled = true
 	dst.IsVirtualModeEnabled = src.GetVirtualMode().GetEnabled()
-	dst.Model = &Railway{}
+	/*dst.Model = &Railway{}
 	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
 		return err
-	}
+	}*/
 	dst.PowerActual = src.GetPower().GetActual(ctx)
 	dst.PowerRequested = src.GetPower().GetRequested(ctx)
 	dst.AutomaticControlActual = src.GetAutomaticLocController().GetEnabled().GetActual(ctx)
