@@ -130,6 +130,9 @@ type Railway interface {
 	// Get the number of outputs
 	GetOutputCount(context.Context) int
 
+	// Get the entity tester
+	GetEntityTester() EntityTester
+
 	// Close the railway
 	Close(ctx context.Context)
 }

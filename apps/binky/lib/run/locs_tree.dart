@@ -30,8 +30,6 @@ class LocsTree extends StatefulWidget {
 }
 
 class _LocsTreeState extends State<LocsTree> {
-  bool _showUnassigned = false;
-
   @override
   Widget build(BuildContext context) {
     final runCtx = Provider.of<RunContext>(context);
@@ -40,15 +38,20 @@ class _LocsTreeState extends State<LocsTree> {
       builder: (context, state, child) {
         final allLocs = state.locs().map((x) => x.last).toList()
           ..sort((a, b) => a.model.description.compareTo(b.model.description));
+        final enabledLocs = allLocs.where((x) => x.isEnabled).toList();
+        final disabledLocs = allLocs.where((x) => !x.isEnabled).toList();
         final assignedLocs =
-            allLocs.where((x) => x.canBeControlledAutomatically).toList();
+            enabledLocs.where((x) => x.canBeControlledAutomatically).toList();
         final unassignedLocs =
-            allLocs.where((x) => !x.canBeControlledAutomatically).toList();
-        return ListView.builder(
-            itemCount:
-                _showUnassigned ? allLocs.length + 2 : assignedLocs.length + 2,
+            enabledLocs.where((x) => !x.canBeControlledAutomatically).toList();
+
+        final assignedHeaderIndex = 0;
+        final unassignedHeaderIndex = assignedLocs.length + 1;
+
+        final locListView = ListView.builder(
+            itemCount: enabledLocs.length + 2,
             itemBuilder: (context, index) {
-              if (index == 0) {
+              if (index == assignedHeaderIndex) {
                 return ListTile(
                     trailing: const Text(""),
                     title: Text(
@@ -57,17 +60,9 @@ class _LocsTreeState extends State<LocsTree> {
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold),
                     ));
-              } else if (index == 1 + assignedLocs.length) {
+              } else if (index == unassignedHeaderIndex) {
                 return ListTile(
-                    trailing: GestureDetector(
-                        onTap: () => setState(() {
-                              _showUnassigned = !_showUnassigned;
-                            }),
-                        child: Icon(
-                          _showUnassigned
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        )),
+                    trailing: const Text(""),
                     title: Text(
                       "Unassigned locs (${unassignedLocs.length})",
                       style: const TextStyle(
@@ -75,21 +70,60 @@ class _LocsTreeState extends State<LocsTree> {
                           fontWeight: FontWeight.bold),
                     ));
               } else {
-                index = index - 1;
-                final isAssigned = (index < assignedLocs.length);
+                final isAssigned = (index < unassignedHeaderIndex);
                 final loc = isAssigned
-                    ? assignedLocs[index]
-                    : unassignedLocs[index - (assignedLocs.length + 1)];
+                    ? assignedLocs[index - (assignedHeaderIndex + 1)]
+                    : unassignedLocs[index - (unassignedHeaderIndex + 1)];
                 final isSelected = selectedLocId == loc.model.id;
 
                 return LocsTreeCard(
                     loc: loc,
                     state: state,
                     isAssigned: isAssigned,
+                    isEnabled: true,
                     isSelected: isSelected,
                     runCtx: runCtx);
               }
             });
+
+        final disabledLocsCards = disabledLocs
+            .map((loc) => PopupMenuItem<String>(
+                  child: GestureDetector(
+                    child: SizedBox(
+                      child: LocsTreeCard(
+                        loc: loc,
+                        state: state,
+                        isAssigned: false,
+                        isEnabled: false,
+                        isSelected: false,
+                        runCtx: runCtx,
+                      ),
+                      width: 240,
+                    ),
+                  ),
+                ))
+            .toList();
+
+        return Column(children: [
+          Expanded(child: locListView),
+          GestureDetector(
+            child: const Icon(Icons.add, size: 32),
+            onTapDown: (TapDownDetails details) {
+              showMenu(
+                context: context,
+                useRootNavigator: true,
+                position: const RelativeRect.fromLTRB(
+                  0,
+                  0,
+                  0,
+                  0,
+                ),
+                items: disabledLocsCards,
+                elevation: 8.0,
+              );
+            },
+          ),
+        ]);
       },
     );
   }

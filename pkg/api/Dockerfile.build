@@ -1,4 +1,4 @@
-FROM golang:1.17.0-alpine AS protoinstall
+FROM golang:1.22.3-alpine AS protoinstall
 ARG TARGETPLATFORM
 ARG TARGETARCH
 
@@ -9,7 +9,7 @@ RUN curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1
 RUN curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-aarch_64.zip -o /tmp/protoc-arm64.zip
 RUN cd /usr/local/ && unzip /tmp/protoc-${TARGETARCH}.zip
 
-FROM golang:1.17.0
+FROM golang:1.22.3
 ARG version=1.0.5
 ARG TOKEN
 
@@ -93,15 +93,15 @@ RUN apt-get install -y git curl make sed
 COPY --from=protoinstall /usr/local/bin/protoc /usr/local/bin/
 
 # Install go tools
-RUN go get github.com/gogo/protobuf/protoc-gen-gogo && \
-    go get github.com/gogo/protobuf/protoc-gen-gofast && \
-    go get github.com/gogo/protobuf/protoc-gen-gogofaster && \
-    go get golang.org/x/tools/cmd/goimports && \
-    go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway && \
+RUN go mod init github.com/binkyrailways/build-image && \
+    go install github.com/gogo/protobuf/protoc-gen-gogo@v1.3.2 && \
+    go install github.com/gogo/protobuf/protoc-gen-gofast@v1.3.2 && \
+    go install github.com/gogo/protobuf/protoc-gen-gogofaster@v1.3.2 && \
+    go install golang.org/x/tools/cmd/goimports@v0.20.0 && \
+    go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v2.19.1 && \
     #go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger && \
-    go get github.com/golang/protobuf/protoc-gen-go && \
-    go get github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
-
+    go install github.com/golang/protobuf/protoc-gen-go@v1.5.4 && \
+    go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@v1.5.1
 
 # Install Dart protoc plugin
 RUN mkdir -p /dart/cache

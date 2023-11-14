@@ -46,7 +46,7 @@ func newSensor(en model.Sensor, railway Railway) sensor {
 
 // getSensor returns the entity as Sensor.
 func (s *sensor) Configure(railway Railway) {
-	s.active.Configure(&s.active, "active", s, railway, railway)
+	s.active.Configure(&s.active, "active", s, nil, railway, railway)
 }
 
 // Unique ID of the module containing this entity

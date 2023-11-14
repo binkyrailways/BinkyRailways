@@ -10,10 +10,10 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_model_types.pb.dart' as $1;
+import 'br_model_types.pb.dart' as $0;
 
 import 'br_state_types.pbenum.dart';
-import 'br_model_types.pbenum.dart' as $1;
+import 'br_model_types.pbenum.dart' as $0;
 
 export 'br_state_types.pbenum.dart';
 
@@ -22,19 +22,20 @@ class RailwayState extends $pb.GeneratedMessage {
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRunModeEnabled')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualModeEnabled')
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isEntityTesterEnabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticControlActual')
     ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticControlRequested')
-    ..pc<$1.BlockRef>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: $1.BlockRef.create)
-    ..pc<$1.BlockGroupRef>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, subBuilder: $1.BlockGroupRef.create)
-    ..pc<$1.CommandStationRef>(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, subBuilder: $1.CommandStationRef.create)
-    ..pc<$1.JunctionRef>(53, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: $1.JunctionRef.create)
-    ..pc<$1.LocRef>(54, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: $1.LocRef.create)
-    ..pc<$1.OutputRef>(55, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: $1.OutputRef.create)
-    ..pc<$1.RouteRef>(56, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: $1.RouteRef.create)
-    ..pc<$1.SensorRef>(57, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: $1.SensorRef.create)
-    ..pc<$1.SignalRef>(58, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: $1.SignalRef.create)
+    ..pc<$0.BlockRef>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blocks', $pb.PbFieldType.PM, subBuilder: $0.BlockRef.create)
+    ..pc<$0.BlockGroupRef>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroups', $pb.PbFieldType.PM, subBuilder: $0.BlockGroupRef.create)
+    ..pc<$0.CommandStationRef>(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStations', $pb.PbFieldType.PM, subBuilder: $0.CommandStationRef.create)
+    ..pc<$0.JunctionRef>(53, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctions', $pb.PbFieldType.PM, subBuilder: $0.JunctionRef.create)
+    ..pc<$0.LocRef>(54, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locs', $pb.PbFieldType.PM, subBuilder: $0.LocRef.create)
+    ..pc<$0.OutputRef>(55, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: $0.OutputRef.create)
+    ..pc<$0.RouteRef>(56, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: $0.RouteRef.create)
+    ..pc<$0.SensorRef>(57, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: $0.SensorRef.create)
+    ..pc<$0.SignalRef>(58, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: $0.SignalRef.create)
     ..hasRequiredFields = false
   ;
 
@@ -43,19 +44,20 @@ class RailwayState extends $pb.GeneratedMessage {
     $core.bool? isRunModeEnabled,
     $core.bool? isVirtualModeEnabled,
     $core.bool? isVirtualAutorunEnabled,
+    $core.bool? isEntityTesterEnabled,
     $core.bool? powerActual,
     $core.bool? powerRequested,
     $core.bool? automaticControlActual,
     $core.bool? automaticControlRequested,
-    $core.Iterable<$1.BlockRef>? blocks,
-    $core.Iterable<$1.BlockGroupRef>? blockGroups,
-    $core.Iterable<$1.CommandStationRef>? commandStations,
-    $core.Iterable<$1.JunctionRef>? junctions,
-    $core.Iterable<$1.LocRef>? locs,
-    $core.Iterable<$1.OutputRef>? outputs,
-    $core.Iterable<$1.RouteRef>? routes,
-    $core.Iterable<$1.SensorRef>? sensors,
-    $core.Iterable<$1.SignalRef>? signals,
+    $core.Iterable<$0.BlockRef>? blocks,
+    $core.Iterable<$0.BlockGroupRef>? blockGroups,
+    $core.Iterable<$0.CommandStationRef>? commandStations,
+    $core.Iterable<$0.JunctionRef>? junctions,
+    $core.Iterable<$0.LocRef>? locs,
+    $core.Iterable<$0.OutputRef>? outputs,
+    $core.Iterable<$0.RouteRef>? routes,
+    $core.Iterable<$0.SensorRef>? sensors,
+    $core.Iterable<$0.SignalRef>? signals,
   }) {
     final _result = create();
     if (isRunModeEnabled != null) {
@@ -66,6 +68,9 @@ class RailwayState extends $pb.GeneratedMessage {
     }
     if (isVirtualAutorunEnabled != null) {
       _result.isVirtualAutorunEnabled = isVirtualAutorunEnabled;
+    }
+    if (isEntityTesterEnabled != null) {
+      _result.isEntityTesterEnabled = isEntityTesterEnabled;
     }
     if (powerActual != null) {
       _result.powerActual = powerActual;
@@ -156,83 +161,92 @@ class RailwayState extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearIsVirtualAutorunEnabled() => clearField(4);
 
+  @$pb.TagNumber(5)
+  $core.bool get isEntityTesterEnabled => $_getBF(3);
+  @$pb.TagNumber(5)
+  set isEntityTesterEnabled($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasIsEntityTesterEnabled() => $_has(3);
+  @$pb.TagNumber(5)
+  void clearIsEntityTesterEnabled() => clearField(5);
+
   @$pb.TagNumber(10)
-  $core.bool get powerActual => $_getBF(3);
+  $core.bool get powerActual => $_getBF(4);
   @$pb.TagNumber(10)
-  set powerActual($core.bool v) { $_setBool(3, v); }
+  set powerActual($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(10)
-  $core.bool hasPowerActual() => $_has(3);
+  $core.bool hasPowerActual() => $_has(4);
   @$pb.TagNumber(10)
   void clearPowerActual() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get powerRequested => $_getBF(4);
+  $core.bool get powerRequested => $_getBF(5);
   @$pb.TagNumber(11)
-  set powerRequested($core.bool v) { $_setBool(4, v); }
+  set powerRequested($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(11)
-  $core.bool hasPowerRequested() => $_has(4);
+  $core.bool hasPowerRequested() => $_has(5);
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.bool get automaticControlActual => $_getBF(5);
+  $core.bool get automaticControlActual => $_getBF(6);
   @$pb.TagNumber(12)
-  set automaticControlActual($core.bool v) { $_setBool(5, v); }
+  set automaticControlActual($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(12)
-  $core.bool hasAutomaticControlActual() => $_has(5);
+  $core.bool hasAutomaticControlActual() => $_has(6);
   @$pb.TagNumber(12)
   void clearAutomaticControlActual() => clearField(12);
 
   @$pb.TagNumber(13)
-  $core.bool get automaticControlRequested => $_getBF(6);
+  $core.bool get automaticControlRequested => $_getBF(7);
   @$pb.TagNumber(13)
-  set automaticControlRequested($core.bool v) { $_setBool(6, v); }
+  set automaticControlRequested($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(13)
-  $core.bool hasAutomaticControlRequested() => $_has(6);
+  $core.bool hasAutomaticControlRequested() => $_has(7);
   @$pb.TagNumber(13)
   void clearAutomaticControlRequested() => clearField(13);
 
   @$pb.TagNumber(50)
-  $core.List<$1.BlockRef> get blocks => $_getList(7);
+  $core.List<$0.BlockRef> get blocks => $_getList(8);
 
   @$pb.TagNumber(51)
-  $core.List<$1.BlockGroupRef> get blockGroups => $_getList(8);
+  $core.List<$0.BlockGroupRef> get blockGroups => $_getList(9);
 
   @$pb.TagNumber(52)
-  $core.List<$1.CommandStationRef> get commandStations => $_getList(9);
+  $core.List<$0.CommandStationRef> get commandStations => $_getList(10);
 
   @$pb.TagNumber(53)
-  $core.List<$1.JunctionRef> get junctions => $_getList(10);
+  $core.List<$0.JunctionRef> get junctions => $_getList(11);
 
   @$pb.TagNumber(54)
-  $core.List<$1.LocRef> get locs => $_getList(11);
+  $core.List<$0.LocRef> get locs => $_getList(12);
 
   @$pb.TagNumber(55)
-  $core.List<$1.OutputRef> get outputs => $_getList(12);
+  $core.List<$0.OutputRef> get outputs => $_getList(13);
 
   @$pb.TagNumber(56)
-  $core.List<$1.RouteRef> get routes => $_getList(13);
+  $core.List<$0.RouteRef> get routes => $_getList(14);
 
   @$pb.TagNumber(57)
-  $core.List<$1.SensorRef> get sensors => $_getList(14);
+  $core.List<$0.SensorRef> get sensors => $_getList(15);
 
   @$pb.TagNumber(58)
-  $core.List<$1.SignalRef> get signals => $_getList(15);
+  $core.List<$0.SignalRef> get signals => $_getList(16);
 }
 
 class LocState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LocState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Loc.create)
+    ..aOM<$0.Loc>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Loc.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'controlledAutomaticallyActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'controlledAutomaticallyRequested')
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canBeControlledAutomatically')
     ..e<AutoLocState>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticState', $pb.PbFieldType.OE, defaultOrMaker: AutoLocState.ASSIGNROUTE, valueOf: AutoLocState.valueOf, enumValues: AutoLocState.values)
-    ..aOM<$1.RouteRef>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentRoute', subBuilder: $1.RouteRef.create)
+    ..aOM<$0.RouteRef>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentRoute', subBuilder: $0.RouteRef.create)
     ..aOB(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waitAfterCurrentRoute')
     ..aOB(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCurrentRouteDurationExceeded')
-    ..aOM<$1.RouteRef>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextRoute', subBuilder: $1.RouteRef.create)
-    ..aOM<$1.BlockRef>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlock', subBuilder: $1.BlockRef.create)
-    ..e<$1.BlockSide>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlockEnterSide', $pb.PbFieldType.OE, defaultOrMaker: $1.BlockSide.FRONT, valueOf: $1.BlockSide.valueOf, enumValues: $1.BlockSide.values)
+    ..aOM<$0.RouteRef>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextRoute', subBuilder: $0.RouteRef.create)
+    ..aOM<$0.BlockRef>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlock', subBuilder: $0.BlockRef.create)
+    ..e<$0.BlockSide>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentBlockEnterSide', $pb.PbFieldType.OE, defaultOrMaker: $0.BlockSide.FRONT, valueOf: $0.BlockSide.valueOf, enumValues: $0.BlockSide.values)
     ..a<$core.int>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedActual', $pb.PbFieldType.O3)
     ..a<$core.int>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedRequested', $pb.PbFieldType.O3)
     ..aOS(52, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speedText')
@@ -244,22 +258,25 @@ class LocState extends $pb.GeneratedMessage {
     ..aOB(60, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isReversing')
     ..aOB(70, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Actual')
     ..aOB(71, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Requested')
+    ..aOB(80, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isEnabled')
+    ..aOB(90, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hasBatteryLevel')
+    ..a<$core.int>(91, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'batteryLevel', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
   LocState._() : super();
   factory LocState({
-    $1.Loc? model,
+    $0.Loc? model,
     $core.bool? controlledAutomaticallyActual,
     $core.bool? controlledAutomaticallyRequested,
     $core.bool? canBeControlledAutomatically,
     AutoLocState? automaticState,
-    $1.RouteRef? currentRoute,
+    $0.RouteRef? currentRoute,
     $core.bool? waitAfterCurrentRoute,
     $core.bool? isCurrentRouteDurationExceeded,
-    $1.RouteRef? nextRoute,
-    $1.BlockRef? currentBlock,
-    $1.BlockSide? currentBlockEnterSide,
+    $0.RouteRef? nextRoute,
+    $0.BlockRef? currentBlock,
+    $0.BlockSide? currentBlockEnterSide,
     $core.int? speedActual,
     $core.int? speedRequested,
     $core.String? speedText,
@@ -271,6 +288,9 @@ class LocState extends $pb.GeneratedMessage {
     $core.bool? isReversing,
     $core.bool? f0Actual,
     $core.bool? f0Requested,
+    $core.bool? isEnabled,
+    $core.bool? hasBatteryLevel,
+    $core.int? batteryLevel_91,
   }) {
     final _result = create();
     if (model != null) {
@@ -339,6 +359,15 @@ class LocState extends $pb.GeneratedMessage {
     if (f0Requested != null) {
       _result.f0Requested = f0Requested;
     }
+    if (isEnabled != null) {
+      _result.isEnabled = isEnabled;
+    }
+    if (hasBatteryLevel != null) {
+      _result.hasBatteryLevel = hasBatteryLevel;
+    }
+    if (batteryLevel_91 != null) {
+      _result.batteryLevel_91 = batteryLevel_91;
+    }
     return _result;
   }
   factory LocState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
@@ -363,15 +392,15 @@ class LocState extends $pb.GeneratedMessage {
   static LocState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Loc get model => $_getN(0);
+  $0.Loc get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Loc v) { setField(1, v); }
+  set model($0.Loc v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Loc ensureModel() => $_ensure(0);
+  $0.Loc ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(10)
   $core.bool get controlledAutomaticallyActual => $_getBF(1);
@@ -410,15 +439,15 @@ class LocState extends $pb.GeneratedMessage {
   void clearAutomaticState() => clearField(13);
 
   @$pb.TagNumber(18)
-  $1.RouteRef get currentRoute => $_getN(5);
+  $0.RouteRef get currentRoute => $_getN(5);
   @$pb.TagNumber(18)
-  set currentRoute($1.RouteRef v) { setField(18, v); }
+  set currentRoute($0.RouteRef v) { setField(18, v); }
   @$pb.TagNumber(18)
   $core.bool hasCurrentRoute() => $_has(5);
   @$pb.TagNumber(18)
   void clearCurrentRoute() => clearField(18);
   @$pb.TagNumber(18)
-  $1.RouteRef ensureCurrentRoute() => $_ensure(5);
+  $0.RouteRef ensureCurrentRoute() => $_ensure(5);
 
   @$pb.TagNumber(20)
   $core.bool get waitAfterCurrentRoute => $_getBF(6);
@@ -439,31 +468,31 @@ class LocState extends $pb.GeneratedMessage {
   void clearIsCurrentRouteDurationExceeded() => clearField(22);
 
   @$pb.TagNumber(23)
-  $1.RouteRef get nextRoute => $_getN(8);
+  $0.RouteRef get nextRoute => $_getN(8);
   @$pb.TagNumber(23)
-  set nextRoute($1.RouteRef v) { setField(23, v); }
+  set nextRoute($0.RouteRef v) { setField(23, v); }
   @$pb.TagNumber(23)
   $core.bool hasNextRoute() => $_has(8);
   @$pb.TagNumber(23)
   void clearNextRoute() => clearField(23);
   @$pb.TagNumber(23)
-  $1.RouteRef ensureNextRoute() => $_ensure(8);
+  $0.RouteRef ensureNextRoute() => $_ensure(8);
 
   @$pb.TagNumber(24)
-  $1.BlockRef get currentBlock => $_getN(9);
+  $0.BlockRef get currentBlock => $_getN(9);
   @$pb.TagNumber(24)
-  set currentBlock($1.BlockRef v) { setField(24, v); }
+  set currentBlock($0.BlockRef v) { setField(24, v); }
   @$pb.TagNumber(24)
   $core.bool hasCurrentBlock() => $_has(9);
   @$pb.TagNumber(24)
   void clearCurrentBlock() => clearField(24);
   @$pb.TagNumber(24)
-  $1.BlockRef ensureCurrentBlock() => $_ensure(9);
+  $0.BlockRef ensureCurrentBlock() => $_ensure(9);
 
   @$pb.TagNumber(25)
-  $1.BlockSide get currentBlockEnterSide => $_getN(10);
+  $0.BlockSide get currentBlockEnterSide => $_getN(10);
   @$pb.TagNumber(25)
-  set currentBlockEnterSide($1.BlockSide v) { setField(25, v); }
+  set currentBlockEnterSide($0.BlockSide v) { setField(25, v); }
   @$pb.TagNumber(25)
   $core.bool hasCurrentBlockEnterSide() => $_has(10);
   @$pb.TagNumber(25)
@@ -567,18 +596,45 @@ class LocState extends $pb.GeneratedMessage {
   $core.bool hasF0Requested() => $_has(21);
   @$pb.TagNumber(71)
   void clearF0Requested() => clearField(71);
+
+  @$pb.TagNumber(80)
+  $core.bool get isEnabled => $_getBF(22);
+  @$pb.TagNumber(80)
+  set isEnabled($core.bool v) { $_setBool(22, v); }
+  @$pb.TagNumber(80)
+  $core.bool hasIsEnabled() => $_has(22);
+  @$pb.TagNumber(80)
+  void clearIsEnabled() => clearField(80);
+
+  @$pb.TagNumber(90)
+  $core.bool get hasBatteryLevel => $_getBF(23);
+  @$pb.TagNumber(90)
+  set hasBatteryLevel($core.bool v) { $_setBool(23, v); }
+  @$pb.TagNumber(90)
+  $core.bool hasHasBatteryLevel() => $_has(23);
+  @$pb.TagNumber(90)
+  void clearHasBatteryLevel() => clearField(90);
+
+  @$pb.TagNumber(91)
+  $core.int get batteryLevel_91 => $_getIZ(24);
+  @$pb.TagNumber(91)
+  set batteryLevel_91($core.int v) { $_setSignedInt32(24, v); }
+  @$pb.TagNumber(91)
+  $core.bool hasBatteryLevel_91() => $_has(24);
+  @$pb.TagNumber(91)
+  void clearBatteryLevel_91() => clearField(91);
 }
 
 class CommandStationState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStationState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.CommandStation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.CommandStation.create)
+    ..aOM<$0.CommandStation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.CommandStation.create)
     ..pc<HardwareModule>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareModules', $pb.PbFieldType.PM, subBuilder: HardwareModule.create)
     ..hasRequiredFields = false
   ;
 
   CommandStationState._() : super();
   factory CommandStationState({
-    $1.CommandStation? model,
+    $0.CommandStation? model,
     $core.Iterable<HardwareModule>? hardwareModules,
   }) {
     final _result = create();
@@ -612,15 +668,15 @@ class CommandStationState extends $pb.GeneratedMessage {
   static CommandStationState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.CommandStation get model => $_getN(0);
+  $0.CommandStation get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.CommandStation v) { setField(1, v); }
+  set model($0.CommandStation v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.CommandStation ensureModel() => $_ensure(0);
+  $0.CommandStation ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<HardwareModule> get hardwareModules => $_getList(1);
@@ -633,6 +689,10 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastUpdatedAt')
     ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'errorMessages')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondsSinceLastUpdated')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metricsUrl')
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dccGeneratorUrl')
+    ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sshUrl')
     ..hasRequiredFields = false
   ;
 
@@ -643,6 +703,10 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.String? lastUpdatedAt,
     $core.Iterable<$core.String>? errorMessages,
     $core.String? address,
+    $fixnum.Int64? secondsSinceLastUpdated,
+    $core.String? metricsUrl,
+    $core.String? dccGeneratorUrl,
+    $core.String? sshUrl,
   }) {
     final _result = create();
     if (id != null) {
@@ -659,6 +723,18 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (secondsSinceLastUpdated != null) {
+      _result.secondsSinceLastUpdated = secondsSinceLastUpdated;
+    }
+    if (metricsUrl != null) {
+      _result.metricsUrl = metricsUrl;
+    }
+    if (dccGeneratorUrl != null) {
+      _result.dccGeneratorUrl = dccGeneratorUrl;
+    }
+    if (sshUrl != null) {
+      _result.sshUrl = sshUrl;
     }
     return _result;
   }
@@ -721,12 +797,48 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasAddress() => $_has(4);
   @$pb.TagNumber(5)
   void clearAddress() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $fixnum.Int64 get secondsSinceLastUpdated => $_getI64(5);
+  @$pb.TagNumber(6)
+  set secondsSinceLastUpdated($fixnum.Int64 v) { $_setInt64(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasSecondsSinceLastUpdated() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearSecondsSinceLastUpdated() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get metricsUrl => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set metricsUrl($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasMetricsUrl() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearMetricsUrl() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get dccGeneratorUrl => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set dccGeneratorUrl($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasDccGeneratorUrl() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearDccGeneratorUrl() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get sshUrl => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set sshUrl($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasSshUrl() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSshUrl() => clearField(9);
 }
 
 class BlockState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Block.create)
-    ..aOM<$1.LocRef>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lockedBy', subBuilder: $1.LocRef.create)
+    ..aOM<$0.Block>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Block.create)
+    ..aOM<$0.LocRef>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lockedBy', subBuilder: $0.LocRef.create)
     ..e<BlockStateState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'state', $pb.PbFieldType.OE, defaultOrMaker: BlockStateState.FREE, valueOf: BlockStateState.valueOf, enumValues: BlockStateState.values)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'closedRequested')
@@ -738,8 +850,8 @@ class BlockState extends $pb.GeneratedMessage {
 
   BlockState._() : super();
   factory BlockState({
-    $1.Block? model,
-    $1.LocRef? lockedBy,
+    $0.Block? model,
+    $0.LocRef? lockedBy,
     BlockStateState? state,
     $core.bool? closedActual,
     $core.bool? closedRequested,
@@ -796,26 +908,26 @@ class BlockState extends $pb.GeneratedMessage {
   static BlockState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Block get model => $_getN(0);
+  $0.Block get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Block v) { setField(1, v); }
+  set model($0.Block v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Block ensureModel() => $_ensure(0);
+  $0.Block ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $1.LocRef get lockedBy => $_getN(1);
+  $0.LocRef get lockedBy => $_getN(1);
   @$pb.TagNumber(2)
-  set lockedBy($1.LocRef v) { setField(2, v); }
+  set lockedBy($0.LocRef v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLockedBy() => $_has(1);
   @$pb.TagNumber(2)
   void clearLockedBy() => clearField(2);
   @$pb.TagNumber(2)
-  $1.LocRef ensureLockedBy() => $_ensure(1);
+  $0.LocRef ensureLockedBy() => $_ensure(1);
 
   @$pb.TagNumber(3)
   BlockStateState get state => $_getN(2);
@@ -874,13 +986,13 @@ class BlockState extends $pb.GeneratedMessage {
 
 class BlockGroupState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockGroupState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.BlockGroup>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.BlockGroup.create)
+    ..aOM<$0.BlockGroup>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.BlockGroup.create)
     ..hasRequiredFields = false
   ;
 
   BlockGroupState._() : super();
   factory BlockGroupState({
-    $1.BlockGroup? model,
+    $0.BlockGroup? model,
   }) {
     final _result = create();
     if (model != null) {
@@ -910,27 +1022,27 @@ class BlockGroupState extends $pb.GeneratedMessage {
   static BlockGroupState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.BlockGroup get model => $_getN(0);
+  $0.BlockGroup get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.BlockGroup v) { setField(1, v); }
+  set model($0.BlockGroup v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.BlockGroup ensureModel() => $_ensure(0);
+  $0.BlockGroup ensureModel() => $_ensure(0);
 }
 
 class JunctionState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JunctionState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Junction>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Junction.create)
+    ..aOM<$0.Junction>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Junction.create)
     ..aOM<SwitchState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'switch', subBuilder: SwitchState.create)
     ..hasRequiredFields = false
   ;
 
   JunctionState._() : super();
   factory JunctionState({
-    $1.Junction? model,
+    $0.Junction? model,
     SwitchState? switch_2,
   }) {
     final _result = create();
@@ -964,15 +1076,15 @@ class JunctionState extends $pb.GeneratedMessage {
   static JunctionState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Junction get model => $_getN(0);
+  $0.Junction get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Junction v) { setField(1, v); }
+  set model($0.Junction v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Junction ensureModel() => $_ensure(0);
+  $0.Junction ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
   SwitchState get switch_2 => $_getN(1);
@@ -988,15 +1100,15 @@ class JunctionState extends $pb.GeneratedMessage {
 
 class SwitchState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SwitchState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..e<$1.SwitchDirection>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionActual', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
-    ..e<$1.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionRequested', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..e<$0.SwitchDirection>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionActual', $pb.PbFieldType.OE, defaultOrMaker: $0.SwitchDirection.STRAIGHT, valueOf: $0.SwitchDirection.valueOf, enumValues: $0.SwitchDirection.values)
+    ..e<$0.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'directionRequested', $pb.PbFieldType.OE, defaultOrMaker: $0.SwitchDirection.STRAIGHT, valueOf: $0.SwitchDirection.valueOf, enumValues: $0.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
   SwitchState._() : super();
   factory SwitchState({
-    $1.SwitchDirection? directionActual,
-    $1.SwitchDirection? directionRequested,
+    $0.SwitchDirection? directionActual,
+    $0.SwitchDirection? directionRequested,
   }) {
     final _result = create();
     if (directionActual != null) {
@@ -1029,18 +1141,18 @@ class SwitchState extends $pb.GeneratedMessage {
   static SwitchState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.SwitchDirection get directionActual => $_getN(0);
+  $0.SwitchDirection get directionActual => $_getN(0);
   @$pb.TagNumber(1)
-  set directionActual($1.SwitchDirection v) { setField(1, v); }
+  set directionActual($0.SwitchDirection v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDirectionActual() => $_has(0);
   @$pb.TagNumber(1)
   void clearDirectionActual() => clearField(1);
 
   @$pb.TagNumber(2)
-  $1.SwitchDirection get directionRequested => $_getN(1);
+  $0.SwitchDirection get directionRequested => $_getN(1);
   @$pb.TagNumber(2)
-  set directionRequested($1.SwitchDirection v) { setField(2, v); }
+  set directionRequested($0.SwitchDirection v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDirectionRequested() => $_has(1);
   @$pb.TagNumber(2)
@@ -1049,14 +1161,14 @@ class SwitchState extends $pb.GeneratedMessage {
 
 class OutputState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OutputState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Output>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Output.create)
+    ..aOM<$0.Output>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Output.create)
     ..aOM<BinaryOutputState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'binaryOutput', subBuilder: BinaryOutputState.create)
     ..hasRequiredFields = false
   ;
 
   OutputState._() : super();
   factory OutputState({
-    $1.Output? model,
+    $0.Output? model,
     BinaryOutputState? binaryOutput,
   }) {
     final _result = create();
@@ -1090,15 +1202,15 @@ class OutputState extends $pb.GeneratedMessage {
   static OutputState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Output get model => $_getN(0);
+  $0.Output get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Output v) { setField(1, v); }
+  set model($0.Output v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Output ensureModel() => $_ensure(0);
+  $0.Output ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
   BinaryOutputState get binaryOutput => $_getN(1);
@@ -1175,13 +1287,13 @@ class BinaryOutputState extends $pb.GeneratedMessage {
 
 class RouteState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RouteState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Route>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Route.create)
+    ..aOM<$0.Route>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Route.create)
     ..hasRequiredFields = false
   ;
 
   RouteState._() : super();
   factory RouteState({
-    $1.Route? model,
+    $0.Route? model,
   }) {
     final _result = create();
     if (model != null) {
@@ -1211,27 +1323,27 @@ class RouteState extends $pb.GeneratedMessage {
   static RouteState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Route get model => $_getN(0);
+  $0.Route get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Route v) { setField(1, v); }
+  set model($0.Route v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Route ensureModel() => $_ensure(0);
+  $0.Route ensureModel() => $_ensure(0);
 }
 
 class SensorState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SensorState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Sensor>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Sensor.create)
+    ..aOM<$0.Sensor>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Sensor.create)
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'active')
     ..hasRequiredFields = false
   ;
 
   SensorState._() : super();
   factory SensorState({
-    $1.Sensor? model,
+    $0.Sensor? model,
     $core.bool? active,
   }) {
     final _result = create();
@@ -1265,15 +1377,15 @@ class SensorState extends $pb.GeneratedMessage {
   static SensorState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Sensor get model => $_getN(0);
+  $0.Sensor get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Sensor v) { setField(1, v); }
+  set model($0.Sensor v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Sensor ensureModel() => $_ensure(0);
+  $0.Sensor ensureModel() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.bool get active => $_getBF(1);
@@ -1287,13 +1399,13 @@ class SensorState extends $pb.GeneratedMessage {
 
 class SignalState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SignalState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$1.Signal>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $1.Signal.create)
+    ..aOM<$0.Signal>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.Signal.create)
     ..hasRequiredFields = false
   ;
 
   SignalState._() : super();
   factory SignalState({
-    $1.Signal? model,
+    $0.Signal? model,
   }) {
     final _result = create();
     if (model != null) {
@@ -1323,14 +1435,14 @@ class SignalState extends $pb.GeneratedMessage {
   static SignalState? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.Signal get model => $_getN(0);
+  $0.Signal get model => $_getN(0);
   @$pb.TagNumber(1)
-  set model($1.Signal v) { setField(1, v); }
+  set model($0.Signal v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasModel() => $_has(0);
   @$pb.TagNumber(1)
   void clearModel() => clearField(1);
   @$pb.TagNumber(1)
-  $1.Signal ensureModel() => $_ensure(0);
+  $0.Signal ensureModel() => $_ensure(0);
 }
 

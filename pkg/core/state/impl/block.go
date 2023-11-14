@@ -60,7 +60,7 @@ func newBlock(en model.Block, railway Railway) Block {
 			b.updateClosed(ctx)
 		}
 	})
-	b.closed.Configure("closed", b, railway, railway)
+	b.closed.Configure("closed", b, nil, railway, railway)
 	b.closed.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		b.updateClosed(ctx)
 	})

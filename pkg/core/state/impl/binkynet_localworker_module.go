@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/binkynet/NetManager/service/manager"
@@ -92,5 +93,64 @@ func (lw *binkyNetLocalWorkerModule) GetAddress() string {
 
 // Does this module support address data?
 func (lw *binkyNetLocalWorkerModule) HasAddress() bool {
+	return true
+}
+
+// URL to get metrics of this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetMetricsURL() string {
+	if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		port := info.GetMetricsPort()
+		secure := info.GetMetricsSecure()
+		if port > 0 {
+			scheme := "http"
+			if secure {
+				scheme = "https"
+			}
+			return fmt.Sprintf("%s://%s:%d/metrics", scheme, host, port)
+		}
+	}
+	return ""
+}
+
+// Does this module support metrics url?
+func (lw *binkyNetLocalWorkerModule) HasMetricsURL() bool {
+	return true
+}
+
+// URL to get DCC generator info of this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetDCCGeneratorURL() string {
+	if lw.ID == dccModuleID {
+		if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+			port := info.GetMetricsPort()
+			secure := info.GetMetricsSecure()
+			if port > 0 {
+				scheme := "http"
+				if secure {
+					scheme = "https"
+				}
+				return fmt.Sprintf("%s://%s:%d/dcc", scheme, host, port)
+			}
+		}
+	}
+	return ""
+}
+
+// Does this module support DCC generator url?
+func (lw *binkyNetLocalWorkerModule) HasDCCGeneratorURL() bool {
+	return lw.GetID() == dccModuleID
+}
+
+// URL to open SSH connection to this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetSSHURL() string {
+	if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		if port := info.GetSshPort(); port != 0 {
+			return fmt.Sprintf("ssh://%s:%d", host, port)
+		}
+	}
+	return ""
+}
+
+// Does this module support SSH url?
+func (lw *binkyNetLocalWorkerModule) HasSSHURL() bool {
 	return true
 }

@@ -147,6 +147,12 @@ type Loc interface {
 	// Return all functions that have state.
 	//IEnumerable<LocFunction> Functions { get; }
 
+	// Returns property indicating if a battery level for this loc is known.
+	HasBatteryLevel() ActualBoolProperty
+
+	// Gets the battery level in percentage (0-100)
+	GetBatteryLevel() ActualIntProperty
+
 	// Try to assign the given loc to the given block.
 	// Assigning is only possible when the loc is not controlled automatically and
 	// the block can be assigned by the given loc.
@@ -161,8 +167,19 @@ type Loc interface {
 	GetCommandStationInfo(context.Context) string
 
 	// Forcefully reset of settings of this loc.
+	// This disables the loc and no signals will be sent to it.
 	// This should be used when a loc is taken of the track.
 	Reset(context.Context)
+
+	// Enable the loc.
+	// This should be used when a loc is put on the track.
+	// Signals will now be sent to the loc.
+	Enable(context.Context) error
+
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+	GetEnabled() bool
 
 	// Save the current state to the state persistence.
 	PersistState(context.Context)

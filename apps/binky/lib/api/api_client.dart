@@ -21,6 +21,7 @@ import 'api_channel.dart'
     if (dart.library.io) 'api_channel_grpc.dart'
     if (dart.library.html) 'api_channel_web.dart';
 
+import "./generated/br_app_service.pbgrpc.dart";
 import "./generated/br_model_service.pbgrpc.dart";
 import './generated/br_state_service.pbgrpc.dart';
 import './generated/br_storage_service.pbgrpc.dart';
@@ -28,12 +29,14 @@ import './generated/br_storage_service.pbgrpc.dart';
 class APIClient {
   final intf.ClientChannel _channel;
 
+  final AppServiceClient _appClient;
   final ModelServiceClient _modelClient;
   final StateServiceClient _stateClient;
   final StorageServiceClient _storageClient;
 
   APIClient._initialize(intf.ClientChannel channel)
       : _channel = channel,
+        _appClient = AppServiceClient(channel),
         _modelClient = ModelServiceClient(channel),
         _stateClient = StateServiceClient(channel),
         _storageClient = StorageServiceClient(channel);
@@ -42,6 +45,8 @@ class APIClient {
       createChannel(defaultChannelHost(), defaultChannelPort()));
 
   factory APIClient() => _instance;
+
+  AppServiceClient appClient() => _appClient;
 
   ModelServiceClient modelClient() => _modelClient;
 

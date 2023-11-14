@@ -64,7 +64,6 @@ class _LocSettings extends StatefulWidget {
 }
 
 class _LocSettingsState extends State<_LocSettings> {
-  final ScrollController _scrollController = ScrollController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ownerController = TextEditingController();
   final TextEditingController _slowSpeedController = TextEditingController();

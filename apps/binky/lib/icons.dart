@@ -41,4 +41,5 @@ class BinkyIconsData {
   static const IconData controlledAutomatically = Icons.auto_fix_normal;
   static const IconData controlleManually = Icons.person;
   static const IconData unassigned = Icons.bedtime;
+  static const IconData disabled = Icons.disabled_visible;
 }

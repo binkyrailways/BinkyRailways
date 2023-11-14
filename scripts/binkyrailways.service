@@ -6,11 +6,8 @@ Requires=dnsmasq.service
 
 [Service]
 ExecStart=/home/pi/binky-server \
-  --prom-config-path=/home/pi/prometheus.yml \
   --storage-path=/home/pi/binky-storage \
   --certificate-path=/home/pi/binky-cert.json \
-  --loki-url=${LOKI_URL} \
-  --prom-url=${PROMETHEUS_URL} \
   --published-host=${PUBLISHED_HOST_IP} \
   --published-hostname=${PUBLISHED_HOST_DNS} \
   --http-port=80

@@ -153,6 +153,10 @@ service ModelService {
   rpc RemoveRouteOutput(RemoveRouteOutputRequest) returns (Route);
   // Adds an event to the given route
   rpc AddRouteEvent(AddRouteEventRequest) returns (Route);
+  // Move the event for given sensor ID up by 1 entry
+  rpc MoveRouteEventUp(MoveRouteEventRequest) returns (Route);
+  // Move the event for given sensor ID down by 1 entry
+  rpc MoveRouteEventDown(MoveRouteEventRequest) returns (Route);
   // Remove an event from the given route
   rpc RemoveRouteEvent(RemoveRouteEventRequest) returns (Route);
   // Adds a behavior to an event in the given route
@@ -288,6 +292,13 @@ message AddRouteEventRequest {
   string sensor_id = 2;
 }
 
+message MoveRouteEventRequest {
+  // ID of the route to move an event from
+  string route_id = 1;
+  // ID of sensor to move event for 
+  string sensor_id = 2;
+}
+
 message RemoveRouteEventRequest {
   // ID of the route to remove an event from
   string route_id = 1;
@@ -321,5 +332,6 @@ message AddBinkyNetObjectsGroupRequest {
 }
 
 enum BinkyNetObjectsGroupType {
-  MGV93 = 0;
+  SENSORS_8 = 0;
+  SENSORS_4 = 1;
 }

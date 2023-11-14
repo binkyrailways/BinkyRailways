@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,11 +32,24 @@ class StoragePage extends StatefulWidget {
 
 class _StoragePageState extends State<StoragePage> {
   final TextEditingController _textFieldController = TextEditingController();
+  Timer? _updateTimer;
+
+  @override
+  void dispose() {
+    _updateTimer?.cancel();
+    super.dispose();
+  }
+
+  void _ensureUpdateTimer(StorageModel model) {
+    _updateTimer ??= Timer.periodic(const Duration(seconds: 2),
+        (t) async => await model.updateRailwayEntries());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ModelModel>(builder: (context, model, child) {
       return Consumer<StorageModel>(builder: (context, storage, child) {
+        _ensureUpdateTimer(storage);
         return FutureBuilder<List<RailwayEntry>>(
             future: storage.getRailwayEntries(),
             builder: (context, snapshot) {
@@ -45,10 +60,10 @@ class _StoragePageState extends State<StoragePage> {
                     // the App.build method, and use it to set our appbar title.
                     title: const Text("Binky Railways"),
                   ),
-                  body: Center(
+                  body: const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Text('Loading railways...'),
                         CircularProgressIndicator(value: null),
                       ],
@@ -96,11 +111,11 @@ class _StoragePageState extends State<StoragePage> {
       context: context,
       builder: (context) {
         final defaultStyle = ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.green[200]),
-            foregroundColor: MaterialStateProperty.all(Colors.black));
+            backgroundColor: WidgetStateProperty.all(Colors.green[200]),
+            foregroundColor: WidgetStateProperty.all(Colors.black));
         final disabledStyle = ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.grey),
-            foregroundColor: MaterialStateProperty.all(Colors.black));
+            backgroundColor: WidgetStateProperty.all(Colors.grey),
+            foregroundColor: WidgetStateProperty.all(Colors.black));
         final hasName = _textFieldController.text.isNotEmpty;
 
         return AlertDialog(

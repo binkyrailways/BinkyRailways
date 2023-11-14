@@ -47,7 +47,7 @@ class ModuleCanvas extends StatelessWidget {
           autofocus: true,
           game: game,
           overlayBuilderMap: {
-            ModuleGame.layersOverlay: game!.layersOverlayBuilder,
+            ModuleGame.layersOverlay: game.layersOverlayBuilder,
           },
         ),
         Positioned(

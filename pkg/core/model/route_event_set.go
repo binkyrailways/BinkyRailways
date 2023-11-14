@@ -28,6 +28,14 @@ type RouteEventSet interface {
 	// Invoke the callback for each item
 	ForEach(cb func(RouteEvent))
 
+	// Move the given item up by 1 entry.
+	// Returns true if it was moved, false otherwise
+	MoveUp(item RouteEvent) bool
+
+	// Move the given item down by 1 entry.
+	// Returns true if it was moved, false otherwise
+	MoveDown(item RouteEvent) bool
+
 	// Remove the given item from this set.
 	// Returns true if it was removed, false otherwise
 	Remove(item RouteEvent) bool

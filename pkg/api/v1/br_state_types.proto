@@ -31,6 +31,8 @@ message RailwayState {
   bool is_virtual_mode_enabled = 3;
   // Set when the server is in run mode with virtual auto run enabled
   bool is_virtual_autorun_enabled = 4;
+  // Set when the entity tester is active
+  bool is_entity_tester_enabled = 5;
   // Is the actual power status on?
   bool power_actual = 10;
   // Is the requested power status on?
@@ -136,6 +138,16 @@ message LocState {
   // the value.
   bool f0_actual = 70;
   bool f0_requested = 71;
+
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+  bool is_enabled = 80;
+
+  // If set, battery level for this loc is known.
+  bool has_battery_level = 90;
+  // Battery level for this loc in percentage (0-100)
+  int32 battery_level = 91;
 }
 
 // Direction of a loc
@@ -222,6 +234,14 @@ message HardwareModule {
   repeated string error_messages = 4;
   // IP address of this module (if any)
   string address = 5;
+  // Seconds since the module sent it's last ping update
+  int64 seconds_since_last_updated = 6;
+   // URL to fetch metrics from this module
+  string metrics_url = 7;
+   // URL to fetch DCC generator info from this module
+   string dcc_generator_url = 8;
+   // URL to open an SSH session towards this module
+   string ssh_url = 9;
 }
 
 // State of a single block

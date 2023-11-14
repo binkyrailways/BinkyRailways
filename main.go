@@ -23,6 +23,7 @@ import (
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
+	_ "net/http/pprof"
 
 	"github.com/binkyrailways/BinkyRailways/cmd"
 )

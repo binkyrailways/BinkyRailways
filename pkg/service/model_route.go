@@ -218,6 +218,50 @@ func (s *service) AddRouteEvent(ctx context.Context, req *api.AddRouteEventReque
 	return &result, nil
 }
 
+// Move the event for given sensor ID up by 1 entry
+func (s *service) MoveRouteEventUp(ctx context.Context, req *api.MoveRouteEventRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	evt, ok := route.GetEvents().Get(sensor.GetID())
+	if !ok {
+		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
+	}
+	route.GetEvents().MoveUp(evt)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Move the event for given sensor ID down by 1 entry
+func (s *service) MoveRouteEventDown(ctx context.Context, req *api.MoveRouteEventRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	evt, ok := route.GetEvents().Get(sensor.GetID())
+	if !ok {
+		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
+	}
+	route.GetEvents().MoveDown(evt)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Remove an event from the given route
 func (s *service) RemoveRouteEvent(ctx context.Context, req *api.RemoveRouteEventRequest) (*api.Route, error) {
 	route, err := s.getRoute(ctx, req.GetRouteId())

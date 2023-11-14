@@ -10,10 +10,12 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class BinkyNetObjectsGroupType extends $pb.ProtobufEnum {
-  static const BinkyNetObjectsGroupType MGV93 = BinkyNetObjectsGroupType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MGV93');
+  static const BinkyNetObjectsGroupType SENSORS_8 = BinkyNetObjectsGroupType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SENSORS_8');
+  static const BinkyNetObjectsGroupType SENSORS_4 = BinkyNetObjectsGroupType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SENSORS_4');
 
   static const $core.List<BinkyNetObjectsGroupType> values = <BinkyNetObjectsGroupType> [
-    MGV93,
+    SENSORS_8,
+    SENSORS_4,
   ];
 
   static final $core.Map<$core.int, BinkyNetObjectsGroupType> _byValue = $pb.ProtobufEnum.initByValue(values);

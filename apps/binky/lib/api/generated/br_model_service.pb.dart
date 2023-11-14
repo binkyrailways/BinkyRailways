@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_model_types.pbenum.dart' as $1;
+import 'br_model_types.pbenum.dart' as $0;
 import 'br_model_service.pbenum.dart';
 
 export 'br_model_service.pbenum.dart';
@@ -472,7 +472,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteCrossingJunctionSwitchRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctionId')
-    ..e<$1.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..e<$0.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $0.SwitchDirection.STRAIGHT, valueOf: $0.SwitchDirection.valueOf, enumValues: $0.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
@@ -480,7 +480,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   factory AddRouteCrossingJunctionSwitchRequest({
     $core.String? routeId,
     $core.String? junctionId,
-    $1.SwitchDirection? direction,
+    $0.SwitchDirection? direction,
   }) {
     final _result = create();
     if (routeId != null) {
@@ -534,9 +534,9 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   void clearJunctionId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $1.SwitchDirection get direction => $_getN(2);
+  $0.SwitchDirection get direction => $_getN(2);
   @$pb.TagNumber(3)
-  set direction($1.SwitchDirection v) { setField(3, v); }
+  set direction($0.SwitchDirection v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasDirection() => $_has(2);
   @$pb.TagNumber(3)
@@ -801,6 +801,67 @@ class AddRouteEventRequest extends $pb.GeneratedMessage {
   void clearSensorId() => clearField(2);
 }
 
+class MoveRouteEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MoveRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensorId')
+    ..hasRequiredFields = false
+  ;
+
+  MoveRouteEventRequest._() : super();
+  factory MoveRouteEventRequest({
+    $core.String? routeId,
+    $core.String? sensorId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (sensorId != null) {
+      _result.sensorId = sensorId;
+    }
+    return _result;
+  }
+  factory MoveRouteEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MoveRouteEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  MoveRouteEventRequest clone() => MoveRouteEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  MoveRouteEventRequest copyWith(void Function(MoveRouteEventRequest) updates) => super.copyWith((message) => updates(message as MoveRouteEventRequest)) as MoveRouteEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteEventRequest create() => MoveRouteEventRequest._();
+  MoveRouteEventRequest createEmptyInstance() => create();
+  static $pb.PbList<MoveRouteEventRequest> createRepeated() => $pb.PbList<MoveRouteEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveRouteEventRequest>(create);
+  static MoveRouteEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sensorId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sensorId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSensorId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSensorId() => clearField(2);
+}
+
 class RemoveRouteEventRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
@@ -1002,7 +1063,7 @@ class AddBinkyNetObjectsGroupRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddBinkyNetObjectsGroupRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkerId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
-    ..e<BinkyNetObjectsGroupType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectsGroupType.MGV93, valueOf: BinkyNetObjectsGroupType.valueOf, enumValues: BinkyNetObjectsGroupType.values)
+    ..e<BinkyNetObjectsGroupType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectsGroupType.SENSORS_8, valueOf: BinkyNetObjectsGroupType.valueOf, enumValues: BinkyNetObjectsGroupType.values)
     ..hasRequiredFields = false
   ;
 

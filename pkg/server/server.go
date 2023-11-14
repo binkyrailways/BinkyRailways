@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"strconv"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
@@ -33,6 +34,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/webapp"
 )
 
 // Config for the GRPC server.
@@ -51,10 +53,6 @@ type Config struct {
 	HTTPSPort int
 	// Port to listen on for GRPC requests
 	GRPCPort int
-	// Port to listen on for Loki requests
-	LokiPort int
-	// URL to proxy loki requests to (do not proxy if empty)
-	LokiURL string
 	// If set, the web application is served from live filesystem instead of embedding.
 	WebDevelopment bool
 }
@@ -64,12 +62,12 @@ type Server struct {
 	Config
 	service     Service
 	log         zerolog.Logger
-	lokiHandler *lokiHandler
 	publicCAPem string
 }
 
 // Service expected by this server
 type Service interface {
+	api.AppServiceServer
 	api.ModelServiceServer
 	api.StateServiceServer
 	api.StorageServiceServer
@@ -81,10 +79,9 @@ type Service interface {
 // New configures a new Server.
 func New(cfg Config, log zerolog.Logger, service Service) (*Server, error) {
 	return &Server{
-		Config:      cfg,
-		service:     service,
-		log:         log,
-		lokiHandler: newLokiHandler(log),
+		Config:  cfg,
+		service: service,
+		log:     log,
 	}, nil
 }
 
@@ -123,23 +120,12 @@ func (s *Server) Run(ctx context.Context) error {
 	}
 	grpcsLis := tls.NewListener(grpcLis, tlsCfg)
 
-	// Prepare Loki listener
-	lokiAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.LokiPort))
-	lokiLis, err := net.Listen("tcp", lokiAddr)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to listen on address %s", lokiAddr)
-	}
-	lokiRouter := echo.New()
-	lokiRouter.POST("/loki/api/v1/push", s.handlePushLokiRequest)
-	lokiSrv := &http.Server{
-		Handler: lokiRouter,
-	}
-
 	// Prepare GRPC server
 	grpcSrv := grpc.NewServer(
 	//grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
 	//grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
+	api.RegisterAppServiceServer(grpcSrv, s.service)
 	api.RegisterModelServiceServer(grpcSrv, s.service)
 	api.RegisterStateServiceServer(grpcSrv, s.service)
 	api.RegisterStorageServiceServer(grpcSrv, s.service)
@@ -153,7 +139,8 @@ func (s *Server) Run(ctx context.Context) error {
 	httpsRouter.GET("/loc/:id/image", s.handleGetLocImage)
 	httpsRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpsRouter.GET("/tls/ca.pem", s.handleGetCACert)
-	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
+	httpsRouter.GET("/debug/pprof/*", echo.WrapHandler(http.HandlerFunc(pprof.Index)))
+	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(webapp.GetWebAppFileSystem(s.WebDevelopment))))
 	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {
@@ -169,6 +156,7 @@ func (s *Server) Run(ctx context.Context) error {
 	httpRouter := echo.New()
 	httpRouter.GET("/", s.handleInsecureGetIndex)
 	httpRouter.GET("/tls/ca.pem", s.handleGetCACert)
+	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpSrv := http.Server{
 		Handler: httpRouter,
 	}
@@ -195,14 +183,6 @@ func (s *Server) Run(ctx context.Context) error {
 		}
 		log.Debug().Str("address", grpcAddr).Msg("Done Serving gRPC")
 	}()
-	log.Debug().Str("address", lokiAddr).Msg("Serving Loki")
-	go func() {
-		if err := lokiSrv.Serve(lokiLis); err != nil {
-			log.Fatal().Err(err).Msg("failed to serve Loki server")
-		}
-		log.Debug().Str("address", lokiAddr).Msg("Done Serving Loki")
-	}()
-	go s.lokiHandler.Run(ctx)
 
 	// Wait until context closed
 	<-ctx.Done()
@@ -210,7 +190,6 @@ func (s *Server) Run(ctx context.Context) error {
 	log.Info().Msg("Closing GRPC server")
 	httpsSrv.Shutdown(context.Background())
 	grpcSrv.GracefulStop()
-	lokiSrv.Shutdown(context.Background())
 
 	return nil
 }

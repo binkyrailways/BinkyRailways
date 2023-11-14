@@ -136,6 +136,14 @@ class ModelModel extends ChangeNotifier {
   mapi.Railway? getCachedRailway() => _railway;
 
   Future<mapi.RailwayEntry> getRailwayEntry() async {
+    final cached = _railwayEntry;
+    if (cached != null) {
+      return cached;
+    }
+    return await updateRailwayEntry();
+  }
+
+  Future<mapi.RailwayEntry> updateRailwayEntry() async {
     var modelClient = mapi.APIClient().modelClient();
     final entry = await modelClient.getRailwayEntry(mapi.Empty());
     if (_railwayEntry?.name != entry.name) {
@@ -752,6 +760,31 @@ class ModelModel extends ChangeNotifier {
   Future<mapi.Route> addRouteEvent(String routeId, String sensorId) async {
     var modelClient = mapi.APIClient().modelClient();
     var updated = await modelClient.addRouteEvent(mapi.AddRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Move the even with given sensor ID up by 1 entry.
+  Future<mapi.Route> moveRouteEventUp(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.moveRouteEventUp(mapi.MoveRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Move the even with given sensor ID down by 1 entry.
+  Future<mapi.Route> moveRouteEventDown(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated =
+        await modelClient.moveRouteEventDown(mapi.MoveRouteEventRequest(
       routeId: routeId,
       sensorId: sensorId,
     ));

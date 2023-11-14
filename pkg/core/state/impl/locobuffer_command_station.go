@@ -34,9 +34,9 @@ type locoBufferCommandStation struct {
 // Create a new entity
 func newLocoBufferCommandStation(en model.LocoBufferCommandStation, railway Railway) CommandStation {
 	cs := &locoBufferCommandStation{
-		commandStation: newCommandStation(en, railway),
+		commandStation: newCommandStation(en, railway, false),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	return cs
 }
 
@@ -69,7 +69,10 @@ func (cs *locoBufferCommandStation) GetIdle(context.Context) bool {
 }
 
 // Send the speed and direction of the given loc towards the railway.
-func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(context.Context, state.Loc) {
+func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
+	if !loc.GetEnabled() {
+		return
+	}
 	// TODO
 }
 
@@ -100,4 +103,10 @@ func (cs *locoBufferCommandStation) TriggerDiscover(ctx context.Context, hardwar
 // Iterate over all hardware modules this command station is in control of.
 func (cs *locoBufferCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
 	// No modules
+}
+
+// Request a reset of hardware module with given ID
+func (cs *locoBufferCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
 }

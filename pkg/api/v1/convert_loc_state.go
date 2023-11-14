@@ -62,5 +62,8 @@ func (dst *LocState) FromState(ctx context.Context, src state.Loc, httpHost stri
 	dst.IsReversing = src.GetReversing().GetActual(ctx)
 	dst.F0Actual = src.GetF0().GetActual(ctx)
 	dst.F0Requested = src.GetF0().GetRequested(ctx)
+	dst.IsEnabled = src.GetEnabled()
+	dst.HasBatteryLevel = src.HasBatteryLevel().GetActual(ctx)
+	dst.BatteryLevel = int32(src.GetBatteryLevel().GetActual(ctx))
 	return nil
 }

@@ -29,7 +29,6 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/eventlog"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
-	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
 	"github.com/rs/zerolog"
 )
 
@@ -55,9 +54,6 @@ type Railway interface {
 	ResolveSensor(context.Context, model.Sensor) (Sensor, error)
 	// Select a command station that can best drive the given entity
 	SelectCommandStation(context.Context, model.AddressEntity) (CommandStation, error)
-
-	// Register a (prometheus) scrape target
-	RegisterScrapeTarget(name, address string, port int, secure bool)
 }
 
 // railway implements the Railway state
@@ -80,26 +76,25 @@ type railway struct {
 	outputs                []Output
 	automaticLocController state.AutomaticLocController
 	eventLogger            state.EventLogger
-	pcb                    *promconfig.PrometheusConfigBuilder
+	entityTester           *entityTester
 }
 
 // New constructs and initializes state for the given railway.
 func New(ctx context.Context, entity model.Railway, log zerolog.Logger,
 	ui state.UserInterface,
 	persistence state.Persistence,
-	pcb *promconfig.PrometheusConfigBuilder,
 	virtual bool) (state.Railway, error) {
 	// Create
 	r := &railway{
 		exclusive: util.NewExclusive(log),
 		log:       log,
-		pcb:       pcb,
 	}
 	r.entity = newEntity(log, entity, r)
 	r.power = powerProperty{
 		Railway: r,
 	}
 	r.virtualMode = newVirtualMode(virtual, r)
+	r.entityTester = newEntityTester(log, r)
 
 	// Construct children
 	builder := &builder{Railway: r}
@@ -303,6 +298,7 @@ func (r *railway) FinalizePrepare(ctx context.Context) {
 		ix := x.(Loc)
 		finalizePrepare(ctx, ix)
 	})
+	r.entityTester.Start()
 }
 
 // Try to resolve the given block (model) into a block state.
@@ -669,8 +665,15 @@ func (r *railway) GetOutput(id string) (state.Output, error) {
 	return nil, nil
 }
 
+// Get the entity tester
+func (r *railway) GetEntityTester() state.EntityTester {
+	return r.entityTester
+}
+
 // Close the railway
 func (r *railway) Close(ctx context.Context) {
+	// Stop entity tester
+	r.entityTester.Close()
 	// Stop virtual mode
 	r.virtualMode.Close()
 	// Stop automatic loc controller
@@ -684,9 +687,4 @@ func (r *railway) Close(ctx context.Context) {
 	// Stop event dispatching
 	r.eventDispatcher.CancelAll()
 	// TODO
-}
-
-// Register a (prometheus) scrape target
-func (r *railway) RegisterScrapeTarget(name, address string, port int, secure bool) {
-	r.pcb.RegisterTarget(name, address, port, secure)
 }

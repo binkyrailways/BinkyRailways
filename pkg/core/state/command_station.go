@@ -78,4 +78,7 @@ type CommandStation interface {
 
 	// Iterate over all hardware modules this command station is in control of.
 	ForEachHardwareModule(func(HardwareModule))
+
+	// Request a reset of hardware module with given ID
+	ResetHardwareModule(ctx context.Context, id string) error
 }

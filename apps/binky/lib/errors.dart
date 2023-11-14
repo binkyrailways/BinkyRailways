@@ -1,4 +1,4 @@
-// Copyright 2023 Ewout Prangsma
+// Copyright 2024 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,24 +15,19 @@
 // Author Ewout Prangsma
 //
 
-package server
+import 'package:grpc/grpc.dart';
 
-import (
-	"log"
-	"net/http"
-	"os"
-
-	webapp "github.com/binkyrailways/BinkyRailways/apps/binky"
-)
-
-// Load the filesystem to serve
-func getWebAppFileSystem(webDevelopment bool) http.FileSystem {
-	if webDevelopment {
-		log.Print("using live mode")
-		return http.FS(os.DirFS("./apps/binky/build/web"))
-	}
-
-	log.Print("using embed mode")
-	fsys := webapp.GetWebAppFileSystem()
-	return fsys
+class Errors {
+  static String format(Object? error) {
+    if (error == null) {
+      return "";
+    }
+    if (error is GrpcError) {
+      switch (error.code) {
+        case StatusCode.unauthenticated:
+          return "Server is not available";
+      }
+    }
+    return "$error";
+  }
 }

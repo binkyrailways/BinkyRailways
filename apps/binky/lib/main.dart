@@ -28,6 +28,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AppModel()),
         ChangeNotifierProvider(create: (context) => ModelModel()),
         ChangeNotifierProvider(create: (context) => StateModel()),
         ChangeNotifierProvider(create: (context) => StorageModel()),
@@ -46,7 +47,15 @@ class BinkyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Binky Railways',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        colorSchemeSeed: Colors.blueGrey,
+        useMaterial3: true,
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
       ),
       home: const AppPage(),
     );

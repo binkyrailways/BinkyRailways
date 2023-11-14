@@ -52,6 +52,13 @@ func (s *service) SetSwitchDirection(ctx context.Context, req *api.SetSwitchDire
 	if err := swState.GetDirection().SetRequested(ctx, direction); err != nil {
 		return nil, err
 	}
+	if et := rwState.GetEntityTester(); et.GetEnabled().GetRequested(ctx) {
+		if et.IsIncluded(ctx, swState) {
+			et.Exclude(ctx, swState)
+		} else {
+			et.Include(ctx, swState)
+		}
+	}
 	var result api.JunctionState
 	if err := result.FromState(ctx, junctionState); err != nil {
 		return nil, err

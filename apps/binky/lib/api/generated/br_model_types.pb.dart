@@ -1421,7 +1421,8 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
     ..e<BinkyNetDeviceType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetDeviceType.MCP23008, valueOf: BinkyNetDeviceType.valueOf, enumValues: BinkyNetDeviceType.values)
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
-    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddMgv93Group')
+    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors8Group', protoName: 'can_add_sensors_8_group')
+    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors4Group', protoName: 'can_add_sensors_4_group')
     ..hasRequiredFields = false
   ;
 
@@ -1431,7 +1432,8 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     $core.String? deviceId,
     BinkyNetDeviceType? deviceType,
     $core.String? address,
-    $core.bool? canAddMgv93Group,
+    $core.bool? canAddSensors8Group,
+    $core.bool? canAddSensors4Group,
   }) {
     final _result = create();
     if (id != null) {
@@ -1446,8 +1448,11 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     if (address != null) {
       _result.address = address;
     }
-    if (canAddMgv93Group != null) {
-      _result.canAddMgv93Group = canAddMgv93Group;
+    if (canAddSensors8Group != null) {
+      _result.canAddSensors8Group = canAddSensors8Group;
+    }
+    if (canAddSensors4Group != null) {
+      _result.canAddSensors4Group = canAddSensors4Group;
     }
     return _result;
   }
@@ -1509,13 +1514,22 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
   void clearAddress() => clearField(4);
 
   @$pb.TagNumber(10)
-  $core.bool get canAddMgv93Group => $_getBF(4);
+  $core.bool get canAddSensors8Group => $_getBF(4);
   @$pb.TagNumber(10)
-  set canAddMgv93Group($core.bool v) { $_setBool(4, v); }
+  set canAddSensors8Group($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(10)
-  $core.bool hasCanAddMgv93Group() => $_has(4);
+  $core.bool hasCanAddSensors8Group() => $_has(4);
   @$pb.TagNumber(10)
-  void clearCanAddMgv93Group() => clearField(10);
+  void clearCanAddSensors8Group() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.bool get canAddSensors4Group => $_getBF(5);
+  @$pb.TagNumber(11)
+  set canAddSensors4Group($core.bool v) { $_setBool(5, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCanAddSensors4Group() => $_has(5);
+  @$pb.TagNumber(11)
+  void clearCanAddSensors4Group() => clearField(11);
 }
 
 class BinkyNetObject extends $pb.GeneratedMessage {

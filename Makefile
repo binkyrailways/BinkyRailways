@@ -78,6 +78,13 @@ develop-gui:
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
 		cd apps/binky ; flutter run -d macos
 
+.PHONY: develop-web
+develop-web: 
+	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
+		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
+		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
+		cd apps/binky ; flutter run -d chrome
+
 bootstrap:
 	go get github.com/mitchellh/gox
 	go install github.com/mna/pigeon@v1.1.0
@@ -95,14 +102,14 @@ build-image:
 
 .PHONY: $(CACHEVOL)
 $(CACHEVOL):
-	@docker volume create $(CACHEVOL)
+	@docker volume create $(CACHEVOL) || true
 	docker run -it 	--rm -v $(CACHEVOL):/usr/gocache \
 		$(BUILDIMAGE) \
 		chown -R $(shell id -u):$(shell id -g) /usr/gocache
 
 .PHONY: $(MODVOL)
 $(MODVOL):
-	@docker volume create $(MODVOL)
+	@docker volume create $(MODVOL) || true
 	docker run -it 	--rm -v $(MODVOL):/go/pkg/mod \
 		$(BUILDIMAGE) \
 		chown -R $(shell id -u):$(shell id -g) /go/pkg/mod
@@ -118,8 +125,8 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v1.5.2 \
-		github.com/binkynet/BinkyNet@v1.7.2
+		github.com/binkynet/NetManager@v1.9.0 \
+		github.com/binkynet/BinkyNet@v1.12.0
 	go mod tidy
 
 deploy:

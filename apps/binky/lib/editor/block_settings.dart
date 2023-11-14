@@ -21,7 +21,6 @@ import 'package:binky/icons.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../components.dart';
 import '../models.dart';

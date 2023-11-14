@@ -38,8 +38,8 @@ type comparableProperty[T comparable] struct {
 }
 
 // Configure the values of the property
-func (p *comparableProperty[T]) Configure(name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
-	p.comparableActualProperty.Configure(p, name, subject, dispatcher, exclusive)
+func (p *comparableProperty[T]) Configure(name string, subject state.Subject, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.comparableActualProperty.Configure(p, name, subject, validate, dispatcher, exclusive)
 }
 
 func (p *comparableProperty[T]) IsConsistent(ctx context.Context) bool {
@@ -49,6 +49,7 @@ func (p *comparableProperty[T]) GetRequested(ctx context.Context) T {
 	return p.requested
 }
 func (p *comparableProperty[T]) SetRequested(ctx context.Context, value T) error {
+	value = p.validate(value)
 	return p.exclusive.Exclusive(ctx, setRequestTimeout, "comparableProperty.SetRequested."+p.Name, func(ctx context.Context) error {
 		if p.requested != value {
 			p.requested = value

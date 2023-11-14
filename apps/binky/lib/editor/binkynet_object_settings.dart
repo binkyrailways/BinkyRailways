@@ -101,7 +101,9 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
           controller: _objectIdController,
           label: "Object ID",
           onLostFocus: (value) async {
-            await _update((update) => {update.objectId = value});
+            await _update((update) {
+              update.objectId = value;
+            });
           }),
       SettingsDropdownField<BinkyNetObjectType>(
         label: "Object type",
@@ -290,7 +292,9 @@ class _BinkyNetDevicePinSettingsState
               label: "Device Pin",
               validator: _indexValidator.validate,
               onLostFocus: (value) async {
-                await _update((update) => {update.index = int.parse(value)});
+                await _update((update) {
+                  update.index = int.parse(value);
+                });
               })),
     ];
     return Row(
@@ -376,8 +380,9 @@ class _BinkyNetConfigKeyValueSettingsState
           label: "config: ${widget.configKey.titleCase}",
           value: boolValue,
           onChanged: (value) async {
-            await widget.update((update) =>
-                {update.configuration[widget.configKey] = value.toString()});
+            await widget.update((update) {
+              update.configuration[widget.configKey] = value.toString();
+            });
           },
         );
       default:
@@ -385,8 +390,9 @@ class _BinkyNetConfigKeyValueSettingsState
             controller: _valueController,
             label: "config: ${widget.configKey.titleCase}",
             onLostFocus: (value) async {
-              await widget.update(
-                  (update) => {update.configuration[widget.configKey] = value});
+              await widget.update((update) {
+                update.configuration[widget.configKey] = value;
+              });
             });
     }
   }

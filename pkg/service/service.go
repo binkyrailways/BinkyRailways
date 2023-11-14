@@ -29,7 +29,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
-	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
+	"github.com/dchest/uniuri"
 	"github.com/mattn/go-pubsub"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc/metadata"
@@ -47,11 +47,12 @@ type Config struct {
 	HTTPPort int
 	// If set, our HTTP server is using TLS
 	HTTPSecure bool
+	// If set, the web application is served from live filesystem instead of embedding.
+	WebDevelopment bool
 }
 
 type Dependencies struct {
-	Logger                  zerolog.Logger
-	PrometheusConfigBuilder *promconfig.PrometheusConfigBuilder
+	Logger zerolog.Logger
 }
 
 // New constructs a new service.
@@ -63,6 +64,7 @@ func New(cfg Config, deps Dependencies) (*service, error) {
 		Config:       cfg,
 		Dependencies: deps,
 		stateChanges: pubsub.New(),
+		processUUID:  uniuri.New(),
 	}
 
 	/*
@@ -78,6 +80,7 @@ type service struct {
 	Config
 	Dependencies
 
+	processUUID             string
 	mutex                   sync.Mutex
 	railway                 model.Railway
 	railwayEntryName        string

@@ -35,9 +35,14 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 	dst.Address = src.GetAddress()
 	switch src.GetDeviceType() {
 	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
-		dst.CanAddMgv93Group = true
+		dst.CanAddSensors_4Group = false
+		dst.CanAddSensors_8Group = true
+	case v1.DeviceTypeBinkyCarSensor:
+		dst.CanAddSensors_4Group = true
+		dst.CanAddSensors_8Group = true
 	default:
-		dst.CanAddMgv93Group = false
+		dst.CanAddSensors_4Group = false
+		dst.CanAddSensors_8Group = false
 	}
 	return nil
 }

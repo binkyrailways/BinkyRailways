@@ -109,6 +109,21 @@ func (ss *sensorSet) Contains(item model.Sensor) bool {
 
 // Add a new binary sensor
 func (ss *sensorSet) AddNewBinarySensor() model.BinarySensor {
+	// Find minimum size of existing sensors
+	minWidth := 0
+	minHeight := 0
+	for idx, item := range ss.Items {
+		w := item.Sensor.GetWidth()
+		h := item.Sensor.GetHeight()
+		if idx == 0 {
+			minWidth = w
+			minHeight = h
+		} else {
+			minWidth = min(minWidth, w)
+			minHeight = min(minHeight, h)
+		}
+	}
+
 	// Create new id
 	for {
 		id := NewID()
@@ -116,6 +131,12 @@ func (ss *sensorSet) AddNewBinarySensor() model.BinarySensor {
 			continue
 		}
 		bs := newBinarySensor()
+		if minWidth > 0 {
+			bs.SetWidth(minWidth)
+		}
+		if minHeight > 0 {
+			bs.SetHeight(minHeight)
+		}
 		bs.SetID(id)
 		bs.SetContainer(ss)
 		ss.Items = append(ss.Items, &SensorContainer{Sensor: bs})

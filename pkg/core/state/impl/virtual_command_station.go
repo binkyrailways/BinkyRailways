@@ -42,10 +42,10 @@ type virtualHardwareModule struct {
 // Create a new entity
 func newVirtualCommandStation(railway Railway) CommandStation {
 	cs := &virtualCommandStation{
-		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
+		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway, true),
 		createdAt:      time.Now(),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		cs.power.SetActual(ctx, value)
 	})
@@ -86,9 +86,19 @@ func (cs *virtualCommandStation) GetIdle(context.Context) bool {
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l state.Loc) {
+	if !l.GetEnabled() {
+		return
+	}
+
 	l.GetSpeedInSteps().SetActual(ctx, l.GetSpeedInSteps().GetRequested(ctx))
 	l.GetDirection().SetActual(ctx, l.GetDirection().GetRequested(ctx))
 	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))
+
+	// Car simulation
+	if l.GetModel().GetVehicleType() == model.VehicleTypeCar {
+		l.HasBatteryLevel().SetActual(ctx, true)
+		l.GetBatteryLevel().SetActual(ctx, l.GetSpeedInSteps().GetActual(ctx))
+	}
 }
 
 // Send the state of the binary output towards the railway.
@@ -122,6 +132,12 @@ func (cs *virtualCommandStation) ForEachHardwareModule(cb func(state.HardwareMod
 		uptime:        time.Since(cs.createdAt),
 		lastUpdatedAt: time.Now(),
 	})
+}
+
+// Request a reset of hardware module with given ID
+func (cs *virtualCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
 }
 
 // Gets the ID of the module
@@ -166,6 +182,36 @@ func (hm *virtualHardwareModule) GetErrorMessages() []string {
 
 // Does this module support address data?
 func (hm *virtualHardwareModule) HasAddress() bool {
+	return false
+}
+
+// URL to get metrics of this module (if any)
+func (lw *virtualHardwareModule) GetMetricsURL() string {
+	return ""
+}
+
+// Does this module support metrics url?
+func (lw *virtualHardwareModule) HasMetricsURL() bool {
+	return true
+}
+
+// URL to get DCC generator info of this module (if any)
+func (lw *virtualHardwareModule) GetDCCGeneratorURL() string {
+	return ""
+}
+
+// Does this module support DCC generator url?
+func (lw *virtualHardwareModule) HasDCCGeneratorURL() bool {
+	return false
+}
+
+// URL to open SSH connection to this module (if any)
+func (lw *virtualHardwareModule) GetSSHURL() string {
+	return ""
+}
+
+// Does this module support SSH url?
+func (lw *virtualHardwareModule) HasSSHURL() bool {
 	return false
 }
 

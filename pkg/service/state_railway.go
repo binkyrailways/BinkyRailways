@@ -42,7 +42,7 @@ func (s *service) EnableRunMode(ctx context.Context, req *api.EnableRunModeReque
 	if s.railwayState == nil {
 		// Enable run state
 		var err error
-		s.railwayState, err = impl.New(ctx, s.railway, s.Logger, s, s, s.PrometheusConfigBuilder, req.GetVirtual())
+		s.railwayState, err = impl.New(ctx, s.railway, s.Logger, s, s, req.GetVirtual())
 		if err != nil {
 			return nil, err
 		}
@@ -82,6 +82,30 @@ func (s *service) DisableRunMode(ctx context.Context, req *api.Empty) (*api.Rail
 		cf()
 	}
 	return s.GetRailwayState(ctx, &api.Empty{})
+}
+
+// Enable the entity tester.
+func (s *service) EnableEntityTester(ctx context.Context, req *api.Empty) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetEntityTester().GetEnabled().SetRequested(ctx, true); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
+}
+
+// Disable the entity tester.
+func (s *service) DisableEntityTester(ctx context.Context, req *api.Empty) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetEntityTester().GetEnabled().SetRequested(ctx, false); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
 }
 
 // Set the requested power state

@@ -35,6 +35,19 @@ class StateModel extends ChangeNotifier {
 
   StateModel();
 
+  void reset() {
+    _railwayState = null;
+    _commandStations.clear();
+    _locs.clear();
+    _blocks.clear();
+    _blockGroups.clear();
+    _junctions.clear();
+    _outputs.clear();
+    _routes.clear();
+    _sensors.clear();
+    _signals.clear();
+  }
+
   // Is a railway already loaded?
   bool isRailwayStateLoaded() => _railwayState != null;
 
@@ -68,6 +81,13 @@ class StateModel extends ChangeNotifier {
     ));
   }
 
+  Future<Empty> resetHardwareModule(String hardwareModuleID) async {
+    var stateClient = APIClient().stateClient();
+    return await stateClient.resetHardwareModule(IDRequest(
+      id: hardwareModuleID,
+    ));
+  }
+
   // Enable run mode
   Future<RailwayState> enableRunMode(
       {bool virtual = false, bool autoRun = false}) async {
@@ -83,6 +103,26 @@ class StateModel extends ChangeNotifier {
         EnableRunModeRequest(virtual: virtual, autoRun: autoRun));
     _railwayState = result;
     await _ensureFetchingChanges();
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
+  // Enable entity tester
+  Future<RailwayState> enableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.enableEntityTester(Empty());
+    _railwayState = result;
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
+  // Disable entity tester
+  Future<RailwayState> disableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.disableEntityTester(Empty());
+    _railwayState = result;
     // Notify listeners
     notifyListeners();
     return result;
@@ -221,6 +261,16 @@ class StateModel extends ChangeNotifier {
       locId: locId,
       blockId: blockId,
       blockSide: blockSide,
+    ));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
+  Future<RailwayState> putLocOnTrack(String locId) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.putLocOnTrack(PutLocOnTrackRequest(
+      locId: locId,
     ));
     _railwayState = result;
     notifyListeners();
@@ -370,6 +420,9 @@ class StateModel extends ChangeNotifier {
         }
       } catch (err) {
         print(err);
+      }
+      if (bootstrapOnly) {
+        break;
       }
     }
   }

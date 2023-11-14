@@ -23,6 +23,7 @@ option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
 
 import "br_state_types.proto";
 import "br_model_types.proto";
+import "br_model_service.proto";
 
 // StateService is used to get & modify the running state of the current
 // railway.
@@ -34,6 +35,11 @@ service StateService {
   rpc EnableRunMode(EnableRunModeRequest) returns (RailwayState);
   // Disable the run mode of the process, switching back to edit mode.
   rpc DisableRunMode(Empty) returns (RailwayState);
+
+  // Enable the entity tester.
+  rpc EnableEntityTester(Empty) returns (RailwayState);
+  // Disable the entity tester.
+  rpc DisableEntityTester(Empty) returns (RailwayState);
 
   // Fetch state changes when they happen
   rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
@@ -67,14 +73,19 @@ service StateService {
   // Assign a loc to a block
   rpc AssignLocToBlock(AssignLocToBlockRequest) returns (RailwayState);
 
-  // Remove a loc from the track
-  rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
+  // Put a loc onto the track
+  rpc PutLocOnTrack(PutLocOnTrackRequest) returns (RailwayState);
+
+    // Remove a loc from the track
+    rpc TakeLocOfTrack(TakeLocOfTrackRequest) returns (RailwayState);
 
   // Set the closed status of a block
   rpc SetBlockClosed(SetBlockClosedRequest) returns (BlockState);
 
   // Trigger a hardware discovery request
   rpc DiscoverHardware(DiscoverHardwareRequest) returns (DiscoverHardwareResponse);
+  // Request a reset of hardware module with given ID
+  rpc ResetHardwareModule(IDRequest) returns (Empty);
 }
 
 // Request arguments for EnableRunMode.
@@ -177,6 +188,11 @@ message AssignLocToBlockRequest {
   string block_id = 2;
   // Side of the block that the loc is facing
   BlockSide block_side = 3;
+}
+
+message PutLocOnTrackRequest {
+  // ID of loc to put on the track
+  string loc_id = 1;
 }
 
 message TakeLocOfTrackRequest {

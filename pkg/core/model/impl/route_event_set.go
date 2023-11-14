@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"slices"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -65,6 +66,48 @@ func (rs *routeEventSet) ForEach(cb func(model.RouteEvent)) {
 	for _, x := range rs.Items {
 		cb(x)
 	}
+}
+
+// Move the given item up by 1 entry.
+// Returns true if it was moved, false otherwise
+func (rs *routeEventSet) MoveUp(item model.RouteEvent) bool {
+	index := slices.IndexFunc(rs.Items, func(re *routeEvent) bool {
+		return re.GetSensor().GetID() == item.GetSensor().GetID()
+	})
+	if index < 0 {
+		// Not found
+		return false
+	}
+	if index == 0 {
+		// Already at top
+		return false
+	}
+	// Swap places
+	prev, x := rs.Items[index-1], rs.Items[index]
+	rs.Items[index-1] = x
+	rs.Items[index] = prev
+	return true
+}
+
+// Move the given item down by 1 entry.
+// Returns true if it was moved, false otherwise
+func (rs *routeEventSet) MoveDown(item model.RouteEvent) bool {
+	index := slices.IndexFunc(rs.Items, func(re *routeEvent) bool {
+		return re.GetSensor().GetID() == item.GetSensor().GetID()
+	})
+	if index < 0 {
+		// Not found
+		return false
+	}
+	if index >= len(rs.Items)-1 {
+		// Already at bottom
+		return false
+	}
+	// Swap places
+	next, x := rs.Items[index+1], rs.Items[index]
+	rs.Items[index+1] = x
+	rs.Items[index] = next
+	return true
 }
 
 // Remove the given item from this set.
