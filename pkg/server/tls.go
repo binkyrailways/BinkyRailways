@@ -32,6 +32,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"net"
 	"os"
 	"strings"
 	"time"
@@ -259,6 +260,7 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageAny | x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
+		IPAddresses:           []net.IP{net.ParseIP("192.168.77.1")},
 	}
 
 	if isCA {
