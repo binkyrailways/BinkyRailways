@@ -46,7 +46,7 @@ clean:
 .PHONY: binaries
 binaries: generate binaries-server
 
-.PHONY: binaries-server
+.PHONY: binaries-server 
 binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
@@ -57,11 +57,18 @@ binaries-server: generate pkg/core/model/predicates/parser.go
 		github.com/binkyrailways/BinkyRailways
 
 .PHONY: binaries-gui
-binaries-gui: 
+binaries-gui: binaries-web binaries-macos
+
+.PHONY: binaries-web
+binaries-web: 
+	cd apps/binky ; flutter build web
+
+.PHONY: binaries-macos
+binaries-macos: 
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter build web ; flutter build macos
+		cd apps/binky ; flutter build macos
 		open apps/binky/build/macos/Build/Products/Release/
 
 .PHONY: develop-gui
