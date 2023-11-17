@@ -21,9 +21,9 @@ Next, install the TLS certificate as trusted certificate:
 
 ```bash
 # For local
-curl -k https://localhost:18033/tls/cert.pem > binky-ca.pem
+curl -k https://localhost:18033/tls/ca.pem > binky-ca.pem
 # For remote
-curl -k https://192.168.77.1:18033/tls/cert.pem > binky-ca.pem
+curl -k https://192.168.77.1:18033/tls/ca.pem > binky-ca.pem
 # Install on MacOS
 sudo /usr/bin/security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain binky-ca.pem
 ```

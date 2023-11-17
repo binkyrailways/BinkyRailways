@@ -73,7 +73,8 @@ func init() {
 	f.StringVar(&rootArgs.server.PublishedHostIP, "published-host", "", "IP Address of the current host that we publish on")
 	f.StringVar(&rootArgs.server.PublishedHostDNSName, "published-hostname", "localhost", "Full DNS name of the current host that we publish on")
 	f.StringVar(&rootArgs.server.CertificatePath, "certificate-path", "cert.json", "Certificate file path")
-	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18033, "Port number to serve HTTP on")
+	f.IntVar(&rootArgs.server.HTTPPort, "http-port", 18032, "Port number to serve HTTP on")
+	f.IntVar(&rootArgs.server.HTTPSPort, "https-port", 18033, "Port number to serve HTTPS on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	f.StringVar(&rootArgs.server.LokiURL, "loki-url", "", "URL of loki")
 	f.IntVar(&rootArgs.server.LokiPort, "loki-port", 13100, "Port to serve Loki requests on")
@@ -127,10 +128,10 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	if err != nil {
 		cliLog.Fatal().Err(err).Msg("Prometheus config builder construction failed")
 	}
-	pcb.RegisterTarget("binkyrailways", rootArgs.hostNameFromPrometheus, rootArgs.server.HTTPPort, false)
+	pcb.RegisterTarget("binkyrailways", rootArgs.hostNameFromPrometheus, rootArgs.server.HTTPSPort, false)
 
 	// Construct the service
-	rootArgs.app.HTTPPort = rootArgs.server.HTTPPort
+	rootArgs.app.HTTPPort = rootArgs.server.HTTPSPort
 	rootArgs.app.HTTPSecure = true
 	svc, err := service.New(rootArgs.app, service.Dependencies{
 		Logger:                  cliLog,
@@ -172,7 +173,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 			Secure:     false,
 		})
 	})
-	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHostDNSName, rootArgs.server.HTTPPort, rootArgs.server.PublishedHostDNSName, rootArgs.server.GRPCPort)
+	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHostDNSName, rootArgs.server.HTTPSPort, rootArgs.server.PublishedHostDNSName, rootArgs.server.GRPCPort)
 	if err := g.Wait(); err != nil {
 		cliLog.Fatal().Err(err).Msg("Application failed")
 	}
