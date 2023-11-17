@@ -39,8 +39,10 @@ import (
 type Config struct {
 	// Host interface to listen on
 	Host string
-	// Address of the current host that we publish on
-	PublishedHost string
+	// IP Address of the current host that we publish on
+	PublishedHostIP string
+	// Full DNS name of the current host that we publish on
+	PublishedHostDNSName string
 	// File path used to store TLS certificate
 	CertificatePath string
 	// Port to listen on for HTTP requests
@@ -49,7 +51,7 @@ type Config struct {
 	GRPCPort int
 	// Port to listen on for Loki requests
 	LokiPort int
-	// URL to proxy loki requests to
+	// URL to proxy loki requests to (do not proxy if empty)
 	LokiURL string
 	// If set, the web application is served from live filesystem instead of embedding.
 	WebDevelopment bool
@@ -90,7 +92,7 @@ func (s *Server) Run(ctx context.Context) error {
 	log := s.log
 
 	// Prepare TLS config
-	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHost, s.CertificatePath)
+	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHostIP, s.PublishedHostDNSName, s.CertificatePath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to prepare self signed certificate")
 	}
@@ -118,15 +120,10 @@ func (s *Server) Run(ctx context.Context) error {
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to listen on address %s", lokiAddr)
 	}
-	/*lokiUrl, err := url.Parse(s.LokiURL)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to parse loki URL: %s", s.LokiURL)
-	}*/
 	lokiRouter := echo.New()
 	lokiRouter.POST("/loki/api/v1/push", s.handlePushLokiRequest)
 	lokiSrv := &http.Server{
 		Handler: lokiRouter,
-		//Handler: httputil.NewSingleHostReverseProxy(lokiUrl),
 	}
 
 	// Prepare GRPC server

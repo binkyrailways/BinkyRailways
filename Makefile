@@ -121,6 +121,7 @@ deploy:
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl daemon-reload
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl stop binkyrailways
 	scp bin/linux/arm/binky-server $(BINKYHOSTUSER)@$(BINKYHOST):/home/$(BINKYHOSTUSER)/binky-server
+	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo touch /home/$(BINKYHOSTUSER)/binky-server.env
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl restart binkyrailways
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl enable binkyrailways
 

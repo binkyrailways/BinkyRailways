@@ -83,7 +83,7 @@ func saveCertificateToFile(info certificateStorage, path string) error {
 
 // createSelfSignedCertificate creates a self-signed TLS certificate and
 // returns <a tls Config with that certificate>, <ca pem encoded>, <error>.
-func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath string) (*tls.Config, string, error) {
+func createSelfSignedCertificate(log zerolog.Logger, publishedHostIP, publishedHostDNSName, storagePath string) (*tls.Config, string, error) {
 	// Try to load from file first
 	stg, err := loadCertificateFromFile(storagePath)
 	if err == nil {
@@ -105,7 +105,7 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath 
 	}
 
 	// Create a CA
-	pubCA, privCA, err := createCertificate(publishedHost, nil)
+	pubCA, privCA, err := createCertificate(publishedHostIP, publishedHostDNSName, nil)
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to create CA: %w", err)
 	}
@@ -114,7 +114,7 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHost, storagePath 
 		return nil, "", fmt.Errorf("failed to load CA: %w", err)
 	}
 	// Create cert
-	pub, priv, err := createCertificate(publishedHost, &ca)
+	pub, priv, err := createCertificate(publishedHostIP, publishedHostDNSName, &ca)
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to create certificate: %w", err)
 	}
@@ -226,7 +226,7 @@ func parsePrivateKey(der []byte) (crypto.PrivateKey, error) {
 
 // Create a TLS x509 certificate.
 // Returns: publicKey, privateKey, error
-func createCertificate(publishedHost string, ca *CA) (string, string, error) {
+func createCertificate(publishedHostIP, publishedHostDNSName string, ca *CA) (string, string, error) {
 	isCA := ca == nil
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
@@ -234,7 +234,7 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 	}
 
 	notBefore := time.Now()
-	notAfter := notBefore.Add(time.Hour * 24 * 30)
+	notAfter := notBefore.AddDate(10, 0, 0)
 	if isCA {
 		notAfter = notBefore.AddDate(25, 0, 0)
 	}
@@ -246,7 +246,7 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 	}
 
 	var subject pkix.Name
-	subject.CommonName = publishedHost
+	subject.CommonName = publishedHostDNSName
 	subject.Organization = []string{"BinkyRailways"}
 	if isCA {
 		subject.Organization[0] += " (CA)"
@@ -260,7 +260,8 @@ func createCertificate(publishedHost string, ca *CA) (string, string, error) {
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageAny | x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
-		IPAddresses:           []net.IP{net.ParseIP("192.168.77.1")},
+		DNSNames:              []string{publishedHostDNSName},
+		IPAddresses:           []net.IP{net.ParseIP(publishedHostIP)},
 	}
 
 	if isCA {

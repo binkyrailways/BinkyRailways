@@ -17,5 +17,16 @@ make
 ./bin/<os>/<architecture>/binky-server
 ```
 
+Next, install the TLS certificate as trusted certificate:
+
+```bash
+# For local
+curl -k https://localhost:18033/tls/cert.pem > binky-ca.pem
+# For remote
+curl -k https://192.168.77.1:18033/tls/cert.pem > binky-ca.pem
+# Install on MacOS
+sudo /usr/bin/security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain binky-ca.pem
+```
+
 Then connect to https://localhost:18033
 (accept the self-signed certificate).

@@ -146,6 +146,10 @@ func (pcb *PrometheusConfigBuilder) rebuildConfig() error {
 
 // triggerReloadConfig invokes a reload of prometheus
 func (pcb *PrometheusConfigBuilder) triggerReloadConfig() error {
+	if pcb.promURL == "" {
+		// Nothing to reload
+		return nil
+	}
 	url := strings.TrimSuffix(pcb.promURL, "/") + "/-/reload"
 	_, err := http.DefaultClient.Post(url, "text/plain", strings.NewReader(""))
 	return err

@@ -33,5 +33,5 @@ Open <a href="binkyrailways://%HOST%">BinkyRailways</a>.
 )
 
 func (s *Server) handleGetIndex(c echo.Context) error {
-	return c.HTML(http.StatusOK, strings.Replace(indexHTML, "%HOST", s.PublishedHost, -1))
+	return c.HTML(http.StatusOK, strings.Replace(indexHTML, "%HOST", s.PublishedHostDNSName, -1))
 }
