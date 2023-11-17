@@ -61,7 +61,7 @@ binaries-gui: binaries-web binaries-macos
 
 .PHONY: binaries-web
 binaries-web: 
-	cd apps/binky ; flutter build web
+	cd apps/binky ; flutter build web --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/
 
 .PHONY: binaries-macos
 binaries-macos: 
