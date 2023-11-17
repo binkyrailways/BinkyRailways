@@ -12,7 +12,8 @@ ExecStart=/home/pi/binky-server \
   --loki-url=${LOKI_URL} \
   --prom-url=${PROMETHEUS_URL} \
   --published-host=${PUBLISHED_HOST_IP} \
-  --published-hostname=${PUBLISHED_HOST_DNS}
+  --published-hostname=${PUBLISHED_HOST_DNS} \
+  --http-port=80
 EnvironmentFile=/home/pi/binky-server.env
 Restart=on-failure
 
