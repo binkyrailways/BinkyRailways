@@ -455,12 +455,14 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw st
 		// Unknown direction
 		return
 	}
+	isLocked := sw.GetLockedBy(ctx) != nil
 	requestedSwitchDirectionGauge.WithLabelValues(string(addr)).Set(float64(direction))
 	sendSwitchDirectionCounter.WithLabelValues(string(addr)).Inc()
 	cs.manager.SetSwitchRequest(bn.Switch{
 		Address: addr,
 		Request: &bn.SwitchState{
 			Direction: direction,
+			IsUsed:    isLocked,
 		},
 	})
 }

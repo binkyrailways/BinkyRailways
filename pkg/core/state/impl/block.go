@@ -53,9 +53,12 @@ func newBlock(en model.Block, railway Railway) Block {
 			cb(x)
 		}
 		return nil
-	}, func(ctx context.Context) {
-		// OnUnlock
-		b.updateClosed(ctx)
+	})
+	b.SubscribeLockedByChanges(func(ctx context.Context, owner state.Loc) {
+		if owner == nil {
+			// Unlocked
+			b.updateClosed(ctx)
+		}
 	})
 	b.closed.Configure("closed", b, railway, railway)
 	b.closed.SubscribeRequestChanges(func(ctx context.Context, value bool) {

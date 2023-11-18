@@ -34,7 +34,7 @@ type Lockable interface {
 type lockable struct {
 	this            state.Lockable
 	iterateChildren func(context.Context, func(state.Lockable) error) error
-	onUnlocked      []func(context.Context)
+	lockedByChanges util.SliceWithIdEntries[func(context.Context, state.Loc)]
 
 	exclusive util.Exclusive
 	lockedBy  Loc
@@ -47,12 +47,11 @@ const (
 )
 
 // newLockable initializes a new lockable
-func newLockable(exclusive util.Exclusive, this state.Lockable, iterateChildren func(context.Context, func(state.Lockable) error) error, onUnlocked ...func(context.Context)) lockable {
+func newLockable(exclusive util.Exclusive, this state.Lockable, iterateChildren func(context.Context, func(state.Lockable) error) error) lockable {
 	return lockable{
 		this:            this,
 		exclusive:       exclusive,
 		iterateChildren: iterateChildren,
-		onUnlocked:      onUnlocked,
 	}
 }
 
@@ -140,6 +139,9 @@ func (l *lockable) Lock(ctx context.Context, owner state.Loc) error {
 			}
 			return err
 		}
+		for _, cb := range l.lockedByChanges {
+			cb.Value(ctx, owner)
+		}
 		return nil
 	})
 }
@@ -164,8 +166,8 @@ func (l *lockable) Unlock(ctx context.Context, exclusion state.Lockable) {
 		}
 		// TODO
 		//		OnActualStateChanged();
-		for _, cb := range l.onUnlocked {
-			cb(ctx)
+		for _, cb := range l.lockedByChanges {
+			cb.Value(ctx, nil)
 		}
 		return nil
 	})
@@ -190,4 +192,16 @@ func (l *lockable) excludeMe(ctx context.Context, exclusion state.Lockable) bool
 		return contains
 	}
 	return false
+}
+
+// Subscribe to changes in LockedBy status.
+// Given callback is called with a nil loc when this object is unlocked or a non-nil loc
+// when this object is locked by the specified loc.
+func (l *lockable) SubscribeLockedByChanges(cb func(context.Context, state.Loc)) context.CancelFunc {
+	var cancel context.CancelFunc
+	l.exclusive.Exclusive(context.Background(), subscribeTimeout, "bool.SubscribeLockedByChanges", func(c context.Context) error {
+		cancel = l.lockedByChanges.Append(cb)
+		return nil
+	})
+	return cancel
 }
