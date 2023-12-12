@@ -54,11 +54,12 @@ const BinkyNetObjectType$json = const {
     const {'1': 'SERVOSWITCH', '2': 2},
     const {'1': 'RELAYSWITCH', '2': 3},
     const {'1': 'TRACKINVERTER', '2': 4},
+    const {'1': 'MAGNETICSWITCH', '2': 5},
   ],
 };
 
 /// Descriptor for `BinkyNetObjectType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List binkyNetObjectTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldE9iamVjdFR5cGUSEAoMQklOQVJZU0VOU09SEAASEAoMQklOQVJZT1VUUFVUEAESDwoLU0VSVk9TV0lUQ0gQAhIPCgtSRUxBWVNXSVRDSBADEhEKDVRSQUNLSU5WRVJURVIQBA==');
+final $typed_data.Uint8List binkyNetObjectTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldE9iamVjdFR5cGUSEAoMQklOQVJZU0VOU09SEAASEAoMQklOQVJZT1VUUFVUEAESDwoLU0VSVk9TV0lUQ0gQAhIPCgtSRUxBWVNXSVRDSBADEhEKDVRSQUNLSU5WRVJURVIQBBISCg5NQUdORVRJQ1NXSVRDSBAF');
 @$core.Deprecated('Use switchDirectionDescriptor instead')
 const SwitchDirection$json = const {
   '1': 'SwitchDirection',

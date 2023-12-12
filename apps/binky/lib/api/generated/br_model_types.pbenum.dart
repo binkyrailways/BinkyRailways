@@ -68,6 +68,7 @@ class BinkyNetObjectType extends $pb.ProtobufEnum {
   static const BinkyNetObjectType SERVOSWITCH = BinkyNetObjectType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SERVOSWITCH');
   static const BinkyNetObjectType RELAYSWITCH = BinkyNetObjectType._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'RELAYSWITCH');
   static const BinkyNetObjectType TRACKINVERTER = BinkyNetObjectType._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TRACKINVERTER');
+  static const BinkyNetObjectType MAGNETICSWITCH = BinkyNetObjectType._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MAGNETICSWITCH');
 
   static const $core.List<BinkyNetObjectType> values = <BinkyNetObjectType> [
     BINARYSENSOR,
@@ -75,6 +76,7 @@ class BinkyNetObjectType extends $pb.ProtobufEnum {
     SERVOSWITCH,
     RELAYSWITCH,
     TRACKINVERTER,
+    MAGNETICSWITCH,
   ];
 
   static final $core.Map<$core.int, BinkyNetObjectType> _byValue = $pb.ProtobufEnum.initByValue(values);

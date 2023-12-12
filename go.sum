@@ -69,6 +69,8 @@ github.com/binkynet/BinkyNet v1.4.1 h1:G6rtKqo7a8SfGx5kpcJiD/iPSdmkwa2JY1TJUlIGH
 github.com/binkynet/BinkyNet v1.4.1/go.mod h1:IGWTutjIzojoVPxVXRc1Ts1bAfyGxKw16u+zL4rqS1Q=
 github.com/binkynet/BinkyNet v1.4.2 h1:UZvrV6lN8nQfP7Mt00uWC8jYY99mx8giWq2mdRlohYk=
 github.com/binkynet/BinkyNet v1.4.2/go.mod h1:IGWTutjIzojoVPxVXRc1Ts1bAfyGxKw16u+zL4rqS1Q=
+github.com/binkynet/BinkyNet v1.5.0 h1:ifzkgWIS2gkHjJDWnVpTwNEsILoDnLIgUY+yfjrK/a8=
+github.com/binkynet/BinkyNet v1.5.0/go.mod h1:IGWTutjIzojoVPxVXRc1Ts1bAfyGxKw16u+zL4rqS1Q=
 github.com/binkynet/NetManager v1.0.2 h1:rQnxEG7yGD/7zKe3DM6jAsse042WGU743vdmSisKn84=
 github.com/binkynet/NetManager v1.0.2/go.mod h1:kb5Ve9mjc6V9MJnQd+vMjoknba+e5bdztldWcSyuUuY=
 github.com/binkynet/NetManager v1.0.3 h1:mBK1OuVcImURdrZLL1yA51FgXInu5VQfaJxGmmyPKaM=

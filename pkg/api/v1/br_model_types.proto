@@ -318,6 +318,9 @@ enum BinkyNetObjectType {
   // ObjectTypeTrackInverter is the object type of a four relay based track
   // power inverter.
   TRACKINVERTER = 4;
+	// ObjectTypeMagneticSwitch is the object type of switch that a single magnetic coil per direction.
+	// The coil has to stay activated.
+	MAGNETICSWITCH = 5;
 }
 
 // BinkyNetConnection represents a connection from a BinkyNetObject to a

@@ -36,6 +36,8 @@ func (dst *BinkyNetObjectType) FromModel(ctx context.Context, src api.ObjectType
 		*dst = BinkyNetObjectType_SERVOSWITCH
 	case api.ObjectTypeTrackInverter:
 		*dst = BinkyNetObjectType_TRACKINVERTER
+	case api.ObjectTypeMagneticSwitch:
+		*dst = BinkyNetObjectType_MAGNETICSWITCH
 	}
 	return nil
 }
@@ -53,6 +55,8 @@ func (src BinkyNetObjectType) ToModel(ctx context.Context) (api.ObjectType, erro
 		return api.ObjectTypeServoSwitch, nil
 	case BinkyNetObjectType_TRACKINVERTER:
 		return api.ObjectTypeTrackInverter, nil
+	case BinkyNetObjectType_MAGNETICSWITCH:
+		return api.ObjectTypeMagneticSwitch, nil
 	}
 	return api.ObjectTypeBinaryOutput, InvalidArgument("Unknown BinkyNetObjectType: %s", src)
 }
