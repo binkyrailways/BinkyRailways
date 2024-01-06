@@ -70,9 +70,13 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 				return
 			}
 			o := &api.Object{
-				Id:   objModel.GetObjectID(),
-				Type: objModel.GetObjectType(),
+				Id:            objModel.GetObjectID(),
+				Type:          objModel.GetObjectType(),
+				Configuration: make(map[api.ObjectConfigKey]string),
 			}
+			objModel.GetConfiguration().ForEach(func(k, v string) {
+				o.Configuration[api.ObjectConfigKey(k)] = v
+			})
 			objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
 				if allPinsHaveNoDevice(cm) {
 					// No device configured for this connection, ignore it

@@ -33,9 +33,10 @@ type binkyNetObject struct {
 
 type binkyNetObjectFields struct {
 	entity
-	ObjectID    api.ObjectID          `xml:"ObjectID,omitempty"`
-	Type        api.ObjectType        `xml:"Type,omitempty"`
-	Connections binkyNetConnectionSet `xml:"Connections"`
+	ObjectID      api.ObjectID                `xml:"ObjectID,omitempty"`
+	Type          api.ObjectType              `xml:"Type,omitempty"`
+	Connections   binkyNetConnectionSet       `xml:"Connections"`
+	Configuration binkyNetObjectConfiguration `xml:"Configuration"`
 }
 
 var _ model.BinkyNetObject = &binkyNetObject{}
@@ -45,6 +46,7 @@ func newBinkyNetObject() *binkyNetObject {
 	o := &binkyNetObject{}
 	o.EnsureID()
 	o.Connections.SetContainer(o)
+	o.Configuration.SetContainer(o)
 	return o
 }
 
@@ -54,6 +56,9 @@ func (o *binkyNetObject) UnmarshalXML(d *xml.Decoder, start xml.StartElement) er
 		return err
 	}
 	o.Connections.SetContainer(o)
+	o.Configuration.SetContainer(o)
+	opt := o.Type.ExpectedConfigurations()
+	o.ensureConfiguration(opt)
 	return nil
 }
 
@@ -125,6 +130,8 @@ func (o *binkyNetObject) GetObjectType() api.ObjectType {
 func (o *binkyNetObject) SetObjectType(ctx context.Context, value api.ObjectType) error {
 	if o.Type != value {
 		o.Type = value
+		opt := o.Type.ExpectedConfigurations()
+		o.ensureConfiguration(opt)
 		o.ensureConnectionsForType()
 		o.OnModified()
 	}
@@ -142,6 +149,37 @@ func (o *binkyNetObject) ensureConnectionsForType() {
 // The keys used in this map are specific to the type of object.
 func (o *binkyNetObject) GetConnections() model.BinkyNetConnectionSet {
 	return &o.Connections
+}
+
+// Gets optional configuration for this object.
+func (o *binkyNetObject) GetConfiguration() model.BinkyNetObjectConfiguration {
+	return &o.Configuration
+}
+
+// ensureConfiguration ensures that a configuration entry exists for all of the given keys.
+// Also remove all other keys with a default value.
+func (o *binkyNetObject) ensureConfiguration(keys []api.ObjectConfigKey) {
+	// Ensure values
+	for _, key := range keys {
+		if _, found := o.Configuration.Get(string(key)); !found {
+			o.Configuration.Set(string(key), key.DefaultValue())
+		}
+	}
+	// Remove empty unexpected configurations
+	isExpected := func(key api.ObjectConfigKey) bool {
+		for _, x := range keys {
+			if x == key {
+				return true
+			}
+		}
+		return false
+	}
+	for _, e := range o.Configuration.Data {
+		key := api.ObjectConfigKey(e.Key)
+		if !isExpected(key) && key.DefaultValue() == e.Value {
+			o.Configuration.Remove(e.Key)
+		}
+	}
 }
 
 // OnModified triggers the modified function of the parent (if any)

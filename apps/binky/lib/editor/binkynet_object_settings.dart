@@ -116,6 +116,19 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
         items: _objectTypeItems,
       ),
     ];
+
+    final configuration = widget.binkynetobject.configuration;
+    final configurationKeys = configuration.keys.toList();
+    configurationKeys.sort();
+    for (var key in configurationKeys) {
+      children.add(Container(
+          padding: const EdgeInsets.only(left: 5),
+          child: _BinkyNetObjectConfigKeyValueSettings(
+              binkynetobject: widget.binkynetobject,
+              configKey: key,
+              update: _update)));
+    }
+
     final connections = widget.binkynetobject.connections.toList();
     connections.sort((a, b) => a.key.compareTo(b.key));
     for (var i = 0; i < connections.length; i++) {
@@ -374,6 +387,82 @@ class _BinkyNetConfigKeyValueSettingsState
             onLostFocus: (value) async {
               await widget.update(
                   (update) => {update.configuration[widget.configKey] = value});
+            });
+    }
+  }
+}
+
+class _BinkyNetObjectConfigKeyValueSettings extends StatefulWidget {
+  final BinkyNetObject binkynetobject;
+  final String configKey;
+  final Future<void> Function(void Function(BinkyNetObject)) update;
+
+  const _BinkyNetObjectConfigKeyValueSettings(
+      {Key? key,
+      required this.binkynetobject,
+      required this.configKey,
+      required this.update})
+      : super(key: key);
+
+  @override
+  State<_BinkyNetObjectConfigKeyValueSettings> createState() =>
+      _BinkyNetObjectConfigKeyValueSettingsState();
+}
+
+class _BinkyNetObjectConfigKeyValueSettingsState
+    extends State<_BinkyNetObjectConfigKeyValueSettings> {
+  final TextEditingController _valueController = TextEditingController();
+
+  void _initConrollers() {
+    _valueController.text =
+        widget.binkynetobject.configuration[widget.configKey] ?? "";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initConrollers();
+  }
+
+  @override
+  void didUpdateWidget(
+      covariant _BinkyNetObjectConfigKeyValueSettings oldWidget) {
+    _initConrollers();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [_buildChild(context)],
+    );
+  }
+
+  Widget _buildChild(BuildContext context) {
+    switch (widget.configKey) {
+      case "debug":
+      case "magnetic-always-enabled":
+      case "magnetic-straight-invert":
+      case "magnetic-off-invert":
+        var strValue =
+            (widget.binkynetobject.configuration[widget.configKey] ?? "")
+                .toLowerCase();
+        var boolValue = (strValue == "true") || (strValue == "1");
+        return SettingsCheckBoxField(
+          label: "config: ${widget.configKey.titleCase}",
+          value: boolValue,
+          onChanged: (value) async {
+            await widget.update((update) =>
+                update.configuration[widget.configKey] = value.toString());
+          },
+        );
+      default:
+        return SettingsTextField(
+            controller: _valueController,
+            label: "config: ${widget.configKey.titleCase}",
+            onLostFocus: (value) async {
+              await widget.update(
+                  (update) => update.configuration[widget.configKey] = value);
             });
     }
   }
