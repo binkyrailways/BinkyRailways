@@ -633,6 +633,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastUpdatedAt')
     ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'errorMessages')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondsSinceLastUpdated')
     ..hasRequiredFields = false
   ;
 
@@ -643,6 +644,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.String? lastUpdatedAt,
     $core.Iterable<$core.String>? errorMessages,
     $core.String? address,
+    $fixnum.Int64? secondsSinceLastUpdated,
   }) {
     final _result = create();
     if (id != null) {
@@ -659,6 +661,9 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (secondsSinceLastUpdated != null) {
+      _result.secondsSinceLastUpdated = secondsSinceLastUpdated;
     }
     return _result;
   }
@@ -721,6 +726,15 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasAddress() => $_has(4);
   @$pb.TagNumber(5)
   void clearAddress() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $fixnum.Int64 get secondsSinceLastUpdated => $_getI64(5);
+  @$pb.TagNumber(6)
+  set secondsSinceLastUpdated($fixnum.Int64 v) { $_setInt64(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasSecondsSinceLastUpdated() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearSecondsSinceLastUpdated() => clearField(6);
 }
 
 class BlockState extends $pb.GeneratedMessage {

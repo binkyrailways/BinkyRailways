@@ -28,14 +28,11 @@ class HardwareModulePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastUpdatedAt = DateTime.tryParse(hardwareModule.lastUpdatedAt);
-    final lastUpdatedSince = (lastUpdatedAt != null)
-        ? DateTime.now().difference(lastUpdatedAt)
-        : const Duration(days: 1);
+    final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
         ? Colors.redAccent
-        : (lastUpdatedSince.inSeconds < 30)
+        : (secondsSinceLastUpdate < 30)
             ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.purple)
             : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.purple);
     return Container(
@@ -49,7 +46,8 @@ class HardwareModulePane extends StatelessWidget {
               ? hardwareModule.errorMessages.join(".\n")
               : "No errors",
           preferBelow: false,
-          child: Text("${hardwareModule.id} up:${hardwareModule.uptime}"),
+          child: Text(
+              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
         ),
         onPressed: () async {
           final stateModel = Provider.of<StateModel>(context, listen: false);

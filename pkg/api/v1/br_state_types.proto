@@ -222,6 +222,8 @@ message HardwareModule {
   repeated string error_messages = 4;
   // IP address of this module (if any)
   string address = 5;
+  // Seconds since the module sent it's last ping update
+  int64 seconds_since_last_updated = 6;
 }
 
 // State of a single block
