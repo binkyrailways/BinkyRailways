@@ -106,6 +106,10 @@ class _AppPageState extends State<AppPage> {
                       const Text('Loading railway entry...'),
                       const CircularProgressIndicator(value: null)
                     ];
+              if (snapshot.hasError) {
+                Timer(
+                    const Duration(seconds: 2), () => model.getRailwayEntry());
+              }
               return Scaffold(
                 appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
