@@ -51,6 +51,7 @@ type binkyNetCommandStation struct {
 const (
 	onActualTimeout       = time.Millisecond
 	netManagerChanTimeout = time.Second
+	dccModuleID           = "dcc"
 )
 
 // Create a new entity
@@ -563,6 +564,8 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			if unconfigured > 0 {
 				lwm.ErrorMessages = append(lwm.ErrorMessages, fmt.Sprintf("%d unconfigured objects", unconfigured))
 			}
+		} else if info.GetId() == dccModuleID {
+			// DCC module is well known
 		} else {
 			lwm.ErrorMessages = []string{"Undefined local worker"}
 		}
