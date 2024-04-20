@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"time"
 
+	apiutil "github.com/binkynet/BinkyNet/apis/util"
 	bn "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/NetManager/service"
 	"github.com/binkynet/NetManager/service/manager"
@@ -58,6 +59,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 		commandStation:      newCommandStation(en, railway),
 		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
+	cs.log = cs.log.With().Str("component", "bncs").Logger()
 	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
@@ -72,6 +74,7 @@ func (cs *binkyNetCommandStation) getCommandStation() model.BinkyNetCommandStati
 // Returns nil when the entity is successfully prepared,
 // returns an error otherwise.
 func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.UserInterface, _ state.Persistence) error {
+	log := cs.log
 	var err error
 	serverHost, err := util.FindServerHostAddress(cs.getCommandStation().GetServerHost())
 	if err != nil {
@@ -81,7 +84,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	registry := newBinkyNetConfigRegistry(cs.getCommandStation().GetLocalWorkers(),
 		cs.onUnknownLocalWorker, cs.isObjectUsed)
 	cs.manager, err = manager.New(manager.Dependencies{
-		Log:              cs.log,
+		Log:              log,
 		ReconfigureQueue: cs.reconfigureQueue,
 	})
 	if err != nil {
@@ -89,14 +92,14 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	}
 	registry.ForEach(ctx, func(ctx context.Context, lw bn.LocalWorker) error {
 		lw.Request.Hash = lw.GetRequest().Sha1()
-		cs.log.Info().Str("hash", lw.GetRequest().GetHash()).Msg("Setting local worker request")
+		log.Info().Str("hash", lw.GetRequest().GetHash()).Msg("Setting local worker request")
 		return cs.manager.SetLocalWorkerRequest(ctx, lw)
 	})
 	//registry
 	cs.service, err = service.NewService(service.Config{
 		RequiredWorkerVersion: cs.getCommandStation().GetRequiredWorkerVersion(),
 	}, service.Dependencies{
-		Log:     cs.log,
+		Log:     log,
 		Manager: cs.manager,
 	})
 	if err != nil {
@@ -105,7 +108,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	cs.server, err = server.NewServer(server.Config{
 		Host:     serverHost,
 		GRPCPort: cs.getCommandStation().GetGRPCPort(),
-	}, cs.service, cs.log)
+	}, cs.service, log)
 	if err != nil {
 		return err
 	}
@@ -113,8 +116,22 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 	cs.cancel = cancel
 	g, ctx := errgroup.WithContext(ctx)
 	ctx = bn.WithServiceInfoHost(ctx, serverHost)
-	g.Go(func() error { return cs.manager.Run(ctx) })
-	g.Go(func() error { return cs.server.Run(ctx) })
+	g.Go(func() (result error) {
+		defer func() {
+			log.Info().Err(result).Msg("Binky NetManager ended")
+		}()
+		err := cs.manager.Run(ctx)
+		result = apiutil.ContextCanceledOrUnexpected(ctx, err, "Binky NetManager")
+		return
+	})
+	g.Go(func() (result error) {
+		defer func() {
+			log.Info().Err(result).Msg("Binky NetManager.Server ended")
+		}()
+		err := cs.server.Run(ctx)
+		result = apiutil.ContextCanceledOrUnexpected(ctx, err, "Binky NetManager.Server")
+		return
+	})
 	g.Go(func() error { cs.runSendLocSpeedAndDirection(ctx); return nil })
 	g.Go(func() error { cs.runSendOutputActive(ctx); return nil })
 	g.Go(func() error { cs.runSendSwitchDirection(ctx); return nil })
@@ -176,7 +193,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 			select {
 			case actual := <-actuals:
 				cs.railway.Exclusive(ctx, onActualTimeout, "onOutputActualChange", func(ctx context.Context) error {
-					cs.log.Debug().
+					log.Debug().
 						Str("address", string(actual.Address)).
 						Msg("output actual update")
 					cs.onOutputActual(ctx, actual)
