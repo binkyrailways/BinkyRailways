@@ -1,10 +1,10 @@
 module github.com/binkyrailways/BinkyRailways
 
-go 1.21.2
+go 1.21.6
 
 require (
-	github.com/binkynet/BinkyNet v1.7.2
-	github.com/binkynet/NetManager v1.5.2
+	github.com/binkynet/BinkyNet v1.8.0
+	github.com/binkynet/NetManager v1.6.0
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
@@ -16,11 +16,11 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.8.1
 	go.uber.org/multierr v1.6.0
-	golang.org/x/crypto v0.14.0
-	golang.org/x/net v0.17.0
+	golang.org/x/crypto v0.18.0
+	golang.org/x/net v0.20.0
 	golang.org/x/sync v0.3.0
-	golang.org/x/sys v0.15.0
-	golang.org/x/text v0.13.0
+	golang.org/x/sys v0.16.0
+	golang.org/x/text v0.14.0
 	google.golang.org/grpc v1.53.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -46,9 +46,9 @@ require (
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/prometheus/client_golang v1.18.0 // indirect
+	github.com/prometheus/client_golang v1.19.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
-	github.com/prometheus/common v0.45.0 // indirect
+	github.com/prometheus/common v0.48.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/pulcy/go-terminate v0.0.0-20160630075856-d486fe7ee814 // indirect
 	github.com/rs/cors v1.7.0 // indirect
@@ -61,6 +61,6 @@ require (
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230216225411-c8e22ba71e44 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
 	nhooyr.io/websocket v1.8.6 // indirect
 )
