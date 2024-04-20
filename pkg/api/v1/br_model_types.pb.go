@@ -2892,8 +2892,8 @@ type Route struct {
 	// highest probability will have the highest chance or being chosen.
 	// <value>0..100</value>
 	ChooseProbability int32 `protobuf:"varint,11,opt,name=choose_probability,json=chooseProbability,proto3" json:"choose_probability,omitempty"`
-	/// Gets the predicate used to decide which locs are allowed to use this
-	/// route.
+	// / Gets the predicate used to decide which locs are allowed to use this
+	// / route.
 	Permissions string `protobuf:"bytes,12,opt,name=permissions,proto3" json:"permissions,omitempty"`
 	// Is this rout open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.
