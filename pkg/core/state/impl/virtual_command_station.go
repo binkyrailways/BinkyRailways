@@ -173,3 +173,9 @@ func (hm *virtualHardwareModule) HasAddress() bool {
 func (hm *virtualHardwareModule) GetAddress() string {
 	return ""
 }
+
+// Request a reset of hardware module with given ID
+func (cs *virtualCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
+}

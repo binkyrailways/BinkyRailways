@@ -101,3 +101,9 @@ func (cs *locoBufferCommandStation) TriggerDiscover(ctx context.Context, hardwar
 func (cs *locoBufferCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
 	// No modules
 }
+
+// Request a reset of hardware module with given ID
+func (cs *locoBufferCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
+}

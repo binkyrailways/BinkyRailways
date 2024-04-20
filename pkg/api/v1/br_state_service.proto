@@ -23,6 +23,7 @@ option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
 
 import "br_state_types.proto";
 import "br_model_types.proto";
+import "br_model_service.proto";
 
 // StateService is used to get & modify the running state of the current
 // railway.
@@ -75,6 +76,8 @@ service StateService {
 
   // Trigger a hardware discovery request
   rpc DiscoverHardware(DiscoverHardwareRequest) returns (DiscoverHardwareResponse);
+  // Request a reset of hardware module with given ID
+  rpc ResetHardwareModule(IDRequest) returns (Empty);
 }
 
 // Request arguments for EnableRunMode.

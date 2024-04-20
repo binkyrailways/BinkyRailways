@@ -107,6 +107,8 @@ github.com/binkynet/NetManager v1.5.2 h1:PgP6Rrs9CYbdUUfWESEBiWJTvIwwBI9rg/SdYSZ
 github.com/binkynet/NetManager v1.5.2/go.mod h1:49uu5KeupXUOy0iULHfFwY/tiCRCmTstK1RXHREcqw8=
 github.com/binkynet/NetManager v1.6.0 h1:XZ7WZoAKMzmCjQ23zwfFwsbd7PWDVnxAUitCgP+wQuw=
 github.com/binkynet/NetManager v1.6.0/go.mod h1:ZMGWyZCAU+l0szv3zhU3XvkzawVgfbmGLTXYkUIjnHo=
+github.com/binkynet/NetManager v1.6.1 h1:xoGoDLosV6ZYp62jBrXViMUHucwzVge4OE2atc3JkfY=
+github.com/binkynet/NetManager v1.6.1/go.mod h1:ZMGWyZCAU+l0szv3zhU3XvkzawVgfbmGLTXYkUIjnHo=
 github.com/bketelsen/crypt v0.0.3-0.20200106085610-5cbc8cc4026c/go.mod h1:MKsuJmJgSg28kpZDP6UIiPt0e0Oz0kqKNGyRaWEPv84=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=

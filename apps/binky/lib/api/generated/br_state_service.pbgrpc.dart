@@ -13,6 +13,7 @@ import 'package:grpc/service_api.dart' as $grpc;
 import 'br_model_types.pb.dart' as $1;
 import 'br_state_types.pb.dart' as $3;
 import 'br_state_service.pb.dart' as $4;
+import 'br_model_service.pb.dart' as $0;
 export 'br_state_service.pb.dart';
 
 class StateServiceClient extends $grpc.Client {
@@ -97,6 +98,11 @@ class StateServiceClient extends $grpc.Client {
       ($4.DiscoverHardwareRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $4.DiscoverHardwareResponse.fromBuffer(value));
+  static final _$resetHardwareModule =
+      $grpc.ClientMethod<$0.IDRequest, $1.Empty>(
+          '/binkyrailways.v1.StateService/ResetHardwareModule',
+          ($0.IDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
 
   StateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -198,6 +204,11 @@ class StateServiceClient extends $grpc.Client {
       $4.DiscoverHardwareRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$discoverHardware, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Empty> resetHardwareModule($0.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$resetHardwareModule, request, options: options);
   }
 }
 
@@ -337,6 +348,13 @@ abstract class StateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $4.DiscoverHardwareRequest.fromBuffer(value),
         ($4.DiscoverHardwareResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IDRequest, $1.Empty>(
+        'ResetHardwareModule',
+        resetHardwareModule_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.IDRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
   }
 
   $async.Future<$3.RailwayState> getRailwayState_Pre(
@@ -422,6 +440,11 @@ abstract class StateServiceBase extends $grpc.Service {
     return discoverHardware(call, await request);
   }
 
+  $async.Future<$1.Empty> resetHardwareModule_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.IDRequest> request) async {
+    return resetHardwareModule(call, await request);
+  }
+
   $async.Future<$3.RailwayState> getRailwayState(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$3.RailwayState> enableRunMode(
@@ -454,4 +477,6 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $4.SetBlockClosedRequest request);
   $async.Future<$4.DiscoverHardwareResponse> discoverHardware(
       $grpc.ServiceCall call, $4.DiscoverHardwareRequest request);
+  $async.Future<$1.Empty> resetHardwareModule(
+      $grpc.ServiceCall call, $0.IDRequest request);
 }

@@ -587,6 +587,12 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 	}
 }
 
+// Request a reset of hardware module with given ID
+func (cs *binkyNetCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	cs.manager.RequestResetLocalWorker(ctx, id)
+	return nil
+}
+
 // createObjectAddress converts a model address into a BinkyNet object address.
 func (cs *binkyNetCommandStation) createObjectAddress(addr model.Address) bn.ObjectAddress {
 	return bn.ObjectAddress(addr.Value)

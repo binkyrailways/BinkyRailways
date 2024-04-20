@@ -239,3 +239,9 @@ func (cs *bidibCommandStation) TriggerDiscover(ctx context.Context, hardwareID s
 func (cs *bidibCommandStation) ForEachHardwareModule(func(state.HardwareModule)) {
 	// No modules
 }
+
+// Request a reset of hardware module with given ID
+func (cs *bidibCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
+}

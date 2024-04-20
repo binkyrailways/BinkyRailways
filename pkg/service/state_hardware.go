@@ -36,3 +36,16 @@ func (s *service) DiscoverHardware(ctx context.Context, req *api.DiscoverHardwar
 	var result api.DiscoverHardwareResponse
 	return &result, nil
 }
+
+// Request a reset of hardware module with given ID
+func (s *service) ResetHardwareModule(ctx context.Context, req *api.IDRequest) (*api.Empty, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	rwState.ForEachCommandStation(func(cs state.CommandStation) {
+		cs.ResetHardwareModule(ctx, req.GetId())
+	})
+	var result api.Empty
+	return &result, nil
+}
