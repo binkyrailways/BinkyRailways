@@ -462,20 +462,30 @@ func (cs *binkyNetCommandStation) onSwitchActual(ctx context.Context, actual bn.
 
 // Send the direction of the given switch towards the railway.
 func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw state.Switch) {
+	cs.sendSwitchDirection(ctx, sw, false)
+}
+
+// Send the direction of the given switch towards the railway.
+func (cs *binkyNetCommandStation) sendSwitchDirection(ctx context.Context, sw state.Switch, isRepeat bool) {
 	addr := cs.createObjectAddress(sw.GetAddress())
+	log := cs.log.With().Str("address", string(addr)).Logger()
 	var direction bn.SwitchDirection
-	switch sw.GetDirection().GetRequested(ctx) {
+	switch dir := sw.GetDirection().GetRequested(ctx); dir {
 	case model.SwitchDirectionStraight:
 		direction = bn.SwitchDirection_STRAIGHT
 	case model.SwitchDirectionOff:
 		direction = bn.SwitchDirection_OFF
 	default:
 		// Unknown direction
+		log.Error().
+			Str("direction", string(dir)).
+			Msg("Invalid switch direction: %w")
 		return
 	}
 	isLocked := sw.GetLockedBy(ctx) != nil
 	requestedSwitchDirectionGauge.WithLabelValues(string(addr)).Set(float64(direction))
 	sendSwitchDirectionCounter.WithLabelValues(string(addr)).Inc()
+	start := time.Now()
 	cs.manager.SetSwitchRequest(bn.Switch{
 		Address: addr,
 		Request: &bn.SwitchState{
@@ -483,6 +493,13 @@ func (cs *binkyNetCommandStation) SendSwitchDirection(ctx context.Context, sw st
 			IsUsed:    isLocked,
 		},
 	})
+	if !isRepeat {
+		log.Debug().
+			Int32("direction", int32(direction)).
+			Bool("isUsed", isLocked).
+			Dur("duration", time.Since(start)).
+			Msg("Sent switch direction")
+	}
 }
 
 // Send the position of the given turntable towards the railway.
@@ -647,10 +664,19 @@ func (cs *binkyNetCommandStation) runSendSwitchDirection(ctx context.Context) {
 		case <-time.After(time.Second * 2):
 			// Send again
 		}
+		maxDuration := (time.Millisecond * 25) * time.Duration(len(cs.junctions))
+		start := time.Now()
 		for _, junction := range cs.junctions {
 			if sw, ok := junction.(state.Switch); ok {
-				cs.SendSwitchDirection(ctx, sw)
+				cs.sendSwitchDirection(ctx, sw, true)
 			}
+		}
+		if duration := time.Since(start); duration > maxDuration {
+			cs.log.Warn().
+				Dur("duration", duration).
+				Dur("max", maxDuration).
+				Int("count", len(cs.junctions)).
+				Msg("refresh of switch direction took too long")
 		}
 	}
 }

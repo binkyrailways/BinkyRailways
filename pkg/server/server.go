@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"strconv"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
@@ -153,6 +154,7 @@ func (s *Server) Run(ctx context.Context) error {
 	httpsRouter.GET("/loc/:id/image", s.handleGetLocImage)
 	httpsRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpsRouter.GET("/tls/ca.pem", s.handleGetCACert)
+	httpsRouter.GET("/debug/pprof/*", echo.WrapHandler(http.HandlerFunc(pprof.Index)))
 	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
 	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
