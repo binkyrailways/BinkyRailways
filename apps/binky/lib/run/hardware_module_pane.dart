@@ -48,7 +48,7 @@ class HardwareModulePane extends StatelessWidget {
                 : "No errors",
             preferBelow: false,
             child: Text(
-                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
+                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate\nip:${hardwareModule.address}"),
           ),
           onTapDown: (TapDownDetails details) {
             showMenu(
