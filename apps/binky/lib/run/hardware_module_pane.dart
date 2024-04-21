@@ -41,18 +41,45 @@ class HardwareModulePane extends StatelessWidget {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(color),
             foregroundColor: MaterialStateProperty.all(Colors.black)),
-        child: Tooltip(
-          message: hasErrors
-              ? hardwareModule.errorMessages.join(".\n")
-              : "No errors",
-          preferBelow: false,
-          child: Text(
-              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
+        child: GestureDetector(
+          child: Tooltip(
+            message: hasErrors
+                ? hardwareModule.errorMessages.join(".\n")
+                : "No errors",
+            preferBelow: false,
+            child: Text(
+                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
+          ),
+          onTapDown: (TapDownDetails details) {
+            showMenu(
+              context: context,
+              useRootNavigator: true,
+              position: RelativeRect.fromLTRB(
+                  details.globalPosition.dx,
+                  details.globalPosition.dy,
+                  details.globalPosition.dx,
+                  details.globalPosition.dy),
+              items: [
+                PopupMenuItem<String>(
+                    child: const Text('Reset'),
+                    onTap: () async {
+                      final stateModel =
+                          Provider.of<StateModel>(context, listen: false);
+                      await stateModel.resetHardwareModule(hardwareModule.id);
+                    }),
+                PopupMenuItem<String>(
+                    child: const Text('Discover hardware'),
+                    onTap: () async {
+                      final stateModel =
+                          Provider.of<StateModel>(context, listen: false);
+                      await stateModel.discoverHardware(hardwareModule.id);
+                    }),
+              ],
+              elevation: 8.0,
+            );
+          },
         ),
-        onPressed: () async {
-          final stateModel = Provider.of<StateModel>(context, listen: false);
-          await stateModel.discoverHardware(hardwareModule.id);
-        },
+        onPressed: () {},
       ),
     );
   }
