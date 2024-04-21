@@ -37,5 +37,6 @@ func (dst *HardwareModule) FromState(ctx context.Context, src state.HardwareModu
 	} else {
 		dst.SecondsSinceLastUpdated = int64(time.Since(lastUpdatedAt).Seconds())
 	}
+	dst.MetricsUrl = src.GetMetricsURL()
 	return nil
 }

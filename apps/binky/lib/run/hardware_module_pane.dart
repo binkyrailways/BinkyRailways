@@ -17,6 +17,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models.dart';
 import '../api.dart';
@@ -35,6 +36,28 @@ class HardwareModulePane extends StatelessWidget {
         : (secondsSinceLastUpdate < 30)
             ? ((hardwareModule.uptime > 0) ? Colors.green : Colors.purple)
             : ((hardwareModule.uptime > 0) ? Colors.orange : Colors.purple);
+    final popupItems = [
+      PopupMenuItem<String>(
+          child: const Text('Reset'),
+          onTap: () async {
+            final stateModel = Provider.of<StateModel>(context, listen: false);
+            await stateModel.resetHardwareModule(hardwareModule.id);
+          }),
+      PopupMenuItem<String>(
+          child: const Text('Discover hardware'),
+          onTap: () async {
+            final stateModel = Provider.of<StateModel>(context, listen: false);
+            await stateModel.discoverHardware(hardwareModule.id);
+          }),
+    ];
+    if (hardwareModule.metricsUrl.isNotEmpty) {
+      popupItems.add(PopupMenuItem<String>(
+          child: const Text('Show metrics'),
+          onTap: () async {
+            await launchUrl(Uri.parse(hardwareModule.metricsUrl),
+                webOnlyWindowName: "_blank");
+          }));
+    }
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
@@ -59,22 +82,7 @@ class HardwareModulePane extends StatelessWidget {
                   details.globalPosition.dy,
                   details.globalPosition.dx,
                   details.globalPosition.dy),
-              items: [
-                PopupMenuItem<String>(
-                    child: const Text('Reset'),
-                    onTap: () async {
-                      final stateModel =
-                          Provider.of<StateModel>(context, listen: false);
-                      await stateModel.resetHardwareModule(hardwareModule.id);
-                    }),
-                PopupMenuItem<String>(
-                    child: const Text('Discover hardware'),
-                    onTap: () async {
-                      final stateModel =
-                          Provider.of<StateModel>(context, listen: false);
-                      await stateModel.discoverHardware(hardwareModule.id);
-                    }),
-              ],
+              items: popupItems,
               elevation: 8.0,
             );
           },

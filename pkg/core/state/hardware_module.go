@@ -46,4 +46,9 @@ type HardwareModule interface {
 	GetAddress() string
 	// Does this module support address?
 	HasAddress() bool
+
+	// URL to get metrics of this module (if any)
+	GetMetricsURL() string
+	// Does this module support metrics url?
+	HasMetricsURL() bool
 }

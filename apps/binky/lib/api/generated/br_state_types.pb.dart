@@ -634,6 +634,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'errorMessages')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondsSinceLastUpdated')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metricsUrl')
     ..hasRequiredFields = false
   ;
 
@@ -645,6 +646,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? errorMessages,
     $core.String? address,
     $fixnum.Int64? secondsSinceLastUpdated,
+    $core.String? metricsUrl,
   }) {
     final _result = create();
     if (id != null) {
@@ -664,6 +666,9 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (secondsSinceLastUpdated != null) {
       _result.secondsSinceLastUpdated = secondsSinceLastUpdated;
+    }
+    if (metricsUrl != null) {
+      _result.metricsUrl = metricsUrl;
     }
     return _result;
   }
@@ -735,6 +740,15 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasSecondsSinceLastUpdated() => $_has(5);
   @$pb.TagNumber(6)
   void clearSecondsSinceLastUpdated() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get metricsUrl => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set metricsUrl($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasMetricsUrl() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearMetricsUrl() => clearField(7);
 }
 
 class BlockState extends $pb.GeneratedMessage {

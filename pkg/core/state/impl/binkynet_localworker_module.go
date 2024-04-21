@@ -18,6 +18,7 @@
 package impl
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/binkynet/NetManager/service/manager"
@@ -92,5 +93,26 @@ func (lw *binkyNetLocalWorkerModule) GetAddress() string {
 
 // Does this module support address data?
 func (lw *binkyNetLocalWorkerModule) HasAddress() bool {
+	return true
+}
+
+// URL to get metrics of this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetMetricsURL() string {
+	if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		port := info.GetMetricsPort()
+		secure := info.GetMetricsSecure()
+		if port > 0 {
+			scheme := "http"
+			if secure {
+				scheme = "https"
+			}
+			return fmt.Sprintf("%s://%s:%d/metrics", scheme, host, port)
+		}
+	}
+	return ""
+}
+
+// Does this module support metrics url?
+func (lw *binkyNetLocalWorkerModule) HasMetricsURL() bool {
 	return true
 }

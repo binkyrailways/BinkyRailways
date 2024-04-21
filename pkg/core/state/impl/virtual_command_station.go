@@ -124,6 +124,12 @@ func (cs *virtualCommandStation) ForEachHardwareModule(cb func(state.HardwareMod
 	})
 }
 
+// Request a reset of hardware module with given ID
+func (cs *virtualCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
+	// No modules
+	return nil
+}
+
 // Gets the ID of the module
 func (hm *virtualHardwareModule) GetID() string {
 	return "virtual"
@@ -169,13 +175,17 @@ func (hm *virtualHardwareModule) HasAddress() bool {
 	return false
 }
 
-// Gets the address of the module (if any)
-func (hm *virtualHardwareModule) GetAddress() string {
+// URL to get metrics of this module (if any)
+func (lw *virtualHardwareModule) GetMetricsURL() string {
 	return ""
 }
 
-// Request a reset of hardware module with given ID
-func (cs *virtualCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
-	// No modules
-	return nil
+// Does this module support metrics url?
+func (lw *virtualHardwareModule) HasMetricsURL() bool {
+	return true
+}
+
+// Gets the address of the module (if any)
+func (hm *virtualHardwareModule) GetAddress() string {
+	return ""
 }
