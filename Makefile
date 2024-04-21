@@ -118,8 +118,8 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v1.6.1 \
-		github.com/binkynet/BinkyNet@v1.8.0
+		github.com/binkynet/NetManager@v1.7.0 \
+		github.com/binkynet/BinkyNet@v1.10.0
 	go mod tidy
 
 deploy:

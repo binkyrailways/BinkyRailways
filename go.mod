@@ -3,8 +3,8 @@ module github.com/binkyrailways/BinkyRailways
 go 1.21.6
 
 require (
-	github.com/binkynet/BinkyNet v1.8.0
-	github.com/binkynet/NetManager v1.6.1
+	github.com/binkynet/BinkyNet v1.10.0
+	github.com/binkynet/NetManager v1.7.0
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
@@ -32,6 +32,7 @@ require (
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/grandcat/zeroconf v1.0.0 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
