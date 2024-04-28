@@ -3,7 +3,7 @@ services:
     build:
       context: ".."
       dockerfile: scripts/Dockerfile
-    command: telemetry agent --loki-port=3100
+    command: telemetry agent
     network_mode: host
     volumes:
       - ".:/scripts/"
