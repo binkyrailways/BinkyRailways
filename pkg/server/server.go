@@ -153,6 +153,7 @@ func (s *Server) Run(ctx context.Context) error {
 	httpRouter := echo.New()
 	httpRouter.GET("/", s.handleInsecureGetIndex)
 	httpRouter.GET("/tls/ca.pem", s.handleGetCACert)
+	httpRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpSrv := http.Server{
 		Handler: httpRouter,
 	}

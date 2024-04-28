@@ -63,5 +63,8 @@ func (a *agent) Run(ctx context.Context) error {
 }
 
 func createName(info api.ServiceInfo) string {
+	if info.ProviderName != "" {
+		return strings.ToLower(info.ProviderName)
+	}
 	return strings.Replace(info.GetApiAddress(), ".", "_", -1)
 }

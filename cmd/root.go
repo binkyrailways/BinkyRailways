@@ -48,6 +48,10 @@ var (
 	}
 )
 
+const (
+	jobName = "brw"
+)
+
 func newConsoleWriter() zerolog.ConsoleWriter {
 	zerolog.TimeFieldFormat = time.RFC3339Nano
 	return zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
@@ -94,7 +98,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		newConsoleWriter(),
 	}
 	// Prepare Loki logger
-	lokiWriter, err := loki.NewLokiLogger("", "brw", 0)
+	lokiWriter, err := loki.NewLokiLogger("", jobName, 0)
 	if err != nil {
 		cliLog.Fatal().Err(err).Msg("Failed to create Loki writer")
 	}
@@ -155,9 +159,10 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		// Broadcast service info
 		sb := api.NewServiceBroadcaster(cliLog, rootArgs.server.Host,
 			api.ServiceTypePrometheusProvider, api.ServiceInfo{
-				ApiVersion: "v1",
-				ApiPort:    int32(rootArgs.server.HTTPPort),
-				Secure:     false,
+				ApiVersion:   "v1",
+				ApiPort:      int32(rootArgs.server.HTTPPort),
+				Secure:       false,
+				ProviderName: jobName,
 			})
 		return sb.Run(ctx)
 	})
