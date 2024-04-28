@@ -52,10 +52,6 @@ type Config struct {
 	HTTPSPort int
 	// Port to listen on for GRPC requests
 	GRPCPort int
-	// Port to listen on for Loki requests
-	LokiPort int
-	// URL to proxy loki requests to (do not proxy if empty)
-	LokiURL string
 	// If set, the web application is served from live filesystem instead of embedding.
 	WebDevelopment bool
 }
@@ -65,7 +61,6 @@ type Server struct {
 	Config
 	service     Service
 	log         zerolog.Logger
-	lokiHandler *lokiHandler
 	publicCAPem string
 }
 
@@ -82,10 +77,9 @@ type Service interface {
 // New configures a new Server.
 func New(cfg Config, log zerolog.Logger, service Service) (*Server, error) {
 	return &Server{
-		Config:      cfg,
-		service:     service,
-		log:         log,
-		lokiHandler: newLokiHandler(log),
+		Config:  cfg,
+		service: service,
+		log:     log,
 	}, nil
 }
 
@@ -123,18 +117,6 @@ func (s *Server) Run(ctx context.Context) error {
 		log.Fatal().Err(err).Msgf("failed to listen on address %s", grpcAddr)
 	}
 	grpcsLis := tls.NewListener(grpcLis, tlsCfg)
-
-	// Prepare Loki listener
-	lokiAddr := net.JoinHostPort(s.Host, strconv.Itoa(s.LokiPort))
-	lokiLis, err := net.Listen("tcp", lokiAddr)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to listen on address %s", lokiAddr)
-	}
-	lokiRouter := echo.New()
-	lokiRouter.POST("/loki/api/v1/push", s.handlePushLokiRequest)
-	lokiSrv := &http.Server{
-		Handler: lokiRouter,
-	}
 
 	// Prepare GRPC server
 	grpcSrv := grpc.NewServer(
@@ -197,14 +179,6 @@ func (s *Server) Run(ctx context.Context) error {
 		}
 		log.Debug().Str("address", grpcAddr).Msg("Done Serving gRPC")
 	}()
-	log.Debug().Str("address", lokiAddr).Msg("Serving Loki")
-	go func() {
-		if err := lokiSrv.Serve(lokiLis); err != nil {
-			log.Fatal().Err(err).Msg("failed to serve Loki server")
-		}
-		log.Debug().Str("address", lokiAddr).Msg("Done Serving Loki")
-	}()
-	go s.lokiHandler.Run(ctx)
 
 	// Wait until context closed
 	<-ctx.Done()
@@ -212,7 +186,6 @@ func (s *Server) Run(ctx context.Context) error {
 	log.Info().Msg("Closing GRPC server")
 	httpsSrv.Shutdown(context.Background())
 	grpcSrv.GracefulStop()
-	lokiSrv.Shutdown(context.Background())
 
 	return nil
 }
