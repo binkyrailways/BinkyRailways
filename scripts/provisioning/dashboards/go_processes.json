@@ -113,6 +113,7 @@
           "expr": "go_memstats_mspan_inuse_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_mspan_inuse_bytes",
           "range": true,
           "refId": "A"
         },
@@ -125,6 +126,7 @@
           "expr": "go_memstats_mspan_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_mspan_sys_bytes",
           "range": true,
           "refId": "B"
         },
@@ -137,6 +139,7 @@
           "expr": "go_memstats_mcache_inuse_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_mcache_inuse_bytes",
           "range": true,
           "refId": "C"
         },
@@ -149,6 +152,7 @@
           "expr": "go_memstats_mcache_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_mcache_sys_bytes",
           "range": true,
           "refId": "D"
         },
@@ -161,6 +165,7 @@
           "expr": "go_memstats_buck_hash_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_buck_hash_sys_bytes",
           "range": true,
           "refId": "E"
         },
@@ -173,6 +178,7 @@
           "expr": "go_memstats_gc_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_gc_sys_bytes",
           "range": true,
           "refId": "F"
         },
@@ -185,7 +191,7 @@
           "expr": "go_memstats_other_sys_bytes{job=\"$job\"} - go_memstats_other_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "bytes of memory are used for other runtime allocations {pod={{kubernetes_pod_name}}}",
+          "legendFormat": "bytes of memory that are used for other runtime allocations",
           "range": true,
           "refId": "G"
         },
@@ -198,6 +204,7 @@
           "expr": "go_memstats_next_gc_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_next_gc_bytes",
           "range": true,
           "refId": "H"
         }
@@ -296,6 +303,7 @@
           "expr": "go_memstats_heap_alloc_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_heap_alloc_bytes",
           "range": true,
           "refId": "B"
         },
@@ -308,6 +316,7 @@
           "expr": "go_memstats_heap_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_heap_sys_bytes",
           "range": true,
           "refId": "A"
         },
@@ -320,6 +329,7 @@
           "expr": "go_memstats_heap_idle_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_heap_idle_bytes",
           "range": true,
           "refId": "C"
         },
@@ -332,7 +342,7 @@
           "expr": "go_memstats_heap_inuse_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "go_memstats_heap_inuse_bytes",
           "range": true,
           "refId": "D"
         },
@@ -345,6 +355,7 @@
           "expr": "go_memstats_heap_released_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_heap_released_bytes",
           "range": true,
           "refId": "E"
         }
@@ -443,6 +454,7 @@
           "expr": "go_memstats_stack_inuse_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_stack_inuse_bytes",
           "range": true,
           "refId": "A"
         },
@@ -452,9 +464,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
+          "exemplar": false,
           "expr": "go_memstats_stack_sys_bytes{job=\"$job\"}",
           "format": "time_series",
+          "instant": false,
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_stack_sys_bytes",
           "range": true,
           "refId": "B"
         }
@@ -550,9 +565,11 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
+          "exemplar": false,
           "expr": "go_memstats_sys_bytes{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "go_memstats_sys_bytes",
           "range": true,
           "refId": "A"
         }
@@ -651,6 +668,7 @@
           "expr": "go_memstats_mallocs_total{job=\"$job\"} - go_memstats_frees_total{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "live objects",
           "range": true,
           "refId": "A"
         }
@@ -750,6 +768,7 @@
           "expr": "rate(go_memstats_mallocs_total{job=\"$job\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "rate of allocated objects [1m]",
           "range": true,
           "refId": "A"
         }
@@ -806,7 +825,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -848,6 +868,7 @@
           "expr": "rate(go_memstats_lookups_total{job=\"$job\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "rate of pointer dereferences [1m]",
           "range": true,
           "refId": "A"
         }
@@ -903,7 +924,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -945,8 +967,22 @@
           "expr": "go_goroutines{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "number of go routines",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "go_threads{job=\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "number of threads",
+          "range": true,
+          "refId": "B"
         }
       ],
       "title": "Goroutines",
@@ -1000,7 +1036,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1042,6 +1079,7 @@
           "expr": "rate(go_memstats_alloc_bytes_total{job=\"$job\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "rate of allocated bytes [1m]",
           "range": true,
           "refId": "A"
         }
@@ -1097,7 +1135,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1139,6 +1178,7 @@
           "expr": "go_gc_duration_seconds{job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "gc duration p{{quantile}}",
           "range": true,
           "refId": "A"
         }
@@ -1158,8 +1198,8 @@
       {
         "current": {
           "selected": false,
-          "text": "192_168_77_1",
-          "value": "192_168_77_1"
+          "text": "m1",
+          "value": "m1"
         },
         "datasource": {
           "type": "prometheus",
@@ -1185,7 +1225,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
