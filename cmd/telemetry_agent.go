@@ -52,7 +52,7 @@ var (
 		promConfigPath   string
 		promURL          string
 		// Host name of the host running this process as seen from prometheus
-		hostNameFromPrometheus string
+		//hostNameFromPrometheus string
 	}
 )
 
@@ -66,8 +66,8 @@ func init() {
 	f.StringVar(&args.hostMask, "host", "0.0.0.0", "Host to serve on")
 	// Prometheus config builder arguments
 	f.StringVar(&args.promConfigPath, "prom-config-path", "./scripts/prometheus.yml", "Path of prometheus config file")
-	f.StringVar(&args.promURL, "prom-url", "", "URL towards prometheus")
-	f.StringVar(&args.hostNameFromPrometheus, "hostname-from-prom", "host.docker.internal", "Host name of the host running this process as seen from prometheus")
+	f.StringVar(&args.promURL, "prom-url", "http://127.0.0.1:9090", "URL towards prometheus")
+	//f.StringVar(&args.hostNameFromPrometheus, "hostname-from-prom", "host.docker.internal", "Host name of the host running this process as seen from prometheus")
 	// Loki registration arguments
 	f.StringVar(&args.lokiHost, "loki-host", "127.0.0.1", "Host to forward Loki requests to")
 	f.IntVar(&args.lokiPort, "loki-port", 3100, "Port to forward Loki requests to")

@@ -23,6 +23,7 @@ import (
 	"os"
 	"time"
 
+	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/BinkyNet/loki"
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
@@ -149,6 +150,16 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 			return err
 		}
 		return nil
+	})
+	g.Go(func() error {
+		// Broadcast service info
+		sb := api.NewServiceBroadcaster(cliLog, rootArgs.server.Host,
+			api.ServiceTypePrometheusProvider, api.ServiceInfo{
+				ApiVersion: "v1",
+				ApiPort:    int32(rootArgs.server.HTTPPort),
+				Secure:     false,
+			})
+		return sb.Run(ctx)
 	})
 	cliLog.Info().Msgf("Starting server... visit https://%s:%d or binkyrailways://%s:%d to open app.", rootArgs.server.PublishedHostDNSName, rootArgs.server.HTTPSPort, rootArgs.server.PublishedHostDNSName, rootArgs.server.GRPCPort)
 	if err := g.Wait(); err != nil {

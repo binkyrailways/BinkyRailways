@@ -19,8 +19,10 @@ package agent
 
 import (
 	"context"
-	"time"
+	"strings"
 
+	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkynet/BinkyNet/discovery"
 	"github.com/binkyrailways/BinkyRailways/pkg/metrics/promconfig"
 	"github.com/rs/zerolog"
 )
@@ -46,24 +48,20 @@ type agent struct {
 // Run the agent until the given context is canceled.
 func (a *agent) Run(ctx context.Context) error {
 	log := a.log
-	for {
-		if err := a.registerPrometheusTargets(ctx); err != nil {
-			log.Error().Err(err).Msg("failed to collect & register prometheus targets")
-		}
-		select {
-		case <-ctx.Done():
-			// Context canceled
-			return nil
-		case <-time.After(time.Second * 5):
-			// Continue
-		}
-	}
+	l := discovery.NewServiceListener(log, api.ServiceTypePrometheusProvider, true, func(info api.ServiceInfo) {
+		name := createName(info)
+		log.Info().
+			Str("server", info.GetApiAddress()).
+			Int32("port", info.GetApiPort()).
+			Bool("secure", info.GetSecure()).
+			Str("name", name).
+			Msg("New Prometheus metrics provider detected")
+
+		a.pcb.RegisterTarget(name, info.GetApiAddress(), int(info.GetApiPort()), info.GetSecure())
+	})
+	return l.Run(ctx)
 }
 
-// registerPrometheusTargets asks the binky server for all
-// known prometheus targets and registers them such that the
-// prometheus config file is updated.
-func (a *agent) registerPrometheusTargets(ctx context.Context) error {
-	// TODO
-	return nil
+func createName(info api.ServiceInfo) string {
+	return strings.Replace(info.GetApiAddress(), ".", "_", -1)
 }
