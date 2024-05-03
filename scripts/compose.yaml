@@ -1,19 +1,11 @@
 services:
-  telemetry-agent:
-    build:
-      context: ".."
-      dockerfile: scripts/Dockerfile
-    command: telemetry agent
-    network_mode: host
-    volumes:
-      - ".:/scripts/"
-
   loki:
     image: grafana/loki:2.9.2
     ports:
       - "3100:3100"
     volumes:
       - ".:/mnt/config"
+      - loki_data:/tmp/loki
     command: -config.file=/mnt/config/loki-config.yaml
 
   prometheus:
@@ -22,6 +14,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml 
       - --storage.tsdb.path=/prometheus
@@ -39,3 +32,7 @@ services:
     links:
       - loki
       - prometheus
+
+volumes:
+  loki_data:
+  prom_data:
