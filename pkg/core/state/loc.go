@@ -72,6 +72,11 @@ type Loc interface {
 	// Gets the name of the person that owns this loc.
 	GetOwner(context.Context) string
 
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+	GetEnabled() bool
+
 	// Is it allowed to set the ControlledAutomatically property to true?
 	GetCanSetAutomaticControl(context.Context) bool
 

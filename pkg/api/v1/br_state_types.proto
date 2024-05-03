@@ -136,6 +136,11 @@ message LocState {
   // the value.
   bool f0_actual = 70;
   bool f0_requested = 71;
+
+	// Gets the enabled state of this loc.
+	// If not enabled, the loc state will not be sent to
+	// command stations.
+  bool is_enabled = 80;
 }
 
 // Direction of a loc

@@ -71,6 +71,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -85,32 +86,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "5047"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -118,7 +94,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 3,
       "options": {
         "legend": {
           "calcs": [],
@@ -138,13 +114,26 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "increase(binkynetmanager_manager_loc_pool_set_request_total{address=~\"$loc_address\"}[1m])",
-          "legendFormat": "{{address}}",
+          "expr": "binkyrailways_service_loc_speed_in_steps{address=~\"$loc_address\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "speed in steps: {{address}}",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "binkyrailways_service_loc_direction{address=~\"$loc_address\"}",
+          "legendFormat": "direction: {{address}}",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Loc: SetRequest [1m]",
+      "title": "DCC Loc Direction & Speed",
       "type": "timeseries"
     },
     {
@@ -191,6 +180,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -205,7 +195,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "speed steps 216"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -213,7 +228,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 4,
+      "id": 6,
       "options": {
         "legend": {
           "calcs": [],
@@ -233,13 +248,26 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "increase(binkynetmanager_manager_loc_pool_set_actual_total{address=~\"$loc_address\"}[1m])",
-          "legendFormat": "{{address}}",
+          "expr": "binkynetmanager_manager_loc_speed_in_steps{address=~\"$loc_address\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "speed steps {{address}}",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "binkynetmanager_manager_loc_direction{address=~\"$loc_address\"}",
+          "legendFormat": "direction {{address}}",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Loc: SetActual [1m]",
+      "title": "BinkyNet Loc Direction & Speed",
       "type": "timeseries"
     },
     {
@@ -309,7 +337,7 @@
         "x": 0,
         "y": 9
       },
-      "id": 3,
+      "id": 7,
       "options": {
         "legend": {
           "calcs": [],
@@ -329,10 +357,108 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "binkyrailways_service_loc_speed_steps{address=~\"$loc_address\"}",
+          "expr": "binkyrailways_service_dcc_slot_packets_sent{priority!=\"0\"}",
           "hide": false,
           "instant": false,
-          "legendFormat": "speed steps {{address}}",
+          "legendFormat": "p{{priority}}-{{kind}}-{{address}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DCC Packets Sent (p1..p3)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(binkyrailways_service_dcc_slot_packets_sent{priority=\"0\",address!=\"\"}[1m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "p{{priority}}-{{kind}}-{{address}}",
           "range": true,
           "refId": "A"
         },
@@ -342,13 +468,120 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "binkyrailways_service_loc_direction{address=~\"$loc_address\"}",
-          "legendFormat": "direction {{address}}",
+          "expr": "rate(binkyrailways_service_dcc_slot_packets_sent{address=\"\"}[1m])",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "idle",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "DCC Loc Direction & Speed",
+      "title": "DCC Packets Sent Rate (p0) [1m]",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(binkynetmanager_manager_loc_pool_set_request_total[1m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{address}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BinkyNet Set Loc Requests",
       "type": "timeseries"
     },
     {
@@ -422,7 +655,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 18
       },
       "id": 5,
       "options": {
@@ -483,8 +716,11 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
+            "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -496,6 +732,9 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -512,7 +751,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -525,7 +763,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "bool_on_off"
         },
         "overrides": []
       },
@@ -533,9 +772,9 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 27
       },
-      "id": 6,
+      "id": 10,
       "options": {
         "legend": {
           "calcs": [],
@@ -555,30 +794,93 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "binkynetmanager_manager_loc_speed_steps{address=~\"$loc_address\"}",
+          "expr": "binkyrailways_service_dcc_slot_packet_send_failure_total",
           "hide": false,
           "instant": false,
-          "legendFormat": "speed steps {{address}}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
+        }
+      ],
+      "title": "DCC Packet Sent Failures",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        }
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "binkynetmanager_manager_loc_direction{address=~\"$loc_address\"}",
-          "legendFormat": "direction {{address}}",
+          "expr": "binkyrailways_service_dcc_slot_write_time_us_bucket",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{le}}",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "DCC Loc Direction & Speed",
-      "type": "timeseries"
+      "title": "DCC Packet Write Time in uS",
+      "type": "histogram"
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -587,10 +889,10 @@
         "current": {
           "selected": false,
           "text": [
-            "114"
+            "216"
           ],
           "value": [
-            "114"
+            "216"
           ]
         },
         "datasource": {
@@ -624,6 +926,6 @@
   "timezone": "",
   "title": "Locs",
   "uid": "TyBStwxVk",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

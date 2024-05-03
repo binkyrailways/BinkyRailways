@@ -244,6 +244,7 @@ class LocState extends $pb.GeneratedMessage {
     ..aOB(60, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isReversing')
     ..aOB(70, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Actual')
     ..aOB(71, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Requested')
+    ..aOB(80, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isEnabled')
     ..hasRequiredFields = false
   ;
 
@@ -271,6 +272,7 @@ class LocState extends $pb.GeneratedMessage {
     $core.bool? isReversing,
     $core.bool? f0Actual,
     $core.bool? f0Requested,
+    $core.bool? isEnabled,
   }) {
     final _result = create();
     if (model != null) {
@@ -338,6 +340,9 @@ class LocState extends $pb.GeneratedMessage {
     }
     if (f0Requested != null) {
       _result.f0Requested = f0Requested;
+    }
+    if (isEnabled != null) {
+      _result.isEnabled = isEnabled;
     }
     return _result;
   }
@@ -567,6 +572,15 @@ class LocState extends $pb.GeneratedMessage {
   $core.bool hasF0Requested() => $_has(21);
   @$pb.TagNumber(71)
   void clearF0Requested() => clearField(71);
+
+  @$pb.TagNumber(80)
+  $core.bool get isEnabled => $_getBF(22);
+  @$pb.TagNumber(80)
+  set isEnabled($core.bool v) { $_setBool(22, v); }
+  @$pb.TagNumber(80)
+  $core.bool hasIsEnabled() => $_has(22);
+  @$pb.TagNumber(80)
+  void clearIsEnabled() => clearField(80);
 }
 
 class CommandStationState extends $pb.GeneratedMessage {

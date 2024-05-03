@@ -209,7 +209,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
           }));
     }
 
-    if (isAssigned) {
+    if (isAssigned || loc.isEnabled) {
       //actions.add(Container(width: 16));
       actions.add(_buildAction(
           icon: Icons.cancel,
@@ -316,12 +316,14 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
     final autoControlled = loc.controlledAutomaticallyActual;
     final autoControlledConsistent = loc.controlledAutomaticallyActual ==
         loc.controlledAutomaticallyRequested;
-    final stateData = canBeControlledAutomatically
-        ? autoControlled
-            ? Pair(BinkyIconsData.controlledAutomatically,
-                "Controlled automatically")
-            : Pair(BinkyIconsData.controlleManually, "Controlled manually")
-        : Pair(BinkyIconsData.unassigned, "Not assigned to track");
+    final stateData = !loc.isEnabled
+        ? Pair(BinkyIconsData.disabled, "Disabled")
+        : canBeControlledAutomatically
+            ? autoControlled
+                ? Pair(BinkyIconsData.controlledAutomatically,
+                    "Controlled automatically")
+                : Pair(BinkyIconsData.controlleManually, "Controlled manually")
+            : Pair(BinkyIconsData.unassigned, "Not assigned to track");
 
     final icon = Icon(
       stateData.first,

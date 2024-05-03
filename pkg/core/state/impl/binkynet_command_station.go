@@ -271,6 +271,10 @@ func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.P
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *binkyNetCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
+	if !loc.GetEnabled() {
+		return
+	}
+
 	addr := cs.createObjectAddress(loc.GetAddress(ctx))
 	direction := bn.LocDirection_FORWARD
 	if loc.GetDirection().GetRequested(ctx) == state.LocDirectionReverse {
@@ -628,7 +632,9 @@ func (cs *binkyNetCommandStation) runSendLocSpeedAndDirection(ctx context.Contex
 			// Send again
 		}
 		for _, loc := range cs.locs {
-			cs.SendLocSpeedAndDirection(ctx, loc)
+			if loc.GetEnabled() {
+				cs.SendLocSpeedAndDirection(ctx, loc)
+			}
 		}
 	}
 }
