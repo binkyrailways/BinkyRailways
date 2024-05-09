@@ -88,7 +88,7 @@ test:
 # Build docker builder image
 .PHONY: build-image
 build-image:
-	#docker buildx uninstall
+	docker buildx uninstall
 	docker build \
 		-t $(BUILDIMAGE) \
 		-f pkg/api/Dockerfile.build pkg/api
