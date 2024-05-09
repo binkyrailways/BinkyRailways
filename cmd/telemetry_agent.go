@@ -108,7 +108,7 @@ func runTelemetryAgentCmd(cmd *cobra.Command, _ []string) {
 	}
 
 	// Construct loki proxy
-	lp := loki.NewLokiProxy(args.lokiHost, args.lokiPort, false)
+	lp := loki.NewLokiProxy(cliLog, args.lokiHost, args.lokiPort, false)
 
 	// Construct server
 	svr, err := agent.NewServer(agent.Config{
