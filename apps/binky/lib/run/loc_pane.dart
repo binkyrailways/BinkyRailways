@@ -129,17 +129,4 @@ class LocPane extends StatelessWidget {
       },
     );
   }
-
-  Color? _directionColor(LocState locState, LocDirection expected) {
-    final dirActual = locState.directionActual;
-    final dirRequested = locState.directionRequested;
-    final dirConsistent = (dirActual == dirRequested);
-    if (dirActual == expected) {
-      if (!dirConsistent) {
-        return Colors.purple[200];
-      }
-      return Colors.green[400];
-    }
-    return Colors.grey;
-  }
 }
