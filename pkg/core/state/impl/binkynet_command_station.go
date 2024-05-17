@@ -309,7 +309,7 @@ func (cs *binkyNetCommandStation) onLocActual(ctx context.Context, actual bn.Loc
 			if c, _ := loc.GetDirection().SetActual(ctx, direction); c {
 				changed = true
 			}
-			if c, _ := loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeedSteps())); c {
+			if c, _ := loc.GetSpeedInSteps().SetActual(ctx, int(actual.GetActual().GetSpeed())); c {
 				changed = true
 			}
 			if c, _ := loc.GetF0().SetActual(ctx, actual.Actual.GetFunctions()[0]); c {
