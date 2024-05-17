@@ -64,15 +64,19 @@ type commandStation struct {
 }
 
 // Create a new entity
-func newCommandStation(en model.CommandStation, railway Railway) commandStation {
+func newCommandStation(en model.CommandStation, railway Railway, isVirtual bool) commandStation {
 	csRef, found := railway.GetModel().GetCommandStations().Get(en.GetID())
-	if !found {
+	if !found && !isVirtual {
 		panic("Command station ref not found")
+	}
+	var addressSpaces []string
+	if found {
+		addressSpaces = csRef.GetAddressSpaces()
 	}
 	return commandStation{
 		csRef:         csRef,
 		entity:        newEntity(railway.Logger().With().Str("cs", en.GetDescription()).Logger(), en, railway),
-		addressSpaces: csRef.GetAddressSpaces(),
+		addressSpaces: addressSpaces,
 	}
 }
 

@@ -57,7 +57,7 @@ const (
 // Create a new entity
 func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway) CommandStation {
 	cs := &binkyNetCommandStation{
-		commandStation:      newCommandStation(en, railway),
+		commandStation:      newCommandStation(en, railway, false),
 		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
 	cs.log = cs.log.With().Str("component", "bncs").Logger()

@@ -42,7 +42,7 @@ type virtualHardwareModule struct {
 // Create a new entity
 func newVirtualCommandStation(railway Railway) CommandStation {
 	cs := &virtualCommandStation{
-		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway),
+		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway, true),
 		createdAt:      time.Now(),
 	}
 	cs.power.Configure("power", cs, railway, railway)

@@ -41,7 +41,7 @@ type bidibCommandStation struct {
 // Create a new entity
 func newBidibCommandStation(en model.BidibCommandStation, railway Railway) CommandStation {
 	cs := &bidibCommandStation{
-		commandStation: newCommandStation(en, railway),
+		commandStation: newCommandStation(en, railway, false),
 	}
 	cs.power.Configure("power", cs, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)

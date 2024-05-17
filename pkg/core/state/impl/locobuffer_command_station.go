@@ -34,7 +34,7 @@ type locoBufferCommandStation struct {
 // Create a new entity
 func newLocoBufferCommandStation(en model.LocoBufferCommandStation, railway Railway) CommandStation {
 	cs := &locoBufferCommandStation{
-		commandStation: newCommandStation(en, railway),
+		commandStation: newCommandStation(en, railway, false),
 	}
 	cs.power.Configure("power", cs, railway, railway)
 	return cs
