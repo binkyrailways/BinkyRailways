@@ -51,4 +51,14 @@ type HardwareModule interface {
 	GetMetricsURL() string
 	// Does this module support metrics url?
 	HasMetricsURL() bool
+
+	// URL to get DCC generator info of this module (if any)
+	GetDCCGeneratorURL() string
+	// Does this module support DCC generator url?
+	HasDCCGeneratorURL() bool
+
+	// URL to open SSH connection to this module (if any)
+	GetSSHURL() string
+	// Does this module support SSH url?
+	HasSSHURL() bool
 }

@@ -133,11 +133,13 @@ const HardwareModule$json = const {
     const {'1': 'address', '3': 5, '4': 1, '5': 9, '10': 'address'},
     const {'1': 'seconds_since_last_updated', '3': 6, '4': 1, '5': 3, '10': 'secondsSinceLastUpdated'},
     const {'1': 'metrics_url', '3': 7, '4': 1, '5': 9, '10': 'metricsUrl'},
+    const {'1': 'dcc_generator_url', '3': 8, '4': 1, '5': 9, '10': 'dccGeneratorUrl'},
+    const {'1': 'ssh_url', '3': 9, '4': 1, '5': 9, '10': 'sshUrl'},
   ],
 };
 
 /// Descriptor for `HardwareModule`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0EiUKDmVycm9yX21lc3NhZ2VzGAQgAygJUg1lcnJvck1lc3NhZ2VzEhgKB2FkZHJlc3MYBSABKAlSB2FkZHJlc3MSOwoac2Vjb25kc19zaW5jZV9sYXN0X3VwZGF0ZWQYBiABKANSF3NlY29uZHNTaW5jZUxhc3RVcGRhdGVkEh8KC21ldHJpY3NfdXJsGAcgASgJUgptZXRyaWNzVXJs');
+final $typed_data.Uint8List hardwareModuleDescriptor = $convert.base64Decode('Cg5IYXJkd2FyZU1vZHVsZRIOCgJpZBgBIAEoCVICaWQSFgoGdXB0aW1lGAIgASgDUgZ1cHRpbWUSJgoPbGFzdF91cGRhdGVkX2F0GAMgASgJUg1sYXN0VXBkYXRlZEF0EiUKDmVycm9yX21lc3NhZ2VzGAQgAygJUg1lcnJvck1lc3NhZ2VzEhgKB2FkZHJlc3MYBSABKAlSB2FkZHJlc3MSOwoac2Vjb25kc19zaW5jZV9sYXN0X3VwZGF0ZWQYBiABKANSF3NlY29uZHNTaW5jZUxhc3RVcGRhdGVkEh8KC21ldHJpY3NfdXJsGAcgASgJUgptZXRyaWNzVXJsEioKEWRjY19nZW5lcmF0b3JfdXJsGAggASgJUg9kY2NHZW5lcmF0b3JVcmwSFwoHc3NoX3VybBgJIAEoCVIGc3NoVXJs');
 @$core.Deprecated('Use blockStateDescriptor instead')
 const BlockState$json = const {
   '1': 'BlockState',

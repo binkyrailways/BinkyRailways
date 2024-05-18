@@ -189,6 +189,26 @@ func (lw *virtualHardwareModule) HasMetricsURL() bool {
 	return true
 }
 
+// URL to get DCC generator info of this module (if any)
+func (lw *virtualHardwareModule) GetDCCGeneratorURL() string {
+	return ""
+}
+
+// Does this module support DCC generator url?
+func (lw *virtualHardwareModule) HasDCCGeneratorURL() bool {
+	return false
+}
+
+// URL to open SSH connection to this module (if any)
+func (lw *virtualHardwareModule) GetSSHURL() string {
+	return ""
+}
+
+// Does this module support SSH url?
+func (lw *virtualHardwareModule) HasSSHURL() bool {
+	return false
+}
+
 // Gets the address of the module (if any)
 func (hm *virtualHardwareModule) GetAddress() string {
 	return ""

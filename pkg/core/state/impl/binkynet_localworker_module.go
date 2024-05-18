@@ -116,3 +116,41 @@ func (lw *binkyNetLocalWorkerModule) GetMetricsURL() string {
 func (lw *binkyNetLocalWorkerModule) HasMetricsURL() bool {
 	return true
 }
+
+// URL to get DCC generator info of this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetDCCGeneratorURL() string {
+	if lw.ID == dccModuleID {
+		if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+			port := info.GetMetricsPort()
+			secure := info.GetMetricsSecure()
+			if port > 0 {
+				scheme := "http"
+				if secure {
+					scheme = "https"
+				}
+				return fmt.Sprintf("%s://%s:%d/dcc", scheme, host, port)
+			}
+		}
+	}
+	return ""
+}
+
+// Does this module support DCC generator url?
+func (lw *binkyNetLocalWorkerModule) HasDCCGeneratorURL() bool {
+	return lw.GetID() == dccModuleID
+}
+
+// URL to open SSH connection to this module (if any)
+func (lw *binkyNetLocalWorkerModule) GetSSHURL() string {
+	if lw.ID == dccModuleID {
+		if _, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+			return fmt.Sprintf("ssh://%s:1515", host)
+		}
+	}
+	return ""
+}
+
+// Does this module support SSH url?
+func (lw *binkyNetLocalWorkerModule) HasSSHURL() bool {
+	return lw.GetID() == dccModuleID
+}

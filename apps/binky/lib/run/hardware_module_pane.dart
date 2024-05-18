@@ -58,6 +58,22 @@ class HardwareModulePane extends StatelessWidget {
                 webOnlyWindowName: "_blank");
           }));
     }
+    if (hardwareModule.dccGeneratorUrl.isNotEmpty) {
+      popupItems.add(PopupMenuItem<String>(
+          child: const Text('Show DCC generator'),
+          onTap: () async {
+            await launchUrl(Uri.parse(hardwareModule.dccGeneratorUrl),
+                webOnlyWindowName: "_blank");
+          }));
+    }
+    if (hardwareModule.sshUrl.isNotEmpty) {
+      popupItems.add(PopupMenuItem<String>(
+          child: const Text('Open SSH'),
+          onTap: () async {
+            await launchUrl(Uri.parse(hardwareModule.sshUrl),
+                webOnlyWindowName: "_blank");
+          }));
+    }
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(

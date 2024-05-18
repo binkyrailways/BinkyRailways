@@ -649,6 +649,8 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'secondsSinceLastUpdated')
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metricsUrl')
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dccGeneratorUrl')
+    ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sshUrl')
     ..hasRequiredFields = false
   ;
 
@@ -661,6 +663,8 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.String? address,
     $fixnum.Int64? secondsSinceLastUpdated,
     $core.String? metricsUrl,
+    $core.String? dccGeneratorUrl,
+    $core.String? sshUrl,
   }) {
     final _result = create();
     if (id != null) {
@@ -683,6 +687,12 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (metricsUrl != null) {
       _result.metricsUrl = metricsUrl;
+    }
+    if (dccGeneratorUrl != null) {
+      _result.dccGeneratorUrl = dccGeneratorUrl;
+    }
+    if (sshUrl != null) {
+      _result.sshUrl = sshUrl;
     }
     return _result;
   }
@@ -763,6 +773,24 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasMetricsUrl() => $_has(6);
   @$pb.TagNumber(7)
   void clearMetricsUrl() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get dccGeneratorUrl => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set dccGeneratorUrl($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasDccGeneratorUrl() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearDccGeneratorUrl() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get sshUrl => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set sshUrl($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasSshUrl() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSshUrl() => clearField(9);
 }
 
 class BlockState extends $pb.GeneratedMessage {
