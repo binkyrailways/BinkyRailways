@@ -116,9 +116,6 @@ func newLoc(en model.Loc, railway Railway) Loc {
 	l.speed.loc = l
 	l.speedInSteps.Configure("speedInSteps", l, railway, railway)
 	l.speedInSteps.SubscribeRequestChanges(func(ctx context.Context, value int) {
-		if value > 0 {
-			l.enabled = true
-		}
 		if l.commandStation != nil {
 			l.commandStation.SendLocSpeedAndDirection(ctx, l)
 		}
@@ -507,6 +504,7 @@ func (l *loc) Reset(ctx context.Context) {
 		return l.railway.Exclusive(ctx, locResetTimeout, "locReset", func(ctx context.Context) error {
 			// Stop
 			l.GetSpeed().SetRequested(ctx, 0)
+			l.GetF0().SetRequested(ctx, false)
 			l.GetControlledAutomatically().SetRequested(ctx, false)
 
 			// Call before reset handlers
@@ -535,6 +533,24 @@ func (l *loc) Reset(ctx context.Context) {
 		defer cancel()
 		backoff.Retry(attempt, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(time.Second/10), 25), ctx))
 	}()
+}
+
+// Enable the loc.
+// This should be used when a loc is put on the track.
+// Signals will now be sent to the loc.
+func (l *loc) Enable(ctx context.Context) error {
+	return l.railway.Exclusive(ctx, locResetTimeout, "locReset", func(ctx context.Context) error {
+		// Eisable loc
+		l.enabled = true
+
+		// Start with reset state
+		l.GetSpeed().SetRequested(ctx, 0)
+		l.GetDirection().SetRequested(ctx, state.LocDirectionForward)
+		l.GetF0().SetRequested(ctx, true)
+		l.GetControlledAutomatically().SetRequested(ctx, false)
+
+		return nil
+	})
 }
 
 // Save the current state to the state persistence.

@@ -86,6 +86,10 @@ func (cs *virtualCommandStation) GetIdle(context.Context) bool {
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l state.Loc) {
+	if !l.GetEnabled() {
+		return
+	}
+
 	l.GetSpeedInSteps().SetActual(ctx, l.GetSpeedInSteps().GetRequested(ctx))
 	l.GetDirection().SetActual(ctx, l.GetDirection().GetRequested(ctx))
 	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))

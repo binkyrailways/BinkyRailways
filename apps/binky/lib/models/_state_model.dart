@@ -234,6 +234,16 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  Future<RailwayState> putLocOnTrack(String locId) async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.putLocOnTrack(PutLocOnTrackRequest(
+      locId: locId,
+    ));
+    _railwayState = result;
+    notifyListeners();
+    return result;
+  }
+
   Future<RailwayState> takeLocOfTrack(String locId) async {
     var stateClient = APIClient().stateClient();
     final result = await stateClient.takeLocOfTrack(TakeLocOfTrackRequest(

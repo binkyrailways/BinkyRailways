@@ -32,6 +32,7 @@ class LocsTreeCard extends StatefulWidget {
   final StateModel state;
   final LocState loc;
   final bool isAssigned;
+  final bool isEnabled;
   final bool isSelected;
 
   const LocsTreeCard(
@@ -39,6 +40,7 @@ class LocsTreeCard extends StatefulWidget {
       required this.loc,
       required this.state,
       required this.isAssigned,
+      required this.isEnabled,
       required this.isSelected,
       required this.runCtx})
       : super(key: key);
@@ -54,15 +56,17 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
   Widget build(BuildContext context) {
     final loc = widget.loc;
     final stateText = loc.stateText;
-    final actions =
-        _buildActions(context, widget.state, loc, widget.isAssigned);
+    final actions = _buildActions(
+        context, widget.state, loc, widget.isAssigned, widget.isEnabled);
     final hasImage = loc.model.imageUrl.isNotEmpty;
     const statusSize = 32.0;
 
     return MouseRegion(
       onEnter: (x) {
         setState(() {
-          _hasMouse = true;
+          if (widget.isEnabled) {
+            _hasMouse = true;
+          }
         });
       },
       onExit: (x) {
@@ -72,7 +76,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
       },
       child: Card(
         color: widget.isSelected ? Colors.grey.shade300 : Colors.white,
-        elevation: 4,
+        elevation: widget.isEnabled ? 4 : 0,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           child: Container(
@@ -101,33 +105,57 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                           : Container(),
                     ),
                   ]),
-                  SizedBox(
-                    width: statusSize,
-                    height: statusSize,
-                    child: Stack(alignment: Alignment.center, children: [
-                      _buildSpeedIndicator(),
-                      _buildStateIcon(),
-                    ]),
-                  ),
+                  widget.isEnabled
+                      ? SizedBox(
+                          width: statusSize,
+                          height: statusSize,
+                          child: Stack(alignment: Alignment.center, children: [
+                            _buildSpeedIndicator(),
+                            _buildStateIcon(),
+                          ]),
+                        )
+                      : Container(),
                 ]),
                 Container(
                   width: constraints.maxWidth,
                   padding: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: hasImage
-                      ? Image.network(
-                          loc.model.imageUrl,
-                        )
-                      : const Icon(Icons.train),
+                  child: Stack(
+                      alignment: AlignmentDirectional.bottomStart,
+                      children: [
+                        hasImage
+                            ? Image.network(
+                                loc.model.imageUrl,
+                              )
+                            : const Icon(Icons.train),
+                        widget.isSelected || _hasMouse
+                            ? Positioned.fill(
+                                child: Container(
+                                  color: Colors.white.withAlpha(128 + 64),
+                                  child: Column(
+                                    children: [
+                                      Expanded(child: Container()),
+                                      Container(
+                                        color: Colors.white,
+                                        child: Row(children: actions),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ]),
                 ),
-                widget.isSelected || _hasMouse
-                    ? Row(children: actions)
-                    : Container(height: 0),
-                widget.isSelected ? _buildControlBar() : Container(),
+                widget.isEnabled ? _buildControlBar() : Container(),
               ]),
             ),
           ),
           onTap: () {
-            widget.runCtx.selectLoc(loc.model.id);
+            if (widget.isEnabled) {
+              widget.runCtx.selectLoc(loc.model.id);
+            } else {
+              widget.state.putLocOnTrack(loc.model.id);
+              Navigator.pop(context);
+            }
           },
         ),
       ),
@@ -164,12 +192,16 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
     );
   }
 
-  List<Widget> _buildActions(
-      BuildContext context, StateModel state, LocState loc, bool isAssigned) {
+  List<Widget> _buildActions(BuildContext context, StateModel state,
+      LocState loc, bool isAssigned, bool isEnabled) {
+    if (!isEnabled) {
+      return [];
+    }
+
     final canBeControlledAutomatically = loc.canBeControlledAutomatically;
     final List<Widget> actions = [];
 
-    if (canBeControlledAutomatically) {
+    if (isEnabled && canBeControlledAutomatically) {
       if (loc.controlledAutomaticallyRequested) {
         actions.add(_buildAction(
             icon: BinkyIconsData.controlleManually,
@@ -209,8 +241,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
           }));
     }
 
-    if (isAssigned || loc.isEnabled) {
-      //actions.add(Container(width: 16));
+    if (isEnabled) {
       actions.add(_buildAction(
           icon: Icons.cancel,
           tooltip: 'Take of track',
@@ -323,7 +354,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                 ? Pair(BinkyIconsData.controlledAutomatically,
                     "Controlled automatically")
                 : Pair(BinkyIconsData.controlleManually, "Controlled manually")
-            : Pair(BinkyIconsData.unassigned, "Not assigned to track");
+            : Pair(BinkyIconsData.unassigned, "Not assigned to a block");
 
     final icon = Icon(
       stateData.first,

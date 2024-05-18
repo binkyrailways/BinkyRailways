@@ -266,7 +266,13 @@ func (cs *binkyNetCommandStation) sendPower(ctx context.Context, enabled bool) {
 
 // Send the state of the binary output towards the railway.
 func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.Power) {
-	cs.power.SetActual(ctx, actual.GetActual().GetEnabled())
+	// Update (internal) actual status
+	enabled := actual.GetActual().GetEnabled()
+	cs.power.SetActual(ctx, enabled)
+	// If actual power turned off, also turn off the requested power.
+	if !enabled {
+		cs.power.SetRequested(ctx, enabled)
+	}
 }
 
 // Send the speed and direction of the given loc towards the railway.

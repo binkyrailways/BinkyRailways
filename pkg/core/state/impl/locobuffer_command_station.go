@@ -69,7 +69,10 @@ func (cs *locoBufferCommandStation) GetIdle(context.Context) bool {
 }
 
 // Send the speed and direction of the given loc towards the railway.
-func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(context.Context, state.Loc) {
+func (cs *locoBufferCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc state.Loc) {
+	if !loc.GetEnabled() {
+		return
+	}
 	// TODO
 }
 

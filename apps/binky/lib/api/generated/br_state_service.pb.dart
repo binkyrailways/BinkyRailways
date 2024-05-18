@@ -919,6 +919,53 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   void clearBlockSide() => clearField(3);
 }
 
+class PutLocOnTrackRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PutLocOnTrackRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locId')
+    ..hasRequiredFields = false
+  ;
+
+  PutLocOnTrackRequest._() : super();
+  factory PutLocOnTrackRequest({
+    $core.String? locId,
+  }) {
+    final _result = create();
+    if (locId != null) {
+      _result.locId = locId;
+    }
+    return _result;
+  }
+  factory PutLocOnTrackRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PutLocOnTrackRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PutLocOnTrackRequest clone() => PutLocOnTrackRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PutLocOnTrackRequest copyWith(void Function(PutLocOnTrackRequest) updates) => super.copyWith((message) => updates(message as PutLocOnTrackRequest)) as PutLocOnTrackRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PutLocOnTrackRequest create() => PutLocOnTrackRequest._();
+  PutLocOnTrackRequest createEmptyInstance() => create();
+  static $pb.PbList<PutLocOnTrackRequest> createRepeated() => $pb.PbList<PutLocOnTrackRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PutLocOnTrackRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PutLocOnTrackRequest>(create);
+  static PutLocOnTrackRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get locId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set locId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLocId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLocId() => clearField(1);
+}
+
 class TakeLocOfTrackRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'TakeLocOfTrackRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locId')

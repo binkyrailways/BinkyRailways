@@ -147,6 +147,10 @@ func (cs *bidibCommandStation) sendDriveToNode(node *host.Node, opts host.DriveO
 
 // Send the speed and direction of the given loc towards the railway.
 func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, locState state.Loc) {
+	if !locState.GetEnabled() {
+		return
+	}
+
 	log := cs.log
 	// Prepare drive options
 	var opts host.DriveOptions
