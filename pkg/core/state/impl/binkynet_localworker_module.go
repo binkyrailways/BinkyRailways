@@ -142,9 +142,9 @@ func (lw *binkyNetLocalWorkerModule) HasDCCGeneratorURL() bool {
 
 // URL to open SSH connection to this module (if any)
 func (lw *binkyNetLocalWorkerModule) GetSSHURL() string {
-	if lw.ID == dccModuleID {
-		if _, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
-			return fmt.Sprintf("ssh://%s:1515", host)
+	if info, host, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {
+		if port := info.GetSshPort(); port != 0 {
+			return fmt.Sprintf("ssh://%s:%d", host, port)
 		}
 	}
 	return ""
@@ -152,5 +152,5 @@ func (lw *binkyNetLocalWorkerModule) GetSSHURL() string {
 
 // Does this module support SSH url?
 func (lw *binkyNetLocalWorkerModule) HasSSHURL() bool {
-	return lw.GetID() == dccModuleID
+	return true
 }
