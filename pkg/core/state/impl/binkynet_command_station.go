@@ -271,7 +271,7 @@ func (cs *binkyNetCommandStation) onPowerActual(ctx context.Context, actual bn.P
 	cs.power.SetActual(ctx, enabled)
 	// If actual power turned off, also turn off the requested power.
 	if !enabled {
-		cs.power.SetRequested(ctx, enabled)
+		//cs.power.SetRequested(ctx, enabled)
 	}
 }
 
