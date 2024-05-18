@@ -61,7 +61,7 @@ func newBinkyNetCommandStation(en model.BinkyNetCommandStation, railway Railway)
 		binaryOutputCounter: make(map[bn.ObjectAddress]int),
 	}
 	cs.log = cs.log.With().Str("component", "bncs").Logger()
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	return cs
 }

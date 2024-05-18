@@ -45,7 +45,7 @@ func newVirtualCommandStation(railway Railway) CommandStation {
 		commandStation: newCommandStation(mimpl.NewVirtualCommandStation(), railway, true),
 		createdAt:      time.Now(),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(func(ctx context.Context, value bool) {
 		cs.power.SetActual(ctx, value)
 	})

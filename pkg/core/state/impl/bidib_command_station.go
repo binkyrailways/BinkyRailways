@@ -43,7 +43,7 @@ func newBidibCommandStation(en model.BidibCommandStation, railway Railway) Comma
 	cs := &bidibCommandStation{
 		commandStation: newCommandStation(en, railway, false),
 	}
-	cs.power.Configure("power", cs, railway, railway)
+	cs.power.Configure("power", cs, nil, railway, railway)
 	cs.power.SubscribeRequestChanges(cs.sendPower)
 	cs.log.Debug().Msg("Created bidib commandstation state")
 	return cs

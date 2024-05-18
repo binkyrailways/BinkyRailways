@@ -83,6 +83,17 @@ type comparableActualProperty[T comparable] struct {
 	propertyBase
 	actual        T
 	actualChanges util.SliceWithIdEntries[func(context.Context, T)]
+	validate      func(T) T
+}
+
+// Configure the values of the property
+func (p *comparableActualProperty[T]) Configure(property state.ActualProperty, name string, subject state.Entity, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+	p.propertyBase.Configure(property, name, subject, dispatcher, exclusive)
+	if validate != nil {
+		p.validate = validate
+	} else {
+		p.validate = func(t T) T { return t }
+	}
 }
 
 // Gets the actual value of the property as string
@@ -95,6 +106,7 @@ func (p *comparableActualProperty[T]) GetActual(ctx context.Context) T {
 }
 func (p *comparableActualProperty[T]) SetActual(ctx context.Context, value T) (bool, error) {
 	changed := false
+	value = p.validate(value)
 	err := p.exclusive.Exclusive(ctx, setActualTimeout, "comparableActualProperty.SetActual", func(ctx context.Context) error {
 		if p.actual != value {
 			p.LastActualChange = time.Now()
