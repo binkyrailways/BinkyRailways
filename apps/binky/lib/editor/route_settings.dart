@@ -388,9 +388,14 @@ class _RouteSettingsState extends State<_RouteSettings> {
                     },
                   ));
             }
+            final behaviorsSummary =
+                evt.behaviors.map((e) => _describeRouteEventBehavior(e));
+            final subtitle = (behaviorsSummary.isEmpty)
+                ? "No behaviors"
+                : behaviorsSummary.join(",\n");
             return ListTile(
               title: Text(description),
-              subtitle: Text("${evt.behaviors.length} behaviors"),
+              subtitle: Text(subtitle),
               trailing: GestureDetector(
                 child: const Icon(Icons.more_vert),
                 onTapDown: (TapDownDetails details) {
@@ -507,6 +512,33 @@ class _RouteSettingsState extends State<_RouteSettings> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     ));
+  }
+
+  String _describeRouteEventBehavior(RouteEventBehavior b) {
+    final result = [b.appliesTo];
+    switch (b.stateBehavior) {
+      case RouteStateBehavior.RSB_ENTER:
+        result.add("enter");
+        break;
+      case RouteStateBehavior.RSB_REACHED:
+        result.add("reached");
+        break;
+    }
+    switch (b.speedBehavior) {
+      case LocSpeedBehavior.LSB_MAXIMUM:
+        result.add("max-speed");
+        break;
+      case LocSpeedBehavior.LSB_MEDIUM:
+        result.add("med-speed");
+        break;
+      case LocSpeedBehavior.LSB_MINIMUM:
+        result.add("min-speed");
+        break;
+      case LocSpeedBehavior.LSB_NOCHANGE:
+        result.add("same-speed");
+        break;
+    }
+    return result.join("/");
   }
 
   Future<void> _update(void Function(Route) editor) async {
