@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: app_links
-      sha256: eb83c2b15b78a66db04e95132678e910fcdb8dc3a9b0aed0c138f50b2bef0dae
+      sha256: "3ced568a5d9e309e99af71285666f1f3117bddd0bd5b3317979dccc1a40cada4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.5"
+    version: "3.5.1"
   archive:
     dependency: transitive
     description:
@@ -200,6 +200,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.4"
+  gtk:
+    dependency: transitive
+    description:
+      name: gtk
+      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   http:
     dependency: transitive
     description:
@@ -349,10 +357,10 @@ packages:
     dependency: "direct main"
     description:
       name: provider
-      sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.5"
+    version: "6.1.2"
   recase:
     dependency: "direct main"
     description:
@@ -442,10 +450,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: c512655380d241a337521703af62d2c122bf7b77a46ff7dd750092aa9433499c
+      sha256: "6ce1e04375be4eed30548f10a315826fd933c1e493206eab82eed01f438c8d2e"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.4"
+    version: "6.2.6"
   url_launcher_android:
     dependency: transitive
     description:
