@@ -44,7 +44,9 @@ class _SettingsAddressFieldState extends State<SettingsAddressField> {
   void initState() {
     super.initState();
     _controller.text = widget.address;
-    _addressValidator.setState = () => {if (mounted) setState(() {})};
+    _addressValidator.setState = () {
+      if (mounted) setState(() {});
+    };
   }
 
   @override

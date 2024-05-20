@@ -18,7 +18,6 @@
 import 'package:binky/models/_state_model.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
-import 'package:flutter/material.dart';
 
 import '../output_component.dart' as common;
 import '../view_settings.dart';
