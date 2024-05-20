@@ -209,15 +209,8 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 		return nil, api.NotFound("Device %s", req.GetDeviceId())
 	}
 	var firstPin int
-	switch req.GetType() {
-	case api.BinkyNetObjectsGroupType_MGV93:
-		// Device must be of GPIO type
-		switch bnDev.GetDeviceType() {
-		case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
-			firstPin = 1
-		default:
-			return nil, api.InvalidArgument("Invalid device type (%s) for object group type %s", bnDev.GetDeviceType(), req.GetType().String())
-		}
+
+	addSensors := func(count int) error {
 		getObjectWithPin := func(pinIndex v1.DeviceIndex) model.BinkyNetObject {
 			var result model.BinkyNetObject
 			lw.GetObjects().ForEach(func(bnObj model.BinkyNetObject) {
@@ -231,7 +224,7 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 			})
 			return result
 		}
-		for i := 0; i < 8; i++ {
+		for i := 0; i < count; i++ {
 			bnObj := getObjectWithPin(v1.DeviceIndex(firstPin + i))
 			if bnObj == nil {
 				// Object not found, create it
@@ -241,14 +234,40 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 			bnObj.SetObjectType(ctx, v1.ObjectTypeBinarySensor)
 			conn, err := bnObj.GetConnections().GetOrAdd(v1.ConnectionNameSensor)
 			if err != nil {
-				return nil, err
+				return err
 			}
 			pin, err := conn.GetPins().GetOrAdd(0)
 			if err != nil {
-				return nil, err
+				return err
 			}
 			pin.SetDeviceID(ctx, bnDev.GetDeviceID())
 			pin.SetIndex(ctx, v1.DeviceIndex(firstPin+i))
+		}
+		return nil
+	}
+
+	switch req.GetType() {
+	case api.BinkyNetObjectsGroupType_SENSORS_8:
+		// Device must be of GPIO type
+		switch bnDev.GetDeviceType() {
+		case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574, v1.DeviceTypeBinkyCarSensor:
+			firstPin = 1
+		default:
+			return nil, api.InvalidArgument("Invalid device type (%s) for object group type %s", bnDev.GetDeviceType(), req.GetType().String())
+		}
+		if err := addSensors(8); err != nil {
+			return nil, err
+		}
+	case api.BinkyNetObjectsGroupType_SENSORS_4:
+		// Device must be of GPIO type
+		switch bnDev.GetDeviceType() {
+		case v1.DeviceTypeBinkyCarSensor:
+			firstPin = 1
+		default:
+			return nil, api.InvalidArgument("Invalid device type (%s) for object group type %s", bnDev.GetDeviceType(), req.GetType().String())
+		}
+		if err := addSensors(4); err != nil {
+			return nil, err
 		}
 	}
 	var result api.BinkyNetLocalWorker

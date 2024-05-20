@@ -332,5 +332,6 @@ message AddBinkyNetObjectsGroupRequest {
 }
 
 enum BinkyNetObjectsGroupType {
-  MGV93 = 0;
+  SENSORS_8 = 0;
+  SENSORS_4 = 1;
 }

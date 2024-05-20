@@ -641,14 +641,26 @@ class _EditorPageState extends State<EditorPage> {
               final devList = lw.devices.where((x) => x.id == devId).toList();
               if (devList.length == 1) {
                 final dev = devList[0];
-                if (dev.canAddMgv93Group) {
+                if (dev.canAddSensors4Group) {
                   children.add(SpeedDialChild(
                     child: BinkyIcons.binkynetobject,
-                    label: "Add MGV93",
+                    label: "Add 4 Sensors",
                     onTap: () async {
                       final lw = await model.getBinkyNetLocalWorker(lwId);
-                      await model.addBinkyNetObjectsGroup(
-                          lwId, dev.deviceId, BinkyNetObjectsGroupType.MGV93);
+                      await model.addBinkyNetObjectsGroup(lwId, dev.deviceId,
+                          BinkyNetObjectsGroupType.SENSORS_4);
+                      editorCtx.select(EntitySelector.binkynetObjects(lw));
+                    },
+                  ));
+                }
+                if (dev.canAddSensors8Group) {
+                  children.add(SpeedDialChild(
+                    child: BinkyIcons.binkynetobject,
+                    label: "Add 8 Sensors",
+                    onTap: () async {
+                      final lw = await model.getBinkyNetLocalWorker(lwId);
+                      await model.addBinkyNetObjectsGroup(lwId, dev.deviceId,
+                          BinkyNetObjectsGroupType.SENSORS_8);
                       editorCtx.select(EntitySelector.binkynetObjects(lw));
                     },
                   ));

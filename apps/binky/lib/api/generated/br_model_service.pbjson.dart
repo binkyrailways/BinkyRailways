@@ -12,12 +12,13 @@ import 'dart:typed_data' as $typed_data;
 const BinkyNetObjectsGroupType$json = const {
   '1': 'BinkyNetObjectsGroupType',
   '2': const [
-    const {'1': 'MGV93', '2': 0},
+    const {'1': 'SENSORS_8', '2': 0},
+    const {'1': 'SENSORS_4', '2': 1},
   ],
 };
 
 /// Descriptor for `BinkyNetObjectsGroupType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List binkyNetObjectsGroupTypeDescriptor = $convert.base64Decode('ChhCaW5reU5ldE9iamVjdHNHcm91cFR5cGUSCQoFTUdWOTMQAA==');
+final $typed_data.Uint8List binkyNetObjectsGroupTypeDescriptor = $convert.base64Decode('ChhCaW5reU5ldE9iamVjdHNHcm91cFR5cGUSDQoJU0VOU09SU184EAASDQoJU0VOU09SU180EAE=');
 @$core.Deprecated('Use serialPortListDescriptor instead')
 const SerialPortList$json = const {
   '1': 'SerialPortList',

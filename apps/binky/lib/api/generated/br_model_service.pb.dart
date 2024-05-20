@@ -1063,7 +1063,7 @@ class AddBinkyNetObjectsGroupRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddBinkyNetObjectsGroupRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkerId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
-    ..e<BinkyNetObjectsGroupType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectsGroupType.MGV93, valueOf: BinkyNetObjectsGroupType.valueOf, enumValues: BinkyNetObjectsGroupType.values)
+    ..e<BinkyNetObjectsGroupType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectsGroupType.SENSORS_8, valueOf: BinkyNetObjectsGroupType.valueOf, enumValues: BinkyNetObjectsGroupType.values)
     ..hasRequiredFields = false
   ;
 
