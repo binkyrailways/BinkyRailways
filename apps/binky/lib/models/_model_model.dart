@@ -760,6 +760,31 @@ class ModelModel extends ChangeNotifier {
     return updated;
   }
 
+  // Move the even with given sensor ID up by 1 entry.
+  Future<mapi.Route> moveRouteEventUp(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.moveRouteEventUp(mapi.MoveRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Move the even with given sensor ID down by 1 entry.
+  Future<mapi.Route> moveRouteEventDown(String routeId, String sensorId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated =
+        await modelClient.moveRouteEventDown(mapi.MoveRouteEventRequest(
+      routeId: routeId,
+      sensorId: sensorId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
   // Remove an event from a route.
   Future<mapi.Route> removeRouteEvent(String routeId, String sensorId) async {
     var modelClient = mapi.APIClient().modelClient();

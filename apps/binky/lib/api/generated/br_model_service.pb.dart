@@ -801,6 +801,67 @@ class AddRouteEventRequest extends $pb.GeneratedMessage {
   void clearSensorId() => clearField(2);
 }
 
+class MoveRouteEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MoveRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensorId')
+    ..hasRequiredFields = false
+  ;
+
+  MoveRouteEventRequest._() : super();
+  factory MoveRouteEventRequest({
+    $core.String? routeId,
+    $core.String? sensorId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (sensorId != null) {
+      _result.sensorId = sensorId;
+    }
+    return _result;
+  }
+  factory MoveRouteEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MoveRouteEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  MoveRouteEventRequest clone() => MoveRouteEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  MoveRouteEventRequest copyWith(void Function(MoveRouteEventRequest) updates) => super.copyWith((message) => updates(message as MoveRouteEventRequest)) as MoveRouteEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteEventRequest create() => MoveRouteEventRequest._();
+  MoveRouteEventRequest createEmptyInstance() => create();
+  static $pb.PbList<MoveRouteEventRequest> createRepeated() => $pb.PbList<MoveRouteEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveRouteEventRequest>(create);
+  static MoveRouteEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sensorId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sensorId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSensorId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSensorId() => clearField(2);
+}
+
 class RemoveRouteEventRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')

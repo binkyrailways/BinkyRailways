@@ -266,6 +266,16 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/AddRouteEvent',
           ($0.AddRouteEventRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$moveRouteEventUp =
+      $grpc.ClientMethod<$0.MoveRouteEventRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/MoveRouteEventUp',
+          ($0.MoveRouteEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
+  static final _$moveRouteEventDown =
+      $grpc.ClientMethod<$0.MoveRouteEventRequest, $1.Route>(
+          '/binkyrailways.v1.ModelService/MoveRouteEventDown',
+          ($0.MoveRouteEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Route.fromBuffer(value));
   static final _$removeRouteEvent =
       $grpc.ClientMethod<$0.RemoveRouteEventRequest, $1.Route>(
           '/binkyrailways.v1.ModelService/RemoveRouteEvent',
@@ -666,6 +676,18 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.Route> addRouteEvent($0.AddRouteEventRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addRouteEvent, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> moveRouteEventUp(
+      $0.MoveRouteEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$moveRouteEventUp, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Route> moveRouteEventDown(
+      $0.MoveRouteEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$moveRouteEventDown, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.Route> removeRouteEvent(
@@ -1196,6 +1218,22 @@ abstract class ModelServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.AddRouteEventRequest.fromBuffer(value),
         ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.MoveRouteEventRequest, $1.Route>(
+        'MoveRouteEventUp',
+        moveRouteEventUp_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.MoveRouteEventRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.MoveRouteEventRequest, $1.Route>(
+        'MoveRouteEventDown',
+        moveRouteEventDown_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.MoveRouteEventRequest.fromBuffer(value),
+        ($1.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.RemoveRouteEventRequest, $1.Route>(
         'RemoveRouteEvent',
         removeRouteEvent_Pre,
@@ -1627,6 +1665,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addRouteEvent(call, await request);
   }
 
+  $async.Future<$1.Route> moveRouteEventUp_Pre($grpc.ServiceCall call,
+      $async.Future<$0.MoveRouteEventRequest> request) async {
+    return moveRouteEventUp(call, await request);
+  }
+
+  $async.Future<$1.Route> moveRouteEventDown_Pre($grpc.ServiceCall call,
+      $async.Future<$0.MoveRouteEventRequest> request) async {
+    return moveRouteEventDown(call, await request);
+  }
+
   $async.Future<$1.Route> removeRouteEvent_Pre($grpc.ServiceCall call,
       $async.Future<$0.RemoveRouteEventRequest> request) async {
     return removeRouteEvent(call, await request);
@@ -1828,6 +1876,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.RemoveRouteOutputRequest request);
   $async.Future<$1.Route> addRouteEvent(
       $grpc.ServiceCall call, $0.AddRouteEventRequest request);
+  $async.Future<$1.Route> moveRouteEventUp(
+      $grpc.ServiceCall call, $0.MoveRouteEventRequest request);
+  $async.Future<$1.Route> moveRouteEventDown(
+      $grpc.ServiceCall call, $0.MoveRouteEventRequest request);
   $async.Future<$1.Route> removeRouteEvent(
       $grpc.ServiceCall call, $0.RemoveRouteEventRequest request);
   $async.Future<$1.Route> addRouteEventBehavior(

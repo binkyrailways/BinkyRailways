@@ -358,6 +358,36 @@ class _RouteSettingsState extends State<_RouteSettings> {
               );
             }
             final description = snapshot.data!;
+            final menuItems = [
+              PopupMenuItem<String>(
+                  child: const Text('Remove'),
+                  onTap: () async {
+                    await widget.model
+                        .removeRouteEvent(widget.route.id, evt.sensor.id);
+                  }),
+            ];
+            if (index < widget.route.events.length - 1) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move down"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteEventDown(widget.route.id, evt.sensor.id);
+                    },
+                  ));
+            }
+            if (index > 0) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move up"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteEventUp(widget.route.id, evt.sensor.id);
+                    },
+                  ));
+            }
             return ListTile(
               title: Text(description),
               subtitle: Text("${evt.behaviors.length} behaviors"),
@@ -368,14 +398,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
                     context: context,
                     position: RelativeRect.fromLTRB(details.globalPosition.dx,
                         details.globalPosition.dy, 0, 0),
-                    items: [
-                      PopupMenuItem<String>(
-                          child: const Text('Remove'),
-                          onTap: () async {
-                            await widget.model.removeRouteEvent(
-                                widget.route.id, evt.sensor.id);
-                          }),
-                    ],
+                    items: menuItems,
                     elevation: 8.0,
                   );
                 },
