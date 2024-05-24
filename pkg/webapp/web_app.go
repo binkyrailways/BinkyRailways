@@ -19,7 +19,6 @@ package webapp
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -29,11 +28,9 @@ import (
 // Load the filesystem to serve
 func GetWebAppFileSystem(webDevelopment bool) http.FileSystem {
 	if webDevelopment {
-		log.Print("using live mode")
 		return http.FS(os.DirFS("./apps/binky/build/web"))
 	}
 
-	log.Print("using embed mode")
 	fsys := webapp.GetWebAppFileSystem()
 	return fsys
 }

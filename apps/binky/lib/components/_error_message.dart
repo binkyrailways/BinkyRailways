@@ -15,9 +15,10 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/components.dart';
 import 'package:flutter/material.dart';
 
-class ErrorMessage extends StatelessWidget {
+class ErrorMessage extends StatefulWidget {
   final String title;
   final Object? error;
 
@@ -26,15 +27,41 @@ class ErrorMessage extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<ErrorMessage> createState() => _ErrorMessageState();
+}
+
+class _ErrorMessageState extends State<ErrorMessage> {
+  bool _showDetails = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text("$error"),
-        ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red, width: 2),
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          children: [
+            Text(widget.title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: _showDetails
+                  ? Text("${widget.error}")
+                  : GestureDetector(
+                      child: const Text("show details"),
+                      onTap: () {
+                        setState(() {
+                          _showDetails = !_showDetails;
+                        });
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

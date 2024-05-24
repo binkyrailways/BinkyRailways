@@ -85,16 +85,18 @@ class _AppPageState extends State<AppPage> {
 
   void _updateAppInfo(AppModel model) async {
     final info = await model.update();
-    final frontendBuild = info?.frontendBuild ?? "";
-    if (frontendBuild != _lastFrontendBuild) {
-      if (_lastFrontendBuild.isEmpty) {
-        // First time we see a frontend version. Save it.
-        setState(() {
-          _lastFrontendBuild = frontendBuild;
-        });
-      } else {
-        // Frontend version changed, reload window
-        html.window.location.reload();
+    if (info != null) {
+      final frontendBuild = info.frontendBuild;
+      if (frontendBuild != _lastFrontendBuild) {
+        if (_lastFrontendBuild.isEmpty) {
+          // First time we see a frontend version. Save it.
+          setState(() {
+            _lastFrontendBuild = frontendBuild;
+          });
+        } else {
+          // Frontend version changed, reload window
+          html.window.location.reload();
+        }
       }
     }
   }
@@ -112,14 +114,11 @@ class _AppPageState extends State<AppPage> {
               final List<Widget> children = snapshot.hasError
                   ? [
                       ErrorMessage(
-                          title: "Failed to load application info_",
+                          title:
+                              "Failed to load application info.\nThe application is probably down.",
                           error: isUnavailable
                               ? "Cannot connect to server"
                               : snapshot.error),
-                      TextButton(
-                        onPressed: () => model.update(),
-                        child: const Text("Retry"),
-                      ),
                     ]
                   : [
                       const Text('Loading application info...'),
