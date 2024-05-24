@@ -16,7 +16,6 @@
 //
 //
 
-import 'package:binky/api/generated/br_app_service.pbgrpc.dart';
 import 'package:binky/api/generated/br_app_types.pb.dart';
 import 'package:binky/api/generated/br_model_types.pb.dart';
 
@@ -29,7 +28,7 @@ class AppModel extends ChangeNotifier {
   AppModel();
 
   // Update app info
-  Future<AppInfo?> update() async {
+  Future<AppInfo?> updateAppInfo() async {
     try {
       final appClient = mapi.APIClient().appClient();
       _appInfo = await appClient.getAppInfo(Empty());
@@ -40,12 +39,18 @@ class AppModel extends ChangeNotifier {
     return _appInfo;
   }
 
+  // getAppInfo returns the cached app info, unless no such cached
+  // info is available. In those cases, app info is actively loaded.
   Future<mapi.AppInfo> getAppInfo() async {
-    if (_appInfo == null) {
+    final cached = _appInfo;
+    if (cached != null) {
+      return cached;
+    } else {
       final appClient = mapi.APIClient().appClient();
-      _appInfo = await appClient.getAppInfo(Empty());
+      final result = await appClient.getAppInfo(Empty());
+      _appInfo = result;
       notifyListeners();
+      return result;
     }
-    return _appInfo!;
   }
 }

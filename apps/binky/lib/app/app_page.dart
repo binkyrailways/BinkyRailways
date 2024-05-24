@@ -17,9 +17,8 @@
 
 import 'dart:async';
 
+import 'package:binky/errors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
-import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 import 'package:app_links/app_links.dart';
 import 'package:universal_html/html.dart' as html;
@@ -44,6 +43,7 @@ class _AppPageState extends State<AppPage> {
   StreamSubscription<Uri>? _linkSubscription;
   String _title = "Testing";
   String _lastFrontendBuild = "";
+  Timer? _updateTimer;
 
   @override
   void initState() {
@@ -55,6 +55,7 @@ class _AppPageState extends State<AppPage> {
   @override
   void dispose() {
     _linkSubscription?.cancel();
+    _updateTimer?.cancel();
 
     super.dispose();
   }
@@ -83,8 +84,16 @@ class _AppPageState extends State<AppPage> {
     });
   }
 
-  void _updateAppInfo(AppModel model) async {
-    final info = await model.update();
+  // Ensure we have an update timer running
+  void _ensureUpdateTimer(AppModel appModel, ModelModel modelModel) {
+    _updateTimer ??= Timer.periodic(const Duration(seconds: 2),
+        (timer) => _updateServerState(appModel, modelModel));
+  }
+
+  // Trigger an update of app info & railway entry.
+  void _updateServerState(AppModel appModel, ModelModel modelModel) async {
+    // Load app info
+    final info = await appModel.updateAppInfo();
     if (info != null) {
       final frontendBuild = info.frontendBuild;
       if (frontendBuild != _lastFrontendBuild) {
@@ -96,84 +105,72 @@ class _AppPageState extends State<AppPage> {
         } else {
           // Frontend version changed, reload window
           html.window.location.reload();
+          return;
         }
       }
+      // Load railway entry
+      modelModel.updateRailwayEntry();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppModel>(builder: (context, model, child) {
-      return FutureBuilder<AppInfo>(
-          future: model.getAppInfo(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              final isUnavailable = snapshot.hasError &&
-                  snapshot.error is GrpcError &&
-                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
-              final List<Widget> children = snapshot.hasError
-                  ? [
-                      ErrorMessage(
-                          title:
-                              "Failed to load application info.\nThe application is probably down.",
-                          error: isUnavailable
-                              ? "Cannot connect to server"
-                              : snapshot.error),
-                    ]
-                  : [
-                      const Text('Loading application info...'),
-                      const CircularProgressIndicator(value: null)
-                    ];
-              Timer(const Duration(seconds: 2), () => _updateAppInfo(model));
-              return Scaffold(
-                appBar: AppBar(
-                  // Here we take the value from the MyHomePage object that was created by
-                  // the App.build method, and use it to set our appbar title.
-                  title: Text("Binky Railways '$_title'"),
-                ),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
+    return Consumer<AppModel>(builder: (context, appModel, child) {
+      return Consumer<ModelModel>(builder: (context, modelModel, child) {
+        _ensureUpdateTimer(appModel, modelModel);
+        return FutureBuilder<AppInfo>(
+            future: appModel.getAppInfo(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                final List<Widget> children = snapshot.hasError
+                    ? [
+                        ErrorMessage(
+                          title: "Failed to load application information.",
+                          error: Errors.format(snapshot.error),
+                        ),
+                      ]
+                    : [
+                        const Text('Loading application info...'),
+                        const CircularProgressIndicator(value: null)
+                      ];
+                return Scaffold(
+                  appBar: AppBar(
+                    // Here we take the value from the MyHomePage object that was created by
+                    // the App.build method, and use it to set our appbar title.
+                    title: Text("Binky Railways '$_title'"),
                   ),
-                ),
-              );
-            }
-            Timer(const Duration(seconds: 2), () => _updateAppInfo(model));
-            return _buildRailwayEntryLayer(context);
-          });
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: children,
+                    ),
+                  ),
+                );
+              } else {
+                return _buildRailwayEntryLayer(context);
+              }
+            });
+      });
     });
   }
 
   Widget _buildRailwayEntryLayer(BuildContext context) {
-    return Consumer<ModelModel>(builder: (context, model, child) {
+    return Consumer<ModelModel>(builder: (context, modelModel, child) {
       return FutureBuilder<RailwayEntry>(
-          future: model.getRailwayEntry(),
+          future: modelModel.getRailwayEntry(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              final isUnavailable = snapshot.hasError &&
-                  snapshot.error is GrpcError &&
-                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
               final List<Widget> children = snapshot.hasError
                   ? [
                       ErrorMessage(
-                          title: "Failed to load railway entry",
-                          error: isUnavailable
-                              ? "Cannot connect to server"
-                              : snapshot.error),
-                      TextButton(
-                        onPressed: () => model.getRailwayEntry(),
-                        child: const Text("Retry"),
+                        title: "Failed to load railway entry",
+                        error: Errors.format(snapshot.error),
                       ),
                     ]
                   : [
                       const Text('Loading railway entry...'),
                       const CircularProgressIndicator(value: null)
                     ];
-              if (snapshot.hasError) {
-                Timer(
-                    const Duration(seconds: 2), () => model.getRailwayEntry());
-              }
               return Scaffold(
                 appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
@@ -187,12 +184,13 @@ class _AppPageState extends State<AppPage> {
                   ),
                 ),
               );
-            }
-            var rwEntry = snapshot.data!;
-            if (rwEntry.name.isNotEmpty) {
-              return _buildForLoadedEntry(context);
             } else {
-              return const StoragePage();
+              var rwEntry = snapshot.data!;
+              if (rwEntry.name.isNotEmpty) {
+                return _buildForLoadedEntry(context);
+              } else {
+                return const StoragePage();
+              }
             }
           });
     });
@@ -204,16 +202,12 @@ class _AppPageState extends State<AppPage> {
           future: state.getRailwayState(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              final isUnavailable = snapshot.hasError &&
-                  snapshot.error is GrpcError &&
-                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
               final List<Widget> children = snapshot.hasError
                   ? [
                       ErrorMessage(
-                          title: "Failed to load railway state",
-                          error: isUnavailable
-                              ? "Cannot connect to server"
-                              : snapshot.error),
+                        title: "Failed to load railway state",
+                        error: Errors.format(snapshot.error),
+                      ),
                       TextButton(
                         onPressed: () => state.getRailwayState(),
                         child: const Text("Retry"),

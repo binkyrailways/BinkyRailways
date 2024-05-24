@@ -45,10 +45,10 @@ class _StoragePageState extends State<StoragePage> {
                     // the App.build method, and use it to set our appbar title.
                     title: const Text("Binky Railways"),
                   ),
-                  body: Center(
+                  body: const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Text('Loading railways...'),
                         CircularProgressIndicator(value: null),
                       ],

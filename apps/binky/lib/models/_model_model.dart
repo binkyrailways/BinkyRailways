@@ -136,6 +136,14 @@ class ModelModel extends ChangeNotifier {
   mapi.Railway? getCachedRailway() => _railway;
 
   Future<mapi.RailwayEntry> getRailwayEntry() async {
+    final cached = _railwayEntry;
+    if (cached != null) {
+      return cached;
+    }
+    return await updateRailwayEntry();
+  }
+
+  Future<mapi.RailwayEntry> updateRailwayEntry() async {
     var modelClient = mapi.APIClient().modelClient();
     final entry = await modelClient.getRailwayEntry(mapi.Empty());
     if (_railwayEntry?.name != entry.name) {
