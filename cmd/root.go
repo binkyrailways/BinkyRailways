@@ -42,9 +42,10 @@ var (
 		Run:   runRootCmd,
 	}
 	rootArgs struct {
-		app     service.Config
-		server  server.Config
-		logFile string
+		app      service.Config
+		server   server.Config
+		logFile  string
+		logLevel string
 	}
 )
 
@@ -63,6 +64,7 @@ func init() {
 	f := RootCmd.Flags()
 	// Log arguments
 	f.StringVar(&rootArgs.logFile, "logfile", "./binkyrailways.log", "Path of log file")
+	f.StringVar(&rootArgs.logLevel, "loglevel", "DEBUG", "Minimum log level to display")
 	// Server arguments
 	f.StringVar(&rootArgs.server.Host, "host", "0.0.0.0", "Host to serve on")
 	f.StringVar(&rootArgs.server.PublishedHostIP, "published-host", "", "IP Address of the current host that we publish on")
@@ -106,6 +108,14 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	// Prepare CLI log
 	logWriter := zerolog.MultiLevelWriter(logWriters...)
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
+
+	// Parse log level
+	if level, err := zerolog.ParseLevel(rootArgs.logLevel); err != nil {
+		cliLog.Fatal().Err(err).
+			Str("level", rootArgs.logLevel).Msg("Invalid log level")
+	} else {
+		cliLog = cliLog.Level(level)
+	}
 
 	// Find our external host address
 	if rootArgs.server.PublishedHostIP == "" {
