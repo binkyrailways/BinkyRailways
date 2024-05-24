@@ -23,26 +23,35 @@ import '../api.dart' as mapi;
 import 'package:flutter/material.dart';
 
 class StorageModel extends ChangeNotifier {
-  final List<RailwayEntry> _entries = [];
+  List<RailwayEntry>? _entries;
 
   StorageModel();
 
   // Flush all caches and force a reload.
   Future<void> reloadAll() async {
     // Clear all caches
-    _entries.clear();
+    _entries = null;
 
     // Reload
     await getRailwayEntries();
   }
 
-  // Reload railway storage entries
+  // getRailwayEntries returns the cached railway entries, unless no such cache
+  // is available. In those cases, railway entries are actively loaded.
   Future<List<RailwayEntry>> getRailwayEntries() async {
+    final cached = _entries;
+    if (cached != null) {
+      return cached;
+    }
+    return updateRailwayEntries();
+  }
+
+  // Reload railway storage entries
+  Future<List<RailwayEntry>> updateRailwayEntries() async {
     var storageClient = mapi.APIClient().storageClient();
     final entries =
         await storageClient.getRailwayEntries(GetRailwayEntriesRequest());
-    _entries.clear();
-    _entries.addAll(entries.items);
+    _entries = entries.items;
     notifyListeners();
     return entries.items;
   }
