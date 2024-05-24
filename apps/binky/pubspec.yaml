@@ -46,6 +46,7 @@ dependencies:
   recase: ^4.0.0
   search_choices: ^2.0.20
   url_launcher: ^6.2.6
+  universal_html:
   wakelock: ^0.6.2
 
   # The following adds the Cupertino Icons font to your application.

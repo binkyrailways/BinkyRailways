@@ -15,9 +15,10 @@
 // Author Ewout Prangsma
 //
 
-package server
+package webapp
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -26,7 +27,7 @@ import (
 )
 
 // Load the filesystem to serve
-func getWebAppFileSystem(webDevelopment bool) http.FileSystem {
+func GetWebAppFileSystem(webDevelopment bool) http.FileSystem {
 	if webDevelopment {
 		log.Print("using live mode")
 		return http.FS(os.DirFS("./apps/binky/build/web"))
@@ -35,4 +36,30 @@ func getWebAppFileSystem(webDevelopment bool) http.FileSystem {
 	log.Print("using embed mode")
 	fsys := webapp.GetWebAppFileSystem()
 	return fsys
+}
+
+var (
+	webAppBuild string
+)
+
+// Get's a build identifier for the webapp
+func GetWebAppBuild(webDevelopment bool) string {
+	// Fast path for production build
+	if !webDevelopment && webAppBuild != "" {
+		return webAppBuild
+	}
+
+	// Load build info
+	fs := GetWebAppFileSystem(webDevelopment)
+	mainDartJs, err := fs.Open("main.dart.js")
+	if err != nil {
+		return ""
+	}
+	defer mainDartJs.Close()
+	info, err := mainDartJs.Stat()
+	if err != nil {
+		return ""
+	}
+	webAppBuild = fmt.Sprintf("%d-%d", info.ModTime().Unix(), info.Size())
+	return webAppBuild
 }

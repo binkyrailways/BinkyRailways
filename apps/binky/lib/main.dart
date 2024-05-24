@@ -28,6 +28,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AppModel()),
         ChangeNotifierProvider(create: (context) => ModelModel()),
         ChangeNotifierProvider(create: (context) => StateModel()),
         ChangeNotifierProvider(create: (context) => StorageModel()),

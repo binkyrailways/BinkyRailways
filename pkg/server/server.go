@@ -34,6 +34,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/webapp"
 )
 
 // Config for the GRPC server.
@@ -66,6 +67,7 @@ type Server struct {
 
 // Service expected by this server
 type Service interface {
+	api.AppServiceServer
 	api.ModelServiceServer
 	api.StateServiceServer
 	api.StorageServiceServer
@@ -123,6 +125,7 @@ func (s *Server) Run(ctx context.Context) error {
 	//grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
 	//grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
+	api.RegisterAppServiceServer(grpcSrv, s.service)
 	api.RegisterModelServiceServer(grpcSrv, s.service)
 	api.RegisterStateServiceServer(grpcSrv, s.service)
 	api.RegisterStorageServiceServer(grpcSrv, s.service)
@@ -137,7 +140,7 @@ func (s *Server) Run(ctx context.Context) error {
 	httpsRouter.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 	httpsRouter.GET("/tls/ca.pem", s.handleGetCACert)
 	httpsRouter.GET("/debug/pprof/*", echo.WrapHandler(http.HandlerFunc(pprof.Index)))
-	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(getWebAppFileSystem(s.WebDevelopment))))
+	httpsRouter.GET("/*", echo.WrapHandler(http.FileServer(webapp.GetWebAppFileSystem(s.WebDevelopment))))
 	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {

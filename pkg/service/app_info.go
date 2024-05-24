@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2024 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,19 @@
 // Author Ewout Prangsma
 //
 
-export 'models/_app_model.dart';
-export 'models/_model_model.dart';
-export 'models/_state_model.dart';
-export 'models/_storage_model.dart';
+package service
+
+import (
+	"context"
+
+	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/webapp"
+)
+
+// Try to parse an address
+func (s *service) GetAppInfo(ctx context.Context, req *api.Empty) (*api.AppInfo, error) {
+	return &api.AppInfo{
+		Version:       s.ProjectVersion,
+		FrontendBuild: webapp.GetWebAppBuild(s.WebDevelopment),
+	}, nil
+}

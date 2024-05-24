@@ -129,6 +129,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	// Construct the service
 	rootArgs.app.HTTPPort = rootArgs.server.HTTPSPort
 	rootArgs.app.HTTPSecure = true
+	rootArgs.app.WebDevelopment = rootArgs.server.WebDevelopment
 	svc, err := service.New(rootArgs.app, service.Dependencies{
 		Logger: cliLog,
 	})

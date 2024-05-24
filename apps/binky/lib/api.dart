@@ -17,6 +17,12 @@
 
 export 'api/api_client.dart';
 export 'api/api_extensions.dart';
+export 'api/generated/br_app_service.pb.dart';
+export 'api/generated/br_app_service.pbenum.dart';
+export 'api/generated/br_app_service.pbjson.dart';
+export 'api/generated/br_app_types.pb.dart';
+export 'api/generated/br_app_types.pbenum.dart';
+export 'api/generated/br_app_types.pbjson.dart';
 export 'api/generated/br_model_service.pb.dart';
 export 'api/generated/br_model_service.pbenum.dart';
 export 'api/generated/br_model_service.pbjson.dart';

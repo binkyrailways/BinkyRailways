@@ -18,9 +18,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 import 'package:app_links/app_links.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../api.dart';
 
@@ -41,6 +43,7 @@ class _AppPageState extends State<AppPage> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   String _title = "Testing";
+  String _lastFrontendBuild = "";
 
   @override
   void initState() {
@@ -80,8 +83,70 @@ class _AppPageState extends State<AppPage> {
     });
   }
 
+  void _updateAppInfo(AppModel model) async {
+    final info = await model.update();
+    final frontendBuild = info?.frontendBuild ?? "";
+    if (frontendBuild != _lastFrontendBuild) {
+      if (_lastFrontendBuild.isEmpty) {
+        // First time we see a frontend version. Save it.
+        setState(() {
+          _lastFrontendBuild = frontendBuild;
+        });
+      } else {
+        // Frontend version changed, reload window
+        html.window.location.reload();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Consumer<AppModel>(builder: (context, model, child) {
+      return FutureBuilder<AppInfo>(
+          future: model.getAppInfo(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              final isUnavailable = snapshot.hasError &&
+                  snapshot.error is GrpcError &&
+                  (snapshot.error as GrpcError).code == StatusCode.unavailable;
+              final List<Widget> children = snapshot.hasError
+                  ? [
+                      ErrorMessage(
+                          title: "Failed to load application info_",
+                          error: isUnavailable
+                              ? "Cannot connect to server"
+                              : snapshot.error),
+                      TextButton(
+                        onPressed: () => model.update(),
+                        child: const Text("Retry"),
+                      ),
+                    ]
+                  : [
+                      const Text('Loading application info...'),
+                      const CircularProgressIndicator(value: null)
+                    ];
+              Timer(const Duration(seconds: 2), () => _updateAppInfo(model));
+              return Scaffold(
+                appBar: AppBar(
+                  // Here we take the value from the MyHomePage object that was created by
+                  // the App.build method, and use it to set our appbar title.
+                  title: Text("Binky Railways '$_title'"),
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: children,
+                  ),
+                ),
+              );
+            }
+            Timer(const Duration(seconds: 2), () => _updateAppInfo(model));
+            return _buildRailwayEntryLayer(context);
+          });
+    });
+  }
+
+  Widget _buildRailwayEntryLayer(BuildContext context) {
     return Consumer<ModelModel>(builder: (context, model, child) {
       return FutureBuilder<RailwayEntry>(
           future: model.getRailwayEntry(),

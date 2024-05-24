@@ -46,6 +46,8 @@ type Config struct {
 	HTTPPort int
 	// If set, our HTTP server is using TLS
 	HTTPSecure bool
+	// If set, the web application is served from live filesystem instead of embedding.
+	WebDevelopment bool
 }
 
 type Dependencies struct {

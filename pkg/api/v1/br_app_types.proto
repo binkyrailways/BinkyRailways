@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2024 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,16 @@
 // Author Ewout Prangsma
 //
 
-export 'models/_app_model.dart';
-export 'models/_model_model.dart';
-export 'models/_state_model.dart';
-export 'models/_storage_model.dart';
+syntax = "proto3";
+
+package binkyrailways.v1;
+
+option go_package = "github.com/binkyrailways/BinkyRailways/pkg/api/v1";
+
+// AppInfo contains basic information of the application currently running.
+message AppInfo {
+  // Version identifier
+  string version = 1;
+  // Build identifier of the frontend
+  string frontend_build = 2;
+}
