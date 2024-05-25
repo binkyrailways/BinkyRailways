@@ -401,6 +401,9 @@ class StateModel extends ChangeNotifier {
       } catch (err) {
         print(err);
       }
+      if (bootstrapOnly) {
+        break;
+      }
     }
   }
 }

@@ -19,6 +19,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -34,11 +35,57 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
 
+	sendEntireState := func() {
+		//ctx := context.Background()
+		send := func(sc *api.StateChange) bool {
+			if sc == nil {
+				return true
+			}
+			select {
+			case changes <- sc:
+				// Change put in channel
+				return true
+			case <-ctx.Done():
+				// Context canceled
+				return false
+			}
+		}
+		send(s.stateChangeBuilder(ctx, rwState))
+		rwState.ForEachCommandStation(func(b state.CommandStation) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachLoc(func(b state.Loc) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachBlock(func(b state.Block) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		/*rwState.ForEachBlockGroup(func(b state.BlockGroup) {
+			send(s.stateChangeBuilder(ctx, b))
+		})*/
+		rwState.ForEachJunction(func(b state.Junction) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachOutput(func(b state.Output) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachRoute(func(b state.Route) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachSensor(func(b state.Sensor) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+		rwState.ForEachSignal(func(b state.Signal) {
+			send(s.stateChangeBuilder(ctx, b))
+		})
+	}
+
 	// Listen for state changes
 	if !req.GetBootstrapOnly() {
 		defer close(changes)
 		cb := func(stateChange *api.StateChange) {
-			changes <- stateChange
+			sendEntireState()
+			//changes <- stateChange
 		}
 		s.stateChanges.Sub(cb)
 		defer s.stateChanges.Leave(cb)
@@ -47,48 +94,7 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	// If requested, send all state objects
 	if req.GetBootstrap() || req.GetBootstrapOnly() {
 		go func() {
-			//ctx := context.Background()
-			send := func(sc *api.StateChange) bool {
-				if sc == nil {
-					return true
-				}
-				select {
-				case changes <- sc:
-					// Change put in channel
-					return true
-				case <-ctx.Done():
-					// Context canceled
-					return false
-				}
-			}
-			send(s.stateChangeBuilder(ctx, rwState))
-			rwState.ForEachCommandStation(func(b state.CommandStation) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachLoc(func(b state.Loc) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachBlock(func(b state.Block) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			/*rwState.ForEachBlockGroup(func(b state.BlockGroup) {
-				send(s.stateChangeBuilder(ctx, b))
-			})*/
-			rwState.ForEachJunction(func(b state.Junction) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachOutput(func(b state.Output) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachRoute(func(b state.Route) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachSensor(func(b state.Sensor) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
-			rwState.ForEachSignal(func(b state.Signal) {
-				send(s.stateChangeBuilder(ctx, b))
-			})
+			sendEntireState()
 			if req.GetBootstrapOnly() {
 				close(changes)
 			}
@@ -107,6 +113,10 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 		case <-ctx.Done():
 			// Context canceled
 			return nil
+		case <-time.After(time.Second):
+			// We need to send at least 1 update per second
+			go sendEntireState()
+			continue
 		}
 		if err := server.Send(msg); err != nil {
 			return err
