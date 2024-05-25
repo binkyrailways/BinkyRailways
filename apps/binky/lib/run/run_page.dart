@@ -41,6 +41,7 @@ class RunPage extends StatefulWidget {
 
 class _RunPageState extends State<RunPage> {
   final ViewSettings _viewSettings = ViewSettings();
+  bool _isReloaded = false;
 
   @override
   void initState() {
@@ -63,6 +64,12 @@ class _RunPageState extends State<RunPage> {
       child: ChangeNotifierProvider<RunContext>(
         create: (context) => RunContext(),
         child: Consumer<StateModel>(builder: (context, state, child) {
+          if (!_isReloaded) {
+            setState(() {
+              state.reset();
+              _isReloaded = true;
+            });
+          }
           return Consumer<ModelModel>(builder: (context, model, child) {
             return FutureBuilder<RailwayState>(
                 future: state.getRailwayState(),
