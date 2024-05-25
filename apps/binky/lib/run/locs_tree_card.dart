@@ -145,7 +145,9 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                             : Container(),
                       ]),
                 ),
-                widget.isEnabled ? _buildControlBar() : Container(),
+                widget.isSelected || _hasMouse
+                    ? _buildControlBar()
+                    : Container(),
               ]),
             ),
           ),
