@@ -21,6 +21,7 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
+	"sync"
 	"time"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
@@ -37,6 +38,7 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
 	lastHash := make(map[string]string)
+	lastHashMutex := sync.Mutex{}
 
 	sendEntireState := func() {
 		//ctx := context.Background()
@@ -47,11 +49,19 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 			}
 			// Did something change since last time we send this?
 			h := hash(sc.String())
-			if h == lastHash[id] {
+			if func() bool {
+				lastHashMutex.Lock()
+				defer lastHashMutex.Unlock()
+				if h == lastHash[id] {
+					// Nothing changed
+					return true
+				}
+				lastHash[id] = h
+				return false
+			}() {
 				// Nothing changed
 				return true
 			}
-			lastHash[id] = h
 			// Send it
 			select {
 			case changes <- sc:
