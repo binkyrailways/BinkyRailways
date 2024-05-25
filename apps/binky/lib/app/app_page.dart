@@ -85,13 +85,15 @@ class _AppPageState extends State<AppPage> {
   }
 
   // Ensure we have an update timer running
-  void _ensureUpdateTimer(AppModel appModel, ModelModel modelModel) {
+  void _ensureUpdateTimer(
+      AppModel appModel, ModelModel modelModel, StateModel stateModel) {
     _updateTimer ??= Timer.periodic(const Duration(seconds: 2),
-        (timer) => _updateServerState(appModel, modelModel));
+        (timer) => _updateServerState(appModel, modelModel, stateModel));
   }
 
   // Trigger an update of app info & railway entry.
-  void _updateServerState(AppModel appModel, ModelModel modelModel) async {
+  void _updateServerState(
+      AppModel appModel, ModelModel modelModel, StateModel stateModel) async {
     // Load app info
     final info = await appModel.updateAppInfo();
     if (info != null) {
@@ -104,6 +106,7 @@ class _AppPageState extends State<AppPage> {
           });
         } else {
           // Frontend version changed, reload window
+          stateModel.reset();
           html.window.location.reload();
           return;
         }
@@ -117,39 +120,41 @@ class _AppPageState extends State<AppPage> {
   Widget build(BuildContext context) {
     return Consumer<AppModel>(builder: (context, appModel, child) {
       return Consumer<ModelModel>(builder: (context, modelModel, child) {
-        _ensureUpdateTimer(appModel, modelModel);
-        return FutureBuilder<AppInfo>(
-            future: appModel.getAppInfo(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                final List<Widget> children = snapshot.hasError
-                    ? [
-                        ErrorMessage(
-                          title: "Failed to load application information.",
-                          error: Errors.format(snapshot.error),
-                        ),
-                      ]
-                    : [
-                        const Text('Loading application info...'),
-                        const CircularProgressIndicator(value: null)
-                      ];
-                return Scaffold(
-                  appBar: AppBar(
-                    // Here we take the value from the MyHomePage object that was created by
-                    // the App.build method, and use it to set our appbar title.
-                    title: Text("Binky Railways '$_title'"),
-                  ),
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: children,
+        return Consumer<StateModel>(builder: (context, stateModel, child) {
+          _ensureUpdateTimer(appModel, modelModel, stateModel);
+          return FutureBuilder<AppInfo>(
+              future: appModel.getAppInfo(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  final List<Widget> children = snapshot.hasError
+                      ? [
+                          ErrorMessage(
+                            title: "Failed to load application information.",
+                            error: Errors.format(snapshot.error),
+                          ),
+                        ]
+                      : [
+                          const Text('Loading application info...'),
+                          const CircularProgressIndicator(value: null)
+                        ];
+                  return Scaffold(
+                    appBar: AppBar(
+                      // Here we take the value from the MyHomePage object that was created by
+                      // the App.build method, and use it to set our appbar title.
+                      title: Text("Binky Railways '$_title'"),
                     ),
-                  ),
-                );
-              } else {
-                return _buildRailwayEntryLayer(context);
-              }
-            });
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: children,
+                      ),
+                    ),
+                  );
+                } else {
+                  return _buildRailwayEntryLayer(context);
+                }
+              });
+        });
       });
     });
   }

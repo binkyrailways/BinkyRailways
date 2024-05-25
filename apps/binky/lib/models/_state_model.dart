@@ -35,6 +35,19 @@ class StateModel extends ChangeNotifier {
 
   StateModel();
 
+  void reset() {
+    _railwayState = null;
+    _commandStations.clear();
+    _locs.clear();
+    _blocks.clear();
+    _blockGroups.clear();
+    _junctions.clear();
+    _outputs.clear();
+    _routes.clear();
+    _sensors.clear();
+    _signals.clear();
+  }
+
   // Is a railway already loaded?
   bool isRailwayStateLoaded() => _railwayState != null;
 
