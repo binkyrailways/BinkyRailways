@@ -19,6 +19,8 @@ package service
 
 import (
 	"context"
+	"crypto/sha1"
+	"fmt"
 	"time"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
@@ -34,13 +36,23 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	}
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
+	lastHash := make(map[string]string)
 
 	sendEntireState := func() {
 		//ctx := context.Background()
-		send := func(sc *api.StateChange) bool {
+		send := func(sc *api.StateChange, id string) bool {
+			// Is change empty?
 			if sc == nil {
 				return true
 			}
+			// Did something change since last time we send this?
+			h := hash(sc.String())
+			if h == lastHash[id] {
+				// Nothing changed
+				return true
+			}
+			lastHash[id] = h
+			// Send it
 			select {
 			case changes <- sc:
 				// Change put in channel
@@ -50,33 +62,33 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 				return false
 			}
 		}
-		send(s.stateChangeBuilder(ctx, rwState))
+		send(s.stateChangeBuilder(ctx, rwState), rwState.GetID())
 		rwState.ForEachCommandStation(func(b state.CommandStation) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachLoc(func(b state.Loc) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachBlock(func(b state.Block) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		/*rwState.ForEachBlockGroup(func(b state.BlockGroup) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})*/
 		rwState.ForEachJunction(func(b state.Junction) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachOutput(func(b state.Output) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachRoute(func(b state.Route) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachSensor(func(b state.Sensor) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 		rwState.ForEachSignal(func(b state.Signal) {
-			send(s.stateChangeBuilder(ctx, b))
+			send(s.stateChangeBuilder(ctx, b), b.GetID())
 		})
 	}
 
@@ -192,4 +204,10 @@ func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *
 	default:
 		return nil
 	}
+}
+
+// Hash returns a sha256 hash of the given string
+func hash(input string) string {
+	h := sha1.Sum([]byte(input))
+	return fmt.Sprintf("%x", string(h[:]))
 }
