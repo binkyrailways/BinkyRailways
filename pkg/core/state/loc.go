@@ -147,6 +147,12 @@ type Loc interface {
 	// Return all functions that have state.
 	//IEnumerable<LocFunction> Functions { get; }
 
+	// Returns property indicating if a battery level for this loc is known.
+	HasBatteryLevel() ActualBoolProperty
+
+	// Gets the battery level in percentage (0-100)
+	GetBatteryLevel() ActualIntProperty
+
 	// Try to assign the given loc to the given block.
 	// Assigning is only possible when the loc is not controlled automatically and
 	// the block can be assigned by the given loc.

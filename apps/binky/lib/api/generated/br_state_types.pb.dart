@@ -245,6 +245,8 @@ class LocState extends $pb.GeneratedMessage {
     ..aOB(70, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Actual')
     ..aOB(71, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0Requested')
     ..aOB(80, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isEnabled')
+    ..aOB(90, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hasBatteryLevel')
+    ..a<$core.int>(91, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'batteryLevel', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -273,6 +275,8 @@ class LocState extends $pb.GeneratedMessage {
     $core.bool? f0Actual,
     $core.bool? f0Requested,
     $core.bool? isEnabled,
+    $core.bool? hasBatteryLevel,
+    $core.int? batteryLevel_91,
   }) {
     final _result = create();
     if (model != null) {
@@ -343,6 +347,12 @@ class LocState extends $pb.GeneratedMessage {
     }
     if (isEnabled != null) {
       _result.isEnabled = isEnabled;
+    }
+    if (hasBatteryLevel != null) {
+      _result.hasBatteryLevel = hasBatteryLevel;
+    }
+    if (batteryLevel_91 != null) {
+      _result.batteryLevel_91 = batteryLevel_91;
     }
     return _result;
   }
@@ -581,6 +591,24 @@ class LocState extends $pb.GeneratedMessage {
   $core.bool hasIsEnabled() => $_has(22);
   @$pb.TagNumber(80)
   void clearIsEnabled() => clearField(80);
+
+  @$pb.TagNumber(90)
+  $core.bool get hasBatteryLevel => $_getBF(23);
+  @$pb.TagNumber(90)
+  set hasBatteryLevel($core.bool v) { $_setBool(23, v); }
+  @$pb.TagNumber(90)
+  $core.bool hasHasBatteryLevel() => $_has(23);
+  @$pb.TagNumber(90)
+  void clearHasBatteryLevel() => clearField(90);
+
+  @$pb.TagNumber(91)
+  $core.int get batteryLevel_91 => $_getIZ(24);
+  @$pb.TagNumber(91)
+  set batteryLevel_91($core.int v) { $_setSignedInt32(24, v); }
+  @$pb.TagNumber(91)
+  $core.bool hasBatteryLevel_91() => $_has(24);
+  @$pb.TagNumber(91)
+  void clearBatteryLevel_91() => clearField(91);
 }
 
 class CommandStationState extends $pb.GeneratedMessage {

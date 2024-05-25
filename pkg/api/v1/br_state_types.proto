@@ -141,6 +141,11 @@ message LocState {
 	// If not enabled, the loc state will not be sent to
 	// command stations.
   bool is_enabled = 80;
+
+  // If set, battery level for this loc is known.
+  bool has_battery_level = 90;
+  // Battery level for this loc in percentage (0-100)
+  int32 battery_level = 91;
 }
 
 // Direction of a loc

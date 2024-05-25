@@ -67,6 +67,8 @@ type loc struct {
 	afterReset                      util.SliceWithIdEntries[func(context.Context)]
 	recentlyVisitedBlocks           *recentlyVisitedBlocks
 	enabled                         actualBoolProperty
+	hasBatteryLevel                 actualBoolProperty
+	batteryLevel                    actualIntProperty
 }
 
 const (
@@ -153,6 +155,10 @@ func newLoc(en model.Loc, railway Railway) Loc {
 		l.recentlyVisitedBlocks.Insert(ctx, b)
 	})
 	l.enabled.Configure(&l.enabled, "enabled", l, nil, railway, railway)
+	l.hasBatteryLevel.Configure(&l.hasBatteryLevel, "hasBatteryLevel", l, nil, railway, railway)
+	l.batteryLevel.Configure(&l.batteryLevel, "batteryLevel", l, func(v int) int {
+		return max(0, min(100, v))
+	}, railway, railway)
 	return l
 }
 
@@ -439,6 +445,16 @@ func (l *loc) GetF0() state.BoolProperty {
 
 // Return all functions that have state.
 //IEnumerable<LocFunction> Functions { get; }
+
+// Returns property indicating if a battery level for this loc is known.
+func (l *loc) HasBatteryLevel() state.ActualBoolProperty {
+	return &l.hasBatteryLevel
+}
+
+// Gets the battery level in percentage (0-100)
+func (l *loc) GetBatteryLevel() state.ActualIntProperty {
+	return &l.batteryLevel
+}
 
 // Try to assign the given loc to the given block.
 // Assigning is only possible when the loc is not controlled automatically and

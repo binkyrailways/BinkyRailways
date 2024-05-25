@@ -93,6 +93,11 @@ func (cs *virtualCommandStation) SendLocSpeedAndDirection(ctx context.Context, l
 	l.GetSpeedInSteps().SetActual(ctx, l.GetSpeedInSteps().GetRequested(ctx))
 	l.GetDirection().SetActual(ctx, l.GetDirection().GetRequested(ctx))
 	l.GetF0().SetActual(ctx, l.GetF0().GetRequested(ctx))
+
+	// TEST ONLY
+	l.HasBatteryLevel().SetActual(ctx, true)
+	l.GetBatteryLevel().SetActual(ctx, l.GetSpeedInSteps().GetActual(ctx))
+	// END
 }
 
 // Send the state of the binary output towards the railway.
