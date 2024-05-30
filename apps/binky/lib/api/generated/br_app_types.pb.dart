@@ -13,6 +13,7 @@ class AppInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AppInfo', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'version')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'frontendBuild')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'processUuid')
     ..hasRequiredFields = false
   ;
 
@@ -20,6 +21,7 @@ class AppInfo extends $pb.GeneratedMessage {
   factory AppInfo({
     $core.String? version,
     $core.String? frontendBuild,
+    $core.String? processUuid,
   }) {
     final _result = create();
     if (version != null) {
@@ -27,6 +29,9 @@ class AppInfo extends $pb.GeneratedMessage {
     }
     if (frontendBuild != null) {
       _result.frontendBuild = frontendBuild;
+    }
+    if (processUuid != null) {
+      _result.processUuid = processUuid;
     }
     return _result;
   }
@@ -68,5 +73,14 @@ class AppInfo extends $pb.GeneratedMessage {
   $core.bool hasFrontendBuild() => $_has(1);
   @$pb.TagNumber(2)
   void clearFrontendBuild() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get processUuid => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set processUuid($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasProcessUuid() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearProcessUuid() => clearField(3);
 }
 

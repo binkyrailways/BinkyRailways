@@ -43,6 +43,7 @@ class _AppPageState extends State<AppPage> {
   StreamSubscription<Uri>? _linkSubscription;
   String _title = "Testing";
   String _lastFrontendBuild = "";
+  String _lastProcessUUID = "";
   Timer? _updateTimer;
 
   @override
@@ -98,11 +99,14 @@ class _AppPageState extends State<AppPage> {
     final info = await appModel.updateAppInfo();
     if (info != null) {
       final frontendBuild = info.frontendBuild;
-      if (frontendBuild != _lastFrontendBuild) {
-        if (_lastFrontendBuild.isEmpty) {
+      final processUUID = info.processUuid;
+      if ((frontendBuild != _lastFrontendBuild) ||
+          (processUUID != _lastProcessUUID)) {
+        if ((_lastFrontendBuild.isEmpty) && (_lastProcessUUID.isEmpty)) {
           // First time we see a frontend version. Save it.
           setState(() {
             _lastFrontendBuild = frontendBuild;
+            _lastProcessUUID = processUUID;
           });
         } else {
           // Frontend version changed, reload window

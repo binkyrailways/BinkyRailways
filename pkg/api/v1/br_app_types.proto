@@ -27,4 +27,7 @@ message AppInfo {
   string version = 1;
   // Build identifier of the frontend
   string frontend_build = 2;
+  // Unique ID for the current process.
+  // Used to detect process restarts.
+  string process_uuid = 3;
 }

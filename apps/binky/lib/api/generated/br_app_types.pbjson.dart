@@ -14,8 +14,9 @@ const AppInfo$json = const {
   '2': const [
     const {'1': 'version', '3': 1, '4': 1, '5': 9, '10': 'version'},
     const {'1': 'frontend_build', '3': 2, '4': 1, '5': 9, '10': 'frontendBuild'},
+    const {'1': 'process_uuid', '3': 3, '4': 1, '5': 9, '10': 'processUuid'},
   ],
 };
 
 /// Descriptor for `AppInfo`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List appInfoDescriptor = $convert.base64Decode('CgdBcHBJbmZvEhgKB3ZlcnNpb24YASABKAlSB3ZlcnNpb24SJQoOZnJvbnRlbmRfYnVpbGQYAiABKAlSDWZyb250ZW5kQnVpbGQ=');
+final $typed_data.Uint8List appInfoDescriptor = $convert.base64Decode('CgdBcHBJbmZvEhgKB3ZlcnNpb24YASABKAlSB3ZlcnNpb24SJQoOZnJvbnRlbmRfYnVpbGQYAiABKAlSDWZyb250ZW5kQnVpbGQSIQoMcHJvY2Vzc191dWlkGAMgASgJUgtwcm9jZXNzVXVpZA==');

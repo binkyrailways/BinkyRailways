@@ -29,5 +29,6 @@ func (s *service) GetAppInfo(ctx context.Context, req *api.Empty) (*api.AppInfo,
 	return &api.AppInfo{
 		Version:       s.ProjectVersion,
 		FrontendBuild: webapp.GetWebAppBuild(s.WebDevelopment),
+		ProcessUuid:   s.processUUID,
 	}, nil
 }
