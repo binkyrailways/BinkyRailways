@@ -133,6 +133,44 @@ class _RunPageState extends State<RunPage> {
   List<Widget>? _buildActions(BuildContext context, ModelModel model,
       StateModel state, EditorContext editorCtx) {
     final List<Widget> list = [];
+    final rwState = state.getCachedRailwayState();
+
+    if ((rwState != null) && (!rwState.isVirtualModeEnabled)) {
+      if (rwState.isEntityTesterEnabled) {
+        list.add(IconButton(
+          color: Colors.green,
+          icon: const Icon(Icons.auto_fix_off),
+          tooltip: "Stop entity tester",
+          onPressed: () async {
+            try {
+              await state.disableEntityTester();
+            } catch (err) {
+              showErrorDialog(
+                  context: context,
+                  title: "Failed to disable entity tester",
+                  content: Text("$err"));
+            }
+          },
+        ));
+      } else {
+        list.add(IconButton(
+          color: Colors.orange,
+          icon: const Icon(Icons.auto_fix_high),
+          tooltip: "Start entity tester",
+          onPressed: () async {
+            try {
+              await state.enableEntityTester();
+            } catch (err) {
+              showErrorDialog(
+                  context: context,
+                  title: "Failed to enable entity tester",
+                  content: Text("$err"));
+            }
+          },
+        ));
+      }
+      list.add(const VerticalDivider());
+    }
 
     list.add(IconButton(
       icon: const Icon(Icons.save),
@@ -167,7 +205,6 @@ class _RunPageState extends State<RunPage> {
 
     list.add(const VerticalDivider());
 
-    final rwState = state.getCachedRailwayState();
     if (rwState != null) {
       if (rwState.isVirtualModeEnabled) {
         if (!rwState.isVirtualAutorunEnabled) {
@@ -196,38 +233,6 @@ class _RunPageState extends State<RunPage> {
                 showErrorDialog(
                     context: context,
                     title: "Failed to disable autorun mode",
-                    content: Text("$err"));
-              }
-            },
-          ));
-        }
-      } else {
-        if (rwState.isEntityTesterEnabled) {
-          list.add(IconButton(
-            icon: const Icon(Icons.stop_circle),
-            tooltip: "Stop entity tester",
-            onPressed: () async {
-              try {
-                await state.disableEntityTester();
-              } catch (err) {
-                showErrorDialog(
-                    context: context,
-                    title: "Failed to disable entity tester",
-                    content: Text("$err"));
-              }
-            },
-          ));
-        } else {
-          list.add(IconButton(
-            icon: const Icon(Icons.hardware),
-            tooltip: "Start entity tester",
-            onPressed: () async {
-              try {
-                await state.enableEntityTester();
-              } catch (err) {
-                showErrorDialog(
-                    context: context,
-                    title: "Failed to enable entity tester",
                     content: Text("$err"));
               }
             },
