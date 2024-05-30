@@ -74,6 +74,8 @@ class HardwareModulePane extends StatelessWidget {
                 webOnlyWindowName: "_blank");
           }));
     }
+    final tooltipErrors =
+        hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
       child: TextButton(
@@ -82,12 +84,10 @@ class HardwareModulePane extends StatelessWidget {
             foregroundColor: WidgetStateProperty.all(Colors.black)),
         child: GestureDetector(
           child: Tooltip(
-            message: hasErrors
-                ? hardwareModule.errorMessages.join(".\n")
-                : "No errors",
+            message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
             preferBelow: false,
             child: Text(
-                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate\nip:${hardwareModule.address}"),
+                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
           ),
           onTapDown: (TapDownDetails details) {
             showMenu(
