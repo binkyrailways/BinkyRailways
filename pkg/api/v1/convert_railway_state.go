@@ -34,6 +34,7 @@ func (dst *RailwayState) FromState(ctx context.Context, src state.Railway) error
 	dst.IsRunModeEnabled = true
 	dst.IsVirtualModeEnabled = src.GetVirtualMode().GetEnabled()
 	dst.IsVirtualAutorunEnabled = src.GetVirtualMode().GetAutoRun()
+	dst.IsEntityTesterEnabled = src.GetEntityTester().GetEnabled().GetRequested(ctx)
 	/*dst.Model = &Railway{}
 	if err := dst.Model.FromModel(ctx, src.GetModel()); err != nil {
 		return err

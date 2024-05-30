@@ -108,6 +108,26 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  // Enable entity tester
+  Future<RailwayState> enableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.enableEntityTester(Empty());
+    _railwayState = result;
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
+  // Disable entity tester
+  Future<RailwayState> disableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.disableEntityTester(Empty());
+    _railwayState = result;
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
   Future<void> _ensureFetchingChanges() async {
     if (!_fetchingChanges) {
       _fetchingChanges = true;

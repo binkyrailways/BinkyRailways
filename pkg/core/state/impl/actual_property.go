@@ -32,7 +32,7 @@ import (
 type propertyBase struct {
 	Property         state.ActualProperty  `json:"-"`
 	Name             string                `json:"-"`
-	Subject          state.Entity          `json:"-"`
+	Subject          state.Subject         `json:"-"`
 	Dispatcher       state.EventDispatcher `json:"-"`
 	LastActualChange time.Time             `json:"-"`
 	exclusive        util.Exclusive
@@ -45,7 +45,7 @@ const (
 )
 
 // Configure the values of the property
-func (p *propertyBase) Configure(property state.ActualProperty, name string, subject state.Entity, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+func (p *propertyBase) Configure(property state.ActualProperty, name string, subject state.Subject, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
 	p.Property = property
 	p.Name = name
 	p.Subject = subject
@@ -87,7 +87,7 @@ type comparableActualProperty[T comparable] struct {
 }
 
 // Configure the values of the property
-func (p *comparableActualProperty[T]) Configure(property state.ActualProperty, name string, subject state.Entity, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+func (p *comparableActualProperty[T]) Configure(property state.ActualProperty, name string, subject state.Subject, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
 	p.propertyBase.Configure(property, name, subject, dispatcher, exclusive)
 	if validate != nil {
 		p.validate = validate

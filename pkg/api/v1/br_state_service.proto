@@ -36,6 +36,11 @@ service StateService {
   // Disable the run mode of the process, switching back to edit mode.
   rpc DisableRunMode(Empty) returns (RailwayState);
 
+  // Enable the entity tester.
+  rpc EnableEntityTester(Empty) returns (RailwayState);
+  // Disable the entity tester.
+  rpc DisableEntityTester(Empty) returns (RailwayState);
+
   // Fetch state changes when they happen
   rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
 

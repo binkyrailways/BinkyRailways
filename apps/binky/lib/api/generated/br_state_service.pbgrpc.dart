@@ -31,6 +31,16 @@ class StateServiceClient extends $grpc.Client {
       '/binkyrailways.v1.StateService/DisableRunMode',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $4.RailwayState.fromBuffer(value));
+  static final _$enableEntityTester =
+      $grpc.ClientMethod<$0.Empty, $4.RailwayState>(
+          '/binkyrailways.v1.StateService/EnableEntityTester',
+          ($0.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $4.RailwayState.fromBuffer(value));
+  static final _$disableEntityTester =
+      $grpc.ClientMethod<$0.Empty, $4.RailwayState>(
+          '/binkyrailways.v1.StateService/DisableEntityTester',
+          ($0.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $4.RailwayState.fromBuffer(value));
   static final _$getStateChanges =
       $grpc.ClientMethod<$5.GetStateChangesRequest, $5.StateChange>(
           '/binkyrailways.v1.StateService/GetStateChanges',
@@ -128,6 +138,16 @@ class StateServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$4.RailwayState> disableRunMode($0.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$disableRunMode, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$4.RailwayState> enableEntityTester($0.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$enableEntityTester, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$4.RailwayState> disableEntityTester($0.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$disableEntityTester, request, options: options);
   }
 
   $grpc.ResponseStream<$5.StateChange> getStateChanges(
@@ -245,6 +265,20 @@ abstract class StateServiceBase extends $grpc.Service {
     $addMethod($grpc.ServiceMethod<$0.Empty, $4.RailwayState>(
         'DisableRunMode',
         disableRunMode_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($4.RailwayState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $4.RailwayState>(
+        'EnableEntityTester',
+        enableEntityTester_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($4.RailwayState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $4.RailwayState>(
+        'DisableEntityTester',
+        disableEntityTester_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
@@ -391,6 +425,16 @@ abstract class StateServiceBase extends $grpc.Service {
     return disableRunMode(call, await request);
   }
 
+  $async.Future<$4.RailwayState> enableEntityTester_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return enableEntityTester(call, await request);
+  }
+
+  $async.Future<$4.RailwayState> disableEntityTester_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return disableEntityTester(call, await request);
+  }
+
   $async.Stream<$5.StateChange> getStateChanges_Pre($grpc.ServiceCall call,
       $async.Future<$5.GetStateChangesRequest> request) async* {
     yield* getStateChanges(call, await request);
@@ -474,6 +518,10 @@ abstract class StateServiceBase extends $grpc.Service {
   $async.Future<$4.RailwayState> enableRunMode(
       $grpc.ServiceCall call, $5.EnableRunModeRequest request);
   $async.Future<$4.RailwayState> disableRunMode(
+      $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$4.RailwayState> enableEntityTester(
+      $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$4.RailwayState> disableEntityTester(
       $grpc.ServiceCall call, $0.Empty request);
   $async.Stream<$5.StateChange> getStateChanges(
       $grpc.ServiceCall call, $5.GetStateChangesRequest request);

@@ -30,6 +30,12 @@ type Event interface {
 	LogFormat() []KeyValue
 }
 
+// Subject of an event
+type Subject interface {
+	GetID() string
+	GetDescription() string
+}
+
 type KeyValue struct {
 	Key   string
 	Value string
@@ -48,7 +54,7 @@ type EventDispatcher interface {
 // entity has changed.
 type ActualStateChangedEvent struct {
 	// Subject holds the entity for which an actual state has changed
-	Subject Entity
+	Subject Subject
 	// Property that has changed
 	Property ActualProperty
 }
@@ -79,7 +85,7 @@ func (e ActualStateChangedEvent) LogFormat() []KeyValue {
 // entity has changed.
 type RequestedStateChangedEvent struct {
 	// Subject holds the entity for which a requested state has changed
-	Subject Entity
+	Subject Subject
 	// Property that has changed
 	Property Property
 }

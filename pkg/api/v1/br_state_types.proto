@@ -31,6 +31,8 @@ message RailwayState {
   bool is_virtual_mode_enabled = 3;
   // Set when the server is in run mode with virtual auto run enabled
   bool is_virtual_autorun_enabled = 4;
+  // Set when the entity tester is active
+  bool is_entity_tester_enabled = 5;
   // Is the actual power status on?
   bool power_actual = 10;
   // Is the requested power status on?

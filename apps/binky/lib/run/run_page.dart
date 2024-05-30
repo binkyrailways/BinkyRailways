@@ -201,6 +201,38 @@ class _RunPageState extends State<RunPage> {
             },
           ));
         }
+      } else {
+        if (rwState.isEntityTesterEnabled) {
+          list.add(IconButton(
+            icon: const Icon(Icons.stop_circle),
+            tooltip: "Stop entity tester",
+            onPressed: () async {
+              try {
+                await state.disableEntityTester();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to disable entity tester",
+                    content: Text("$err"));
+              }
+            },
+          ));
+        } else {
+          list.add(IconButton(
+            icon: const Icon(Icons.hardware),
+            tooltip: "Start entity tester",
+            onPressed: () async {
+              try {
+                await state.enableEntityTester();
+              } catch (err) {
+                showErrorDialog(
+                    context: context,
+                    title: "Failed to enable entity tester",
+                    content: Text("$err"));
+              }
+            },
+          ));
+        }
       }
     }
     list.add(IconButton(

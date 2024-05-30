@@ -76,6 +76,7 @@ type railway struct {
 	outputs                []Output
 	automaticLocController state.AutomaticLocController
 	eventLogger            state.EventLogger
+	entityTester           *entityTester
 }
 
 // New constructs and initializes state for the given railway.
@@ -93,6 +94,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger,
 		Railway: r,
 	}
 	r.virtualMode = newVirtualMode(virtual, r)
+	r.entityTester = newEntityTester(log, r)
 
 	// Construct children
 	builder := &builder{Railway: r}
@@ -296,6 +298,7 @@ func (r *railway) FinalizePrepare(ctx context.Context) {
 		ix := x.(Loc)
 		finalizePrepare(ctx, ix)
 	})
+	r.entityTester.Start()
 }
 
 // Try to resolve the given block (model) into a block state.
@@ -662,8 +665,15 @@ func (r *railway) GetOutput(id string) (state.Output, error) {
 	return nil, nil
 }
 
+// Get the entity tester
+func (r *railway) GetEntityTester() state.EntityTester {
+	return r.entityTester
+}
+
 // Close the railway
 func (r *railway) Close(ctx context.Context) {
+	// Stop entity tester
+	r.entityTester.Close()
 	// Stop virtual mode
 	r.virtualMode.Close()
 	// Stop automatic loc controller

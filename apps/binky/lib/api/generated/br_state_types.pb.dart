@@ -22,6 +22,7 @@ class RailwayState extends $pb.GeneratedMessage {
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRunModeEnabled')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualModeEnabled')
     ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtualAutorunEnabled')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isEntityTesterEnabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'automaticControlActual')
@@ -43,6 +44,7 @@ class RailwayState extends $pb.GeneratedMessage {
     $core.bool? isRunModeEnabled,
     $core.bool? isVirtualModeEnabled,
     $core.bool? isVirtualAutorunEnabled,
+    $core.bool? isEntityTesterEnabled,
     $core.bool? powerActual,
     $core.bool? powerRequested,
     $core.bool? automaticControlActual,
@@ -66,6 +68,9 @@ class RailwayState extends $pb.GeneratedMessage {
     }
     if (isVirtualAutorunEnabled != null) {
       _result.isVirtualAutorunEnabled = isVirtualAutorunEnabled;
+    }
+    if (isEntityTesterEnabled != null) {
+      _result.isEntityTesterEnabled = isEntityTesterEnabled;
     }
     if (powerActual != null) {
       _result.powerActual = powerActual;
@@ -156,68 +161,77 @@ class RailwayState extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearIsVirtualAutorunEnabled() => clearField(4);
 
+  @$pb.TagNumber(5)
+  $core.bool get isEntityTesterEnabled => $_getBF(3);
+  @$pb.TagNumber(5)
+  set isEntityTesterEnabled($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasIsEntityTesterEnabled() => $_has(3);
+  @$pb.TagNumber(5)
+  void clearIsEntityTesterEnabled() => clearField(5);
+
   @$pb.TagNumber(10)
-  $core.bool get powerActual => $_getBF(3);
+  $core.bool get powerActual => $_getBF(4);
   @$pb.TagNumber(10)
-  set powerActual($core.bool v) { $_setBool(3, v); }
+  set powerActual($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(10)
-  $core.bool hasPowerActual() => $_has(3);
+  $core.bool hasPowerActual() => $_has(4);
   @$pb.TagNumber(10)
   void clearPowerActual() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get powerRequested => $_getBF(4);
+  $core.bool get powerRequested => $_getBF(5);
   @$pb.TagNumber(11)
-  set powerRequested($core.bool v) { $_setBool(4, v); }
+  set powerRequested($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(11)
-  $core.bool hasPowerRequested() => $_has(4);
+  $core.bool hasPowerRequested() => $_has(5);
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.bool get automaticControlActual => $_getBF(5);
+  $core.bool get automaticControlActual => $_getBF(6);
   @$pb.TagNumber(12)
-  set automaticControlActual($core.bool v) { $_setBool(5, v); }
+  set automaticControlActual($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(12)
-  $core.bool hasAutomaticControlActual() => $_has(5);
+  $core.bool hasAutomaticControlActual() => $_has(6);
   @$pb.TagNumber(12)
   void clearAutomaticControlActual() => clearField(12);
 
   @$pb.TagNumber(13)
-  $core.bool get automaticControlRequested => $_getBF(6);
+  $core.bool get automaticControlRequested => $_getBF(7);
   @$pb.TagNumber(13)
-  set automaticControlRequested($core.bool v) { $_setBool(6, v); }
+  set automaticControlRequested($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(13)
-  $core.bool hasAutomaticControlRequested() => $_has(6);
+  $core.bool hasAutomaticControlRequested() => $_has(7);
   @$pb.TagNumber(13)
   void clearAutomaticControlRequested() => clearField(13);
 
   @$pb.TagNumber(50)
-  $core.List<$0.BlockRef> get blocks => $_getList(7);
+  $core.List<$0.BlockRef> get blocks => $_getList(8);
 
   @$pb.TagNumber(51)
-  $core.List<$0.BlockGroupRef> get blockGroups => $_getList(8);
+  $core.List<$0.BlockGroupRef> get blockGroups => $_getList(9);
 
   @$pb.TagNumber(52)
-  $core.List<$0.CommandStationRef> get commandStations => $_getList(9);
+  $core.List<$0.CommandStationRef> get commandStations => $_getList(10);
 
   @$pb.TagNumber(53)
-  $core.List<$0.JunctionRef> get junctions => $_getList(10);
+  $core.List<$0.JunctionRef> get junctions => $_getList(11);
 
   @$pb.TagNumber(54)
-  $core.List<$0.LocRef> get locs => $_getList(11);
+  $core.List<$0.LocRef> get locs => $_getList(12);
 
   @$pb.TagNumber(55)
-  $core.List<$0.OutputRef> get outputs => $_getList(12);
+  $core.List<$0.OutputRef> get outputs => $_getList(13);
 
   @$pb.TagNumber(56)
-  $core.List<$0.RouteRef> get routes => $_getList(13);
+  $core.List<$0.RouteRef> get routes => $_getList(14);
 
   @$pb.TagNumber(57)
-  $core.List<$0.SensorRef> get sensors => $_getList(14);
+  $core.List<$0.SensorRef> get sensors => $_getList(15);
 
   @$pb.TagNumber(58)
-  $core.List<$0.SignalRef> get signals => $_getList(15);
+  $core.List<$0.SignalRef> get signals => $_getList(16);
 }
 
 class LocState extends $pb.GeneratedMessage {

@@ -148,7 +148,7 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 
 // stateChangeBuilder constructs a StateChange for the given event.
 // Can result nil.
-func (s *service) stateChangeBuilder(ctx context.Context, entity state.Entity) *api.StateChange {
+func (s *service) stateChangeBuilder(ctx context.Context, entity state.Subject) *api.StateChange {
 	switch x := entity.(type) {
 	case state.Railway:
 		rs, _ := s.GetRailwayState(ctx, nil)
