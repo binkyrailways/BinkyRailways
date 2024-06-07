@@ -26,16 +26,19 @@ class CommandStationPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = commandStation.powerRequested
-        ? (commandStation.powerActual ? Colors.green : Colors.purple)
-        : (commandStation.powerActual ? Colors.orange : Colors.red);
+    final powerConsistent =
+        (commandStation.powerRequested == commandStation.powerActual);
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
-      child: TextButton(
-        style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(color),
-            foregroundColor: WidgetStateProperty.all(Colors.black)),
-        child: Text(commandStation.model.description),
+      child: ElevatedButton.icon(
+        icon: Icon(
+            commandStation.powerRequested
+                ? Icons.power
+                : Icons.power_off_outlined,
+            color: powerConsistent
+                ? (commandStation.powerRequested ? Colors.green : Colors.red)
+                : Colors.purple),
+        label: Text(commandStation.model.description),
         onPressed: () {},
       ),
     );
