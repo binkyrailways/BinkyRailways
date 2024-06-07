@@ -629,6 +629,8 @@ class CommandStationState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CommandStationState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOM<$0.CommandStation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model', subBuilder: $0.CommandStation.create)
     ..pc<HardwareModule>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareModules', $pb.PbFieldType.PM, subBuilder: HardwareModule.create)
+    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
+    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
     ..hasRequiredFields = false
   ;
 
@@ -636,6 +638,8 @@ class CommandStationState extends $pb.GeneratedMessage {
   factory CommandStationState({
     $0.CommandStation? model,
     $core.Iterable<HardwareModule>? hardwareModules,
+    $core.bool? powerActual,
+    $core.bool? powerRequested,
   }) {
     final _result = create();
     if (model != null) {
@@ -643,6 +647,12 @@ class CommandStationState extends $pb.GeneratedMessage {
     }
     if (hardwareModules != null) {
       _result.hardwareModules.addAll(hardwareModules);
+    }
+    if (powerActual != null) {
+      _result.powerActual = powerActual;
+    }
+    if (powerRequested != null) {
+      _result.powerRequested = powerRequested;
     }
     return _result;
   }
@@ -680,6 +690,24 @@ class CommandStationState extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(2)
   $core.List<HardwareModule> get hardwareModules => $_getList(1);
+
+  @$pb.TagNumber(10)
+  $core.bool get powerActual => $_getBF(2);
+  @$pb.TagNumber(10)
+  set powerActual($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasPowerActual() => $_has(2);
+  @$pb.TagNumber(10)
+  void clearPowerActual() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.bool get powerRequested => $_getBF(3);
+  @$pb.TagNumber(11)
+  set powerRequested($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasPowerRequested() => $_has(3);
+  @$pb.TagNumber(11)
+  void clearPowerRequested() => clearField(11);
 }
 
 class HardwareModule extends $pb.GeneratedMessage {

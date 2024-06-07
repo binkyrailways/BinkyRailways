@@ -120,11 +120,13 @@ const CommandStationState$json = const {
   '2': const [
     const {'1': 'model', '3': 1, '4': 1, '5': 11, '6': '.binkyrailways.v1.CommandStation', '10': 'model'},
     const {'1': 'hardware_modules', '3': 2, '4': 3, '5': 11, '6': '.binkyrailways.v1.HardwareModule', '10': 'hardwareModules'},
+    const {'1': 'power_actual', '3': 10, '4': 1, '5': 8, '10': 'powerActual'},
+    const {'1': 'power_requested', '3': 11, '4': 1, '5': 8, '10': 'powerRequested'},
   ],
 };
 
 /// Descriptor for `CommandStationState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWwSSwoQaGFyZHdhcmVfbW9kdWxlcxgCIAMoCzIgLmJpbmt5cmFpbHdheXMudjEuSGFyZHdhcmVNb2R1bGVSD2hhcmR3YXJlTW9kdWxlcw==');
+final $typed_data.Uint8List commandStationStateDescriptor = $convert.base64Decode('ChNDb21tYW5kU3RhdGlvblN0YXRlEjYKBW1vZGVsGAEgASgLMiAuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblIFbW9kZWwSSwoQaGFyZHdhcmVfbW9kdWxlcxgCIAMoCzIgLmJpbmt5cmFpbHdheXMudjEuSGFyZHdhcmVNb2R1bGVSD2hhcmR3YXJlTW9kdWxlcxIhCgxwb3dlcl9hY3R1YWwYCiABKAhSC3Bvd2VyQWN0dWFsEicKD3Bvd2VyX3JlcXVlc3RlZBgLIAEoCFIOcG93ZXJSZXF1ZXN0ZWQ=');
 @$core.Deprecated('Use hardwareModuleDescriptor instead')
 const HardwareModule$json = const {
   '1': 'HardwareModule',

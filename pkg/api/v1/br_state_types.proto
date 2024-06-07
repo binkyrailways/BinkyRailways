@@ -219,6 +219,10 @@ message CommandStationState {
   CommandStation model = 1;
   // Status of hardware modules connected to this command station
   repeated HardwareModule hardware_modules = 2;
+  // Is the actual power status of this command station on?
+  bool power_actual = 10;
+  // Is the requested power status of this command station on?
+  bool power_requested = 11;
 }
 
 // State specific a hardware module that is connected to the command station

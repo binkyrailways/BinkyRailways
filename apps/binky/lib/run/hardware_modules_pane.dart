@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 
 import '../models.dart';
 import '../api.dart';
+import 'command_station_pane.dart';
 import 'hardware_module_pane.dart';
 
 class HardwareModulesPane extends StatelessWidget {
@@ -28,12 +29,19 @@ class HardwareModulesPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(builder: (context, state, child) {
+      final css = state.commandStations().toList();
       final hws = _getHardwareModules(state);
-      if (hws.isEmpty) {
-        return const Text("No hardware modules found");
+      if (css.isEmpty && hws.isEmpty) {
+        return const Text("No command stations and hardware modules found");
       }
+      css.sort((a, b) =>
+          a.last.model.description.compareTo(b.last.model.description));
       hws.sort((a, b) => a.id.compareTo(b.id));
       final List<Widget> children = [];
+      css.forEach((e) {
+        children.add(CommandStationPane(commandStation: e.last));
+      });
+      children.add(const Divider());
       hws.forEach((e) {
         children.add(HardwareModulePane(hardwareModule: e));
       });
