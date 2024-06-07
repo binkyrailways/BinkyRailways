@@ -98,12 +98,7 @@ message EnableRunModeRequest {
 
 // Request arguments for GetStateChanges.
 message GetStateChangesRequest {
-  // If set, all state objects will be send to the stream before state changes
-  // are passed.
-  bool bootstrap = 1;
-  // If set, only all state objects will be send to the stream, after which the
-  // stream is closed.
-  bool bootstrap_only = 2;
+  map<string, string> hashes = 1;
 }
 
 // State change of a single object.
@@ -119,6 +114,9 @@ message StateChange {
   RouteState route = 8;
   SensorState sensor = 9;
   SignalState signal = 10;
+
+  string id = 100;
+  string hash = 101;
 }
 
 message SetPowerRequest {

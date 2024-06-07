@@ -21,7 +21,6 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
-	"sync"
 	"time"
 
 	api "github.com/binkyrailways/BinkyRailways/pkg/api/v1"
@@ -37,32 +36,25 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 	}
 	ctx := server.Context()
 	changes := make(chan *api.StateChange, 64)
-	lastHash := make(map[string]string)
-	lastHashMutex := sync.Mutex{}
 
-	sendEntireState := func() {
-		//ctx := context.Background()
+	sendEntireState := func() int {
+		sentChanges := 0
 		send := func(sc *api.StateChange, id string) bool {
 			// Is change empty?
 			if sc == nil {
 				return true
 			}
-			// Did something change since last time we send this?
+			// Prepare hash
 			h := hash(sc.String())
-			if func() bool {
-				lastHashMutex.Lock()
-				defer lastHashMutex.Unlock()
-				if h == lastHash[id] {
-					// Nothing changed
-					return true
-				}
-				lastHash[id] = h
-				return false
-			}() {
-				// Nothing changed
+			if req.Hashes[id] == h {
+				// Caller already has the same state
 				return true
 			}
+
 			// Send it
+			sentChanges++
+			sc.Id = id
+			sc.Hash = h
 			select {
 			case changes <- sc:
 				// Change put in channel
@@ -72,56 +64,48 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 				return false
 			}
 		}
-		send(s.stateChangeBuilder(ctx, rwState), rwState.GetID())
+		send(s.stateChangeBuilder(ctx, rwState), "rw:"+rwState.GetID())
 		rwState.ForEachCommandStation(func(b state.CommandStation) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "cs:"+b.GetID())
 		})
 		rwState.ForEachLoc(func(b state.Loc) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "l:"+b.GetID())
 		})
 		rwState.ForEachBlock(func(b state.Block) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "b:"+b.GetID())
 		})
 		/*rwState.ForEachBlockGroup(func(b state.BlockGroup) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "bg:" + b.GetID())
 		})*/
 		rwState.ForEachJunction(func(b state.Junction) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "j:"+b.GetID())
 		})
 		rwState.ForEachOutput(func(b state.Output) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "o:"+b.GetID())
 		})
 		rwState.ForEachRoute(func(b state.Route) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "r:"+b.GetID())
 		})
 		rwState.ForEachSensor(func(b state.Sensor) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "sn:"+b.GetID())
 		})
 		rwState.ForEachSignal(func(b state.Signal) {
-			send(s.stateChangeBuilder(ctx, b), b.GetID())
+			send(s.stateChangeBuilder(ctx, b), "sig:"+b.GetID())
 		})
-	}
-
-	// Listen for state changes
-	if !req.GetBootstrapOnly() {
-		defer close(changes)
-		cb := func(stateChange *api.StateChange) {
-			sendEntireState()
-			//changes <- stateChange
-		}
-		s.stateChanges.Sub(cb)
-		defer s.stateChanges.Leave(cb)
+		return sentChanges
 	}
 
 	// If requested, send all state objects
-	if req.GetBootstrap() || req.GetBootstrapOnly() {
-		go func() {
-			sendEntireState()
-			if req.GetBootstrapOnly() {
+	go func() {
+		for {
+			cnt := sendEntireState()
+			time.Sleep(time.Millisecond * 25)
+			if cnt > 0 {
 				close(changes)
+				return
 			}
-		}()
-	}
+		}
+	}()
 
 	// Send messages
 	for {
@@ -135,10 +119,6 @@ func (s *service) GetStateChanges(req *api.GetStateChangesRequest, server api.St
 		case <-ctx.Done():
 			// Context canceled
 			return nil
-		case <-time.After(time.Second):
-			// We need to send at least 1 update per second
-			go sendEntireState()
-			continue
 		}
 		if err := server.Send(msg); err != nil {
 			return err

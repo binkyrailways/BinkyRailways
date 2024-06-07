@@ -77,22 +77,17 @@ class EnableRunModeRequest extends $pb.GeneratedMessage {
 
 class GetStateChangesRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetStateChangesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrap')
-    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrapOnly')
+    ..m<$core.String, $core.String>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hashes', entryClassName: 'GetStateChangesRequest.HashesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('binkyrailways.v1'))
     ..hasRequiredFields = false
   ;
 
   GetStateChangesRequest._() : super();
   factory GetStateChangesRequest({
-    $core.bool? bootstrap,
-    $core.bool? bootstrapOnly,
+    $core.Map<$core.String, $core.String>? hashes,
   }) {
     final _result = create();
-    if (bootstrap != null) {
-      _result.bootstrap = bootstrap;
-    }
-    if (bootstrapOnly != null) {
-      _result.bootstrapOnly = bootstrapOnly;
+    if (hashes != null) {
+      _result.hashes.addAll(hashes);
     }
     return _result;
   }
@@ -118,22 +113,7 @@ class GetStateChangesRequest extends $pb.GeneratedMessage {
   static GetStateChangesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get bootstrap => $_getBF(0);
-  @$pb.TagNumber(1)
-  set bootstrap($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasBootstrap() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearBootstrap() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.bool get bootstrapOnly => $_getBF(1);
-  @$pb.TagNumber(2)
-  set bootstrapOnly($core.bool v) { $_setBool(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBootstrapOnly() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBootstrapOnly() => clearField(2);
+  $core.Map<$core.String, $core.String> get hashes => $_getMap(0);
 }
 
 class StateChange extends $pb.GeneratedMessage {
@@ -148,6 +128,8 @@ class StateChange extends $pb.GeneratedMessage {
     ..aOM<$4.RouteState>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'route', subBuilder: $4.RouteState.create)
     ..aOM<$4.SensorState>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensor', subBuilder: $4.SensorState.create)
     ..aOM<$4.SignalState>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signal', subBuilder: $4.SignalState.create)
+    ..aOS(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hash')
     ..hasRequiredFields = false
   ;
 
@@ -163,6 +145,8 @@ class StateChange extends $pb.GeneratedMessage {
     $4.RouteState? route,
     $4.SensorState? sensor,
     $4.SignalState? signal,
+    $core.String? id,
+    $core.String? hash,
   }) {
     final _result = create();
     if (railway != null) {
@@ -194,6 +178,12 @@ class StateChange extends $pb.GeneratedMessage {
     }
     if (signal != null) {
       _result.signal = signal;
+    }
+    if (id != null) {
+      _result.id = id;
+    }
+    if (hash != null) {
+      _result.hash = hash;
     }
     return _result;
   }
@@ -327,6 +317,24 @@ class StateChange extends $pb.GeneratedMessage {
   void clearSignal() => clearField(10);
   @$pb.TagNumber(10)
   $4.SignalState ensureSignal() => $_ensure(9);
+
+  @$pb.TagNumber(100)
+  $core.String get id => $_getSZ(10);
+  @$pb.TagNumber(100)
+  set id($core.String v) { $_setString(10, v); }
+  @$pb.TagNumber(100)
+  $core.bool hasId() => $_has(10);
+  @$pb.TagNumber(100)
+  void clearId() => clearField(100);
+
+  @$pb.TagNumber(101)
+  $core.String get hash => $_getSZ(11);
+  @$pb.TagNumber(101)
+  set hash($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(101)
+  $core.bool hasHash() => $_has(11);
+  @$pb.TagNumber(101)
+  void clearHash() => clearField(101);
 }
 
 class SetPowerRequest extends $pb.GeneratedMessage {

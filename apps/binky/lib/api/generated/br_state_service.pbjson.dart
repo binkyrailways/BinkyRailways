@@ -23,13 +23,23 @@ final $typed_data.Uint8List enableRunModeRequestDescriptor = $convert.base64Deco
 const GetStateChangesRequest$json = const {
   '1': 'GetStateChangesRequest',
   '2': const [
-    const {'1': 'bootstrap', '3': 1, '4': 1, '5': 8, '10': 'bootstrap'},
-    const {'1': 'bootstrap_only', '3': 2, '4': 1, '5': 8, '10': 'bootstrapOnly'},
+    const {'1': 'hashes', '3': 1, '4': 3, '5': 11, '6': '.binkyrailways.v1.GetStateChangesRequest.HashesEntry', '10': 'hashes'},
   ],
+  '3': const [GetStateChangesRequest_HashesEntry$json],
+};
+
+@$core.Deprecated('Use getStateChangesRequestDescriptor instead')
+const GetStateChangesRequest_HashesEntry$json = const {
+  '1': 'HashesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': const {'7': true},
 };
 
 /// Descriptor for `GetStateChangesRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStateChangesRequestDescriptor = $convert.base64Decode('ChZHZXRTdGF0ZUNoYW5nZXNSZXF1ZXN0EhwKCWJvb3RzdHJhcBgBIAEoCFIJYm9vdHN0cmFwEiUKDmJvb3RzdHJhcF9vbmx5GAIgASgIUg1ib290c3RyYXBPbmx5');
+final $typed_data.Uint8List getStateChangesRequestDescriptor = $convert.base64Decode('ChZHZXRTdGF0ZUNoYW5nZXNSZXF1ZXN0EkwKBmhhc2hlcxgBIAMoCzI0LmJpbmt5cmFpbHdheXMudjEuR2V0U3RhdGVDaGFuZ2VzUmVxdWVzdC5IYXNoZXNFbnRyeVIGaGFzaGVzGjkKC0hhc2hlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAE=');
 @$core.Deprecated('Use stateChangeDescriptor instead')
 const StateChange$json = const {
   '1': 'StateChange',
@@ -44,11 +54,13 @@ const StateChange$json = const {
     const {'1': 'route', '3': 8, '4': 1, '5': 11, '6': '.binkyrailways.v1.RouteState', '10': 'route'},
     const {'1': 'sensor', '3': 9, '4': 1, '5': 11, '6': '.binkyrailways.v1.SensorState', '10': 'sensor'},
     const {'1': 'signal', '3': 10, '4': 1, '5': 11, '6': '.binkyrailways.v1.SignalState', '10': 'signal'},
+    const {'1': 'id', '3': 100, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'hash', '3': 101, '4': 1, '5': 9, '10': 'hash'},
   ],
 };
 
 /// Descriptor for `StateChange`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List stateChangeDescriptor = $convert.base64Decode('CgtTdGF0ZUNoYW5nZRI4CgdyYWlsd2F5GAEgASgLMh4uYmlua3lyYWlsd2F5cy52MS5SYWlsd2F5U3RhdGVSB3JhaWx3YXkSLAoDbG9jGAIgASgLMhouYmlua3lyYWlsd2F5cy52MS5Mb2NTdGF0ZVIDbG9jEk0KDmNvbW1hbmRTdGF0aW9uGAMgASgLMiUuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblN0YXRlUg5jb21tYW5kU3RhdGlvbhIyCgVibG9jaxgEIAEoCzIcLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTdGF0ZVIFYmxvY2sSQQoKYmxvY2tHcm91cBgFIAEoCzIhLmJpbmt5cmFpbHdheXMudjEuQmxvY2tHcm91cFN0YXRlUgpibG9ja0dyb3VwEjsKCGp1bmN0aW9uGAYgASgLMh8uYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblN0YXRlUghqdW5jdGlvbhI1CgZvdXRwdXQYByABKAsyHS5iaW5reXJhaWx3YXlzLnYxLk91dHB1dFN0YXRlUgZvdXRwdXQSMgoFcm91dGUYCCABKAsyHC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlU3RhdGVSBXJvdXRlEjUKBnNlbnNvchgJIAEoCzIdLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yU3RhdGVSBnNlbnNvchI1CgZzaWduYWwYCiABKAsyHS5iaW5reXJhaWx3YXlzLnYxLlNpZ25hbFN0YXRlUgZzaWduYWw=');
+final $typed_data.Uint8List stateChangeDescriptor = $convert.base64Decode('CgtTdGF0ZUNoYW5nZRI4CgdyYWlsd2F5GAEgASgLMh4uYmlua3lyYWlsd2F5cy52MS5SYWlsd2F5U3RhdGVSB3JhaWx3YXkSLAoDbG9jGAIgASgLMhouYmlua3lyYWlsd2F5cy52MS5Mb2NTdGF0ZVIDbG9jEk0KDmNvbW1hbmRTdGF0aW9uGAMgASgLMiUuYmlua3lyYWlsd2F5cy52MS5Db21tYW5kU3RhdGlvblN0YXRlUg5jb21tYW5kU3RhdGlvbhIyCgVibG9jaxgEIAEoCzIcLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTdGF0ZVIFYmxvY2sSQQoKYmxvY2tHcm91cBgFIAEoCzIhLmJpbmt5cmFpbHdheXMudjEuQmxvY2tHcm91cFN0YXRlUgpibG9ja0dyb3VwEjsKCGp1bmN0aW9uGAYgASgLMh8uYmlua3lyYWlsd2F5cy52MS5KdW5jdGlvblN0YXRlUghqdW5jdGlvbhI1CgZvdXRwdXQYByABKAsyHS5iaW5reXJhaWx3YXlzLnYxLk91dHB1dFN0YXRlUgZvdXRwdXQSMgoFcm91dGUYCCABKAsyHC5iaW5reXJhaWx3YXlzLnYxLlJvdXRlU3RhdGVSBXJvdXRlEjUKBnNlbnNvchgJIAEoCzIdLmJpbmt5cmFpbHdheXMudjEuU2Vuc29yU3RhdGVSBnNlbnNvchI1CgZzaWduYWwYCiABKAsyHS5iaW5reXJhaWx3YXlzLnYxLlNpZ25hbFN0YXRlUgZzaWduYWwSDgoCaWQYZCABKAlSAmlkEhIKBGhhc2gYZSABKAlSBGhhc2g=');
 @$core.Deprecated('Use setPowerRequestDescriptor instead')
 const SetPowerRequest$json = const {
   '1': 'SetPowerRequest',
