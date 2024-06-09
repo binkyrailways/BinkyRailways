@@ -131,7 +131,10 @@ func (s *Server) Run(ctx context.Context) error {
 	api.RegisterStorageServiceServer(grpcSrv, s.service)
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcSrv)
-	wrappedGrpc := grpcweb.WrapServer(grpcSrv)
+	wrappedGrpc := grpcweb.WrapServer(grpcSrv,
+		grpcweb.WithOriginFunc(func(origin string) bool {
+			return false
+		}))
 
 	// Prepare HTTPS server
 	httpsRouter := echo.New()
@@ -144,6 +147,10 @@ func (s *Server) Run(ctx context.Context) error {
 	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {
+				log.Debug().
+					Str("method", req.Method).
+					Str("path", req.URL.Path).
+					Msg("Serving GRPC request")
 				wrappedGrpc.ServeHTTP(resp, req)
 				return
 			}
