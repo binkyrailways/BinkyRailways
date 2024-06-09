@@ -147,7 +147,7 @@ func (s *Server) Run(ctx context.Context) error {
 	httpsSrv := http.Server{
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(req) {
-				log.Debug().
+				log.Trace().
 					Str("method", req.Method).
 					Str("path", req.URL.Path).
 					Msg("Serving GRPC request")
