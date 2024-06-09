@@ -57,12 +57,12 @@ func (rcs routeChances) Gamble() state.Route {
 	return rcs[len(rcs)-1].Route
 }
 
-/// Select one of the given possible routes.
-/// Returns null if no route should be taken.
-/// <param name="possibleRoutes">A list of routes to choose from</param>
-/// <param name="loc">The loc to choose for</param>
-/// <param name="fromBlock">The block from which the next route will leave</param>
-/// <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
+// / Select one of the given possible routes.
+// / Returns null if no route should be taken.
+// / <param name="possibleRoutes">A list of routes to choose from</param>
+// / <param name="loc">The loc to choose for</param>
+// / <param name="fromBlock">The block from which the next route will leave</param>
+// / <param name="locDirection">The direction the loc is facing in the <see cref="fromBlock"/>.</param>
 func (rs *defaultRouteSelector) SelectRoute(ctx context.Context, possibleRoutes []state.Route, loc state.Loc, fromBlock state.Block, locDirection model.BlockSide) state.Route {
 	switch len(possibleRoutes) {
 	case 0:
@@ -87,7 +87,7 @@ func (rs *defaultRouteSelector) SelectRoute(ctx context.Context, possibleRoutes 
 	loc.ForEachRecentlyVisitedBlock(ctx, func(ctx context.Context, b state.Block) error {
 		multiplier := float64(1.0) - (1.0 / offset)
 		for i, opt := range options {
-			if opt.Route.GetTo(ctx) == b {
+			if opt.Route.GetTo() == b {
 				// Lower probability of this route
 				options[i].Chance = int(math.Trunc(float64(opt.Chance) * multiplier))
 			}
@@ -121,12 +121,12 @@ func (rs *defaultRouteSelector) SelectRoute(ctx context.Context, possibleRoutes 
 	return options.Gamble()
 }
 
-/// Called when the loc has entered the given to-block of the current route.
+// / Called when the loc has entered the given to-block of the current route.
 func (rs *defaultRouteSelector) BlockEntered(ctx context.Context, loc state.Loc, block state.Block) {
 	// Do nothing
 }
 
-/// Called when the loc has reached the given to-block of the current route.
+// / Called when the loc has reached the given to-block of the current route.
 func (rs *defaultRouteSelector) BlockReached(ctx context.Context, loc state.Loc, block state.Block) {
 	// Do nothing
 }

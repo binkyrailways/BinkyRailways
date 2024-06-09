@@ -124,7 +124,7 @@ func (alc *automaticLocController) chooseNextRoute(ctx context.Context, loc stat
 	}
 
 	// The loc can continue (if a free route is found)
-	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute(), route.GetRoute().GetTo(ctx), route.GetRoute().GetToBlockSide(ctx).Invert(), true)
+	nextRoute := alc.chooseRoute(ctx, loc, route.GetRoute(), route.GetRoute().GetTo(), route.GetRoute().GetToBlockSide().Invert(), true)
 	if nextRoute == nil {
 		// No route available
 		return false

@@ -32,8 +32,8 @@ type blockAndSide struct {
 // Initialize a new blockAndSide from given route.
 func newBlockAndSide(ctx context.Context, rt state.Route) blockAndSide {
 	return blockAndSide{
-		Block:     rt.GetTo(ctx),
-		EnterSide: rt.GetToBlockSide(ctx),
+		Block:     rt.GetTo(),
+		EnterSide: rt.GetToBlockSide(),
 	}
 }
 
@@ -99,8 +99,8 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 		targetBlock := b.Block
 		targetSide := b.EnterSide.Invert()
 		rw.ForEachRoute(func(r state.Route) {
-			if r.GetTo(ctx) == targetBlock &&
-				r.GetToBlockSide(ctx) == targetSide {
+			if r.GetTo() == targetBlock &&
+				r.GetToBlockSide() == targetSide {
 				routes = append(routes, r)
 			}
 		})
@@ -120,8 +120,8 @@ func anyRoutesTo(ctx context.Context, rw state.Railway, toBlock state.Block, toS
 	result := false
 	rw.ForEachRoute(func(r state.Route) {
 		if !result {
-			if r.GetTo(ctx) == toBlock &&
-				r.GetToBlockSide(ctx) == toSide {
+			if r.GetTo() == toBlock &&
+				r.GetToBlockSide() == toSide {
 				result = true
 			}
 		}
@@ -133,8 +133,8 @@ func anyRoutesTo(ctx context.Context, rw state.Railway, toBlock state.Block, toS
 func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block, fromSide model.BlockSide) []blockAndSide {
 	result := make([]blockAndSide, 0, rw.GetRouteCount(ctx))
 	rw.ForEachRoute(func(r state.Route) {
-		if r.GetFrom(ctx) == fromBlock &&
-			r.GetFromBlockSide(ctx) == fromSide {
+		if r.GetFrom() == fromBlock &&
+			r.GetFromBlockSide() == fromSide {
 			result = append(result, newBlockAndSide(ctx, r))
 		}
 	})
@@ -145,10 +145,10 @@ func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block,
 // Returns nil if not found.
 func getReverseRoute(ctx context.Context, rw state.Railway, route state.Route) state.Route {
 	// Get reversed from-to
-	from := route.GetTo(ctx)
-	to := route.GetFrom(ctx)
-	fromBlockSide := route.GetToBlockSide(ctx)
-	toBlockSide := route.GetFromBlockSide(ctx)
+	from := route.GetTo()
+	to := route.GetFrom()
+	fromBlockSide := route.GetToBlockSide()
+	toBlockSide := route.GetFromBlockSide()
 
 	if (from == nil) || (to == nil) {
 		return nil
@@ -157,10 +157,10 @@ func getReverseRoute(ctx context.Context, rw state.Railway, route state.Route) s
 	var result state.Route
 	rw.ForEachRoute(func(r state.Route) {
 		if result == nil {
-			if r.GetTo(ctx) == to &&
-				r.GetFrom(ctx) == from &&
-				r.GetToBlockSide(ctx) == toBlockSide &&
-				r.GetFromBlockSide(ctx) == fromBlockSide {
+			if r.GetTo() == to &&
+				r.GetFrom() == from &&
+				r.GetToBlockSide() == toBlockSide &&
+				r.GetFromBlockSide() == fromBlockSide {
 				result = r
 			}
 		}
