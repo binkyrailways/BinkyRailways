@@ -18,8 +18,6 @@
 package impl
 
 import (
-	"context"
-
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -30,7 +28,7 @@ type blockAndSide struct {
 }
 
 // Initialize a new blockAndSide from given route.
-func newBlockAndSide(ctx context.Context, rt state.Route) blockAndSide {
+func newBlockAndSide(rt state.Route) blockAndSide {
 	return blockAndSide{
 		Block:     rt.GetTo(),
 		EnterSide: rt.GetToBlockSide(),
@@ -57,12 +55,12 @@ func (list blockAndSides) Contains(entry blockAndSide) bool {
 }
 
 // Build the set of critical routes from the given route.
-func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state.Railway) ([]state.Route, error) {
+func buildCriticalSectionRoutes(route state.Route, rw state.Railway) ([]state.Route, error) {
 	var blocks blockAndSides
-	iterator := newBlockAndSide(ctx, route)
+	iterator := newBlockAndSide(route)
 	for {
 		// Are there any routes to the opposite side of the iterator block?
-		if !anyRoutesTo(ctx, rw, iterator.Block, iterator.EnterSide.Invert()) {
+		if !anyRoutesTo(rw, iterator.Block, iterator.EnterSide.Invert()) {
 			// No routes leading into the opposite side of the to block.
 			// No further critical section
 			break
@@ -70,7 +68,7 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 		}
 		if len(blocks) > 0 {
 			// Are there more then 'exits' from the iterator
-			iteratorExits := getNextBlocks(ctx, rw, iterator.Block, iterator.EnterSide)
+			iteratorExits := getNextBlocks(rw, iterator.Block, iterator.EnterSide)
 			if len(iteratorExits) > 1 {
 				// Multiple routes in the opposite direction possible
 				break
@@ -80,7 +78,7 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 		blocks = append(blocks, iterator)
 
 		// Find the blocks where we can go to from the iterator.
-		nextBlocks := getNextBlocks(ctx, rw, iterator.Block, iterator.EnterSide.Invert())
+		nextBlocks := getNextBlocks(rw, iterator.Block, iterator.EnterSide.Invert())
 		if len(nextBlocks) != 1 {
 			// We've found multiple or no routes, stop now
 			break
@@ -107,7 +105,7 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 	}
 
 	// Look for the reverse of this route (if any)
-	if reverse := getReverseRoute(ctx, rw, route); reverse != nil {
+	if reverse := getReverseRoute(rw, route); reverse != nil {
 		routes = append(routes, reverse)
 	}
 
@@ -116,7 +114,7 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 
 // Are there any routes leading to the given block that enter the to block
 // at the given to side?
-func anyRoutesTo(ctx context.Context, rw state.Railway, toBlock state.Block, toSide model.BlockSide) bool {
+func anyRoutesTo(rw state.Railway, toBlock state.Block, toSide model.BlockSide) bool {
 	result := false
 	rw.ForEachRoute(func(r state.Route) {
 		if !result {
@@ -130,12 +128,12 @@ func anyRoutesTo(ctx context.Context, rw state.Railway, toBlock state.Block, toS
 }
 
 // Create a list of blocks reachable from the given block.
-func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block, fromSide model.BlockSide) []blockAndSide {
-	result := make([]blockAndSide, 0, rw.GetRouteCount(ctx))
+func getNextBlocks(rw state.Railway, fromBlock state.Block, fromSide model.BlockSide) []blockAndSide {
+	result := make([]blockAndSide, 0, rw.GetRouteCount())
 	rw.ForEachRoute(func(r state.Route) {
 		if r.GetFrom() == fromBlock &&
 			r.GetFromBlockSide() == fromSide {
-			result = append(result, newBlockAndSide(ctx, r))
+			result = append(result, newBlockAndSide(r))
 		}
 	})
 	return result
@@ -143,7 +141,7 @@ func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block,
 
 // Find the route that is the reverse of the given route.
 // Returns nil if not found.
-func getReverseRoute(ctx context.Context, rw state.Railway, route state.Route) state.Route {
+func getReverseRoute(rw state.Railway, route state.Route) state.Route {
 	// Get reversed from-to
 	from := route.GetTo()
 	to := route.GetFrom()

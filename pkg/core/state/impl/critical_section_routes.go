@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"sort"
 	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -32,8 +33,8 @@ type criticalSectionRoutes struct {
 var _ state.CriticalSectionRoutes = &criticalSectionRoutes{}
 
 // Build the set of critical routes from the given route.
-func (csr *criticalSectionRoutes) Build(ctx context.Context, route state.Route, rw state.Railway) error {
-	routes, err := buildCriticalSectionRoutes(ctx, route, rw)
+func (csr *criticalSectionRoutes) Build(route state.Route, rw state.Railway) error {
+	routes, err := buildCriticalSectionRoutes(route, rw)
 	if err != nil {
 		return nil
 	}
@@ -80,5 +81,6 @@ func (csr *criticalSectionRoutes) String() string {
 	for _, x := range csr.routes {
 		result = append(result, x.String())
 	}
+	sort.Strings(result)
 	return strings.Join(result, ",\n")
 }

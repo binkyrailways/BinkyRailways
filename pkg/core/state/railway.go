@@ -67,7 +67,7 @@ type Railway interface {
 	// Gets the states of all blocks in this railway
 	ForEachBlock(func(Block))
 	// Get the number of blocks
-	GetBlockCount(context.Context) int
+	GetBlockCount() int
 	// Gets the state of the block with given ID.
 	// Returns nil if not found
 	GetBlock(id string) (Block, error)
@@ -75,12 +75,12 @@ type Railway interface {
 	// Gets the states of all block groups in this railway
 	ForEachBlockGroup(func(BlockGroup))
 	// Get the number of block groups
-	GetBlockGroupCount(context.Context) int
+	GetBlockGroupCount() int
 
 	// Gets the states of all command stations in this railway
 	ForEachCommandStation(func(CommandStation))
 	// Get the number of command stations
-	GetCommandStationCount(context.Context) int
+	GetCommandStationCount() int
 
 	// Gets the states of all junctions in this railway
 	ForEachJunction(func(Junction))
@@ -88,12 +88,12 @@ type Railway interface {
 	// Returns nil if not found
 	GetJunction(id string) (Junction, error)
 	// Get the number of junctions
-	GetJunctionCount(context.Context) int
+	GetJunctionCount() int
 
 	// Gets the states of all locomotives in this railway
 	ForEachLoc(func(Loc))
 	// Get the number of locs
-	GetLocCount(context.Context) int
+	GetLocCount() int
 	// Gets the state of the loc with given ID.
 	// Returns nil if not found
 	GetLoc(id string) (Loc, error)
@@ -101,7 +101,7 @@ type Railway interface {
 	// Gets the states of all routes in this railway
 	ForEachRoute(func(Route))
 	// Get the number of routes
-	GetRouteCount(context.Context) int
+	GetRouteCount() int
 	// Gets the state of the route with given ID.
 	// Returns nil if not found
 	GetRoute(id string) (Route, error)
@@ -112,7 +112,7 @@ type Railway interface {
 	// Returns nil if not found
 	GetSensor(id string) (Sensor, error)
 	// Get the number of sensors
-	GetSensorCount(context.Context) int
+	GetSensorCount() int
 
 	// Gets the states of all signals in this railway
 	ForEachSignal(func(Signal))
@@ -120,7 +120,7 @@ type Railway interface {
 	// Returns nil if not found
 	GetSignal(id string) (Signal, error)
 	// Get the number of signals
-	GetSignalCount(context.Context) int
+	GetSignalCount() int
 
 	// Gets the states of all outputs in this railway
 	ForEachOutput(func(Output))
@@ -128,7 +128,7 @@ type Railway interface {
 	// Returns nil if not found
 	GetOutput(id string) (Output, error)
 	// Get the number of outputs
-	GetOutputCount(context.Context) int
+	GetOutputCount() int
 
 	// Get the entity tester
 	GetEntityTester() EntityTester

@@ -96,7 +96,7 @@ func (rt *baseRouteAvailabilityTester) IsAvailableFor(ctx context.Context, route
 	}
 
 	// Check opposite traffic
-	maxSteps := rt.Railway.GetBlockCount(ctx)
+	maxSteps := rt.Railway.GetBlockCount()
 	if blockContainingTraffic, hasTraffic := rt.hasTrafficInOppositeDirection(ctx, route, loc, maxSteps); hasTraffic {
 		// Traffic in opposite direction found
 		return state.RouteOption{

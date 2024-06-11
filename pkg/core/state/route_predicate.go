@@ -26,7 +26,7 @@ import (
 type RoutePredicate func(context.Context, Route) bool
 type routes interface {
 	// Get total possible number of routes
-	GetRouteCount(context.Context) int
+	GetRouteCount() int
 	// Iterate all routes
 	ForEachRoute(func(Route))
 }
@@ -40,7 +40,7 @@ func (p RoutePredicate) And(other RoutePredicate) RoutePredicate {
 
 // Get all routes that match the given predicate
 func (p RoutePredicate) GetRoutes(ctx context.Context, allRoutes routes) []Route {
-	result := make([]Route, 0, allRoutes.GetRouteCount(ctx))
+	result := make([]Route, 0, allRoutes.GetRouteCount())
 	allRoutes.ForEachRoute(func(r Route) {
 		if p(ctx, r) {
 			result = append(result, r)
