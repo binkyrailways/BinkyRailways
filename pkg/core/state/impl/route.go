@@ -150,19 +150,16 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 		return merr
 	}
 
-	// Construct critical section
-	if err := r.csr.Build(r, rw); err != nil {
-		return err
-	}
-
-	fmt.Printf("Critical section routes of %s:\n%s\n\n", r.String(), r.csr.String())
-
 	return nil
 }
 
 // Wrap up the preparation fase.
 func (r *route) FinalizePrepare(ctx context.Context) {
-	// TODO
+	// Construct critical section
+	rw := r.GetRailwayImpl()
+	r.csr.Build(r, rw)
+
+	fmt.Printf("Critical section routes of %s:\n%s\n\n", r.String(), r.csr.String())
 }
 
 // Speed of locs when going this route.

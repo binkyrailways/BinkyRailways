@@ -33,13 +33,9 @@ type criticalSectionRoutes struct {
 var _ state.CriticalSectionRoutes = &criticalSectionRoutes{}
 
 // Build the set of critical routes from the given route.
-func (csr *criticalSectionRoutes) Build(route state.Route, rw state.Railway) error {
-	routes, err := buildCriticalSectionRoutes(route, rw)
-	if err != nil {
-		return nil
-	}
+func (csr *criticalSectionRoutes) Build(route state.Route, rw state.Railway) {
+	routes := buildCriticalSectionRoutes(route, rw)
 	csr.routes = routes
-	return nil
 }
 
 // Iterate all the routes

@@ -18,6 +18,9 @@
 package impl
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -41,7 +44,21 @@ func (bs blockAndSide) Equals(other blockAndSide) bool {
 		bs.EnterSide == other.EnterSide
 }
 
+// Return human readable representation
+func (bs blockAndSide) String() string {
+	return fmt.Sprintf("%s of %s", bs.EnterSide, bs.Block.GetDescription())
+}
+
 type blockAndSides []blockAndSide
+
+// Return human readable representation
+func (bss blockAndSides) String() string {
+	result := make([]string, 0, len(bss))
+	for _, bs := range bss {
+		result = append(result, bs.String())
+	}
+	return strings.Join(result, ", ")
+}
 
 // Contains returns true if the list contains an entry
 // with given values.
@@ -55,16 +72,16 @@ func (list blockAndSides) Contains(entry blockAndSide) bool {
 }
 
 // Build the set of critical routes from the given route.
-func buildCriticalSectionRoutes(route state.Route, rw state.Railway) ([]state.Route, error) {
+func buildCriticalSectionRoutes(route state.Route, rw state.Railway) []state.Route {
 	var blocks blockAndSides
 	iterator := newBlockAndSide(route)
+
 	for {
 		// Are there any routes to the opposite side of the iterator block?
 		if !anyRoutesTo(rw, iterator.Block, iterator.EnterSide.Invert()) {
 			// No routes leading into the opposite side of the to block.
 			// No further critical section
 			break
-
 		}
 		if len(blocks) > 0 {
 			// Are there more then 'exits' from the iterator
@@ -109,22 +126,20 @@ func buildCriticalSectionRoutes(route state.Route, rw state.Railway) ([]state.Ro
 		routes = append(routes, reverse)
 	}
 
-	return routes, nil
+	return routes
 }
 
 // Are there any routes leading to the given block that enter the to block
 // at the given to side?
 func anyRoutesTo(rw state.Railway, toBlock state.Block, toSide model.BlockSide) bool {
-	result := false
+	count := 0
 	rw.ForEachRoute(func(r state.Route) {
-		if !result {
-			if r.GetTo() == toBlock &&
-				r.GetToBlockSide() == toSide {
-				result = true
-			}
+		if r.GetTo() == toBlock &&
+			r.GetToBlockSide() == toSide {
+			count++
 		}
 	})
-	return result
+	return count > 0
 }
 
 // Create a list of blocks reachable from the given block.

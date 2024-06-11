@@ -29,10 +29,14 @@ const (
 
 // Invert returns the inverted side.
 func (bs BlockSide) Invert() BlockSide {
-	if bs == BlockSideFront {
+	switch bs {
+	case BlockSideFront:
 		return BlockSideBack
+	case BlockSideBack:
+		return BlockSideFront
+	default:
+		panic("Unknown block side: " + string(bs))
 	}
-	return BlockSideFront
 }
 
 // String returns block side as string
