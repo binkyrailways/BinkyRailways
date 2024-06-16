@@ -184,6 +184,10 @@ certutil -addstore root binky-ca.pem
 <a class="button-25" href="https://%HOST%:%HTTPSPORT%/debug/pprof/">Open Debug Profiles</a>
 </p>
 
+<p>
+<a class="button" href="http://%HOST%:%HTTPPORT%/tls/ca.pem" download>Download Certificate</a>
+</p>
+
 <h2>MacOS Application</h2>
 
 <p>
