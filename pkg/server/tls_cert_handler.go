@@ -24,5 +24,5 @@ import (
 )
 
 func (s *Server) handleGetCACert(c echo.Context) error {
-	return c.String(http.StatusOK, s.publicCAPem)
+	return c.Blob(http.StatusOK, "application/pem-certificate-chain", []byte(s.publicCAPem))
 }
