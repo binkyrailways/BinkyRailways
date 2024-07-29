@@ -33,6 +33,7 @@ type binkyNetDevice struct {
 	DeviceID api.DeviceID   `xml:"DeviceID,omitempty"`
 	Type     api.DeviceType `xml:"Type,omitempty"`
 	Address  string         `xml:"Address,omitempty"`
+	Disabled bool           `xml:"Disabled,omitempty"`
 }
 
 var _ model.BinkyNetDevice = &binkyNetDevice{}
@@ -114,6 +115,18 @@ func (d *binkyNetDevice) GetAddress() string {
 func (d *binkyNetDevice) SetAddress(ctx context.Context, value string) error {
 	if d.Address != value {
 		d.Address = value
+		d.OnModified()
+	}
+	return nil
+}
+
+// Is this device disabled?
+func (d *binkyNetDevice) GetIsDisabled() bool {
+	return d.Disabled
+}
+func (d *binkyNetDevice) SetIsDisabled(ctx context.Context, value bool) error {
+	if d.Disabled != value {
+		d.Disabled = value
 		d.OnModified()
 	}
 	return nil

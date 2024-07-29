@@ -33,6 +33,7 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 	dst.DeviceId = string(src.GetDeviceID())
 	dst.DeviceType.FromModel(ctx, src.GetDeviceType())
 	dst.Address = src.GetAddress()
+	dst.Disabled = src.GetIsDisabled()
 	switch src.GetDeviceType() {
 	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
 		dst.CanAddSensors_4Group = false
@@ -61,5 +62,6 @@ func (src *BinkyNetDevice) ToModel(ctx context.Context, dst model.BinkyNetDevice
 		multierr.AppendInto(&err, dst.SetDeviceType(ctx, dt))
 	}
 	multierr.AppendInto(&err, dst.SetAddress(ctx, src.GetAddress()))
+	multierr.AppendInto(&err, dst.SetIsDisabled(ctx, src.GetDisabled()))
 	return err
 }

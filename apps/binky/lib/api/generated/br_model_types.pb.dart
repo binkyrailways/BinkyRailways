@@ -1421,6 +1421,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
     ..e<BinkyNetDeviceType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetDeviceType.MCP23008, valueOf: BinkyNetDeviceType.valueOf, enumValues: BinkyNetDeviceType.values)
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'disabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors8Group', protoName: 'can_add_sensors_8_group')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors4Group', protoName: 'can_add_sensors_4_group')
     ..hasRequiredFields = false
@@ -1432,6 +1433,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     $core.String? deviceId,
     BinkyNetDeviceType? deviceType,
     $core.String? address,
+    $core.bool? disabled,
     $core.bool? canAddSensors8Group,
     $core.bool? canAddSensors4Group,
   }) {
@@ -1447,6 +1449,9 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (disabled != null) {
+      _result.disabled = disabled;
     }
     if (canAddSensors8Group != null) {
       _result.canAddSensors8Group = canAddSensors8Group;
@@ -1513,21 +1518,30 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearAddress() => clearField(4);
 
+  @$pb.TagNumber(5)
+  $core.bool get disabled => $_getBF(4);
+  @$pb.TagNumber(5)
+  set disabled($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDisabled() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDisabled() => clearField(5);
+
   @$pb.TagNumber(10)
-  $core.bool get canAddSensors8Group => $_getBF(4);
+  $core.bool get canAddSensors8Group => $_getBF(5);
   @$pb.TagNumber(10)
-  set canAddSensors8Group($core.bool v) { $_setBool(4, v); }
+  set canAddSensors8Group($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(10)
-  $core.bool hasCanAddSensors8Group() => $_has(4);
+  $core.bool hasCanAddSensors8Group() => $_has(5);
   @$pb.TagNumber(10)
   void clearCanAddSensors8Group() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get canAddSensors4Group => $_getBF(5);
+  $core.bool get canAddSensors4Group => $_getBF(6);
   @$pb.TagNumber(11)
-  set canAddSensors4Group($core.bool v) { $_setBool(5, v); }
+  set canAddSensors4Group($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(11)
-  $core.bool hasCanAddSensors4Group() => $_has(5);
+  $core.bool hasCanAddSensors4Group() => $_has(6);
   @$pb.TagNumber(11)
   void clearCanAddSensors4Group() => clearField(11);
 }

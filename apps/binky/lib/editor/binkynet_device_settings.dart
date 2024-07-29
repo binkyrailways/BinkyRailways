@@ -123,6 +123,15 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
             onLostFocus: (value) async {
               await _update((update) => {update.address = value});
             }),
+        SettingsCheckBoxField(
+          label: "Disabled",
+          value: widget.binkynetdevice.disabled,
+          onChanged: (value) async {
+            await _update((update) {
+              update.disabled = value;
+            });
+          },
+        ),
       ],
     );
   }
