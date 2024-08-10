@@ -73,13 +73,14 @@ class BinkyNetDevicesTree extends StatelessWidget {
                     }
                     final device = devices[index - extra];
                     final id = device.id;
+                    final subPrefix = device.disabled ? "(disabled) " : "";
                     return ListTile(
                       leading: BinkyIcons.binkynetdevice,
                       title: Text(device.deviceId),
                       subtitle: withParents
-                          ? null
+                          ? Text(subPrefix)
                           : Text(
-                              "addr=${device.address}, type=${device.deviceType}"),
+                              "${subPrefix}addr=${device.address}, type=${device.deviceType}"),
                       onTap: () => editorCtx
                           .select(EntitySelector.binkynetDevice(lw, device)),
                       selected: selector.idOf(EntityType.binkynetdevice) == id,

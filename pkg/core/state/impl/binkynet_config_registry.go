@@ -57,18 +57,21 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 		}
 		// Add devices
 		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
-			d := &api.Device{
-				Id:      devModel.GetDeviceID(),
-				Type:    devModel.GetDeviceType(),
-				Address: devModel.GetAddress(),
+			if !devModel.GetIsDisabled() {
+				d := &api.Device{
+					Id:      devModel.GetDeviceID(),
+					Type:    devModel.GetDeviceType(),
+					Address: devModel.GetAddress(),
+				}
+				lw.Devices = append(lw.Devices, d)
 			}
-			lw.Devices = append(lw.Devices, d)
 		})
 		// Add objects
 		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
 			if !r.isObjectUsed(objModel) {
 				return
 			}
+			disabled := false
 			o := &api.Object{
 				Id:            objModel.GetObjectID(),
 				Type:          objModel.GetObjectType(),
@@ -78,7 +81,10 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 				o.Configuration[api.ObjectConfigKey(k)] = v
 			})
 			objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
-				if allPinsHaveNoDevice(cm) {
+				if anyPinsHaveDisabledDevice(cm, lwModel) {
+					// Using a disabled device
+					disabled = true
+				} else if allPinsHaveNoDevice(cm) {
 					// No device configured for this connection, ignore it
 				} else {
 					conn := &api.Connection{
@@ -97,7 +103,9 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 					o.Connections = append(o.Connections, conn)
 				}
 			})
-			lw.Objects = append(lw.Objects, o)
+			if !disabled {
+				lw.Objects = append(lw.Objects, o)
+			}
 		})
 		// Store config
 		lwConfig[lwModel.GetHardwareID()] = lw
@@ -115,6 +123,22 @@ func allPinsHaveNoDevice(cm model.BinkyNetConnection) bool {
 		}
 	})
 	return !anyDevice
+}
+
+// anyPinsHaveDisabledDevice returns true if any of the pins in the
+// given connection refer to a disabled device.
+func anyPinsHaveDisabledDevice(cm model.BinkyNetConnection, lw model.BinkyNetLocalWorker) bool {
+	foundDisabledDevice := false
+	cm.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+		if id := pin.GetDeviceID(); id != "" {
+			if dev, found := lw.GetDevices().Get(id); found {
+				if dev.GetIsDisabled() {
+					foundDisabledDevice = true
+				}
+			}
+		}
+	})
+	return foundDisabledDevice
 }
 
 // Get returns the configuration for a worker with given hardware ID.

@@ -270,6 +270,8 @@ message BinkyNetDevice {
   BinkyNetDeviceType device_type = 3;
   // Address of the device
   string address = 4;
+  // Set if the device is disabled
+  bool disabled = 5;
   // If set, this device supports adding an object group of type SENSORS_8
   bool can_add_sensors_8_group = 10;
   // If set, this device supports adding an object group of type SENSORS_4

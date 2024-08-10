@@ -41,4 +41,8 @@ type BinkyNetDevice interface {
 	// Address of the device
 	GetAddress() string
 	SetAddress(ctx context.Context, value string) error
+
+	// Is this device disabled?
+	GetIsDisabled() bool
+	SetIsDisabled(context.Context, bool) error
 }
