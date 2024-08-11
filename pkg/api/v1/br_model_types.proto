@@ -741,6 +741,64 @@ message Signal {
   string module_id = 3;
   // Position of the Signal
   Position position = 4;
+  // Set when this signal is of type block signal.
+  BlockSignal block_signal = 5;
+}
+
+// Signal related to a specific block
+message BlockSignal {
+	// First address
+	// This is an output signal.
+  string address1 = 1;
+	// Second address
+	// This is an output signal.
+  string address2 = 2;
+	// Third address
+	// This is an output signal.
+  string address3 = 3;
+	// Fourth address
+	// This is an output signal.
+  string address4 = 4;
+
+  // Is the Red color available?
+  // Readonly.
+  bool is_red_available = 10;
+	// Bit pattern used for color Red.
+  int32 red_pattern = 11;
+
+  // Is the Green color available?
+  // Readonly.
+  bool is_green_available = 20;
+  // Bit pattern used for color Green.
+  int32 green_pattern = 21;
+  
+  // Is the Yellow color available?
+  // Readonly.
+  bool is_yellow_available = 30;
+	// Bit pattern used for color Yellow.
+  int32 yellow_pattern = 31;
+
+  // Is the White color available?
+  // Readonly.
+  bool is_white_available = 40;
+	// Bit pattern used for color White.
+  int32 white_pattern = 41;
+
+	// The block this signal protects.
+  BlockRef block = 50;
+	// Side of the block where the signal is located.
+  BlockSide block_side = 51;
+
+	// Type of signal
+  BlockSignalType type = 60;
+}
+
+// BlockSignalType indicates a type of block signal.
+enum BlockSignalType {
+	// ENTRY indicates the type of signal that shows if a block can be entered.
+  ENTRY = 0;
+	// EXIT indicates the type of signal that shows if a block can be left.
+  EXIT = 1;
 }
 
 // Reference to a Signal

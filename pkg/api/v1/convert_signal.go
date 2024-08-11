@@ -32,6 +32,12 @@ func (dst *Signal) FromModel(ctx context.Context, src model.Signal) error {
 	if err := dst.Position.FromModel(ctx, src); err != nil {
 		return err
 	}
+	if bs, ok := src.(model.BlockSignal); ok {
+		dst.BlockSignal = &BlockSignal{}
+		if err := dst.BlockSignal.FromModel(ctx, bs); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -44,6 +50,15 @@ func (src *Signal) ToModel(ctx context.Context, dst model.Signal) error {
 	dst.SetDescription(src.GetDescription())
 	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
 		return err
+	}
+	if bs, ok := dst.(model.BlockSignal); ok {
+		bsSrc := src.GetBlockSignal()
+		if bsSrc == nil {
+			return InvalidArgument("Expected block signal")
+		}
+		if err := bsSrc.ToModel(ctx, bs); err != nil {
+			return err
+		}
 	}
 	return nil
 }
