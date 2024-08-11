@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	github.com/binkynet/BinkyNet v1.12.1
-	github.com/binkynet/NetManager v1.10.0
+	github.com/binkynet/NetManager v1.10.1
 	github.com/binkynet/bidib v0.0.0-20231022123849-25701f6a5d6a
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dchest/uniuri v1.2.0

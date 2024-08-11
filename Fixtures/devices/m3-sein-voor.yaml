@@ -1,0 +1,27 @@
+packages:
+  networking: !include packages/networking.yaml
+  device: !include packages/device-d1mini.yaml
+
+esphome:
+  name: m3-sein-voor
+
+switch:
+  - platform: gpio
+    id: pin1
+    name: pin1
+    pin:
+      number: D7
+      inverted: true
+  - platform: gpio
+    id: pin2
+    name: pin2
+    pin: 
+      number: D6
+      inverted: true
+  - platform: gpio
+    id: pin3
+    name: pin3
+    pin: 
+      number: D5
+      inverted: true
+

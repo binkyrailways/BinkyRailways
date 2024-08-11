@@ -30,8 +30,8 @@ github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6r
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
 github.com/binkynet/BinkyNet v1.12.1 h1:+8W2xEBMX8Re/Epo7ttgZiKkO1qg59Pt3flMtWSLOE0=
 github.com/binkynet/BinkyNet v1.12.1/go.mod h1:9b+leXFlW2EvPzKNJfnKl7S/6AWOw9mqWTaIaUGXFzA=
-github.com/binkynet/NetManager v1.10.0 h1:38KVOfFlLlQXDPfWlWDAp0xAP1s+CRkSCC8h4PtQrCM=
-github.com/binkynet/NetManager v1.10.0/go.mod h1:lFXoJMkYw5A1XtaK1aT1fdShf9xFW153w1W3DZ/v0/0=
+github.com/binkynet/NetManager v1.10.1 h1:P1MnAVOxKW+ryT/ivVn+RTvNWy2INoPaiigzLYeYOQg=
+github.com/binkynet/NetManager v1.10.1/go.mod h1:lFXoJMkYw5A1XtaK1aT1fdShf9xFW153w1W3DZ/v0/0=
 github.com/binkynet/bidib v0.0.0-20231022123849-25701f6a5d6a h1:NLf7Zol7DNh4GsmrRoz/G4DOmyfJYdJVVmEN9jIqhC4=
 github.com/binkynet/bidib v0.0.0-20231022123849-25701f6a5d6a/go.mod h1:snEK3os5Y9r9VZtWdp909fPH0mNBvhu1c8XOu+TF4mI=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
