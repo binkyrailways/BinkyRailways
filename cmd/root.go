@@ -21,6 +21,7 @@ import (
 	"context"
 	"io"
 	"os"
+	"strings"
 	"time"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
@@ -110,7 +111,7 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	cliLog = zerolog.New(logWriter).With().Timestamp().Logger()
 
 	// Parse log level
-	if level, err := zerolog.ParseLevel(rootArgs.logLevel); err != nil {
+	if level, err := zerolog.ParseLevel(strings.ToLower(rootArgs.logLevel)); err != nil {
 		cliLog.Fatal().Err(err).
 			Str("level", rootArgs.logLevel).Msg("Invalid log level")
 	} else {
