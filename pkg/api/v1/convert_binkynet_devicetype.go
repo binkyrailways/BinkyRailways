@@ -38,6 +38,8 @@ func (dst *BinkyNetDeviceType) FromModel(ctx context.Context, src api.DeviceType
 		*dst = BinkyNetDeviceType_ADS1115
 	case api.DeviceTypeBinkyCarSensor:
 		*dst = BinkyNetDeviceType_BINKYCARSENSOR
+	case api.DeviceTypeMQTT:
+		*dst = BinkyNetDeviceType_MQTT
 	}
 	return nil
 }
@@ -57,6 +59,8 @@ func (src BinkyNetDeviceType) ToModel(ctx context.Context) (api.DeviceType, erro
 		return api.DeviceTypeADS1115, nil
 	case BinkyNetDeviceType_BINKYCARSENSOR:
 		return api.DeviceTypeBinkyCarSensor, nil
+	case BinkyNetDeviceType_MQTT:
+		return api.DeviceTypeMQTT, nil
 	}
 	return api.DeviceTypeMCP23008, InvalidArgument("Unknown BinkyNetDeviceType: %s", src)
 }
