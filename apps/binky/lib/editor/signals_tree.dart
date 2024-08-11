@@ -60,9 +60,13 @@ class SignalsTree extends StatelessWidget {
                     }
                     final signal = signals[index - 2];
                     final id = signal.id;
+                    final subtitle = signal.hasBlockSignal()
+                        ? "${signal.blockSignal.blockSide}, ${signal.blockSignal.type}"
+                        : "";
                     return ListTile(
                       leading: BinkyIcons.signal,
                       title: Text(signal.description),
+                      subtitle: Text(subtitle),
                       onTap: () =>
                           editorCtx.select(EntitySelector.signal(signal)),
                       selected: selector.idOf(EntityType.signal) == id,
