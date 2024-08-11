@@ -89,6 +89,7 @@ class _SignalSettings extends StatefulWidget {
 }
 
 class _SignalSettingsState extends State<_SignalSettings> {
+  final SignalPatternValidator _patternValidator = SignalPatternValidator();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _redPatternController = TextEditingController();
   final TextEditingController _greenPatternController = TextEditingController();
@@ -99,14 +100,14 @@ class _SignalSettingsState extends State<_SignalSettings> {
   void _initConrollers() {
     _descriptionController.text = widget.signal.description;
     if (widget.signal.hasBlockSignal()) {
-      _redPatternController.text =
-          widget.signal.blockSignal.redPattern.toString();
-      _greenPatternController.text =
-          widget.signal.blockSignal.greenPattern.toString();
-      _yellowPatternController.text =
-          widget.signal.blockSignal.yellowPattern.toString();
-      _whitePatternController.text =
-          widget.signal.blockSignal.whitePattern.toString();
+      _redPatternController.text = SignalPatternValidator.patternToString(
+          widget.signal.blockSignal.redPattern);
+      _greenPatternController.text = SignalPatternValidator.patternToString(
+          widget.signal.blockSignal.greenPattern);
+      _yellowPatternController.text = SignalPatternValidator.patternToString(
+          widget.signal.blockSignal.yellowPattern);
+      _whitePatternController.text = SignalPatternValidator.patternToString(
+          widget.signal.blockSignal.whitePattern);
     }
   }
 
@@ -137,84 +138,104 @@ class _SignalSettingsState extends State<_SignalSettings> {
           }),
     ];
     if (widget.signal.hasBlockSignal()) {
-      widgets.add(const SettingsHeader(title: "Addresses"));
-      widgets.add(SettingsAddressField(
-          key: Key("${widget.signal.id}/signal/address1"),
-          label: "Address 1",
-          address: widget.signal.blockSignal.address1,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.address1 = value;
-            });
-          }));
-      widgets.add(SettingsAddressField(
-          key: Key("${widget.signal.id}/signal/address2"),
-          label: "Address 2",
-          address: widget.signal.blockSignal.address2,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.address2 = value;
-            });
-          }));
-      widgets.add(SettingsAddressField(
-          key: Key("${widget.signal.id}/signal/address3"),
-          label: "Address 3",
-          address: widget.signal.blockSignal.address3,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.address3 = value;
-            });
-          }));
-      widgets.add(SettingsAddressField(
-          key: Key("${widget.signal.id}/signal/address4"),
-          label: "Address 4",
-          address: widget.signal.blockSignal.address4,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.address4 = value;
-            });
-          }));
+      widgets.add(const SettingsHeader(title: "Connections"));
+      widgets.add(Row(children: [
+        Expanded(
+            child: SettingsAddressField(
+                key: Key("${widget.signal.id}/signal/address1"),
+                label: "Address 1",
+                address: widget.signal.blockSignal.address1,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.address1 = value;
+                  });
+                })),
+        Expanded(
+            child: SettingsAddressField(
+                key: Key("${widget.signal.id}/signal/address2"),
+                label: "Address 2",
+                address: widget.signal.blockSignal.address2,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.address2 = value;
+                  });
+                })),
+      ]));
+      widgets.add(Row(children: [
+        Expanded(
+            child: SettingsAddressField(
+                key: Key("${widget.signal.id}/signal/address3"),
+                label: "Address 3",
+                address: widget.signal.blockSignal.address3,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.address3 = value;
+                  });
+                })),
+        Expanded(
+            child: SettingsAddressField(
+                key: Key("${widget.signal.id}/signal/address4"),
+                label: "Address 4",
+                address: widget.signal.blockSignal.address4,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.address4 = value;
+                  });
+                })),
+      ]));
 
-      widgets.add(SettingsTextField(
-          key: Key("${widget.signal.id}/signal/red_pattern"),
-          controller: _redPatternController,
-          label: "Red pattern",
-          //validator: _patternValidator.validate,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.redPattern = int.parse(value);
-            });
-          }));
-      widgets.add(SettingsTextField(
-          key: Key("${widget.signal.id}/signal/green_pattern"),
-          controller: _greenPatternController,
-          label: "Green pattern",
-          //validator: _patternValidator.validate,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.greenPattern = int.parse(value);
-            });
-          }));
-      widgets.add(SettingsTextField(
-          key: Key("${widget.signal.id}/signal/yellow_pattern"),
-          controller: _yellowPatternController,
-          label: "Yellow pattern",
-          //validator: _patternValidator.validate,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.yellowPattern = int.parse(value);
-            });
-          }));
-      widgets.add(SettingsTextField(
-          key: Key("${widget.signal.id}/signal/white_pattern"),
-          controller: _whitePatternController,
-          label: "White pattern",
-          //validator: _patternValidator.validate,
-          onLostFocus: (value) async {
-            await _update((update) {
-              update.blockSignal.whitePattern = int.parse(value);
-            });
-          }));
+      widgets.add(Row(children: [
+        Expanded(
+            child: SettingsTextField(
+                key: Key("${widget.signal.id}/signal/red_pattern"),
+                controller: _redPatternController,
+                label: "Red pattern",
+                validator: _patternValidator.validate,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.redPattern =
+                        SignalPatternValidator.stringToPattern(value);
+                  });
+                })),
+        Expanded(
+            child: SettingsTextField(
+                key: Key("${widget.signal.id}/signal/green_pattern"),
+                controller: _greenPatternController,
+                label: "Green pattern",
+                validator: _patternValidator.validate,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.greenPattern =
+                        SignalPatternValidator.stringToPattern(value);
+                  });
+                })),
+      ]));
+      widgets.add(Row(children: [
+        Expanded(
+            child: SettingsTextField(
+                key: Key("${widget.signal.id}/signal/yellow_pattern"),
+                controller: _yellowPatternController,
+                label: "Yellow pattern",
+                validator: _patternValidator.validate,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.yellowPattern =
+                        SignalPatternValidator.stringToPattern(value);
+                  });
+                })),
+        Expanded(
+            child: SettingsTextField(
+                key: Key("${widget.signal.id}/signal/white_pattern"),
+                controller: _whitePatternController,
+                label: "White pattern",
+                validator: _patternValidator.validate,
+                onLostFocus: (value) async {
+                  await _update((update) {
+                    update.blockSignal.whitePattern =
+                        SignalPatternValidator.stringToPattern(value);
+                  });
+                })),
+      ]));
 
       widgets.add(SettingsDropdownField<String>(
         key: Key("${widget.signal.id}/signal/block"),

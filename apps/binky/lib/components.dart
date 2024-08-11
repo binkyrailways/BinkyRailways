@@ -28,4 +28,5 @@ export 'components/_settings_checkboxfield.dart';
 export 'components/_settings_dropdownfield.dart';
 export 'components/_settings_header.dart';
 export 'components/_settings_textfield.dart';
+export 'components/_signal_pattern_validator.dart';
 export 'components/_split_view.dart';

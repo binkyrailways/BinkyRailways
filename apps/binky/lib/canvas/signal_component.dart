@@ -46,14 +46,49 @@ class SignalComponent extends EntityComponent {
       );
       canvas.save();
 
+      // Count number of colors
+      final colors = <Color>[];
+      if (model.hasBlockSignal()) {
+        final bs = model.blockSignal;
+        if (bs.hasRedPattern()) {
+          colors.add(redColor());
+        }
+        if (bs.hasGreenPattern()) {
+          colors.add(greenColor());
+        }
+        if (bs.hasYellowPattern()) {
+          colors.add(yellowColor());
+        }
+        if (bs.hasWhitePattern()) {
+          colors.add(whiteColor());
+        }
+      }
+      if (colors.isEmpty) {
+        colors.add(redColor());
+        colors.add(greenColor());
+      }
+      final colorHeight = size.y / (colors.length + 1);
+      final colorRadius = (min(colorHeight, (size.x * 0.6)) / 2) * 0.9;
+
       // Clip rrect
       final backgroundPaint = Paint()..color = backgroundColor();
       final borderPaint = Paint()..color = Colors.black.withAlpha(64);
       borderPaint.style = PaintingStyle.stroke;
-      canvas.drawCircle(
-          Offset(size.x / 2, size.y / 2), minDim / 2, backgroundPaint);
-      canvas.drawCircle(
-          Offset(size.x / 2, size.y / 2), minDim / 2, borderPaint);
+      canvas.clipRRect(
+          RRect.fromRectAndRadius(size.toRect(), Radius.circular(minDim / 2)));
+      // Draw background
+      canvas.drawPaint(backgroundPaint);
+      // Draw colors
+      var y = colorHeight;
+      for (var c in colors) {
+        final colorPaint = Paint()..color = c;
+        canvas.drawCircle(Offset(size.x / 2, y), colorRadius, colorPaint);
+        canvas.drawCircle(Offset(size.x / 2, y), colorRadius, borderPaint);
+        y += colorHeight;
+      }
+
+      // Draw border
+      canvas.drawPaint(borderPaint);
       canvas.restore();
 
       // Show description (if hovered)
@@ -69,10 +104,12 @@ class SignalComponent extends EntityComponent {
     }
   }
 
-  Color backgroundColor() =>
-      isActive() ? BinkyColors.activeSensorBg : BinkyColors.inactiveSensorBg;
+  Color backgroundColor() => Colors.grey;
   Color textColor() => Colors.black;
+  Color redColor() => Colors.red;
+  Color greenColor() => Colors.green;
+  Color yellowColor() => Colors.yellow;
+  Color whiteColor() => Colors.white;
 
-  bool isActive() => true;
   bool showDescription() => isHovered;
 }
