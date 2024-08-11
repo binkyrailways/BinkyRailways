@@ -25,6 +25,7 @@ import './junction_component.dart';
 import './output_component.dart';
 import './route_component.dart';
 import './sensor_component.dart';
+import './signal_component.dart';
 import './module_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
@@ -42,6 +43,7 @@ class ModuleComponent extends common.ModuleComponent {
     final List<mapi.Edge> edges = [];
     final List<mapi.Junction> junctions = [];
     final List<mapi.Sensor> sensors = [];
+    final List<mapi.Signal> signals = [];
     for (var routeRef in model.routes) {
       final route = await modelModel.getRoute(routeRef.id);
       add(RouteComponent(viewSettings,
@@ -87,6 +89,16 @@ class ModuleComponent extends common.ModuleComponent {
       add(SensorComponent(viewSettings,
           editorCtx: editorCtx,
           model: sensor,
+          modelModel: modelModel,
+          game: game));
+    }
+    // Load signals
+    for (var signalRef in model.signals) {
+      final signal = await modelModel.getSignal(signalRef.id);
+      signals.add(signal);
+      add(SignalComponent(viewSettings,
+          editorCtx: editorCtx,
+          model: signal,
           modelModel: modelModel,
           game: game));
     }
