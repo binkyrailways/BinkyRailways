@@ -4,6 +4,10 @@ packages:
 
 esphome:
   name: m3-sein-voor
+  on_boot:
+    priority: 800 # This is where all hardware initialization of vital components is executed
+    then:
+      - switch.turn_on: pin1 # Red light
 
 switch:
   - platform: gpio
