@@ -3,12 +3,12 @@ module github.com/binkyrailways/BinkyRailways
 go 1.22.5
 
 require (
-	github.com/binkynet/BinkyNet v1.12.1
-	github.com/binkynet/NetManager v1.10.1
+	github.com/binkynet/BinkyNet v1.13.0
+	github.com/binkynet/NetManager v1.10.2
 	github.com/binkynet/bidib v0.0.0-20231022123849-25701f6a5d6a
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dchest/uniuri v1.2.0
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/mattn/go-pubsub v0.0.0-20160821075316-7a151c7747cd

@@ -292,8 +292,10 @@ enum BinkyNetDeviceType {
   // DeviceTypeBinkyCarSensor is the device type of a Binky Car Sensor.
   // See https://easyeda.com/editor?from=oshwlab#id=4b79ca953a7e4ea8971153b438ae1339|5964111c75b2459481dac75f8581f77e
   BINKYCARSENSOR = 5;
-  // DeviceTypeMQTT is the device type of an MQTT bridge
-  MQTT = 6;
+  // DeviceTypeMQTTGPIO is the device type of an MQTT input/output device
+  MQTT_GPIO = 6;
+  // DeviceTypeMQTTServo is the device type of an MQTT servo device
+  MQTT_SERVO = 7;
 }
 
 message BinkyNetObject {
