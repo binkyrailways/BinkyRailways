@@ -33,28 +33,28 @@ class SignalSettings extends StatelessWidget {
     return Consumer<EditorContext>(builder: (context, editorCtx, child) {
       final selector = editorCtx.selector;
       return Consumer<ModelModel>(builder: (context, model, child) {
-        final signalId = selector.idOf(EntityType.signal) ?? "";
-        return FutureBuilder<Signal>(
-            future: model.getSignal(signalId),
-            initialData: model.getCachedSignal(signalId),
+        final moduleId = selector.idOf(EntityType.module) ?? "";
+        return FutureBuilder<List<Block>>(
+            future: _getBlocks(model, moduleId),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              var signal = snapshot.data!;
-              final moduleId = selector.idOf(EntityType.module) ?? "";
-              return FutureBuilder<List<Block>>(
-                  future: _getBlocks(model, moduleId),
+              var blocks = snapshot.data!;
+              final signalId = selector.idOf(EntityType.signal) ?? "";
+              return FutureBuilder<Signal>(
+                  future: model.getSignal(signalId),
+                  initialData: model.getCachedSignal(signalId),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    var blocks = snapshot.data!;
+                    var signal = snapshot.data!;
                     return _SignalSettings(
                         editorCtx: editorCtx,
                         model: model,
-                        signal: signal,
-                        blocks: blocks);
+                        blocks: blocks,
+                        signal: signal);
                   });
             });
       });
@@ -76,13 +76,13 @@ class _SignalSettings extends StatefulWidget {
   final Signal signal;
   final List<Block> blocks;
 
-  const _SignalSettings(
-      {Key? key,
-      required this.editorCtx,
-      required this.model,
-      required this.signal,
-      required this.blocks})
-      : super(key: key);
+  const _SignalSettings({
+    Key? key,
+    required this.editorCtx,
+    required this.model,
+    required this.blocks,
+    required this.signal,
+  }) : super(key: key);
 
   @override
   State<_SignalSettings> createState() => _SignalSettingsState();
@@ -97,7 +97,7 @@ class _SignalSettingsState extends State<_SignalSettings> {
       TextEditingController();
   final TextEditingController _whitePatternController = TextEditingController();
 
-  void _initConrollers() {
+  void _initControllers() {
     _descriptionController.text = widget.signal.description;
     if (widget.signal.hasBlockSignal()) {
       _redPatternController.text = SignalPatternValidator.patternToString(
@@ -114,12 +114,12 @@ class _SignalSettingsState extends State<_SignalSettings> {
   @override
   void initState() {
     super.initState();
-    _initConrollers();
+    _initControllers();
   }
 
   @override
   void didUpdateWidget(covariant _SignalSettings oldWidget) {
-    _initConrollers();
+    _initControllers();
     super.didUpdateWidget(oldWidget);
   }
 
@@ -250,6 +250,8 @@ class _SignalSettingsState extends State<_SignalSettings> {
         },
         items: _blockIds(),
       ));
+      print(
+          "blockID=${widget.signal.blockSignal.block.id}, #blocks=${_blockIds()}");
 
       widgets.add(SettingsDropdownField<BlockSide>(
         key: Key("${widget.signal.id}/signal/block_side"),
