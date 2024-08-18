@@ -189,3 +189,18 @@ class Shape extends $pb.ProtobufEnum {
   const Shape._($core.int v, $core.String n) : super(v, n);
 }
 
+class BlockSignalType extends $pb.ProtobufEnum {
+  static const BlockSignalType ENTRY = BlockSignalType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ENTRY');
+  static const BlockSignalType EXIT = BlockSignalType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'EXIT');
+
+  static const $core.List<BlockSignalType> values = <BlockSignalType> [
+    ENTRY,
+    EXIT,
+  ];
+
+  static final $core.Map<$core.int, BlockSignalType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BlockSignalType? valueOf($core.int value) => _byValue[value];
+
+  const BlockSignalType._($core.int v, $core.String n) : super(v, n);
+}
+

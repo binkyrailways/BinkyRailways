@@ -311,6 +311,10 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/GetSignal',
       ($2.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Signal.fromBuffer(value));
+  static final _$addBlockSignal = $grpc.ClientMethod<$2.IDRequest, $0.Signal>(
+      '/binkyrailways.v1.ModelService/AddBlockSignal',
+      ($2.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Signal.fromBuffer(value));
   static final _$updateSignal = $grpc.ClientMethod<$0.Signal, $0.Signal>(
       '/binkyrailways.v1.ModelService/UpdateSignal',
       ($0.Signal value) => value.writeToBuffer(),
@@ -732,6 +736,11 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Signal> getSignal($2.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getSignal, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Signal> addBlockSignal($2.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBlockSignal, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.Signal> updateSignal($0.Signal request,
@@ -1294,6 +1303,13 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
         ($0.Signal value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.Signal>(
+        'AddBlockSignal',
+        addBlockSignal_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
+        ($0.Signal value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Signal, $0.Signal>(
         'UpdateSignal',
         updateSignal_Pre,
@@ -1715,6 +1731,11 @@ abstract class ModelServiceBase extends $grpc.Service {
     return getSignal(call, await request);
   }
 
+  $async.Future<$0.Signal> addBlockSignal_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
+    return addBlockSignal(call, await request);
+  }
+
   $async.Future<$0.Signal> updateSignal_Pre(
       $grpc.ServiceCall call, $async.Future<$0.Signal> request) async {
     return updateSignal(call, await request);
@@ -1895,6 +1916,8 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$0.Module> deleteSensor(
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.Signal> getSignal(
+      $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.Signal> addBlockSignal(
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.Signal> updateSignal(
       $grpc.ServiceCall call, $0.Signal request);

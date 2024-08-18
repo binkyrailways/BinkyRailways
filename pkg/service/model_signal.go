@@ -44,6 +44,20 @@ func (s *service) GetSignal(ctx context.Context, req *api.IDRequest) (*api.Signa
 	return &result, nil
 }
 
+// Add a signal in module with given ID
+func (s *service) AddBlockSignal(ctx context.Context, req *api.IDRequest) (*api.Signal, error) {
+	mod, err := s.getModule(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	sensor := mod.GetSignals().AddNewBlockSignal()
+	var result api.Signal
+	if err := result.FromModel(ctx, sensor); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Update a signal by ID.
 func (s *service) UpdateSignal(ctx context.Context, req *api.Signal) (*api.Signal, error) {
 	moduleID, signalID, err := api.SplitParentChildID(req.GetId())

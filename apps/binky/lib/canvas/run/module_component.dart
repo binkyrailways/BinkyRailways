@@ -24,6 +24,7 @@ import './block_component.dart';
 import './junction_component.dart';
 import './output_component.dart';
 import './sensor_component.dart';
+import './signal_component.dart';
 import './railway_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
@@ -81,6 +82,15 @@ class ModuleComponent extends common.ModuleComponent {
         final sensorState = await stateModel.getSensorState(sensorRef.id);
         add(SensorComponent(viewSettings,
             state: sensorState, stateModel: stateModel));
+      } catch (err) {
+        print(err);
+      }
+    }
+    for (var signalRef in railway.signals) {
+      try {
+        final signalState = await stateModel.getSignalState(signalRef.id);
+        add(SignalComponent(viewSettings,
+            state: signalState, stateModel: stateModel));
       } catch (err) {
         print(err);
       }

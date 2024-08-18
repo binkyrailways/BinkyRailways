@@ -112,19 +112,19 @@ class _SensorSettingsState extends State<_SensorSettings> {
   final TextEditingController _descriptionController = TextEditingController();
   final ScrollController _usedByScrollController = ScrollController();
 
-  void _initConrollers() {
+  void _initControllers() {
     _descriptionController.text = widget.sensor.description;
   }
 
   @override
   void initState() {
     super.initState();
-    _initConrollers();
+    _initControllers();
   }
 
   @override
   void didUpdateWidget(covariant _SensorSettings oldWidget) {
-    _initConrollers();
+    _initControllers();
     super.didUpdateWidget(oldWidget);
   }
 

@@ -176,6 +176,8 @@ service ModelService {
 
   // Gets a Signal by ID.
   rpc GetSignal(IDRequest) returns (Signal);
+  // Adds a new block signal in the module identified by given by ID.
+  rpc AddBlockSignal(IDRequest) returns (Signal);
   // Update a Signal by ID.
   rpc UpdateSignal(Signal) returns (Signal);
   // Delete the signal with the given ID.

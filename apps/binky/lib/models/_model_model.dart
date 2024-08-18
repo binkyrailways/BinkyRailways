@@ -900,6 +900,17 @@ class ModelModel extends ChangeNotifier {
     return result;
   }
 
+  // Add a new block signal
+  Future<mapi.Signal> addBlockSignal(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBlockSignal(mapi.IDRequest(id: moduleId));
+    _signals[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
   // Update the given Signal
   Future<void> updateSignal(mapi.Signal value) async {
     var modelClient = mapi.APIClient().modelClient();
