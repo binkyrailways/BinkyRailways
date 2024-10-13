@@ -1,0 +1,76 @@
+substitutions:
+  name: m6-berg-baan-controller
+
+packages:
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
+
+i2c:
+
+pcf8574:
+  - id: 'pcf8574_hub'
+    address: 0x27
+    pcf8575: false
+
+# Individual inputs
+switch:
+  - platform: gpio
+    # REV active
+    id: pin1
+    name: pin1
+    pin:
+      pcf8574: pcf8574_hub
+      number: 0
+      mode:
+        input: true
+      inverted: false
+  - platform: gpio
+    # S1 active
+    id: pin2
+    name: pin2
+    pin:
+      pcf8574: pcf8574_hub
+      number: 1
+      mode:
+        input: true
+      inverted: false
+  - platform: gpio
+    # S2 active
+    id: pin3
+    name: pin3
+    pin:
+      pcf8574: pcf8574_hub
+      number: 2
+      mode:
+        input: true
+      inverted: false
+  - platform: gpio
+    # S3 active
+    id: pin4
+    name: pin4
+    pin:
+      pcf8574: pcf8574_hub
+      number: 3
+      mode:
+        input: true
+      inverted: false
+  - platform: gpio
+    # S4 active
+    id: pin5
+    name: pin5
+    pin:
+      pcf8574: pcf8574_hub
+      number: 4
+      mode:
+        input: true
+      inverted: false
+  - platform: gpio
+    # Loc is driving
+    id: pin6
+    name: pin6
+    pin:
+      pcf8574: pcf8574_hub
+      number: 5
+      mode:
+        input: true
+      inverted: false

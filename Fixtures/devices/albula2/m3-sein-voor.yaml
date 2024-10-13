@@ -1,9 +1,11 @@
+substitutions:
+  name: m3-sein-voor
+
 packages:
-  networking: !include packages/networking.yaml
-  device: !include packages/device-d1mini.yaml
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
 
 esphome:
-  name: m3-sein-voor
   on_boot:
     then:
       - switch.turn_on: pin1 # Red light
@@ -18,13 +20,13 @@ switch:
   - platform: gpio
     id: pin2
     name: pin2
-    pin: 
+    pin:
       number: D6
       inverted: true
   - platform: gpio
     id: pin3
     name: pin3
-    pin: 
+    pin:
       number: D5
       inverted: true
 

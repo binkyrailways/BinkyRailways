@@ -1,6 +1,6 @@
 mqtt:
   broker: !secret mqtt_broker
-  topic_prefix: /binky
+  topic_prefix: /binky/${name}
   log_topic: /binky_logs
   discovery: true
   discovery_retain: false
@@ -17,7 +17,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: ${node_name}-ap
+    ssid: ${name}-ap
     password: !secret wifi_ap_password
 
 captive_portal:

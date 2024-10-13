@@ -1,0 +1,93 @@
+packages:
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
+
+esphome:
+  name: m2-servos
+
+i2c:
+
+pca9685:
+  - id: pca9685_hub1
+    frequency: 50
+
+number:
+  - platform: template
+    id: pin1
+    min_value: -100
+    max_value: 100
+    step: 1
+    set_action:
+      - servo.write:
+          id: servo1
+          level: !lambda 'return x / 100.0;'
+
+servo:
+  - output: pca9685_hub1_c0
+    id: servo1
+
+output:
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 0
+    id: pca9685_hub1_c0
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 1
+    id: pca9685_hub1_c1
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 2
+    id: pca9685_hub1_c2
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 3
+    id: pca9685_hub1_c3
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 4
+    id: pca9685_hub1_c4
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 5
+    id: pca9685_hub1_c5
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 6
+    id: pca9685_hub1_c6
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 7
+    id: pca9685_hub1_c7
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 8
+    id: pca9685_hub1_c8
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 9
+    id: pca9685_hub1_c9
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 10
+    id: pca9685_hub1_c10
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 11
+    id: pca9685_hub1_c11
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 12
+    id: pca9685_hub1_c12
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 13
+    id: pca9685_hub1_c13
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 14
+    id: pca9685_hub1_c14
+  - platform: pca9685
+    pca9685_id: pca9685_hub1
+    channel: 15
+    id: pca9685_hub1_c15
