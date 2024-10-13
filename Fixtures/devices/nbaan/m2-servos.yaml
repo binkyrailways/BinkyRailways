@@ -1,9 +1,9 @@
+substitutions:
+  name: m2-servos
+
 packages:
   networking: !include ../packages/networking.yaml
   device: !include ../packages/device-d1mini.yaml
-
-esphome:
-  name: m2-servos
 
 i2c:
 
