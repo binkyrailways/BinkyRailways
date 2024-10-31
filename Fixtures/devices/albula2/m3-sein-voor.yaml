@@ -8,7 +8,14 @@ packages:
 esphome:
   on_boot:
     then:
-      - switch.turn_on: pin1 # Red light
+      - switch.turn_on: pin1 # Red light 1
+      - delay: 2s
+      - switch.turn_on: pin2 # Yellow light 1
+      - delay: 2s
+      - switch.turn_on: pin3 # Green light 1
+      - delay: 2s
+      - switch.turn_off: pin2 # Yellow light 1
+      - switch.turn_off: pin3 # Green light 1
 
 switch:
   - platform: gpio
