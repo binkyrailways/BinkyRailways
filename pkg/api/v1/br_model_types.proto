@@ -249,6 +249,8 @@ message BinkyNetLocalWorker {
   string hardware_id = 4;
   // Optional alias for the local worker.
   string alias = 5;
+  // If set, the local worker is virtual.
+  bool is_virtual = 6;
 
   // Set of devices that must be configured on this local worker.
   repeated BinkyNetDevice devices = 10;
@@ -773,7 +775,7 @@ message BlockSignal {
   bool is_green_available = 20;
   // Bit pattern used for color Green.
   int32 green_pattern = 21;
-  
+
   // Is the Yellow color available?
   // Readonly.
   bool is_yellow_available = 30;

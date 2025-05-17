@@ -106,6 +106,15 @@ class _BinkyNetLocalWorkerSettingsState
             onLostFocus: (value) async {
               await _update((update) => {update.alias = value});
             }),
+        SettingsCheckBoxField(
+          label: "Is Virtual",
+          value: widget.binkynetlocalworker.isVirtual,
+          onChanged: (value) async {
+            await _update((update) {
+              update.isVirtual = value;
+            });
+          },
+        ),
       ],
     );
   }

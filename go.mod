@@ -33,12 +33,15 @@ require (
 	github.com/grandcat/zeroconf v1.0.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
+	github.com/hashicorp/go-version v1.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/miekg/dns v1.1.27 // indirect
+	github.com/mitchellh/gox v1.0.1 // indirect
+	github.com/mitchellh/iochan v1.0.0 // indirect
 	github.com/mochi-mqtt/server/v2 v2.6.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

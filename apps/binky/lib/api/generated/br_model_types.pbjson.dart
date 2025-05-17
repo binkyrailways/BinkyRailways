@@ -340,13 +340,14 @@ const BinkyNetLocalWorker$json = const {
     const {'1': 'command_station_id', '3': 3, '4': 1, '5': 9, '10': 'commandStationId'},
     const {'1': 'hardware_id', '3': 4, '4': 1, '5': 9, '10': 'hardwareId'},
     const {'1': 'alias', '3': 5, '4': 1, '5': 9, '10': 'alias'},
+    const {'1': 'is_virtual', '3': 6, '4': 1, '5': 8, '10': 'isVirtual'},
     const {'1': 'devices', '3': 10, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetDevice', '10': 'devices'},
     const {'1': 'objects', '3': 11, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetObject', '10': 'objects'},
   ],
 };
 
 /// Descriptor for `BinkyNetLocalWorker`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetLocalWorkerDescriptor = $convert.base64Decode('ChNCaW5reU5ldExvY2FsV29ya2VyEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SLAoSY29tbWFuZF9zdGF0aW9uX2lkGAMgASgJUhBjb21tYW5kU3RhdGlvbklkEh8KC2hhcmR3YXJlX2lkGAQgASgJUgpoYXJkd2FyZUlkEhQKBWFsaWFzGAUgASgJUgVhbGlhcxI6CgdkZXZpY2VzGAogAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldERldmljZVIHZGV2aWNlcxI6CgdvYmplY3RzGAsgAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldE9iamVjdFIHb2JqZWN0cw==');
+final $typed_data.Uint8List binkyNetLocalWorkerDescriptor = $convert.base64Decode('ChNCaW5reU5ldExvY2FsV29ya2VyEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SLAoSY29tbWFuZF9zdGF0aW9uX2lkGAMgASgJUhBjb21tYW5kU3RhdGlvbklkEh8KC2hhcmR3YXJlX2lkGAQgASgJUgpoYXJkd2FyZUlkEhQKBWFsaWFzGAUgASgJUgVhbGlhcxIdCgppc192aXJ0dWFsGAYgASgIUglpc1ZpcnR1YWwSOgoHZGV2aWNlcxgKIAMoCzIgLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXREZXZpY2VSB2RldmljZXMSOgoHb2JqZWN0cxgLIAMoCzIgLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRPYmplY3RSB29iamVjdHM=');
 @$core.Deprecated('Use binkyNetLocalWorkerRefDescriptor instead')
 const BinkyNetLocalWorkerRef$json = const {
   '1': 'BinkyNetLocalWorkerRef',

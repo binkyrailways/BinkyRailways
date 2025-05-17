@@ -35,6 +35,7 @@ type binkyNetLocalWorkerFields struct {
 	entity
 	HardwareID string            `xml:"HardwareID,omitempty"`
 	Alias      string            `xml:"Alias,omitempty"`
+	Virtual    bool              `xml:"Virtual,omitempty"`
 	Devices    binkyNetDeviceSet `xml:"Devices"`
 	Objects    binkyNetObjectSet `xml:"Objects"`
 }
@@ -94,6 +95,18 @@ func (lw *binkyNetLocalWorker) GetHardwareID() string {
 func (lw *binkyNetLocalWorker) SetHardwareID(ctx context.Context, value string) error {
 	if lw.HardwareID != value {
 		lw.HardwareID = value
+		lw.OnModified()
+	}
+	return nil
+}
+
+// Is the local worker a virtual one.
+func (lw *binkyNetLocalWorker) GetVirtual() bool {
+	return lw.Virtual
+}
+func (lw *binkyNetLocalWorker) SetVirtual(ctx context.Context, value bool) error {
+	if lw.Virtual != value {
+		lw.Virtual = value
 		lw.OnModified()
 	}
 	return nil

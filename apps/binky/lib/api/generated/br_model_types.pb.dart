@@ -1256,6 +1256,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStationId')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareId')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alias')
+    ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isVirtual')
     ..pc<BinkyNetDevice>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: BinkyNetDevice.create)
     ..pc<BinkyNetObject>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: BinkyNetObject.create)
     ..hasRequiredFields = false
@@ -1268,6 +1269,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     $core.String? commandStationId,
     $core.String? hardwareId,
     $core.String? alias,
+    $core.bool? isVirtual,
     $core.Iterable<BinkyNetDevice>? devices,
     $core.Iterable<BinkyNetObject>? objects,
   }) {
@@ -1286,6 +1288,9 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     }
     if (alias != null) {
       _result.alias = alias;
+    }
+    if (isVirtual != null) {
+      _result.isVirtual = isVirtual;
     }
     if (devices != null) {
       _result.devices.addAll(devices);
@@ -1361,11 +1366,20 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearAlias() => clearField(5);
 
+  @$pb.TagNumber(6)
+  $core.bool get isVirtual => $_getBF(5);
+  @$pb.TagNumber(6)
+  set isVirtual($core.bool v) { $_setBool(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasIsVirtual() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearIsVirtual() => clearField(6);
+
   @$pb.TagNumber(10)
-  $core.List<BinkyNetDevice> get devices => $_getList(5);
+  $core.List<BinkyNetDevice> get devices => $_getList(6);
 
   @$pb.TagNumber(11)
-  $core.List<BinkyNetObject> get objects => $_getList(6);
+  $core.List<BinkyNetObject> get objects => $_getList(7);
 }
 
 class BinkyNetLocalWorkerRef extends $pb.GeneratedMessage {

@@ -30,6 +30,10 @@ type BinkyNetLocalWorker interface {
 	GetHardwareID() string
 	SetHardwareID(ctx context.Context, value string) error
 
+	// Is the local worker a virtual one.
+	GetVirtual() bool
+	SetVirtual(ctx context.Context, value bool) error
+
 	// Optional alias for the local worker.
 	GetAlias() string
 	SetAlias(ctx context.Context, value string) error
