@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 	"sync"
@@ -414,6 +415,11 @@ func (p *packageImpl) Save() error {
 	return nil
 }
 
+type afterSave interface {
+	// Called after the model has been saved
+	AfterSave(path string) error
+}
+
 // Save to disk.
 func (p *packageImpl) SaveAs(path string) error {
 	p.mutex.Lock()
@@ -445,8 +451,17 @@ func (p *packageImpl) SaveAs(path string) error {
 	}
 
 	// Write to disk
-	if err := ioutil.WriteFile(path, buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
 		return err
+	}
+
+	// Call AfterSave on entities
+	for _, entity := range p.loadedEntities {
+		if asEntity, ok := entity.(afterSave); ok {
+			if err := asEntity.AfterSave(path); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil

@@ -97,6 +97,10 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 						})
 					})
 					conn.Configuration = make(map[api.ConfigKey]string)
+					if lwModel.GetVirtual() {
+						conn.Configuration[api.ConfigKeyMQTTStateTopic] = objModel.GetMQTTStateTopic(cm.GetKey())
+						conn.Configuration[api.ConfigKeyMQTTCommandTopic] = objModel.GetMQTTCommandTopic(cm.GetKey())
+					}
 					cm.GetConfiguration().ForEach(func(k, v string) {
 						conn.Configuration[api.ConfigKey(k)] = v
 					})

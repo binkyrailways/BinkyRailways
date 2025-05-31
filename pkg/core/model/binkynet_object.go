@@ -44,4 +44,9 @@ type BinkyNetObject interface {
 
 	// Gets optional configuration for this connection.
 	GetConfiguration() BinkyNetObjectConfiguration
+
+	// Gets the MQTT state topic to use for the connection with given name on this object
+	GetMQTTStateTopic(api.ConnectionName) string
+	// Gets the MQTT command topic to use for the connection with given name on this object
+	GetMQTTCommandTopic(api.ConnectionName) string
 }

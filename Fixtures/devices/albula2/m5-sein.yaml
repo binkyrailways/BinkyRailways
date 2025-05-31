@@ -19,6 +19,7 @@ esphome:
 
 switch:
   # red 1
+  # topic: /binky/m5-sein/switch/pin1/[state|command]
   - platform: gpio
     id: pin1
     name: pin1

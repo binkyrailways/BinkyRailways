@@ -24,6 +24,7 @@ import (
 
 	apiutil "github.com/binkynet/BinkyNet/apis/util"
 	bn "github.com/binkynet/BinkyNet/apis/v1"
+	lwsvc "github.com/binkynet/LocalWorker/pkg/service"
 	"github.com/binkynet/NetManager/service"
 	"github.com/binkynet/NetManager/service/manager"
 	"github.com/binkynet/NetManager/service/server"
@@ -236,6 +237,22 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 				return nil
 			}
 		}
+	})
+
+	var lokiLogger lwsvc.LokiLogger
+	basePort := 21010
+	cs.getCommandStation().GetLocalWorkers().ForEach(func(bnlw model.BinkyNetLocalWorker) {
+		if !bnlw.GetVirtual() {
+			return
+		}
+		// Build loki logger if needed
+		if lokiLogger == nil {
+			lokiLogger = lwsvc.NewLokiLogger()
+		}
+		// Run virtual local worker
+		vlw := newBinkyNetVirtualLocalWorker(log, bnlw, lokiLogger, basePort)
+		basePort += 10
+		g.Go(func() error { return vlw.Run(ctx) })
 	})
 
 	return nil

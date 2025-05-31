@@ -18,7 +18,11 @@
 package impl
 
 import (
+	"path/filepath"
+	"strings"
+
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/esphome"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
 )
 
@@ -132,4 +136,13 @@ func (cs *binkyNetCommandStation) GetLocalWorkers() model.BinkyNetLocalWorkerSet
 
 func (cs *binkyNetCommandStation) Upgrade() {
 	// Nothing needed
+}
+
+// Called after the model has been saved
+func (cs *binkyNetCommandStation) AfterSave(path string) error {
+	folder := filepath.Dir(path)
+	name := filepath.Base(path)
+	name = strings.TrimSuffix(name, filepath.Ext(name))
+	baseFolder := filepath.Join(folder, "devices", name)
+	return esphome.BuildEsphomeConfigs(baseFolder, cs.GetLocalWorkers())
 }
