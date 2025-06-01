@@ -84,10 +84,11 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 	// Prepare server
 	uiProv := ui.NewUIProvider()
 	svr, err := server.New(server.Config{
-		Host:     "0.0.0.0",
-		HTTPPort: vlw.basePort + 4,
-		GRPCPort: vlw.basePort + 2,
-		SSHPort:  vlw.basePort + 3,
+		Host:      "0.0.0.0",
+		HTTPPort:  vlw.basePort + 4,
+		GRPCPort:  vlw.basePort + 2,
+		SSHPort:   vlw.basePort + 3,
+		IsVirtual: true,
 	},
 		vlw.log, sshlog.NewSshLogger(), uiProv, svc)
 	if err != nil {
