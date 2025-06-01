@@ -22,7 +22,9 @@ import (
 
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 
+	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkynet/BinkyNet/sshlog"
 	"github.com/binkynet/LocalWorker/pkg/server"
 	"github.com/binkynet/LocalWorker/pkg/service"
@@ -33,10 +35,12 @@ import (
 )
 
 type binkyNetEsphomeLocalWorker struct {
-	log        zerolog.Logger
-	bnlw       model.BinkyNetLocalWorker
-	lokiLogger service.LokiLogger
-	basePort   int
+	log            zerolog.Logger
+	bnlw           model.BinkyNetLocalWorker
+	lokiLogger     service.LokiLogger
+	basePort       int
+	serverHost     string
+	serverGrpcPort int
 }
 
 // Construct a esphome local worker
@@ -44,12 +48,15 @@ func newBinkyNetEsphomeLocalWorker(
 	log zerolog.Logger,
 	bnlw model.BinkyNetLocalWorker,
 	lokiLogger service.LokiLogger,
-	basePort int) *binkyNetEsphomeLocalWorker {
+	basePort int,
+	serverHost string, serverGrpcPort int) *binkyNetEsphomeLocalWorker {
 	return &binkyNetEsphomeLocalWorker{
-		log:        log,
-		bnlw:       bnlw,
-		lokiLogger: lokiLogger,
-		basePort:   basePort,
+		log:            log,
+		bnlw:           bnlw,
+		lokiLogger:     lokiLogger,
+		basePort:       basePort,
+		serverHost:     serverHost,
+		serverGrpcPort: serverGrpcPort,
 	}
 }
 
@@ -71,10 +78,16 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 		GRPCPort:       vlw.basePort + 2,
 		SSHPort:        vlw.basePort + 3,
 		IsVirtual:      true,
+		VirtualServiceInfo: &api.ServiceInfo{
+			ApiAddress: vlw.serverHost,
+			ApiPort:    int32(vlw.serverGrpcPort),
+		},
 	}, service.Dependencies{
 		Logger:     vlw.log,
 		Bridge:     br,
 		LokiLogger: vlw.lokiLogger,
+		NcsSem:     semaphore.NewWeighted(1),
+		WorkerSem:  semaphore.NewWeighted(1),
 	})
 	if err != nil {
 		log.Debug().Err(err).Msg("Failed to initialize Service")

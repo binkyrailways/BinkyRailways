@@ -239,18 +239,15 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		}
 	})
 
-	var lokiLogger lwsvc.LokiLogger
 	basePort := 21010
+	lokiLogger := lwsvc.NewLokiLogger()
 	cs.getCommandStation().GetLocalWorkers().ForEach(func(bnlw model.BinkyNetLocalWorker) {
 		if bnlw.GetLocalWorkerType() != model.BinkynetLocalWorkerTypeEsphome {
 			return
 		}
 		// Build loki logger if needed
-		if lokiLogger == nil {
-			lokiLogger = lwsvc.NewLokiLogger()
-		}
 		// Run esphome local worker
-		vlw := newBinkyNetEsphomeLocalWorker(log, bnlw, lokiLogger, basePort)
+		vlw := newBinkyNetEsphomeLocalWorker(log, bnlw, lokiLogger, basePort, serverHost, cs.getCommandStation().GetGRPCPort())
 		basePort += 10
 		g.Go(func() error { return vlw.Run(ctx) })
 	})
