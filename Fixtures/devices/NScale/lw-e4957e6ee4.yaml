@@ -1,5 +1,5 @@
 substitutions:
-    name: m2
+    name: m1
 packages:
     device: !include ../packages/device-d1mini.yaml
     networking: !include ../packages/networking.yaml
@@ -35,7 +35,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin1
       name: ios1_pin1
-      state_topic: /binky/m2/ios1_pin1/sensor/state
+      state_topic: /binky/m1/ios1_pin1/sensor/state
       pin:
         number: "0"
         mcp23xxx: ios1
@@ -49,7 +49,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin2
       name: ios1_pin2
-      state_topic: /binky/m2/ios1_pin2/sensor/state
+      state_topic: /binky/m1/ios1_pin2/sensor/state
       pin:
         number: "1"
         mcp23xxx: ios1
@@ -63,7 +63,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin3
       name: ios1_pin3
-      state_topic: /binky/m2/ios1_pin3/sensor/state
+      state_topic: /binky/m1/ios1_pin3/sensor/state
       pin:
         number: "2"
         mcp23xxx: ios1
@@ -77,7 +77,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin4
       name: ios1_pin4
-      state_topic: /binky/m2/ios1_pin4/sensor/state
+      state_topic: /binky/m1/ios1_pin4/sensor/state
       pin:
         number: "3"
         mcp23xxx: ios1
@@ -91,7 +91,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin5
       name: ios1_pin5
-      state_topic: /binky/m2/ios1_pin5/sensor/state
+      state_topic: /binky/m1/ios1_pin5/sensor/state
       pin:
         number: "4"
         mcp23xxx: ios1
@@ -105,7 +105,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin6
       name: ios1_pin6
-      state_topic: /binky/m2/ios1_pin6/sensor/state
+      state_topic: /binky/m1/ios1_pin6/sensor/state
       pin:
         number: "5"
         mcp23xxx: ios1
@@ -119,7 +119,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin7
       name: ios1_pin7
-      state_topic: /binky/m2/ios1_pin7/sensor/state
+      state_topic: /binky/m1/ios1_pin7/sensor/state
       pin:
         number: "6"
         mcp23xxx: ios1
@@ -133,7 +133,7 @@ binary_sensor:
     - platform: gpio
       id: ios1_pin8
       name: ios1_pin8
-      state_topic: /binky/m2/ios1_pin8/sensor/state
+      state_topic: /binky/m1/ios1_pin8/sensor/state
       pin:
         number: "7"
         mcp23xxx: ios1
@@ -147,7 +147,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin1
       name: ios2_pin1
-      state_topic: /binky/m2/ios2_pin1/sensor/state
+      state_topic: /binky/m1/ios2_pin1/sensor/state
       pin:
         number: "0"
         mcp23xxx: ios2
@@ -161,7 +161,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin2
       name: ios2_pin2
-      state_topic: /binky/m2/ios2_pin2/sensor/state
+      state_topic: /binky/m1/ios2_pin2/sensor/state
       pin:
         number: "1"
         mcp23xxx: ios2
@@ -175,7 +175,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin3
       name: ios2_pin3
-      state_topic: /binky/m2/ios2_pin3/sensor/state
+      state_topic: /binky/m1/ios2_pin3/sensor/state
       pin:
         number: "2"
         mcp23xxx: ios2
@@ -189,7 +189,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin4
       name: ios2_pin4
-      state_topic: /binky/m2/ios2_pin4/sensor/state
+      state_topic: /binky/m1/ios2_pin4/sensor/state
       pin:
         number: "3"
         mcp23xxx: ios2
@@ -203,7 +203,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin5
       name: ios2_pin5
-      state_topic: /binky/m2/ios2_pin5/sensor/state
+      state_topic: /binky/m1/ios2_pin5/sensor/state
       pin:
         number: "4"
         mcp23xxx: ios2
@@ -217,7 +217,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin6
       name: ios2_pin6
-      state_topic: /binky/m2/ios2_pin6/sensor/state
+      state_topic: /binky/m1/ios2_pin6/sensor/state
       pin:
         number: "5"
         mcp23xxx: ios2
@@ -231,7 +231,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin7
       name: ios2_pin7
-      state_topic: /binky/m2/ios2_pin7/sensor/state
+      state_topic: /binky/m1/ios2_pin7/sensor/state
       pin:
         number: "6"
         mcp23xxx: ios2
@@ -245,7 +245,7 @@ binary_sensor:
     - platform: gpio
       id: ios2_pin8
       name: ios2_pin8
-      state_topic: /binky/m2/ios2_pin8/sensor/state
+      state_topic: /binky/m1/ios2_pin8/sensor/state
       pin:
         number: "7"
         mcp23xxx: ios2
@@ -259,7 +259,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin1
       name: ios3_pin1
-      state_topic: /binky/m2/ios3_pin1/sensor/state
+      state_topic: /binky/m1/ios3_pin1/sensor/state
       pin:
         number: "0"
         mcp23xxx: ios3
@@ -273,7 +273,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin2
       name: ios3_pin2
-      state_topic: /binky/m2/ios3_pin2/sensor/state
+      state_topic: /binky/m1/ios3_pin2/sensor/state
       pin:
         number: "1"
         mcp23xxx: ios3
@@ -287,7 +287,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin3
       name: ios3_pin3
-      state_topic: /binky/m2/ios3_pin3/sensor/state
+      state_topic: /binky/m1/ios3_pin3/sensor/state
       pin:
         number: "2"
         mcp23xxx: ios3
@@ -301,7 +301,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin4
       name: ios3_pin4
-      state_topic: /binky/m2/ios3_pin4/sensor/state
+      state_topic: /binky/m1/ios3_pin4/sensor/state
       pin:
         number: "3"
         mcp23xxx: ios3
@@ -315,7 +315,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin5
       name: ios3_pin5
-      state_topic: /binky/m2/ios3_pin5/sensor/state
+      state_topic: /binky/m1/ios3_pin5/sensor/state
       pin:
         number: "4"
         mcp23xxx: ios3
@@ -329,7 +329,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin6
       name: ios3_pin6
-      state_topic: /binky/m2/ios3_pin6/sensor/state
+      state_topic: /binky/m1/ios3_pin6/sensor/state
       pin:
         number: "5"
         mcp23xxx: ios3
@@ -343,7 +343,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin7
       name: ios3_pin7
-      state_topic: /binky/m2/ios3_pin7/sensor/state
+      state_topic: /binky/m1/ios3_pin7/sensor/state
       pin:
         number: "6"
         mcp23xxx: ios3
@@ -357,7 +357,7 @@ binary_sensor:
     - platform: gpio
       id: ios3_pin8
       name: ios3_pin8
-      state_topic: /binky/m2/ios3_pin8/sensor/state
+      state_topic: /binky/m1/ios3_pin8/sensor/state
       pin:
         number: "7"
         mcp23xxx: ios3
@@ -369,12 +369,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin1
-      name: ios4_pin1
-      state_topic: /binky/m2/ios4_pin1/sensor/state
+      id: io4_pin1
+      name: io4_pin1
+      state_topic: /binky/m1/io4_pin1/sensor/state
       pin:
         number: "0"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -383,12 +383,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin2
-      name: ios4_pin2
-      state_topic: /binky/m2/ios4_pin2/sensor/state
+      id: io4_pin2
+      name: io4_pin2
+      state_topic: /binky/m1/io4_pin2/sensor/state
       pin:
         number: "1"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -397,12 +397,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin3
-      name: ios4_pin3
-      state_topic: /binky/m2/ios4_pin3/sensor/state
+      id: io4_pin3
+      name: io4_pin3
+      state_topic: /binky/m1/io4_pin3/sensor/state
       pin:
         number: "2"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -411,12 +411,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin4
-      name: ios4_pin4
-      state_topic: /binky/m2/ios4_pin4/sensor/state
+      id: io4_pin4
+      name: io4_pin4
+      state_topic: /binky/m1/io4_pin4/sensor/state
       pin:
         number: "3"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -425,12 +425,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin5
-      name: ios4_pin5
-      state_topic: /binky/m2/ios4_pin5/sensor/state
+      id: io4_pin5
+      name: io4_pin5
+      state_topic: /binky/m1/io4_pin5/sensor/state
       pin:
         number: "4"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -439,12 +439,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin6
-      name: ios4_pin6
-      state_topic: /binky/m2/ios4_pin6/sensor/state
+      id: io4_pin6
+      name: io4_pin6
+      state_topic: /binky/m1/io4_pin6/sensor/state
       pin:
         number: "5"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -453,12 +453,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin7
-      name: ios4_pin7
-      state_topic: /binky/m2/ios4_pin7/sensor/state
+      id: io4_pin7
+      name: io4_pin7
+      state_topic: /binky/m1/io4_pin7/sensor/state
       pin:
         number: "6"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -467,12 +467,12 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios4_pin8
-      name: ios4_pin8
-      state_topic: /binky/m2/ios4_pin8/sensor/state
+      id: io4_pin8
+      name: io4_pin8
+      state_topic: /binky/m1/io4_pin8/sensor/state
       pin:
         number: "7"
-        mcp23xxx: ios4
+        mcp23xxx: io4
         mode:
             input: true
       on_state:
@@ -488,7 +488,7 @@ number:
     - platform: template
       id: sw3
       name: sw3
-      command_topic: /binky/m2/sw3/servo/command
+      command_topic: /binky/m1/sw3/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -499,7 +499,7 @@ number:
     - platform: template
       id: sw4
       name: sw4
-      command_topic: /binky/m2/sw4/servo/command
+      command_topic: /binky/m1/sw4/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -510,7 +510,7 @@ number:
     - platform: template
       id: sw5
       name: sw5
-      command_topic: /binky/m2/sw5/servo/command
+      command_topic: /binky/m1/sw5/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -519,20 +519,9 @@ number:
             id: servo_sw5
             level: !lambda return x / 100.0;
     - platform: template
-      id: sw1
-      name: sw1
-      command_topic: /binky/m2/sw1/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw1
-            level: !lambda return x / 100.0;
-    - platform: template
       id: sw2
       name: sw2
-      command_topic: /binky/m2/sw2/servo/command
+      command_topic: /binky/m1/sw2/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -541,20 +530,20 @@ number:
             id: servo_sw2
             level: !lambda return x / 100.0;
     - platform: template
-      id: sw8
-      name: sw8
-      command_topic: /binky/m2/sw8/servo/command
+      id: sw1
+      name: sw1
+      command_topic: /binky/m1/sw1/servo/command
       min_value: -100
       max_value: 100
       step: 1
       set_action:
         - servo.write:
-            id: servo_sw8
+            id: servo_sw1
             level: !lambda return x / 100.0;
     - platform: template
       id: sw6
       name: sw6
-      command_topic: /binky/m2/sw6/servo/command
+      command_topic: /binky/m1/sw6/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -565,7 +554,7 @@ number:
     - platform: template
       id: sw7
       name: sw7
-      command_topic: /binky/m2/sw7/servo/command
+      command_topic: /binky/m1/sw7/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -576,35 +565,31 @@ number:
 output:
     - platform: pca9685
       id: servo_output_sw3
-      channel: "0"
+      channel: "15"
       pca9685_id: pwm1
     - platform: pca9685
       id: servo_output_sw4
-      channel: "1"
+      channel: "14"
       pca9685_id: pwm1
     - platform: pca9685
       id: servo_output_sw5
-      channel: "2"
-      pca9685_id: pwm1
-    - platform: pca9685
-      id: servo_output_sw1
-      channel: "8"
+      channel: "13"
       pca9685_id: pwm1
     - platform: pca9685
       id: servo_output_sw2
       channel: "3"
       pca9685_id: pwm1
     - platform: pca9685
-      id: servo_output_sw8
-      channel: "11"
+      id: servo_output_sw1
+      channel: "7"
       pca9685_id: pwm1
     - platform: pca9685
       id: servo_output_sw6
-      channel: "14"
+      channel: "11"
       pca9685_id: pwm1
     - platform: pca9685
       id: servo_output_sw7
-      channel: "15"
+      channel: "0"
       pca9685_id: pwm1
 servo:
     - id: servo_sw3
@@ -628,13 +613,6 @@ servo:
       min_level: 0%
       max_level: 100%
       idle_level: 50%
-    - id: servo_sw1
-      output: servo_output_sw1
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
     - id: servo_sw2
       output: servo_output_sw2
       auto_detach_time: 4s
@@ -642,8 +620,8 @@ servo:
       min_level: 0%
       max_level: 100%
       idle_level: 50%
-    - id: servo_sw8
-      output: servo_output_sw8
+    - id: servo_sw1
+      output: servo_output_sw1
       auto_detach_time: 4s
       transition_length: 3s
       min_level: 0%
@@ -685,15 +663,14 @@ switch:
 i2c: {}
 pca9685:
     - id: pwm1
-      address: "0x40"
+      address: "0x70"
       frequency: 54
 mcp23008:
-    - id: ios2
-      address: "0x21"
-    - id: ios4
-      address: "0x24"
-mcp23017:
     - id: ios1
       address: "0x20"
+    - id: ios2
+      address: "0x21"
     - id: ios3
       address: "0x22"
+    - id: io4
+      address: "0x24"

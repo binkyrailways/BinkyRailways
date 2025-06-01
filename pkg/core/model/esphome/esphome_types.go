@@ -153,7 +153,7 @@ type Action map[string]any
 
 type Pin struct {
 	Number   string   `yaml:"number,omitempty"`
-	MCP23xxx string   `yaml:"mcp23xxx,omitempty"`
+	MCP23XXX string   `yaml:"mcp23xxx,omitempty"`
 	Mode     *PinMode `yaml:"mode,omitempty"`
 	Inverted bool     `yaml:"inverted,omitempty"`
 }

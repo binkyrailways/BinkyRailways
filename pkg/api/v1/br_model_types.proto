@@ -249,13 +249,21 @@ message BinkyNetLocalWorker {
   string hardware_id = 4;
   // Optional alias for the local worker.
   string alias = 5;
-  // If set, the local worker is virtual.
-  bool is_virtual = 6;
+  // Type of local worker
+  BinkyNetLocalWorkerType local_worker_type = 6;
 
   // Set of devices that must be configured on this local worker.
   repeated BinkyNetDevice devices = 10;
   // Set of real world objects controlled by the local worker
   repeated BinkyNetObject objects = 11;
+}
+
+// Type of local worker
+enum BinkyNetLocalWorkerType {
+  // Local worker runs linux.
+  LINUX = 0;
+  // Local worker runs Esphome.
+  ESPHOME = 1;
 }
 
 message BinkyNetLocalWorkerRef {

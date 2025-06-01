@@ -32,20 +32,20 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-type binkyNetVirtualLocalWorker struct {
+type binkyNetEsphomeLocalWorker struct {
 	log        zerolog.Logger
 	bnlw       model.BinkyNetLocalWorker
 	lokiLogger service.LokiLogger
 	basePort   int
 }
 
-// Construct a virtual local worker
-func newBinkyNetVirtualLocalWorker(
+// Construct a esphome local worker
+func newBinkyNetEsphomeLocalWorker(
 	log zerolog.Logger,
 	bnlw model.BinkyNetLocalWorker,
 	lokiLogger service.LokiLogger,
-	basePort int) *binkyNetVirtualLocalWorker {
-	return &binkyNetVirtualLocalWorker{
+	basePort int) *binkyNetEsphomeLocalWorker {
+	return &binkyNetEsphomeLocalWorker{
 		log:        log,
 		bnlw:       bnlw,
 		lokiLogger: lokiLogger,
@@ -54,7 +54,7 @@ func newBinkyNetVirtualLocalWorker(
 }
 
 // Run until the given context is canceled
-func (vlw *binkyNetVirtualLocalWorker) Run(ctx context.Context) error {
+func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 	// Prepare virtual bridge
 	log := vlw.log
 	br, err := bridge.NewVirtualBridge()

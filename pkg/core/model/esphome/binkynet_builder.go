@@ -30,7 +30,7 @@ import (
 func BuildEsphomeConfigs(baseFolder string, lwSet model.BinkyNetLocalWorkerSet) error {
 	var result error
 	lwSet.ForEach(func(lwModel model.BinkyNetLocalWorker) {
-		if !lwModel.GetVirtual() {
+		if lwModel.GetLocalWorkerType() != model.BinkynetLocalWorkerTypeEsphome {
 			return
 		}
 		file := &DeviceFile{
@@ -167,7 +167,7 @@ func (f *DeviceFile) AddDevice(devModel model.BinkyNetDevice) error {
 		f.platforms[devModel.GetDeviceID()] = devicePlatform{
 			Platform: "gpio",
 			configurePin: func(pin *Pin) {
-				pin.MCP23xxx = hub.Id
+				pin.MCP23XXX = hub.Id
 			},
 		}
 	case api.DeviceTypeMCP23017:
@@ -180,7 +180,7 @@ func (f *DeviceFile) AddDevice(devModel model.BinkyNetDevice) error {
 		f.platforms[devModel.GetDeviceID()] = devicePlatform{
 			Platform: "gpio",
 			configurePin: func(pin *Pin) {
-				pin.MCP23xxx = hub.Id
+				pin.MCP23XXX = hub.Id
 			},
 		}
 	}
@@ -274,7 +274,7 @@ func (f *DeviceFile) addBinarySensor(objModel model.BinkyNetObject) error {
 		return err
 	}
 	sensor.Pin = &Pin{
-		Number: fmt.Sprintf("%d", pin.GetIndex()),
+		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
 	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
 		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())

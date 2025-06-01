@@ -97,7 +97,7 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 						})
 					})
 					conn.Configuration = make(map[api.ConfigKey]string)
-					if lwModel.GetVirtual() {
+					if lwModel.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
 						conn.Configuration[api.ConfigKeyMQTTStateTopic] = objModel.GetMQTTStateTopic(cm.GetKey())
 						conn.Configuration[api.ConfigKeyMQTTCommandTopic] = objModel.GetMQTTCommandTopic(cm.GetKey())
 					}
