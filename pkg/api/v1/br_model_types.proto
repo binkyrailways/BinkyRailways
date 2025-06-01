@@ -234,6 +234,9 @@ message BinkyNetCommandStation {
 
 	// If set, do not configure objects that are not used
   bool exclude_unused_objects = 5;
+
+  // DNS domain to use
+  string domain = 6;
 }
 
 // Configuration of a binky local worker

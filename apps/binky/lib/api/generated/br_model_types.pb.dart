@@ -1159,6 +1159,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiredWorkerVersion')
     ..pc<BinkyNetLocalWorkerRef>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkers', $pb.PbFieldType.PM, subBuilder: BinkyNetLocalWorkerRef.create)
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'excludeUnusedObjects')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'domain')
     ..hasRequiredFields = false
   ;
 
@@ -1169,6 +1170,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     $core.String? requiredWorkerVersion,
     $core.Iterable<BinkyNetLocalWorkerRef>? localWorkers,
     $core.bool? excludeUnusedObjects,
+    $core.String? domain,
   }) {
     final _result = create();
     if (serverHost != null) {
@@ -1185,6 +1187,9 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     }
     if (excludeUnusedObjects != null) {
       _result.excludeUnusedObjects = excludeUnusedObjects;
+    }
+    if (domain != null) {
+      _result.domain = domain;
     }
     return _result;
   }
@@ -1247,6 +1252,15 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
   $core.bool hasExcludeUnusedObjects() => $_has(4);
   @$pb.TagNumber(5)
   void clearExcludeUnusedObjects() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get domain => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set domain($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasDomain() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearDomain() => clearField(6);
 }
 
 class BinkyNetLocalWorker extends $pb.GeneratedMessage {

@@ -20,6 +20,7 @@ package esphome
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -27,7 +28,7 @@ import (
 )
 
 // Create esphome yaml configuration files for all local workers.
-func BuildEsphomeConfigs(baseFolder string, lwSet model.BinkyNetLocalWorkerSet) error {
+func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwSet model.BinkyNetLocalWorkerSet) error {
 	var result error
 	lwSet.ForEach(func(lwModel model.BinkyNetLocalWorker) {
 		if lwModel.GetLocalWorkerType() != model.BinkynetLocalWorkerTypeEsphome {
@@ -90,6 +91,10 @@ func BuildEsphomeConfigs(baseFolder string, lwSet model.BinkyNetLocalWorkerSet) 
 				createLedSwitch("led_green", "D7"),
 			},
 			platforms: make(map[api.DeviceID]devicePlatform),
+		}
+		// Setup domain
+		if domain := cs.GetDomain(); domain != "" {
+			file.Wifi.Domain = "." + strings.TrimPrefix(domain, ".")
 		}
 		// Add devices
 		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {

@@ -25,6 +25,10 @@ type BinkyNetCommandStation interface {
 	GetServerHost() string
 	SetServerHost(value string) error
 
+	// DNS domain to use (default to local)
+	GetDomain() string
+	SetDomain(value string) error
+
 	// Network Port of the command station
 	GetGRPCPort() int
 	SetGRPCPort(value int) error

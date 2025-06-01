@@ -33,6 +33,8 @@ type BinkyNetCommandStation interface {
 }
 
 const (
+	defaultServerHost            = "0.0.0.0"
+	defaultDomain                = "local"
 	defaultGRPCPort              = 8823
 	defaultRequiredWorkerVersion = "1.0.0"
 	defaultExcludeUnUsedObjects  = true
@@ -41,7 +43,8 @@ const (
 type binkyNetCommandStation struct {
 	commandStation
 
-	ServerHost            *string                `xml:ServerHost,omitempty"`
+	ServerHost            *string                `xml:"ServerHost,omitempty"`
+	Domain                *string                `xml:"Domain,omitempty"`
 	GRPCPort              *int                   `xml:"GRPCPort,omitempty"`
 	RequiredWorkerVersion *string                `xml:"RequiredWorkerVersion,omitempty"`
 	LocalWorkers          binkyNetLocalWorkerSet `xml:"LocalWorkers,omitempty"`
@@ -82,11 +85,23 @@ func (cs *binkyNetCommandStation) GetSupportedAddressTypes(entity model.AddressE
 
 // Network host address (defaults to 0.0.0.0)
 func (cs *binkyNetCommandStation) GetServerHost() string {
-	return refs.StringValue(cs.ServerHost, "0.0.0.0")
+	return refs.StringValue(cs.ServerHost, defaultServerHost)
 }
 func (cs *binkyNetCommandStation) SetServerHost(value string) error {
 	if cs.GetServerHost() != value {
 		cs.ServerHost = refs.NewString(value)
+		cs.OnModified()
+	}
+	return nil
+}
+
+// DNS domain to use (default to empty)
+func (cs *binkyNetCommandStation) GetDomain() string {
+	return refs.StringValue(cs.Domain, defaultDomain)
+}
+func (cs *binkyNetCommandStation) SetDomain(value string) error {
+	if cs.GetDomain() != value {
+		cs.Domain = refs.NewString(value)
 		cs.OnModified()
 	}
 	return nil
@@ -144,5 +159,5 @@ func (cs *binkyNetCommandStation) AfterSave(path string) error {
 	name := filepath.Base(path)
 	name = strings.TrimSuffix(name, filepath.Ext(name))
 	baseFolder := filepath.Join(folder, "devices", name)
-	return esphome.BuildEsphomeConfigs(baseFolder, cs.GetLocalWorkers())
+	return esphome.BuildEsphomeConfigs(baseFolder, cs, cs.GetLocalWorkers())
 }

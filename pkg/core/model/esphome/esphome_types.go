@@ -79,6 +79,7 @@ type WebServer struct {
 
 type Wifi struct {
 	FastConnect  bool     `yaml:"fast_connect,omitempty"`
+	Domain       string   `yaml:"domain,omitempty"`
 	OnConnect    []Action `yaml:"on_connect,omitempty"`
 	OnDisconnect []Action `yaml:"on_disconnect,omitempty"`
 }
