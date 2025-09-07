@@ -188,6 +188,19 @@ func (f *DeviceFile) AddDevice(devModel model.BinkyNetDevice) error {
 				pin.MCP23XXX = hub.Id
 			},
 		}
+	case api.DeviceTypePCF8574:
+		hub := PCF8574Hub{
+			Id:      name(string(devModel.GetDeviceID())),
+			Address: devModel.GetAddress(),
+		}
+		f.I2C = &I2C{}
+		f.PCF8574s = append(f.PCF8574s, hub)
+		f.platforms[devModel.GetDeviceID()] = devicePlatform{
+			Platform: "gpio",
+			configurePin: func(pin *Pin) {
+				pin.PCF8574 = hub.Id
+			},
+		}
 	}
 	return nil
 }

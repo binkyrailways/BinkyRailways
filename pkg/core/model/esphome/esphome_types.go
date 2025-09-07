@@ -47,6 +47,7 @@ type DeviceFile struct {
 	PCA9685s      []PCA9685Hub      `yaml:"pca9685,omitempty"`
 	MCP23008s     []MCP23xxxHub     `yaml:"mcp23008,omitempty"`
 	MCP23017s     []MCP23xxxHub     `yaml:"mcp23017,omitempty"`
+	PCF8574s      []PCF8574Hub      `yaml:"pcf8574,omitempty"`
 
 	platforms map[api.DeviceID]devicePlatform
 }
@@ -94,6 +95,11 @@ type PCA9685Hub struct {
 }
 
 type MCP23xxxHub struct {
+	Id      string `yaml:"id"`
+	Address string `yaml:"address,omitempty"`
+}
+
+type PCF8574Hub struct {
 	Id      string `yaml:"id"`
 	Address string `yaml:"address,omitempty"`
 }
@@ -155,6 +161,7 @@ type Action map[string]any
 type Pin struct {
 	Number   string   `yaml:"number,omitempty"`
 	MCP23XXX string   `yaml:"mcp23xxx,omitempty"`
+	PCF8574  string   `yaml:"pcf8574,omitempty"`
 	Mode     *PinMode `yaml:"mode,omitempty"`
 	Inverted bool     `yaml:"inverted,omitempty"`
 }
