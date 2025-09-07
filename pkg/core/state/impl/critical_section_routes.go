@@ -19,6 +19,8 @@ package impl
 
 import (
 	"context"
+	"sort"
+	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -31,13 +33,9 @@ type criticalSectionRoutes struct {
 var _ state.CriticalSectionRoutes = &criticalSectionRoutes{}
 
 // Build the set of critical routes from the given route.
-func (csr *criticalSectionRoutes) Build(ctx context.Context, route state.Route, rw state.Railway) error {
-	routes, err := buildCriticalSectionRoutes(ctx, route, rw)
-	if err != nil {
-		return nil
-	}
+func (csr *criticalSectionRoutes) Build(route state.Route, rw state.Railway) {
+	routes := buildCriticalSectionRoutes(route, rw)
 	csr.routes = routes
-	return nil
 }
 
 // Iterate all the routes
@@ -57,9 +55,9 @@ func (csr *criticalSectionRoutes) AllFree(ctx context.Context, allowedLoc state.
 	}
 	// Check blocks in the routes
 	for _, route := range csr.routes {
-		toBlock := route.GetTo(ctx)
+		toBlock := route.GetTo()
 		loc := toBlock.GetLockedBy(ctx)
-		if (loc != nil) && (loc != allowedLoc) && (loc.GetCurrentBlockEnterSide().GetActual(ctx) == route.GetToBlockSide(ctx)) {
+		if (loc != nil) && (loc != allowedLoc) && (loc.GetCurrentBlockEnterSide().GetActual(ctx) == route.GetToBlockSide()) {
 			// If the loc occupying the blokc cannot change direction, we may not enter this critical section.
 			if loc.GetChangeDirection(ctx) == model.ChangeDirectionAvoid {
 				return false
@@ -71,5 +69,14 @@ func (csr *criticalSectionRoutes) AllFree(ctx context.Context, allowedLoc state.
 		}
 	}
 	return true
+}
 
+// Return a human readable representation of the critical section routes.
+func (csr *criticalSectionRoutes) String() string {
+	result := make([]string, 0, len(csr.routes))
+	for _, x := range csr.routes {
+		result = append(result, x.String())
+	}
+	sort.Strings(result)
+	return strings.Join(result, ",\n")
 }

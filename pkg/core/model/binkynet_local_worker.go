@@ -30,6 +30,10 @@ type BinkyNetLocalWorker interface {
 	GetHardwareID() string
 	SetHardwareID(ctx context.Context, value string) error
 
+	// What type is the local worker?
+	GetLocalWorkerType() BinkyNetLocalWorkerType
+	SetLocalWorkerType(ctx context.Context, value BinkyNetLocalWorkerType) error
+
 	// Optional alias for the local worker.
 	GetAlias() string
 	SetAlias(ctx context.Context, value string) error

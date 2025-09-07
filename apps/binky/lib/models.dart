@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+export 'models/_app_model.dart';
 export 'models/_model_model.dart';
 export 'models/_state_model.dart';
 export 'models/_storage_model.dart';

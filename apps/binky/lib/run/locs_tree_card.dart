@@ -60,6 +60,12 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
         context, widget.state, loc, widget.isAssigned, widget.isEnabled);
     final hasImage = loc.model.imageUrl.isNotEmpty;
     const statusSize = 32.0;
+    final showBatteryLevel = widget.isEnabled && loc.hasBatteryLevel;
+    final showSpeedAndState = widget.isEnabled;
+    titleSize(BoxConstraints constraints) =>
+        constraints.maxWidth -
+        (showBatteryLevel ? statusSize : 0) -
+        (showSpeedAndState ? statusSize : 0);
 
     return MouseRegion(
       onEnter: (x) {
@@ -86,7 +92,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                 Row(children: [
                   Column(children: [
                     SizedBox(
-                      width: constraints.maxWidth - statusSize,
+                      width: titleSize(constraints),
                       child: Text(
                         "${loc.model.description} (${loc.model.owner})",
                         overflow: TextOverflow.ellipsis,
@@ -95,7 +101,7 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                       ),
                     ),
                     SizedBox(
-                      width: constraints.maxWidth - statusSize,
+                      width: titleSize(constraints),
                       child: (stateText.isNotEmpty)
                           ? Text(
                               loc.stateText,
@@ -105,7 +111,16 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                           : Container(),
                     ),
                   ]),
-                  widget.isEnabled
+                  showBatteryLevel
+                      ? SizedBox(
+                          width: statusSize,
+                          height: statusSize,
+                          child: Stack(alignment: Alignment.center, children: [
+                            _buildBatteryLevelIcon(),
+                          ]),
+                        )
+                      : Container(),
+                  showSpeedAndState
                       ? SizedBox(
                           width: statusSize,
                           height: statusSize,
@@ -145,7 +160,9 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
                             : Container(),
                       ]),
                 ),
-                widget.isEnabled ? _buildControlBar() : Container(),
+                widget.isSelected || _hasMouse
+                    ? _buildControlBar()
+                    : Container(),
               ]),
             ),
           ),
@@ -365,6 +382,26 @@ class _LocsTreeCardState extends State<LocsTreeCard> {
     );
 
     return Tooltip(message: stateData.second, child: icon);
+  }
+
+  Widget _buildBatteryLevelIcon() {
+    final loc = widget.loc;
+    final iconData = switch (loc.batteryLevel_91) {
+      >= 0 && <= 15 => Icons.battery_0_bar,
+      > 15 && <= 30 => Icons.battery_1_bar,
+      > 30 && <= 45 => Icons.battery_2_bar,
+      > 45 && <= 60 => Icons.battery_3_bar,
+      > 60 && <= 75 => Icons.battery_4_bar,
+      > 75 && <= 90 => Icons.battery_5_bar,
+      > 90 && <= 99 => Icons.battery_6_bar,
+      _ => Icons.battery_full,
+    };
+    final icon = Icon(
+      iconData,
+      size: 24,
+    );
+
+    return Tooltip(message: "${loc.batteryLevel_91}%", child: icon);
   }
 
   Color _getSpeedColor(double speed) {

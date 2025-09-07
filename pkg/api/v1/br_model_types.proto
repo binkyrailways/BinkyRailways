@@ -234,6 +234,9 @@ message BinkyNetCommandStation {
 
 	// If set, do not configure objects that are not used
   bool exclude_unused_objects = 5;
+
+  // DNS domain to use
+  string domain = 6;
 }
 
 // Configuration of a binky local worker
@@ -249,11 +252,21 @@ message BinkyNetLocalWorker {
   string hardware_id = 4;
   // Optional alias for the local worker.
   string alias = 5;
+  // Type of local worker
+  BinkyNetLocalWorkerType local_worker_type = 6;
 
   // Set of devices that must be configured on this local worker.
   repeated BinkyNetDevice devices = 10;
   // Set of real world objects controlled by the local worker
   repeated BinkyNetObject objects = 11;
+}
+
+// Type of local worker
+enum BinkyNetLocalWorkerType {
+  // Local worker runs linux.
+  LINUX = 0;
+  // Local worker runs Esphome.
+  ESPHOME = 1;
 }
 
 message BinkyNetLocalWorkerRef {
@@ -270,6 +283,8 @@ message BinkyNetDevice {
   BinkyNetDeviceType device_type = 3;
   // Address of the device
   string address = 4;
+  // Set if the device is disabled
+  bool disabled = 5;
   // If set, this device supports adding an object group of type SENSORS_8
   bool can_add_sensors_8_group = 10;
   // If set, this device supports adding an object group of type SENSORS_4
@@ -290,6 +305,10 @@ enum BinkyNetDeviceType {
   // DeviceTypeBinkyCarSensor is the device type of a Binky Car Sensor.
   // See https://easyeda.com/editor?from=oshwlab#id=4b79ca953a7e4ea8971153b438ae1339|5964111c75b2459481dac75f8581f77e
   BINKYCARSENSOR = 5;
+  // DeviceTypeMQTTGPIO is the device type of an MQTT input/output device
+  MQTT_GPIO = 6;
+  // DeviceTypeMQTTServo is the device type of an MQTT servo device
+  MQTT_SERVO = 7;
 }
 
 message BinkyNetObject {
@@ -737,6 +756,64 @@ message Signal {
   string module_id = 3;
   // Position of the Signal
   Position position = 4;
+  // Set when this signal is of type block signal.
+  BlockSignal block_signal = 5;
+}
+
+// Signal related to a specific block
+message BlockSignal {
+	// First address
+	// This is an output signal.
+  string address1 = 1;
+	// Second address
+	// This is an output signal.
+  string address2 = 2;
+	// Third address
+	// This is an output signal.
+  string address3 = 3;
+	// Fourth address
+	// This is an output signal.
+  string address4 = 4;
+
+  // Is the Red color available?
+  // Readonly.
+  bool is_red_available = 10;
+	// Bit pattern used for color Red.
+  int32 red_pattern = 11;
+
+  // Is the Green color available?
+  // Readonly.
+  bool is_green_available = 20;
+  // Bit pattern used for color Green.
+  int32 green_pattern = 21;
+
+  // Is the Yellow color available?
+  // Readonly.
+  bool is_yellow_available = 30;
+	// Bit pattern used for color Yellow.
+  int32 yellow_pattern = 31;
+
+  // Is the White color available?
+  // Readonly.
+  bool is_white_available = 40;
+	// Bit pattern used for color White.
+  int32 white_pattern = 41;
+
+	// The block this signal protects.
+  BlockRef block = 50;
+	// Side of the block where the signal is located.
+  BlockSide block_side = 51;
+
+	// Type of signal
+  BlockSignalType type = 60;
+}
+
+// BlockSignalType indicates a type of block signal.
+enum BlockSignalType {
+	// ENTRY indicates the type of signal that shows if a block can be entered.
+  ENTRY = 0;
+	// EXIT indicates the type of signal that shows if a block can be left.
+  EXIT = 1;
 }
 
 // Reference to a Signal

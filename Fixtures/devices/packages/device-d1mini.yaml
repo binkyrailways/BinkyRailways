@@ -1,0 +1,9 @@
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+  level: DEBUG
+
+esphome:
+  name: $name

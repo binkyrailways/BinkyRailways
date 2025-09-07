@@ -16,6 +16,8 @@
 //
 //
 
+import 'dart:io';
+
 import '../api.dart';
 import 'package:flutter/material.dart';
 import 'package:retry/retry.dart';
@@ -34,6 +36,19 @@ class StateModel extends ChangeNotifier {
   final HolderMap<SignalState> _signals = HolderMap();
 
   StateModel();
+
+  void reset() {
+    _railwayState = null;
+    _commandStations.clear();
+    _locs.clear();
+    _blocks.clear();
+    _blockGroups.clear();
+    _junctions.clear();
+    _outputs.clear();
+    _routes.clear();
+    _sensors.clear();
+    _signals.clear();
+  }
 
   // Is a railway already loaded?
   bool isRailwayStateLoaded() => _railwayState != null;
@@ -95,13 +110,31 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  // Enable entity tester
+  Future<RailwayState> enableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.enableEntityTester(Empty());
+    _railwayState = result;
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
+  // Disable entity tester
+  Future<RailwayState> disableEntityTester() async {
+    var stateClient = APIClient().stateClient();
+    final result = await stateClient.disableEntityTester(Empty());
+    _railwayState = result;
+    // Notify listeners
+    notifyListeners();
+    return result;
+  }
+
   Future<void> _ensureFetchingChanges() async {
     if (!_fetchingChanges) {
       _fetchingChanges = true;
-      // Fetch all state changes first
-      await _getStateChanges(true, true);
-      // Now wait for all future changes
-      _getStateChanges(true, false);
+      // Now wait for all changes
+      _getStateChanges();
     }
   }
 
@@ -150,7 +183,7 @@ class StateModel extends ChangeNotifier {
       speed: speed,
       direction: direction,
     ));
-    if (_locs.set(id, result)) {
+    if (_locs.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -163,7 +196,7 @@ class StateModel extends ChangeNotifier {
       id: id,
       functions: functions,
     ));
-    if (_locs.set(id, result)) {
+    if (_locs.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -177,7 +210,7 @@ class StateModel extends ChangeNotifier {
       id: id,
       enabled: enabled,
     ));
-    if (_locs.set(id, result)) {
+    if (_locs.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -191,7 +224,7 @@ class StateModel extends ChangeNotifier {
       id: id,
       direction: direction,
     ));
-    if (_junctions.set(id, result)) {
+    if (_junctions.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -204,7 +237,7 @@ class StateModel extends ChangeNotifier {
       id: id,
       active: active,
     ));
-    if (_outputs.set(id, result)) {
+    if (_outputs.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -260,7 +293,7 @@ class StateModel extends ChangeNotifier {
       id: id,
       closed: closed,
     ));
-    if (_blocks.set(id, result)) {
+    if (_blocks.set(id, "", "", result)) {
       notifyListeners();
     }
     return result;
@@ -327,7 +360,7 @@ class StateModel extends ChangeNotifier {
       _getState(id, _signals);
 
   // Collect state changes from the server, until the
-  Future<void> _getStateChanges(bool bootstrap, bool bootstrapOnly) async {
+  Future<void> _getStateChanges() async {
     // Clear current state
     _commandStations.clear();
     _locs.clear();
@@ -340,46 +373,70 @@ class StateModel extends ChangeNotifier {
     _signals.clear();
     // Keep fetching changes until run mode is disabled
     final stateClient = APIClient().stateClient();
+    var railwayHashKey = "";
+    var railwayHashValue = "";
     while (_railwayState?.isRunModeEnabled ?? false) {
       // Request state changes
-      final req = GetStateChangesRequest(
-          bootstrap: bootstrap, bootstrapOnly: bootstrapOnly);
       try {
+        // Collect all known hashes
+        final Map<String, String> hashes = {
+          railwayHashKey: railwayHashValue,
+        };
+        _commandStations.copyHashesTo(hashes);
+        _locs.copyHashesTo(hashes);
+        _blocks.copyHashesTo(hashes);
+        _blockGroups.copyHashesTo(hashes);
+        _junctions.copyHashesTo(hashes);
+        _outputs.copyHashesTo(hashes);
+        _routes.copyHashesTo(hashes);
+        _sensors.copyHashesTo(hashes);
+        _signals.copyHashesTo(hashes);
+
+        // Make request
+        final req = GetStateChangesRequest(hashes: hashes);
         await for (var change in stateClient.getStateChanges(req)) {
           var changed = false;
           if (change.hasRailway()) {
             _railwayState = change.railway;
+            railwayHashKey = change.id;
+            railwayHashValue = change.hash;
             changed = true;
           }
           if (change.hasCommandStation()) {
-            changed |= _commandStations.set(
-                change.commandStation.model.id, change.commandStation);
+            changed |= _commandStations.set(change.commandStation.model.id,
+                change.id, change.hash, change.commandStation);
           }
           if (change.hasLoc()) {
-            changed |= _locs.set(change.loc.model.id, change.loc);
+            changed |= _locs.set(
+                change.loc.model.id, change.id, change.hash, change.loc);
           }
           if (change.hasBlock()) {
-            changed |= _blocks.set(change.block.model.id, change.block);
+            changed |= _blocks.set(
+                change.block.model.id, change.id, change.hash, change.block);
           }
           if (change.hasBlockGroup()) {
-            changed |=
-                _blockGroups.set(change.blockGroup.model.id, change.blockGroup);
+            changed |= _blockGroups.set(change.blockGroup.model.id, change.id,
+                change.hash, change.blockGroup);
           }
           if (change.hasJunction()) {
-            changed |=
-                _junctions.set(change.junction.model.id, change.junction);
+            changed |= _junctions.set(change.junction.model.id, change.id,
+                change.hash, change.junction);
           }
           if (change.hasOutput()) {
-            changed |= _outputs.set(change.output.model.id, change.output);
+            changed |= _outputs.set(
+                change.output.model.id, change.id, change.hash, change.output);
           }
           if (change.hasRoute()) {
-            changed |= _routes.set(change.route.model.id, change.route);
+            changed |= _routes.set(
+                change.route.model.id, change.id, change.hash, change.route);
           }
           if (change.hasSensor()) {
-            changed |= _sensors.set(change.sensor.model.id, change.sensor);
+            changed |= _sensors.set(
+                change.sensor.model.id, change.id, change.hash, change.sensor);
           }
           if (change.hasSignal()) {
-            changed |= _signals.set(change.signal.model.id, change.signal);
+            changed |= _signals.set(
+                change.signal.model.id, change.id, change.hash, change.signal);
           }
           if (changed) {
             notifyListeners();
@@ -388,6 +445,7 @@ class StateModel extends ChangeNotifier {
       } catch (err) {
         print(err);
       }
+      //sleep(const Duration(milliseconds: 10));
     }
   }
 }
@@ -411,6 +469,7 @@ class Holder<T> {
 
 class HolderMap<T> {
   final Map<String, Holder<T>> _map = {};
+  final Map<String, String> _hashes = {};
 
   Iterable<Holder<T>> get values => _map.values;
 
@@ -418,8 +477,13 @@ class HolderMap<T> {
     return _map[id];
   }
 
-  bool set(String id, T value) {
+  bool set(String id, String hashKey, String hashValue, T value) {
     final holder = _map[id];
+    if (hashKey.isNotEmpty) {
+      _hashes[hashKey] = hashValue;
+    } else {
+      _hashes.clear();
+    }
     if (holder != null) {
       return holder.update(value);
     }
@@ -429,5 +493,10 @@ class HolderMap<T> {
 
   void clear() {
     _map.clear();
+    _hashes.clear();
+  }
+
+  void copyHashesTo(Map<String, String> target) {
+    _hashes.forEach((k, v) => target[k] = v);
   }
 }

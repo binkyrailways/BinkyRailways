@@ -9,10 +9,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_state_types.pb.dart' as $3;
+import 'br_state_types.pb.dart' as $4;
 
-import 'br_state_types.pbenum.dart' as $3;
-import 'br_model_types.pbenum.dart' as $1;
+import 'br_state_types.pbenum.dart' as $4;
+import 'br_model_types.pbenum.dart' as $0;
 
 class EnableRunModeRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EnableRunModeRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
@@ -77,22 +77,17 @@ class EnableRunModeRequest extends $pb.GeneratedMessage {
 
 class GetStateChangesRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetStateChangesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrap')
-    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bootstrapOnly')
+    ..m<$core.String, $core.String>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hashes', entryClassName: 'GetStateChangesRequest.HashesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('binkyrailways.v1'))
     ..hasRequiredFields = false
   ;
 
   GetStateChangesRequest._() : super();
   factory GetStateChangesRequest({
-    $core.bool? bootstrap,
-    $core.bool? bootstrapOnly,
+    $core.Map<$core.String, $core.String>? hashes,
   }) {
     final _result = create();
-    if (bootstrap != null) {
-      _result.bootstrap = bootstrap;
-    }
-    if (bootstrapOnly != null) {
-      _result.bootstrapOnly = bootstrapOnly;
+    if (hashes != null) {
+      _result.hashes.addAll(hashes);
     }
     return _result;
   }
@@ -118,51 +113,40 @@ class GetStateChangesRequest extends $pb.GeneratedMessage {
   static GetStateChangesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get bootstrap => $_getBF(0);
-  @$pb.TagNumber(1)
-  set bootstrap($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasBootstrap() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearBootstrap() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.bool get bootstrapOnly => $_getBF(1);
-  @$pb.TagNumber(2)
-  set bootstrapOnly($core.bool v) { $_setBool(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBootstrapOnly() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBootstrapOnly() => clearField(2);
+  $core.Map<$core.String, $core.String> get hashes => $_getMap(0);
 }
 
 class StateChange extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StateChange', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
-    ..aOM<$3.RailwayState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railway', subBuilder: $3.RailwayState.create)
-    ..aOM<$3.LocState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'loc', subBuilder: $3.LocState.create)
-    ..aOM<$3.CommandStationState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStation', protoName: 'commandStation', subBuilder: $3.CommandStationState.create)
-    ..aOM<$3.BlockState>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'block', subBuilder: $3.BlockState.create)
-    ..aOM<$3.BlockGroupState>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroup', protoName: 'blockGroup', subBuilder: $3.BlockGroupState.create)
-    ..aOM<$3.JunctionState>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junction', subBuilder: $3.JunctionState.create)
-    ..aOM<$3.OutputState>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'output', subBuilder: $3.OutputState.create)
-    ..aOM<$3.RouteState>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'route', subBuilder: $3.RouteState.create)
-    ..aOM<$3.SensorState>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensor', subBuilder: $3.SensorState.create)
-    ..aOM<$3.SignalState>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signal', subBuilder: $3.SignalState.create)
+    ..aOM<$4.RailwayState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railway', subBuilder: $4.RailwayState.create)
+    ..aOM<$4.LocState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'loc', subBuilder: $4.LocState.create)
+    ..aOM<$4.CommandStationState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStation', protoName: 'commandStation', subBuilder: $4.CommandStationState.create)
+    ..aOM<$4.BlockState>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'block', subBuilder: $4.BlockState.create)
+    ..aOM<$4.BlockGroupState>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockGroup', protoName: 'blockGroup', subBuilder: $4.BlockGroupState.create)
+    ..aOM<$4.JunctionState>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junction', subBuilder: $4.JunctionState.create)
+    ..aOM<$4.OutputState>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'output', subBuilder: $4.OutputState.create)
+    ..aOM<$4.RouteState>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'route', subBuilder: $4.RouteState.create)
+    ..aOM<$4.SensorState>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensor', subBuilder: $4.SensorState.create)
+    ..aOM<$4.SignalState>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signal', subBuilder: $4.SignalState.create)
+    ..aOS(100, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(101, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hash')
     ..hasRequiredFields = false
   ;
 
   StateChange._() : super();
   factory StateChange({
-    $3.RailwayState? railway,
-    $3.LocState? loc,
-    $3.CommandStationState? commandStation,
-    $3.BlockState? block,
-    $3.BlockGroupState? blockGroup,
-    $3.JunctionState? junction,
-    $3.OutputState? output,
-    $3.RouteState? route,
-    $3.SensorState? sensor,
-    $3.SignalState? signal,
+    $4.RailwayState? railway,
+    $4.LocState? loc,
+    $4.CommandStationState? commandStation,
+    $4.BlockState? block,
+    $4.BlockGroupState? blockGroup,
+    $4.JunctionState? junction,
+    $4.OutputState? output,
+    $4.RouteState? route,
+    $4.SensorState? sensor,
+    $4.SignalState? signal,
+    $core.String? id,
+    $core.String? hash,
   }) {
     final _result = create();
     if (railway != null) {
@@ -195,6 +179,12 @@ class StateChange extends $pb.GeneratedMessage {
     if (signal != null) {
       _result.signal = signal;
     }
+    if (id != null) {
+      _result.id = id;
+    }
+    if (hash != null) {
+      _result.hash = hash;
+    }
     return _result;
   }
   factory StateChange.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
@@ -219,114 +209,132 @@ class StateChange extends $pb.GeneratedMessage {
   static StateChange? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $3.RailwayState get railway => $_getN(0);
+  $4.RailwayState get railway => $_getN(0);
   @$pb.TagNumber(1)
-  set railway($3.RailwayState v) { setField(1, v); }
+  set railway($4.RailwayState v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasRailway() => $_has(0);
   @$pb.TagNumber(1)
   void clearRailway() => clearField(1);
   @$pb.TagNumber(1)
-  $3.RailwayState ensureRailway() => $_ensure(0);
+  $4.RailwayState ensureRailway() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $3.LocState get loc => $_getN(1);
+  $4.LocState get loc => $_getN(1);
   @$pb.TagNumber(2)
-  set loc($3.LocState v) { setField(2, v); }
+  set loc($4.LocState v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLoc() => $_has(1);
   @$pb.TagNumber(2)
   void clearLoc() => clearField(2);
   @$pb.TagNumber(2)
-  $3.LocState ensureLoc() => $_ensure(1);
+  $4.LocState ensureLoc() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $3.CommandStationState get commandStation => $_getN(2);
+  $4.CommandStationState get commandStation => $_getN(2);
   @$pb.TagNumber(3)
-  set commandStation($3.CommandStationState v) { setField(3, v); }
+  set commandStation($4.CommandStationState v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasCommandStation() => $_has(2);
   @$pb.TagNumber(3)
   void clearCommandStation() => clearField(3);
   @$pb.TagNumber(3)
-  $3.CommandStationState ensureCommandStation() => $_ensure(2);
+  $4.CommandStationState ensureCommandStation() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $3.BlockState get block => $_getN(3);
+  $4.BlockState get block => $_getN(3);
   @$pb.TagNumber(4)
-  set block($3.BlockState v) { setField(4, v); }
+  set block($4.BlockState v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasBlock() => $_has(3);
   @$pb.TagNumber(4)
   void clearBlock() => clearField(4);
   @$pb.TagNumber(4)
-  $3.BlockState ensureBlock() => $_ensure(3);
+  $4.BlockState ensureBlock() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $3.BlockGroupState get blockGroup => $_getN(4);
+  $4.BlockGroupState get blockGroup => $_getN(4);
   @$pb.TagNumber(5)
-  set blockGroup($3.BlockGroupState v) { setField(5, v); }
+  set blockGroup($4.BlockGroupState v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasBlockGroup() => $_has(4);
   @$pb.TagNumber(5)
   void clearBlockGroup() => clearField(5);
   @$pb.TagNumber(5)
-  $3.BlockGroupState ensureBlockGroup() => $_ensure(4);
+  $4.BlockGroupState ensureBlockGroup() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $3.JunctionState get junction => $_getN(5);
+  $4.JunctionState get junction => $_getN(5);
   @$pb.TagNumber(6)
-  set junction($3.JunctionState v) { setField(6, v); }
+  set junction($4.JunctionState v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasJunction() => $_has(5);
   @$pb.TagNumber(6)
   void clearJunction() => clearField(6);
   @$pb.TagNumber(6)
-  $3.JunctionState ensureJunction() => $_ensure(5);
+  $4.JunctionState ensureJunction() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $3.OutputState get output => $_getN(6);
+  $4.OutputState get output => $_getN(6);
   @$pb.TagNumber(7)
-  set output($3.OutputState v) { setField(7, v); }
+  set output($4.OutputState v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasOutput() => $_has(6);
   @$pb.TagNumber(7)
   void clearOutput() => clearField(7);
   @$pb.TagNumber(7)
-  $3.OutputState ensureOutput() => $_ensure(6);
+  $4.OutputState ensureOutput() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $3.RouteState get route => $_getN(7);
+  $4.RouteState get route => $_getN(7);
   @$pb.TagNumber(8)
-  set route($3.RouteState v) { setField(8, v); }
+  set route($4.RouteState v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasRoute() => $_has(7);
   @$pb.TagNumber(8)
   void clearRoute() => clearField(8);
   @$pb.TagNumber(8)
-  $3.RouteState ensureRoute() => $_ensure(7);
+  $4.RouteState ensureRoute() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $3.SensorState get sensor => $_getN(8);
+  $4.SensorState get sensor => $_getN(8);
   @$pb.TagNumber(9)
-  set sensor($3.SensorState v) { setField(9, v); }
+  set sensor($4.SensorState v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasSensor() => $_has(8);
   @$pb.TagNumber(9)
   void clearSensor() => clearField(9);
   @$pb.TagNumber(9)
-  $3.SensorState ensureSensor() => $_ensure(8);
+  $4.SensorState ensureSensor() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $3.SignalState get signal => $_getN(9);
+  $4.SignalState get signal => $_getN(9);
   @$pb.TagNumber(10)
-  set signal($3.SignalState v) { setField(10, v); }
+  set signal($4.SignalState v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasSignal() => $_has(9);
   @$pb.TagNumber(10)
   void clearSignal() => clearField(10);
   @$pb.TagNumber(10)
-  $3.SignalState ensureSignal() => $_ensure(9);
+  $4.SignalState ensureSignal() => $_ensure(9);
+
+  @$pb.TagNumber(100)
+  $core.String get id => $_getSZ(10);
+  @$pb.TagNumber(100)
+  set id($core.String v) { $_setString(10, v); }
+  @$pb.TagNumber(100)
+  $core.bool hasId() => $_has(10);
+  @$pb.TagNumber(100)
+  void clearId() => clearField(100);
+
+  @$pb.TagNumber(101)
+  $core.String get hash => $_getSZ(11);
+  @$pb.TagNumber(101)
+  set hash($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(101)
+  $core.bool hasHash() => $_has(11);
+  @$pb.TagNumber(101)
+  void clearHash() => clearField(101);
 }
 
 class SetPowerRequest extends $pb.GeneratedMessage {
@@ -427,7 +435,7 @@ class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetLocSpeedAndDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
-    ..e<$3.LocDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $3.LocDirection.FORWARD, valueOf: $3.LocDirection.valueOf, enumValues: $3.LocDirection.values)
+    ..e<$4.LocDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $4.LocDirection.FORWARD, valueOf: $4.LocDirection.valueOf, enumValues: $4.LocDirection.values)
     ..hasRequiredFields = false
   ;
 
@@ -435,7 +443,7 @@ class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   factory SetLocSpeedAndDirectionRequest({
     $core.String? id,
     $core.int? speed,
-    $3.LocDirection? direction,
+    $4.LocDirection? direction,
   }) {
     final _result = create();
     if (id != null) {
@@ -489,9 +497,9 @@ class SetLocSpeedAndDirectionRequest extends $pb.GeneratedMessage {
   void clearSpeed() => clearField(2);
 
   @$pb.TagNumber(3)
-  $3.LocDirection get direction => $_getN(2);
+  $4.LocDirection get direction => $_getN(2);
   @$pb.TagNumber(3)
-  set direction($3.LocDirection v) { setField(3, v); }
+  set direction($4.LocDirection v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasDirection() => $_has(2);
   @$pb.TagNumber(3)
@@ -678,14 +686,14 @@ class LocFunction extends $pb.GeneratedMessage {
 class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SetSwitchDirectionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
-    ..e<$1.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..e<$0.SwitchDirection>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $0.SwitchDirection.STRAIGHT, valueOf: $0.SwitchDirection.valueOf, enumValues: $0.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
   SetSwitchDirectionRequest._() : super();
   factory SetSwitchDirectionRequest({
     $core.String? id,
-    $1.SwitchDirection? direction,
+    $0.SwitchDirection? direction,
   }) {
     final _result = create();
     if (id != null) {
@@ -727,9 +735,9 @@ class SetSwitchDirectionRequest extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $1.SwitchDirection get direction => $_getN(1);
+  $0.SwitchDirection get direction => $_getN(1);
   @$pb.TagNumber(2)
-  set direction($1.SwitchDirection v) { setField(2, v); }
+  set direction($0.SwitchDirection v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDirection() => $_has(1);
   @$pb.TagNumber(2)
@@ -848,7 +856,7 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AssignLocToBlockRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockId')
-    ..e<$1.BlockSide>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: $1.BlockSide.FRONT, valueOf: $1.BlockSide.valueOf, enumValues: $1.BlockSide.values)
+    ..e<$0.BlockSide>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: $0.BlockSide.FRONT, valueOf: $0.BlockSide.valueOf, enumValues: $0.BlockSide.values)
     ..hasRequiredFields = false
   ;
 
@@ -856,7 +864,7 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   factory AssignLocToBlockRequest({
     $core.String? locId,
     $core.String? blockId,
-    $1.BlockSide? blockSide,
+    $0.BlockSide? blockSide,
   }) {
     final _result = create();
     if (locId != null) {
@@ -910,9 +918,9 @@ class AssignLocToBlockRequest extends $pb.GeneratedMessage {
   void clearBlockId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $1.BlockSide get blockSide => $_getN(2);
+  $0.BlockSide get blockSide => $_getN(2);
   @$pb.TagNumber(3)
-  set blockSide($1.BlockSide v) { setField(3, v); }
+  set blockSide($0.BlockSide v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBlockSide() => $_has(2);
   @$pb.TagNumber(3)

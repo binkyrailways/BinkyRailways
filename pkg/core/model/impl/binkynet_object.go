@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"strings"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -188,4 +189,19 @@ func (o *binkyNetObject) OnModified() {
 		o.container.OnModified()
 	}
 	o.entity.OnModified()
+}
+
+// Gets the MQTT state topic to use for the connection with given name on this object
+func (o *binkyNetObject) getMQTTPrefix() string {
+	return strings.ToLower("/binky/" + o.GetLocalWorker().GetAlias() + "/" + string(o.GetObjectID()) + "/")
+}
+
+// Gets the MQTT state topic to use for the connection with given name on this object
+func (o *binkyNetObject) GetMQTTStateTopic(connName api.ConnectionName) string {
+	return strings.ToLower(o.getMQTTPrefix() + string(connName) + "/state")
+}
+
+// Gets the MQTT command topic to use for the connection with given name on this object
+func (o *binkyNetObject) GetMQTTCommandTopic(connName api.ConnectionName) string {
+	return strings.ToLower(o.getMQTTPrefix() + string(connName) + "/command")
 }

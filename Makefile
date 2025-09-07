@@ -61,7 +61,7 @@ binaries-gui: binaries-web binaries-macos
 
 .PHONY: binaries-web
 binaries-web: 
-	cd apps/binky ; flutter build web --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/
+	cd apps/binky ; flutter build web --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/ --profile
 
 .PHONY: binaries-macos
 binaries-macos: 
@@ -77,6 +77,13 @@ develop-gui:
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
 		cd apps/binky ; flutter run -d macos
+
+.PHONY: develop-web
+develop-web: 
+	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
+		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
+		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
+		cd apps/binky ; flutter run -d chrome
 
 bootstrap:
 	go get github.com/mitchellh/gox
@@ -118,8 +125,9 @@ pkg/core/model/predicates/parser.go: pkg/core/model/predicates/parser.peg
 
 update-modules:
 	go get \
-		github.com/binkynet/NetManager@v1.9.0 \
-		github.com/binkynet/BinkyNet@v1.12.0
+		github.com/binkynet/NetManager@v1.10.2 \
+		github.com/binkynet/BinkyNet@v1.13.0 \
+		golang.org/x/crypto@latest
 	go mod tidy
 
 deploy:

@@ -41,6 +41,7 @@ class RunPage extends StatefulWidget {
 
 class _RunPageState extends State<RunPage> {
   final ViewSettings _viewSettings = ViewSettings();
+  bool _isReloaded = false;
 
   @override
   void initState() {
@@ -63,6 +64,12 @@ class _RunPageState extends State<RunPage> {
       child: ChangeNotifierProvider<RunContext>(
         create: (context) => RunContext(),
         child: Consumer<StateModel>(builder: (context, state, child) {
+          if (!_isReloaded) {
+            setState(() {
+              state.reset();
+              _isReloaded = true;
+            });
+          }
           return Consumer<ModelModel>(builder: (context, model, child) {
             return FutureBuilder<RailwayState>(
                 future: state.getRailwayState(),
@@ -75,10 +82,10 @@ class _RunPageState extends State<RunPage> {
                         // the App.build method, and use it to set our appbar title.
                         title: const Text("Binky Railways"),
                       ),
-                      body: Center(
+                      body: const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
+                          children: <Widget>[
                             Text('Loading railway...'),
                             CircularProgressIndicator(value: null),
                           ],
@@ -126,6 +133,44 @@ class _RunPageState extends State<RunPage> {
   List<Widget>? _buildActions(BuildContext context, ModelModel model,
       StateModel state, EditorContext editorCtx) {
     final List<Widget> list = [];
+    final rwState = state.getCachedRailwayState();
+
+    if ((rwState != null) && (!rwState.isVirtualModeEnabled)) {
+      if (rwState.isEntityTesterEnabled) {
+        list.add(IconButton(
+          color: Colors.green,
+          icon: const Icon(Icons.auto_fix_off),
+          tooltip: "Stop entity tester",
+          onPressed: () async {
+            try {
+              await state.disableEntityTester();
+            } catch (err) {
+              showErrorDialog(
+                  context: context,
+                  title: "Failed to disable entity tester",
+                  content: Text("$err"));
+            }
+          },
+        ));
+      } else {
+        list.add(IconButton(
+          color: Colors.orange,
+          icon: const Icon(Icons.auto_fix_high),
+          tooltip: "Start entity tester",
+          onPressed: () async {
+            try {
+              await state.enableEntityTester();
+            } catch (err) {
+              showErrorDialog(
+                  context: context,
+                  title: "Failed to enable entity tester",
+                  content: Text("$err"));
+            }
+          },
+        ));
+      }
+      list.add(const VerticalDivider());
+    }
 
     list.add(IconButton(
       icon: const Icon(Icons.save),
@@ -160,7 +205,6 @@ class _RunPageState extends State<RunPage> {
 
     list.add(const VerticalDivider());
 
-    final rwState = state.getCachedRailwayState();
     if (rwState != null) {
       if (rwState.isVirtualModeEnabled) {
         if (!rwState.isVirtualAutorunEnabled) {

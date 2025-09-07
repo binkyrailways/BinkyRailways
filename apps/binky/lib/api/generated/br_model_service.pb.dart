@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'br_model_types.pbenum.dart' as $1;
+import 'br_model_types.pbenum.dart' as $0;
 import 'br_model_service.pbenum.dart';
 
 export 'br_model_service.pbenum.dart';
@@ -472,7 +472,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteCrossingJunctionSwitchRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'junctionId')
-    ..e<$1.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $1.SwitchDirection.STRAIGHT, valueOf: $1.SwitchDirection.valueOf, enumValues: $1.SwitchDirection.values)
+    ..e<$0.SwitchDirection>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'direction', $pb.PbFieldType.OE, defaultOrMaker: $0.SwitchDirection.STRAIGHT, valueOf: $0.SwitchDirection.valueOf, enumValues: $0.SwitchDirection.values)
     ..hasRequiredFields = false
   ;
 
@@ -480,7 +480,7 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   factory AddRouteCrossingJunctionSwitchRequest({
     $core.String? routeId,
     $core.String? junctionId,
-    $1.SwitchDirection? direction,
+    $0.SwitchDirection? direction,
   }) {
     final _result = create();
     if (routeId != null) {
@@ -534,9 +534,9 @@ class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {
   void clearJunctionId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $1.SwitchDirection get direction => $_getN(2);
+  $0.SwitchDirection get direction => $_getN(2);
   @$pb.TagNumber(3)
-  set direction($1.SwitchDirection v) { setField(3, v); }
+  set direction($0.SwitchDirection v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasDirection() => $_has(2);
   @$pb.TagNumber(3)

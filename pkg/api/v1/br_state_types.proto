@@ -31,6 +31,8 @@ message RailwayState {
   bool is_virtual_mode_enabled = 3;
   // Set when the server is in run mode with virtual auto run enabled
   bool is_virtual_autorun_enabled = 4;
+  // Set when the entity tester is active
+  bool is_entity_tester_enabled = 5;
   // Is the actual power status on?
   bool power_actual = 10;
   // Is the requested power status on?
@@ -141,6 +143,11 @@ message LocState {
 	// If not enabled, the loc state will not be sent to
 	// command stations.
   bool is_enabled = 80;
+
+  // If set, battery level for this loc is known.
+  bool has_battery_level = 90;
+  // Battery level for this loc in percentage (0-100)
+  int32 battery_level = 91;
 }
 
 // Direction of a loc
@@ -212,6 +219,10 @@ message CommandStationState {
   CommandStation model = 1;
   // Status of hardware modules connected to this command station
   repeated HardwareModule hardware_modules = 2;
+  // Is the actual power status of this command station on?
+  bool power_actual = 10;
+  // Is the requested power status of this command station on?
+  bool power_requested = 11;
 }
 
 // State specific a hardware module that is connected to the command station

@@ -405,9 +405,9 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 		return maxDuration
 	}
 	// Setup waiting after block (do this before assigning the route)
-	if route.GetTo(ctx).GetWaitPermissions().Evaluate(ctx, loc) {
+	if route.GetTo().GetWaitPermissions().Evaluate(ctx, loc) {
 		// Waiting allowed, gamble for it.
-		waitProbability := route.GetTo(ctx).GetWaitProbability(ctx)
+		waitProbability := route.GetTo().GetWaitProbability(ctx)
 		loc.GetWaitAfterCurrentRoute().SetActual(ctx, gamble(waitProbability))
 	} else {
 		// Waiting not allowed.
@@ -421,7 +421,7 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 
 	// Should we change direction?
 	enteredSide := loc.GetCurrentBlockEnterSide().GetActual(ctx)
-	leavingSide := route.GetFromBlockSide(ctx)
+	leavingSide := route.GetFromBlockSide()
 	if enteredSide == leavingSide {
 		// Reverse direction
 		loc.GetDirection().SetRequested(ctx, loc.GetDirection().GetActual(ctx).Invert())
@@ -432,7 +432,7 @@ func (alc *automaticLocController) onAssignRoute(ctx context.Context, loc state.
 		}
 
 		// When reversing, check the state of the target block
-		if loc.GetReversing().GetActual(ctx) && route.GetTo(ctx).GetChangeDirectionReversingLocs(ctx) {
+		if loc.GetReversing().GetActual(ctx) && route.GetTo().GetChangeDirectionReversingLocs(ctx) {
 			// We must stop at the target block
 			loc.GetWaitAfterCurrentRoute().SetActual(ctx, true)
 		}

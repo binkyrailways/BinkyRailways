@@ -1,4 +1,4 @@
-// Copyright 2023 Ewout Prangsma
+// Copyright 2020 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,24 +15,14 @@
 // Author Ewout Prangsma
 //
 
-package server
+package model
 
-import (
-	"log"
-	"net/http"
-	"os"
+// BinkyNetLocalWorkerType indicates a type of local worker.
+type BinkyNetLocalWorkerType string
 
-	webapp "github.com/binkyrailways/BinkyRailways/apps/binky"
+const (
+	// BinkynetLocalWorkerTypeLinux indicates the type of local worker that runs a Linux OS.
+	BinkynetLocalWorkerTypeLinux BinkyNetLocalWorkerType = "Linux"
+	// BinkynetLocalWorkerTypeEsphome indicates the type of local worker that runs esphome.
+	BinkynetLocalWorkerTypeEsphome BinkyNetLocalWorkerType = "Esphome"
 )
-
-// Load the filesystem to serve
-func getWebAppFileSystem(webDevelopment bool) http.FileSystem {
-	if webDevelopment {
-		log.Print("using live mode")
-		return http.FS(os.DirFS("./apps/binky/build/web"))
-	}
-
-	log.Print("using embed mode")
-	fsys := webapp.GetWebAppFileSystem()
-	return fsys
-}

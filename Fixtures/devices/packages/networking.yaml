@@ -1,0 +1,24 @@
+mqtt:
+  broker: !secret mqtt_broker
+  topic_prefix: /binky/${name}
+  log_topic: /binky_logs
+  discovery: true
+  discovery_retain: false
+  discovery_prefix: /binky_discovery
+  reboot_timeout: 1min
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${name}-ap
+    password: !secret wifi_ap_password
+
+captive_portal:
+

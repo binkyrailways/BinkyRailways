@@ -33,7 +33,7 @@ class OutputComponent extends common.OutputComponent with Tappable {
       : super(viewSettings, model: state.last.model);
 
   @override
-  bool onTapUp(TapUpInfo event) {
+  bool onTapUp(TapUpInfo info) {
     if (onVisibleLayer()) {
       final sw = state.last;
       if (sw.hasBinaryOutput()) {

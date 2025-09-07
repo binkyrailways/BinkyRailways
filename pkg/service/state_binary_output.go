@@ -48,6 +48,13 @@ func (s *service) SetBinaryOutputActive(ctx context.Context, req *api.SetBinaryO
 	if err := boState.GetActive().SetRequested(ctx, req.GetActive()); err != nil {
 		return nil, err
 	}
+	if et := rwState.GetEntityTester(); et.GetEnabled().GetRequested(ctx) {
+		if et.IsIncluded(ctx, boState) {
+			et.Exclude(ctx, boState)
+		} else {
+			et.Include(ctx, boState)
+		}
+	}
 	var result api.OutputState
 	if err := result.FromState(ctx, outputState); err != nil {
 		return nil, err

@@ -106,6 +106,18 @@ class _BinkyNetLocalWorkerSettingsState
             onLostFocus: (value) async {
               await _update((update) => {update.alias = value});
             }),
+        SettingsDropdownField<BinkyNetLocalWorkerType>(
+          label: "Local Worker type",
+          value: widget.binkynetlocalworker.localWorkerType,
+          onChanged: (value) {
+            _update((x) {
+              if (value != null) {
+                x.localWorkerType = value;
+              }
+            });
+          },
+          items: _localWorkerTypeItems,
+        ),
       ],
     );
   }
@@ -117,4 +129,12 @@ class _BinkyNetLocalWorkerSettingsState
     editor(update);
     widget.model.updateBinkyNetLocalWorker(update);
   }
+
+  static final List<DropdownMenuItem<BinkyNetLocalWorkerType>>
+      _localWorkerTypeItems = BinkyNetLocalWorkerType.values
+          .map((e) => DropdownMenuItem<BinkyNetLocalWorkerType>(
+                child: Text(e.name),
+                value: e,
+              ))
+          .toList();
 }

@@ -33,10 +33,11 @@ type binkyNetLocalWorker struct {
 
 type binkyNetLocalWorkerFields struct {
 	entity
-	HardwareID string            `xml:"HardwareID,omitempty"`
-	Alias      string            `xml:"Alias,omitempty"`
-	Devices    binkyNetDeviceSet `xml:"Devices"`
-	Objects    binkyNetObjectSet `xml:"Objects"`
+	HardwareID      string                        `xml:"HardwareID,omitempty"`
+	Alias           string                        `xml:"Alias,omitempty"`
+	LocalWorkerType model.BinkyNetLocalWorkerType `xml:"LocalWorkerType,omitempty"`
+	Devices         binkyNetDeviceSet             `xml:"Devices"`
+	Objects         binkyNetObjectSet             `xml:"Objects"`
 }
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
@@ -46,6 +47,7 @@ func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw := &binkyNetLocalWorker{}
 	lw.EnsureID()
 	lw.SetHardwareID(context.Background(), hardwareID)
+	lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
 	return lw
@@ -58,6 +60,9 @@ func (lw *binkyNetLocalWorker) UnmarshalXML(d *xml.Decoder, start xml.StartEleme
 	}
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
+	if lw.LocalWorkerType == "" {
+		lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
+	}
 	return nil
 }
 
@@ -94,6 +99,22 @@ func (lw *binkyNetLocalWorker) GetHardwareID() string {
 func (lw *binkyNetLocalWorker) SetHardwareID(ctx context.Context, value string) error {
 	if lw.HardwareID != value {
 		lw.HardwareID = value
+		lw.OnModified()
+	}
+	return nil
+}
+
+// What type is the local worker?
+func (lw *binkyNetLocalWorker) GetLocalWorkerType() model.BinkyNetLocalWorkerType {
+	if lw.LocalWorkerType == "" {
+		return model.BinkynetLocalWorkerTypeLinux
+	}
+	return lw.LocalWorkerType
+}
+
+func (lw *binkyNetLocalWorker) SetLocalWorkerType(ctx context.Context, value model.BinkyNetLocalWorkerType) error {
+	if lw.LocalWorkerType != value {
+		lw.LocalWorkerType = value
 		lw.OnModified()
 	}
 	return nil

@@ -1,0 +1,68 @@
+substitutions:
+  name: m2-seinen
+
+packages:
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
+
+esphome:
+  on_boot:
+    then:
+      - switch.turn_on: pin1 # Red light 1
+      - switch.turn_on: pin4 # Red light 2
+      - delay: 2s
+      - switch.turn_on: pin2 # Yellow light 1
+      - switch.turn_on: pin5 # Yellow light 2
+      - delay: 2s
+      - switch.turn_on: pin3 # Green light 1
+      - switch.turn_on: pin6 # Green light 2
+      - delay: 2s
+      - switch.turn_off: pin2 # Yellow light 1
+      - switch.turn_off: pin3 # Green light 1
+      - switch.turn_off: pin5 # Yellow light 2
+      - switch.turn_off: pin6 # Green light 2
+
+switch:
+  # red 1
+  - platform: gpio
+    id: pin1
+    name: pin1
+    pin:
+      number: D7
+      inverted: true
+  # yellow 1
+  - platform: gpio
+    id: pin2
+    name: pin2
+    pin:
+      number: D6
+      inverted: true
+  # green 1
+  - platform: gpio
+    id: pin3
+    name: pin3
+    pin:
+      number: D5
+      inverted: true
+  # red 2
+  - platform: gpio
+    id: pin4
+    name: pin4
+    pin:
+      number: D3
+      inverted: true
+  # yellow 2
+  - platform: gpio
+    id: pin5
+    name: pin5
+    pin:
+      number: D2
+      inverted: true
+  # green 2
+  - platform: gpio
+    id: pin6
+    name: pin6
+    pin:
+      number: D1
+      inverted: true
+

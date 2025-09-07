@@ -1159,6 +1159,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requiredWorkerVersion')
     ..pc<BinkyNetLocalWorkerRef>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkers', $pb.PbFieldType.PM, subBuilder: BinkyNetLocalWorkerRef.create)
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'excludeUnusedObjects')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'domain')
     ..hasRequiredFields = false
   ;
 
@@ -1169,6 +1170,7 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     $core.String? requiredWorkerVersion,
     $core.Iterable<BinkyNetLocalWorkerRef>? localWorkers,
     $core.bool? excludeUnusedObjects,
+    $core.String? domain,
   }) {
     final _result = create();
     if (serverHost != null) {
@@ -1185,6 +1187,9 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
     }
     if (excludeUnusedObjects != null) {
       _result.excludeUnusedObjects = excludeUnusedObjects;
+    }
+    if (domain != null) {
+      _result.domain = domain;
     }
     return _result;
   }
@@ -1247,6 +1252,15 @@ class BinkyNetCommandStation extends $pb.GeneratedMessage {
   $core.bool hasExcludeUnusedObjects() => $_has(4);
   @$pb.TagNumber(5)
   void clearExcludeUnusedObjects() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get domain => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set domain($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasDomain() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearDomain() => clearField(6);
 }
 
 class BinkyNetLocalWorker extends $pb.GeneratedMessage {
@@ -1256,6 +1270,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'commandStationId')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareId')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'alias')
+    ..e<BinkyNetLocalWorkerType>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkerType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetLocalWorkerType.LINUX, valueOf: BinkyNetLocalWorkerType.valueOf, enumValues: BinkyNetLocalWorkerType.values)
     ..pc<BinkyNetDevice>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: BinkyNetDevice.create)
     ..pc<BinkyNetObject>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: BinkyNetObject.create)
     ..hasRequiredFields = false
@@ -1268,6 +1283,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     $core.String? commandStationId,
     $core.String? hardwareId,
     $core.String? alias,
+    BinkyNetLocalWorkerType? localWorkerType,
     $core.Iterable<BinkyNetDevice>? devices,
     $core.Iterable<BinkyNetObject>? objects,
   }) {
@@ -1286,6 +1302,9 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     }
     if (alias != null) {
       _result.alias = alias;
+    }
+    if (localWorkerType != null) {
+      _result.localWorkerType = localWorkerType;
     }
     if (devices != null) {
       _result.devices.addAll(devices);
@@ -1361,11 +1380,20 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearAlias() => clearField(5);
 
+  @$pb.TagNumber(6)
+  BinkyNetLocalWorkerType get localWorkerType => $_getN(5);
+  @$pb.TagNumber(6)
+  set localWorkerType(BinkyNetLocalWorkerType v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasLocalWorkerType() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearLocalWorkerType() => clearField(6);
+
   @$pb.TagNumber(10)
-  $core.List<BinkyNetDevice> get devices => $_getList(5);
+  $core.List<BinkyNetDevice> get devices => $_getList(6);
 
   @$pb.TagNumber(11)
-  $core.List<BinkyNetObject> get objects => $_getList(6);
+  $core.List<BinkyNetObject> get objects => $_getList(7);
 }
 
 class BinkyNetLocalWorkerRef extends $pb.GeneratedMessage {
@@ -1421,6 +1449,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceId')
     ..e<BinkyNetDeviceType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetDeviceType.MCP23008, valueOf: BinkyNetDeviceType.valueOf, enumValues: BinkyNetDeviceType.values)
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'disabled')
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors8Group', protoName: 'can_add_sensors_8_group')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors4Group', protoName: 'can_add_sensors_4_group')
     ..hasRequiredFields = false
@@ -1432,6 +1461,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     $core.String? deviceId,
     BinkyNetDeviceType? deviceType,
     $core.String? address,
+    $core.bool? disabled,
     $core.bool? canAddSensors8Group,
     $core.bool? canAddSensors4Group,
   }) {
@@ -1447,6 +1477,9 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     }
     if (address != null) {
       _result.address = address;
+    }
+    if (disabled != null) {
+      _result.disabled = disabled;
     }
     if (canAddSensors8Group != null) {
       _result.canAddSensors8Group = canAddSensors8Group;
@@ -1513,21 +1546,30 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearAddress() => clearField(4);
 
+  @$pb.TagNumber(5)
+  $core.bool get disabled => $_getBF(4);
+  @$pb.TagNumber(5)
+  set disabled($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDisabled() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDisabled() => clearField(5);
+
   @$pb.TagNumber(10)
-  $core.bool get canAddSensors8Group => $_getBF(4);
+  $core.bool get canAddSensors8Group => $_getBF(5);
   @$pb.TagNumber(10)
-  set canAddSensors8Group($core.bool v) { $_setBool(4, v); }
+  set canAddSensors8Group($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(10)
-  $core.bool hasCanAddSensors8Group() => $_has(4);
+  $core.bool hasCanAddSensors8Group() => $_has(5);
   @$pb.TagNumber(10)
   void clearCanAddSensors8Group() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get canAddSensors4Group => $_getBF(5);
+  $core.bool get canAddSensors4Group => $_getBF(6);
   @$pb.TagNumber(11)
-  set canAddSensors4Group($core.bool v) { $_setBool(5, v); }
+  set canAddSensors4Group($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(11)
-  $core.bool hasCanAddSensors4Group() => $_has(5);
+  $core.bool hasCanAddSensors4Group() => $_has(6);
   @$pb.TagNumber(11)
   void clearCanAddSensors4Group() => clearField(11);
 }
@@ -3775,6 +3817,7 @@ class Signal extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
     ..aOM<Position>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..aOM<BlockSignal>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSignal', subBuilder: BlockSignal.create)
     ..hasRequiredFields = false
   ;
 
@@ -3784,6 +3827,7 @@ class Signal extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? moduleId,
     Position? position,
+    BlockSignal? blockSignal,
   }) {
     final _result = create();
     if (id != null) {
@@ -3797,6 +3841,9 @@ class Signal extends $pb.GeneratedMessage {
     }
     if (position != null) {
       _result.position = position;
+    }
+    if (blockSignal != null) {
+      _result.blockSignal = blockSignal;
     }
     return _result;
   }
@@ -3858,6 +3905,262 @@ class Signal extends $pb.GeneratedMessage {
   void clearPosition() => clearField(4);
   @$pb.TagNumber(4)
   Position ensurePosition() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  BlockSignal get blockSignal => $_getN(4);
+  @$pb.TagNumber(5)
+  set blockSignal(BlockSignal v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasBlockSignal() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBlockSignal() => clearField(5);
+  @$pb.TagNumber(5)
+  BlockSignal ensureBlockSignal() => $_ensure(4);
+}
+
+class BlockSignal extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BlockSignal', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address1')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address2')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address3')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address4')
+    ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRedAvailable')
+    ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'redPattern', $pb.PbFieldType.O3)
+    ..aOB(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isGreenAvailable')
+    ..a<$core.int>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'greenPattern', $pb.PbFieldType.O3)
+    ..aOB(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isYellowAvailable')
+    ..a<$core.int>(31, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'yellowPattern', $pb.PbFieldType.O3)
+    ..aOB(40, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWhiteAvailable')
+    ..a<$core.int>(41, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'whitePattern', $pb.PbFieldType.O3)
+    ..aOM<BlockRef>(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'block', subBuilder: BlockRef.create)
+    ..e<BlockSide>(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockSide', $pb.PbFieldType.OE, defaultOrMaker: BlockSide.FRONT, valueOf: BlockSide.valueOf, enumValues: BlockSide.values)
+    ..e<BlockSignalType>(60, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: BlockSignalType.ENTRY, valueOf: BlockSignalType.valueOf, enumValues: BlockSignalType.values)
+    ..hasRequiredFields = false
+  ;
+
+  BlockSignal._() : super();
+  factory BlockSignal({
+    $core.String? address1,
+    $core.String? address2,
+    $core.String? address3,
+    $core.String? address4,
+    $core.bool? isRedAvailable,
+    $core.int? redPattern,
+    $core.bool? isGreenAvailable,
+    $core.int? greenPattern,
+    $core.bool? isYellowAvailable,
+    $core.int? yellowPattern,
+    $core.bool? isWhiteAvailable,
+    $core.int? whitePattern,
+    BlockRef? block,
+    BlockSide? blockSide,
+    BlockSignalType? type,
+  }) {
+    final _result = create();
+    if (address1 != null) {
+      _result.address1 = address1;
+    }
+    if (address2 != null) {
+      _result.address2 = address2;
+    }
+    if (address3 != null) {
+      _result.address3 = address3;
+    }
+    if (address4 != null) {
+      _result.address4 = address4;
+    }
+    if (isRedAvailable != null) {
+      _result.isRedAvailable = isRedAvailable;
+    }
+    if (redPattern != null) {
+      _result.redPattern = redPattern;
+    }
+    if (isGreenAvailable != null) {
+      _result.isGreenAvailable = isGreenAvailable;
+    }
+    if (greenPattern != null) {
+      _result.greenPattern = greenPattern;
+    }
+    if (isYellowAvailable != null) {
+      _result.isYellowAvailable = isYellowAvailable;
+    }
+    if (yellowPattern != null) {
+      _result.yellowPattern = yellowPattern;
+    }
+    if (isWhiteAvailable != null) {
+      _result.isWhiteAvailable = isWhiteAvailable;
+    }
+    if (whitePattern != null) {
+      _result.whitePattern = whitePattern;
+    }
+    if (block != null) {
+      _result.block = block;
+    }
+    if (blockSide != null) {
+      _result.blockSide = blockSide;
+    }
+    if (type != null) {
+      _result.type = type;
+    }
+    return _result;
+  }
+  factory BlockSignal.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BlockSignal.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BlockSignal clone() => BlockSignal()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BlockSignal copyWith(void Function(BlockSignal) updates) => super.copyWith((message) => updates(message as BlockSignal)) as BlockSignal; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BlockSignal create() => BlockSignal._();
+  BlockSignal createEmptyInstance() => create();
+  static $pb.PbList<BlockSignal> createRepeated() => $pb.PbList<BlockSignal>();
+  @$core.pragma('dart2js:noInline')
+  static BlockSignal getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BlockSignal>(create);
+  static BlockSignal? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get address1 => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set address1($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasAddress1() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAddress1() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get address2 => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set address2($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasAddress2() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAddress2() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get address3 => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set address3($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasAddress3() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAddress3() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get address4 => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set address4($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasAddress4() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAddress4() => clearField(4);
+
+  @$pb.TagNumber(10)
+  $core.bool get isRedAvailable => $_getBF(4);
+  @$pb.TagNumber(10)
+  set isRedAvailable($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasIsRedAvailable() => $_has(4);
+  @$pb.TagNumber(10)
+  void clearIsRedAvailable() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.int get redPattern => $_getIZ(5);
+  @$pb.TagNumber(11)
+  set redPattern($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasRedPattern() => $_has(5);
+  @$pb.TagNumber(11)
+  void clearRedPattern() => clearField(11);
+
+  @$pb.TagNumber(20)
+  $core.bool get isGreenAvailable => $_getBF(6);
+  @$pb.TagNumber(20)
+  set isGreenAvailable($core.bool v) { $_setBool(6, v); }
+  @$pb.TagNumber(20)
+  $core.bool hasIsGreenAvailable() => $_has(6);
+  @$pb.TagNumber(20)
+  void clearIsGreenAvailable() => clearField(20);
+
+  @$pb.TagNumber(21)
+  $core.int get greenPattern => $_getIZ(7);
+  @$pb.TagNumber(21)
+  set greenPattern($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(21)
+  $core.bool hasGreenPattern() => $_has(7);
+  @$pb.TagNumber(21)
+  void clearGreenPattern() => clearField(21);
+
+  @$pb.TagNumber(30)
+  $core.bool get isYellowAvailable => $_getBF(8);
+  @$pb.TagNumber(30)
+  set isYellowAvailable($core.bool v) { $_setBool(8, v); }
+  @$pb.TagNumber(30)
+  $core.bool hasIsYellowAvailable() => $_has(8);
+  @$pb.TagNumber(30)
+  void clearIsYellowAvailable() => clearField(30);
+
+  @$pb.TagNumber(31)
+  $core.int get yellowPattern => $_getIZ(9);
+  @$pb.TagNumber(31)
+  set yellowPattern($core.int v) { $_setSignedInt32(9, v); }
+  @$pb.TagNumber(31)
+  $core.bool hasYellowPattern() => $_has(9);
+  @$pb.TagNumber(31)
+  void clearYellowPattern() => clearField(31);
+
+  @$pb.TagNumber(40)
+  $core.bool get isWhiteAvailable => $_getBF(10);
+  @$pb.TagNumber(40)
+  set isWhiteAvailable($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(40)
+  $core.bool hasIsWhiteAvailable() => $_has(10);
+  @$pb.TagNumber(40)
+  void clearIsWhiteAvailable() => clearField(40);
+
+  @$pb.TagNumber(41)
+  $core.int get whitePattern => $_getIZ(11);
+  @$pb.TagNumber(41)
+  set whitePattern($core.int v) { $_setSignedInt32(11, v); }
+  @$pb.TagNumber(41)
+  $core.bool hasWhitePattern() => $_has(11);
+  @$pb.TagNumber(41)
+  void clearWhitePattern() => clearField(41);
+
+  @$pb.TagNumber(50)
+  BlockRef get block => $_getN(12);
+  @$pb.TagNumber(50)
+  set block(BlockRef v) { setField(50, v); }
+  @$pb.TagNumber(50)
+  $core.bool hasBlock() => $_has(12);
+  @$pb.TagNumber(50)
+  void clearBlock() => clearField(50);
+  @$pb.TagNumber(50)
+  BlockRef ensureBlock() => $_ensure(12);
+
+  @$pb.TagNumber(51)
+  BlockSide get blockSide => $_getN(13);
+  @$pb.TagNumber(51)
+  set blockSide(BlockSide v) { setField(51, v); }
+  @$pb.TagNumber(51)
+  $core.bool hasBlockSide() => $_has(13);
+  @$pb.TagNumber(51)
+  void clearBlockSide() => clearField(51);
+
+  @$pb.TagNumber(60)
+  BlockSignalType get type => $_getN(14);
+  @$pb.TagNumber(60)
+  set type(BlockSignalType v) { setField(60, v); }
+  @$pb.TagNumber(60)
+  $core.bool hasType() => $_has(14);
+  @$pb.TagNumber(60)
+  void clearType() => clearField(60);
 }
 
 class SignalRef extends $pb.GeneratedMessage {

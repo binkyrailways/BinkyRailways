@@ -76,6 +76,7 @@ type railway struct {
 	outputs                []Output
 	automaticLocController state.AutomaticLocController
 	eventLogger            state.EventLogger
+	entityTester           *entityTester
 }
 
 // New constructs and initializes state for the given railway.
@@ -93,6 +94,7 @@ func New(ctx context.Context, entity model.Railway, log zerolog.Logger,
 		Railway: r,
 	}
 	r.virtualMode = newVirtualMode(virtual, r)
+	r.entityTester = newEntityTester(log, r)
 
 	// Construct children
 	builder := &builder{Railway: r}
@@ -296,6 +298,7 @@ func (r *railway) FinalizePrepare(ctx context.Context) {
 		ix := x.(Loc)
 		finalizePrepare(ctx, ix)
 	})
+	r.entityTester.Start()
 }
 
 // Try to resolve the given block (model) into a block state.
@@ -485,7 +488,7 @@ func (r *railway) ForEachBlock(cb func(state.Block)) {
 }
 
 // Gets the number of blocks in this railway
-func (r *railway) GetBlockCount(context.Context) int {
+func (r *railway) GetBlockCount() int {
 	return len(r.blocks)
 }
 
@@ -508,7 +511,7 @@ func (r *railway) ForEachBlockGroup(cb func(state.BlockGroup)) {
 }
 
 // Gets the number of block groups in this railway
-func (r *railway) GetBlockGroupCount(context.Context) int {
+func (r *railway) GetBlockGroupCount() int {
 	return len(r.blockGroups)
 }
 
@@ -520,7 +523,7 @@ func (r *railway) ForEachCommandStation(cb func(state.CommandStation)) {
 }
 
 // Gets the number of command stations in this railway
-func (r *railway) GetCommandStationCount(context.Context) int {
+func (r *railway) GetCommandStationCount() int {
 	return len(r.commandStations)
 }
 
@@ -532,7 +535,7 @@ func (r *railway) ForEachJunction(cb func(state.Junction)) {
 }
 
 // Gets the number of junctions in this railway
-func (r *railway) GetJunctionCount(context.Context) int {
+func (r *railway) GetJunctionCount() int {
 	return len(r.junctions)
 }
 
@@ -555,7 +558,7 @@ func (r *railway) ForEachLoc(cb func(state.Loc)) {
 }
 
 // Gets the number of locomotives in this railway
-func (r *railway) GetLocCount(context.Context) int {
+func (r *railway) GetLocCount() int {
 	return len(r.locs)
 }
 
@@ -578,7 +581,7 @@ func (r *railway) ForEachRoute(cb func(state.Route)) {
 }
 
 // Gets the number of routes in this railway
-func (r *railway) GetRouteCount(context.Context) int {
+func (r *railway) GetRouteCount() int {
 	return len(r.routes)
 }
 
@@ -601,7 +604,7 @@ func (r *railway) ForEachSensor(cb func(state.Sensor)) {
 }
 
 // Gets the number of sensors in this railway
-func (r *railway) GetSensorCount(context.Context) int {
+func (r *railway) GetSensorCount() int {
 	return len(r.sensors)
 }
 
@@ -624,7 +627,7 @@ func (r *railway) ForEachSignal(cb func(state.Signal)) {
 }
 
 // Gets the number of signals in this railway
-func (r *railway) GetSignalCount(context.Context) int {
+func (r *railway) GetSignalCount() int {
 	return len(r.signals)
 }
 
@@ -647,7 +650,7 @@ func (r *railway) ForEachOutput(cb func(state.Output)) {
 }
 
 // Gets the number of outputs in this railway
-func (r *railway) GetOutputCount(context.Context) int {
+func (r *railway) GetOutputCount() int {
 	return len(r.outputs)
 }
 
@@ -662,8 +665,15 @@ func (r *railway) GetOutput(id string) (state.Output, error) {
 	return nil, nil
 }
 
+// Get the entity tester
+func (r *railway) GetEntityTester() state.EntityTester {
+	return r.entityTester
+}
+
 // Close the railway
 func (r *railway) Close(ctx context.Context) {
+	// Stop entity tester
+	r.entityTester.Close()
 	// Stop virtual mode
 	r.virtualMode.Close()
 	// Stop automatic loc controller

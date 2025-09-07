@@ -75,23 +75,34 @@ class _RailwayCanvasState extends State<_RailwayCanvas> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(
-          game: _game!,
-          loadingBuilder: (context) => const Text("Loading canvas..."),
-          errorBuilder: (context, err) => Text("Error: $err"),
-          overlayBuilderMap: {
-            RailwayGame.blockOverlay: _game!.blockOverlayBuilder,
-            RailwayGame.layersOverlay: _game!.layersOverlayBuilder,
-          },
+        ClipRect(
+          child: GameWidget(
+            game: _game!,
+            loadingBuilder: (context) => const Text("Loading canvas..."),
+            errorBuilder: (context, err) => Text("Error: $err"),
+            overlayBuilderMap: {
+              RailwayGame.blockOverlay: _game!.blockOverlayBuilder,
+              RailwayGame.layersOverlay: _game!.layersOverlayBuilder,
+            },
+          ),
         ),
         Positioned(
-          right: 8,
+          right: 8 + 32,
           top: 8,
           child: GestureDetector(
               child: const Icon(Icons.layers),
               onTapDown: (TapDownDetails details) {
                 _game!.showLayers(Vector2(
                     details.localPosition.dx, details.localPosition.dy));
+              }),
+        ),
+        Positioned(
+          right: 8,
+          top: 8,
+          child: GestureDetector(
+              child: const Icon(Icons.center_focus_strong),
+              onTapDown: (TapDownDetails details) {
+                _game!.resetCamera();
               }),
         ),
       ],

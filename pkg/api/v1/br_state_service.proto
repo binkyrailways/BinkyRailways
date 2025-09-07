@@ -36,6 +36,11 @@ service StateService {
   // Disable the run mode of the process, switching back to edit mode.
   rpc DisableRunMode(Empty) returns (RailwayState);
 
+  // Enable the entity tester.
+  rpc EnableEntityTester(Empty) returns (RailwayState);
+  // Disable the entity tester.
+  rpc DisableEntityTester(Empty) returns (RailwayState);
+
   // Fetch state changes when they happen
   rpc GetStateChanges(GetStateChangesRequest) returns (stream StateChange);
 
@@ -93,12 +98,7 @@ message EnableRunModeRequest {
 
 // Request arguments for GetStateChanges.
 message GetStateChangesRequest {
-  // If set, all state objects will be send to the stream before state changes
-  // are passed.
-  bool bootstrap = 1;
-  // If set, only all state objects will be send to the stream, after which the
-  // stream is closed.
-  bool bootstrap_only = 2;
+  map<string, string> hashes = 1;
 }
 
 // State change of a single object.
@@ -114,6 +114,9 @@ message StateChange {
   RouteState route = 8;
   SensorState sensor = 9;
   SignalState signal = 10;
+
+  string id = 100;
+  string hash = 101;
 }
 
 message SetPowerRequest {

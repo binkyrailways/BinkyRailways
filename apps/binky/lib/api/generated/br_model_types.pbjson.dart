@@ -30,6 +30,17 @@ const VehicleType$json = const {
 
 /// Descriptor for `VehicleType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List vehicleTypeDescriptor = $convert.base64Decode('CgtWZWhpY2xlVHlwZRIHCgNMT0MQABIHCgNDQVIQAQ==');
+@$core.Deprecated('Use binkyNetLocalWorkerTypeDescriptor instead')
+const BinkyNetLocalWorkerType$json = const {
+  '1': 'BinkyNetLocalWorkerType',
+  '2': const [
+    const {'1': 'LINUX', '2': 0},
+    const {'1': 'ESPHOME', '2': 1},
+  ],
+};
+
+/// Descriptor for `BinkyNetLocalWorkerType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List binkyNetLocalWorkerTypeDescriptor = $convert.base64Decode('ChdCaW5reU5ldExvY2FsV29ya2VyVHlwZRIJCgVMSU5VWBAAEgsKB0VTUEhPTUUQAQ==');
 @$core.Deprecated('Use binkyNetDeviceTypeDescriptor instead')
 const BinkyNetDeviceType$json = const {
   '1': 'BinkyNetDeviceType',
@@ -40,11 +51,13 @@ const BinkyNetDeviceType$json = const {
     const {'1': 'PCF8574', '2': 3},
     const {'1': 'ADS1115', '2': 4},
     const {'1': 'BINKYCARSENSOR', '2': 5},
+    const {'1': 'MQTT_GPIO', '2': 6},
+    const {'1': 'MQTT_SERVO', '2': 7},
   ],
 };
 
 /// Descriptor for `BinkyNetDeviceType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAMSCwoHQURTMTExNRAEEhIKDkJJTktZQ0FSU0VOU09SEAU=');
+final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAMSCwoHQURTMTExNRAEEhIKDkJJTktZQ0FSU0VOU09SEAUSDQoJTVFUVF9HUElPEAYSDgoKTVFUVF9TRVJWTxAH');
 @$core.Deprecated('Use binkyNetObjectTypeDescriptor instead')
 const BinkyNetObjectType$json = const {
   '1': 'BinkyNetObjectType',
@@ -132,6 +145,17 @@ const Shape$json = const {
 
 /// Descriptor for `Shape`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List shapeDescriptor = $convert.base64Decode('CgVTaGFwZRIKCgZDSVJDTEUQABIMCghUUklBTkdMRRABEgoKBlNRVUFSRRACEgsKB0RJQU1PTkQQAw==');
+@$core.Deprecated('Use blockSignalTypeDescriptor instead')
+const BlockSignalType$json = const {
+  '1': 'BlockSignalType',
+  '2': const [
+    const {'1': 'ENTRY', '2': 0},
+    const {'1': 'EXIT', '2': 1},
+  ],
+};
+
+/// Descriptor for `BlockSignalType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List blockSignalTypeDescriptor = $convert.base64Decode('Cg9CbG9ja1NpZ25hbFR5cGUSCQoFRU5UUlkQABIICgRFWElUEAE=');
 @$core.Deprecated('Use emptyDescriptor instead')
 const Empty$json = const {
   '1': 'Empty',
@@ -313,11 +337,12 @@ const BinkyNetCommandStation$json = const {
     const {'1': 'required_worker_version', '3': 3, '4': 1, '5': 9, '10': 'requiredWorkerVersion'},
     const {'1': 'local_workers', '3': 4, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetLocalWorkerRef', '10': 'localWorkers'},
     const {'1': 'exclude_unused_objects', '3': 5, '4': 1, '5': 8, '10': 'excludeUnusedObjects'},
+    const {'1': 'domain', '3': 6, '4': 1, '5': 9, '10': 'domain'},
   ],
 };
 
 /// Descriptor for `BinkyNetCommandStation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetCommandStationDescriptor = $convert.base64Decode('ChZCaW5reU5ldENvbW1hbmRTdGF0aW9uEh8KC3NlcnZlcl9ob3N0GAEgASgJUgpzZXJ2ZXJIb3N0EhsKCWdycGNfcG9ydBgCIAEoBVIIZ3JwY1BvcnQSNgoXcmVxdWlyZWRfd29ya2VyX3ZlcnNpb24YAyABKAlSFXJlcXVpcmVkV29ya2VyVmVyc2lvbhJNCg1sb2NhbF93b3JrZXJzGAQgAygLMiguYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldExvY2FsV29ya2VyUmVmUgxsb2NhbFdvcmtlcnMSNAoWZXhjbHVkZV91bnVzZWRfb2JqZWN0cxgFIAEoCFIUZXhjbHVkZVVudXNlZE9iamVjdHM=');
+final $typed_data.Uint8List binkyNetCommandStationDescriptor = $convert.base64Decode('ChZCaW5reU5ldENvbW1hbmRTdGF0aW9uEh8KC3NlcnZlcl9ob3N0GAEgASgJUgpzZXJ2ZXJIb3N0EhsKCWdycGNfcG9ydBgCIAEoBVIIZ3JwY1BvcnQSNgoXcmVxdWlyZWRfd29ya2VyX3ZlcnNpb24YAyABKAlSFXJlcXVpcmVkV29ya2VyVmVyc2lvbhJNCg1sb2NhbF93b3JrZXJzGAQgAygLMiguYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldExvY2FsV29ya2VyUmVmUgxsb2NhbFdvcmtlcnMSNAoWZXhjbHVkZV91bnVzZWRfb2JqZWN0cxgFIAEoCFIUZXhjbHVkZVVudXNlZE9iamVjdHMSFgoGZG9tYWluGAYgASgJUgZkb21haW4=');
 @$core.Deprecated('Use binkyNetLocalWorkerDescriptor instead')
 const BinkyNetLocalWorker$json = const {
   '1': 'BinkyNetLocalWorker',
@@ -327,13 +352,14 @@ const BinkyNetLocalWorker$json = const {
     const {'1': 'command_station_id', '3': 3, '4': 1, '5': 9, '10': 'commandStationId'},
     const {'1': 'hardware_id', '3': 4, '4': 1, '5': 9, '10': 'hardwareId'},
     const {'1': 'alias', '3': 5, '4': 1, '5': 9, '10': 'alias'},
+    const {'1': 'local_worker_type', '3': 6, '4': 1, '5': 14, '6': '.binkyrailways.v1.BinkyNetLocalWorkerType', '10': 'localWorkerType'},
     const {'1': 'devices', '3': 10, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetDevice', '10': 'devices'},
     const {'1': 'objects', '3': 11, '4': 3, '5': 11, '6': '.binkyrailways.v1.BinkyNetObject', '10': 'objects'},
   ],
 };
 
 /// Descriptor for `BinkyNetLocalWorker`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetLocalWorkerDescriptor = $convert.base64Decode('ChNCaW5reU5ldExvY2FsV29ya2VyEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SLAoSY29tbWFuZF9zdGF0aW9uX2lkGAMgASgJUhBjb21tYW5kU3RhdGlvbklkEh8KC2hhcmR3YXJlX2lkGAQgASgJUgpoYXJkd2FyZUlkEhQKBWFsaWFzGAUgASgJUgVhbGlhcxI6CgdkZXZpY2VzGAogAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldERldmljZVIHZGV2aWNlcxI6CgdvYmplY3RzGAsgAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldE9iamVjdFIHb2JqZWN0cw==');
+final $typed_data.Uint8List binkyNetLocalWorkerDescriptor = $convert.base64Decode('ChNCaW5reU5ldExvY2FsV29ya2VyEg4KAmlkGAEgASgJUgJpZBIgCgtkZXNjcmlwdGlvbhgCIAEoCVILZGVzY3JpcHRpb24SLAoSY29tbWFuZF9zdGF0aW9uX2lkGAMgASgJUhBjb21tYW5kU3RhdGlvbklkEh8KC2hhcmR3YXJlX2lkGAQgASgJUgpoYXJkd2FyZUlkEhQKBWFsaWFzGAUgASgJUgVhbGlhcxJVChFsb2NhbF93b3JrZXJfdHlwZRgGIAEoDjIpLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXRMb2NhbFdvcmtlclR5cGVSD2xvY2FsV29ya2VyVHlwZRI6CgdkZXZpY2VzGAogAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldERldmljZVIHZGV2aWNlcxI6CgdvYmplY3RzGAsgAygLMiAuYmlua3lyYWlsd2F5cy52MS5CaW5reU5ldE9iamVjdFIHb2JqZWN0cw==');
 @$core.Deprecated('Use binkyNetLocalWorkerRefDescriptor instead')
 const BinkyNetLocalWorkerRef$json = const {
   '1': 'BinkyNetLocalWorkerRef',
@@ -352,13 +378,14 @@ const BinkyNetDevice$json = const {
     const {'1': 'device_id', '3': 2, '4': 1, '5': 9, '10': 'deviceId'},
     const {'1': 'device_type', '3': 3, '4': 1, '5': 14, '6': '.binkyrailways.v1.BinkyNetDeviceType', '10': 'deviceType'},
     const {'1': 'address', '3': 4, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'disabled', '3': 5, '4': 1, '5': 8, '10': 'disabled'},
     const {'1': 'can_add_sensors_8_group', '3': 10, '4': 1, '5': 8, '10': 'canAddSensors8Group'},
     const {'1': 'can_add_sensors_4_group', '3': 11, '4': 1, '5': 8, '10': 'canAddSensors4Group'},
   ],
 };
 
 /// Descriptor for `BinkyNetDevice`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List binkyNetDeviceDescriptor = $convert.base64Decode('Cg5CaW5reU5ldERldmljZRIOCgJpZBgBIAEoCVICaWQSGwoJZGV2aWNlX2lkGAIgASgJUghkZXZpY2VJZBJFCgtkZXZpY2VfdHlwZRgDIAEoDjIkLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXREZXZpY2VUeXBlUgpkZXZpY2VUeXBlEhgKB2FkZHJlc3MYBCABKAlSB2FkZHJlc3MSNAoXY2FuX2FkZF9zZW5zb3JzXzhfZ3JvdXAYCiABKAhSE2NhbkFkZFNlbnNvcnM4R3JvdXASNAoXY2FuX2FkZF9zZW5zb3JzXzRfZ3JvdXAYCyABKAhSE2NhbkFkZFNlbnNvcnM0R3JvdXA=');
+final $typed_data.Uint8List binkyNetDeviceDescriptor = $convert.base64Decode('Cg5CaW5reU5ldERldmljZRIOCgJpZBgBIAEoCVICaWQSGwoJZGV2aWNlX2lkGAIgASgJUghkZXZpY2VJZBJFCgtkZXZpY2VfdHlwZRgDIAEoDjIkLmJpbmt5cmFpbHdheXMudjEuQmlua3lOZXREZXZpY2VUeXBlUgpkZXZpY2VUeXBlEhgKB2FkZHJlc3MYBCABKAlSB2FkZHJlc3MSGgoIZGlzYWJsZWQYBSABKAhSCGRpc2FibGVkEjQKF2Nhbl9hZGRfc2Vuc29yc184X2dyb3VwGAogASgIUhNjYW5BZGRTZW5zb3JzOEdyb3VwEjQKF2Nhbl9hZGRfc2Vuc29yc180X2dyb3VwGAsgASgIUhNjYW5BZGRTZW5zb3JzNEdyb3Vw');
 @$core.Deprecated('Use binkyNetObjectDescriptor instead')
 const BinkyNetObject$json = const {
   '1': 'BinkyNetObject',
@@ -727,11 +754,36 @@ const Signal$json = const {
     const {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 3, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 4, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
+    const {'1': 'block_signal', '3': 5, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockSignal', '10': 'blockSignal'},
   ],
 };
 
 /// Descriptor for `Signal`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List signalDescriptor = $convert.base64Decode('CgZTaWduYWwSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAyABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAQgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24=');
+final $typed_data.Uint8List signalDescriptor = $convert.base64Decode('CgZTaWduYWwSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAyABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAQgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24SQAoMYmxvY2tfc2lnbmFsGAUgASgLMh0uYmlua3lyYWlsd2F5cy52MS5CbG9ja1NpZ25hbFILYmxvY2tTaWduYWw=');
+@$core.Deprecated('Use blockSignalDescriptor instead')
+const BlockSignal$json = const {
+  '1': 'BlockSignal',
+  '2': const [
+    const {'1': 'address1', '3': 1, '4': 1, '5': 9, '10': 'address1'},
+    const {'1': 'address2', '3': 2, '4': 1, '5': 9, '10': 'address2'},
+    const {'1': 'address3', '3': 3, '4': 1, '5': 9, '10': 'address3'},
+    const {'1': 'address4', '3': 4, '4': 1, '5': 9, '10': 'address4'},
+    const {'1': 'is_red_available', '3': 10, '4': 1, '5': 8, '10': 'isRedAvailable'},
+    const {'1': 'red_pattern', '3': 11, '4': 1, '5': 5, '10': 'redPattern'},
+    const {'1': 'is_green_available', '3': 20, '4': 1, '5': 8, '10': 'isGreenAvailable'},
+    const {'1': 'green_pattern', '3': 21, '4': 1, '5': 5, '10': 'greenPattern'},
+    const {'1': 'is_yellow_available', '3': 30, '4': 1, '5': 8, '10': 'isYellowAvailable'},
+    const {'1': 'yellow_pattern', '3': 31, '4': 1, '5': 5, '10': 'yellowPattern'},
+    const {'1': 'is_white_available', '3': 40, '4': 1, '5': 8, '10': 'isWhiteAvailable'},
+    const {'1': 'white_pattern', '3': 41, '4': 1, '5': 5, '10': 'whitePattern'},
+    const {'1': 'block', '3': 50, '4': 1, '5': 11, '6': '.binkyrailways.v1.BlockRef', '10': 'block'},
+    const {'1': 'block_side', '3': 51, '4': 1, '5': 14, '6': '.binkyrailways.v1.BlockSide', '10': 'blockSide'},
+    const {'1': 'type', '3': 60, '4': 1, '5': 14, '6': '.binkyrailways.v1.BlockSignalType', '10': 'type'},
+  ],
+};
+
+/// Descriptor for `BlockSignal`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List blockSignalDescriptor = $convert.base64Decode('CgtCbG9ja1NpZ25hbBIaCghhZGRyZXNzMRgBIAEoCVIIYWRkcmVzczESGgoIYWRkcmVzczIYAiABKAlSCGFkZHJlc3MyEhoKCGFkZHJlc3MzGAMgASgJUghhZGRyZXNzMxIaCghhZGRyZXNzNBgEIAEoCVIIYWRkcmVzczQSKAoQaXNfcmVkX2F2YWlsYWJsZRgKIAEoCFIOaXNSZWRBdmFpbGFibGUSHwoLcmVkX3BhdHRlcm4YCyABKAVSCnJlZFBhdHRlcm4SLAoSaXNfZ3JlZW5fYXZhaWxhYmxlGBQgASgIUhBpc0dyZWVuQXZhaWxhYmxlEiMKDWdyZWVuX3BhdHRlcm4YFSABKAVSDGdyZWVuUGF0dGVybhIuChNpc195ZWxsb3dfYXZhaWxhYmxlGB4gASgIUhFpc1llbGxvd0F2YWlsYWJsZRIlCg55ZWxsb3dfcGF0dGVybhgfIAEoBVINeWVsbG93UGF0dGVybhIsChJpc193aGl0ZV9hdmFpbGFibGUYKCABKAhSEGlzV2hpdGVBdmFpbGFibGUSIwoNd2hpdGVfcGF0dGVybhgpIAEoBVIMd2hpdGVQYXR0ZXJuEjAKBWJsb2NrGDIgASgLMhouYmlua3lyYWlsd2F5cy52MS5CbG9ja1JlZlIFYmxvY2sSOgoKYmxvY2tfc2lkZRgzIAEoDjIbLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTaWRlUglibG9ja1NpZGUSNQoEdHlwZRg8IAEoDjIhLmJpbmt5cmFpbHdheXMudjEuQmxvY2tTaWduYWxUeXBlUgR0eXBl');
 @$core.Deprecated('Use signalRefDescriptor instead')
 const SignalRef$json = const {
   '1': 'SignalRef',

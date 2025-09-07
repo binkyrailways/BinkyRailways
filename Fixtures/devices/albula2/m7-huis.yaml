@@ -1,0 +1,42 @@
+substitutions:
+  name: m7-huis
+
+packages:
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
+
+esphome:
+  on_boot:
+    then:
+      - switch.turn_on: light1
+      - delay: 2s
+      - switch.turn_on: light2
+      - delay: 2s
+      - switch.turn_on: light3
+      - delay: 2s
+      - switch.turn_off: light1
+      - switch.turn_off: light2
+      - switch.turn_off: light3
+
+switch:
+  # light 1
+  - platform: gpio
+    id: light1
+    name: light1
+    pin:
+      number: D5
+      inverted: true
+  # light 2
+  - platform: gpio
+    id: light2
+    name: light2
+    pin:
+      number: D6
+      inverted: true
+  # light 3
+  - platform: gpio
+    id: light3
+    name: light3
+    pin:
+      number: D7
+      inverted: true

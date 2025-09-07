@@ -29,7 +29,7 @@ type LocPredicate func(context.Context, state.Loc) bool
 
 type locs interface {
 	// Get total possible number of locs
-	GetLocCount(context.Context) int
+	GetLocCount() int
 	// Iterate all locs
 	ForEachLoc(func(state.Loc))
 }
@@ -43,7 +43,7 @@ func (p LocPredicate) And(other LocPredicate) LocPredicate {
 
 // Get all locs that match the given predicate
 func (p LocPredicate) GetLocs(ctx context.Context, allRoutes locs) []state.Loc {
-	result := make([]state.Loc, 0, allRoutes.GetLocCount(ctx))
+	result := make([]state.Loc, 0, allRoutes.GetLocCount())
 	allRoutes.ForEachLoc(func(r state.Loc) {
 		if p(ctx, r) {
 			result = append(result, r)

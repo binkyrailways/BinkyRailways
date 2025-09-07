@@ -82,7 +82,7 @@ func newFutureAlternativeSet(ctx context.Context, live *liveRouteAvailabilityTes
 			l.GetCurrentBlock().GetActual(ctx) != nil
 	})
 	fas := &futureAlternativeSet{
-		minGenerations: live.Railway.GetBlockCount(ctx),
+		minGenerations: live.Railway.GetBlockCount(),
 		testLoc:        loc,
 		autoLocs:       autoLocs.GetLocs(ctx, live.Railway),
 	}
@@ -134,7 +134,7 @@ type futureAlternative struct {
 	generation int
 }
 
-/// Increment the generation and move all locs.
+// / Increment the generation and move all locs.
 // Returns: stationReached, atLeastOneLocHasMoved
 func (fa *futureAlternative) Increment(ctx context.Context, genSet *futureAlternativeSet, locs []state.Loc, testLoc state.Loc) (bool, bool) {
 	fa.generation++

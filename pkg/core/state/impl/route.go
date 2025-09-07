@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -149,17 +150,16 @@ func (r *route) TryPrepareForUse(ctx context.Context, ui state.UserInterface, ps
 		return merr
 	}
 
-	// Construct critical section
-	if err := r.csr.Build(ctx, r, rw); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 // Wrap up the preparation fase.
 func (r *route) FinalizePrepare(ctx context.Context) {
-	// TODO
+	// Construct critical section
+	rw := r.GetRailwayImpl()
+	r.csr.Build(r, rw)
+
+	fmt.Printf("Critical section routes of %s:\n%s\n\n", r.String(), r.csr.String())
 }
 
 // Speed of locs when going this route.
@@ -178,22 +178,22 @@ func (r *route) GetChooseProbability(context.Context) int {
 }
 
 // Gets the source block.
-func (r *route) GetFrom(context.Context) state.Block {
+func (r *route) GetFrom() state.Block {
 	return r.from
 }
 
 // Side of the <see cref="From"/> block at which this route will leave that block.
-func (r *route) GetFromBlockSide(context.Context) model.BlockSide {
+func (r *route) GetFromBlockSide() model.BlockSide {
 	return r.getRoute().GetFromBlockSide()
 }
 
 // Gets the destination block.
-func (r *route) GetTo(context.Context) state.Block {
+func (r *route) GetTo() state.Block {
 	return r.to
 }
 
 // Side of the <see cref="To"/> block at which this route will enter that block.
-func (r *route) GetToBlockSide(context.Context) model.BlockSide {
+func (r *route) GetToBlockSide() model.BlockSide {
 	return r.getRoute().GetToBlockSide()
 }
 
@@ -373,4 +373,11 @@ func (r *route) FireEnteringDestinationTrigger(ctx context.Context, loc state.Lo
 // Fire the actions attached to the destination reached trigger.
 func (r *route) FireDestinationReachedTrigger(ctx context.Context, loc state.Loc) {
 	// TODO
+}
+
+// Return a human readable representation of this route
+func (r *route) String() string {
+	fbs := r.GetFromBlockSide()
+	tbs := r.GetToBlockSide()
+	return fmt.Sprintf("%s of %s -> %s of %s", fbs, r.GetFrom().GetDescription(), tbs, r.GetTo().GetDescription())
 }

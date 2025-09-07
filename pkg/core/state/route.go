@@ -28,6 +28,9 @@ type Route interface {
 	ModuleEntity
 	Lockable
 
+	// Return a human readable representation of this route
+	String() string
+
 	// Is this equal to other?
 	Equals(other Route) bool
 
@@ -46,16 +49,16 @@ type Route interface {
 	GetChooseProbability(context.Context) int
 
 	// Gets the source block.
-	GetFrom(context.Context) Block
+	GetFrom() Block
 
 	// Side of the <see cref="From"/> block at which this route will leave that block.
-	GetFromBlockSide(context.Context) model.BlockSide
+	GetFromBlockSide() model.BlockSide
 
 	// Gets the destination block.
-	GetTo(context.Context) Block
+	GetTo() Block
 
 	// Side of the <see cref="To"/> block at which this route will enter that block.
-	GetToBlockSide(context.Context) model.BlockSide
+	GetToBlockSide() model.BlockSide
 
 	// Does this route require any switches to be in the non-straight state?
 	GetHasNonStraightSwitches(context.Context) bool

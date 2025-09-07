@@ -39,5 +39,7 @@ func (dst *CommandStationState) FromState(ctx context.Context, src state.Command
 	sort.Slice(dst.HardwareModules, func(i, j int) bool {
 		return strings.Compare(dst.HardwareModules[i].GetId(), dst.HardwareModules[j].GetId()) < 0
 	})
+	dst.PowerActual = src.GetPower().GetActual(ctx)
+	dst.PowerRequested = src.GetPower().GetRequested(ctx)
 	return nil
 }

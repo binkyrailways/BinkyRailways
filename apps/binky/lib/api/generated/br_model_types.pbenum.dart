@@ -39,6 +39,21 @@ class VehicleType extends $pb.ProtobufEnum {
   const VehicleType._($core.int v, $core.String n) : super(v, n);
 }
 
+class BinkyNetLocalWorkerType extends $pb.ProtobufEnum {
+  static const BinkyNetLocalWorkerType LINUX = BinkyNetLocalWorkerType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'LINUX');
+  static const BinkyNetLocalWorkerType ESPHOME = BinkyNetLocalWorkerType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ESPHOME');
+
+  static const $core.List<BinkyNetLocalWorkerType> values = <BinkyNetLocalWorkerType> [
+    LINUX,
+    ESPHOME,
+  ];
+
+  static final $core.Map<$core.int, BinkyNetLocalWorkerType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BinkyNetLocalWorkerType? valueOf($core.int value) => _byValue[value];
+
+  const BinkyNetLocalWorkerType._($core.int v, $core.String n) : super(v, n);
+}
+
 class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType MCP23008 = BinkyNetDeviceType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MCP23008');
   static const BinkyNetDeviceType MCP23017 = BinkyNetDeviceType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MCP23017');
@@ -46,6 +61,8 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType PCF8574 = BinkyNetDeviceType._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PCF8574');
   static const BinkyNetDeviceType ADS1115 = BinkyNetDeviceType._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ADS1115');
   static const BinkyNetDeviceType BINKYCARSENSOR = BinkyNetDeviceType._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BINKYCARSENSOR');
+  static const BinkyNetDeviceType MQTT_GPIO = BinkyNetDeviceType._(6, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MQTT_GPIO');
+  static const BinkyNetDeviceType MQTT_SERVO = BinkyNetDeviceType._(7, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MQTT_SERVO');
 
   static const $core.List<BinkyNetDeviceType> values = <BinkyNetDeviceType> [
     MCP23008,
@@ -54,6 +71,8 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
     PCF8574,
     ADS1115,
     BINKYCARSENSOR,
+    MQTT_GPIO,
+    MQTT_SERVO,
   ];
 
   static final $core.Map<$core.int, BinkyNetDeviceType> _byValue = $pb.ProtobufEnum.initByValue(values);
@@ -185,5 +204,20 @@ class Shape extends $pb.ProtobufEnum {
   static Shape? valueOf($core.int value) => _byValue[value];
 
   const Shape._($core.int v, $core.String n) : super(v, n);
+}
+
+class BlockSignalType extends $pb.ProtobufEnum {
+  static const BlockSignalType ENTRY = BlockSignalType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ENTRY');
+  static const BlockSignalType EXIT = BlockSignalType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'EXIT');
+
+  static const $core.List<BlockSignalType> values = <BlockSignalType> [
+    ENTRY,
+    EXIT,
+  ];
+
+  static final $core.Map<$core.int, BlockSignalType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static BlockSignalType? valueOf($core.int value) => _byValue[value];
+
+  const BlockSignalType._($core.int v, $core.String n) : super(v, n);
 }
 

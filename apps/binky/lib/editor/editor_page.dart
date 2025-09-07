@@ -605,6 +605,22 @@ class _EditorPageState extends State<EditorPage> {
           ];
         }
         return [];
+      case EntityType.signal:
+      case EntityType.signals:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.signal,
+              label: "Add signal",
+              onTap: () async {
+                final added = await model.addBlockSignal(moduleId);
+                editorCtx.select(EntitySelector.signal(added));
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.binkynetlocalworker:
       case EntityType.binkynetlocalworkers:
         final csId = selector.idOf(EntityType.commandstation);

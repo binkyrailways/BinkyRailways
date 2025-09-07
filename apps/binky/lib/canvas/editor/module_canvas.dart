@@ -43,21 +43,32 @@ class ModuleCanvas extends StatelessWidget {
         viewSettings: viewSettings);
     return Stack(
       children: [
-        GameWidget(
-          autofocus: true,
-          game: game,
-          overlayBuilderMap: {
-            ModuleGame.layersOverlay: game.layersOverlayBuilder,
-          },
+        ClipRect(
+          child: GameWidget(
+            //autofocus: true,
+            game: game,
+            overlayBuilderMap: {
+              ModuleGame.layersOverlay: game.layersOverlayBuilder,
+            },
+          ),
         ),
         Positioned(
-          right: 8,
+          right: 8 + 32,
           top: 8,
           child: GestureDetector(
               child: const Icon(Icons.layers),
               onTapDown: (TapDownDetails details) {
                 game.showLayers(Vector2(
                     details.localPosition.dx, details.localPosition.dy));
+              }),
+        ),
+        Positioned(
+          right: 8,
+          top: 8,
+          child: GestureDetector(
+              child: const Icon(Icons.center_focus_strong),
+              onTapDown: (TapDownDetails details) {
+                game.resetCamera();
               }),
         ),
       ],

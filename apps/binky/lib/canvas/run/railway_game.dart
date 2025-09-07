@@ -17,7 +17,6 @@
 
 import 'package:binky/api/generated/br_state_types.pb.dart';
 import 'package:binky/canvas/layers_overlay.dart';
-import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'dart:math';
@@ -27,9 +26,10 @@ import '../../models.dart';
 
 import './module_component.dart';
 import '../view_settings.dart';
+import '../base_game.dart';
 import 'block_overlay.dart';
 
-class RailwayGame extends FlameGame with HasHoverables, HasTappables {
+class RailwayGame extends BaseGame {
   final ModelModel modelModel;
   final StateModel stateModel;
   final ViewSettings viewSettings;

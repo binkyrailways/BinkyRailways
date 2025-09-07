@@ -27,7 +27,7 @@ import (
 // Gets a selection of all possible routes from the given block.
 func getAllPossibleRoutesFromBlock(fromBlock state.Block) state.RoutePredicate {
 	return func(ctx context.Context, r state.Route) bool {
-		return r.GetFrom(ctx) == fromBlock
+		return r.GetFrom() == fromBlock
 	}
 }
 
@@ -41,7 +41,7 @@ func getAllPossibleNonClosedRoutesFromBlock(fromBlock state.Block) state.RoutePr
 // Gets a selection of all possible routes from the given block + side.
 func getAllPossibleRoutesFromBlockWithSide(fromBlock state.Block, fromBlockSide model.BlockSide) state.RoutePredicate {
 	return getAllPossibleRoutesFromBlock(fromBlock).And(func(ctx context.Context, r state.Route) bool {
-		return r.GetFromBlockSide(ctx) == fromBlockSide
+		return r.GetFromBlockSide() == fromBlockSide
 	})
 }
 

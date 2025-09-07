@@ -136,6 +136,14 @@ class ModelModel extends ChangeNotifier {
   mapi.Railway? getCachedRailway() => _railway;
 
   Future<mapi.RailwayEntry> getRailwayEntry() async {
+    final cached = _railwayEntry;
+    if (cached != null) {
+      return cached;
+    }
+    return await updateRailwayEntry();
+  }
+
+  Future<mapi.RailwayEntry> updateRailwayEntry() async {
     var modelClient = mapi.APIClient().modelClient();
     final entry = await modelClient.getRailwayEntry(mapi.Empty());
     if (_railwayEntry?.name != entry.name) {
@@ -890,6 +898,17 @@ class ModelModel extends ChangeNotifier {
     _signals[id] = result;
     notifyListeners();
     return result;
+  }
+
+  // Add a new block signal
+  Future<mapi.Signal> addBlockSignal(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addBlockSignal(mapi.IDRequest(id: moduleId));
+    _signals[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
   }
 
   // Update the given Signal

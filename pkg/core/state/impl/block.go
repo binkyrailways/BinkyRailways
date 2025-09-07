@@ -126,16 +126,16 @@ func (b *block) TryPrepareForUse(ctx context.Context, ui state.UserInterface, _ 
 // Wrap up the preparation fase.
 func (b *block) FinalizePrepare(ctx context.Context) {
 	hasRoutesToBack := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
-		return r.GetToBlockSide(ctx) == model.BlockSideBack && r.GetTo(ctx) == b
+		return r.GetToBlockSide() == model.BlockSideBack && r.GetTo() == b
 	}).AnyRoutes(ctx, b.railway)
 	hasRoutesToFront := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
-		return r.GetToBlockSide(ctx) == model.BlockSideFront && r.GetTo(ctx) == b
+		return r.GetToBlockSide() == model.BlockSideFront && r.GetTo() == b
 	}).AnyRoutes(ctx, b.railway)
 	hasRoutesFromBack := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
-		return r.GetFromBlockSide(ctx) == model.BlockSideBack && r.GetFrom(ctx) == b
+		return r.GetFromBlockSide() == model.BlockSideBack && r.GetFrom() == b
 	}).AnyRoutes(ctx, b.railway)
 	hasRoutesFromFront := state.RoutePredicate(func(ctx context.Context, r state.Route) bool {
-		return r.GetFromBlockSide(ctx) == model.BlockSideFront && r.GetFrom(ctx) == b
+		return r.GetFromBlockSide() == model.BlockSideFront && r.GetFrom() == b
 	}).AnyRoutes(ctx, b.railway)
 
 	b.deadEnd = (hasRoutesToBack && !hasRoutesFromFront) ||
@@ -222,7 +222,7 @@ func (b *block) GetState(ctx context.Context) state.BlockState {
 			return state.BlockStateOccupied
 		}
 		currentRoute := loc.GetCurrentRoute().GetActual(ctx)
-		if (currentRoute != nil) && (currentRoute.GetRoute().GetTo(ctx) == b) {
+		if (currentRoute != nil) && (currentRoute.GetRoute().GetTo() == b) {
 			if loc.GetAutomaticState().GetActual(ctx) == state.EnteringDestination {
 				// Loc is entering this block
 				return state.BlockStateEntering

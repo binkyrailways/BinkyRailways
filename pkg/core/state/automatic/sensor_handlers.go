@@ -147,7 +147,7 @@ func (alc *automaticLocController) onEnterSensorActivated(ctx context.Context, l
 	log.Trace().Msg("OnEnterSensorActivated")
 
 	// Notify route selector
-	loc.GetRouteSelector(ctx).BlockEntered(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute().GetTo(ctx))
+	loc.GetRouteSelector(ctx).BlockEntered(ctx, loc, loc.GetCurrentRoute().GetActual(ctx).GetRoute().GetTo())
 
 	// Should we wait in the destination block?
 	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
@@ -221,7 +221,7 @@ func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, l
 	log.Trace().Msg("OnReachSensorActivated")
 
 	route := loc.GetCurrentRoute().GetActual(ctx)
-	currentBlock := route.GetRoute().GetTo(ctx)
+	currentBlock := route.GetRoute().GetTo()
 
 	// Notify route selector
 	loc.GetRouteSelector(ctx).BlockReached(ctx, loc, currentBlock)
@@ -236,7 +236,7 @@ func (alc *automaticLocController) onReachSensorActivated(ctx context.Context, l
 
 	// Release the current route, except for the current block.
 	loc.GetCurrentBlock().SetActual(ctx, currentBlock)
-	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide(ctx))
+	loc.GetCurrentBlockEnterSide().SetActual(ctx, route.GetRoute().GetToBlockSide())
 	// Test that current block is locked
 	state.AssertLockedBy(ctx, currentBlock, loc)
 	// Unlock the route
@@ -270,7 +270,7 @@ func (alc *automaticLocController) onReachedDestination(ctx context.Context, loc
 
 	// Delay if we should wait
 	route := loc.GetCurrentRoute().GetActual(ctx)
-	currentBlock := route.GetRoute().GetTo(ctx)
+	currentBlock := route.GetRoute().GetTo()
 	if loc.GetWaitAfterCurrentRoute().GetActual(ctx) {
 		delta := maxInt(0, currentBlock.GetMaximumWaitTime(ctx)-currentBlock.GetMinimumWaitTime(ctx))
 		secondsToWait := currentBlock.GetMinimumWaitTime(ctx)

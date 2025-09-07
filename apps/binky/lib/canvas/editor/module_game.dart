@@ -19,22 +19,20 @@ import 'package:binky/canvas/layers_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../models.dart';
 import '../../editor/editor_context.dart';
+import '../base_game.dart';
 import '../view_settings.dart';
 import 'module_component.dart';
 
-class ModuleGame extends FlameGame
-    with HasDraggables, HasHoverables, HasTappables {
+class ModuleGame extends BaseGame {
   final ModelModel modelModel;
   final String moduleId;
   final EditorContext editorCtx;
   final ViewSettings viewSettings;
-  bool _shiftPressed = false;
 
   Vector2? _overlayPosition;
 
@@ -49,23 +47,7 @@ class ModuleGame extends FlameGame
   @override
   Color backgroundColor() => Colors.white;
 
-  @override
-  void onAttach() {
-    RawKeyboard.instance.addListener(_handleKeyEvent);
-    super.onAttach();
-  }
-
-  @override
-  void onDetach() {
-    RawKeyboard.instance.removeListener(_handleKeyEvent);
-    super.onDetach();
-  }
-
-  void _handleKeyEvent(RawKeyEvent event) {
-    _shiftPressed = event.isShiftPressed;
-  }
-
-  bool shiftPressed() => _shiftPressed;
+  bool shiftPressed() => HardwareKeyboard.instance.isShiftPressed;
 
   // Load the game components
   @override

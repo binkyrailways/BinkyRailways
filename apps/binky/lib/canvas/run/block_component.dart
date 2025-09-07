@@ -35,9 +35,9 @@ class BlockComponent extends common.BlockComponent {
       : super(viewSettings, model: state.last.model);
 
   @override
-  bool onTapUp(TapUpInfo event) {
+  bool onTapUp(TapUpInfo info) {
     if (onVisibleLayer()) {
-      game.showBlock(event.eventPosition.widget, state.last);
+      game.showBlock(info.eventPosition.widget, state.last);
       return false;
     }
     return true;

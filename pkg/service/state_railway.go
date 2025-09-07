@@ -84,6 +84,30 @@ func (s *service) DisableRunMode(ctx context.Context, req *api.Empty) (*api.Rail
 	return s.GetRailwayState(ctx, &api.Empty{})
 }
 
+// Enable the entity tester.
+func (s *service) EnableEntityTester(ctx context.Context, req *api.Empty) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetEntityTester().GetEnabled().SetRequested(ctx, true); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
+}
+
+// Disable the entity tester.
+func (s *service) DisableEntityTester(ctx context.Context, req *api.Empty) (*api.RailwayState, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	if err := rwState.GetEntityTester().GetEnabled().SetRequested(ctx, false); err != nil {
+		return nil, err
+	}
+	return s.GetRailwayState(ctx, nil)
+}
+
 // Set the requested power state
 func (s *service) SetPower(ctx context.Context, req *api.SetPowerRequest) (*api.RailwayState, error) {
 	rwState, err := s.getRailwayState()

@@ -18,7 +18,8 @@
 package impl
 
 import (
-	"context"
+	"fmt"
+	"strings"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -30,10 +31,10 @@ type blockAndSide struct {
 }
 
 // Initialize a new blockAndSide from given route.
-func newBlockAndSide(ctx context.Context, rt state.Route) blockAndSide {
+func newBlockAndSide(rt state.Route) blockAndSide {
 	return blockAndSide{
-		Block:     rt.GetTo(ctx),
-		EnterSide: rt.GetToBlockSide(ctx),
+		Block:     rt.GetTo(),
+		EnterSide: rt.GetToBlockSide(),
 	}
 }
 
@@ -43,7 +44,21 @@ func (bs blockAndSide) Equals(other blockAndSide) bool {
 		bs.EnterSide == other.EnterSide
 }
 
+// Return human readable representation
+func (bs blockAndSide) String() string {
+	return fmt.Sprintf("%s of %s", bs.EnterSide, bs.Block.GetDescription())
+}
+
 type blockAndSides []blockAndSide
+
+// Return human readable representation
+func (bss blockAndSides) String() string {
+	result := make([]string, 0, len(bss))
+	for _, bs := range bss {
+		result = append(result, bs.String())
+	}
+	return strings.Join(result, ", ")
+}
 
 // Contains returns true if the list contains an entry
 // with given values.
@@ -57,20 +72,20 @@ func (list blockAndSides) Contains(entry blockAndSide) bool {
 }
 
 // Build the set of critical routes from the given route.
-func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state.Railway) ([]state.Route, error) {
+func buildCriticalSectionRoutes(route state.Route, rw state.Railway) []state.Route {
 	var blocks blockAndSides
-	iterator := newBlockAndSide(ctx, route)
+	iterator := newBlockAndSide(route)
+
 	for {
 		// Are there any routes to the opposite side of the iterator block?
-		if !anyRoutesTo(ctx, rw, iterator.Block, iterator.EnterSide.Invert()) {
+		if !anyRoutesTo(rw, iterator.Block, iterator.EnterSide.Invert()) {
 			// No routes leading into the opposite side of the to block.
 			// No further critical section
 			break
-
 		}
 		if len(blocks) > 0 {
 			// Are there more then 'exits' from the iterator
-			iteratorExits := getNextBlocks(ctx, rw, iterator.Block, iterator.EnterSide)
+			iteratorExits := getNextBlocks(rw, iterator.Block, iterator.EnterSide)
 			if len(iteratorExits) > 1 {
 				// Multiple routes in the opposite direction possible
 				break
@@ -80,7 +95,7 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 		blocks = append(blocks, iterator)
 
 		// Find the blocks where we can go to from the iterator.
-		nextBlocks := getNextBlocks(ctx, rw, iterator.Block, iterator.EnterSide.Invert())
+		nextBlocks := getNextBlocks(rw, iterator.Block, iterator.EnterSide.Invert())
 		if len(nextBlocks) != 1 {
 			// We've found multiple or no routes, stop now
 			break
@@ -99,43 +114,41 @@ func buildCriticalSectionRoutes(ctx context.Context, route state.Route, rw state
 		targetBlock := b.Block
 		targetSide := b.EnterSide.Invert()
 		rw.ForEachRoute(func(r state.Route) {
-			if r.GetTo(ctx) == targetBlock &&
-				r.GetToBlockSide(ctx) == targetSide {
+			if r.GetTo() == targetBlock &&
+				r.GetToBlockSide() == targetSide {
 				routes = append(routes, r)
 			}
 		})
 	}
 
 	// Look for the reverse of this route (if any)
-	if reverse := getReverseRoute(ctx, rw, route); reverse != nil {
+	if reverse := getReverseRoute(rw, route); reverse != nil {
 		routes = append(routes, reverse)
 	}
 
-	return routes, nil
+	return routes
 }
 
 // Are there any routes leading to the given block that enter the to block
 // at the given to side?
-func anyRoutesTo(ctx context.Context, rw state.Railway, toBlock state.Block, toSide model.BlockSide) bool {
-	result := false
+func anyRoutesTo(rw state.Railway, toBlock state.Block, toSide model.BlockSide) bool {
+	count := 0
 	rw.ForEachRoute(func(r state.Route) {
-		if !result {
-			if r.GetTo(ctx) == toBlock &&
-				r.GetToBlockSide(ctx) == toSide {
-				result = true
-			}
+		if r.GetTo() == toBlock &&
+			r.GetToBlockSide() == toSide {
+			count++
 		}
 	})
-	return result
+	return count > 0
 }
 
 // Create a list of blocks reachable from the given block.
-func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block, fromSide model.BlockSide) []blockAndSide {
-	result := make([]blockAndSide, 0, rw.GetRouteCount(ctx))
+func getNextBlocks(rw state.Railway, fromBlock state.Block, fromSide model.BlockSide) []blockAndSide {
+	result := make([]blockAndSide, 0, rw.GetRouteCount())
 	rw.ForEachRoute(func(r state.Route) {
-		if r.GetFrom(ctx) == fromBlock &&
-			r.GetFromBlockSide(ctx) == fromSide {
-			result = append(result, newBlockAndSide(ctx, r))
+		if r.GetFrom() == fromBlock &&
+			r.GetFromBlockSide() == fromSide {
+			result = append(result, newBlockAndSide(r))
 		}
 	})
 	return result
@@ -143,12 +156,12 @@ func getNextBlocks(ctx context.Context, rw state.Railway, fromBlock state.Block,
 
 // Find the route that is the reverse of the given route.
 // Returns nil if not found.
-func getReverseRoute(ctx context.Context, rw state.Railway, route state.Route) state.Route {
+func getReverseRoute(rw state.Railway, route state.Route) state.Route {
 	// Get reversed from-to
-	from := route.GetTo(ctx)
-	to := route.GetFrom(ctx)
-	fromBlockSide := route.GetToBlockSide(ctx)
-	toBlockSide := route.GetFromBlockSide(ctx)
+	from := route.GetTo()
+	to := route.GetFrom()
+	fromBlockSide := route.GetToBlockSide()
+	toBlockSide := route.GetFromBlockSide()
 
 	if (from == nil) || (to == nil) {
 		return nil
@@ -157,10 +170,10 @@ func getReverseRoute(ctx context.Context, rw state.Railway, route state.Route) s
 	var result state.Route
 	rw.ForEachRoute(func(r state.Route) {
 		if result == nil {
-			if r.GetTo(ctx) == to &&
-				r.GetFrom(ctx) == from &&
-				r.GetToBlockSide(ctx) == toBlockSide &&
-				r.GetFromBlockSide(ctx) == fromBlockSide {
+			if r.GetTo() == to &&
+				r.GetFrom() == from &&
+				r.GetToBlockSide() == toBlockSide &&
+				r.GetFromBlockSide() == fromBlockSide {
 				result = r
 			}
 		}

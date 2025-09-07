@@ -21,9 +21,11 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/binkynet/bidib"
 	"github.com/binkynet/bidib/host"
+	"github.com/binkynet/bidib/messages"
 	serialtx "github.com/binkynet/bidib/transport/serial"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -34,8 +36,9 @@ import (
 type bidibCommandStation struct {
 	commandStation
 
-	host  host.Host
-	power boolProperty
+	host                  host.Host
+	power                 boolProperty
+	dynStateChangedCancel context.CancelFunc
 }
 
 // Create a new entity
@@ -74,6 +77,7 @@ func (cs *bidibCommandStation) TryPrepareForUse(context.Context, state.UserInter
 		return fmt.Errorf("failed to initialize bidib host: %w", err)
 	}
 	cs.host = h
+	cs.dynStateChangedCancel = h.RegisterDynStateChanged(cs.onDynStateChanged)
 	log.Debug().Msg("Prepared bidib host")
 
 	return nil
@@ -226,6 +230,10 @@ func (cs *bidibCommandStation) SendSwitchDirection(context.Context, state.Switch
 // Close the commandstation
 func (cs *bidibCommandStation) Close(ctx context.Context) {
 	cs.sendPower(ctx, false)
+	if cs.dynStateChangedCancel != nil {
+		cs.dynStateChangedCancel()
+		cs.dynStateChangedCancel = nil
+	}
 	if h := cs.host; h != nil {
 		cs.host = nil
 		h.Close()
@@ -248,4 +256,19 @@ func (cs *bidibCommandStation) ForEachHardwareModule(func(state.HardwareModule))
 func (cs *bidibCommandStation) ResetHardwareModule(ctx context.Context, id string) error {
 	// No modules
 	return nil
+}
+
+func (cs *bidibCommandStation) onDynStateChanged(m messages.BmDynState) {
+	addr := strconv.Itoa(int(m.DccAddress))
+	if m.DynNum == 3 /* battery level */ {
+		cs.GetRailway().Exclusive(context.Background(), time.Second, "onDynStateChanged", func(ctx context.Context) error {
+			cs.ForEachLoc(func(l state.Loc) {
+				if l.GetAddress(ctx).Value == addr {
+					l.GetBatteryLevel().SetActual(ctx, int(m.Value))
+					l.HasBatteryLevel().SetActual(ctx, true)
+				}
+			})
+			return nil
+		})
+	}
 }

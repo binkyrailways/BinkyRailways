@@ -31,6 +31,7 @@ func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNe
 	dst.Description = src.GetDescription()
 	dst.CommandStationId = src.GetCommandStation().GetID()
 	dst.HardwareId = src.GetHardwareID()
+	dst.LocalWorkerType.FromModel(ctx, src.GetLocalWorkerType())
 	dst.Alias = src.GetAlias()
 	src.GetDevices().ForEach(func(src model.BinkyNetDevice) {
 		bd := &BinkyNetDevice{}
@@ -60,6 +61,11 @@ func (src *BinkyNetLocalWorker) ToModel(ctx context.Context, dst model.BinkyNetL
 	var err error
 	multierr.AppendInto(&err, dst.SetDescription(src.GetDescription()))
 	multierr.AppendInto(&err, dst.SetHardwareID(ctx, src.GetHardwareId()))
+	if lwt, err := src.GetLocalWorkerType().ToModel(ctx); err != nil {
+		return err
+	} else {
+		multierr.AppendInto(&err, dst.SetLocalWorkerType(ctx, lwt))
+	}
 	multierr.AppendInto(&err, dst.SetAlias(ctx, src.GetAlias()))
 	// Updates objects first, because device renames can lead to object changes
 	for i, src := range src.GetObjects() {

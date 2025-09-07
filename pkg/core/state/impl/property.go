@@ -38,7 +38,7 @@ type comparableProperty[T comparable] struct {
 }
 
 // Configure the values of the property
-func (p *comparableProperty[T]) Configure(name string, subject state.Entity, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
+func (p *comparableProperty[T]) Configure(name string, subject state.Subject, validate func(T) T, dispatcher state.EventDispatcher, exclusive util.Exclusive) {
 	p.comparableActualProperty.Configure(p, name, subject, validate, dispatcher, exclusive)
 }
 

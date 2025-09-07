@@ -68,6 +68,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
       TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _serverHostController = TextEditingController();
+  final TextEditingController _domainController = TextEditingController();
   final TextEditingController _grpcPortController = TextEditingController();
   final TextEditingController _serialPortController = TextEditingController();
   final TextEditingController _requiredVersionController =
@@ -82,6 +83,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
     if (cs.hasBinkynetCommandStation()) {
       final bnCs = cs.binkynetCommandStation;
       _serverHostController.text = bnCs.serverHost;
+      _domainController.text = bnCs.domain;
       _grpcPortController.text = bnCs.grpcPort.toString();
       _requiredVersionController.text = bnCs.requiredWorkerVersion;
     }
@@ -102,6 +104,7 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
     _addressSpacesController.dispose();
     _descriptionController.dispose();
     _serverHostController.dispose();
+    _domainController.dispose();
     _grpcPortController.dispose();
     _serialPortController.dispose();
     _requiredVersionController.dispose();
@@ -143,6 +146,13 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
           onLostFocus: (value) async {
             await _update((update) =>
                 {update.binkynetCommandStation.grpcPort = int.parse(value)});
+          }));
+      children.add(SettingsTextField(
+          controller: _domainController,
+          label: "Domain",
+          onLostFocus: (value) async {
+            await _update(
+                (update) => {update.binkynetCommandStation.domain = value});
           }));
       children.add(SettingsTextField(
           controller: _requiredVersionController,
