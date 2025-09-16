@@ -1,0 +1,43 @@
+substitutions:
+  name: m4-sein
+
+packages:
+  networking: !include ../packages/networking.yaml
+  device: !include ../packages/device-d1mini.yaml
+
+esphome:
+  on_boot:
+    then:
+      - switch.turn_on: pin1 # Red light 1
+      - delay: 2s
+      - switch.turn_on: pin2 # Yellow light 1
+      - delay: 2s
+      - switch.turn_on: pin3 # Green light 1
+      - delay: 2s
+      - switch.turn_off: pin2 # Yellow light 1
+      - switch.turn_off: pin3 # Green light 1
+
+switch:
+  # red 1
+  # topic: /binky/m4-sein/switch/pin1/[state|command]
+  - platform: gpio
+    id: pin1
+    name: pin1
+    pin:
+      number: D7
+      inverted: true
+  # yellow 1
+  - platform: gpio
+    id: pin2
+    name: pin2
+    pin:
+      number: D6
+      inverted: true
+  # green 1
+  - platform: gpio
+    id: pin3
+    name: pin3
+    pin:
+      number: D5
+      inverted: true
+
