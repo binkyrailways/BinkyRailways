@@ -111,7 +111,8 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			}
 		})
 		// Store config
-		if err := file.Save(baseFolder, "lw-"+lwModel.GetHardwareID()); err != nil {
+		fname := fmt.Sprintf("lw-%s-%s", lwModel.GetAlias(), lwModel.GetHardwareID())
+		if err := file.Save(baseFolder, fname); err != nil {
 			result = errors.Join(result, err)
 		}
 	})
