@@ -616,16 +616,6 @@ switch:
       pin:
         number: D7
         inverted: true
-    - platform: gpio
-      id: led1
-      name: led1
-      state_topic: /binky/m1/led1/sensor/state
-      command_topic: /binky/m1/led1/sensor/command
-      pin:
-        number: "1"
-        pcf8574: iotiny1
-        mode:
-            output: true
 i2c: {}
 mcp23008:
     - id: ios1
