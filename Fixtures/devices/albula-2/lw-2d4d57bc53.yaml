@@ -1002,7 +1002,7 @@ switch:
 i2c: {}
 pca9685:
     - id: pwm1
-      address: "0x70"
+      address: "0x40"
       frequency: 54
 mcp23008:
     - id: io1s

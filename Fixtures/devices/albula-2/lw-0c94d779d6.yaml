@@ -597,26 +597,6 @@ button:
     - platform: restart
       id: reboot
       name: reboot
-number:
-    - platform: template
-      id: carsensorservo1
-      name: carsensorservo1
-      command_topic: /binky/m1/carsensorservo1/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo1
-            level: !lambda return x / 100.0;
-servo:
-    - id: servo_carsensorservo1
-      output: servo_output_carsensorservo1
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
 switch:
     - platform: gpio
       id: led_red

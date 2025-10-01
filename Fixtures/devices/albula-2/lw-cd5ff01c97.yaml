@@ -519,61 +519,6 @@ number:
         - servo.write:
             id: servo_sw3
             level: !lambda return x / 100.0;
-    - platform: template
-      id: carsensorservo8
-      name: carsensorservo8
-      command_topic: /binky/m6/carsensorservo8/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo8
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: carsensorservo7
-      name: carsensorservo7
-      command_topic: /binky/m6/carsensorservo7/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo7
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: carsensorservo6
-      name: carsensorservo6
-      command_topic: /binky/m6/carsensorservo6/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo6
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: carsensorservo5
-      name: carsensorservo5
-      command_topic: /binky/m6/carsensorservo5/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo5
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: carsensorservo1
-      name: carsensorservo1
-      command_topic: /binky/m6/carsensorservo1/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_carsensorservo1
-            level: !lambda return x / 100.0;
 output:
     - platform: pca9685
       id: servo_output_sw1
@@ -609,41 +554,6 @@ servo:
       min_level: 0%
       max_level: 100%
       idle_level: 50%
-    - id: servo_carsensorservo8
-      output: servo_output_carsensorservo8
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_carsensorservo7
-      output: servo_output_carsensorservo7
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_carsensorservo6
-      output: servo_output_carsensorservo6
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_carsensorservo5
-      output: servo_output_carsensorservo5
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_carsensorservo1
-      output: servo_output_carsensorservo1
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
 switch:
     - platform: gpio
       id: led_red
@@ -666,7 +576,7 @@ switch:
 i2c: {}
 pca9685:
     - id: pwm1
-      address: "0x70"
+      address: "0x40"
       frequency: 54
 mcp23008:
     - id: ios1
