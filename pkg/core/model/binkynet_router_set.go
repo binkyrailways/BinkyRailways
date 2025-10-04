@@ -24,6 +24,8 @@ type BinkyNetRouterSet interface {
 
 	// Get an entry by ID.
 	Get(id string) (BinkyNetRouter, bool)
+	// Get an entry by index.
+	GetAt(index int) (BinkyNetRouter, bool)
 
 	// Invoke the callback for each entry.
 	ForEach(cb func(BinkyNetRouter))

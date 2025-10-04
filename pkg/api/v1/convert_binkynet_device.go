@@ -34,6 +34,10 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 	dst.DeviceType.FromModel(ctx, src.GetDeviceType())
 	dst.Address = src.GetAddress()
 	dst.Disabled = src.GetIsDisabled()
+	dst.Router = nil
+	if r := src.GetRouter(); r != nil {
+		dst.Router = &BinkyNetRouterRef{Id: r.GetID()}
+	}
 	switch src.GetDeviceType() {
 	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
 		dst.CanAddSensors_4Group = false
@@ -63,5 +67,14 @@ func (src *BinkyNetDevice) ToModel(ctx context.Context, dst model.BinkyNetDevice
 	}
 	multierr.AppendInto(&err, dst.SetAddress(ctx, src.GetAddress()))
 	multierr.AppendInto(&err, dst.SetIsDisabled(ctx, src.GetDisabled()))
+	if id := src.GetRouter().GetId(); id != "" {
+		router, ok := dst.GetLocalWorker().GetRouters().Get(id)
+		if !ok {
+			return InvalidArgument("Unexpected router with id '%s'", id)
+		}
+		multierr.AppendInto(&err, dst.SetRouter(ctx, router))
+	} else {
+		multierr.AppendInto(&err, dst.SetRouter(ctx, nil))
+	}
 	return err
 }

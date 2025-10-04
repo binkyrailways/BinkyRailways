@@ -70,6 +70,14 @@ func (l *binkyNetRouterSet) Get(id string) (model.BinkyNetRouter, bool) {
 	return nil, false
 }
 
+// Get an entry by index.
+func (l *binkyNetRouterSet) GetAt(index int) (model.BinkyNetRouter, bool) {
+	if index >= 0 && index < len(l.Items) {
+		return l.Items[index], true
+	}
+	return nil, false
+}
+
 // Invoke the callback for each entry.
 func (l *binkyNetRouterSet) ForEach(cb func(model.BinkyNetRouter)) {
 	for _, d := range l.Items {

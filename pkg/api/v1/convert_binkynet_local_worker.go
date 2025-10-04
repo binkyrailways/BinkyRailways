@@ -67,6 +67,13 @@ func (src *BinkyNetLocalWorker) ToModel(ctx context.Context, dst model.BinkyNetL
 		multierr.AppendInto(&err, dst.SetLocalWorkerType(ctx, lwt))
 	}
 	multierr.AppendInto(&err, dst.SetAlias(ctx, src.GetAlias()))
+	for i, src := range src.GetRouters() {
+		dst, ok := dst.GetRouters().GetAt(i)
+		if !ok {
+			return InvalidArgument("Unexpected router at index %d", i)
+		}
+		multierr.AppendInto(&err, src.ToModel(ctx, dst))
+	}
 	// Updates objects first, because device renames can lead to object changes
 	for i, src := range src.GetObjects() {
 		dst, ok := dst.GetObjects().GetAt(i)

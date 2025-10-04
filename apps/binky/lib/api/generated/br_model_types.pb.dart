@@ -1273,6 +1273,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     ..e<BinkyNetLocalWorkerType>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkerType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetLocalWorkerType.LINUX, valueOf: BinkyNetLocalWorkerType.valueOf, enumValues: BinkyNetLocalWorkerType.values)
     ..pc<BinkyNetDevice>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: BinkyNetDevice.create)
     ..pc<BinkyNetObject>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: BinkyNetObject.create)
+    ..pc<BinkyNetRouter>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routers', $pb.PbFieldType.PM, subBuilder: BinkyNetRouter.create)
     ..hasRequiredFields = false
   ;
 
@@ -1286,6 +1287,7 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     BinkyNetLocalWorkerType? localWorkerType,
     $core.Iterable<BinkyNetDevice>? devices,
     $core.Iterable<BinkyNetObject>? objects,
+    $core.Iterable<BinkyNetRouter>? routers,
   }) {
     final _result = create();
     if (id != null) {
@@ -1311,6 +1313,9 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
     }
     if (objects != null) {
       _result.objects.addAll(objects);
+    }
+    if (routers != null) {
+      _result.routers.addAll(routers);
     }
     return _result;
   }
@@ -1394,6 +1399,9 @@ class BinkyNetLocalWorker extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(11)
   $core.List<BinkyNetObject> get objects => $_getList(7);
+
+  @$pb.TagNumber(12)
+  $core.List<BinkyNetRouter> get routers => $_getList(8);
 }
 
 class BinkyNetLocalWorkerRef extends $pb.GeneratedMessage {
@@ -1443,6 +1451,114 @@ class BinkyNetLocalWorkerRef extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 }
 
+class BinkyNetRouter extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetRouter', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..hasRequiredFields = false
+  ;
+
+  BinkyNetRouter._() : super();
+  factory BinkyNetRouter({
+    $core.String? id,
+    $core.String? description,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    return _result;
+  }
+  factory BinkyNetRouter.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinkyNetRouter.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinkyNetRouter clone() => BinkyNetRouter()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinkyNetRouter copyWith(void Function(BinkyNetRouter) updates) => super.copyWith((message) => updates(message as BinkyNetRouter)) as BinkyNetRouter; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetRouter create() => BinkyNetRouter._();
+  BinkyNetRouter createEmptyInstance() => create();
+  static $pb.PbList<BinkyNetRouter> createRepeated() => $pb.PbList<BinkyNetRouter>();
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetRouter getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetRouter>(create);
+  static BinkyNetRouter? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+}
+
+class BinkyNetRouterRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetRouterRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  BinkyNetRouterRef._() : super();
+  factory BinkyNetRouterRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory BinkyNetRouterRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BinkyNetRouterRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BinkyNetRouterRef clone() => BinkyNetRouterRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BinkyNetRouterRef copyWith(void Function(BinkyNetRouterRef) updates) => super.copyWith((message) => updates(message as BinkyNetRouterRef)) as BinkyNetRouterRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetRouterRef create() => BinkyNetRouterRef._();
+  BinkyNetRouterRef createEmptyInstance() => create();
+  static $pb.PbList<BinkyNetRouterRef> createRepeated() => $pb.PbList<BinkyNetRouterRef>();
+  @$core.pragma('dart2js:noInline')
+  static BinkyNetRouterRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BinkyNetRouterRef>(create);
+  static BinkyNetRouterRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
 class BinkyNetDevice extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BinkyNetDevice', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
@@ -1450,6 +1566,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     ..e<BinkyNetDeviceType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetDeviceType.MCP23008, valueOf: BinkyNetDeviceType.valueOf, enumValues: BinkyNetDeviceType.values)
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'disabled')
+    ..aOM<BinkyNetRouterRef>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'router', subBuilder: BinkyNetRouterRef.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors8Group', protoName: 'can_add_sensors_8_group')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'canAddSensors4Group', protoName: 'can_add_sensors_4_group')
     ..hasRequiredFields = false
@@ -1462,6 +1579,7 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     BinkyNetDeviceType? deviceType,
     $core.String? address,
     $core.bool? disabled,
+    BinkyNetRouterRef? router,
     $core.bool? canAddSensors8Group,
     $core.bool? canAddSensors4Group,
   }) {
@@ -1480,6 +1598,9 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
     }
     if (disabled != null) {
       _result.disabled = disabled;
+    }
+    if (router != null) {
+      _result.router = router;
     }
     if (canAddSensors8Group != null) {
       _result.canAddSensors8Group = canAddSensors8Group;
@@ -1555,21 +1676,32 @@ class BinkyNetDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearDisabled() => clearField(5);
 
+  @$pb.TagNumber(6)
+  BinkyNetRouterRef get router => $_getN(5);
+  @$pb.TagNumber(6)
+  set router(BinkyNetRouterRef v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasRouter() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearRouter() => clearField(6);
+  @$pb.TagNumber(6)
+  BinkyNetRouterRef ensureRouter() => $_ensure(5);
+
   @$pb.TagNumber(10)
-  $core.bool get canAddSensors8Group => $_getBF(5);
+  $core.bool get canAddSensors8Group => $_getBF(6);
   @$pb.TagNumber(10)
-  set canAddSensors8Group($core.bool v) { $_setBool(5, v); }
+  set canAddSensors8Group($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(10)
-  $core.bool hasCanAddSensors8Group() => $_has(5);
+  $core.bool hasCanAddSensors8Group() => $_has(6);
   @$pb.TagNumber(10)
   void clearCanAddSensors8Group() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.bool get canAddSensors4Group => $_getBF(6);
+  $core.bool get canAddSensors4Group => $_getBF(7);
   @$pb.TagNumber(11)
-  set canAddSensors4Group($core.bool v) { $_setBool(6, v); }
+  set canAddSensors4Group($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(11)
-  $core.bool hasCanAddSensors4Group() => $_has(6);
+  $core.bool hasCanAddSensors4Group() => $_has(7);
   @$pb.TagNumber(11)
   void clearCanAddSensors4Group() => clearField(11);
 }

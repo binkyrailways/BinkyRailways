@@ -259,6 +259,8 @@ message BinkyNetLocalWorker {
   repeated BinkyNetDevice devices = 10;
   // Set of real world objects controlled by the local worker
   repeated BinkyNetObject objects = 11;
+  // Set of hardware devices that route commands & state to/from devices belonging to this local worker.
+  repeated BinkyNetRouter routers = 12;
 }
 
 // Type of local worker
@@ -274,6 +276,19 @@ message BinkyNetLocalWorkerRef {
   string id = 1;
 }
 
+// Configuration of a binky router
+message BinkyNetRouter {
+  // ID of the router
+  string id = 1;
+  // Description of the router
+  string description = 2;
+}
+
+message BinkyNetRouterRef {
+  // ID of the router
+  string id = 1;
+}
+
 message BinkyNetDevice {
   // ID of this object
   string id = 1;
@@ -285,6 +300,8 @@ message BinkyNetDevice {
   string address = 4;
   // Set if the device is disabled
   bool disabled = 5;
+  // Router used to route commands & state to/from this device
+  BinkyNetRouterRef router = 6;
   // If set, this device supports adding an object group of type SENSORS_8
   bool can_add_sensors_8_group = 10;
   // If set, this device supports adding an object group of type SENSORS_4
