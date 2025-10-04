@@ -70,6 +70,12 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 		return err
 	}
 
+	// Collect router names
+	var routerNames []string
+	vlw.bnlw.GetRouters().ForEach(func(router model.BinkyNetRouter) {
+		routerNames = append(routerNames, router.GetDescription())
+	})
+
 	// Prepare service
 	svc, err := service.NewService(service.Config{
 		HostID:         vlw.bnlw.GetHardwareID(),
@@ -78,6 +84,7 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 		GRPCPort:       vlw.basePort + 2,
 		SSHPort:        vlw.basePort + 3,
 		IsVirtual:      true,
+		RouterNames:    routerNames,
 		VirtualServiceInfo: &api.ServiceInfo{
 			ApiAddress: vlw.serverHost,
 			ApiPort:    int32(vlw.serverGrpcPort),
