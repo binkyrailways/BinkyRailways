@@ -25,16 +25,9 @@ import (
 )
 
 // Create a switch for the connection with given name of the given object and add it to the given DeviceFile.
-func (f *DeviceFile) createSwitch(
+func (fs *DeviceFileSet) createSwitch(
 	objModel model.BinkyNetObject, namePrefix string,
 	connName api.ConnectionName, pinsIndex int) (*Switch, error) {
-
-	// Create basic switch
-	sw := Switch{}
-	sw.Id = name(namePrefix + string(objModel.GetObjectID()))
-	sw.Name = name(namePrefix + string(objModel.GetObjectID()))
-	sw.StateTopic = objModel.GetMQTTStateTopic(connName)
-	sw.CommandTopic = objModel.GetMQTTCommandTopic(connName)
 
 	// Fetch connection & pin
 	conn, err := getConnection(objModel, connName)
@@ -45,25 +38,29 @@ func (f *DeviceFile) createSwitch(
 	if err != nil {
 		return nil, err
 	}
+
+	// Find platform
+	platform, err := fs.getPlatform(pin)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create basic switch
+	sw := Switch{}
+	sw.Id = name(namePrefix + string(objModel.GetObjectID()))
+	sw.Name = name(namePrefix + string(objModel.GetObjectID()))
+	sw.StateTopic = objModel.GetMQTTStateTopic(connName)
+	sw.CommandTopic = objModel.GetMQTTCommandTopic(connName)
 	sw.Pin = &Pin{
 		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
 	if err := sw.Pin.applyInvert(conn); err != nil {
 		return nil, err
 	}
-	if err := sw.applyPlatformConfiguration(f, objModel, pin); err != nil {
-		return nil, err
-	}
+	platform.ConfigureSwitch(&sw)
+
+	// Add to file
+	f := platform.deviceFile
 	f.Switches = append(f.Switches, sw)
 	return &f.Switches[len(f.Switches)-1], nil
-}
-
-// Apply platform specific configuration on this switch
-func (sw *Switch) applyPlatformConfiguration(f *DeviceFile, objModel model.BinkyNetObject, pin model.BinkyNetDevicePin) error {
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.ConfigureSwitch(sw)
-	}
-	return nil
 }

@@ -24,9 +24,8 @@ import (
 )
 
 // Create a number for the connection with given name of the given object and add it to the given DeviceFile.
-func (f *DeviceFile) createNumber(
-	objModel model.BinkyNetObject, namePrefix string,
-	connName api.ConnectionName, pinsIndex int) (*Number, error) {
+func (platform *devicePlatform) createNumber(
+	objModel model.BinkyNetObject, namePrefix string) (*Number, error) {
 
 	// Create basic sensor
 	number := Number{}
@@ -38,6 +37,9 @@ func (f *DeviceFile) createNumber(
 	number.Step = ptr.To(1)
 	//number.StateTopic = objModel.GetMQTTStateTopic(api.ConnectionNameServo)
 	number.CommandTopic = objModel.GetMQTTCommandTopic(api.ConnectionNameServo)
+
+	// Add to file
+	f := platform.deviceFile
 	f.Numbers = append(f.Numbers, number)
 
 	return &f.Numbers[len(f.Numbers)-1], nil

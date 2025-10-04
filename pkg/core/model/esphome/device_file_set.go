@@ -18,12 +18,23 @@
 package esphome
 
 import (
+	"fmt"
+
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
-// Add an object of type BinaryOutput
-func addBinaryOutput(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
-	_, err := fs.createSwitch(objModel, "", api.ConnectionNameOutput, 0)
-	return err
+// Set of DeviceFile's
+type DeviceFileSet struct {
+	deviceFiles map[string]*DeviceFile
+	platforms   map[api.DeviceID]*devicePlatform
+}
+
+// Gets the platform for the device of the given pin.
+func (fs *DeviceFileSet) getPlatform(pin model.BinkyNetDevicePin) (*devicePlatform, error) {
+	if platform, ok := fs.platforms[pin.GetDeviceID()]; !ok {
+		return nil, fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID())
+	} else {
+		return platform, nil
+	}
 }

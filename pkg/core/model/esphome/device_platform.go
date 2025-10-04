@@ -20,6 +20,7 @@ package esphome
 // Helper to map binkynet device to esphome platform
 type devicePlatform struct {
 	Platform        string
+	deviceFile      *DeviceFile
 	configurePin    func(*Pin)
 	configureOutput func(*Output)
 }

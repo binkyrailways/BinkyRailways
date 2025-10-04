@@ -23,7 +23,7 @@ import (
 )
 
 // Add an object of type BinarySensor
-func addBinarySensor(f *DeviceFile, objModel model.BinkyNetObject) error {
-	_, err := f.createBinarySensor(objModel, "", api.ConnectionNameSensor, 0)
+func addBinarySensor(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
+	_, _, err := fs.createBinarySensor(objModel, "", api.ConnectionNameSensor, 0)
 	return err
 }

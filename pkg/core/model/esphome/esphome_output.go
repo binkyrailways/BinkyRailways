@@ -25,9 +25,25 @@ import (
 )
 
 // Create an output for the connection with given name of the given object and add it to the given DeviceFile.
-func (f *DeviceFile) createOutput(
+func (fs *DeviceFileSet) createOutput(
 	objModel model.BinkyNetObject, namePrefix string,
-	connName api.ConnectionName, pinsIndex int) (*Output, error) {
+	connName api.ConnectionName, pinsIndex int) (*Output, *devicePlatform, error) {
+
+	// Get connection & pin
+	conn, err := getConnection(objModel, connName)
+	if err != nil {
+		return nil, nil, err
+	}
+	pin, err := getPin(objModel, conn, pinsIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Find platform
+	platform, err := fs.getPlatform(pin)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	// Create basic output
 	output := Output{}
@@ -35,30 +51,12 @@ func (f *DeviceFile) createOutput(
 	// Note that Output's have no name
 	output.StateTopic = objModel.GetMQTTStateTopic(connName)
 	output.CommandTopic = objModel.GetMQTTCommandTopic(connName)
-
-	conn, err := getConnection(objModel, connName)
-	if err != nil {
-		return nil, err
-	}
-	pin, err := getPin(objModel, conn, pinsIndex)
-	if err != nil {
-		return nil, err
-	}
 	output.Channel = fmt.Sprintf("%d", pin.GetIndex()-1)
-	if err := output.applyPlatformConfiguration(f, objModel, pin); err != nil {
-		return nil, err
-	}
+	platform.ConfigureOutput(&output)
+
+	// Add to file
+	f := platform.deviceFile
 	f.Outputs = append(f.Outputs, output)
 
-	return &f.Outputs[len(f.Outputs)-1], nil
-}
-
-// Apply platform specific configuration on this switch
-func (output *Output) applyPlatformConfiguration(f *DeviceFile, objModel model.BinkyNetObject, pin model.BinkyNetDevicePin) error {
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.configureOutput(output)
-	}
-	return nil
+	return &f.Outputs[len(f.Outputs)-1], platform, nil
 }

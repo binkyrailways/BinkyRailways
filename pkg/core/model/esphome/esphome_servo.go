@@ -18,14 +18,12 @@
 package esphome
 
 import (
-	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
 // Create a servo for the connection with given name of the given object and add it to the given DeviceFile.
-func (f *DeviceFile) createServo(
-	objModel model.BinkyNetObject, namePrefix string,
-	connName api.ConnectionName, pinsIndex int) (*Servo, error) {
+func (platform *devicePlatform) createServo(
+	objModel model.BinkyNetObject, namePrefix string) (*Servo, error) {
 
 	// Create basic servo
 	servo := Servo{}
@@ -36,6 +34,9 @@ func (f *DeviceFile) createServo(
 	servo.MinLevel = "0%"
 	servo.MaxLevel = "100%"
 	servo.IdleLevel = "50%"
+
+	// Add to file
+	f := platform.deviceFile
 	f.Servos = append(f.Servos, servo)
 
 	return &f.Servos[len(f.Servos)-1], nil
