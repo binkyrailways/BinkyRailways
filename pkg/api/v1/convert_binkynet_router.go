@@ -27,15 +27,14 @@ import (
 
 // FromModel converts a model BinkyNetRouter to an API BinkyNetRouter
 func (dst *BinkyNetRouter) FromModel(ctx context.Context, src model.BinkyNetRouter) error {
-	dst.Id = JoinParentChildID(src.GetLocalWorker().GetID(), src.GetID())
+	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
 	return nil
 }
 
 // ToModel converts an API BinkyNetRouter to a model BinkyNetRouter
 func (src *BinkyNetRouter) ToModel(ctx context.Context, dst model.BinkyNetRouter) error {
-	expectedID := JoinParentChildID(dst.GetLocalWorker().GetID(), dst.GetID())
-	if src.GetId() != expectedID {
+	if src.GetId() != dst.GetID() {
 		return InvalidArgument("Unexpected binkynet router ID: '%s'", src.GetId())
 	}
 	var err error

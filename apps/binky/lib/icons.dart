@@ -19,10 +19,10 @@ import 'package:flutter/material.dart';
 
 class BinkyIcons {
   // Type icons
-  static const Icon binkynetdevice = Icon(Icons.device_hub);
+  static const Icon binkynetdevice = Icon(Icons.memory);
   static const Icon binkynetlocalworker = Icon(Icons.developer_board);
   static const Icon binkynetobject = Icon(Icons.emoji_objects);
-  static const Icon binkynetrouter = Icon(Icons.lan);
+  static const Icon binkynetrouter = Icon(Icons.device_hub);
   static const Icon block = Icon(Icons.stop);
   static const Icon blockGroup = Icon(Icons.stop_outlined);
   static const Icon commandstation = Icon(Icons.computer);

@@ -46,6 +46,7 @@ class BinkyNetDevicesTree extends StatelessWidget {
               final lw = snapshot.data!;
               var devices = lw.devices.toList()
                 ..sort((a, b) => a.deviceId.compareTo(b.deviceId));
+              final routers = lw.routers;
               final extra = withParents ? 3 : 0;
               return ListView.builder(
                   itemCount: devices.length + extra,
@@ -74,13 +75,19 @@ class BinkyNetDevicesTree extends StatelessWidget {
                     final device = devices[index - extra];
                     final id = device.id;
                     final subPrefix = device.disabled ? "(disabled) " : "";
+                    final routerId = device.routerId;
+                    var routerName = routers
+                        .firstWhere((x) => x.id == routerId,
+                            orElse: () => BinkyNetRouter())
+                        .description;
+                    routerName = routerName.isEmpty ? "None" : routerName;
                     return ListTile(
                       leading: BinkyIcons.binkynetdevice,
                       title: Text(device.deviceId),
                       subtitle: withParents
-                          ? Text(subPrefix)
+                          ? Text("${subPrefix}router=$routerName")
                           : Text(
-                              "${subPrefix}addr=${device.address}, type=${device.deviceType}"),
+                              "${subPrefix}addr=${device.address}, type=${device.deviceType}, router=$routerName"),
                       onTap: () => editorCtx
                           .select(EntitySelector.binkynetDevice(lw, device)),
                       selected: selector.idOf(EntityType.binkynetdevice) == id,

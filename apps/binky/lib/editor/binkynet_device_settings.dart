@@ -77,7 +77,7 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
   final TextEditingController _deviceIdController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  void _initConrollers() {
+  void _initControllers() {
     _deviceIdController.text = widget.binkynetdevice.deviceId;
     _addressController.text = widget.binkynetdevice.address;
   }
@@ -85,18 +85,19 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
   @override
   void initState() {
     super.initState();
-    _initConrollers();
+    _initControllers();
   }
 
   @override
   void didUpdateWidget(covariant _BinkyNetDeviceSettings oldWidget) {
-    _initConrollers();
+    _initControllers();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: Key(widget.binkynetdevice.id),
       children: <Widget>[
         Text(widget.binkynetdevice.id),
         SettingsTextField(
@@ -108,14 +109,27 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
         SettingsDropdownField<BinkyNetDeviceType>(
           label: "Device type",
           value: widget.binkynetdevice.deviceType,
-          onChanged: (value) {
-            _update((x) {
+          onChanged: (value) async {
+            await _update((x) {
               if (value != null) {
                 x.deviceType = value;
               }
             });
           },
           items: _deviceTypeItems,
+        ),
+        SettingsDropdownField<String>(
+          key: Key("binkynet-device-router: ${widget.binkynetdevice.id}"),
+          label: "Router",
+          value: widget.binkynetdevice.routerId,
+          onChanged: (value) async {
+            await _update((x) {
+              if (value != null) {
+                x.routerId = value;
+              }
+            });
+          },
+          items: _routerRefs(),
         ),
         SettingsTextField(
             controller: _addressController,
@@ -142,6 +156,19 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
     var update = lw.deepCopy();
     editor(update.devices.singleWhere((x) => x.id == widget.binkynetdevice.id));
     widget.model.updateBinkyNetLocalWorker(update);
+  }
+
+  List<DropdownMenuItem<String>> _routerRefs() {
+    final list = widget.binkynetlocalworker.routers
+        .map((e) => DropdownMenuItem<String>(
+              child: Text(e.description),
+              value: e.id,
+            ))
+        .toList();
+    list.add(
+      const DropdownMenuItem(child: Text("<None>"), value: ""),
+    );
+    return list;
   }
 
   static final List<DropdownMenuItem<BinkyNetDeviceType>> _deviceTypeItems =

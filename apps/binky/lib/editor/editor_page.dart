@@ -698,6 +698,22 @@ class _EditorPageState extends State<EditorPage> {
           }
         }
         return children;
+      case EntityType.binkynetrouters:
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        if (lwId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.binkynetrouter,
+              label: "Add router",
+              onTap: () async {
+                final lw = await model.getBinkyNetLocalWorker(lwId);
+                final added = await model.addBinkyNetRouter(lwId);
+                editorCtx.select(EntitySelector.binkynetRouter(lw, added));
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.binkynetdevices:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {
