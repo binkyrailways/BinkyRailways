@@ -133,7 +133,7 @@ func (s *Server) Run(ctx context.Context) error {
 	reflection.Register(grpcSrv)
 	wrappedGrpc := grpcweb.WrapServer(grpcSrv,
 		grpcweb.WithOriginFunc(func(origin string) bool {
-			return false
+			return true //false
 		}))
 
 	// Prepare HTTPS server
