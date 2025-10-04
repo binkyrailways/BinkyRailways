@@ -38,6 +38,7 @@ type binkyNetLocalWorkerFields struct {
 	LocalWorkerType model.BinkyNetLocalWorkerType `xml:"LocalWorkerType,omitempty"`
 	Devices         binkyNetDeviceSet             `xml:"Devices"`
 	Objects         binkyNetObjectSet             `xml:"Objects"`
+	Routers         binkyNetRouterSet             `xml:"Routers"`
 }
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
@@ -50,6 +51,7 @@ func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
+	lw.Routers.SetContainer(lw)
 	return lw
 }
 
@@ -60,6 +62,7 @@ func (lw *binkyNetLocalWorker) UnmarshalXML(d *xml.Decoder, start xml.StartEleme
 	}
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
+	lw.Routers.SetContainer(lw)
 	if lw.LocalWorkerType == "" {
 		lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	}
@@ -159,6 +162,11 @@ func (lw *binkyNetLocalWorker) GetDevices() model.BinkyNetDeviceSet {
 // Set of real world objects controlled by the local worker
 func (lw *binkyNetLocalWorker) GetObjects() model.BinkyNetObjectSet {
 	return &lw.Objects
+}
+
+// Set of hardware devices that route commands & state to/from devices belonging to this local worker.
+func (lw *binkyNetLocalWorker) GetRouters() model.BinkyNetRouterSet {
+	return &lw.Routers
 }
 
 // OnModified triggers the modified function of the parent (if any)

@@ -353,3 +353,6 @@ func (v *DefaultEntityVisitor) VisitBinkyNetLocalWorker(BinkyNetLocalWorker) int
 func (v *DefaultEntityVisitor) VisitBinkyNetObject(BinkyNetObject) interface{} {
 	return nil
 }
+func (v *DefaultEntityVisitor) VisitBinkyNetRouter(BinkyNetRouter) interface{} {
+	return nil
+}
