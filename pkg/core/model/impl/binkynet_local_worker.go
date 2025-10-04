@@ -52,6 +52,7 @@ func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
 	lw.Routers.SetContainer(lw)
+	lw.ensureRouters()
 	return lw
 }
 
@@ -66,6 +67,7 @@ func (lw *binkyNetLocalWorker) UnmarshalXML(d *xml.Decoder, start xml.StartEleme
 	if lw.LocalWorkerType == "" {
 		lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	}
+	lw.ensureRouters()
 	return nil
 }
 
@@ -120,6 +122,7 @@ func (lw *binkyNetLocalWorker) SetLocalWorkerType(ctx context.Context, value mod
 		lw.LocalWorkerType = value
 		lw.OnModified()
 	}
+	lw.ensureRouters()
 	return nil
 }
 
@@ -167,6 +170,15 @@ func (lw *binkyNetLocalWorker) GetObjects() model.BinkyNetObjectSet {
 // Set of hardware devices that route commands & state to/from devices belonging to this local worker.
 func (lw *binkyNetLocalWorker) GetRouters() model.BinkyNetRouterSet {
 	return &lw.Routers
+}
+
+// Ensure that there is at least 1 router when type == ESPHOME
+func (lw *binkyNetLocalWorker) ensureRouters() {
+	if lw.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
+		if lw.GetRouters().GetCount() == 0 {
+			lw.GetRouters().AddNew()
+		}
+	}
 }
 
 // OnModified triggers the modified function of the parent (if any)

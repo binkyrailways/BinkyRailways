@@ -38,5 +38,5 @@ type BinkyNetRouterSet interface {
 	Contains(BinkyNetRouter) bool
 
 	// Add a new entry.
-	AddNew() (BinkyNetRouter, error)
+	AddNew() BinkyNetRouter
 }

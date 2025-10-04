@@ -129,10 +129,7 @@ func (s *service) AddBinkyNetRouter(ctx context.Context, req *api.IDRequest) (*a
 	if err != nil {
 		return nil, err
 	}
-	bnRouter, err := lw.GetRouters().AddNew()
-	if err != nil {
-		return nil, err
-	}
+	bnRouter := lw.GetRouters().AddNew()
 	var result api.BinkyNetRouter
 	if err := result.FromModel(ctx, bnRouter); err != nil {
 		return nil, err

@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -108,13 +109,34 @@ func (l *binkyNetRouterSet) Contains(entry model.BinkyNetRouter) bool {
 	return false
 }
 
+// Returns true when this set contains a router with given description
+func (l *binkyNetRouterSet) containsDescription(description string) bool {
+	for _, o := range l.Items {
+		if o.GetDescription() == description {
+			return true
+		}
+	}
+	return false
+}
+
 // Add a new entry
-func (l *binkyNetRouterSet) AddNew() (model.BinkyNetRouter, error) {
+func (l *binkyNetRouterSet) AddNew() model.BinkyNetRouter {
+	// Determine new name
+	var name string
+	nameIdx := l.GetCount() + 1
+	for {
+		name = fmt.Sprintf("Router %d", nameIdx)
+		if !l.containsDescription(name) {
+			break
+		}
+		nameIdx++
+	}
 	d := newBinkyNetRouter()
 	d.SetContainer(l)
 	l.Items = append(l.Items, d)
 	l.OnModified()
-	return d, nil
+	d.SetDescription(name)
+	return d
 }
 
 // OnModified triggers the modified function of the parent (if any)
