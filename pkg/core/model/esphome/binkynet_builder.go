@@ -99,14 +99,14 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 		// Add devices
 		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
 			if !devModel.GetIsDisabled() {
-				if err := file.AddDevice(devModel); err != nil {
+				if err := AddDevice(file, devModel); err != nil {
 					result = errors.Join(result, err)
 				}
 			}
 		})
 		// Add objects
 		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
-			if err := file.AddObject(objModel, lwModel); err != nil {
+			if err := AddObject(file, objModel, lwModel); err != nil {
 				result = errors.Join(result, err)
 			}
 		})
@@ -146,7 +146,7 @@ func createLedSwitch(id, port string) Switch {
 }
 
 // Adds the given device to the esphome config
-func (f *DeviceFile) AddDevice(devModel model.BinkyNetDevice) error {
+func AddDevice(f *DeviceFile, devModel model.BinkyNetDevice) error {
 	switch devModel.GetDeviceType() {
 	case api.DeviceTypePCA9685:
 		hub := PCA9685Hub{
@@ -207,7 +207,7 @@ func (f *DeviceFile) AddDevice(devModel model.BinkyNetDevice) error {
 }
 
 // Adds the given object to the esphome config
-func (f *DeviceFile) AddObject(objModel model.BinkyNetObject, lwModel model.BinkyNetLocalWorker) error {
+func AddObject(f *DeviceFile, objModel model.BinkyNetObject, lwModel model.BinkyNetLocalWorker) error {
 	disabled := false
 	objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
 		if anyPinsHaveDisabledDevice(cm, lwModel) {
@@ -219,17 +219,17 @@ func (f *DeviceFile) AddObject(objModel model.BinkyNetObject, lwModel model.Bink
 	}
 	switch objModel.GetObjectType() {
 	case api.ObjectTypeBinarySensor:
-		return f.addBinarySensor(objModel)
+		return addBinarySensor(f, objModel)
 	case api.ObjectTypeBinaryOutput:
-		return f.addBinaryOutput(objModel)
+		return addBinaryOutput(f, objModel)
 	case api.ObjectTypeMagneticSwitch:
-		return f.addMagneticSwitch(objModel)
+		return addMagneticSwitch(f, objModel)
 	case api.ObjectTypeServoSwitch:
-		return f.addServoSwitch(objModel)
+		return addServoSwitch(f, objModel)
 	case api.ObjectTypeRelaySwitch:
-		return f.addRelaySwitch(objModel)
+		return addRelaySwitch(f, objModel)
 	case api.ObjectTypeTrackInverter:
-		return f.addTrackInverter(objModel)
+		return addTrackInverter(f, objModel)
 	}
 	/*
 			disabled := false
@@ -272,7 +272,7 @@ func (f *DeviceFile) AddObject(objModel model.BinkyNetObject, lwModel model.Bink
 }
 
 // Add an object of type BinarySensor
-func (f *DeviceFile) addBinarySensor(objModel model.BinkyNetObject) error {
+func addBinarySensor(f *DeviceFile, objModel model.BinkyNetObject) error {
 	sensor := BinarySensor{}
 	sensor.Id = name(string(objModel.GetObjectID()))
 	sensor.Name = name(string(objModel.GetObjectID()))
@@ -305,7 +305,7 @@ func (f *DeviceFile) addBinarySensor(objModel model.BinkyNetObject) error {
 }
 
 // Add an object of type BinaryOutput
-func (f *DeviceFile) addBinaryOutput(objModel model.BinkyNetObject) error {
+func addBinaryOutput(f *DeviceFile, objModel model.BinkyNetObject) error {
 	sw := Switch{}
 	sw.Id = name(string(objModel.GetObjectID()))
 	sw.Name = name(string(objModel.GetObjectID()))
@@ -332,12 +332,12 @@ func (f *DeviceFile) addBinaryOutput(objModel model.BinkyNetObject) error {
 }
 
 // Add an object of type MagneticSwitch
-func (f *DeviceFile) addMagneticSwitch(objModel model.BinkyNetObject) error {
+func addMagneticSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
 	return nil
 }
 
 // Add an object of type ServoSwitch
-func (f *DeviceFile) addServoSwitch(objModel model.BinkyNetObject) error {
+func addServoSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
 	// Build number component
 	number := Number{}
 	number.Platform = "template"
@@ -390,12 +390,12 @@ func (f *DeviceFile) addServoSwitch(objModel model.BinkyNetObject) error {
 }
 
 // Add an object of type RelaySwitch
-func (f *DeviceFile) addRelaySwitch(objModel model.BinkyNetObject) error {
+func addRelaySwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
 	return nil
 }
 
 // Add an object of type TrackInverter
-func (f *DeviceFile) addTrackInverter(objModel model.BinkyNetObject) error {
+func addTrackInverter(f *DeviceFile, objModel model.BinkyNetObject) error {
 	return nil
 }
 
