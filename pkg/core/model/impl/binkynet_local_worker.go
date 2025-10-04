@@ -52,7 +52,7 @@ func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
 	lw.Routers.SetContainer(lw)
-	lw.ensureRouters()
+	lw.ensureRouters(context.Background())
 	return lw
 }
 
@@ -67,7 +67,7 @@ func (lw *binkyNetLocalWorker) UnmarshalXML(d *xml.Decoder, start xml.StartEleme
 	if lw.LocalWorkerType == "" {
 		lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	}
-	lw.ensureRouters()
+	lw.ensureRouters(context.Background())
 	return nil
 }
 
@@ -122,7 +122,7 @@ func (lw *binkyNetLocalWorker) SetLocalWorkerType(ctx context.Context, value mod
 		lw.LocalWorkerType = value
 		lw.OnModified()
 	}
-	lw.ensureRouters()
+	lw.ensureRouters(ctx)
 	return nil
 }
 
@@ -173,11 +173,17 @@ func (lw *binkyNetLocalWorker) GetRouters() model.BinkyNetRouterSet {
 }
 
 // Ensure that there is at least 1 router when type == ESPHOME
-func (lw *binkyNetLocalWorker) ensureRouters() {
+func (lw *binkyNetLocalWorker) ensureRouters(ctx context.Context) {
 	if lw.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
 		if lw.GetRouters().GetCount() == 0 {
 			lw.GetRouters().AddNew()
 		}
+		defaultRouter, _ := lw.GetRouters().GetAt(0)
+		lw.Devices.ForEach(func(dev model.BinkyNetDevice) {
+			if dev.GetRouter() == nil {
+				dev.SetRouter(ctx, defaultRouter)
+			}
+		})
 	}
 }
 
