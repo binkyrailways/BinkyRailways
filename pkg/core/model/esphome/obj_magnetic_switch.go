@@ -20,6 +20,6 @@ package esphome
 import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
 
 // Add an object of type MagneticSwitch
-func addMagneticSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
+func addMagneticSwitch(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
 	return nil
 }

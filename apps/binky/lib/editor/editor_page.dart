@@ -34,6 +34,8 @@ import './binkynet_local_worker_tree.dart';
 import './binkynet_local_workers_tree.dart';
 import './binkynet_object_settings.dart';
 import './binkynet_objects_tree.dart';
+import './binkynet_router_settings.dart';
+import './binkynet_routers_tree.dart';
 import './block_settings.dart';
 import './blocks_tree.dart';
 import './block_group_settings.dart';
@@ -311,6 +313,16 @@ class _EditorPageState extends State<EditorPage> {
         return const SplitView(
           menu: BinkyNetLocalWorkerTree(),
           content: BinkyNetLocalWorkerSettings(),
+        );
+      case EntityType.binkynetrouters:
+        return const SplitView(
+          menu: BinkyNetLocalWorkerTree(),
+          content: BinkyNetRoutersTree(withParents: false),
+        );
+      case EntityType.binkynetrouter:
+        return const SplitView(
+          menu: BinkyNetRoutersTree(withParents: true),
+          content: BinkyNetRouterSettings(),
         );
       case EntityType.binkynetdevices:
         return const SplitView(
@@ -686,6 +698,22 @@ class _EditorPageState extends State<EditorPage> {
           }
         }
         return children;
+      case EntityType.binkynetrouters:
+        final lwId = selector.idOf(EntityType.binkynetlocalworker);
+        if (lwId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.binkynetrouter,
+              label: "Add router",
+              onTap: () async {
+                final lw = await model.getBinkyNetLocalWorker(lwId);
+                final added = await model.addBinkyNetRouter(lwId);
+                editorCtx.select(EntitySelector.binkynetRouter(lw, added));
+              },
+            ),
+          ];
+        }
+        return [];
       case EntityType.binkynetdevices:
         final lwId = selector.idOf(EntityType.binkynetlocalworker);
         if (lwId != null) {

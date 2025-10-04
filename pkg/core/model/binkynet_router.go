@@ -1,4 +1,4 @@
-// Copyright 2025 Ewout Prangsma
+// Copyright 2021 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
 // Author Ewout Prangsma
 //
 
-package esphome
+package model
 
-import (
-	api "github.com/binkynet/BinkyNet/apis/v1"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-)
+// BinkyNetRouter represents a hardware device that routes commands & state to/from BinkyNetDevices.
+type BinkyNetRouter interface {
+	Entity
 
-// Add an object of type BinaryOutput
-func addBinaryOutput(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
-	_, err := fs.createSwitch(objModel, "", api.ConnectionNameOutput, 0)
-	return err
+	// Gets the local worker this router belongs to
+	GetLocalWorker() BinkyNetLocalWorker
 }

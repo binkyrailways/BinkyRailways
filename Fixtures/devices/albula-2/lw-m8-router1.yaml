@@ -1,5 +1,5 @@
 substitutions:
-    name: m8
+    name: m8-router1
 packages:
     device: !include ../packages/device-d1mini.yaml
     networking: !include ../packages/networking.yaml

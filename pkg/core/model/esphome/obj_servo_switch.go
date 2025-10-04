@@ -23,9 +23,9 @@ import (
 )
 
 // Add an object of type ServoSwitch
-func addServoSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
+func addServoSwitch(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
 	// Build output
-	output, err := f.createOutput(objModel, "servo_output_", api.ConnectionNameServo, 0)
+	output, platform, err := fs.createOutput(objModel, "servo_output_", api.ConnectionNameServo, 0)
 	if err != nil {
 		return err
 	}
@@ -33,14 +33,14 @@ func addServoSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
 	output.CommandTopic = ""
 
 	// Build servo
-	servo, err := f.createServo(objModel, "servo_", api.ConnectionNameServo, 0)
+	servo, err := platform.createServo(objModel, "servo_")
 	if err != nil {
 		return err
 	}
 	servo.Output = output.Id
 
 	// Build number component
-	number, err := f.createNumber(objModel, "", api.ConnectionNameServo, 0)
+	number, err := platform.createNumber(objModel, "")
 	if err != nil {
 		return err
 	}
@@ -53,12 +53,12 @@ func addServoSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
 
 	// Create relay switches (if any)
 	if hasConnection(objModel, api.ConnectionNamePhaseStraightRelay) {
-		if _, err := f.createSwitch(objModel, "straight_relay_", api.ConnectionNamePhaseStraightRelay, 0); err != nil {
+		if _, err := fs.createSwitch(objModel, "straight_relay_", api.ConnectionNamePhaseStraightRelay, 0); err != nil {
 			return err
 		}
 	}
 	if hasConnection(objModel, api.ConnectionNamePhaseOffRelay) {
-		if _, err := f.createSwitch(objModel, "off_relay_", api.ConnectionNamePhaseOffRelay, 0); err != nil {
+		if _, err := fs.createSwitch(objModel, "off_relay_", api.ConnectionNamePhaseOffRelay, 0); err != nil {
 			return err
 		}
 	}

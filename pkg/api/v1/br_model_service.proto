@@ -37,7 +37,7 @@ service ModelService {
   rpc LoadRailway(RailwayEntry) returns (Railway);
   // Close the currently loaded railway entry.
   rpc CloseRailway(Empty) returns (Empty);
-  // Gets the current loaded railway entry. 
+  // Gets the current loaded railway entry.
   // If no entry is loaded, the returned entry is empty.
   rpc GetRailwayEntry(Empty) returns (RailwayEntry);
   // Gets the current railway
@@ -192,6 +192,11 @@ service ModelService {
   // Adds a new BinkyNetLocalWorker to the command station identified by given
   // by ID.
   rpc AddBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
+  // Adds a new BinkyNetRouter to the binkynet local worker identified by given
+  // by ID.
+  rpc AddBinkyNetRouter(IDRequest) returns (BinkyNetRouter);
+  // Delete the BinkyNetRouter with the given SubID in local worker with given id.
+  rpc DeleteBinkyNetRouter(SubIDRequest) returns (BinkyNetLocalWorker);
   // Adds a new BinkyNetDevice to the binkynet local worker identified by given
   // by ID.
   rpc AddBinkyNetDevice(IDRequest) returns (BinkyNetDevice);
@@ -216,8 +221,8 @@ message SerialPortList {
 message IDRequest { string id = 1; }
 
 // Request by ID and SubID
-message SubIDRequest { 
-  string id = 1; 
+message SubIDRequest {
+  string id = 1;
   string sub_id = 2;
 }
 
@@ -268,7 +273,7 @@ message RemoveRouteCrossingJunctionRequest {
    // ID of route to change
    string route_id = 1;
    // ID of the junction to remove
-   string junction_id = 2;  
+   string junction_id = 2;
 }
 
 message AddRouteBinaryOutputRequest {
@@ -297,14 +302,14 @@ message AddRouteEventRequest {
 message MoveRouteEventRequest {
   // ID of the route to move an event from
   string route_id = 1;
-  // ID of sensor to move event for 
+  // ID of sensor to move event for
   string sensor_id = 2;
 }
 
 message RemoveRouteEventRequest {
   // ID of the route to remove an event from
   string route_id = 1;
-  // ID of sensor to remove event for 
+  // ID of sensor to remove event for
   string sensor_id = 2;
 }
 
@@ -318,7 +323,7 @@ message AddRouteEventBehaviorRequest {
 message RemoveRouteEventBehaviorRequest {
   // ID of the route to remove an event from
   string route_id = 1;
-  // ID of sensor to remove behavior for 
+  // ID of sensor to remove behavior for
   string sensor_id = 2;
   // Index of the behavior to removed
   int32 index = 3;

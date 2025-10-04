@@ -69,6 +69,17 @@ class BinkyNetLocalWorkerTree extends StatelessWidget {
                       editorCtx.select(EntitySelector.binkynetLocalWorker(lw)),
                 ),
                 ListTile(
+                  leading: BinkyIcons.binkynetrouter,
+                  minLeadingWidth: 20,
+                  title: Text(
+                    "Routers (${lw.routers.length})",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  selected: selector.entityType == EntityType.binkynetrouters,
+                  onTap: () =>
+                      editorCtx.select(EntitySelector.binkynetRouters(lw)),
+                ),
+                ListTile(
                   leading: BinkyIcons.binkynetdevice,
                   minLeadingWidth: 20,
                   title: Text(

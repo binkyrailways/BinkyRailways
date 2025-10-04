@@ -346,6 +346,17 @@ class ModelServiceClient extends $grpc.Client {
           ($2.IDRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.BinkyNetLocalWorker.fromBuffer(value));
+  static final _$addBinkyNetRouter =
+      $grpc.ClientMethod<$2.IDRequest, $0.BinkyNetRouter>(
+          '/binkyrailways.v1.ModelService/AddBinkyNetRouter',
+          ($2.IDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.BinkyNetRouter.fromBuffer(value));
+  static final _$deleteBinkyNetRouter =
+      $grpc.ClientMethod<$2.SubIDRequest, $0.BinkyNetLocalWorker>(
+          '/binkyrailways.v1.ModelService/DeleteBinkyNetRouter',
+          ($2.SubIDRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.BinkyNetLocalWorker.fromBuffer(value));
   static final _$addBinkyNetDevice =
       $grpc.ClientMethod<$2.IDRequest, $0.BinkyNetDevice>(
           '/binkyrailways.v1.ModelService/AddBinkyNetDevice',
@@ -779,6 +790,18 @@ class ModelServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$addBinkyNetLocalWorker, request,
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.BinkyNetRouter> addBinkyNetRouter(
+      $2.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addBinkyNetRouter, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.BinkyNetLocalWorker> deleteBinkyNetRouter(
+      $2.SubIDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteBinkyNetRouter, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.BinkyNetDevice> addBinkyNetDevice(
@@ -1354,6 +1377,20 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
         ($0.BinkyNetLocalWorker value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.BinkyNetRouter>(
+        'AddBinkyNetRouter',
+        addBinkyNetRouter_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
+        ($0.BinkyNetRouter value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.SubIDRequest, $0.BinkyNetLocalWorker>(
+        'DeleteBinkyNetRouter',
+        deleteBinkyNetRouter_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.SubIDRequest.fromBuffer(value),
+        ($0.BinkyNetLocalWorker value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.BinkyNetDevice>(
         'AddBinkyNetDevice',
         addBinkyNetDevice_Pre,
@@ -1767,6 +1804,16 @@ abstract class ModelServiceBase extends $grpc.Service {
     return addBinkyNetLocalWorker(call, await request);
   }
 
+  $async.Future<$0.BinkyNetRouter> addBinkyNetRouter_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
+    return addBinkyNetRouter(call, await request);
+  }
+
+  $async.Future<$0.BinkyNetLocalWorker> deleteBinkyNetRouter_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.SubIDRequest> request) async {
+    return deleteBinkyNetRouter(call, await request);
+  }
+
   $async.Future<$0.BinkyNetDevice> addBinkyNetDevice_Pre(
       $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
     return addBinkyNetDevice(call, await request);
@@ -1931,6 +1978,10 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.BinkyNetLocalWorker> addBinkyNetLocalWorker(
       $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.BinkyNetRouter> addBinkyNetRouter(
+      $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.BinkyNetLocalWorker> deleteBinkyNetRouter(
+      $grpc.ServiceCall call, $2.SubIDRequest request);
   $async.Future<$0.BinkyNetDevice> addBinkyNetDevice(
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.BinkyNetLocalWorker> deleteBinkyNetDevice(

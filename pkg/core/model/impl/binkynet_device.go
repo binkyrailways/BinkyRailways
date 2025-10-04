@@ -34,6 +34,7 @@ type binkyNetDevice struct {
 	Type     api.DeviceType `xml:"Type,omitempty"`
 	Address  string         `xml:"Address,omitempty"`
 	Disabled bool           `xml:"Disabled,omitempty"`
+	RouterID string         `xml:"RouterID,omitempty"`
 }
 
 var _ model.BinkyNetDevice = &binkyNetDevice{}
@@ -54,6 +55,26 @@ func (d *binkyNetDevice) SetContainer(container *binkyNetDeviceSet) {
 func (d *binkyNetDevice) GetLocalWorker() model.BinkyNetLocalWorker {
 	if d.container != nil {
 		return d.container.GetLocalWorker()
+	}
+	return nil
+}
+
+// Gets the router that routes command & state to/from this device
+func (d *binkyNetDevice) GetRouter() model.BinkyNetRouter {
+	if d.RouterID == "" {
+		return nil
+	}
+	r, _ := d.GetLocalWorker().GetRouters().Get(d.RouterID)
+	return r
+}
+func (d *binkyNetDevice) SetRouter(ctx context.Context, value model.BinkyNetRouter) error {
+	newRouterID := ""
+	if value != nil {
+		newRouterID = value.GetID()
+	}
+	if d.RouterID != newRouterID {
+		d.RouterID = newRouterID
+		d.OnModified()
 	}
 	return nil
 }

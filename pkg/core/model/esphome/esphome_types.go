@@ -23,7 +23,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	api "github.com/binkynet/BinkyNet/apis/v1"
 	"gopkg.in/yaml.v3"
 )
 
@@ -48,8 +47,6 @@ type DeviceFile struct {
 	MCP23008s     []MCP23xxxHub     `yaml:"mcp23008,omitempty"`
 	MCP23017s     []MCP23xxxHub     `yaml:"mcp23017,omitempty"`
 	PCF8574s      []PCF8574Hub      `yaml:"pcf8574,omitempty"`
-
-	platforms map[api.DeviceID]devicePlatform
 }
 
 type Esphome struct {
@@ -193,7 +190,7 @@ func (i yamlLambda) MarshalYAML() (interface{}, error) {
 
 // Turn the given input into a valid esphome name
 func name(input string) string {
-	return strings.ToLower(input)
+	return strings.ReplaceAll(strings.ToLower(input), " ", "")
 }
 
 // Save file to disk

@@ -25,9 +25,25 @@ import (
 )
 
 // Create a binary sensor for the connection with given name of the given object and add it to the given DeviceFile.
-func (f *DeviceFile) createBinarySensor(
+func (fs *DeviceFileSet) createBinarySensor(
 	objModel model.BinkyNetObject, namePrefix string,
-	connName api.ConnectionName, pinsIndex int) (*BinarySensor, error) {
+	connName api.ConnectionName, pinsIndex int) (*BinarySensor, *devicePlatform, error) {
+
+	// Get connection
+	conn, err := getConnection(objModel, connName)
+	if err != nil {
+		return nil, nil, err
+	}
+	pin, err := getPin(objModel, conn, pinsIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Find platform
+	platform, err := fs.getPlatform(pin)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	// Create basic sensor
 	sensor := BinarySensor{}
@@ -41,33 +57,15 @@ func (f *DeviceFile) createBinarySensor(
 			{"switch.turn_off": "led_red"},
 		},
 	}
-	conn, err := getConnection(objModel, connName)
-	if err != nil {
-		return nil, err
-	}
-	pin, err := getPin(objModel, conn, pinsIndex)
-	if err != nil {
-		return nil, err
-	}
 	sensor.Pin = &Pin{
 		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
 	if err := sensor.Pin.applyInvert(conn); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	if err := sensor.applyPlatformConfiguration(f, objModel, pin); err != nil {
-		return nil, err
-	}
-	f.BinarySensors = append(f.BinarySensors, sensor)
-	return &f.BinarySensors[len(f.BinarySensors)-1], nil
-}
+	platform.ConfigureBinarySensor(&sensor)
 
-// Apply platform specific configuration on this sensor
-func (sensor *BinarySensor) applyPlatformConfiguration(f *DeviceFile, objModel model.BinkyNetObject, pin model.BinkyNetDevicePin) error {
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.ConfigureBinarySensor(sensor)
-	}
-	return nil
+	f := platform.deviceFile
+	f.BinarySensors = append(f.BinarySensors, sensor)
+	return &f.BinarySensors[len(f.BinarySensors)-1], platform, nil
 }
