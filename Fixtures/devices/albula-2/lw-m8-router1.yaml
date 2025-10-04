@@ -1,5 +1,5 @@
 substitutions:
-    name: m2
+    name: m8-router1
 packages:
     device: !include ../packages/device-d1mini.yaml
     networking: !include ../packages/networking.yaml
@@ -36,12 +36,13 @@ binary_sensor:
     - platform: gpio
       id: io1_pin1
       name: io1_pin1
-      state_topic: /binky/m2/io1_pin1/sensor/state
+      state_topic: /binky/m8/io1_pin1/sensor/state
       pin:
         number: "0"
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -50,12 +51,13 @@ binary_sensor:
     - platform: gpio
       id: io1_pin2
       name: io1_pin2
-      state_topic: /binky/m2/io1_pin2/sensor/state
+      state_topic: /binky/m8/io1_pin2/sensor/state
       pin:
         number: "1"
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -64,7 +66,7 @@ binary_sensor:
     - platform: gpio
       id: io1_pin3
       name: io1_pin3
-      state_topic: /binky/m2/io1_pin3/sensor/state
+      state_topic: /binky/m8/io1_pin3/sensor/state
       pin:
         number: "2"
         mcp23xxx: io1
@@ -78,7 +80,7 @@ binary_sensor:
     - platform: gpio
       id: io1_pin4
       name: io1_pin4
-      state_topic: /binky/m2/io1_pin4/sensor/state
+      state_topic: /binky/m8/io1_pin4/sensor/state
       pin:
         number: "3"
         mcp23xxx: io1
@@ -92,7 +94,7 @@ binary_sensor:
     - platform: gpio
       id: io1_pin5
       name: io1_pin5
-      state_topic: /binky/m2/io1_pin5/sensor/state
+      state_topic: /binky/m8/io1_pin5/sensor/state
       pin:
         number: "4"
         mcp23xxx: io1
@@ -106,7 +108,7 @@ binary_sensor:
     - platform: gpio
       id: io1_pin6
       name: io1_pin6
-      state_topic: /binky/m2/io1_pin6/sensor/state
+      state_topic: /binky/m8/io1_pin6/sensor/state
       pin:
         number: "5"
         mcp23xxx: io1
@@ -120,7 +122,7 @@ binary_sensor:
     - platform: gpio
       id: io1_pin7
       name: io1_pin7
-      state_topic: /binky/m2/io1_pin7/sensor/state
+      state_topic: /binky/m8/io1_pin7/sensor/state
       pin:
         number: "6"
         mcp23xxx: io1
@@ -134,12 +136,13 @@ binary_sensor:
     - platform: gpio
       id: io1_pin8
       name: io1_pin8
-      state_topic: /binky/m2/io1_pin8/sensor/state
+      state_topic: /binky/m8/io1_pin8/sensor/state
       pin:
         number: "7"
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -153,7 +156,7 @@ number:
     - platform: template
       id: sw1
       name: sw1
-      command_topic: /binky/m2/sw1/servo/command
+      command_topic: /binky/m8/sw1/servo/command
       min_value: -100
       max_value: 100
       step: 1
@@ -161,36 +164,14 @@ number:
         - servo.write:
             id: servo_sw1
             level: !lambda return x / 100.0;
-    - platform: template
-      id: sw2
-      name: sw2
-      command_topic: /binky/m2/sw2/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw2
-            level: !lambda return x / 100.0;
 output:
     - platform: pca9685
       id: servo_output_sw1
-      channel: "7"
-      pca9685_id: pwm1
-    - platform: pca9685
-      id: servo_output_sw2
-      channel: "8"
-      pca9685_id: pwm1
+      channel: "15"
+      pca9685_id: pwm
 servo:
     - id: servo_sw1
       output: servo_output_sw1
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_sw2
-      output: servo_output_sw2
       auto_detach_time: 4s
       transition_length: 3s
       min_level: 0%
@@ -215,9 +196,41 @@ switch:
       pin:
         number: D7
         inverted: true
+    - platform: gpio
+      id: straight_relay_sw1
+      name: straight_relay_sw1
+      state_topic: /binky/m8/sw1/phase-straight-relay/state
+      command_topic: /binky/m8/sw1/phase-straight-relay/command
+      pin:
+        number: "14"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: off_relay_sw1
+      name: off_relay_sw1
+      state_topic: /binky/m8/sw1/phase-off-relay/state
+      command_topic: /binky/m8/sw1/phase-off-relay/command
+      pin:
+        number: "15"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: relay1
+      name: relay1
+      state_topic: /binky/m8/relay1/output/state
+      command_topic: /binky/m8/relay1/output/command
+      pin:
+        number: "8"
+        mcp23xxx: io1
+        mode:
+            output: true
 i2c: {}
 pca9685:
-    - id: pwm1
+    - id: pwm
       address: "0x40"
       frequency: 54
 mcp23017:

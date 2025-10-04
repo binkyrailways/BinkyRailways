@@ -33,6 +33,11 @@ func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNe
 	dst.HardwareId = src.GetHardwareID()
 	dst.LocalWorkerType.FromModel(ctx, src.GetLocalWorkerType())
 	dst.Alias = src.GetAlias()
+	src.GetRouters().ForEach(func(src model.BinkyNetRouter) {
+		bd := &BinkyNetRouter{}
+		bd.FromModel(ctx, src)
+		dst.Routers = append(dst.Routers, bd)
+	})
 	src.GetDevices().ForEach(func(src model.BinkyNetDevice) {
 		bd := &BinkyNetDevice{}
 		bd.FromModel(ctx, src)
@@ -67,6 +72,13 @@ func (src *BinkyNetLocalWorker) ToModel(ctx context.Context, dst model.BinkyNetL
 		multierr.AppendInto(&err, dst.SetLocalWorkerType(ctx, lwt))
 	}
 	multierr.AppendInto(&err, dst.SetAlias(ctx, src.GetAlias()))
+	for i, src := range src.GetRouters() {
+		dst, ok := dst.GetRouters().GetAt(i)
+		if !ok {
+			return InvalidArgument("Unexpected router at index %d", i)
+		}
+		multierr.AppendInto(&err, src.ToModel(ctx, dst))
+	}
 	// Updates objects first, because device renames can lead to object changes
 	for i, src := range src.GetObjects() {
 		dst, ok := dst.GetObjects().GetAt(i)

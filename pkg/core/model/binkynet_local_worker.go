@@ -38,6 +38,8 @@ type BinkyNetLocalWorker interface {
 	GetAlias() string
 	SetAlias(ctx context.Context, value string) error
 
+	// Set of hardware devices that route commands & state to/from devices belonging to this local worker.
+	GetRouters() BinkyNetRouterSet
 	// Set of devices that must be configured on this local worker.
 	GetDevices() BinkyNetDeviceSet
 	// Set of real world objects controlled by the local worker

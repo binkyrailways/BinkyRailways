@@ -123,6 +123,43 @@ func (s *service) DeleteBinkyNetLocalWorker(ctx context.Context, req *api.IDRequ
 	return &result, nil
 }
 
+// Adds a new BinkyNetRouter to the local worker identified by given by ID.
+func (s *service) AddBinkyNetRouter(ctx context.Context, req *api.IDRequest) (*api.BinkyNetRouter, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	bnRouter := lw.GetRouters().AddNew()
+	var result api.BinkyNetRouter
+	if err := result.FromModel(ctx, bnRouter); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Delete a BinkyNetRouter by ID.
+func (s *service) DeleteBinkyNetRouter(ctx context.Context, req *api.SubIDRequest) (*api.BinkyNetLocalWorker, error) {
+	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var router model.BinkyNetRouter
+	lw.GetRouters().ForEach(func(x model.BinkyNetRouter) {
+		if x.GetID() == req.GetSubId() {
+			router = x
+		}
+	})
+	if router == nil {
+		return nil, fmt.Errorf("router '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
+	}
+	lw.GetRouters().Remove(router)
+	var result api.BinkyNetLocalWorker
+	if err := result.FromModel(ctx, lw); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Adds a new BinkyNetDevice to the local worker identified by given by ID.
 func (s *service) AddBinkyNetDevice(ctx context.Context, req *api.IDRequest) (*api.BinkyNetDevice, error) {
 	lw, err := s.getBinkyNetLocalWorker(ctx, req.GetId())

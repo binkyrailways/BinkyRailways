@@ -47,6 +47,8 @@ enum EntityType {
   signals,
   binkynetlocalworker,
   binkynetlocalworkers,
+  binkynetrouter,
+  binkynetrouters,
   binkynetdevice,
   binkynetdevices,
   binkynetobject,
@@ -199,6 +201,11 @@ class EntitySelector {
         parent =
             EntitySelector.binkynetLocalWorkers(null, entity.commandStationId);
 
+  EntitySelector.binkynetRouters(BinkyNetLocalWorker entity)
+      : entityType = EntityType.binkynetrouters,
+        _id = entity.id,
+        parent = EntitySelector.binkynetLocalWorker(entity);
+
   EntitySelector.binkynetDevices(BinkyNetLocalWorker entity)
       : entityType = EntityType.binkynetdevices,
         _id = entity.id,
@@ -208,6 +215,11 @@ class EntitySelector {
       : entityType = EntityType.binkynetobjects,
         _id = entity.id,
         parent = EntitySelector.binkynetLocalWorker(entity);
+
+  EntitySelector.binkynetRouter(BinkyNetLocalWorker lw, BinkyNetRouter entity)
+      : entityType = EntityType.binkynetrouter,
+        _id = entity.id,
+        parent = EntitySelector.binkynetRouters(lw);
 
   EntitySelector.binkynetDevice(BinkyNetLocalWorker lw, BinkyNetDevice entity)
       : entityType = EntityType.binkynetdevice,

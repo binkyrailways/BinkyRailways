@@ -88,4 +88,5 @@ type EntityVisitor interface {
 	VisitBinkyNetDevice(BinkyNetDevice) interface{}
 	VisitBinkyNetLocalWorker(BinkyNetLocalWorker) interface{}
 	VisitBinkyNetObject(BinkyNetObject) interface{}
+	VisitBinkyNetRouter(BinkyNetRouter) interface{}
 }

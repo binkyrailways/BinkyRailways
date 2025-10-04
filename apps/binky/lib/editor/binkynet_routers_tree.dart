@@ -24,9 +24,9 @@ import 'package:provider/provider.dart';
 import '../models.dart';
 import '../api.dart';
 
-class BinkyNetDevicesTree extends StatelessWidget {
+class BinkyNetRoutersTree extends StatelessWidget {
   final bool withParents;
-  const BinkyNetDevicesTree({Key? key, required this.withParents})
+  const BinkyNetRoutersTree({Key? key, required this.withParents})
       : super(key: key);
 
   @override
@@ -44,12 +44,11 @@ class BinkyNetDevicesTree extends StatelessWidget {
                 return const Text("Loading...");
               }
               final lw = snapshot.data!;
-              var devices = lw.devices.toList()
-                ..sort((a, b) => a.deviceId.compareTo(b.deviceId));
-              final routers = lw.routers;
+              var routers = lw.routers.toList()
+                ..sort((a, b) => a.description.compareTo(b.description));
               final extra = withParents ? 3 : 0;
               return ListView.builder(
-                  itemCount: devices.length + extra,
+                  itemCount: routers.length + extra,
                   itemBuilder: (context, index) {
                     if ((index == 0) && withParents) {
                       return ListTile(
@@ -72,33 +71,22 @@ class BinkyNetDevicesTree extends StatelessWidget {
                             .select(EntitySelector.binkynetLocalWorker(lw)),
                       );
                     }
-                    final device = devices[index - extra];
-                    final id = device.id;
-                    final subPrefix = device.disabled ? "(disabled) " : "";
-                    final routerId = device.routerId;
-                    var routerName = routers
-                        .firstWhere((x) => x.id == routerId,
-                            orElse: () => BinkyNetRouter())
-                        .description;
-                    routerName = routerName.isEmpty ? "None" : routerName;
+                    final router = routers[index - extra];
+                    final id = router.id;
                     return ListTile(
-                      leading: BinkyIcons.binkynetdevice,
-                      title: Text(device.deviceId),
-                      subtitle: withParents
-                          ? Text("${subPrefix}router=$routerName")
-                          : Text(
-                              "${subPrefix}addr=${device.address}, type=${device.deviceType}, router=$routerName"),
+                      leading: BinkyIcons.binkynetrouter,
+                      title: Text(router.description),
                       onTap: () => editorCtx
-                          .select(EntitySelector.binkynetDevice(lw, device)),
-                      selected: selector.idOf(EntityType.binkynetdevice) == id,
+                          .select(EntitySelector.binkynetRouter(lw, router)),
+                      selected: selector.idOf(EntityType.binkynetrouter) == id,
                       trailing: MorePopupMenu<String>(
                         items: [
                           PopupMenuItem<String>(
                               child: const Text('Remove'),
                               onTap: () async {
-                                await model.deleteBinkyNetDevice(lw, device);
+                                await model.deleteBinkyNetRouter(lw, router);
                                 editorCtx
-                                    .select(EntitySelector.binkynetDevices(lw));
+                                    .select(EntitySelector.binkynetRouters(lw));
                               }),
                         ],
                       ),

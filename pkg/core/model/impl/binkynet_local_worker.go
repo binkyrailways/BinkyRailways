@@ -38,6 +38,7 @@ type binkyNetLocalWorkerFields struct {
 	LocalWorkerType model.BinkyNetLocalWorkerType `xml:"LocalWorkerType,omitempty"`
 	Devices         binkyNetDeviceSet             `xml:"Devices"`
 	Objects         binkyNetObjectSet             `xml:"Objects"`
+	Routers         binkyNetRouterSet             `xml:"Routers"`
 }
 
 var _ model.BinkyNetLocalWorker = &binkyNetLocalWorker{}
@@ -50,6 +51,8 @@ func newBinkyNetLocalWorker(hardwareID string) *binkyNetLocalWorker {
 	lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
+	lw.Routers.SetContainer(lw)
+	lw.ensureRouters(context.Background())
 	return lw
 }
 
@@ -60,9 +63,11 @@ func (lw *binkyNetLocalWorker) UnmarshalXML(d *xml.Decoder, start xml.StartEleme
 	}
 	lw.Devices.SetContainer(lw)
 	lw.Objects.SetContainer(lw)
+	lw.Routers.SetContainer(lw)
 	if lw.LocalWorkerType == "" {
 		lw.LocalWorkerType = model.BinkynetLocalWorkerTypeLinux
 	}
+	lw.ensureRouters(context.Background())
 	return nil
 }
 
@@ -117,6 +122,7 @@ func (lw *binkyNetLocalWorker) SetLocalWorkerType(ctx context.Context, value mod
 		lw.LocalWorkerType = value
 		lw.OnModified()
 	}
+	lw.ensureRouters(ctx)
 	return nil
 }
 
@@ -159,6 +165,26 @@ func (lw *binkyNetLocalWorker) GetDevices() model.BinkyNetDeviceSet {
 // Set of real world objects controlled by the local worker
 func (lw *binkyNetLocalWorker) GetObjects() model.BinkyNetObjectSet {
 	return &lw.Objects
+}
+
+// Set of hardware devices that route commands & state to/from devices belonging to this local worker.
+func (lw *binkyNetLocalWorker) GetRouters() model.BinkyNetRouterSet {
+	return &lw.Routers
+}
+
+// Ensure that there is at least 1 router when type == ESPHOME
+func (lw *binkyNetLocalWorker) ensureRouters(ctx context.Context) {
+	if lw.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
+		if lw.GetRouters().GetCount() == 0 {
+			lw.GetRouters().AddNew()
+		}
+		defaultRouter, _ := lw.GetRouters().GetAt(0)
+		lw.Devices.ForEach(func(dev model.BinkyNetDevice) {
+			if dev.GetRouter() == nil {
+				dev.SetRouter(ctx, defaultRouter)
+			}
+		})
+	}
 }
 
 // OnModified triggers the modified function of the parent (if any)

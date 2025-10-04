@@ -30,6 +30,10 @@ type BinkyNetDevice interface {
 	// Gets the local worker this device belongs to
 	GetLocalWorker() BinkyNetLocalWorker
 
+	// Gets the router that routes command & state to/from this device
+	GetRouter() BinkyNetRouter
+	SetRouter(ctx context.Context, value BinkyNetRouter) error
+
 	// ID of the device
 	GetDeviceID() api.DeviceID
 	SetDeviceID(ctx context.Context, value api.DeviceID) error
