@@ -26,6 +26,13 @@ import (
 )
 
 // Try to find the connection with given name in the given object.
+// Returns true if connection exists, false otherwise.
+func hasConnection(objModel model.BinkyNetObject, connName api.ConnectionName) bool {
+	_, ok := objModel.GetConnections().Get(connName)
+	return ok
+}
+
+// Try to find the connection with given name in the given object.
 func getConnection(objModel model.BinkyNetObject, connName api.ConnectionName) (model.BinkyNetConnection, error) {
 	conn, ok := objModel.GetConnections().Get(connName)
 	if !ok {
@@ -53,4 +60,14 @@ func getInvert(conn model.BinkyNetConnection) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+// Apply any inverted setting on the pin.
+func (pin *Pin) applyInvert(conn model.BinkyNetConnection) error {
+	inverted, err := getInvert(conn)
+	if err != nil {
+		return err
+	}
+	pin.Inverted = inverted
+	return nil
 }

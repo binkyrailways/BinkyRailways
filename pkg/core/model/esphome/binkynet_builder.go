@@ -24,7 +24,6 @@ import (
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
-	"github.com/binkyrailways/BinkyRailways/pkg/core/ptr"
 )
 
 // Create esphome yaml configuration files for all local workers.
@@ -99,14 +98,14 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 		// Add devices
 		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
 			if !devModel.GetIsDisabled() {
-				if err := AddDevice(file, devModel); err != nil {
+				if err := addDevice(file, devModel); err != nil {
 					result = errors.Join(result, err)
 				}
 			}
 		})
 		// Add objects
 		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
-			if err := AddObject(file, objModel, lwModel); err != nil {
+			if err := addObject(file, objModel, lwModel); err != nil {
 				result = errors.Join(result, err)
 			}
 		})
@@ -146,7 +145,7 @@ func createLedSwitch(id, port string) Switch {
 }
 
 // Adds the given device to the esphome config
-func AddDevice(f *DeviceFile, devModel model.BinkyNetDevice) error {
+func addDevice(f *DeviceFile, devModel model.BinkyNetDevice) error {
 	switch devModel.GetDeviceType() {
 	case api.DeviceTypePCA9685:
 		hub := PCA9685Hub{
@@ -207,7 +206,7 @@ func AddDevice(f *DeviceFile, devModel model.BinkyNetDevice) error {
 }
 
 // Adds the given object to the esphome config
-func AddObject(f *DeviceFile, objModel model.BinkyNetObject, lwModel model.BinkyNetLocalWorker) error {
+func addObject(f *DeviceFile, objModel model.BinkyNetObject, lwModel model.BinkyNetLocalWorker) error {
 	disabled := false
 	objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
 		if anyPinsHaveDisabledDevice(cm, lwModel) {
@@ -268,134 +267,6 @@ func AddObject(f *DeviceFile, objModel model.BinkyNetObject, lwModel model.Binky
 			lw.Objects = append(lw.Objects, o)
 		}
 	*/
-	return nil
-}
-
-// Add an object of type BinarySensor
-func addBinarySensor(f *DeviceFile, objModel model.BinkyNetObject) error {
-	sensor := BinarySensor{}
-	sensor.Id = name(string(objModel.GetObjectID()))
-	sensor.Name = name(string(objModel.GetObjectID()))
-	sensor.StateTopic = objModel.GetMQTTStateTopic(api.ConnectionNameSensor)
-	sensor.OnState = &Trigger{
-		Then: []Action{
-			{"switch.turn_on": "led_red"},
-			{"delay": "0.2s"},
-			{"switch.turn_off": "led_red"},
-		},
-	}
-	conn, err := getConnection(objModel, api.ConnectionNameSensor)
-	if err != nil {
-		return err
-	}
-	pin, err := getPin(objModel, conn, 0)
-	if err != nil {
-		return err
-	}
-	sensor.Pin = &Pin{
-		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
-	}
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.ConfigureBinarySensor(&sensor)
-	}
-	f.BinarySensors = append(f.BinarySensors, sensor)
-	return nil
-}
-
-// Add an object of type BinaryOutput
-func addBinaryOutput(f *DeviceFile, objModel model.BinkyNetObject) error {
-	sw := Switch{}
-	sw.Id = name(string(objModel.GetObjectID()))
-	sw.Name = name(string(objModel.GetObjectID()))
-	sw.StateTopic = objModel.GetMQTTStateTopic(api.ConnectionNameSensor)
-	sw.CommandTopic = objModel.GetMQTTCommandTopic(api.ConnectionNameSensor)
-	conn, err := getConnection(objModel, api.ConnectionNameOutput)
-	if err != nil {
-		return err
-	}
-	pin, err := getPin(objModel, conn, 0)
-	if err != nil {
-		return err
-	}
-	sw.Pin = &Pin{
-		Number: fmt.Sprintf("%d", pin.GetIndex()),
-	}
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.ConfigureSwitch(&sw)
-	}
-	f.Switches = append(f.Switches, sw)
-	return nil
-}
-
-// Add an object of type MagneticSwitch
-func addMagneticSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
-	return nil
-}
-
-// Add an object of type ServoSwitch
-func addServoSwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
-	// Build number component
-	number := Number{}
-	number.Platform = "template"
-	number.Id = name(string(objModel.GetObjectID()))
-	number.Name = name(string(objModel.GetObjectID()))
-	number.MinValue = ptr.To(-100)
-	number.MaxValue = ptr.To(100)
-	number.Step = ptr.To(1)
-	number.SetAction = []Action{{
-		"servo.write": map[string]any{
-			"id":    "servo_" + number.Id,
-			"level": yamlLambda("return x / 100.0;"),
-		},
-	}}
-	//number.StateTopic = objModel.GetMQTTStateTopic(api.ConnectionNameServo)
-	number.CommandTopic = objModel.GetMQTTCommandTopic(api.ConnectionNameServo)
-	f.Numbers = append(f.Numbers, number)
-
-	// Build servo
-	servo := Servo{}
-	servo.Id = "servo_" + number.Id
-	servo.Output = "servo_output_" + number.Id
-	servo.AutoDetachTime = "4s"
-	servo.TransitionLength = "3s"
-	servo.MinLevel = "0%"
-	servo.MaxLevel = "100%"
-	servo.IdleLevel = "50%"
-	f.Servos = append(f.Servos, servo)
-
-	// Build output
-	output := Output{}
-	output.Id = servo.Output
-
-	conn, err := getConnection(objModel, api.ConnectionNameServo)
-	if err != nil {
-		return err
-	}
-	pin, err := getPin(objModel, conn, 0)
-	if err != nil {
-		return err
-	}
-	output.Channel = fmt.Sprintf("%d", pin.GetIndex()-1)
-	if platform, ok := f.platforms[pin.GetDeviceID()]; !ok {
-		return fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID(), objModel.GetDescription())
-	} else {
-		platform.ConfigureOutput(&output)
-	}
-	f.Outputs = append(f.Outputs, output)
-	return nil
-}
-
-// Add an object of type RelaySwitch
-func addRelaySwitch(f *DeviceFile, objModel model.BinkyNetObject) error {
-	return nil
-}
-
-// Add an object of type TrackInverter
-func addTrackInverter(f *DeviceFile, objModel model.BinkyNetObject) error {
 	return nil
 }
 

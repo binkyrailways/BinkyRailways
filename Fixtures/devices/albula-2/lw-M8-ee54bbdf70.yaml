@@ -42,6 +42,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -56,6 +57,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -140,6 +142,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -194,12 +197,34 @@ switch:
         number: D7
         inverted: true
     - platform: gpio
+      id: straight_relay_sw1
+      name: straight_relay_sw1
+      state_topic: /binky/m8/sw1/phase-straight-relay/state
+      command_topic: /binky/m8/sw1/phase-straight-relay/command
+      pin:
+        number: "14"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: off_relay_sw1
+      name: off_relay_sw1
+      state_topic: /binky/m8/sw1/phase-off-relay/state
+      command_topic: /binky/m8/sw1/phase-off-relay/command
+      pin:
+        number: "15"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
       id: relay1
       name: relay1
-      state_topic: /binky/m8/relay1/sensor/state
-      command_topic: /binky/m8/relay1/sensor/command
+      state_topic: /binky/m8/relay1/output/state
+      command_topic: /binky/m8/relay1/output/command
       pin:
-        number: "9"
+        number: "8"
         mcp23xxx: io1
         mode:
             output: true

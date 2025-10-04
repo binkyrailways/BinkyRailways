@@ -42,6 +42,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -56,6 +57,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -70,6 +72,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -84,6 +87,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -98,6 +102,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -112,6 +117,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -126,6 +132,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -140,6 +147,7 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -154,6 +162,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -168,6 +177,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -182,6 +192,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -196,6 +207,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -210,6 +222,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -224,6 +237,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -238,6 +252,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -252,6 +267,7 @@ binary_sensor:
         mcp23xxx: io1s
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -266,6 +282,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -280,6 +297,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -294,6 +312,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -308,6 +327,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -322,6 +342,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -336,6 +357,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -350,6 +372,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -364,6 +387,7 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -378,6 +402,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -392,6 +417,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -406,6 +432,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -420,6 +447,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -434,6 +462,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -448,6 +477,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -462,6 +492,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -476,6 +507,7 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -490,6 +522,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -504,6 +537,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -518,6 +552,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -532,6 +567,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -546,6 +582,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -560,6 +597,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -574,6 +612,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -588,6 +627,7 @@ binary_sensor:
         pcf8574: iotiny1
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -602,6 +642,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -616,6 +657,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -630,6 +672,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -644,6 +687,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -658,6 +702,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -672,6 +717,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -686,6 +732,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -700,6 +747,7 @@ binary_sensor:
         pcf8574: iotiny2
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -714,6 +762,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -728,6 +777,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -742,6 +792,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -756,6 +807,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -770,6 +822,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -784,6 +837,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -798,6 +852,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -812,6 +867,7 @@ binary_sensor:
         pcf8574: iotiny3
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -826,6 +882,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -840,6 +897,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -854,6 +912,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -868,6 +927,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -882,6 +942,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -896,6 +957,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -910,6 +972,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -924,6 +987,7 @@ binary_sensor:
         pcf8574: iotiny4
         mode:
             input: true
+        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -998,6 +1062,50 @@ switch:
       name: led_green
       pin:
         number: D7
+        inverted: true
+    - platform: gpio
+      id: straight_relay_sw1
+      name: straight_relay_sw1
+      state_topic: /binky/m5/sw1/phase-straight-relay/state
+      command_topic: /binky/m5/sw1/phase-straight-relay/command
+      pin:
+        number: "15"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: off_relay_sw1
+      name: off_relay_sw1
+      state_topic: /binky/m5/sw1/phase-off-relay/state
+      command_topic: /binky/m5/sw1/phase-off-relay/command
+      pin:
+        number: "14"
+        mcp23xxx: io1
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: straight_relay_sw2
+      name: straight_relay_sw2
+      state_topic: /binky/m5/sw2/phase-straight-relay/state
+      command_topic: /binky/m5/sw2/phase-straight-relay/command
+      pin:
+        number: "8"
+        mcp23xxx: io2
+        mode:
+            output: true
+        inverted: true
+    - platform: gpio
+      id: off_relay_sw2
+      name: off_relay_sw2
+      state_topic: /binky/m5/sw2/phase-off-relay/state
+      command_topic: /binky/m5/sw2/phase-off-relay/command
+      pin:
+        number: "9"
+        mcp23xxx: io2
+        mode:
+            output: true
         inverted: true
 i2c: {}
 pca9685:
