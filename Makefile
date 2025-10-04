@@ -9,7 +9,9 @@ ORGPATH := github.com/binkyrailways
 REPONAME := BinkyRailways
 REPOPATH := $(ORGPATH)/$(REPONAME)
 
-BINKYHOST := 192.168.77.1
+ifndef BINKYHOST
+	BINKYHOST := 192.168.77.1
+endif
 BINKYHOSTUSER := pi
 
 ifndef GOOS
@@ -46,7 +48,7 @@ clean:
 .PHONY: binaries
 binaries: generate binaries-server
 
-.PHONY: binaries-server 
+.PHONY: binaries-server
 binaries-server: generate pkg/core/model/predicates/parser.go
 	gox \
 		-mod=readonly \
@@ -60,11 +62,11 @@ binaries-server: generate pkg/core/model/predicates/parser.go
 binaries-gui: binaries-web binaries-macos
 
 .PHONY: binaries-web
-binaries-web: 
+binaries-web:
 	cd apps/binky ; flutter build web --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/ --profile
 
 .PHONY: binaries-macos
-binaries-macos: 
+binaries-macos:
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
@@ -72,14 +74,14 @@ binaries-macos:
 		open apps/binky/build/macos/Build/Products/Release/
 
 .PHONY: develop-gui
-develop-gui: 
+develop-gui:
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
 		cd apps/binky ; flutter run -d macos
 
 .PHONY: develop-web
-develop-web: 
+develop-web:
 	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
 		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
 		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
