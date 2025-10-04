@@ -125,7 +125,7 @@ func (l *binkyNetRouterSet) AddNew() model.BinkyNetRouter {
 	var name string
 	nameIdx := l.GetCount() + 1
 	for {
-		name = fmt.Sprintf("Router %d", nameIdx)
+		name = fmt.Sprintf("r%d", nameIdx)
 		if !l.containsDescription(name) {
 			break
 		}
