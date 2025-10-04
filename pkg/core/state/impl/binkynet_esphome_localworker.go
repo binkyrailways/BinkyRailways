@@ -70,10 +70,13 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 		return err
 	}
 
-	// Collect router names
-	var routerNames []string
+	// Collect router info
+	var routers []*api.RouterInfo
 	vlw.bnlw.GetRouters().ForEach(func(router model.BinkyNetRouter) {
-		routerNames = append(routerNames, router.GetDescription())
+		routers = append(routers, &api.RouterInfo{
+			Id:          router.GetID(),
+			Description: router.GetDescription(),
+		})
 	})
 
 	// Prepare service
@@ -84,7 +87,7 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 		GRPCPort:       vlw.basePort + 2,
 		SSHPort:        vlw.basePort + 3,
 		IsVirtual:      true,
-		RouterNames:    routerNames,
+		Routers:        routers,
 		VirtualServiceInfo: &api.ServiceInfo{
 			ApiAddress: vlw.serverHost,
 			ApiPort:    int32(vlw.serverGrpcPort),

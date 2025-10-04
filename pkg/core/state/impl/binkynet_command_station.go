@@ -606,6 +606,23 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			if unconfigured > 0 {
 				lwm.ErrorMessages = append(lwm.ErrorMessages, fmt.Sprintf("%d unconfigured objects", unconfigured))
 			}
+			for _, router := range info.GetOnlineRouters() {
+				rm := binkyNetRouterModule{
+					LocalWorkerID: info.GetId(),
+					RouterID:      router.GetId(),
+					Manager:       cs.manager,
+				}
+				cb(&rm)
+			}
+			for _, router := range info.GetOfflineRouters() {
+				rm := binkyNetRouterModule{
+					LocalWorkerID: info.GetId(),
+					RouterID:      router.GetId(),
+					Manager:       cs.manager,
+					ErrorMessages: []string{"Router offline"},
+				}
+				cb(&rm)
+			}
 		} else if info.GetId() == dccModuleID {
 			// DCC module is well known
 		} else {
