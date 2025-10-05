@@ -61,13 +61,3 @@ func getInvert(conn model.BinkyNetConnection) (bool, error) {
 	}
 	return false, nil
 }
-
-// Apply any inverted setting on the pin.
-func (pin *Pin) applyInvert(conn model.BinkyNetConnection) error {
-	inverted, err := getInvert(conn)
-	if err != nil {
-		return err
-	}
-	pin.Inverted = inverted
-	return nil
-}

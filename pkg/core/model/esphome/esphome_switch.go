@@ -54,9 +54,6 @@ func (fs *DeviceFileSet) createSwitch(
 	sw.Pin = &Pin{
 		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
-	if err := sw.Pin.applyInvert(conn); err != nil {
-		return nil, err
-	}
 	platform.ConfigureSwitch(&sw)
 
 	// Add to file

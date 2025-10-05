@@ -60,9 +60,6 @@ func (fs *DeviceFileSet) createBinarySensor(
 	sensor.Pin = &Pin{
 		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
-	if err := sensor.Pin.applyInvert(conn); err != nil {
-		return nil, nil, err
-	}
 	platform.ConfigureBinarySensor(&sensor)
 
 	f := platform.deviceFile
