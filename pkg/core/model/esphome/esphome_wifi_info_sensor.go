@@ -17,9 +17,7 @@
 
 package esphome
 
-import (
-	"fmt"
-)
+import api "github.com/binkynet/BinkyNet/apis/v1"
 
 // Create an WIFI info sensor and add it to the given DeviceFile.
 func (f *DeviceFile) createWifiInfoSensor(moduleID string) (*TextSensor, error) {
@@ -30,7 +28,7 @@ func (f *DeviceFile) createWifiInfoSensor(moduleID string) (*TextSensor, error) 
 	sensor.IPAddress = &Component{
 		Name: "ip_address",
 		MQTTComponent: MQTTComponent{
-			StateTopic: fmt.Sprintf("/binky/%s/ip_address", moduleID),
+			StateTopic: api.GetMqttModuleInfoPrefix(moduleID) + api.IpAddressTopicSuffix,
 		},
 	}
 

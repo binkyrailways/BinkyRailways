@@ -65,6 +65,7 @@ type Logger struct {
 type MQTT struct {
 	OnConnect    []Action `yaml:"on_connect,omitempty"`
 	OnDisconnect []Action `yaml:"on_disconnect,omitempty"`
+	TopicPrefix  string   `yaml:"topic_prefix,omitempty"`
 }
 
 type OTA struct {

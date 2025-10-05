@@ -18,8 +18,7 @@
 package esphome
 
 import (
-	"fmt"
-
+	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
 
@@ -33,7 +32,7 @@ func (f *DeviceFile) createWifiSignalSensor(moduleID string) (*Sensor, error) {
 	sensor.Id = name
 	sensor.Name = name
 	sensor.Platform = "wifi_signal"
-	sensor.MQTTComponent.StateTopic = fmt.Sprintf("/binky/%s/wifi_signal", moduleID)
+	sensor.MQTTComponent.StateTopic = api.GetMqttModuleInfoPrefix(moduleID) + api.WifiSignalTopicSuffix
 
 	f.Sensors = append(f.Sensors, sensor)
 	return &f.Sensors[len(f.Sensors)-1], nil

@@ -69,6 +69,7 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 					OnDisconnect: []Action{
 						{"switch.turn_off": "led_green"},
 					},
+					TopicPrefix: api.GetMqttModuleInfoPrefix(router.GetModuleID()),
 				},
 				OTA: &OTA{
 					Platform: "esphome",

@@ -18,7 +18,7 @@
 package esphome
 
 import (
-	"fmt"
+	api "github.com/binkynet/BinkyNet/apis/v1"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -33,7 +33,7 @@ func (f *DeviceFile) createUptimeSensor(moduleID string) (*Sensor, error) {
 	sensor.Name = name
 	sensor.Platform = "uptime"
 	sensor.UpdateInterval = "15s"
-	sensor.MQTTComponent.StateTopic = fmt.Sprintf("/binky/%s/uptime", moduleID)
+	sensor.MQTTComponent.StateTopic = api.GetMqttModuleInfoPrefix(moduleID) + api.UptimeTopicSuffix
 
 	f.Sensors = append(f.Sensors, sensor)
 	return &f.Sensors[len(f.Sensors)-1], nil
