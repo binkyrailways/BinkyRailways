@@ -30,8 +30,8 @@ func (platform *devicePlatform) createNumber(
 	// Create basic sensor
 	number := Number{}
 	number.Platform = "template"
-	number.Id = name(namePrefix + string(objModel.GetObjectID()))
-	number.Name = name(namePrefix + string(objModel.GetObjectID()))
+	number.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
+	number.Name = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	number.MinValue = ptr.To(-100)
 	number.MaxValue = ptr.To(100)
 	number.Step = ptr.To(1)

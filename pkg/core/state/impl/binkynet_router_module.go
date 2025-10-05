@@ -29,7 +29,7 @@ import (
 
 type binkyNetRouterModule struct {
 	LocalWorkerID string
-	RouterID      string
+	ModuleID      string
 	Manager       manager.Manager
 	ErrorMessages []string
 }
@@ -38,14 +38,14 @@ var _ state.HardwareModule = &binkyNetRouterModule{}
 
 // Gets the ID of the module
 func (rm *binkyNetRouterModule) GetID() string {
-	return rm.RouterID
+	return rm.ModuleID
 }
 
 // Gets RouterInfo if online.
 func (rm *binkyNetRouterModule) getRouterInfo() *api.RouterInfo {
 	if info, _, _, found := rm.Manager.GetLocalWorkerInfo(rm.LocalWorkerID); found {
 		for _, ri := range info.GetOnlineRouters() {
-			if ri.GetId() == rm.RouterID {
+			if ri.GetModuleId() == rm.ModuleID {
 				return ri
 			}
 		}

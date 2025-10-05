@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -186,11 +185,6 @@ func (i yamlLambda) MarshalYAML() (interface{}, error) {
 		Value: string(i),
 		Tag:   "!lambda",
 	}, nil
-}
-
-// Turn the given input into a valid esphome name
-func name(input string) string {
-	return strings.ReplaceAll(strings.ToLower(input), " ", "")
 }
 
 // Save file to disk

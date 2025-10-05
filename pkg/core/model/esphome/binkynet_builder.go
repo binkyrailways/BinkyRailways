@@ -40,7 +40,7 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 		lwModel.GetRouters().ForEach(func(router model.BinkyNetRouter) {
 			file := &DeviceFile{
 				Substitutions: map[string]string{
-					"name": name(fmt.Sprintf("%s-%s", lwModel.GetAlias(), router.GetDescription())),
+					"name": router.GetModuleID(),
 				},
 				Packages: map[string]any{
 					"networking": yamlInclude("../packages/networking.yaml"),
@@ -117,7 +117,7 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 		})
 		// Store config(s)
 		lwModel.GetRouters().ForEach(func(router model.BinkyNetRouter) {
-			fname := name(fmt.Sprintf("lw-%s-%s", lwModel.GetAlias(), router.GetDescription()))
+			fname := fmt.Sprintf("lw-%s", router.GetModuleID())
 			file := fileSet.deviceFiles[router.GetID()]
 			if err := file.Save(baseFolder, fname); err != nil {
 				result = errors.Join(result, err)
@@ -162,7 +162,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 	switch devModel.GetDeviceType() {
 	case api.DeviceTypePCA9685:
 		hub := PCA9685Hub{
-			Id:        name(string(devModel.GetDeviceID())),
+			Id:        model.NormalizeName(string(devModel.GetDeviceID())),
 			Address:   devModel.GetAddress(),
 			Frequency: 54,
 		}
@@ -178,7 +178,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 		}
 	case api.DeviceTypeMCP23008:
 		hub := MCP23xxxHub{
-			Id:      name(string(devModel.GetDeviceID())),
+			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
 		f.I2C = &I2C{}
@@ -192,7 +192,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 		}
 	case api.DeviceTypeMCP23017:
 		hub := MCP23xxxHub{
-			Id:      name(string(devModel.GetDeviceID())),
+			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
 		f.I2C = &I2C{}
@@ -206,7 +206,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 		}
 	case api.DeviceTypePCF8574:
 		hub := PCF8574Hub{
-			Id:      name(string(devModel.GetDeviceID())),
+			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
 		f.I2C = &I2C{}

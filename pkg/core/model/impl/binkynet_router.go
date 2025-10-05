@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -55,6 +56,19 @@ func (r *binkyNetRouter) GetLocalWorker() model.BinkyNetLocalWorker {
 		return r.container.GetLocalWorker()
 	}
 	return nil
+}
+
+// Get the identifier of the module.
+// That is: (Alias(or ID) or the local worker) '-' (normalized description of router)
+func (r *binkyNetRouter) GetModuleID() string {
+	if lw := r.GetLocalWorker(); lw != nil {
+		alias := lw.GetAlias()
+		if alias == "" {
+			alias = lw.GetID()
+		}
+		return model.NormalizeName(fmt.Sprintf("%s-%s", alias, r.GetDescription()))
+	}
+	return ""
 }
 
 // SetContainer links this instance to its container

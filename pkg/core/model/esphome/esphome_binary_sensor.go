@@ -47,8 +47,8 @@ func (fs *DeviceFileSet) createBinarySensor(
 
 	// Create basic sensor
 	sensor := BinarySensor{}
-	sensor.Id = name(namePrefix + string(objModel.GetObjectID()))
-	sensor.Name = name(namePrefix + string(objModel.GetObjectID()))
+	sensor.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
+	sensor.Name = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	sensor.StateTopic = objModel.GetMQTTStateTopic(connName)
 	sensor.OnState = &Trigger{
 		Then: []Action{

@@ -47,8 +47,8 @@ func (fs *DeviceFileSet) createSwitch(
 
 	// Create basic switch
 	sw := Switch{}
-	sw.Id = name(namePrefix + string(objModel.GetObjectID()))
-	sw.Name = name(namePrefix + string(objModel.GetObjectID()))
+	sw.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
+	sw.Name = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	sw.StateTopic = objModel.GetMQTTStateTopic(connName)
 	sw.CommandTopic = objModel.GetMQTTCommandTopic(connName)
 	sw.Pin = &Pin{

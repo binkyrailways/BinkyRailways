@@ -16,6 +16,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
 import '../models.dart';
@@ -36,7 +37,7 @@ class HardwareModulesPane extends StatelessWidget {
       }
       css.sort((a, b) =>
           a.last.model.description.compareTo(b.last.model.description));
-      hws.sort((a, b) => a.id.compareTo(b.id));
+      hws.sort((a, b) => compareAsciiLowerCase(a.id, b.id));
       final List<Widget> children = [];
       css.forEach((e) {
         children.add(CommandStationPane(commandStation: e.last));

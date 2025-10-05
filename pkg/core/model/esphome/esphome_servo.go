@@ -27,7 +27,7 @@ func (platform *devicePlatform) createServo(
 
 	// Create basic servo
 	servo := Servo{}
-	servo.Id = name(namePrefix + string(objModel.GetObjectID()))
+	servo.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	// Note that Servo's have no name
 	servo.AutoDetachTime = "4s"
 	servo.TransitionLength = "3s"

@@ -74,7 +74,7 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 	var routers []*api.RouterInfo
 	vlw.bnlw.GetRouters().ForEach(func(router model.BinkyNetRouter) {
 		routers = append(routers, &api.RouterInfo{
-			Id:          router.GetID(),
+			ModuleId:    router.GetModuleID(),
 			Description: router.GetDescription(),
 		})
 	})

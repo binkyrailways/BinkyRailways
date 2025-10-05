@@ -609,7 +609,7 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			for _, router := range info.GetOnlineRouters() {
 				rm := binkyNetRouterModule{
 					LocalWorkerID: info.GetId(),
-					RouterID:      router.GetId(),
+					ModuleID:      router.GetModuleId(),
 					Manager:       cs.manager,
 				}
 				cb(&rm)
@@ -617,7 +617,7 @@ func (cs *binkyNetCommandStation) ForEachHardwareModule(cb func(state.HardwareMo
 			for _, router := range info.GetOfflineRouters() {
 				rm := binkyNetRouterModule{
 					LocalWorkerID: info.GetId(),
-					RouterID:      router.GetId(),
+					ModuleID:      router.GetModuleId(),
 					Manager:       cs.manager,
 					ErrorMessages: []string{"Router offline"},
 				}

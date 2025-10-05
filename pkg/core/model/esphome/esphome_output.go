@@ -47,7 +47,7 @@ func (fs *DeviceFileSet) createOutput(
 
 	// Create basic output
 	output := Output{}
-	output.Id = name(namePrefix + string(objModel.GetObjectID()))
+	output.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	// Note that Output's have no name
 	output.StateTopic = objModel.GetMQTTStateTopic(connName)
 	output.CommandTopic = objModel.GetMQTTCommandTopic(connName)

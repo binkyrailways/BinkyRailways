@@ -1,4 +1,4 @@
-// Copyright 2021 Ewout Prangsma
+// Copyright 2020 Ewout Prangsma
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,11 @@
 
 package model
 
-// BinkyNetRouter represents a hardware device that routes commands & state to/from BinkyNetDevices.
-type BinkyNetRouter interface {
-	Entity
+import (
+	"strings"
+)
 
-	// Gets the local worker this router belongs to
-	GetLocalWorker() BinkyNetLocalWorker
-	// Get the identifier of the module.
-	// That is: (Alias(or ID) or the local worker) '-' (normalized description of router)
-	GetModuleID() string
+// Normalize a module name
+func NormalizeName(input string) string {
+	return strings.ReplaceAll(strings.ToLower(input), " ", "")
 }
