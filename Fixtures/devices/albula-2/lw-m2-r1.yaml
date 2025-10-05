@@ -189,6 +189,16 @@ output:
       id: servo_output_sw2
       channel: "8"
       pca9685_id: pwm1
+sensor:
+    - platform: uptime
+      id: uptime_sensor
+      name: uptime_sensor
+      state_topic: /binky/m2-r1/uptime
+      update_interval: 15s
+    - platform: wifi_signal
+      id: wifi_signal_sensor
+      name: wifi_signal_sensor
+      state_topic: /binky/m2-r1/wifi_signal
 servo:
     - id: servo_sw1
       output: servo_output_sw1
@@ -267,6 +277,11 @@ switch:
         mode:
             output: true
         inverted: true
+text_sensor:
+    - platform: wifi_info
+      ip_address:
+        name: ip_address
+        state_topic: /binky/m2-r1/ip_address
 i2c: {}
 pca9685:
     - id: pwm1

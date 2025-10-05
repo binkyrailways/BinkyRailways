@@ -39,8 +39,10 @@ type DeviceFile struct {
 	Buttons       []Button          `yaml:"button,omitempty"`
 	Numbers       []Number          `yaml:"number,omitempty"`
 	Outputs       []Output          `yaml:"output,omitempty"`
+	Sensors       []Sensor          `yaml:"sensor,omitempty"`
 	Servos        []Servo           `yaml:"servo,omitempty"`
 	Switches      []Switch          `yaml:"switch,omitempty"`
+	TextSensors   []TextSensor      `yaml:"text_sensor,omitempty"`
 	I2C           *I2C              `yaml:"i2c,omitempty"`
 	PCA9685s      []PCA9685Hub      `yaml:"pca9685,omitempty"`
 	MCP23008s     []MCP23xxxHub     `yaml:"mcp23008,omitempty"`
@@ -116,6 +118,16 @@ type BinarySensor struct {
 	Component `yaml:",inline"`
 	Pin       *Pin     `yaml:"pin,omitempty"`
 	OnState   *Trigger `yaml:"on_state,omitempty"`
+}
+
+type Sensor struct {
+	Component      `yaml:",inline"`
+	UpdateInterval string `yaml:"update_interval,omitempty"`
+}
+
+type TextSensor struct {
+	Component `yaml:",inline"`
+	IPAddress *Component `yaml:"ip_address,omitempty"`
 }
 
 type Button struct {

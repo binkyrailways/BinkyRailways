@@ -517,6 +517,16 @@ button:
     - platform: restart
       id: reboot
       name: reboot
+sensor:
+    - platform: uptime
+      id: uptime_sensor
+      name: uptime_sensor
+      state_topic: /binky/m5-r2/uptime
+      update_interval: 15s
+    - platform: wifi_signal
+      id: wifi_signal_sensor
+      name: wifi_signal_sensor
+      state_topic: /binky/m5-r2/wifi_signal
 switch:
     - platform: gpio
       id: led_red
@@ -536,6 +546,11 @@ switch:
       pin:
         number: D7
         inverted: true
+text_sensor:
+    - platform: wifi_info
+      ip_address:
+        name: ip_address
+        state_topic: /binky/m5-r2/ip_address
 i2c: {}
 pcf8574:
     - id: iotiny1

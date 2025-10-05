@@ -100,6 +100,10 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 				file.Wifi.Domain = "." + strings.TrimPrefix(domain, ".")
 			}
 			fileSet.deviceFiles[router.GetID()] = file
+			// Add common sensors
+			file.createUptimeSensor(router.GetModuleID())
+			file.createWifiSignalSensor(router.GetModuleID())
+			file.createWifiInfoSensor(router.GetModuleID())
 		})
 		// Add devices
 		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
