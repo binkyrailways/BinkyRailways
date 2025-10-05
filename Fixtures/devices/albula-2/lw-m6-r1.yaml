@@ -43,7 +43,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -58,7 +57,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -73,7 +71,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -88,7 +85,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -103,7 +99,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -118,7 +113,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -133,7 +127,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -148,7 +141,6 @@ binary_sensor:
         mcp23xxx: io1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -163,7 +155,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -178,7 +169,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -193,7 +183,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -208,7 +197,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -223,7 +211,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -238,7 +225,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -253,7 +239,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -268,7 +253,6 @@ binary_sensor:
         mcp23xxx: ios1
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -283,7 +267,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -298,7 +281,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -313,7 +295,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -328,7 +309,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -343,7 +323,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -358,7 +337,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -373,7 +351,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -388,7 +365,6 @@ binary_sensor:
         mcp23xxx: ios2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -403,7 +379,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -418,7 +393,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -433,7 +407,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -448,7 +421,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -463,7 +435,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -478,7 +449,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -493,7 +463,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -508,7 +477,6 @@ binary_sensor:
         mcp23xxx: io2
         mode:
             input: true
-        inverted: true
       on_state:
         then:
             - switch.turn_on: led_red
@@ -626,7 +594,6 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
-        inverted: true
     - platform: gpio
       id: off_relay_sw1
       name: off_relay_sw1
@@ -637,7 +604,6 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
-        inverted: true
     - platform: gpio
       id: straight_relay_sw2
       name: straight_relay_sw2
@@ -648,7 +614,6 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
-        inverted: true
     - platform: gpio
       id: off_relay_sw2
       name: off_relay_sw2
@@ -659,7 +624,6 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
-        inverted: true
     - platform: gpio
       id: straight_relay_sw3
       name: straight_relay_sw3
@@ -670,7 +634,6 @@ switch:
         mcp23xxx: io2
         mode:
             output: true
-        inverted: true
     - platform: gpio
       id: off_relay_sw3
       name: off_relay_sw3
@@ -681,7 +644,6 @@ switch:
         mcp23xxx: io2
         mode:
             output: true
-        inverted: true
 text_sensor:
     - platform: wifi_info
       ip_address:
