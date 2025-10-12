@@ -165,6 +165,14 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 		return fmt.Errorf("No DeviceFile found for router on device %s", devModel.GetDeviceID())
 	}
 	switch devModel.GetDeviceType() {
+	case api.DeviceTypeGPIO:
+		fs.platforms[devModel.GetDeviceID()] = &devicePlatform{
+			Platform:   "gpio",
+			deviceFile: f,
+			configureOutput: func(o *Output) {
+				o.Platform = "gpio"
+			},
+		}
 	case api.DeviceTypePCA9685:
 		hub := PCA9685Hub{
 			Id:        model.NormalizeName(string(devModel.GetDeviceID())),

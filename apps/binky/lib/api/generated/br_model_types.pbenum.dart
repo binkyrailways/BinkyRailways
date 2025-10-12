@@ -63,6 +63,7 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
   static const BinkyNetDeviceType BINKYCARSENSOR = BinkyNetDeviceType._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'BINKYCARSENSOR');
   static const BinkyNetDeviceType MQTT_GPIO = BinkyNetDeviceType._(6, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MQTT_GPIO');
   static const BinkyNetDeviceType MQTT_SERVO = BinkyNetDeviceType._(7, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'MQTT_SERVO');
+  static const BinkyNetDeviceType GPIO = BinkyNetDeviceType._(8, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GPIO');
 
   static const $core.List<BinkyNetDeviceType> values = <BinkyNetDeviceType> [
     MCP23008,
@@ -73,6 +74,7 @@ class BinkyNetDeviceType extends $pb.ProtobufEnum {
     BINKYCARSENSOR,
     MQTT_GPIO,
     MQTT_SERVO,
+    GPIO,
   ];
 
   static final $core.Map<$core.int, BinkyNetDeviceType> _byValue = $pb.ProtobufEnum.initByValue(values);

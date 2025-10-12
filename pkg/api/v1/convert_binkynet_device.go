@@ -39,7 +39,7 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 		dst.RouterId = r.GetID()
 	}
 	switch src.GetDeviceType() {
-	case v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
+	case v1.DeviceTypeGPIO, v1.DeviceTypeMCP23008, v1.DeviceTypeMCP23017, v1.DeviceTypePCF8574:
 		dst.CanAddSensors_4Group = false
 		dst.CanAddSensors_8Group = true
 	case v1.DeviceTypeBinkyCarSensor:

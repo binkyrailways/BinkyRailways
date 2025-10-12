@@ -26,6 +26,8 @@ import (
 // FromModel converts a device type to an API type
 func (dst *BinkyNetDeviceType) FromModel(ctx context.Context, src api.DeviceType) error {
 	switch src {
+	case api.DeviceTypeGPIO:
+		*dst = BinkyNetDeviceType_GPIO
 	case api.DeviceTypeMCP23008:
 		*dst = BinkyNetDeviceType_MCP23008
 	case api.DeviceTypeMCP23017:
@@ -49,6 +51,8 @@ func (dst *BinkyNetDeviceType) FromModel(ctx context.Context, src api.DeviceType
 // ToModel converts a device type from an API type
 func (src BinkyNetDeviceType) ToModel(ctx context.Context) (api.DeviceType, error) {
 	switch src {
+	case BinkyNetDeviceType_GPIO:
+		return api.DeviceTypeGPIO, nil
 	case BinkyNetDeviceType_MCP23008:
 		return api.DeviceTypeMCP23008, nil
 	case BinkyNetDeviceType_MCP23017:

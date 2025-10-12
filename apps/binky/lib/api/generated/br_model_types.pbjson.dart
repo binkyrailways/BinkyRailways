@@ -53,11 +53,12 @@ const BinkyNetDeviceType$json = const {
     const {'1': 'BINKYCARSENSOR', '2': 5},
     const {'1': 'MQTT_GPIO', '2': 6},
     const {'1': 'MQTT_SERVO', '2': 7},
+    const {'1': 'GPIO', '2': 8},
   ],
 };
 
 /// Descriptor for `BinkyNetDeviceType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAMSCwoHQURTMTExNRAEEhIKDkJJTktZQ0FSU0VOU09SEAUSDQoJTVFUVF9HUElPEAYSDgoKTVFUVF9TRVJWTxAH');
+final $typed_data.Uint8List binkyNetDeviceTypeDescriptor = $convert.base64Decode('ChJCaW5reU5ldERldmljZVR5cGUSDAoITUNQMjMwMDgQABIMCghNQ1AyMzAxNxABEgsKB1BDQTk2ODUQAhILCgdQQ0Y4NTc0EAMSCwoHQURTMTExNRAEEhIKDkJJTktZQ0FSU0VOU09SEAUSDQoJTVFUVF9HUElPEAYSDgoKTVFUVF9TRVJWTxAHEggKBEdQSU8QCA==');
 @$core.Deprecated('Use binkyNetObjectTypeDescriptor instead')
 const BinkyNetObjectType$json = const {
   '1': 'BinkyNetObjectType',

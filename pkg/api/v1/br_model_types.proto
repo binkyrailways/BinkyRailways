@@ -321,6 +321,8 @@ enum BinkyNetDeviceType {
   MQTT_GPIO = 6;
   // DeviceTypeMQTTServo is the device type of an MQTT servo device
   MQTT_SERVO = 7;
+  // DeviceTypeGPIO is the device type of a General Purpose I/O on the localworker / router
+  GPIO = 8;
 }
 
 message BinkyNetObject {
