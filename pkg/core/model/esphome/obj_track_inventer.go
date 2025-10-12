@@ -17,9 +17,25 @@
 
 package esphome
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	api "github.com/binkynet/BinkyNet/apis/v1"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Add an object of type TrackInverter
 func addTrackInverter(fs *DeviceFileSet, objModel model.BinkyNetObject) error {
+	if _, err := fs.createSwitch(objModel, "out_a_in_a_", api.ConnectionNameRelayOutAInA, 0); err != nil {
+		return err
+	}
+	if _, err := fs.createSwitch(objModel, "out_a_in_b_", api.ConnectionNameRelayOutAInB, 0); err != nil {
+		return err
+	}
+	if _, err := fs.createSwitch(objModel, "out_b_in_a_", api.ConnectionNameRelayOutBInA, 0); err != nil {
+		return err
+	}
+	if _, err := fs.createSwitch(objModel, "out_b_in_b_", api.ConnectionNameRelayOutBInB, 0); err != nil {
+		return err
+	}
+
 	return nil
 }
