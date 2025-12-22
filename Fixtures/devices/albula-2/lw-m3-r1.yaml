@@ -336,6 +336,46 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
+    - platform: gpio
+      id: out_a_in_a_l1inverter
+      name: out_a_in_a_l1inverter
+      state_topic: /binky/m3/l1inverter/relay-out-a-in-a/state
+      command_topic: /binky/m3/l1inverter/relay-out-a-in-a/command
+      pin:
+        number: "12"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_a_in_b_l1inverter
+      name: out_a_in_b_l1inverter
+      state_topic: /binky/m3/l1inverter/relay-out-a-in-b/state
+      command_topic: /binky/m3/l1inverter/relay-out-a-in-b/command
+      pin:
+        number: "13"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_a_l1inverter
+      name: out_b_in_a_l1inverter
+      state_topic: /binky/m3/l1inverter/relay-out-b-in-a/state
+      command_topic: /binky/m3/l1inverter/relay-out-b-in-a/command
+      pin:
+        number: "14"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_b_l1inverter
+      name: out_b_in_b_l1inverter
+      state_topic: /binky/m3/l1inverter/relay-out-b-in-b/state
+      command_topic: /binky/m3/l1inverter/relay-out-b-in-b/command
+      pin:
+        number: "15"
+        mcp23xxx: io1
+        mode:
+            output: true
 text_sensor:
     - platform: wifi_info
       ip_address:

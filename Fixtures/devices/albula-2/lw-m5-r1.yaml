@@ -563,6 +563,46 @@ switch:
         number: D7
         inverted: true
     - platform: gpio
+      id: out_a_in_a_l1inverter
+      name: out_a_in_a_l1inverter
+      state_topic: /binky/m5/l1inverter/relay-out-a-in-a/state
+      command_topic: /binky/m5/l1inverter/relay-out-a-in-a/command
+      pin:
+        number: "8"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_a_in_b_l1inverter
+      name: out_a_in_b_l1inverter
+      state_topic: /binky/m5/l1inverter/relay-out-a-in-b/state
+      command_topic: /binky/m5/l1inverter/relay-out-a-in-b/command
+      pin:
+        number: "9"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_a_l1inverter
+      name: out_b_in_a_l1inverter
+      state_topic: /binky/m5/l1inverter/relay-out-b-in-a/state
+      command_topic: /binky/m5/l1inverter/relay-out-b-in-a/command
+      pin:
+        number: "10"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_b_l1inverter
+      name: out_b_in_b_l1inverter
+      state_topic: /binky/m5/l1inverter/relay-out-b-in-b/state
+      command_topic: /binky/m5/l1inverter/relay-out-b-in-b/command
+      pin:
+        number: "11"
+        mcp23xxx: io1
+        mode:
+            output: true
+    - platform: gpio
       id: straight_relay_sw1
       name: straight_relay_sw1
       state_topic: /binky/m5/sw1/phase-straight-relay/state
@@ -599,6 +639,46 @@ switch:
       command_topic: /binky/m5/sw2/phase-off-relay/command
       pin:
         number: "9"
+        mcp23xxx: io2
+        mode:
+            output: true
+    - platform: gpio
+      id: out_a_in_a_l4inverter
+      name: out_a_in_a_l4inverter
+      state_topic: /binky/m5/l4inverter/relay-out-a-in-a/state
+      command_topic: /binky/m5/l4inverter/relay-out-a-in-a/command
+      pin:
+        number: "12"
+        mcp23xxx: io2
+        mode:
+            output: true
+    - platform: gpio
+      id: out_a_in_b_l4inverter
+      name: out_a_in_b_l4inverter
+      state_topic: /binky/m5/l4inverter/relay-out-a-in-b/state
+      command_topic: /binky/m5/l4inverter/relay-out-a-in-b/command
+      pin:
+        number: "13"
+        mcp23xxx: io2
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_a_l4inverter
+      name: out_b_in_a_l4inverter
+      state_topic: /binky/m5/l4inverter/relay-out-b-in-a/state
+      command_topic: /binky/m5/l4inverter/relay-out-b-in-a/command
+      pin:
+        number: "14"
+        mcp23xxx: io2
+        mode:
+            output: true
+    - platform: gpio
+      id: out_b_in_b_l4inverter
+      name: out_b_in_b_l4inverter
+      state_topic: /binky/m5/l4inverter/relay-out-b-in-b/state
+      command_topic: /binky/m5/l4inverter/relay-out-b-in-b/command
+      pin:
+        number: "15"
         mcp23xxx: io2
         mode:
             output: true
