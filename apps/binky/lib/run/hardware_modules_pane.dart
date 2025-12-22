@@ -48,7 +48,10 @@ class HardwareModulesPane extends StatelessWidget {
       });
       return Container(
         padding: const EdgeInsets.all(8),
-        child: Row(children: children),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(children: children),
+        ),
       );
     });
   }
