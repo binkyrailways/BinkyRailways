@@ -22,6 +22,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/validation"
 )
 
 type Railway interface {
@@ -193,4 +194,11 @@ func (r *railway) SetPreferredMqttCommandStation(value model.CommandStation) err
 // Upgrade to latest version
 func (r *railway) Upgrade() {
 	// Empty on purpose
+}
+
+// Validate the railway, returning all findings
+func (r *railway) Validate() []model.Finding {
+	val := validation.NewValidator()
+	r.Accept(val)
+	return val.GetFindings()
 }

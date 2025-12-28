@@ -31,6 +31,7 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
+	"github.com/samber/lo"
 	"golang.org/x/net/html/charset"
 )
 
@@ -124,6 +125,12 @@ func NewPackageFromFile(path string) (model.Package, error) {
 		return nil, fmt.Errorf("Railway entry not found")
 	}
 	p.railway = entry.(model.Railway)
+
+	if findings := p.railway.Validate(); len(findings) > 0 {
+		for _, f := range findings {
+			fmt.Printf("Finding: %s\n", f)
+		}
+	}
 
 	return p, nil
 }
@@ -424,6 +431,15 @@ type afterSave interface {
 func (p *packageImpl) SaveAs(path string) error {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
+
+	// Validate
+	if findings := p.railway.Validate(); len(findings) > 0 {
+		msgs := lo.Map(findings, func(f model.Finding, _ int) string {
+			fmt.Println(f.GetDescription())
+			return f.GetDescription()
+		})
+		return fmt.Errorf("validation failed: %s", strings.Join(msgs, ",\n"))
+	}
 
 	// Update all parts
 	if err := p.updateEntityParts(); err != nil {

@@ -72,4 +72,7 @@ type Railway interface {
 	// Preferred command station for Mqtt addresses.
 	GetPreferredMqttCommandStation() (CommandStation, error)
 	SetPreferredMqttCommandStation(value CommandStation) error
+
+	// Validate the railway, returning all findings
+	Validate() []Finding
 }
