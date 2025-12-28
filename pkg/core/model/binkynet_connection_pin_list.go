@@ -17,6 +17,8 @@
 
 package model
 
+import "iter"
+
 // BinkyNetConnectionPinList is a list of device pins.
 type BinkyNetConnectionPinList interface {
 	// Gets the containing local worker
@@ -32,7 +34,7 @@ type BinkyNetConnectionPinList interface {
 	GetOrAdd(index int) (BinkyNetDevicePin, error)
 
 	// Invoke the callback for each pin
-	ForEach(cb func(BinkyNetDevicePin))
+	All() iter.Seq[BinkyNetDevicePin]
 
 	// Remove the item at given index.
 	// Returns true if it was removed, false otherwise

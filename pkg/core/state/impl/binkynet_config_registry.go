@@ -90,12 +90,12 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 					conn := &api.Connection{
 						Key: bnc.GetKey(),
 					}
-					bnc.GetPins().ForEach(func(pm model.BinkyNetDevicePin) {
+					for pm := range bnc.GetPins().All() {
 						conn.Pins = append(conn.Pins, &api.DevicePin{
 							DeviceId: pm.GetDeviceID(),
 							Index:    pm.GetIndex(),
 						})
-					})
+					}
 					conn.Configuration = make(map[api.ConfigKey]string)
 					if lwModel.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
 						conn.Configuration[api.ConfigKeyMQTTStateTopic] = objModel.GetMQTTStateTopic(bnc.GetKey())
@@ -120,29 +120,27 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 // allPinsHaveNoDevice returns true if all of the pins in the
 // given connection have an empty device ID.
 func allPinsHaveNoDevice(cm model.BinkyNetConnection) bool {
-	anyDevice := false
-	cm.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+	for pin := range cm.GetPins().All() {
 		if pin.GetDeviceID() != "" {
-			anyDevice = true
+			return false
 		}
-	})
-	return !anyDevice
+	}
+	return true
 }
 
 // anyPinsHaveDisabledDevice returns true if any of the pins in the
 // given connection refer to a disabled device.
 func anyPinsHaveDisabledDevice(cm model.BinkyNetConnection, lw model.BinkyNetLocalWorker) bool {
-	foundDisabledDevice := false
-	cm.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+	for pin := range cm.GetPins().All() {
 		if id := pin.GetDeviceID(); id != "" {
 			if dev, found := lw.GetDevices().Get(id); found {
 				if dev.GetIsDisabled() {
-					foundDisabledDevice = true
+					return true
 				}
 			}
 		}
-	})
-	return foundDisabledDevice
+	}
+	return false
 }
 
 // Get returns the configuration for a worker with given hardware ID.

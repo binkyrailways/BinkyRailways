@@ -27,11 +27,11 @@ import (
 // FromModel converts a model BinkyNetConnection to an API BinkyNetConnection
 func (dst *BinkyNetConnection) FromModel(ctx context.Context, src model.BinkyNetConnection) error {
 	dst.Key = string(src.GetKey())
-	src.GetPins().ForEach(func(bndp model.BinkyNetDevicePin) {
+	for bndp := range src.GetPins().All() {
 		pin := &BinkyNetDevicePin{}
 		pin.FromModel(ctx, bndp)
 		dst.Pins = append(dst.Pins, pin)
-	})
+	}
 	dst.Configuration = make(map[string]string)
 	src.GetConfiguration().ForEach(func(key, value string) {
 		dst.Configuration[key] = value

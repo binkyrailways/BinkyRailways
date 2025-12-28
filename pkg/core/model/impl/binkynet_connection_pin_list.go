@@ -20,6 +20,7 @@ package impl
 import (
 	"encoding/xml"
 	"fmt"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -89,9 +90,13 @@ func (l *binkyNetConnectionPinList) GetOrAdd(index int) (model.BinkyNetDevicePin
 }
 
 // Invoke the callback for each pin
-func (l *binkyNetConnectionPinList) ForEach(cb func(model.BinkyNetDevicePin)) {
-	for _, p := range l.Pins {
-		cb(p)
+func (l *binkyNetConnectionPinList) All() iter.Seq[model.BinkyNetDevicePin] {
+	return func(yield func(model.BinkyNetDevicePin) bool) {
+		for _, p := range l.Pins {
+			if !yield(p) {
+				return
+			}
+		}
 	}
 }
 

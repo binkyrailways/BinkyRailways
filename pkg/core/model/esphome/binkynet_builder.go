@@ -304,15 +304,14 @@ func addObject(fs *DeviceFileSet, objModel model.BinkyNetObject, lwModel model.B
 // anyPinsHaveDisabledDevice returns true if any of the pins in the
 // given connection refer to a disabled device.
 func anyPinsHaveDisabledDevice(cm model.BinkyNetConnection, lw model.BinkyNetLocalWorker) bool {
-	foundDisabledDevice := false
-	cm.GetPins().ForEach(func(pin model.BinkyNetDevicePin) {
+	for pin := range cm.GetPins().All() {
 		if id := pin.GetDeviceID(); id != "" {
 			if dev, found := lw.GetDevices().Get(id); found {
 				if dev.GetIsDisabled() {
-					foundDisabledDevice = true
+					return true
 				}
 			}
 		}
-	})
-	return foundDisabledDevice
+	}
+	return false
 }
