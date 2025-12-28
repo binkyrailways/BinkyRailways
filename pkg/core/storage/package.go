@@ -31,7 +31,6 @@ import (
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/impl"
-	"github.com/samber/lo"
 	"golang.org/x/net/html/charset"
 )
 
@@ -434,11 +433,9 @@ func (p *packageImpl) SaveAs(path string) error {
 
 	// Validate
 	if findings := p.railway.Validate(); len(findings) > 0 {
-		msgs := lo.Map(findings, func(f model.Finding, _ int) string {
+		for _, f := range findings {
 			fmt.Println(f.GetDescription())
-			return f.GetDescription()
-		})
-		return fmt.Errorf("validation failed: %s", strings.Join(msgs, ",\n"))
+		}
 	}
 
 	// Update all parts
