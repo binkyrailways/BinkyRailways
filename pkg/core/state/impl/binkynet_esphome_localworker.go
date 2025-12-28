@@ -72,12 +72,12 @@ func (vlw *binkyNetEsphomeLocalWorker) Run(ctx context.Context) error {
 
 	// Collect router info
 	var routers []*api.RouterInfo
-	vlw.bnlw.GetRouters().ForEach(func(router model.BinkyNetRouter) {
+	for router := range vlw.bnlw.GetRouters().All() {
 		routers = append(routers, &api.RouterInfo{
 			ModuleId:    router.GetModuleID(),
 			Description: router.GetDescription(),
 		})
-	})
+	}
 
 	// Prepare service
 	svc, err := service.NewService(service.Config{

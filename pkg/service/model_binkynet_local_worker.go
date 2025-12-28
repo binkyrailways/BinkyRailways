@@ -144,11 +144,11 @@ func (s *service) DeleteBinkyNetRouter(ctx context.Context, req *api.SubIDReques
 		return nil, err
 	}
 	var router model.BinkyNetRouter
-	lw.GetRouters().ForEach(func(x model.BinkyNetRouter) {
+	for x := range lw.GetRouters().All() {
 		if x.GetID() == req.GetSubId() {
 			router = x
 		}
-	})
+	}
 	if router == nil {
 		return nil, fmt.Errorf("router '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
 	}

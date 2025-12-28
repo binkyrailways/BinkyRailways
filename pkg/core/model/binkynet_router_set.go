@@ -17,6 +17,8 @@
 
 package model
 
+import "iter"
+
 // BinkyNetRouterSet is a set of router configurations.
 type BinkyNetRouterSet interface {
 	// Get number of entries
@@ -28,7 +30,7 @@ type BinkyNetRouterSet interface {
 	GetAt(index int) (BinkyNetRouter, bool)
 
 	// Invoke the callback for each entry.
-	ForEach(cb func(BinkyNetRouter))
+	All() iter.Seq[BinkyNetRouter]
 
 	// Remove the given entry.
 	// Returns true if it was removed, false otherwise

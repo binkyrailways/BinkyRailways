@@ -20,6 +20,7 @@ package impl
 import (
 	"encoding/xml"
 	"fmt"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -80,9 +81,13 @@ func (l *binkyNetRouterSet) GetAt(index int) (model.BinkyNetRouter, bool) {
 }
 
 // Invoke the callback for each entry.
-func (l *binkyNetRouterSet) ForEach(cb func(model.BinkyNetRouter)) {
-	for _, d := range l.Items {
-		cb(d)
+func (l *binkyNetRouterSet) All() iter.Seq[model.BinkyNetRouter] {
+	return func(yield func(model.BinkyNetRouter) bool) {
+		for _, d := range l.Items {
+			if !yield(d) {
+				return
+			}
+		}
 	}
 }
 

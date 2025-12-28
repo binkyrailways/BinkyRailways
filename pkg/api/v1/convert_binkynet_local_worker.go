@@ -33,11 +33,11 @@ func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNe
 	dst.HardwareId = src.GetHardwareID()
 	dst.LocalWorkerType.FromModel(ctx, src.GetLocalWorkerType())
 	dst.Alias = src.GetAlias()
-	src.GetRouters().ForEach(func(src model.BinkyNetRouter) {
+	for src := range src.GetRouters().All() {
 		bd := &BinkyNetRouter{}
 		bd.FromModel(ctx, src)
 		dst.Routers = append(dst.Routers, bd)
-	})
+	}
 	for src := range src.GetDevices().All() {
 		bd := &BinkyNetDevice{}
 		bd.FromModel(ctx, src)

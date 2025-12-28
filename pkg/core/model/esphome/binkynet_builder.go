@@ -37,7 +37,7 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			platforms:   make(map[api.DeviceID]*devicePlatform),
 			deviceFiles: make(map[string]*DeviceFile),
 		}
-		lwModel.GetRouters().ForEach(func(router model.BinkyNetRouter) {
+		for router := range lwModel.GetRouters().All() {
 			file := &DeviceFile{
 				Substitutions: map[string]string{
 					"name": router.GetModuleID(),
@@ -105,7 +105,7 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			file.createUptimeSensor(router.GetModuleID())
 			file.createWifiSignalSensor(router.GetModuleID())
 			file.createWifiInfoSensor(router.GetModuleID())
-		})
+		}
 		// Add devices
 		for devModel := range lwModel.GetDevices().All() {
 			if !devModel.GetIsDisabled() {
@@ -121,13 +121,13 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			}
 		}
 		// Store config(s)
-		lwModel.GetRouters().ForEach(func(router model.BinkyNetRouter) {
+		for router := range lwModel.GetRouters().All() {
 			fname := fmt.Sprintf("lw-%s", router.GetModuleID())
 			file := fileSet.deviceFiles[router.GetID()]
 			if err := file.Save(baseFolder, fname); err != nil {
 				result = errors.Join(result, err)
 			}
-		})
+		}
 	})
 	return result
 }
