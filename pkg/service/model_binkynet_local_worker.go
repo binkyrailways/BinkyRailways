@@ -181,11 +181,11 @@ func (s *service) DeleteBinkyNetDevice(ctx context.Context, req *api.SubIDReques
 		return nil, err
 	}
 	var dev model.BinkyNetDevice
-	lw.GetDevices().ForEach(func(x model.BinkyNetDevice) {
+	for x := range lw.GetDevices().All() {
 		if x.GetID() == req.GetSubId() {
 			dev = x
 		}
-	})
+	}
 	if dev == nil {
 		return nil, fmt.Errorf("device '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
 	}

@@ -56,7 +56,7 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 			Alias: lwModel.GetAlias(),
 		}
 		// Add devices
-		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
+		for devModel := range lwModel.GetDevices().All() {
 			if !devModel.GetIsDisabled() {
 				d := &api.Device{
 					Id:      devModel.GetDeviceID(),
@@ -65,7 +65,7 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 				}
 				lw.Devices = append(lw.Devices, d)
 			}
-		})
+		}
 		// Add objects
 		for objModel := range lwModel.GetObjects().All() {
 			if !r.isObjectUsed(objModel) {

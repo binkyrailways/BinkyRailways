@@ -179,11 +179,11 @@ func (lw *binkyNetLocalWorker) ensureRouters(ctx context.Context) {
 			lw.GetRouters().AddNew()
 		}
 		defaultRouter, _ := lw.GetRouters().GetAt(0)
-		lw.Devices.ForEach(func(dev model.BinkyNetDevice) {
+		for dev := range lw.GetDevices().All() {
 			if dev.GetRouter() == nil {
 				dev.SetRouter(ctx, defaultRouter)
 			}
-		})
+		}
 	}
 }
 

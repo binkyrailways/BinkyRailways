@@ -107,13 +107,13 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			file.createWifiInfoSensor(router.GetModuleID())
 		})
 		// Add devices
-		lwModel.GetDevices().ForEach(func(devModel model.BinkyNetDevice) {
+		for devModel := range lwModel.GetDevices().All() {
 			if !devModel.GetIsDisabled() {
 				if err := addDevice(fileSet, devModel); err != nil {
 					result = errors.Join(result, err)
 				}
 			}
-		})
+		}
 		// Add objects
 		for objModel := range lwModel.GetObjects().All() {
 			if err := addObject(fileSet, objModel, lwModel); err != nil {
