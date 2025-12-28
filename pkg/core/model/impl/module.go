@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -195,19 +196,25 @@ func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 	m.Signals.ForEach(func(item model.Signal) { cb(item) })
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
-// module with the direction their being used.
+// Return a sequence of all (non-empty) addresses configured in this
+// entity with the direction their being used.
 // If addresses are used by multiple entities, they are enumerated multiple times.
-func (m *module) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	cbHelper := func(item interface{}) {
-		if x, ok := item.(model.AddressEntity); ok {
-			x.ForEachAddressUsage(cb)
+func (m *module) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		cbHelper := func(item interface{}) {
+			if x, ok := item.(model.AddressEntity); ok {
+				for addressUsage := range x.AllAddressUsages() {
+					if !yield(addressUsage) {
+						return
+					}
+				}
+			}
 		}
+		m.Junctions.ForEach(func(item model.Junction) { cbHelper(item) })
+		m.Outputs.ForEach(func(item model.Output) { cbHelper(item) })
+		m.Sensors.ForEach(func(item model.Sensor) { cbHelper(item) })
+		m.Signals.ForEach(func(item model.Signal) { cbHelper(item) })
 	}
-	m.Junctions.ForEach(func(item model.Junction) { cbHelper(item) })
-	m.Outputs.ForEach(func(item model.Output) { cbHelper(item) })
-	m.Sensors.ForEach(func(item model.Sensor) { cbHelper(item) })
-	m.Signals.ForEach(func(item model.Signal) { cbHelper(item) })
 }
 
 // Upgrade to latest version

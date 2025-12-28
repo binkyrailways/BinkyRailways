@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -83,20 +84,26 @@ func (sw *stdSwitch) SetAddress(ctx context.Context, value model.Address) error 
 	return nil
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (sw *stdSwitch) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	if !sw.Address.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   sw.Address,
-			Direction: model.AddressDirectionOutput,
-		})
-	}
-	if !sw.FeedbackAddress.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   sw.FeedbackAddress,
-			Direction: model.AddressDirectionInput,
-		})
+func (sw *stdSwitch) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		if !sw.Address.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   sw.Address,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
+		if !sw.FeedbackAddress.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   sw.FeedbackAddress,
+				Direction: model.AddressDirectionInput,
+			}) {
+				return
+			}
+		}
 	}
 }
 

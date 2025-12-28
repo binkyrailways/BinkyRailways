@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -121,13 +122,15 @@ func (bo *binaryOutput) SetInactiveText(ctx context.Context, value string) error
 	return nil
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (bo *binaryOutput) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	if !bo.Address.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   bo.Address,
-			Direction: model.AddressDirectionOutput,
-		})
+func (bo *binaryOutput) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		if !bo.Address.IsEmpty() {
+			yield(model.AddressUsage{
+				Address:   bo.Address,
+				Direction: model.AddressDirectionOutput,
+			})
+		}
 	}
 }

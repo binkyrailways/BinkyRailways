@@ -17,6 +17,8 @@
 
 package model
 
+import "iter"
+
 // Module is an unbreakable part of an entire railway.
 type Module interface {
 	PersistentEntity
@@ -61,8 +63,8 @@ type Module interface {
 	// Call the callback for each positioned item in the module
 	ForEachPositionedEntity(cb func(PositionedEntity))
 
-	// Call the given callback for all (non-empty) addresses configured in this
-	// module with the direction their being used.
+	// Return a sequence of all (non-empty) addresses configured in this
+	// entity with the direction their being used.
 	// If addresses are used by multiple entities, they are enumerated multiple times.
-	ForEachAddressUsage(func(AddressUsage))
+	AllAddressUsages() iter.Seq[AddressUsage]
 }

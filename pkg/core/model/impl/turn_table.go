@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -89,25 +90,44 @@ func (sw *turnTable) SetAddress(ctx context.Context, value model.Address) error 
 	return sw.SetPositionAddress1(ctx, value)
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (sw *turnTable) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	op := func(a model.Address, direction model.AddressDirection) {
-		if !a.IsEmpty() {
-			cb(model.AddressUsage{
-				Address:   a,
-				Direction: direction,
-			})
+func (sw *turnTable) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		op := func(a model.Address, direction model.AddressDirection) bool {
+			if !a.IsEmpty() {
+				return yield(model.AddressUsage{
+					Address:   a,
+					Direction: direction,
+				})
+			}
+			return true
+		}
+		if !op(sw.PositionAddress1, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.PositionAddress2, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.PositionAddress3, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.PositionAddress4, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.PositionAddress5, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.PositionAddress6, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.WriteAddress, model.AddressDirectionOutput) {
+			return
+		}
+		if !op(sw.BusyAddress, model.AddressDirectionInput) {
+			return
 		}
 	}
-	op(sw.PositionAddress1, model.AddressDirectionOutput)
-	op(sw.PositionAddress2, model.AddressDirectionOutput)
-	op(sw.PositionAddress3, model.AddressDirectionOutput)
-	op(sw.PositionAddress4, model.AddressDirectionOutput)
-	op(sw.PositionAddress5, model.AddressDirectionOutput)
-	op(sw.PositionAddress6, model.AddressDirectionOutput)
-	op(sw.WriteAddress, model.AddressDirectionOutput)
-	op(sw.BusyAddress, model.AddressDirectionInput)
 }
 
 // Address of first position bit.

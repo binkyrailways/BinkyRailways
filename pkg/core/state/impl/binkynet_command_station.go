@@ -736,11 +736,12 @@ func (cs *binkyNetCommandStation) isObjectUsed(obj model.BinkyNetObject) bool {
 	objAddr := bn.JoinModuleLocal(obj.GetLocalWorker().GetAlias(), string(obj.GetObjectID()))
 	rw.GetModules().ForEach(func(mr model.ModuleRef) {
 		if module, err := mr.TryResolve(); err == nil {
-			module.ForEachAddressUsage(func(au model.AddressUsage) {
+			for au := range module.AllAddressUsages() {
 				if isAddressEqual(au.Address, objAddr) {
 					used = true
+					break
 				}
-			})
+			}
 		}
 	})
 	return used

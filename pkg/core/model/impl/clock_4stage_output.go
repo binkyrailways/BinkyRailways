@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -77,20 +78,26 @@ func (cso *clock4StageOutput) SetAddress(ctx context.Context, value model.Addres
 	return cso.SetAddress1(ctx, value)
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (cso *clock4StageOutput) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	if !cso.Address1.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   cso.Address1,
-			Direction: model.AddressDirectionOutput,
-		})
-	}
-	if !cso.Address2.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   cso.Address2,
-			Direction: model.AddressDirectionOutput,
-		})
+func (cso *clock4StageOutput) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		if !cso.Address1.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   cso.Address1,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
+		if !cso.Address2.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   cso.Address2,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
 	}
 }
 

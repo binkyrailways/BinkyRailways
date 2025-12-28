@@ -17,7 +17,10 @@
 
 package model
 
-import "context"
+import (
+	"context"
+	"iter"
+)
 
 // AddressEntity is an Entity with address
 type AddressEntity interface {
@@ -28,7 +31,7 @@ type AddressEntity interface {
 	// Set the Address of the entity
 	SetAddress(ctx context.Context, value Address) error
 
-	// Call the given callback for all (non-empty) addresses configured in this
+	// Return a sequence of all (non-empty) addresses configured in this
 	// entity with the direction their being used.
-	ForEachAddressUsage(func(AddressUsage))
+	AllAddressUsages() iter.Seq[AddressUsage]
 }

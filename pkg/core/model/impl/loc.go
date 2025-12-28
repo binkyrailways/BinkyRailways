@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -103,14 +104,16 @@ func (l *loc) SetAddress(ctx context.Context, value model.Address) error {
 	return nil
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (l *loc) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	if !l.Address.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   l.Address,
-			Direction: model.AddressDirectionOutput,
-		})
+func (l *loc) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		if !l.Address.IsEmpty() {
+			yield(model.AddressUsage{
+				Address:   l.Address,
+				Direction: model.AddressDirectionOutput,
+			})
+		}
 	}
 }
 

@@ -19,6 +19,7 @@ package impl
 
 import (
 	"context"
+	"iter"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model/refs"
@@ -84,32 +85,42 @@ func (bs *blockSignal) SetAddress(ctx context.Context, value model.Address) erro
 	return bs.SetAddress1(ctx, value)
 }
 
-// Call the given callback for all (non-empty) addresses configured in this
+// Return a sequence of all (non-empty) addresses configured in this
 // entity with the direction their being used.
-func (bs *blockSignal) ForEachAddressUsage(cb func(model.AddressUsage)) {
-	if !bs.Address1.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   bs.Address1,
-			Direction: model.AddressDirectionOutput,
-		})
-	}
-	if !bs.Address2.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   bs.Address2,
-			Direction: model.AddressDirectionOutput,
-		})
-	}
-	if !bs.Address3.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   bs.Address3,
-			Direction: model.AddressDirectionOutput,
-		})
-	}
-	if !bs.Address4.IsEmpty() {
-		cb(model.AddressUsage{
-			Address:   bs.Address4,
-			Direction: model.AddressDirectionOutput,
-		})
+func (bs *blockSignal) AllAddressUsages() iter.Seq[model.AddressUsage] {
+	return func(yield func(model.AddressUsage) bool) {
+		if !bs.Address1.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   bs.Address1,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
+		if !bs.Address2.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   bs.Address2,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
+		if !bs.Address3.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   bs.Address3,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
+		if !bs.Address4.IsEmpty() {
+			if !yield(model.AddressUsage{
+				Address:   bs.Address4,
+				Direction: model.AddressDirectionOutput,
+			}) {
+				return
+			}
+		}
 	}
 }
 
