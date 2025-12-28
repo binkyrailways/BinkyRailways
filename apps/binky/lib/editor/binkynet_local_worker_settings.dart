@@ -92,6 +92,7 @@ class _BinkyNetLocalWorkerSettingsState
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(widget.binkynetlocalworker.id),
         SettingsTextField(
@@ -118,6 +119,9 @@ class _BinkyNetLocalWorkerSettingsState
           },
           items: _localWorkerTypeItems,
         ),
+        SettingsHeader(title: "Validation"),
+        SettingsFindingsField(
+            value: widget.binkynetlocalworker.validationFindings),
       ],
     );
   }

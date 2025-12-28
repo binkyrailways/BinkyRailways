@@ -143,6 +143,11 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
           binkynetconnection: connections[i],
           update: _update));
     }
+
+    children.add(SettingsHeader(title: "Validation"));
+    children.add(
+        SettingsFindingsField(value: widget.binkynetobject.validationFindings));
+
     return ScrollableForm(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

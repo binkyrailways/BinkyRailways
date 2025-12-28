@@ -198,7 +198,5 @@ func (r *railway) Upgrade() {
 
 // Validate the railway, returning all findings
 func (r *railway) Validate() []model.Finding {
-	val := validation.NewValidator()
-	r.Accept(val)
-	return val.GetFindings()
+	return validation.Validate(r)
 }

@@ -95,6 +95,7 @@ class _BinkyNetRouterSettingsState extends State<_BinkyNetRouterSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(widget.binkynetrouter.id),
         SettingsTextField(
@@ -103,6 +104,8 @@ class _BinkyNetRouterSettingsState extends State<_BinkyNetRouterSettings> {
             onLostFocus: (value) async {
               await _update((update) => {update.description = value});
             }),
+        SettingsHeader(title: "Validation"),
+        SettingsFindingsField(value: widget.binkynetrouter.validationFindings),
       ],
     );
   }

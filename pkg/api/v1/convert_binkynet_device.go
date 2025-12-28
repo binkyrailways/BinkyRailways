@@ -25,6 +25,8 @@ import (
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	v1 "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/validation"
+	"github.com/samber/lo"
 )
 
 // FromModel converts a model BinkyNetDevice to an API BinkyNetDevice
@@ -49,6 +51,9 @@ func (dst *BinkyNetDevice) FromModel(ctx context.Context, src model.BinkyNetDevi
 		dst.CanAddSensors_4Group = false
 		dst.CanAddSensors_8Group = false
 	}
+	dst.ValidationFindings = lo.Map(validation.Validate(src), func(item model.Finding, _ int) string {
+		return item.GetDescription()
+	})
 	return nil
 }
 

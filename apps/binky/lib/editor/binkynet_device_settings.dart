@@ -97,6 +97,7 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       key: Key(widget.binkynetdevice.id),
       children: <Widget>[
         Text(widget.binkynetdevice.id),
@@ -146,6 +147,8 @@ class _BinkyNetDeviceSettingsState extends State<_BinkyNetDeviceSettings> {
             });
           },
         ),
+        SettingsHeader(title: "Validation"),
+        SettingsFindingsField(value: widget.binkynetdevice.validationFindings),
       ],
     );
   }

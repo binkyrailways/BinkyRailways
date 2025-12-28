@@ -261,6 +261,8 @@ message BinkyNetLocalWorker {
   repeated BinkyNetObject objects = 11;
   // Set of hardware devices that route commands & state to/from devices belonging to this local worker.
   repeated BinkyNetRouter routers = 12;
+  // If set, contains validation findings
+  repeated string validation_findings = 20;
 }
 
 // Type of local worker
@@ -282,6 +284,8 @@ message BinkyNetRouter {
   string id = 1;
   // Description of the router
   string description = 2;
+  // If set, contains validation findings
+  repeated string validation_findings = 20;
 }
 
 message BinkyNetDevice {
@@ -301,6 +305,8 @@ message BinkyNetDevice {
   bool can_add_sensors_8_group = 10;
   // If set, this device supports adding an object group of type SENSORS_4
   bool can_add_sensors_4_group = 11;
+  // If set, contains validation findings
+  repeated string validation_findings = 20;
 }
 
 enum BinkyNetDeviceType {
@@ -340,6 +346,8 @@ message BinkyNetObject {
 
   // Gets optional configuration for this object.
   map<string, string> configuration = 5;
+  // If set, contains validation findings
+  repeated string validation_findings = 20;
 }
 
 enum BinkyNetObjectType {

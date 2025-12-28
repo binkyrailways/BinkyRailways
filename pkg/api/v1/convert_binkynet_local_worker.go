@@ -23,6 +23,8 @@ import (
 	"go.uber.org/multierr"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/validation"
+	"github.com/samber/lo"
 )
 
 // FromModel converts a model BinkyNetLocalWorker to an API BinkyNetLocalWorker
@@ -48,6 +50,9 @@ func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNe
 		bo.FromModel(ctx, src)
 		dst.Objects = append(dst.Objects, bo)
 	}
+	dst.ValidationFindings = lo.Map(validation.Validate(src), func(item model.Finding, _ int) string {
+		return item.GetDescription()
+	})
 	return nil
 }
 

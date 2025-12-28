@@ -24,6 +24,8 @@ import (
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/validation"
+	"github.com/samber/lo"
 )
 
 // FromModel converts a model BinkyNetObject to an API BinkyNetObject
@@ -39,6 +41,9 @@ func (dst *BinkyNetObject) FromModel(ctx context.Context, src model.BinkyNetObje
 	dst.Configuration = make(map[string]string)
 	src.GetConfiguration().ForEach(func(key, value string) {
 		dst.Configuration[key] = value
+	})
+	dst.ValidationFindings = lo.Map(validation.Validate(src), func(item model.Finding, _ int) string {
+		return item.GetDescription()
 	})
 	return nil
 }

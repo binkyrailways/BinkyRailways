@@ -1,6 +1,10 @@
 package validation
 
-import "github.com/binkyrailways/BinkyRailways/pkg/core/model"
+import (
+	"sort"
+
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+)
 
 // Entity validator
 type validator struct {
@@ -9,20 +13,11 @@ type validator struct {
 	findings []model.Finding
 }
 
-type Validator interface {
-	model.EntityVisitor
-	// Return all findings
-	GetFindings() []model.Finding
-}
-
-// Construct and initialize a new validator
-func NewValidator() Validator {
+// Validate the given entity
+func Validate(e model.Entity) []model.Finding {
 	v := &validator{}
 	v.Visitor = v
-	return v
-}
-
-// Return all findings
-func (v *validator) GetFindings() []model.Finding {
+	e.Accept(v)
+	sort.Slice(v.findings, func(i, j int) bool { return v.findings[i].GetDescription() < v.findings[j].GetDescription() })
 	return v.findings
 }

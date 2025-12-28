@@ -23,12 +23,17 @@ import (
 	"go.uber.org/multierr"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
+	"github.com/binkyrailways/BinkyRailways/pkg/core/model/validation"
+	"github.com/samber/lo"
 )
 
 // FromModel converts a model BinkyNetRouter to an API BinkyNetRouter
 func (dst *BinkyNetRouter) FromModel(ctx context.Context, src model.BinkyNetRouter) error {
 	dst.Id = src.GetID()
 	dst.Description = src.GetDescription()
+	dst.ValidationFindings = lo.Map(validation.Validate(src), func(item model.Finding, _ int) string {
+		return item.GetDescription()
+	})
 	return nil
 }
 
