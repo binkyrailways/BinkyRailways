@@ -15,10 +15,12 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/editor/binkynet_local_workers_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
+import 'binkynet_local_worker_tree.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';
@@ -191,6 +193,12 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
             update.addressSpaces.addAll(value.split(','));
           });
         }));
+
+    if (cs.hasBinkynetCommandStation()) {
+      children.add(const SettingsHeader(title: "Local Workers"));
+      children
+          .add(Expanded(child: BinkyNetLocalWorkersTree(withParents: false)));
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
