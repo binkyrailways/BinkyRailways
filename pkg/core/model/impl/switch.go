@@ -78,6 +78,9 @@ func (sw *stdSwitch) GetAddress() model.Address {
 // Set the Address of the entity
 func (sw *stdSwitch) SetAddress(ctx context.Context, value model.Address) error {
 	if !sw.Address.Equals(value) {
+		if sw.GetDescription() == sw.Address.Value {
+			sw.SetDescription(value.Value)
+		}
 		sw.Address = value
 		sw.OnModified()
 	}
