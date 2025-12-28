@@ -18,16 +18,17 @@ func (v *validator) VisitBinkyNetDevice(d model.BinkyNetDevice) interface{} {
 				for pin := range conn.GetPins().All() {
 					if pin.GetDeviceID() == d.GetDeviceID() {
 						// Pin using this device
-						usedBy := fmt.Sprintf("%s.%s", obj.GetDescription(), conn.GetKey())
-						index := pin.GetIndex()
-						pinsUsedBy[index] = append(pinsUsedBy[index], usedBy)
+						usedBy := fmt.Sprintf("%s[%s]", obj.GetObjectID(), conn.GetKey())
+						if index := pin.GetIndex(); index > 0 {
+							pinsUsedBy[index] = append(pinsUsedBy[index], usedBy)
+						}
 					}
 				}
 			}
 		}
 		for index, allUsedBy := range pinsUsedBy {
 			if len(allUsedBy) > 1 {
-				v.findings = append(v.findings, Finding(fmt.Sprintf("Pin %d of %s is used by %s", index, d.GetDescription(), strings.Join(allUsedBy, " & "))))
+				v.findings = append(v.findings, Finding(fmt.Sprintf("Pin %d of %s in %s is used by %s", index, d.GetDeviceID(), lw.GetDescription(), strings.Join(allUsedBy, " & "))))
 			}
 		}
 	}
