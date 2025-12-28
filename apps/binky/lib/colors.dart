@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 
 class BinkyColors {
   // Generic
+  static const Color hoveredBg = Colors.purple;
   static const Color selectedBg = Colors.orange;
   static const Color partOfSelectedRouteBg = Colors.cyan;
   static const Color reachedSensorOfSelectedRouteBg = Colors.red;

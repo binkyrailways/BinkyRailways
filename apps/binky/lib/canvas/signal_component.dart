@@ -104,7 +104,7 @@ class SignalComponent extends EntityComponent {
     }
   }
 
-  Color backgroundColor() => Colors.grey;
+  Color backgroundColor() => isHovered ? BinkyColors.hoveredBg : Colors.grey;
   Color textColor() => Colors.black;
   Color redColor() => Colors.red;
   Color greenColor() => Colors.green;

@@ -15,6 +15,7 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/colors.dart';
 import 'package:flame/components.dart' as fc;
 import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
@@ -100,7 +101,7 @@ class JunctionComponent extends EntityComponent {
     }
   }
 
-  Color backgroundColor() => Colors.white;
+  Color backgroundColor() => isHovered ? BinkyColors.hoveredBg : Colors.white;
   Color textColor() => Colors.black;
   Color switchColor() => Colors.red.shade200;
   Color altSwitchColor() => Colors.grey.shade200;

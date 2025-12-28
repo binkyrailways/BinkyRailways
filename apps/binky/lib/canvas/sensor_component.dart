@@ -39,8 +39,9 @@ class SensorComponent extends EntityComponent {
       final minDim = min(size.x, size.y);
       final fc.TextPaint textPaint = fc.TextPaint(
         style: TextStyle(
-          fontSize: minDim * 0.8,
+          fontSize: minDim * 0.8 * (isHovered ? 2 : 1),
           color: textColor(),
+          backgroundColor: isHovered ? Colors.white : null,
           fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
         ),
       );
@@ -95,15 +96,18 @@ class SensorComponent extends EntityComponent {
             getTextRotation(model.position), Vector2(size.x / 2, size.y / 2),
             (canvas) {
           textPaint.render(canvas, model.description,
-              Vector2(size.x / 2, size.y / 2 + height),
+              Vector2(size.x / 2, size.y / 2 - height * 2),
               anchor: fc.Anchor.center);
         });
       }
     }
   }
 
-  Color backgroundColor() =>
-      isActive() ? BinkyColors.activeSensorBg : BinkyColors.inactiveSensorBg;
+  Color backgroundColor() => isHovered
+      ? BinkyColors.hoveredBg
+      : isActive()
+          ? BinkyColors.activeSensorBg
+          : BinkyColors.inactiveSensorBg;
   Color textColor() => Colors.black;
 
   bool isActive() => true;
