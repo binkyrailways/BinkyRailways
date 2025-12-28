@@ -115,11 +115,11 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 			}
 		})
 		// Add objects
-		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
+		for objModel := range lwModel.GetObjects().All() {
 			if err := addObject(fileSet, objModel, lwModel); err != nil {
 				result = errors.Join(result, err)
 			}
-		})
+		}
 		// Store config(s)
 		lwModel.GetRouters().ForEach(func(router model.BinkyNetRouter) {
 			fname := fmt.Sprintf("lw-%s", router.GetModuleID())

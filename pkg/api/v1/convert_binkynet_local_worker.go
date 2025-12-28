@@ -43,11 +43,11 @@ func (dst *BinkyNetLocalWorker) FromModel(ctx context.Context, src model.BinkyNe
 		bd.FromModel(ctx, src)
 		dst.Devices = append(dst.Devices, bd)
 	})
-	src.GetObjects().ForEach(func(src model.BinkyNetObject) {
+	for src := range src.GetObjects().All() {
 		bo := &BinkyNetObject{}
 		bo.FromModel(ctx, src)
 		dst.Objects = append(dst.Objects, bo)
-	})
+	}
 	return nil
 }
 

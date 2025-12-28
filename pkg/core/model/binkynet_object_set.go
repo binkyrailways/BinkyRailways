@@ -19,6 +19,7 @@ package model
 
 import (
 	"context"
+	"iter"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 )
@@ -38,7 +39,7 @@ type BinkyNetObjectSet interface {
 	GetAt(index int) (BinkyNetObject, bool)
 
 	// Invoke the callback for each entry.
-	ForEach(cb func(BinkyNetObject))
+	All() iter.Seq[BinkyNetObject]
 
 	// Remove the given entry.
 	// Returns true if it was removed, false otherwise

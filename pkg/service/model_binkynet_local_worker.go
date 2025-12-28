@@ -218,11 +218,11 @@ func (s *service) DeleteBinkyNetObject(ctx context.Context, req *api.SubIDReques
 		return nil, err
 	}
 	var obj model.BinkyNetObject
-	lw.GetObjects().ForEach(func(x model.BinkyNetObject) {
+	for x := range lw.GetObjects().All() {
 		if x.GetID() == req.GetSubId() {
 			obj = x
 		}
-	})
+	}
 	if obj == nil {
 		return nil, fmt.Errorf("object '%s' not found in local worker '%s'", req.GetSubId(), req.GetId())
 	}
@@ -250,7 +250,7 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 	addSensors := func(count int) error {
 		getObjectWithPin := func(pinIndex v1.DeviceIndex) model.BinkyNetObject {
 			var result model.BinkyNetObject
-			lw.GetObjects().ForEach(func(bnObj model.BinkyNetObject) {
+			for bnObj := range lw.GetObjects().All() {
 				if conn, found := bnObj.GetConnections().Get(v1.ConnectionNameSensor); found {
 					if pin, found := conn.GetPins().Get(0); found {
 						if pin.GetDeviceID() == bnDev.GetDeviceID() && pin.GetIndex() == pinIndex {
@@ -258,7 +258,7 @@ func (s *service) AddBinkyNetObjectsGroup(ctx context.Context, req *api.AddBinky
 						}
 					}
 				}
-			})
+			}
 			return result
 		}
 		for i := 0; i < count; i++ {

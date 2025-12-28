@@ -101,7 +101,7 @@ func (d *binkyNetDevice) SetDeviceID(ctx context.Context, value api.DeviceID) er
 
 		// Update objects using this device
 		if lw := d.GetLocalWorker(); lw != nil {
-			lw.GetObjects().ForEach(func(bnObj model.BinkyNetObject) {
+			for bnObj := range lw.GetObjects().All() {
 				for bnc := range bnObj.GetConnections().All() {
 					for pin := range bnc.GetPins().All() {
 						if pin.GetDeviceID() == oldValue {
@@ -110,7 +110,7 @@ func (d *binkyNetDevice) SetDeviceID(ctx context.Context, value api.DeviceID) er
 						}
 					}
 				}
-			})
+			}
 		}
 	}
 	return nil

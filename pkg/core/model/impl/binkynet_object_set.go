@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"iter"
 
 	api "github.com/binkynet/BinkyNet/apis/v1"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
@@ -83,9 +84,13 @@ func (l *binkyNetObjectSet) GetAt(index int) (model.BinkyNetObject, bool) {
 }
 
 // Invoke the callback for each entry.
-func (l *binkyNetObjectSet) ForEach(cb func(model.BinkyNetObject)) {
-	for _, d := range l.Objects {
-		cb(d)
+func (l *binkyNetObjectSet) All() iter.Seq[model.BinkyNetObject] {
+	return func(yield func(model.BinkyNetObject) bool) {
+		for _, d := range l.Objects {
+			if !yield(d) {
+				return
+			}
+		}
 	}
 }
 

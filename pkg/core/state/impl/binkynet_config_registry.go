@@ -67,9 +67,9 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 			}
 		})
 		// Add objects
-		lwModel.GetObjects().ForEach(func(objModel model.BinkyNetObject) {
+		for objModel := range lwModel.GetObjects().All() {
 			if !r.isObjectUsed(objModel) {
-				return
+				continue
 			}
 			disabled := false
 			o := &api.Object{
@@ -110,7 +110,7 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 			if !disabled {
 				lw.Objects = append(lw.Objects, o)
 			}
-		})
+		}
 		// Store config
 		lwConfig[lwModel.GetHardwareID()] = lw
 	})
