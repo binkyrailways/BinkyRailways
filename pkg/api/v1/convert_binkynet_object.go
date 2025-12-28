@@ -31,11 +31,11 @@ func (dst *BinkyNetObject) FromModel(ctx context.Context, src model.BinkyNetObje
 	dst.Id = src.GetID()
 	dst.ObjectId = string(src.GetObjectID())
 	dst.ObjectType.FromModel(ctx, src.GetObjectType())
-	src.GetConnections().ForEach(func(bnc model.BinkyNetConnection) {
+	for bnc := range src.GetConnections().All() {
 		conn := &BinkyNetConnection{}
 		conn.FromModel(ctx, bnc)
 		dst.Connections = append(dst.Connections, conn)
-	})
+	}
 	dst.Configuration = make(map[string]string)
 	src.GetConfiguration().ForEach(func(key, value string) {
 		dst.Configuration[key] = value

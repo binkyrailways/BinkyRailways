@@ -80,17 +80,17 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 			objModel.GetConfiguration().ForEach(func(k, v string) {
 				o.Configuration[api.ObjectConfigKey(k)] = v
 			})
-			objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
-				if anyPinsHaveDisabledDevice(cm, lwModel) {
+			for bnc := range objModel.GetConnections().All() {
+				if anyPinsHaveDisabledDevice(bnc, lwModel) {
 					// Using a disabled device
 					disabled = true
-				} else if allPinsHaveNoDevice(cm) {
+				} else if allPinsHaveNoDevice(bnc) {
 					// No device configured for this connection, ignore it
 				} else {
 					conn := &api.Connection{
-						Key: cm.GetKey(),
+						Key: bnc.GetKey(),
 					}
-					cm.GetPins().ForEach(func(pm model.BinkyNetDevicePin) {
+					bnc.GetPins().ForEach(func(pm model.BinkyNetDevicePin) {
 						conn.Pins = append(conn.Pins, &api.DevicePin{
 							DeviceId: pm.GetDeviceID(),
 							Index:    pm.GetIndex(),
@@ -98,15 +98,15 @@ func (r *binkyNetConfigRegistry) Reconfigure() {
 					})
 					conn.Configuration = make(map[api.ConfigKey]string)
 					if lwModel.GetLocalWorkerType() == model.BinkynetLocalWorkerTypeEsphome {
-						conn.Configuration[api.ConfigKeyMQTTStateTopic] = objModel.GetMQTTStateTopic(cm.GetKey())
-						conn.Configuration[api.ConfigKeyMQTTCommandTopic] = objModel.GetMQTTCommandTopic(cm.GetKey())
+						conn.Configuration[api.ConfigKeyMQTTStateTopic] = objModel.GetMQTTStateTopic(bnc.GetKey())
+						conn.Configuration[api.ConfigKeyMQTTCommandTopic] = objModel.GetMQTTCommandTopic(bnc.GetKey())
 					}
-					cm.GetConfiguration().ForEach(func(k, v string) {
+					bnc.GetConfiguration().ForEach(func(k, v string) {
 						conn.Configuration[api.ConfigKey(k)] = v
 					})
 					o.Connections = append(o.Connections, conn)
 				}
-			})
+			}
 			if !disabled {
 				lw.Objects = append(lw.Objects, o)
 			}

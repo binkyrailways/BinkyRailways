@@ -238,11 +238,12 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 // Adds the given object to the esphome config
 func addObject(fs *DeviceFileSet, objModel model.BinkyNetObject, lwModel model.BinkyNetLocalWorker) error {
 	disabled := false
-	objModel.GetConnections().ForEach(func(cm model.BinkyNetConnection) {
-		if anyPinsHaveDisabledDevice(cm, lwModel) {
+	for bnc := range objModel.GetConnections().All() {
+		if anyPinsHaveDisabledDevice(bnc, lwModel) {
 			disabled = true
+			break
 		}
-	})
+	}
 	if disabled {
 		return nil
 	}

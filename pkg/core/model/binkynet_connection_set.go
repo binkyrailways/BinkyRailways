@@ -17,7 +17,11 @@
 
 package model
 
-import api "github.com/binkynet/BinkyNet/apis/v1"
+import (
+	"iter"
+
+	api "github.com/binkynet/BinkyNet/apis/v1"
+)
 
 // BinkyNetConnectionSet is a set of connections.
 type BinkyNetConnectionSet interface {
@@ -37,7 +41,7 @@ type BinkyNetConnectionSet interface {
 	GetAt(index int) (BinkyNetConnection, bool)
 
 	// Invoke the callback for each entry.
-	ForEach(cb func(BinkyNetConnection))
+	All() iter.Seq[BinkyNetConnection]
 
 	// Remove the given entry.
 	// Returns true if it was removed, false otherwise
