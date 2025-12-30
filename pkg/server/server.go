@@ -91,7 +91,9 @@ func (s *Server) Run(ctx context.Context) error {
 	log := s.log
 
 	// Prepare TLS config
-	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHostIP, s.PublishedHostDNSName, s.CertificatePath)
+	allIPs := findAllIpAddresses()
+	log.Debug().Strs("all_ips", allIPs).Msg("Found all local IP addresses")
+	tlsCfg, pubCA, err := createSelfSignedCertificate(log, s.PublishedHostIP, s.PublishedHostDNSName, allIPs, s.CertificatePath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to prepare self signed certificate")
 	}
@@ -203,4 +205,32 @@ func (s *Server) Run(ctx context.Context) error {
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "OK")
+}
+
+// Find all local IP addresses
+func findAllIpAddresses() []string {
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		return nil
+	}
+	var result []string
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		if err != nil {
+			continue
+		}
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+			if ip != nil && ip.To4() != nil {
+				result = append(result, ip.String())
+			}
+		}
+	}
+	return result
 }

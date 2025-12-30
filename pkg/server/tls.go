@@ -83,8 +83,9 @@ func saveCertificateToFile(info certificateStorage, path string) error {
 
 // createSelfSignedCertificate creates a self-signed TLS certificate and
 // returns <a tls Config with that certificate>, <ca pem encoded>, <error>.
-func createSelfSignedCertificate(log zerolog.Logger, publishedHostIP, publishedHostDNSName, storagePath string) (*tls.Config, string, error) {
+func createSelfSignedCertificate(log zerolog.Logger, publishedHostIP, publishedHostDNSName string, allIPAddresses []string, storagePath string) (*tls.Config, string, error) {
 	// Try to load from file first
+	var pubCA, privCA string
 	stg, err := loadCertificateFromFile(storagePath)
 	if err == nil {
 		if result, err := func() (*tls.Config, error) {
@@ -93,6 +94,27 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHostIP, publishedH
 			if err != nil {
 				return nil, fmt.Errorf("failed to load certificate: %w", err)
 			}
+			// Check IP addresses
+			hasAllIPAddresses := true
+			for _, ip := range allIPAddresses {
+				found := false
+				for _, x := range cert.Leaf.IPAddresses {
+					if x.String() == ip {
+						found = true
+						break
+					}
+				}
+				if !found {
+					hasAllIPAddresses = false
+				}
+			}
+			// Create new certificate if needed
+			if !hasAllIPAddresses {
+				pubCA = stg.CA.Public
+				privCA = stg.CA.Private
+				return nil, fmt.Errorf("not all ip addresses found")
+			}
+
 			return &tls.Config{
 				Certificates: []tls.Certificate{cert},
 			}, nil
@@ -105,16 +127,19 @@ func createSelfSignedCertificate(log zerolog.Logger, publishedHostIP, publishedH
 	}
 
 	// Create a CA
-	pubCA, privCA, err := createCertificate(publishedHostIP, publishedHostDNSName, nil)
-	if err != nil {
-		return nil, "", fmt.Errorf("failed to create CA: %w", err)
+	if pubCA == "" && privCA == "" {
+		var err error
+		pubCA, privCA, err = createCertificate(publishedHostIP, publishedHostDNSName, nil, nil)
+		if err != nil {
+			return nil, "", fmt.Errorf("failed to create CA: %w", err)
+		}
 	}
 	ca, err := loadCAFromPEM(pubCA, privCA)
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to load CA: %w", err)
 	}
 	// Create cert
-	pub, priv, err := createCertificate(publishedHostIP, publishedHostDNSName, &ca)
+	pub, priv, err := createCertificate(publishedHostIP, publishedHostDNSName, allIPAddresses, &ca)
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to create certificate: %w", err)
 	}
@@ -226,7 +251,7 @@ func parsePrivateKey(der []byte) (crypto.PrivateKey, error) {
 
 // Create a TLS x509 certificate.
 // Returns: publicKey, privateKey, error
-func createCertificate(publishedHostIP, publishedHostDNSName string, ca *CA) (string, string, error) {
+func createCertificate(publishedHostIP, publishedHostDNSName string, allIPAddresses []string, ca *CA) (string, string, error) {
 	isCA := ca == nil
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
@@ -262,6 +287,11 @@ func createCertificate(publishedHostIP, publishedHostDNSName string, ca *CA) (st
 		BasicConstraintsValid: true,
 		DNSNames:              []string{publishedHostDNSName},
 		IPAddresses:           []net.IP{net.ParseIP(publishedHostIP)},
+	}
+	for _, ip := range allIPAddresses {
+		if ip != publishedHostIP {
+			template.IPAddresses = append(template.IPAddresses, net.ParseIP(ip))
+		}
 	}
 
 	if isCA {
