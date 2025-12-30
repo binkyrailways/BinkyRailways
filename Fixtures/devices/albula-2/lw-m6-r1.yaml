@@ -259,9 +259,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin1
-      name: ios2_pin1
-      state_topic: /binky/m6/ios2_pin1/sensor/state
+      id: io3_pin1
+      name: io3_pin1
+      state_topic: /binky/m6/io3_pin1/sensor/state
       pin:
         number: "0"
         mcp23xxx: io3
@@ -273,9 +273,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin2
-      name: ios2_pin2
-      state_topic: /binky/m6/ios2_pin2/sensor/state
+      id: io3_pin2
+      name: io3_pin2
+      state_topic: /binky/m6/io3_pin2/sensor/state
       pin:
         number: "1"
         mcp23xxx: io3
@@ -287,9 +287,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin3
-      name: ios2_pin3
-      state_topic: /binky/m6/ios2_pin3/sensor/state
+      id: io3_pin3
+      name: io3_pin3
+      state_topic: /binky/m6/io3_pin3/sensor/state
       pin:
         number: "2"
         mcp23xxx: io3
@@ -301,9 +301,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin4
-      name: ios2_pin4
-      state_topic: /binky/m6/ios2_pin4/sensor/state
+      id: io3_pin4
+      name: io3_pin4
+      state_topic: /binky/m6/io3_pin4/sensor/state
       pin:
         number: "3"
         mcp23xxx: io3
@@ -315,9 +315,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin5
-      name: ios2_pin5
-      state_topic: /binky/m6/ios2_pin5/sensor/state
+      id: io3_pin5
+      name: io3_pin5
+      state_topic: /binky/m6/io3_pin5/sensor/state
       pin:
         number: "4"
         mcp23xxx: io3
@@ -329,9 +329,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin6
-      name: ios2_pin6
-      state_topic: /binky/m6/ios2_pin6/sensor/state
+      id: io3_pin6
+      name: io3_pin6
+      state_topic: /binky/m6/io3_pin6/sensor/state
       pin:
         number: "5"
         mcp23xxx: io3
@@ -343,9 +343,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin7
-      name: ios2_pin7
-      state_topic: /binky/m6/ios2_pin7/sensor/state
+      id: io3_pin7
+      name: io3_pin7
+      state_topic: /binky/m6/io3_pin7/sensor/state
       pin:
         number: "6"
         mcp23xxx: io3
@@ -357,9 +357,9 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: ios2_pin8
-      name: ios2_pin8
-      state_topic: /binky/m6/ios2_pin8/sensor/state
+      id: io3_pin8
+      name: io3_pin8
+      state_topic: /binky/m6/io3_pin8/sensor/state
       pin:
         number: "7"
         mcp23xxx: io3
