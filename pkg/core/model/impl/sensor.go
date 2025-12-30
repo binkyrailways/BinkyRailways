@@ -61,7 +61,7 @@ func (s *sensor) GetAddress() model.Address {
 func (s *sensor) SetAddress(ctx context.Context, value model.Address) error {
 	if !s.Address.Equals(value) {
 		if s.GetDescription() == s.Address.Value {
-			s.SetDescription(value.Value)
+			s.Description = value.Value
 		}
 		s.Address = value
 		s.OnModified()

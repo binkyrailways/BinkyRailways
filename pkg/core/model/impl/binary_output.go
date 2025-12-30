@@ -74,7 +74,7 @@ func (bo *binaryOutput) GetAddress() model.Address {
 func (bo *binaryOutput) SetAddress(ctx context.Context, value model.Address) error {
 	if !bo.Address.Equals(value) {
 		if bo.GetDescription() == bo.Address.Value {
-			bo.SetDescription(value.Value)
+			bo.Description = value.Value
 		}
 		bo.Address = value
 		bo.OnModified()
