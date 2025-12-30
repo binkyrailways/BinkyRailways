@@ -32,5 +32,5 @@ func (v *validator) VisitBinkyNetDevice(d model.BinkyNetDevice) interface{} {
 			}
 		}
 	}
-	return v.AllEntityVisitor.VisitBinkyNetDevice(d)
+	return nil
 }

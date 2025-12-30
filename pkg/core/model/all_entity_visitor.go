@@ -17,286 +17,310 @@
 
 package model
 
-// AllEntityVisitor is an implementation of EntityVisitor
+import "fmt"
+
+// allEntityVisitor is an implementation of EntityVisitor
 // that ensures that all entities are visited.
-type AllEntityVisitor struct {
+type allEntityVisitor struct {
+	visited map[any]bool
 	Visitor EntityVisitor
 }
 
-var _ EntityVisitor = &AllEntityVisitor{}
+// Accept a visit by given entity from our visitor.
+func (v *allEntityVisitor) visit(e Entity) interface{} {
+	if e == nil {
+		return nil
+	}
+	if v.visited[e] {
+		return nil
+	}
+	v.visited[e] = true
+	fmt.Printf("accept by %T %s\n", e, e.GetDescription())
+	return e.Accept(v.Visitor)
+}
 
-func (v *AllEntityVisitor) VisitAction(x Action) interface{} {
+// Construct a new "All" EntityVisitor.
+func NewAllEntityVisitor(visitor EntityVisitor) EntityVisitor {
+	return &allEntityVisitor{
+		visited: make(map[any]bool),
+		Visitor: visitor,
+	}
+}
+
+var _ EntityVisitor = &allEntityVisitor{}
+
+func (v *allEntityVisitor) VisitAction(x Action) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBidibCommandStation(x BidibCommandStation) interface{} {
+func (v *allEntityVisitor) VisitBidibCommandStation(x BidibCommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBinaryOutput(x BinaryOutput) interface{} {
+func (v *allEntityVisitor) VisitBinaryOutput(x BinaryOutput) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBinaryOutputWithState(x BinaryOutputWithState) interface{} {
+func (v *allEntityVisitor) VisitBinaryOutputWithState(x BinaryOutputWithState) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBinkyNetCommandStation(x BinkyNetCommandStation) interface{} {
+func (v *allEntityVisitor) VisitBinkyNetCommandStation(x BinkyNetCommandStation) interface{} {
 	x.GetLocalWorkers().ForEach(func(bnlw BinkyNetLocalWorker) {
-		bnlw.Accept(v.Visitor)
+		v.visit(bnlw)
 	})
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBinarySensor(x BinarySensor) interface{} {
+func (v *allEntityVisitor) VisitBinarySensor(x BinarySensor) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBlock(x Block) interface{} {
-	x.GetWaitPermissions().Accept(v.Visitor)
+func (v *allEntityVisitor) VisitBlock(x Block) interface{} {
+	v.visit(x.GetWaitPermissions())
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBlockGroup(x BlockGroup) interface{} {
+func (v *allEntityVisitor) VisitBlockGroup(x BlockGroup) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitBlockSignal(x BlockSignal) interface{} {
+func (v *allEntityVisitor) VisitBlockSignal(x BlockSignal) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitClock4StageOutput(x Clock4StageOutput) interface{} {
+func (v *allEntityVisitor) VisitClock4StageOutput(x Clock4StageOutput) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitCommandStation(x CommandStation) interface{} {
+func (v *allEntityVisitor) VisitCommandStation(x CommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitCommandStationRef(x CommandStationRef) interface{} {
+func (v *allEntityVisitor) VisitCommandStationRef(x CommandStationRef) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitDccOverRs232CommandStation(x DccOverRs232CommandStation) interface{} {
+func (v *allEntityVisitor) VisitDccOverRs232CommandStation(x DccOverRs232CommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitEcosCommandStation(x EcosCommandStation) interface{} {
+func (v *allEntityVisitor) VisitEcosCommandStation(x EcosCommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitEdge(x Edge) interface{} {
+func (v *allEntityVisitor) VisitEdge(x Edge) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitEndPoint(x EndPoint) interface{} {
+func (v *allEntityVisitor) VisitEndPoint(x EndPoint) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLoc(x Loc) interface{} {
+func (v *allEntityVisitor) VisitLoc(x Loc) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocFunction(x LocFunction) interface{} {
+func (v *allEntityVisitor) VisitLocFunction(x LocFunction) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocGroup(x LocGroup) interface{} {
+func (v *allEntityVisitor) VisitLocGroup(x LocGroup) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocRef(x LocRef) interface{} {
+func (v *allEntityVisitor) VisitLocRef(x LocRef) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocoBufferCommandStation(x LocoBufferCommandStation) interface{} {
+func (v *allEntityVisitor) VisitLocoBufferCommandStation(x LocoBufferCommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitModule(x Module) interface{} {
-	x.GetBlocks().ForEach(func(b Block) { b.Accept(v.Visitor) })
-	x.GetBlockGroups().ForEach(func(bg BlockGroup) { bg.Accept(v.Visitor) })
-	x.GetEdges().ForEach(func(e Edge) { e.Accept(v.Visitor) })
-	x.GetJunctions().ForEach(func(j Junction) { j.Accept(v.Visitor) })
-	x.GetSensors().ForEach(func(s Sensor) { s.Accept(v.Visitor) })
-	x.GetSignals().ForEach(func(s Signal) { s.Accept(v.Visitor) })
-	x.GetOutputs().ForEach(func(o Output) { o.Accept(v.Visitor) })
-	x.GetRoutes().ForEach(func(r Route) { r.Accept(v.Visitor) })
+func (v *allEntityVisitor) VisitModule(x Module) interface{} {
+	x.GetBlocks().ForEach(func(b Block) { v.visit(b) })
+	x.GetBlockGroups().ForEach(func(bg BlockGroup) { v.visit(bg) })
+	x.GetEdges().ForEach(func(e Edge) { v.visit(e) })
+	x.GetJunctions().ForEach(func(j Junction) { v.visit(j) })
+	x.GetSensors().ForEach(func(s Sensor) { v.visit(s) })
+	x.GetSignals().ForEach(func(s Signal) { v.visit(s) })
+	x.GetOutputs().ForEach(func(o Output) { v.visit(o) })
+	x.GetRoutes().ForEach(func(r Route) { v.visit(r) })
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitModuleConnection(x ModuleConnection) interface{} {
+func (v *allEntityVisitor) VisitModuleConnection(x ModuleConnection) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitModuleRef(x ModuleRef) interface{} {
+func (v *allEntityVisitor) VisitModuleRef(x ModuleRef) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitMqttCommandStation(x MqttCommandStation) interface{} {
+func (v *allEntityVisitor) VisitMqttCommandStation(x MqttCommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitOutput(x Output) interface{} {
+func (v *allEntityVisitor) VisitOutput(x Output) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitOutputWithState(x OutputWithState) interface{} {
+func (v *allEntityVisitor) VisitOutputWithState(x OutputWithState) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitP50xCommandStation(x P50xCommandStation) interface{} {
+func (v *allEntityVisitor) VisitP50xCommandStation(x P50xCommandStation) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitRailway(x Railway) interface{} {
+func (v *allEntityVisitor) VisitRailway(x Railway) interface{} {
 	x.GetCommandStations().ForEach(func(csr CommandStationRef) {
 		if cs, err := csr.TryResolve(); err == nil {
-			cs.Accept(v.Visitor)
+			v.visit(cs)
 		}
 	})
 	x.GetLocs().ForEach(func(lr LocRef) {
 		if loc, err := lr.TryResolve(); err == nil {
-			loc.Accept(v.Visitor)
+			v.visit(loc)
 		}
 	})
 	x.GetLocGroups().ForEach(func(lg LocGroup) { lg.Accept(v.Visitor) })
 	x.GetModules().ForEach(func(mr ModuleRef) {
 		if mod, err := mr.TryResolve(); err == nil {
-			mod.Accept(v.Visitor)
+			v.visit(mod)
 		}
 	})
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitRoute(x Route) interface{} {
+func (v *allEntityVisitor) VisitRoute(x Route) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitRouteEvent(x RouteEvent) interface{} {
+func (v *allEntityVisitor) VisitRouteEvent(x RouteEvent) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitRouteEventBehavior(x RouteEventBehavior) interface{} {
+func (v *allEntityVisitor) VisitRouteEventBehavior(x RouteEventBehavior) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitSensor(x Sensor) interface{} {
+func (v *allEntityVisitor) VisitSensor(x Sensor) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitSignal(x Signal) interface{} {
+func (v *allEntityVisitor) VisitSignal(x Signal) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitVirtualCommandStation(x VirtualCommandStation) interface{} {
+func (v *allEntityVisitor) VisitVirtualCommandStation(x VirtualCommandStation) interface{} {
 	return nil
 }
 
 // Junctions
-func (v *AllEntityVisitor) VisitJunction(x Junction) interface{} {
+func (v *allEntityVisitor) VisitJunction(x Junction) interface{} {
 	return nil
 }
-func (v *AllEntityVisitor) VisitJunctionWithState(x JunctionWithState) interface{} {
+func (v *allEntityVisitor) VisitJunctionWithState(x JunctionWithState) interface{} {
 	return nil
 }
-func (v *AllEntityVisitor) VisitPassiveJunction(x PassiveJunction) interface{} {
-	return nil
-}
-
-func (v *AllEntityVisitor) VisitPassiveJunctionWithState(x PassiveJunctionWithState) interface{} {
+func (v *allEntityVisitor) VisitPassiveJunction(x PassiveJunction) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitSwitch(x Switch) interface{} {
+func (v *allEntityVisitor) VisitPassiveJunctionWithState(x PassiveJunctionWithState) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitSwitchWithState(x SwitchWithState) interface{} {
+func (v *allEntityVisitor) VisitSwitch(x Switch) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitTurnTable(x TurnTable) interface{} {
+func (v *allEntityVisitor) VisitSwitchWithState(x SwitchWithState) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitTurnTableWithState(x TurnTableWithState) interface{} {
+func (v *allEntityVisitor) VisitTurnTable(x TurnTable) interface{} {
+	return nil
+}
+
+func (v *allEntityVisitor) VisitTurnTableWithState(x TurnTableWithState) interface{} {
 	return nil
 }
 
 // Predicate
-func (v *AllEntityVisitor) VisitLocPredicate(x LocPredicate) interface{} {
+func (v *allEntityVisitor) VisitLocPredicate(x LocPredicate) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocAndPredicate(x LocAndPredicate) interface{} {
-	x.GetPredicates().ForEach(func(lp LocPredicate) { lp.Accept(v.Visitor) })
+func (v *allEntityVisitor) VisitLocAndPredicate(x LocAndPredicate) interface{} {
+	x.GetPredicates().ForEach(func(lp LocPredicate) { v.visit(lp) })
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocOrPredicate(x LocOrPredicate) interface{} {
-	x.GetPredicates().ForEach(func(lp LocPredicate) { lp.Accept(v.Visitor) })
+func (v *allEntityVisitor) VisitLocOrPredicate(x LocOrPredicate) interface{} {
+	x.GetPredicates().ForEach(func(lp LocPredicate) { v.visit(lp) })
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocCanChangeDirectionPredicate(x LocCanChangeDirectionPredicate) interface{} {
+func (v *allEntityVisitor) VisitLocCanChangeDirectionPredicate(x LocCanChangeDirectionPredicate) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocEqualsPredicate(x LocEqualsPredicate) interface{} {
+func (v *allEntityVisitor) VisitLocEqualsPredicate(x LocEqualsPredicate) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocGroupEqualsPredicate(x LocGroupEqualsPredicate) interface{} {
+func (v *allEntityVisitor) VisitLocGroupEqualsPredicate(x LocGroupEqualsPredicate) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocStandardPredicate(x LocStandardPredicate) interface{} {
-	x.GetIncludes().Accept(v.Visitor)
-	x.GetExcludes().Accept(v.Visitor)
+func (v *allEntityVisitor) VisitLocStandardPredicate(x LocStandardPredicate) interface{} {
+	v.visit(x.GetIncludes())
+	v.visit(x.GetExcludes())
 	return nil
 }
 
-//func (v*AllEntityVisitor) VisitLocTimePredicate(x LocTimePredicate) interface{}
+//func (v*allEntityVisitor) VisitLocTimePredicate(x LocTimePredicate) interface{}
 
 // Actions
-func (v *AllEntityVisitor) VisitInitializeJunctionAction(x InitializeJunctionAction) interface{} {
+func (v *allEntityVisitor) VisitInitializeJunctionAction(x InitializeJunctionAction) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocAction(x LocAction) interface{} {
+func (v *allEntityVisitor) VisitLocAction(x LocAction) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitLocFunctionAction(x LocFunctionAction) interface{} {
+func (v *allEntityVisitor) VisitLocFunctionAction(x LocFunctionAction) interface{} {
 	return nil
 }
 
-func (v *AllEntityVisitor) VisitModuleAction(x ModuleAction) interface{} {
+func (v *allEntityVisitor) VisitModuleAction(x ModuleAction) interface{} {
 	return nil
 }
 
-//func (v*AllEntityVisitor) VisitPlaySoundAction(x PlaySoundAction) interface{}
+//func (v*allEntityVisitor) VisitPlaySoundAction(x PlaySoundAction) interface{}
 
 // BinkyNet
-func (v *AllEntityVisitor) VisitBinkyNetDevice(BinkyNetDevice) interface{} {
+func (v *allEntityVisitor) VisitBinkyNetDevice(BinkyNetDevice) interface{} {
 	return nil
 }
-func (v *AllEntityVisitor) VisitBinkyNetLocalWorker(x BinkyNetLocalWorker) interface{} {
+func (v *allEntityVisitor) VisitBinkyNetLocalWorker(x BinkyNetLocalWorker) interface{} {
 	for r := range x.GetRouters().All() {
-		r.Accept(v.Visitor)
+		v.visit(r)
 	}
 	for d := range x.GetDevices().All() {
-		d.Accept(v.Visitor)
+		v.visit(d)
 	}
 	for o := range x.GetObjects().All() {
-		o.Accept(v.Visitor)
+		v.visit(o)
 	}
 	return nil
 }
-func (v *AllEntityVisitor) VisitBinkyNetObject(BinkyNetObject) interface{} {
+func (v *allEntityVisitor) VisitBinkyNetObject(BinkyNetObject) interface{} {
 	return nil
 }
-func (v *AllEntityVisitor) VisitBinkyNetRouter(BinkyNetRouter) interface{} {
+func (v *allEntityVisitor) VisitBinkyNetRouter(BinkyNetRouter) interface{} {
 	return nil
 }

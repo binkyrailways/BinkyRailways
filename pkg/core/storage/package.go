@@ -428,17 +428,21 @@ type afterSave interface {
 
 // Save to disk.
 func (p *packageImpl) SaveAs(path string) error {
-	p.mutex.Lock()
-	defer p.mutex.Unlock()
-
-	// Validate
+	// Validate first before locking
+	fmt.Println("Validating...")
 	if findings := p.railway.Validate(); len(findings) > 0 {
 		for _, f := range findings {
 			fmt.Println(f.GetDescription())
 		}
 	}
 
+	// Now prepare for save
+	fmt.Println("SaveAs...")
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+
 	// Update all parts
+	fmt.Println("updateEntityParts...")
 	if err := p.updateEntityParts(); err != nil {
 		return err
 	}
@@ -464,6 +468,7 @@ func (p *packageImpl) SaveAs(path string) error {
 	}
 
 	// Write to disk
+	fmt.Println("WriteFile...")
 	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
 		return err
 	}
@@ -477,6 +482,7 @@ func (p *packageImpl) SaveAs(path string) error {
 		}
 	}
 
+	fmt.Println("SaveAs done.")
 	return nil
 }
 
