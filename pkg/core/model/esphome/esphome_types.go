@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"gopkg.in/yaml.v3"
 )
@@ -52,6 +53,24 @@ type DeviceFile struct {
 
 type Esphome struct {
 	OnBoot []Trigger `yaml:"on_boot,omitempty"`
+}
+
+func (e *Esphome) getTrigger(priority int) *Trigger {
+	for i := range e.OnBoot {
+		if e.OnBoot[i].Priority == priority {
+			return &e.OnBoot[i]
+		}
+	}
+	e.OnBoot = append(e.OnBoot, Trigger{Priority: priority})
+	sort.Slice(e.OnBoot, func(i, j int) bool {
+		return e.OnBoot[i].Priority > e.OnBoot[j].Priority
+	})
+	return &e.OnBoot[0]
+}
+
+func (e *Esphome) AddOnBootAction(priority int, a Action) {
+	t := e.getTrigger(priority)
+	t.Then = append(t.Then, a)
 }
 
 type Trigger struct {

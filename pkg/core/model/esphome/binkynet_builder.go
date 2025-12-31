@@ -49,9 +49,6 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 				Esphome: &Esphome{
 					OnBoot: []Trigger{
 						{
-							Priority: 800, // Set initialization of switches here
-						},
-						{
 							Priority: 600, // Default
 							Then: []Action{
 								{"switch.turn_on": "led_yellow"},
