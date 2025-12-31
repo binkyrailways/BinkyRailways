@@ -210,7 +210,7 @@ func (o *binkyNetObject) getMQTTPrefix() string {
 	if o.UseGlobalAddress {
 		alias = "GLOBAL"
 	}
-	return strings.ToLower("/binky/" + alias + "/" + strings.ToLower(string(o.GetObjectID())) + "/")
+	return "/binky/" + alias + "/" + strings.ToLower(string(o.GetObjectID())) + "/"
 }
 
 // Gets the MQTT state topic to use for the connection with given name on this object
