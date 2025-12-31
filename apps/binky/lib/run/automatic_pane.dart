@@ -35,11 +35,11 @@ class AutomaticPane extends StatelessWidget {
               final rwState = snapshot.data;
               final acActual = rwState?.automaticControlActual ?? false;
               final onStyle = ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green[200]),
-                  foregroundColor: MaterialStateProperty.all(Colors.black));
+                  backgroundColor: WidgetStateProperty.all(Colors.green[200]),
+                  foregroundColor: WidgetStateProperty.all(Colors.black));
               final offStyle = ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red[200]),
-                  foregroundColor: MaterialStateProperty.all(Colors.black));
+                  backgroundColor: WidgetStateProperty.all(Colors.red[200]),
+                  foregroundColor: WidgetStateProperty.all(Colors.black));
               return Container(
                   padding: const EdgeInsets.all(8),
                   child: Row(children: [

@@ -37,8 +37,8 @@ class LocPane extends StatelessWidget {
               }
               final locState = snapshot.data!.last;
               final directionStyle = ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.grey[400]),
-                  foregroundColor: MaterialStateProperty.all(Colors.black));
+                  backgroundColor: WidgetStateProperty.all(Colors.grey[400]),
+                  foregroundColor: WidgetStateProperty.all(Colors.black));
 
               return Container(
                   padding: const EdgeInsets.all(8),
@@ -102,10 +102,10 @@ class LocPane extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.orange[400]),
+                                backgroundColor:
+                                    WidgetStateProperty.all(Colors.orange[400]),
                                 foregroundColor:
-                                    MaterialStateProperty.all(Colors.black)),
+                                    WidgetStateProperty.all(Colors.black)),
                             onPressed: () async {
                               await state.setLocSpeedAndDirection(
                                   id, 0, locState.directionRequested);

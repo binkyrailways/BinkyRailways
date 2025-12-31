@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 
-import 'binkynet_local_worker_tree.dart';
 import '../components.dart';
 import '../models.dart';
 import '../api.dart';

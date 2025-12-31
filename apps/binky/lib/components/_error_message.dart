@@ -15,7 +15,6 @@
 // Author Ewout Prangsma
 //
 
-import 'package:binky/components.dart';
 import 'package:flutter/material.dart';
 
 class ErrorMessage extends StatefulWidget {
