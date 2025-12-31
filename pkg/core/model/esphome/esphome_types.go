@@ -51,11 +51,12 @@ type DeviceFile struct {
 }
 
 type Esphome struct {
-	OnBoot *Trigger `yaml:"on_boot,omitempty"`
+	OnBoot []Trigger `yaml:"on_boot,omitempty"`
 }
 
 type Trigger struct {
-	Then []Action `yaml:"then,omitempty"`
+	Priority int      `yaml:"priority,omitempty"`
+	Then     []Action `yaml:"then,omitempty"`
 }
 
 type Logger struct {

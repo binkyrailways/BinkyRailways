@@ -56,8 +56,11 @@ func (fs *DeviceFileSet) createSwitch(
 	}
 	platform.ConfigureSwitch(&sw)
 
-	// Add to file
+	// Set boot value
 	f := platform.deviceFile
+	f.Esphome.OnBoot[0].Then = append(f.Esphome.OnBoot[0].Then, Action{"switch.turn_on": sw.Id})
+
+	// Add to file
 	f.Switches = append(f.Switches, sw)
 	return &f.Switches[len(f.Switches)-1], nil
 }

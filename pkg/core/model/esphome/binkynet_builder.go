@@ -47,15 +47,21 @@ func BuildEsphomeConfigs(baseFolder string, cs model.BinkyNetCommandStation, lwS
 					"device":     yamlInclude("../packages/device-d1mini.yaml"),
 				},
 				Esphome: &Esphome{
-					OnBoot: &Trigger{
-						Then: []Action{
-							{"switch.turn_on": "led_yellow"},
-							{"switch.turn_on": "led_green"},
-							{"switch.turn_on": "led_red"},
-							{"delay": "2s"},
-							{"switch.turn_off": "led_yellow"},
-							{"switch.turn_off": "led_green"},
-							{"switch.turn_off": "led_red"},
+					OnBoot: []Trigger{
+						{
+							Priority: 800, // Set initialization of switches here
+						},
+						{
+							Priority: 600, // Default
+							Then: []Action{
+								{"switch.turn_on": "led_yellow"},
+								{"switch.turn_on": "led_green"},
+								{"switch.turn_on": "led_red"},
+								{"delay": "2s"},
+								{"switch.turn_off": "led_yellow"},
+								{"switch.turn_off": "led_green"},
+								{"switch.turn_off": "led_red"},
+							},
 						},
 					},
 				},
