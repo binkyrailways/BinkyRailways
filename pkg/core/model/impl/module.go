@@ -201,10 +201,15 @@ func (m *module) ForEachPositionedEntity(cb func(model.PositionedEntity)) {
 // If addresses are used by multiple entities, they are enumerated multiple times.
 func (m *module) AllAddressUsages() iter.Seq[model.AddressUsage] {
 	return func(yield func(model.AddressUsage) bool) {
+		stop := false
 		cbHelper := func(item interface{}) {
+			if stop {
+				return
+			}
 			if x, ok := item.(model.AddressEntity); ok {
 				for addressUsage := range x.AllAddressUsages() {
 					if !yield(addressUsage) {
+						stop = true
 						return
 					}
 				}
