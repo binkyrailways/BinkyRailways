@@ -5,7 +5,6 @@ packages:
     networking: !include ../packages/networking.yaml
 esphome:
     on_boot:
-        - priority: 800
         - priority: 600
           then:
             - switch.turn_on: led_yellow
