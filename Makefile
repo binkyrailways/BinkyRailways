@@ -67,25 +67,22 @@ binaries-web:
 
 .PHONY: binaries-macos
 binaries-macos:
-	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
-		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
-		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter build macos
+	export LANG=en_US.UTF-8; \
+	export LC_ALL=en_US.UTF-8; \
+	cd apps/binky && flutter build macos
 		open apps/binky/build/macos/Build/Products/Release/
 
 .PHONY: develop-gui
 develop-gui:
-	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
-		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
-		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter run -d macos
+	export LANG=en_US.UTF-8; \
+	export LC_ALL=en_US.UTF-8; \
+	cd apps/binky && flutter run -d macos
 
 .PHONY: develop-web
 develop-web:
-	LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8" LC_CTYPE="en_US.UTF-8" \
-		LC_MESSAGES="en_US.UTF-8" LC_MONETARY="en_US.UTF-8" LC_NUMERIC="en_US.UTF-8" \
-		LC_TIME="en_US.UTF-8" LC_ALL=en_US.UTF-8 \
-		cd apps/binky ; flutter run -d chrome
+	export LANG=en_US.UTF-8; \
+	export LC_ALL=en_US.UTF-8; \
+	cd apps/binky && flutter run -d chrome
 
 bootstrap:
 	go get github.com/mitchellh/gox
@@ -141,4 +138,3 @@ deploy:
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo touch /home/$(BINKYHOSTUSER)/binky-server.env
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl restart binkyrailways
 	ssh $(BINKYHOSTUSER)@$(BINKYHOST) /usr/bin/sudo systemctl enable binkyrailways
-
