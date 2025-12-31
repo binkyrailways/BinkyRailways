@@ -206,19 +206,19 @@ func (o *binkyNetObject) OnModified() {
 
 // Gets the MQTT state topic to use for the connection with given name on this object
 func (o *binkyNetObject) getMQTTPrefix() string {
-	alias := o.GetLocalWorker().GetAlias()
+	alias := strings.ToLower(o.GetLocalWorker().GetAlias())
 	if o.UseGlobalAddress {
 		alias = "GLOBAL"
 	}
-	return strings.ToLower("/binky/" + alias + "/" + string(o.GetObjectID()) + "/")
+	return strings.ToLower("/binky/" + alias + "/" + strings.ToLower(string(o.GetObjectID())) + "/")
 }
 
 // Gets the MQTT state topic to use for the connection with given name on this object
 func (o *binkyNetObject) GetMQTTStateTopic(connName api.ConnectionName) string {
-	return strings.ToLower(o.getMQTTPrefix() + string(connName) + "/state")
+	return o.getMQTTPrefix() + strings.ToLower(string(connName)+"/state")
 }
 
 // Gets the MQTT command topic to use for the connection with given name on this object
 func (o *binkyNetObject) GetMQTTCommandTopic(connName api.ConnectionName) string {
-	return strings.ToLower(o.getMQTTPrefix() + string(connName) + "/command")
+	return o.getMQTTPrefix() + strings.ToLower(string(connName)+"/command")
 }
