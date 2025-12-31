@@ -17,8 +17,6 @@
 
 package model
 
-import "fmt"
-
 // allEntityVisitor is an implementation of EntityVisitor
 // that ensures that all entities are visited.
 type allEntityVisitor struct {
@@ -35,7 +33,6 @@ func (v *allEntityVisitor) visit(e Entity) interface{} {
 		return nil
 	}
 	v.visited[e] = true
-	fmt.Printf("accept by %T %s\n", e, e.GetDescription())
 	return e.Accept(v.Visitor)
 }
 
