@@ -7,12 +7,12 @@ esphome:
     on_boot:
         - priority: 800
           then:
-            - switch.turn_on: straight_relay_sw1
-            - switch.turn_on: off_relay_sw1
-            - switch.turn_on: out_a_in_a_l1inverter
-            - switch.turn_on: out_a_in_b_l1inverter
-            - switch.turn_on: out_b_in_a_l1inverter
-            - switch.turn_on: out_b_in_b_l1inverter
+            - switch.turn_off: straight_relay_sw1
+            - switch.turn_off: off_relay_sw1
+            - switch.turn_off: out_a_in_a_l1inverter
+            - switch.turn_off: out_a_in_b_l1inverter
+            - switch.turn_off: out_b_in_a_l1inverter
+            - switch.turn_off: out_b_in_b_l1inverter
         - priority: 600
           then:
             - switch.turn_on: led_yellow
