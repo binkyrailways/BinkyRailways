@@ -34,10 +34,11 @@ type binkyNetObject struct {
 
 type binkyNetObjectFields struct {
 	entity
-	ObjectID      api.ObjectID                `xml:"ObjectID,omitempty"`
-	Type          api.ObjectType              `xml:"Type,omitempty"`
-	Connections   binkyNetConnectionSet       `xml:"Connections"`
-	Configuration binkyNetObjectConfiguration `xml:"Configuration"`
+	ObjectID         api.ObjectID                `xml:"ObjectID,omitempty"`
+	Type             api.ObjectType              `xml:"Type,omitempty"`
+	Connections      binkyNetConnectionSet       `xml:"Connections"`
+	Configuration    binkyNetObjectConfiguration `xml:"Configuration"`
+	UseGlobalAddress bool                        `xml:"UseGlobalAddress,omitempty"`
 }
 
 var _ model.BinkyNetObject = &binkyNetObject{}
@@ -139,6 +140,18 @@ func (o *binkyNetObject) SetObjectType(ctx context.Context, value api.ObjectType
 	return nil
 }
 
+// If set, use global address instead of module local address.
+func (o *binkyNetObject) GetUseGlobalAddress() bool {
+	return o.UseGlobalAddress
+}
+func (o *binkyNetObject) SetUseGlobalAddress(ctx context.Context, value bool) error {
+	if o.UseGlobalAddress != value {
+		o.UseGlobalAddress = value
+		o.OnModified()
+	}
+	return nil
+}
+
 // ensureConnectionsForType ensures that all expected connections exists.
 func (o *binkyNetObject) ensureConnectionsForType() {
 	// Ensure all expected connections are there and remove all unexpected (empty) connections.
@@ -193,7 +206,11 @@ func (o *binkyNetObject) OnModified() {
 
 // Gets the MQTT state topic to use for the connection with given name on this object
 func (o *binkyNetObject) getMQTTPrefix() string {
-	return strings.ToLower("/binky/" + o.GetLocalWorker().GetAlias() + "/" + string(o.GetObjectID()) + "/")
+	alias := o.GetLocalWorker().GetAlias()
+	if o.UseGlobalAddress {
+		alias = "GLOBAL"
+	}
+	return strings.ToLower("/binky/" + alias + "/" + string(o.GetObjectID()) + "/")
 }
 
 // Gets the MQTT state topic to use for the connection with given name on this object

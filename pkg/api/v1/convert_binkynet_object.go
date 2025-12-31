@@ -42,6 +42,7 @@ func (dst *BinkyNetObject) FromModel(ctx context.Context, src model.BinkyNetObje
 	src.GetConfiguration().ForEach(func(key, value string) {
 		dst.Configuration[key] = value
 	})
+	dst.UseGlobalAddress = src.GetUseGlobalAddress()
 	dst.ValidationFindings = lo.Map(validation.Validate(src), func(item model.Finding, _ int) string {
 		return item.GetDescription()
 	})
@@ -80,5 +81,6 @@ func (src *BinkyNetObject) ToModel(ctx context.Context, dst model.BinkyNetObject
 			dst.GetConfiguration().Remove(key)
 		}
 	})
+	multierr.AppendInto(&err, dst.SetUseGlobalAddress(ctx, src.GetUseGlobalAddress()))
 	return err
 }

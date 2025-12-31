@@ -1688,6 +1688,7 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     ..e<BinkyNetObjectType>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'objectType', $pb.PbFieldType.OE, defaultOrMaker: BinkyNetObjectType.BINARYSENSOR, valueOf: BinkyNetObjectType.valueOf, enumValues: BinkyNetObjectType.values)
     ..pc<BinkyNetConnection>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'connections', $pb.PbFieldType.PM, subBuilder: BinkyNetConnection.create)
     ..m<$core.String, $core.String>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'configuration', entryClassName: 'BinkyNetObject.ConfigurationEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('binkyrailways.v1'))
+    ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'useGlobalAddress')
     ..pPS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'validationFindings')
     ..hasRequiredFields = false
   ;
@@ -1699,6 +1700,7 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     BinkyNetObjectType? objectType,
     $core.Iterable<BinkyNetConnection>? connections,
     $core.Map<$core.String, $core.String>? configuration,
+    $core.bool? useGlobalAddress,
     $core.Iterable<$core.String>? validationFindings,
   }) {
     final _result = create();
@@ -1716,6 +1718,9 @@ class BinkyNetObject extends $pb.GeneratedMessage {
     }
     if (configuration != null) {
       _result.configuration.addAll(configuration);
+    }
+    if (useGlobalAddress != null) {
+      _result.useGlobalAddress = useGlobalAddress;
     }
     if (validationFindings != null) {
       _result.validationFindings.addAll(validationFindings);
@@ -1776,8 +1781,17 @@ class BinkyNetObject extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.Map<$core.String, $core.String> get configuration => $_getMap(4);
 
+  @$pb.TagNumber(6)
+  $core.bool get useGlobalAddress => $_getBF(5);
+  @$pb.TagNumber(6)
+  set useGlobalAddress($core.bool v) { $_setBool(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasUseGlobalAddress() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearUseGlobalAddress() => clearField(6);
+
   @$pb.TagNumber(20)
-  $core.List<$core.String> get validationFindings => $_getList(5);
+  $core.List<$core.String> get validationFindings => $_getList(6);
 }
 
 class BinkyNetConnection extends $pb.GeneratedMessage {

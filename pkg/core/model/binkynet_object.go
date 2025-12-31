@@ -45,6 +45,10 @@ type BinkyNetObject interface {
 	// Gets optional configuration for this connection.
 	GetConfiguration() BinkyNetObjectConfiguration
 
+	// If set, use global address instead of module local address.
+	GetUseGlobalAddress() bool
+	SetUseGlobalAddress(ctx context.Context, value bool) error
+
 	// Gets the MQTT state topic to use for the connection with given name on this object
 	GetMQTTStateTopic(api.ConnectionName) string
 	// Gets the MQTT command topic to use for the connection with given name on this object

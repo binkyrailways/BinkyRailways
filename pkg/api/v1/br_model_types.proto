@@ -346,6 +346,10 @@ message BinkyNetObject {
 
   // Gets optional configuration for this object.
   map<string, string> configuration = 5;
+
+  // If set, use GLOBAL address instead of module alias
+  bool use_global_address = 6;
+
   // If set, contains validation findings
   repeated string validation_findings = 20;
 }

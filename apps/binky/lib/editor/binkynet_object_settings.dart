@@ -117,6 +117,15 @@ class _BinkyNetObjectSettingsState extends State<_BinkyNetObjectSettings> {
         },
         items: _objectTypeItems,
       ),
+      SettingsCheckBoxField(
+        label: "Use Global Address",
+        value: widget.binkynetobject.useGlobalAddress,
+        onChanged: (value) {
+          _update((x) {
+            x.useGlobalAddress = value;
+          });
+        },
+      )
     ];
 
     final configuration = widget.binkynetobject.configuration;
