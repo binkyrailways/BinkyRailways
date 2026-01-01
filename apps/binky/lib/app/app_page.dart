@@ -17,11 +17,16 @@
 
 import 'dart:async';
 
+import 'package:binky/api/api_channel.dart'
+    if (dart.library.io) 'package:binky/api/api_channel_grpc.dart'
+    if (dart.library.html) 'package:binky/api/api_channel_web.dart';
+
 import 'package:binky/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_links/app_links.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:validator_regex/validator_regex.dart';
 
 import '../api.dart';
 
@@ -45,11 +50,15 @@ class _AppPageState extends State<AppPage> {
   String _lastFrontendBuild = "";
   String _lastProcessUUID = "";
   Timer? _updateTimer;
+  final TextEditingController _host = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
+    _host.text = defaultChannelHost();
+    _host.selection =
+        TextSelection(baseOffset: 0, extentOffset: _host.text.length);
     initDeepLinks();
   }
 
@@ -81,6 +90,13 @@ class _AppPageState extends State<AppPage> {
   void openAppLink(Uri uri) {
     setState(() {
       _title = uri.toString();
+      APIClient.reload(uri);
+    });
+  }
+
+  void useHost() {
+    setState(() {
+      final uri = Uri.parse("https://${_host.text}:${defaultChannelPort()}");
       APIClient.reload(uri);
     });
   }
@@ -141,6 +157,36 @@ class _AppPageState extends State<AppPage> {
                           const Text('Loading application info...'),
                           const CircularProgressIndicator(value: null)
                         ];
+                  children.add(Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            controller: _host,
+                            autofocus: true,
+                            autovalidateMode: AutovalidateMode.always,
+                            validator: (value) =>
+                                Validator.ipAddress(value ?? '')
+                                    ? null
+                                    : 'Not a valid IP address',
+                            onFieldSubmitted: (value) {
+                              useHost();
+                            },
+                            onTap: () {
+                              setState(() {
+                                _host.selection = TextSelection(
+                                    baseOffset: 0,
+                                    extentOffset: _host.text.length);
+                              });
+                            },
+                          )),
+                      TextButton(
+                        onPressed: useHost,
+                        child: const Text("Connect"),
+                      )
+                    ],
+                  ));
                   return Scaffold(
                     appBar: AppBar(
                       // Here we take the value from the MyHomePage object that was created by
