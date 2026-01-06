@@ -15,10 +15,6 @@ esphome:
             - switch.turn_off: out_a_in_b_l1inverter
             - switch.turn_off: out_b_in_a_l1inverter
             - switch.turn_off: out_b_in_b_l1inverter
-            - switch.turn_off: straight_relay_sw1
-            - switch.turn_off: off_relay_sw1
-            - switch.turn_off: straight_relay_sw4
-            - switch.turn_off: off_relay_sw4
         - priority: 600
           then:
             - switch.turn_on: led_yellow
@@ -274,118 +270,6 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
-      id: io2_pin1
-      name: io2_pin1
-      state_topic: /binky/m7/io2_pin1/sensor/state
-      pin:
-        number: "0"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin2
-      name: io2_pin2
-      state_topic: /binky/m7/io2_pin2/sensor/state
-      pin:
-        number: "1"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin3
-      name: io2_pin3
-      state_topic: /binky/m7/io2_pin3/sensor/state
-      pin:
-        number: "2"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin4
-      name: io2_pin4
-      state_topic: /binky/m7/io2_pin4/sensor/state
-      pin:
-        number: "3"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin5
-      name: io2_pin5
-      state_topic: /binky/m7/io2_pin5/sensor/state
-      pin:
-        number: "4"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin6
-      name: io2_pin6
-      state_topic: /binky/m7/io2_pin6/sensor/state
-      pin:
-        number: "5"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin7
-      name: io2_pin7
-      state_topic: /binky/m7/io2_pin7/sensor/state
-      pin:
-        number: "6"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
-      id: io2_pin8
-      name: io2_pin8
-      state_topic: /binky/m7/io2_pin8/sensor/state
-      pin:
-        number: "7"
-        mcp23xxx: io2
-        mode:
-            input: true
-      on_state:
-        then:
-            - switch.turn_on: led_red
-            - delay: 0.2s
-            - switch.turn_off: led_red
-    - platform: gpio
       id: iotiny1_pin1
       name: iotiny1_pin1
       state_topic: /binky/m7/iotiny1_pin1/sensor/state
@@ -501,68 +385,6 @@ button:
     - platform: restart
       id: reboot
       name: reboot
-number:
-    - platform: template
-      id: sw3
-      name: sw3
-      command_topic: /binky/m7/sw3/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw3
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: sw2
-      name: sw2
-      command_topic: /binky/m7/sw2/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw2
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: sw1
-      name: sw1
-      command_topic: /binky/m7/sw1/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw1
-            level: !lambda return x / 100.0;
-    - platform: template
-      id: sw4
-      name: sw4
-      command_topic: /binky/m7/sw4/servo/command
-      min_value: -100
-      max_value: 100
-      step: 1
-      set_action:
-        - servo.write:
-            id: servo_sw4
-            level: !lambda return x / 100.0;
-output:
-    - platform: pca9685
-      id: servo_output_sw3
-      channel: "12"
-      pca9685_id: pwm1
-    - platform: pca9685
-      id: servo_output_sw2
-      channel: "10"
-      pca9685_id: pwm1
-    - platform: pca9685
-      id: servo_output_sw1
-      channel: "0"
-      pca9685_id: pwm1
-    - platform: pca9685
-      id: servo_output_sw4
-      channel: "1"
-      pca9685_id: pwm1
 sensor:
     - platform: uptime
       id: uptime_sensor
@@ -573,35 +395,6 @@ sensor:
       id: wifi_signal_sensor
       name: wifi_signal_sensor
       state_topic: /binky/m7-r1/info/wifi_signal
-servo:
-    - id: servo_sw3
-      output: servo_output_sw3
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_sw2
-      output: servo_output_sw2
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_sw1
-      output: servo_output_sw1
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
-    - id: servo_sw4
-      output: servo_output_sw4
-      auto_detach_time: 4s
-      transition_length: 3s
-      min_level: 0%
-      max_level: 100%
-      idle_level: 50%
 switch:
     - platform: gpio
       id: led_red
@@ -701,64 +494,18 @@ switch:
         mcp23xxx: io1
         mode:
             output: true
-    - platform: gpio
-      id: straight_relay_sw1
-      name: straight_relay_sw1
-      state_topic: /binky/m7/sw1/phase-straight-relay/state
-      command_topic: /binky/m7/sw1/phase-straight-relay/command
-      pin:
-        number: "8"
-        mcp23xxx: io2
-        mode:
-            output: true
-    - platform: gpio
-      id: off_relay_sw1
-      name: off_relay_sw1
-      state_topic: /binky/m7/sw1/phase-off-relay/state
-      command_topic: /binky/m7/sw1/phase-off-relay/command
-      pin:
-        number: "9"
-        mcp23xxx: io2
-        mode:
-            output: true
-    - platform: gpio
-      id: straight_relay_sw4
-      name: straight_relay_sw4
-      state_topic: /binky/m7/sw4/phase-straight-relay/state
-      command_topic: /binky/m7/sw4/phase-straight-relay/command
-      pin:
-        number: "15"
-        mcp23xxx: io2
-        mode:
-            output: true
-    - platform: gpio
-      id: off_relay_sw4
-      name: off_relay_sw4
-      state_topic: /binky/m7/sw4/phase-off-relay/state
-      command_topic: /binky/m7/sw4/phase-off-relay/command
-      pin:
-        number: "14"
-        mcp23xxx: io2
-        mode:
-            output: true
 text_sensor:
     - platform: wifi_info
       ip_address:
         name: ip_address
         state_topic: /binky/m7-r1/info/ip_address
 i2c: {}
-pca9685:
-    - id: pwm1
-      address: "0x40"
-      frequency: 54
 mcp23008:
     - id: ios1
       address: "0x26"
 mcp23017:
     - id: io1
       address: "0x24"
-    - id: io2
-      address: "0x27"
 pcf8574:
     - id: iotiny1
       address: "0x23"
