@@ -44,6 +44,33 @@ wifi:
         - switch.turn_on: led_yellow
     on_disconnect:
         - switch.turn_off: led_yellow
+interval:
+    - interval: 15s
+      then:
+        - lambda: if (id(io1_pin1).state) { id(io1_pin1).publish_state(true); } else { id(io1_pin1).publish_state(true); }
+        - lambda: if (id(io1_pin2).state) { id(io1_pin2).publish_state(true); } else { id(io1_pin2).publish_state(true); }
+        - lambda: if (id(io1_pin3).state) { id(io1_pin3).publish_state(true); } else { id(io1_pin3).publish_state(true); }
+        - lambda: if (id(io1_pin4).state) { id(io1_pin4).publish_state(true); } else { id(io1_pin4).publish_state(true); }
+        - lambda: if (id(io1_pin5).state) { id(io1_pin5).publish_state(true); } else { id(io1_pin5).publish_state(true); }
+        - lambda: if (id(io1_pin6).state) { id(io1_pin6).publish_state(true); } else { id(io1_pin6).publish_state(true); }
+        - lambda: if (id(io1_pin7).state) { id(io1_pin7).publish_state(true); } else { id(io1_pin7).publish_state(true); }
+        - lambda: if (id(io1_pin8).state) { id(io1_pin8).publish_state(true); } else { id(io1_pin8).publish_state(true); }
+        - lambda: if (id(ios1_pin1).state) { id(ios1_pin1).publish_state(true); } else { id(ios1_pin1).publish_state(true); }
+        - lambda: if (id(ios1_pin2).state) { id(ios1_pin2).publish_state(true); } else { id(ios1_pin2).publish_state(true); }
+        - lambda: if (id(ios1_pin3).state) { id(ios1_pin3).publish_state(true); } else { id(ios1_pin3).publish_state(true); }
+        - lambda: if (id(ios1_pin4).state) { id(ios1_pin4).publish_state(true); } else { id(ios1_pin4).publish_state(true); }
+        - lambda: if (id(ios1_pin5).state) { id(ios1_pin5).publish_state(true); } else { id(ios1_pin5).publish_state(true); }
+        - lambda: if (id(ios1_pin6).state) { id(ios1_pin6).publish_state(true); } else { id(ios1_pin6).publish_state(true); }
+        - lambda: if (id(ios1_pin7).state) { id(ios1_pin7).publish_state(true); } else { id(ios1_pin7).publish_state(true); }
+        - lambda: if (id(ios1_pin8).state) { id(ios1_pin8).publish_state(true); } else { id(ios1_pin8).publish_state(true); }
+        - lambda: if (id(iotiny1_pin1).state) { id(iotiny1_pin1).publish_state(true); } else { id(iotiny1_pin1).publish_state(true); }
+        - lambda: if (id(iotiny1_pin2).state) { id(iotiny1_pin2).publish_state(true); } else { id(iotiny1_pin2).publish_state(true); }
+        - lambda: if (id(iotiny1_pin3).state) { id(iotiny1_pin3).publish_state(true); } else { id(iotiny1_pin3).publish_state(true); }
+        - lambda: if (id(iotiny1_pin4).state) { id(iotiny1_pin4).publish_state(true); } else { id(iotiny1_pin4).publish_state(true); }
+        - lambda: if (id(iotiny1_pin5).state) { id(iotiny1_pin5).publish_state(true); } else { id(iotiny1_pin5).publish_state(true); }
+        - lambda: if (id(iotiny1_pin6).state) { id(iotiny1_pin6).publish_state(true); } else { id(iotiny1_pin6).publish_state(true); }
+        - lambda: if (id(iotiny1_pin7).state) { id(iotiny1_pin7).publish_state(true); } else { id(iotiny1_pin7).publish_state(true); }
+        - lambda: if (id(iotiny1_pin8).state) { id(iotiny1_pin8).publish_state(true); } else { id(iotiny1_pin8).publish_state(true); }
 binary_sensor:
     - platform: gpio
       id: io1_pin1
