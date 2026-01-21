@@ -64,5 +64,6 @@ func (fs *DeviceFileSet) createBinarySensor(
 
 	f := platform.deviceFile
 	f.BinarySensors = append(f.BinarySensors, sensor)
+	f.AddSensorUpdateInterval("15s", &sensor)
 	return &f.BinarySensors[len(f.BinarySensors)-1], platform, nil
 }

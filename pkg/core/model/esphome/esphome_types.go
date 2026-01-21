@@ -36,6 +36,7 @@ type DeviceFile struct {
 	OTA           *OTA              `yaml:"ota,omitempty"`
 	WebServer     *WebServer        `yaml:"web_server,omitempty"`
 	Wifi          *Wifi             `yaml:"wifi,omitempty"`
+	Interval      []Interval        `yaml:"interval,omitempty"`
 	BinarySensors []BinarySensor    `yaml:"binary_sensor,omitempty"`
 	Buttons       []Button          `yaml:"button,omitempty"`
 	Numbers       []Number          `yaml:"number,omitempty"`
@@ -71,6 +72,24 @@ func (e *Esphome) getTrigger(priority int) *Trigger {
 func (e *Esphome) AddOnBootAction(priority int, a Action) {
 	t := e.getTrigger(priority)
 	t.Then = append(t.Then, a)
+}
+
+func (e *DeviceFile) getInterval(interval string) *Interval {
+	for idx, item := range e.Interval {
+		if item.Interval == interval {
+			return &e.Interval[idx]
+		}
+	}
+	e.Interval = append(e.Interval, Interval{Interval: interval})
+	return &e.Interval[len(e.Interval)-1]
+}
+
+func (e *DeviceFile) AddSensorUpdateInterval(interval string, bs *BinarySensor) {
+	i := e.getInterval(interval)
+	idFunc := fmt.Sprintf("id(%s)", bs.Id)
+	i.Then = append(i.Then, Action{
+		"lambda": fmt.Sprintf("if (%s.state) { %s.publish_state(true); } else { %s.publish_state(true); }", idFunc, idFunc, idFunc),
+	})
 }
 
 type Trigger struct {
@@ -133,6 +152,11 @@ type Component struct {
 	Id            string `yaml:"id,omitempty"`
 	Name          string `yaml:"name,omitempty"`
 	MQTTComponent `yaml:",inline"`
+}
+
+type Interval struct {
+	Interval string   `yaml:"interval"`
+	Then     []Action `yaml:"then,omitempty"`
 }
 
 type BinarySensor struct {
