@@ -45,8 +45,8 @@ binary_sensor:
       name: io1_pin1
       state_topic: /binky/m8/io1_pin1/sensor/state
       pin:
-        number: "0"
-        mcp23xxx: io1
+        number: "7"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -59,8 +59,8 @@ binary_sensor:
       name: io1_pin2
       state_topic: /binky/m8/io1_pin2/sensor/state
       pin:
-        number: "1"
-        mcp23xxx: io1
+        number: "6"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -73,8 +73,8 @@ binary_sensor:
       name: io1_pin3
       state_topic: /binky/m8/io1_pin3/sensor/state
       pin:
-        number: "2"
-        mcp23xxx: io1
+        number: "5"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -87,8 +87,8 @@ binary_sensor:
       name: io1_pin4
       state_topic: /binky/m8/io1_pin4/sensor/state
       pin:
-        number: "3"
-        mcp23xxx: io1
+        number: "4"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -101,8 +101,8 @@ binary_sensor:
       name: io1_pin5
       state_topic: /binky/m8/io1_pin5/sensor/state
       pin:
-        number: "4"
-        mcp23xxx: io1
+        number: "3"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -115,8 +115,8 @@ binary_sensor:
       name: io1_pin6
       state_topic: /binky/m8/io1_pin6/sensor/state
       pin:
-        number: "5"
-        mcp23xxx: io1
+        number: "2"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -129,8 +129,8 @@ binary_sensor:
       name: io1_pin7
       state_topic: /binky/m8/io1_pin7/sensor/state
       pin:
-        number: "6"
-        mcp23xxx: io1
+        number: "1"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -143,8 +143,8 @@ binary_sensor:
       name: io1_pin8
       state_topic: /binky/m8/io1_pin8/sensor/state
       pin:
-        number: "7"
-        mcp23xxx: io1
+        number: "0"
+        mcp23xxx: ios1
         mode:
             input: true
       on_state:
@@ -250,6 +250,9 @@ pca9685:
     - id: pwm
       address: "0x40"
       frequency: 54
+mcp23008:
+    - id: ios1
+      address: "0x22"
 mcp23017:
     - id: io1
       address: "0x20"
