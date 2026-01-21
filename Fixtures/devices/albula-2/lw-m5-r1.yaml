@@ -268,6 +268,118 @@ binary_sensor:
             - delay: 0.2s
             - switch.turn_off: led_red
     - platform: gpio
+      id: iotiny1_pin1
+      name: iotiny1_pin1
+      state_topic: /binky/m5/iotiny1_pin1/sensor/state
+      pin:
+        number: "0"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin2
+      name: iotiny1_pin2
+      state_topic: /binky/m5/iotiny1_pin2/sensor/state
+      pin:
+        number: "1"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin3
+      name: iotiny1_pin3
+      state_topic: /binky/m5/iotiny1_pin3/sensor/state
+      pin:
+        number: "2"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin4
+      name: iotiny1_pin4
+      state_topic: /binky/m5/iotiny1_pin4/sensor/state
+      pin:
+        number: "3"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin5
+      name: iotiny1_pin5
+      state_topic: /binky/m5/iotiny1_pin5/sensor/state
+      pin:
+        number: "4"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin6
+      name: iotiny1_pin6
+      state_topic: /binky/m5/iotiny1_pin6/sensor/state
+      pin:
+        number: "5"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin7
+      name: iotiny1_pin7
+      state_topic: /binky/m5/iotiny1_pin7/sensor/state
+      pin:
+        number: "6"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: iotiny1_pin8
+      name: iotiny1_pin8
+      state_topic: /binky/m5/iotiny1_pin8/sensor/state
+      pin:
+        number: "7"
+        pcf8574: iotiny1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
       id: iotiny4_pin1
       name: iotiny4_pin1
       state_topic: /binky/m5/iotiny4_pin1/sensor/state
@@ -536,5 +648,7 @@ mcp23017:
     - id: io1
       address: "0x20"
 pcf8574:
+    - id: iotiny1
+      address: "0x21"
     - id: iotiny4
       address: "0x26"
