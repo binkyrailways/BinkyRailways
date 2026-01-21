@@ -56,7 +56,7 @@ binary_sensor:
       name: io1_pin1
       state_topic: /binky/m8/io1_pin1/sensor/state
       pin:
-        number: "7"
+        number: "0"
         mcp23xxx: ios1
         mode:
             input: true
@@ -70,7 +70,7 @@ binary_sensor:
       name: io1_pin2
       state_topic: /binky/m8/io1_pin2/sensor/state
       pin:
-        number: "6"
+        number: "1"
         mcp23xxx: ios1
         mode:
             input: true
@@ -84,7 +84,7 @@ binary_sensor:
       name: io1_pin3
       state_topic: /binky/m8/io1_pin3/sensor/state
       pin:
-        number: "5"
+        number: "2"
         mcp23xxx: ios1
         mode:
             input: true
@@ -98,7 +98,7 @@ binary_sensor:
       name: io1_pin4
       state_topic: /binky/m8/io1_pin4/sensor/state
       pin:
-        number: "4"
+        number: "3"
         mcp23xxx: ios1
         mode:
             input: true
@@ -112,7 +112,7 @@ binary_sensor:
       name: io1_pin5
       state_topic: /binky/m8/io1_pin5/sensor/state
       pin:
-        number: "3"
+        number: "4"
         mcp23xxx: ios1
         mode:
             input: true
@@ -126,7 +126,7 @@ binary_sensor:
       name: io1_pin6
       state_topic: /binky/m8/io1_pin6/sensor/state
       pin:
-        number: "2"
+        number: "5"
         mcp23xxx: ios1
         mode:
             input: true
@@ -140,7 +140,7 @@ binary_sensor:
       name: io1_pin7
       state_topic: /binky/m8/io1_pin7/sensor/state
       pin:
-        number: "1"
+        number: "6"
         mcp23xxx: ios1
         mode:
             input: true
@@ -154,7 +154,7 @@ binary_sensor:
       name: io1_pin8
       state_topic: /binky/m8/io1_pin8/sensor/state
       pin:
-        number: "0"
+        number: "7"
         mcp23xxx: ios1
         mode:
             input: true
