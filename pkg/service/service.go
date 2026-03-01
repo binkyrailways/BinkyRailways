@@ -31,6 +31,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/storage"
 	"github.com/dchest/uniuri"
 	"github.com/mattn/go-pubsub"
+	mqtt "github.com/mochi-mqtt/server/v2"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc/metadata"
 )
@@ -52,7 +53,8 @@ type Config struct {
 }
 
 type Dependencies struct {
-	Logger zerolog.Logger
+	Logger     zerolog.Logger
+	MQTTServer *mqtt.Server
 }
 
 // New constructs a new service.

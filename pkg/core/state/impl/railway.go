@@ -24,6 +24,7 @@ import (
 
 	"go.uber.org/multierr"
 
+	mqtt "github.com/mochi-mqtt/server/v2"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
@@ -77,17 +78,20 @@ type railway struct {
 	automaticLocController state.AutomaticLocController
 	eventLogger            state.EventLogger
 	entityTester           *entityTester
+	mqttServer             *mqtt.Server
 }
 
 // New constructs and initializes state for the given railway.
 func New(ctx context.Context, entity model.Railway, log zerolog.Logger,
 	ui state.UserInterface,
 	persistence state.Persistence,
-	virtual bool) (state.Railway, error) {
+	virtual bool,
+	mqttServer *mqtt.Server) (state.Railway, error) {
 	// Create
 	r := &railway{
-		exclusive: util.NewExclusive(log),
-		log:       log,
+		exclusive:  util.NewExclusive(log),
+		log:        log,
+		mqttServer: mqttServer,
 	}
 	r.entity = newEntity(log, entity, r)
 	r.power = powerProperty{
@@ -668,6 +672,11 @@ func (r *railway) GetOutput(id string) (state.Output, error) {
 // Get the entity tester
 func (r *railway) GetEntityTester() state.EntityTester {
 	return r.entityTester
+}
+
+// Get the MQTT server (if any)
+func (r *railway) GetMQTTServer() *mqtt.Server {
+	return r.mqttServer
 }
 
 // Close the railway

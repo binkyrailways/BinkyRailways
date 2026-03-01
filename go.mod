@@ -22,6 +22,8 @@ require (
 	google.golang.org/grpc v1.32.0
 )
 
+replace github.com/binkynet/NetManager => ../NetManager
+
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect

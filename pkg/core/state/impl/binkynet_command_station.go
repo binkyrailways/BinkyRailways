@@ -87,6 +87,7 @@ func (cs *binkyNetCommandStation) TryPrepareForUse(ctx context.Context, _ state.
 		cs.onUnknownLocalWorker, cs.isObjectUsed)
 	cs.manager, err = manager.New(manager.Dependencies{
 		Log:              log,
+		MQTTServer:       cs.railway.GetMQTTServer(),
 		ReconfigureQueue: cs.reconfigureQueue,
 	})
 	if err != nil {

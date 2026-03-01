@@ -20,6 +20,7 @@ package state
 import (
 	"context"
 
+	mqtt "github.com/mochi-mqtt/server/v2"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 )
@@ -132,6 +133,9 @@ type Railway interface {
 
 	// Get the entity tester
 	GetEntityTester() EntityTester
+
+	// Get the MQTT server (if any)
+	GetMQTTServer() *mqtt.Server
 
 	// Close the railway
 	Close(ctx context.Context)
