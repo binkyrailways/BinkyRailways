@@ -36,7 +36,7 @@ func (s *service) getOutput(ctx context.Context, id string) (model.Output, error
 	}
 	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
-		return nil, api.NotFound(outputID)
+		return nil, api.NotFound("%s", outputID)
 	}
 	return output, nil
 }
@@ -100,7 +100,7 @@ func (s *service) DeleteOutput(ctx context.Context, req *api.IDRequest) (*api.Mo
 	}
 	output, ok := mod.GetOutputs().Get(outputID)
 	if !ok {
-		return nil, api.NotFound(outputID)
+		return nil, api.NotFound("%s", outputID)
 	}
 	mod.GetOutputs().Remove(output)
 	var result api.Module

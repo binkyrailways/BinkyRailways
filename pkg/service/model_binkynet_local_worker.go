@@ -38,11 +38,11 @@ func (s *service) getBinkyNetLocalWorker(ctx context.Context, fullLocalWorkerID 
 	}
 	bncs, ok := cs.(model.BinkyNetCommandStation)
 	if !ok {
-		return nil, api.NotFound(lwID)
+		return nil, api.NotFound("%s", lwID)
 	}
 	lw, ok := bncs.GetLocalWorkers().Get(lwID)
 	if !ok {
-		return nil, api.NotFound(lwID)
+		return nil, api.NotFound("%s", lwID)
 	}
 	return lw, nil
 }
@@ -109,11 +109,11 @@ func (s *service) DeleteBinkyNetLocalWorker(ctx context.Context, req *api.IDRequ
 	}
 	bncs, ok := cs.(model.BinkyNetCommandStation)
 	if !ok {
-		return nil, api.NotFound(lwID)
+		return nil, api.NotFound("%s", lwID)
 	}
 	lw, ok := bncs.GetLocalWorkers().Get(lwID)
 	if !ok {
-		return nil, api.NotFound(lwID)
+		return nil, api.NotFound("%s", lwID)
 	}
 	bncs.GetLocalWorkers().Remove(lw)
 	var result api.CommandStation

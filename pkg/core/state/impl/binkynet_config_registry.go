@@ -150,7 +150,7 @@ func (r *binkyNetConfigRegistry) Get(hardwareID string) (api.LocalWorkerConfig, 
 		if r.onUnknownLocalWorker != nil {
 			r.onUnknownLocalWorker(hardwareID)
 		}
-		return api.LocalWorkerConfig{}, api.NotFound(hardwareID)
+		return api.LocalWorkerConfig{}, api.NotFound("%s", hardwareID)
 	}
 	return result, nil
 }

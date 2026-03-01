@@ -76,8 +76,8 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
                     final idx = entry.key;
                     final hw = entry.value;
                     return Positioned(
-                      left: (idx + 1) * 3.0,
-                      top: (idx + 1) * 3.0,
+                      left: (idx + 1) * 6.0,
+                      top: (idx + 1) * 6.0,
                       child: Opacity(
                         opacity: 0.5,
                         child: _buildBox(context, hw),
@@ -139,32 +139,39 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
     }
     final tooltipErrors =
         hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
-    return TextButton(
-      style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(color),
-          foregroundColor: WidgetStateProperty.all(Colors.black)),
-      child: GestureDetector(
-        child: Tooltip(
-          message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
-          preferBelow: false,
-          child: Text(
-              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
+    return SizedBox(
+      width: 150,
+      height: 60,
+      child: TextButton(
+        style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(color),
+            foregroundColor: WidgetStateProperty.all(Colors.black)),
+        child: GestureDetector(
+          child: Tooltip(
+            message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
+            preferBelow: false,
+            child: Text(
+              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate",
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          onTapDown: (TapDownDetails details) {
+            showMenu(
+              context: context,
+              useRootNavigator: true,
+              position: RelativeRect.fromLTRB(
+                  details.globalPosition.dx,
+                  details.globalPosition.dy,
+                  details.globalPosition.dx,
+                  details.globalPosition.dy),
+              items: popupItems,
+              elevation: 8.0,
+            );
+          },
         ),
-        onTapDown: (TapDownDetails details) {
-          showMenu(
-            context: context,
-            useRootNavigator: true,
-            position: RelativeRect.fromLTRB(
-                details.globalPosition.dx,
-                details.globalPosition.dy,
-                details.globalPosition.dx,
-                details.globalPosition.dy),
-            items: popupItems,
-            elevation: 8.0,
-          );
-        },
+        onPressed: () {},
       ),
-      onPressed: () {},
     );
   }
 }

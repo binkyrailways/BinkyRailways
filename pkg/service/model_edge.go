@@ -35,7 +35,7 @@ func (s *service) GetEdge(ctx context.Context, req *api.IDRequest) (*api.Edge, e
 	}
 	edge, ok := mod.GetEdges().Get(edgeID)
 	if !ok {
-		return nil, api.NotFound(edgeID)
+		return nil, api.NotFound("%s", edgeID)
 	}
 	var result api.Edge
 	if err := result.FromModel(ctx, edge); err != nil {
@@ -56,7 +56,7 @@ func (s *service) UpdateEdge(ctx context.Context, req *api.Edge) (*api.Edge, err
 	}
 	edge, ok := mod.GetEdges().Get(edgeID)
 	if !ok {
-		return nil, api.NotFound(edgeID)
+		return nil, api.NotFound("%s", edgeID)
 	}
 	if err := req.ToModel(ctx, edge); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (s *service) DeleteEdge(ctx context.Context, req *api.IDRequest) (*api.Modu
 	}
 	edge, ok := mod.GetEdges().Get(edgeID)
 	if !ok {
-		return nil, api.NotFound(edgeID)
+		return nil, api.NotFound("%s", edgeID)
 	}
 	mod.GetEdges().Remove(edge)
 	var result api.Module

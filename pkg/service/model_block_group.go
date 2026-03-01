@@ -35,7 +35,7 @@ func (s *service) GetBlockGroup(ctx context.Context, req *api.IDRequest) (*api.B
 	}
 	blockGroup, ok := mod.GetBlockGroups().Get(blockGroupID)
 	if !ok {
-		return nil, api.NotFound(blockGroupID)
+		return nil, api.NotFound("%s", blockGroupID)
 	}
 	var result api.BlockGroup
 	if err := result.FromModel(ctx, blockGroup); err != nil {
@@ -56,7 +56,7 @@ func (s *service) UpdateBlockGroup(ctx context.Context, req *api.BlockGroup) (*a
 	}
 	blockGroup, ok := mod.GetBlockGroups().Get(blockGroupID)
 	if !ok {
-		return nil, api.NotFound(blockGroupID)
+		return nil, api.NotFound("%s", blockGroupID)
 	}
 	if err := req.ToModel(ctx, blockGroup); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (s *service) DeleteBlockGroup(ctx context.Context, req *api.IDRequest) (*ap
 	}
 	blockGroup, ok := mod.GetBlockGroups().Get(blockGroupID)
 	if !ok {
-		return nil, api.NotFound(blockGroupID)
+		return nil, api.NotFound("%s", blockGroupID)
 	}
 	mod.GetBlockGroups().Remove(blockGroup)
 	var result api.Module

@@ -35,7 +35,7 @@ func (s *service) GetSignal(ctx context.Context, req *api.IDRequest) (*api.Signa
 	}
 	signal, ok := mod.GetSignals().Get(signalID)
 	if !ok {
-		return nil, api.NotFound(signalID)
+		return nil, api.NotFound("%s", signalID)
 	}
 	var result api.Signal
 	if err := result.FromModel(ctx, signal); err != nil {
@@ -70,7 +70,7 @@ func (s *service) UpdateSignal(ctx context.Context, req *api.Signal) (*api.Signa
 	}
 	signal, ok := mod.GetSignals().Get(signalID)
 	if !ok {
-		return nil, api.NotFound(signalID)
+		return nil, api.NotFound("%s", signalID)
 	}
 	if err := req.ToModel(ctx, signal); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (s *service) DeleteSignal(ctx context.Context, req *api.IDRequest) (*api.Mo
 	}
 	signal, ok := mod.GetSignals().Get(signalID)
 	if !ok {
-		return nil, api.NotFound(signalID)
+		return nil, api.NotFound("%s", signalID)
 	}
 	mod.GetSignals().Remove(signal)
 	var result api.Module

@@ -36,7 +36,7 @@ func (s *service) getSensor(ctx context.Context, id string) (model.Sensor, error
 	}
 	sensor, ok := mod.GetSensors().Get(sensorID)
 	if !ok {
-		return nil, api.NotFound(sensorID)
+		return nil, api.NotFound("%s", sensorID)
 	}
 	return sensor, nil
 }
@@ -100,7 +100,7 @@ func (s *service) DeleteSensor(ctx context.Context, req *api.IDRequest) (*api.Mo
 	}
 	sensor, ok := mod.GetSensors().Get(sensorID)
 	if !ok {
-		return nil, api.NotFound(sensorID)
+		return nil, api.NotFound("%s", sensorID)
 	}
 	mod.GetSensors().Remove(sensor)
 	var result api.Module

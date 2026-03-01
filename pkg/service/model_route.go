@@ -36,7 +36,7 @@ func (s *service) getRoute(ctx context.Context, id string) (model.Route, error) 
 	}
 	route, ok := mod.GetRoutes().Get(routeID)
 	if !ok {
-		return nil, api.NotFound(routeID)
+		return nil, api.NotFound("%s", routeID)
 	}
 	return route, nil
 }
@@ -100,7 +100,7 @@ func (s *service) DeleteRoute(ctx context.Context, req *api.IDRequest) (*api.Mod
 	}
 	route, ok := mod.GetRoutes().Get(routeID)
 	if !ok {
-		return nil, api.NotFound(routeID)
+		return nil, api.NotFound("%s", routeID)
 	}
 	mod.GetRoutes().Remove(route)
 	var result api.Module

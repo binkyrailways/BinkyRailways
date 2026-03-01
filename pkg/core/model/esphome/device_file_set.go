@@ -33,7 +33,7 @@ type DeviceFileSet struct {
 // Gets the platform for the device of the given pin.
 func (fs *DeviceFileSet) getPlatform(pin model.BinkyNetDevicePin) (*devicePlatform, error) {
 	if platform, ok := fs.platforms[pin.GetDeviceID()]; !ok {
-		return nil, fmt.Errorf("Platform not found for device with ID '%s' in %s", pin.GetDeviceID())
+		return nil, fmt.Errorf("Platform not found for device with ID '%s'", pin.GetDeviceID())
 	} else {
 		return platform, nil
 	}
