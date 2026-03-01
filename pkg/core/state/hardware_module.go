@@ -23,6 +23,9 @@ import "time"
 type HardwareModule interface {
 	// Gets the ID of the module
 	GetID() string
+	// Gets the ID of the parent of this module.
+	// If there is no parent, the function will return an empty string.
+	GetParentID() string
 
 	// Gets the uptime of the module
 	GetUptime() time.Duration

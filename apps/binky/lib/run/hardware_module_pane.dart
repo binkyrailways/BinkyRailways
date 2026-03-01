@@ -22,13 +22,99 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models.dart';
 import '../api.dart';
 
-class HardwareModulePane extends StatelessWidget {
+class HardwareModulePane extends StatefulWidget {
   final HardwareModule hardwareModule;
   const HardwareModulePane({Key? key, required this.hardwareModule})
       : super(key: key);
 
   @override
+  State<HardwareModulePane> createState() => _HardwareModulePaneState();
+}
+
+class _HardwareModulePaneState extends State<HardwareModulePane> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
+    final state = Provider.of<StateModel>(context);
+    final allHws = state
+        .commandStations()
+        .map((bnCs) => bnCs.last.hardwareModules)
+        .expand((x) => x)
+        .toList();
+    final childModules =
+        allHws.where((hw) => hw.parentId == widget.hardwareModule.id).toList();
+    childModules.sort((a, b) => a.id.compareTo(b.id));
+
+    final tooltipSpan = _buildTooltipMessage(widget.hardwareModule, allHws);
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final self =
+            _buildBox(context, widget.hardwareModule, width, tooltipSpan);
+
+        if (childModules.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: self,
+          );
+        }
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.bottomCenter,
+            children: [
+              if (_isHovered)
+                Positioned(
+                  bottom: 40 + 4, // Height of the box + gap
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    verticalDirection: VerticalDirection.up,
+                    children: childModules
+                        .expand((hw) => [
+                              HardwareModulePane(hardwareModule: hw),
+                              const SizedBox(height: 4),
+                            ])
+                        .toList(),
+                  ),
+                ),
+              self,
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  InlineSpan _buildTooltipMessage(
+      HardwareModule hw, List<HardwareModule> allHws) {
+    final hasErrors = hw.errorMessages.isNotEmpty;
+    final errors = hasErrors ? hw.errorMessages.join(". ") : "No errors";
+
+    final children = allHws.where((child) => child.parentId == hw.id).toList();
+    children.sort((a, b) => a.id.compareTo(b.id));
+
+    return TextSpan(children: [
+      TextSpan(
+          text: "${hw.id}\n",
+          style: const TextStyle(fontWeight: FontWeight.bold)),
+      TextSpan(text: "ip: ${hw.address}\n$errors\n"),
+      for (var child in children) ...[
+        const TextSpan(text: "\n"),
+        _buildTooltipMessage(child, allHws),
+      ]
+    ]);
+  }
+
+  Widget _buildBox(BuildContext context, HardwareModule hardwareModule,
+      double width, InlineSpan tooltipSpan) {
     final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
@@ -74,20 +160,29 @@ class HardwareModulePane extends StatelessWidget {
                 webOnlyWindowName: "_blank");
           }));
     }
-    final tooltipErrors =
-        hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
-    return Container(
-      padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
+    return SizedBox(
+      width: width,
+      height: 40,
       child: TextButton(
         style: ButtonStyle(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                side: BorderSide(color: Colors.black12, width: 1),
+              ),
+            ),
             backgroundColor: WidgetStateProperty.all(color),
             foregroundColor: WidgetStateProperty.all(Colors.black)),
         child: GestureDetector(
           child: Tooltip(
-            message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
+            richMessage: tooltipSpan,
             preferBelow: false,
             child: Text(
-                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
+              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate",
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 11),
+            ),
           ),
           onTapDown: (TapDownDetails details) {
             showMenu(

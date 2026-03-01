@@ -721,6 +721,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'metricsUrl')
     ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dccGeneratorUrl')
     ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sshUrl')
+    ..aOS(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'parentId')
     ..hasRequiredFields = false
   ;
 
@@ -735,6 +736,7 @@ class HardwareModule extends $pb.GeneratedMessage {
     $core.String? metricsUrl,
     $core.String? dccGeneratorUrl,
     $core.String? sshUrl,
+    $core.String? parentId,
   }) {
     final _result = create();
     if (id != null) {
@@ -763,6 +765,9 @@ class HardwareModule extends $pb.GeneratedMessage {
     }
     if (sshUrl != null) {
       _result.sshUrl = sshUrl;
+    }
+    if (parentId != null) {
+      _result.parentId = parentId;
     }
     return _result;
   }
@@ -861,6 +866,15 @@ class HardwareModule extends $pb.GeneratedMessage {
   $core.bool hasSshUrl() => $_has(8);
   @$pb.TagNumber(9)
   void clearSshUrl() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get parentId => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set parentId($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasParentId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearParentId() => clearField(10);
 }
 
 class BlockState extends $pb.GeneratedMessage {

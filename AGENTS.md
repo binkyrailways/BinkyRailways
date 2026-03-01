@@ -8,6 +8,7 @@ BinkyRailways is a model railway automation system. This repository contains the
 - **Backend**: Go (located in `pkg/`, `main.go`, `cmd/`)
 - **Frontend**: Flutter (located in `apps/binky/`)
 - **API**: gRPC / Protobuf (definitions in `pkg/api/v1/*.proto`)
+- **MQTT**: An embedded MQTT server runs at the process level (default port 1883).
 
 ## Essential Commands
 

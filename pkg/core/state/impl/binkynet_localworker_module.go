@@ -39,6 +39,11 @@ func (lw *binkyNetLocalWorkerModule) GetID() string {
 	return lw.ID
 }
 
+// Gets the ID of parent of the module
+func (lw *binkyNetLocalWorkerModule) GetParentID() string {
+	return ""
+}
+
 // Gets the uptime of the module
 func (lw *binkyNetLocalWorkerModule) GetUptime() time.Duration {
 	if info, _, _, found := lw.Manager.GetLocalWorkerInfo(lw.ID); found {

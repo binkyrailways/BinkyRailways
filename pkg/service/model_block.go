@@ -35,7 +35,7 @@ func (s *service) GetBlock(ctx context.Context, req *api.IDRequest) (*api.Block,
 	}
 	block, ok := mod.GetBlocks().Get(blockID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound("%s", blockID)
 	}
 	var result api.Block
 	if err := result.FromModel(ctx, block); err != nil {
@@ -56,7 +56,7 @@ func (s *service) UpdateBlock(ctx context.Context, req *api.Block) (*api.Block, 
 	}
 	block, ok := mod.GetBlocks().Get(blockID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound("%s", blockID)
 	}
 	if err := req.ToModel(ctx, block); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (s *service) DeleteBlock(ctx context.Context, req *api.IDRequest) (*api.Mod
 	}
 	block, ok := mod.GetBlocks().Get(blockID)
 	if !ok {
-		return nil, api.NotFound(blockID)
+		return nil, api.NotFound("%s", blockID)
 	}
 	mod.GetBlocks().Remove(block)
 	var result api.Module

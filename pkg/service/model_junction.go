@@ -36,7 +36,7 @@ func (s *service) getJunction(ctx context.Context, id string) (model.Junction, e
 	}
 	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
-		return nil, api.NotFound(junctionID)
+		return nil, api.NotFound("%s", junctionID)
 	}
 	return junction, nil
 }
@@ -100,7 +100,7 @@ func (s *service) DeleteJunction(ctx context.Context, req *api.IDRequest) (*api.
 	}
 	junction, ok := mod.GetJunctions().Get(junctionID)
 	if !ok {
-		return nil, api.NotFound(junctionID)
+		return nil, api.NotFound("%s", junctionID)
 	}
 	mod.GetJunctions().Remove(junction)
 	var result api.Module
