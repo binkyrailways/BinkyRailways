@@ -25,6 +25,7 @@ import 'package:binky/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_links/app_links.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:validator_regex/validator_regex.dart';
 
@@ -44,6 +45,7 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
+  static const String _hostKey = "host";
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   String _title = "Testing";
@@ -57,9 +59,22 @@ class _AppPageState extends State<AppPage> {
     super.initState();
 
     _host.text = defaultChannelHost();
+    _loadHost();
     _host.selection =
         TextSelection(baseOffset: 0, extentOffset: _host.text.length);
     initDeepLinks();
+  }
+
+  Future<void> _loadHost() async {
+    final prefs = await SharedPreferences.getInstance();
+    final host = prefs.getString(_hostKey);
+    if (host != null) {
+      setState(() {
+        _host.text = host;
+        _host.selection =
+            TextSelection(baseOffset: 0, extentOffset: _host.text.length);
+      });
+    }
   }
 
   @override
@@ -87,14 +102,22 @@ class _AppPageState extends State<AppPage> {
     });
   }
 
-  void openAppLink(Uri uri) {
+  void openAppLink(Uri uri) async {
+    final prefs = await SharedPreferences.getInstance();
+    final host = uri.host;
+    if (host.isNotEmpty) {
+      await prefs.setString(_hostKey, host);
+      _host.text = host;
+    }
     setState(() {
       _title = uri.toString();
       APIClient.reload(uri);
     });
   }
 
-  void useHost() {
+  void useHost() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_hostKey, _host.text);
     setState(() {
       final uri = Uri.parse("https://${_host.text}:${defaultChannelPort()}");
       APIClient.reload(uri);
