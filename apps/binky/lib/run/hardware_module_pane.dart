@@ -42,17 +42,19 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
         .map((bnCs) => bnCs.last.hardwareModules)
         .expand((x) => x)
         .toList();
-    final childModules = allHws
-        .where((hw) => hw.parentId == widget.hardwareModule.id)
-        .toList();
+    final childModules =
+        allHws.where((hw) => hw.parentId == widget.hardwareModule.id).toList();
     childModules.sort((a, b) => a.id.compareTo(b.id));
+
+    final tooltipSpan = _buildTooltipMessage(widget.hardwareModule, allHws);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: LayoutBuilder(builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final self = _buildBox(context, widget.hardwareModule, width);
+        final self =
+            _buildBox(context, widget.hardwareModule, width, tooltipSpan);
 
         if (childModules.isEmpty) {
           return Container(
@@ -91,8 +93,28 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
     );
   }
 
-  Widget _buildBox(
-      BuildContext context, HardwareModule hardwareModule, double width) {
+  InlineSpan _buildTooltipMessage(
+      HardwareModule hw, List<HardwareModule> allHws) {
+    final hasErrors = hw.errorMessages.isNotEmpty;
+    final errors = hasErrors ? hw.errorMessages.join(". ") : "No errors";
+
+    final children = allHws.where((child) => child.parentId == hw.id).toList();
+    children.sort((a, b) => a.id.compareTo(b.id));
+
+    return TextSpan(children: [
+      TextSpan(
+          text: "${hw.id}\n",
+          style: const TextStyle(fontWeight: FontWeight.bold)),
+      TextSpan(text: "ip: ${hw.address}\n$errors\n"),
+      for (var child in children) ...[
+        const TextSpan(text: "\n"),
+        _buildTooltipMessage(child, allHws),
+      ]
+    ]);
+  }
+
+  Widget _buildBox(BuildContext context, HardwareModule hardwareModule,
+      double width, InlineSpan tooltipSpan) {
     final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
@@ -138,8 +160,6 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
                 webOnlyWindowName: "_blank");
           }));
     }
-    final tooltipErrors =
-        hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
     return SizedBox(
       width: width,
       height: 40,
@@ -155,7 +175,7 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
             foregroundColor: WidgetStateProperty.all(Colors.black)),
         child: GestureDetector(
           child: Tooltip(
-            message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
+            richMessage: tooltipSpan,
             preferBelow: false,
             child: Text(
               "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate",
