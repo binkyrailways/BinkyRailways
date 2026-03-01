@@ -1,0 +1,447 @@
+substitutions:
+    name: m6-r2
+packages:
+    device: !include ../packages/device-d1mini.yaml
+    networking: !include ../packages/networking.yaml
+esphome:
+    on_boot:
+        - priority: 600
+          then:
+            - switch.turn_on: led_yellow
+            - switch.turn_on: led_green
+            - switch.turn_on: led_red
+            - delay: 2s
+            - switch.turn_off: led_yellow
+            - switch.turn_off: led_green
+            - switch.turn_off: led_red
+logger:
+    level: DEBUG
+mqtt:
+    on_connect:
+        - switch.turn_on: led_green
+    on_disconnect:
+        - switch.turn_off: led_green
+    topic_prefix: /binky/m6-r2/info
+ota:
+    platform: esphome
+web_server:
+    port: 80
+    local: true
+wifi:
+    fast_connect: true
+    domain: .tzl
+    on_connect:
+        - switch.turn_on: led_yellow
+    on_disconnect:
+        - switch.turn_off: led_yellow
+interval:
+    - interval: 15s
+      then:
+        - lambda: if (id(ios1_pin1).state) { id(ios1_pin1).publish_state(true); } else { id(ios1_pin1).publish_state(true); }
+        - lambda: if (id(ios1_pin2).state) { id(ios1_pin2).publish_state(true); } else { id(ios1_pin2).publish_state(true); }
+        - lambda: if (id(ios1_pin3).state) { id(ios1_pin3).publish_state(true); } else { id(ios1_pin3).publish_state(true); }
+        - lambda: if (id(ios1_pin4).state) { id(ios1_pin4).publish_state(true); } else { id(ios1_pin4).publish_state(true); }
+        - lambda: if (id(ios1_pin5).state) { id(ios1_pin5).publish_state(true); } else { id(ios1_pin5).publish_state(true); }
+        - lambda: if (id(ios1_pin6).state) { id(ios1_pin6).publish_state(true); } else { id(ios1_pin6).publish_state(true); }
+        - lambda: if (id(ios1_pin7).state) { id(ios1_pin7).publish_state(true); } else { id(ios1_pin7).publish_state(true); }
+        - lambda: if (id(ios1_pin8).state) { id(ios1_pin8).publish_state(true); } else { id(ios1_pin8).publish_state(true); }
+        - lambda: if (id(io3_pin1).state) { id(io3_pin1).publish_state(true); } else { id(io3_pin1).publish_state(true); }
+        - lambda: if (id(io3_pin2).state) { id(io3_pin2).publish_state(true); } else { id(io3_pin2).publish_state(true); }
+        - lambda: if (id(io3_pin3).state) { id(io3_pin3).publish_state(true); } else { id(io3_pin3).publish_state(true); }
+        - lambda: if (id(io3_pin4).state) { id(io3_pin4).publish_state(true); } else { id(io3_pin4).publish_state(true); }
+        - lambda: if (id(io3_pin5).state) { id(io3_pin5).publish_state(true); } else { id(io3_pin5).publish_state(true); }
+        - lambda: if (id(io3_pin6).state) { id(io3_pin6).publish_state(true); } else { id(io3_pin6).publish_state(true); }
+        - lambda: if (id(io3_pin7).state) { id(io3_pin7).publish_state(true); } else { id(io3_pin7).publish_state(true); }
+        - lambda: if (id(io3_pin8).state) { id(io3_pin8).publish_state(true); } else { id(io3_pin8).publish_state(true); }
+        - lambda: if (id(io4_pin1).state) { id(io4_pin1).publish_state(true); } else { id(io4_pin1).publish_state(true); }
+        - lambda: if (id(io4_pin2).state) { id(io4_pin2).publish_state(true); } else { id(io4_pin2).publish_state(true); }
+        - lambda: if (id(io4_pin3).state) { id(io4_pin3).publish_state(true); } else { id(io4_pin3).publish_state(true); }
+        - lambda: if (id(io4_pin4).state) { id(io4_pin4).publish_state(true); } else { id(io4_pin4).publish_state(true); }
+        - lambda: if (id(io4_pin5).state) { id(io4_pin5).publish_state(true); } else { id(io4_pin5).publish_state(true); }
+        - lambda: if (id(io4_pin6).state) { id(io4_pin6).publish_state(true); } else { id(io4_pin6).publish_state(true); }
+        - lambda: if (id(io4_pin7).state) { id(io4_pin7).publish_state(true); } else { id(io4_pin7).publish_state(true); }
+        - lambda: if (id(io4_pin8).state) { id(io4_pin8).publish_state(true); } else { id(io4_pin8).publish_state(true); }
+binary_sensor:
+    - platform: gpio
+      id: ios1_pin1
+      name: ios1_pin1
+      state_topic: /binky/m6/ios1_pin1/sensor/state
+      pin:
+        number: "0"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin2
+      name: ios1_pin2
+      state_topic: /binky/m6/ios1_pin2/sensor/state
+      pin:
+        number: "1"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin3
+      name: ios1_pin3
+      state_topic: /binky/m6/ios1_pin3/sensor/state
+      pin:
+        number: "2"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin4
+      name: ios1_pin4
+      state_topic: /binky/m6/ios1_pin4/sensor/state
+      pin:
+        number: "3"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin5
+      name: ios1_pin5
+      state_topic: /binky/m6/ios1_pin5/sensor/state
+      pin:
+        number: "4"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin6
+      name: ios1_pin6
+      state_topic: /binky/m6/ios1_pin6/sensor/state
+      pin:
+        number: "5"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin7
+      name: ios1_pin7
+      state_topic: /binky/m6/ios1_pin7/sensor/state
+      pin:
+        number: "6"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: ios1_pin8
+      name: ios1_pin8
+      state_topic: /binky/m6/ios1_pin8/sensor/state
+      pin:
+        number: "7"
+        mcp23xxx: ios1
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin1
+      name: io3_pin1
+      state_topic: /binky/m6/io3_pin1/sensor/state
+      pin:
+        number: "0"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin2
+      name: io3_pin2
+      state_topic: /binky/m6/io3_pin2/sensor/state
+      pin:
+        number: "1"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin3
+      name: io3_pin3
+      state_topic: /binky/m6/io3_pin3/sensor/state
+      pin:
+        number: "2"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin4
+      name: io3_pin4
+      state_topic: /binky/m6/io3_pin4/sensor/state
+      pin:
+        number: "3"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin5
+      name: io3_pin5
+      state_topic: /binky/m6/io3_pin5/sensor/state
+      pin:
+        number: "4"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin6
+      name: io3_pin6
+      state_topic: /binky/m6/io3_pin6/sensor/state
+      pin:
+        number: "5"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin7
+      name: io3_pin7
+      state_topic: /binky/m6/io3_pin7/sensor/state
+      pin:
+        number: "6"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io3_pin8
+      name: io3_pin8
+      state_topic: /binky/m6/io3_pin8/sensor/state
+      pin:
+        number: "7"
+        mcp23xxx: io3
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin1
+      name: io4_pin1
+      state_topic: /binky/m6/io4_pin1/sensor/state
+      pin:
+        number: "0"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin2
+      name: io4_pin2
+      state_topic: /binky/m6/io4_pin2/sensor/state
+      pin:
+        number: "1"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin3
+      name: io4_pin3
+      state_topic: /binky/m6/io4_pin3/sensor/state
+      pin:
+        number: "2"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin4
+      name: io4_pin4
+      state_topic: /binky/m6/io4_pin4/sensor/state
+      pin:
+        number: "3"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin5
+      name: io4_pin5
+      state_topic: /binky/m6/io4_pin5/sensor/state
+      pin:
+        number: "4"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin6
+      name: io4_pin6
+      state_topic: /binky/m6/io4_pin6/sensor/state
+      pin:
+        number: "5"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin7
+      name: io4_pin7
+      state_topic: /binky/m6/io4_pin7/sensor/state
+      pin:
+        number: "6"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+    - platform: gpio
+      id: io4_pin8
+      name: io4_pin8
+      state_topic: /binky/m6/io4_pin8/sensor/state
+      pin:
+        number: "7"
+        mcp23xxx: io4
+        mode:
+            input: true
+      on_state:
+        then:
+            - switch.turn_on: led_red
+            - delay: 0.2s
+            - switch.turn_off: led_red
+button:
+    - platform: restart
+      id: reboot
+      name: reboot
+sensor:
+    - platform: uptime
+      id: uptime_sensor
+      name: uptime_sensor
+      state_topic: /binky/m6-r2/info/uptime
+      update_interval: 15s
+    - platform: wifi_signal
+      id: wifi_signal_sensor
+      name: wifi_signal_sensor
+      state_topic: /binky/m6-r2/info/wifi_signal
+switch:
+    - platform: gpio
+      id: led_red
+      name: led_red
+      pin:
+        number: D5
+        inverted: true
+    - platform: gpio
+      id: led_yellow
+      name: led_yellow
+      pin:
+        number: D6
+        inverted: true
+    - platform: gpio
+      id: led_green
+      name: led_green
+      pin:
+        number: D7
+        inverted: true
+text_sensor:
+    - platform: wifi_info
+      ip_address:
+        name: ip_address
+        state_topic: /binky/m6-r2/info/ip_address
+i2c: {}
+mcp23008:
+    - id: ios1
+      address: "0x21"
+mcp23017:
+    - id: io3
+      address: "0x25"
+    - id: io4
+      address: "0x20"
