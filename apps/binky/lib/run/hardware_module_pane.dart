@@ -168,7 +168,7 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
             padding: WidgetStateProperty.all(EdgeInsets.zero),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
                 side: const BorderSide(color: Colors.black12, width: 1),
               ),
             ),
