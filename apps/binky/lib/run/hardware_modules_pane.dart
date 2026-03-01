@@ -39,9 +39,23 @@ class HardwareModulesPane extends StatelessWidget {
           a.last.model.description.compareTo(b.last.model.description));
       hws.sort((a, b) => compareAsciiLowerCase(a.id, b.id));
       final List<Widget> children = [];
-      css.forEach((e) {
-        children.add(CommandStationPane(commandStation: e.last));
-      });
+      if (css.isNotEmpty) {
+        final rows = (css.length > 1) ? 2 : 1;
+        children.add(SizedBox(
+          height: 40,
+          child: GridView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: css.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: rows,
+              childAspectRatio: (40 / rows) / 150,
+            ),
+            itemBuilder: (context, index) =>
+                CommandStationPane(commandStation: css[index].last),
+          ),
+        ));
+      }
       hws.where((e) => e.parentId.isEmpty).forEach((e) {
         children.add(Expanded(child: HardwareModulePane(hardwareModule: e)));
       });

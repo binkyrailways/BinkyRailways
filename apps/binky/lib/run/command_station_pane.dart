@@ -29,16 +29,27 @@ class CommandStationPane extends StatelessWidget {
     final powerConsistent =
         (commandStation.powerRequested == commandStation.powerActual);
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
+      padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
       child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          visualDensity: VisualDensity.compact,
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          textStyle: const TextStyle(fontSize: 10),
+        ),
         icon: Icon(
             commandStation.powerRequested
                 ? Icons.power
                 : Icons.power_off_outlined,
+            size: 14,
             color: powerConsistent
                 ? (commandStation.powerRequested ? Colors.green : Colors.red)
                 : Colors.purple),
-        label: Text(commandStation.model.description),
+        label: Text(
+          commandStation.model.description,
+          overflow: TextOverflow.ellipsis,
+        ),
         onPressed: () {},
       ),
     );
