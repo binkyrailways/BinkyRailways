@@ -19,6 +19,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -33,6 +34,7 @@ import (
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
 	"github.com/binkyrailways/BinkyRailways/pkg/server"
 	"github.com/binkyrailways/BinkyRailways/pkg/service"
+	"github.com/binkynet/NetManager/service/manager"
 )
 
 var (
@@ -47,6 +49,7 @@ var (
 		server   server.Config
 		logFile  string
 		logLevel string
+		mqttPort int
 	}
 )
 
@@ -75,6 +78,7 @@ func init() {
 	f.IntVar(&rootArgs.server.HTTPSPort, "https-port", 18033, "Port number to serve HTTPS on")
 	f.IntVar(&rootArgs.server.GRPCPort, "grpc-port", 18034, "Port number to serve GRPC on")
 	f.BoolVar(&rootArgs.server.WebDevelopment, "web-development", false, "If set, web application is served from live filesystem")
+	f.IntVar(&rootArgs.mqttPort, "mqtt-port", 1883, "Port number to serve MQTT on")
 	// Service arguments
 	f.StringVar(&rootArgs.app.RailwayStoragePath, "storage-path", "./Fixtures", "Path of railway files")
 }
@@ -131,8 +135,16 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	rootArgs.app.HTTPPort = rootArgs.server.HTTPSPort
 	rootArgs.app.HTTPSecure = true
 	rootArgs.app.WebDevelopment = rootArgs.server.WebDevelopment
+
+	// Prepare MQTT server
+	mqttServer, err := manager.NewMQTTServer()
+	if err != nil {
+		cliLog.Fatal().Err(err).Msg("MQTT server construction failed")
+	}
+
 	svc, err := service.New(rootArgs.app, service.Dependencies{
-		Logger: cliLog,
+		Logger:     cliLog,
+		MQTTServer: mqttServer,
 	})
 	if err != nil {
 		cliLog.Fatal().Err(err).Msg("Service construction failed")
@@ -146,6 +158,9 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 
 	// Run the server & service
 	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		return manager.RunMQTTServer(ctx, mqttServer, fmt.Sprintf(":%d", rootArgs.mqttPort), cliLog)
+	})
 	g.Go(func() error {
 		if err := svc.Run(ctx); err != nil {
 			cliLog.Error().Err(err).Msg("Service run failed")
