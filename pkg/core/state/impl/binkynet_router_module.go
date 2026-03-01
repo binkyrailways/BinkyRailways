@@ -41,6 +41,11 @@ func (rm *binkyNetRouterModule) GetID() string {
 	return rm.ModuleID
 }
 
+// Gets the ID of parent of the module
+func (rm *binkyNetRouterModule) GetParentID() string {
+	return rm.LocalWorkerID
+}
+
 // Gets RouterInfo if online.
 func (rm *binkyNetRouterModule) getRouterInfo() *api.RouterInfo {
 	if info, _, _, found := rm.Manager.GetLocalWorkerInfo(rm.LocalWorkerID); found {

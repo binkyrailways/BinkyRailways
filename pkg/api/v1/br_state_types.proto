@@ -246,6 +246,9 @@ message HardwareModule {
    string dcc_generator_url = 8;
    // URL to open an SSH session towards this module
    string ssh_url = 9;
+   // ID of the parent module.
+   // Empty is there is no parent module.
+   string parent_id = 10;
 }
 
 // State of a single block

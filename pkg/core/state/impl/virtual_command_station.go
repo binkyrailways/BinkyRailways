@@ -145,6 +145,11 @@ func (hm *virtualHardwareModule) GetID() string {
 	return "virtual"
 }
 
+// Gets the ID of the parent of the module
+func (hm *virtualHardwareModule) GetParentID() string {
+	return ""
+}
+
 // Gets the uptime of the module
 func (hm *virtualHardwareModule) GetUptime() time.Duration {
 	return hm.uptime
