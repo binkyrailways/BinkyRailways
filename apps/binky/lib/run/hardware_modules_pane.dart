@@ -43,7 +43,7 @@ class HardwareModulesPane extends StatelessWidget {
         children.add(CommandStationPane(commandStation: e.last));
       });
       children.add(const Divider());
-      hws.forEach((e) {
+      hws.where((e) => e.parentId.isEmpty).forEach((e) {
         children.add(HardwareModulePane(hardwareModule: e));
       });
       return Container(

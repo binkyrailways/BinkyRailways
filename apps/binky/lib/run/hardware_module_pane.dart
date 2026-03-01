@@ -22,13 +22,76 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models.dart';
 import '../api.dart';
 
-class HardwareModulePane extends StatelessWidget {
+class HardwareModulePane extends StatefulWidget {
   final HardwareModule hardwareModule;
   const HardwareModulePane({Key? key, required this.hardwareModule})
       : super(key: key);
 
   @override
+  State<HardwareModulePane> createState() => _HardwareModulePaneState();
+}
+
+class _HardwareModulePaneState extends State<HardwareModulePane> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
+    final state = Provider.of<StateModel>(context);
+    final allHws = state
+        .commandStations()
+        .map((bnCs) => bnCs.last.hardwareModules)
+        .expand((x) => x)
+        .toList();
+    final childModules =
+        allHws.where((hw) => hw.parentId == widget.hardwareModule.id).toList();
+    childModules.sort((a, b) => a.id.compareTo(b.id));
+
+    final self = _buildBox(context, widget.hardwareModule);
+
+    if (childModules.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
+        child: self,
+      );
+    }
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
+        child: _isHovered
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  self,
+                  ...childModules
+                      .map((hw) => HardwareModulePane(hardwareModule: hw)),
+                ],
+              )
+            : Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ...childModules.asMap().entries.map((entry) {
+                    final idx = entry.key;
+                    final hw = entry.value;
+                    return Positioned(
+                      left: (idx + 1) * 3.0,
+                      top: (idx + 1) * 3.0,
+                      child: Opacity(
+                        opacity: 0.5,
+                        child: _buildBox(context, hw),
+                      ),
+                    );
+                  }),
+                  self,
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _buildBox(BuildContext context, HardwareModule hardwareModule) {
     final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
@@ -76,35 +139,32 @@ class HardwareModulePane extends StatelessWidget {
     }
     final tooltipErrors =
         hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
-    return Container(
-      padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
-      child: TextButton(
-        style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(color),
-            foregroundColor: WidgetStateProperty.all(Colors.black)),
-        child: GestureDetector(
-          child: Tooltip(
-            message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
-            preferBelow: false,
-            child: Text(
-                "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
-          ),
-          onTapDown: (TapDownDetails details) {
-            showMenu(
-              context: context,
-              useRootNavigator: true,
-              position: RelativeRect.fromLTRB(
-                  details.globalPosition.dx,
-                  details.globalPosition.dy,
-                  details.globalPosition.dx,
-                  details.globalPosition.dy),
-              items: popupItems,
-              elevation: 8.0,
-            );
-          },
+    return TextButton(
+      style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(color),
+          foregroundColor: WidgetStateProperty.all(Colors.black)),
+      child: GestureDetector(
+        child: Tooltip(
+          message: "ip:${hardwareModule.address}\n\n$tooltipErrors",
+          preferBelow: false,
+          child: Text(
+              "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate"),
         ),
-        onPressed: () {},
+        onTapDown: (TapDownDetails details) {
+          showMenu(
+            context: context,
+            useRootNavigator: true,
+            position: RelativeRect.fromLTRB(
+                details.globalPosition.dx,
+                details.globalPosition.dy,
+                details.globalPosition.dx,
+                details.globalPosition.dy),
+            items: popupItems,
+            elevation: 8.0,
+          );
+        },
       ),
+      onPressed: () {},
     );
   }
 }
