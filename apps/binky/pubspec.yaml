@@ -47,6 +47,7 @@ dependencies:
   search_choices: ^2.0.20
   url_launcher: ^6.2.6
   universal_html:
+  shared_preferences: ^2.2.2
   wakelock: ^0.6.2
   validator_regex: ^1.1.1
 
