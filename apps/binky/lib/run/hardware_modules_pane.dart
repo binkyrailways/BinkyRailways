@@ -42,16 +42,12 @@ class HardwareModulesPane extends StatelessWidget {
       css.forEach((e) {
         children.add(CommandStationPane(commandStation: e.last));
       });
-      children.add(const Divider());
       hws.where((e) => e.parentId.isEmpty).forEach((e) {
-        children.add(HardwareModulePane(hardwareModule: e));
+        children.add(Expanded(child: HardwareModulePane(hardwareModule: e)));
       });
       return Container(
         padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(children: children),
-        ),
+        child: Row(children: children),
       );
     });
   }

@@ -42,56 +42,57 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
         .map((bnCs) => bnCs.last.hardwareModules)
         .expand((x) => x)
         .toList();
-    final childModules =
-        allHws.where((hw) => hw.parentId == widget.hardwareModule.id).toList();
+    final childModules = allHws
+        .where((hw) => hw.parentId == widget.hardwareModule.id)
+        .toList();
     childModules.sort((a, b) => a.id.compareTo(b.id));
-
-    final self = _buildBox(context, widget.hardwareModule);
-
-    if (childModules.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
-        child: self,
-      );
-    }
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(8, 4, 0, 4),
-        child: _isHovered
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  self,
-                  ...childModules
-                      .map((hw) => HardwareModulePane(hardwareModule: hw)),
-                ],
-              )
-            : Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ...childModules.asMap().entries.map((entry) {
-                    final idx = entry.key;
-                    final hw = entry.value;
-                    return Positioned(
-                      left: (idx + 1) * 6.0,
-                      top: (idx + 1) * 6.0,
-                      child: Opacity(
-                        opacity: 0.5,
-                        child: _buildBox(context, hw),
-                      ),
-                    );
-                  }),
-                  self,
-                ],
-              ),
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final self = _buildBox(context, widget.hardwareModule, width);
+
+        if (childModules.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: self,
+          );
+        }
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.bottomCenter,
+            children: [
+              if (_isHovered)
+                Positioned(
+                  bottom: 40 + 4, // Height of the box + gap
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    verticalDirection: VerticalDirection.up,
+                    children: childModules
+                        .expand((hw) => [
+                              HardwareModulePane(hardwareModule: hw),
+                              const SizedBox(height: 4),
+                            ])
+                        .toList(),
+                  ),
+                ),
+              self,
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Widget _buildBox(BuildContext context, HardwareModule hardwareModule) {
+  Widget _buildBox(
+      BuildContext context, HardwareModule hardwareModule, double width) {
     final secondsSinceLastUpdate = hardwareModule.secondsSinceLastUpdated;
     final hasErrors = hardwareModule.errorMessages.isNotEmpty;
     final color = hasErrors
@@ -140,10 +141,16 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
     final tooltipErrors =
         hasErrors ? hardwareModule.errorMessages.join(".\n") : "No errors";
     return SizedBox(
-      width: 150,
-      height: 60,
+      width: width,
+      height: 40,
       child: TextButton(
         style: ButtonStyle(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.all(
+              const RoundedRectangleBorder(
+                side: BorderSide(color: Colors.black12, width: 1),
+              ),
+            ),
             backgroundColor: WidgetStateProperty.all(color),
             foregroundColor: WidgetStateProperty.all(Colors.black)),
         child: GestureDetector(
@@ -154,6 +161,7 @@ class _HardwareModulePaneState extends State<HardwareModulePane> {
               "${hardwareModule.id}\nup:${hardwareModule.uptime}/$secondsSinceLastUpdate",
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 11),
             ),
           ),
           onTapDown: (TapDownDetails details) {
