@@ -20,6 +20,7 @@ package impl
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"go.uber.org/multierr"
@@ -696,4 +697,50 @@ func (r *railway) Close(ctx context.Context) {
 	// Stop event dispatching
 	r.eventDispatcher.CancelAll()
 	// TODO
+}
+
+// Initialize all outputs
+func (r *railway) InitializeOutputs(ctx context.Context) {
+	var wg sync.WaitGroup
+	r.ForEachJunction(func(j state.Junction) {
+		if sw, ok := j.(state.Switch); ok {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				direction := sw.GetDirection()
+				old := direction.GetRequested(ctx)
+				newDir := model.SwitchDirectionStraight
+				if old == model.SwitchDirectionStraight {
+					newDir = model.SwitchDirectionOff
+				}
+				direction.SetRequested(ctx, newDir)
+				select {
+				case <-time.After(2 * time.Second):
+					direction.SetRequested(ctx, old)
+				case <-ctx.Done():
+					// Context cancelled
+				}
+			}()
+		}
+	})
+	r.ForEachOutput(func(o state.Output) {
+		if bo, ok := o.(state.BinaryOutput); ok {
+			if bo.GetBinaryOutputType() == model.BinaryOutputTypeTrackInverter {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					active := bo.GetActive()
+					old := active.GetRequested(ctx)
+					active.SetRequested(ctx, !old)
+					select {
+					case <-time.After(2 * time.Second):
+						active.SetRequested(ctx, old)
+					case <-ctx.Done():
+						// Context cancelled
+					}
+				}()
+			}
+		}
+	})
+	wg.Wait()
 }
