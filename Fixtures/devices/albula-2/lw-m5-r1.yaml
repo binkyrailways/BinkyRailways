@@ -45,38 +45,102 @@ wifi:
 interval:
     - interval: 15s
       then:
-        - lambda: if (id(io3_pin1).state) { id(io3_pin1).publish_state(true); } else { id(io3_pin1).publish_state(false); }
-        - lambda: if (id(io3_pin2).state) { id(io3_pin2).publish_state(true); } else { id(io3_pin2).publish_state(false); }
-        - lambda: if (id(io3_pin3).state) { id(io3_pin3).publish_state(true); } else { id(io3_pin3).publish_state(false); }
-        - lambda: if (id(io3_pin4).state) { id(io3_pin4).publish_state(true); } else { id(io3_pin4).publish_state(false); }
-        - lambda: if (id(io3_pin5).state) { id(io3_pin5).publish_state(true); } else { id(io3_pin5).publish_state(false); }
-        - lambda: if (id(io3_pin6).state) { id(io3_pin6).publish_state(true); } else { id(io3_pin6).publish_state(false); }
-        - lambda: if (id(io3_pin7).state) { id(io3_pin7).publish_state(true); } else { id(io3_pin7).publish_state(false); }
-        - lambda: if (id(io3_pin8).state) { id(io3_pin8).publish_state(true); } else { id(io3_pin8).publish_state(false); }
-        - lambda: if (id(io1s_pin1).state) { id(io1s_pin1).publish_state(true); } else { id(io1s_pin1).publish_state(false); }
-        - lambda: if (id(io1s_pin2).state) { id(io1s_pin2).publish_state(true); } else { id(io1s_pin2).publish_state(false); }
-        - lambda: if (id(io1s_pin3).state) { id(io1s_pin3).publish_state(true); } else { id(io1s_pin3).publish_state(false); }
-        - lambda: if (id(io1s_pin4).state) { id(io1s_pin4).publish_state(true); } else { id(io1s_pin4).publish_state(false); }
-        - lambda: if (id(io1s_pin5).state) { id(io1s_pin5).publish_state(true); } else { id(io1s_pin5).publish_state(false); }
-        - lambda: if (id(io1s_pin6).state) { id(io1s_pin6).publish_state(true); } else { id(io1s_pin6).publish_state(false); }
-        - lambda: if (id(io1s_pin7).state) { id(io1s_pin7).publish_state(true); } else { id(io1s_pin7).publish_state(false); }
-        - lambda: if (id(io1s_pin8).state) { id(io1s_pin8).publish_state(true); } else { id(io1s_pin8).publish_state(false); }
-        - lambda: if (id(iotiny1_pin1).state) { id(iotiny1_pin1).publish_state(true); } else { id(iotiny1_pin1).publish_state(false); }
-        - lambda: if (id(iotiny1_pin2).state) { id(iotiny1_pin2).publish_state(true); } else { id(iotiny1_pin2).publish_state(false); }
-        - lambda: if (id(iotiny1_pin3).state) { id(iotiny1_pin3).publish_state(true); } else { id(iotiny1_pin3).publish_state(false); }
-        - lambda: if (id(iotiny1_pin4).state) { id(iotiny1_pin4).publish_state(true); } else { id(iotiny1_pin4).publish_state(false); }
-        - lambda: if (id(iotiny1_pin5).state) { id(iotiny1_pin5).publish_state(true); } else { id(iotiny1_pin5).publish_state(false); }
-        - lambda: if (id(iotiny1_pin6).state) { id(iotiny1_pin6).publish_state(true); } else { id(iotiny1_pin6).publish_state(false); }
-        - lambda: if (id(iotiny1_pin7).state) { id(iotiny1_pin7).publish_state(true); } else { id(iotiny1_pin7).publish_state(false); }
-        - lambda: if (id(iotiny1_pin8).state) { id(iotiny1_pin8).publish_state(true); } else { id(iotiny1_pin8).publish_state(false); }
-        - lambda: if (id(iotiny4_pin1).state) { id(iotiny4_pin1).publish_state(true); } else { id(iotiny4_pin1).publish_state(false); }
-        - lambda: if (id(iotiny4_pin2).state) { id(iotiny4_pin2).publish_state(true); } else { id(iotiny4_pin2).publish_state(false); }
-        - lambda: if (id(iotiny4_pin3).state) { id(iotiny4_pin3).publish_state(true); } else { id(iotiny4_pin3).publish_state(false); }
-        - lambda: if (id(iotiny4_pin4).state) { id(iotiny4_pin4).publish_state(true); } else { id(iotiny4_pin4).publish_state(false); }
-        - lambda: if (id(iotiny4_pin5).state) { id(iotiny4_pin5).publish_state(true); } else { id(iotiny4_pin5).publish_state(false); }
-        - lambda: if (id(iotiny4_pin6).state) { id(iotiny4_pin6).publish_state(true); } else { id(iotiny4_pin6).publish_state(false); }
-        - lambda: if (id(iotiny4_pin7).state) { id(iotiny4_pin7).publish_state(true); } else { id(iotiny4_pin7).publish_state(false); }
-        - lambda: if (id(iotiny4_pin8).state) { id(iotiny4_pin8).publish_state(true); } else { id(iotiny4_pin8).publish_state(false); }
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin1).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin1/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin2).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin2/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin3).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin3/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin4).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin4/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin5).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin5/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin6).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin6/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin7).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin7/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io3_pin8).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io3_pin8/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin1).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin1/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin2).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin2/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin3).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin3/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin4).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin4/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin5).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin5/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin6).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin6/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin7).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin7/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(io1s_pin8).state) ? "ON" : "OFF";'
+            topic: /binky/m5/io1s_pin8/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin1).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin1/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin2).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin2/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin3).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin3/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin4).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin4/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin5).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin5/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin6).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin6/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin7).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin7/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny1_pin8).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny1_pin8/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin1).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin1/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin2).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin2/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin3).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin3/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin4).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin4/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin5).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin5/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin6).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin6/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin7).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin7/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(iotiny4_pin8).state) ? "ON" : "OFF";'
+            topic: /binky/m5/iotiny4_pin8/sensor/state
 binary_sensor:
     - platform: gpio
       id: io3_pin1

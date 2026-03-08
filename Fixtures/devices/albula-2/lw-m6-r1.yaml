@@ -49,14 +49,30 @@ wifi:
 interval:
     - interval: 15s
       then:
-        - lambda: if (id(ios2_pin1).state) { id(ios2_pin1).publish_state(true); } else { id(ios2_pin1).publish_state(false); }
-        - lambda: if (id(ios2_pin2).state) { id(ios2_pin2).publish_state(true); } else { id(ios2_pin2).publish_state(false); }
-        - lambda: if (id(ios2_pin3).state) { id(ios2_pin3).publish_state(true); } else { id(ios2_pin3).publish_state(false); }
-        - lambda: if (id(ios2_pin4).state) { id(ios2_pin4).publish_state(true); } else { id(ios2_pin4).publish_state(false); }
-        - lambda: if (id(ios2_pin5).state) { id(ios2_pin5).publish_state(true); } else { id(ios2_pin5).publish_state(false); }
-        - lambda: if (id(ios2_pin6).state) { id(ios2_pin6).publish_state(true); } else { id(ios2_pin6).publish_state(false); }
-        - lambda: if (id(ios2_pin7).state) { id(ios2_pin7).publish_state(true); } else { id(ios2_pin7).publish_state(false); }
-        - lambda: if (id(ios2_pin8).state) { id(ios2_pin8).publish_state(true); } else { id(ios2_pin8).publish_state(false); }
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin1).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin1/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin2).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin2/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin3).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin3/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin4).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin4/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin5).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin5/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin6).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin6/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin7).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin7/sensor/state
+        - mqtt.publish:
+            payload: !lambda 'return (id(ios2_pin8).state) ? "ON" : "OFF";'
+            topic: /binky/m6/ios2_pin8/sensor/state
 binary_sensor:
     - platform: gpio
       id: ios2_pin1
