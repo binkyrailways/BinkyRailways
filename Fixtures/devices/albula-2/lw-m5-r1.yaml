@@ -45,43 +45,44 @@ wifi:
 interval:
     - interval: 15s
       then:
-        - lambda: if (id(io3_pin1).state) { id(io3_pin1).publish_state(true); } else { id(io3_pin1).publish_state(true); }
-        - lambda: if (id(io3_pin2).state) { id(io3_pin2).publish_state(true); } else { id(io3_pin2).publish_state(true); }
-        - lambda: if (id(io3_pin3).state) { id(io3_pin3).publish_state(true); } else { id(io3_pin3).publish_state(true); }
-        - lambda: if (id(io3_pin4).state) { id(io3_pin4).publish_state(true); } else { id(io3_pin4).publish_state(true); }
-        - lambda: if (id(io3_pin5).state) { id(io3_pin5).publish_state(true); } else { id(io3_pin5).publish_state(true); }
-        - lambda: if (id(io3_pin6).state) { id(io3_pin6).publish_state(true); } else { id(io3_pin6).publish_state(true); }
-        - lambda: if (id(io3_pin7).state) { id(io3_pin7).publish_state(true); } else { id(io3_pin7).publish_state(true); }
-        - lambda: if (id(io3_pin8).state) { id(io3_pin8).publish_state(true); } else { id(io3_pin8).publish_state(true); }
-        - lambda: if (id(io1s_pin1).state) { id(io1s_pin1).publish_state(true); } else { id(io1s_pin1).publish_state(true); }
-        - lambda: if (id(io1s_pin2).state) { id(io1s_pin2).publish_state(true); } else { id(io1s_pin2).publish_state(true); }
-        - lambda: if (id(io1s_pin3).state) { id(io1s_pin3).publish_state(true); } else { id(io1s_pin3).publish_state(true); }
-        - lambda: if (id(io1s_pin4).state) { id(io1s_pin4).publish_state(true); } else { id(io1s_pin4).publish_state(true); }
-        - lambda: if (id(io1s_pin5).state) { id(io1s_pin5).publish_state(true); } else { id(io1s_pin5).publish_state(true); }
-        - lambda: if (id(io1s_pin6).state) { id(io1s_pin6).publish_state(true); } else { id(io1s_pin6).publish_state(true); }
-        - lambda: if (id(io1s_pin7).state) { id(io1s_pin7).publish_state(true); } else { id(io1s_pin7).publish_state(true); }
-        - lambda: if (id(io1s_pin8).state) { id(io1s_pin8).publish_state(true); } else { id(io1s_pin8).publish_state(true); }
-        - lambda: if (id(iotiny1_pin1).state) { id(iotiny1_pin1).publish_state(true); } else { id(iotiny1_pin1).publish_state(true); }
-        - lambda: if (id(iotiny1_pin2).state) { id(iotiny1_pin2).publish_state(true); } else { id(iotiny1_pin2).publish_state(true); }
-        - lambda: if (id(iotiny1_pin3).state) { id(iotiny1_pin3).publish_state(true); } else { id(iotiny1_pin3).publish_state(true); }
-        - lambda: if (id(iotiny1_pin4).state) { id(iotiny1_pin4).publish_state(true); } else { id(iotiny1_pin4).publish_state(true); }
-        - lambda: if (id(iotiny1_pin5).state) { id(iotiny1_pin5).publish_state(true); } else { id(iotiny1_pin5).publish_state(true); }
-        - lambda: if (id(iotiny1_pin6).state) { id(iotiny1_pin6).publish_state(true); } else { id(iotiny1_pin6).publish_state(true); }
-        - lambda: if (id(iotiny1_pin7).state) { id(iotiny1_pin7).publish_state(true); } else { id(iotiny1_pin7).publish_state(true); }
-        - lambda: if (id(iotiny1_pin8).state) { id(iotiny1_pin8).publish_state(true); } else { id(iotiny1_pin8).publish_state(true); }
-        - lambda: if (id(iotiny4_pin1).state) { id(iotiny4_pin1).publish_state(true); } else { id(iotiny4_pin1).publish_state(true); }
-        - lambda: if (id(iotiny4_pin2).state) { id(iotiny4_pin2).publish_state(true); } else { id(iotiny4_pin2).publish_state(true); }
-        - lambda: if (id(iotiny4_pin3).state) { id(iotiny4_pin3).publish_state(true); } else { id(iotiny4_pin3).publish_state(true); }
-        - lambda: if (id(iotiny4_pin4).state) { id(iotiny4_pin4).publish_state(true); } else { id(iotiny4_pin4).publish_state(true); }
-        - lambda: if (id(iotiny4_pin5).state) { id(iotiny4_pin5).publish_state(true); } else { id(iotiny4_pin5).publish_state(true); }
-        - lambda: if (id(iotiny4_pin6).state) { id(iotiny4_pin6).publish_state(true); } else { id(iotiny4_pin6).publish_state(true); }
-        - lambda: if (id(iotiny4_pin7).state) { id(iotiny4_pin7).publish_state(true); } else { id(iotiny4_pin7).publish_state(true); }
-        - lambda: if (id(iotiny4_pin8).state) { id(iotiny4_pin8).publish_state(true); } else { id(iotiny4_pin8).publish_state(true); }
+        - lambda: if (id(io3_pin1).state) { id(io3_pin1).publish_state(true); } else { id(io3_pin1).publish_state(false); }
+        - lambda: if (id(io3_pin2).state) { id(io3_pin2).publish_state(true); } else { id(io3_pin2).publish_state(false); }
+        - lambda: if (id(io3_pin3).state) { id(io3_pin3).publish_state(true); } else { id(io3_pin3).publish_state(false); }
+        - lambda: if (id(io3_pin4).state) { id(io3_pin4).publish_state(true); } else { id(io3_pin4).publish_state(false); }
+        - lambda: if (id(io3_pin5).state) { id(io3_pin5).publish_state(true); } else { id(io3_pin5).publish_state(false); }
+        - lambda: if (id(io3_pin6).state) { id(io3_pin6).publish_state(true); } else { id(io3_pin6).publish_state(false); }
+        - lambda: if (id(io3_pin7).state) { id(io3_pin7).publish_state(true); } else { id(io3_pin7).publish_state(false); }
+        - lambda: if (id(io3_pin8).state) { id(io3_pin8).publish_state(true); } else { id(io3_pin8).publish_state(false); }
+        - lambda: if (id(io1s_pin1).state) { id(io1s_pin1).publish_state(true); } else { id(io1s_pin1).publish_state(false); }
+        - lambda: if (id(io1s_pin2).state) { id(io1s_pin2).publish_state(true); } else { id(io1s_pin2).publish_state(false); }
+        - lambda: if (id(io1s_pin3).state) { id(io1s_pin3).publish_state(true); } else { id(io1s_pin3).publish_state(false); }
+        - lambda: if (id(io1s_pin4).state) { id(io1s_pin4).publish_state(true); } else { id(io1s_pin4).publish_state(false); }
+        - lambda: if (id(io1s_pin5).state) { id(io1s_pin5).publish_state(true); } else { id(io1s_pin5).publish_state(false); }
+        - lambda: if (id(io1s_pin6).state) { id(io1s_pin6).publish_state(true); } else { id(io1s_pin6).publish_state(false); }
+        - lambda: if (id(io1s_pin7).state) { id(io1s_pin7).publish_state(true); } else { id(io1s_pin7).publish_state(false); }
+        - lambda: if (id(io1s_pin8).state) { id(io1s_pin8).publish_state(true); } else { id(io1s_pin8).publish_state(false); }
+        - lambda: if (id(iotiny1_pin1).state) { id(iotiny1_pin1).publish_state(true); } else { id(iotiny1_pin1).publish_state(false); }
+        - lambda: if (id(iotiny1_pin2).state) { id(iotiny1_pin2).publish_state(true); } else { id(iotiny1_pin2).publish_state(false); }
+        - lambda: if (id(iotiny1_pin3).state) { id(iotiny1_pin3).publish_state(true); } else { id(iotiny1_pin3).publish_state(false); }
+        - lambda: if (id(iotiny1_pin4).state) { id(iotiny1_pin4).publish_state(true); } else { id(iotiny1_pin4).publish_state(false); }
+        - lambda: if (id(iotiny1_pin5).state) { id(iotiny1_pin5).publish_state(true); } else { id(iotiny1_pin5).publish_state(false); }
+        - lambda: if (id(iotiny1_pin6).state) { id(iotiny1_pin6).publish_state(true); } else { id(iotiny1_pin6).publish_state(false); }
+        - lambda: if (id(iotiny1_pin7).state) { id(iotiny1_pin7).publish_state(true); } else { id(iotiny1_pin7).publish_state(false); }
+        - lambda: if (id(iotiny1_pin8).state) { id(iotiny1_pin8).publish_state(true); } else { id(iotiny1_pin8).publish_state(false); }
+        - lambda: if (id(iotiny4_pin1).state) { id(iotiny4_pin1).publish_state(true); } else { id(iotiny4_pin1).publish_state(false); }
+        - lambda: if (id(iotiny4_pin2).state) { id(iotiny4_pin2).publish_state(true); } else { id(iotiny4_pin2).publish_state(false); }
+        - lambda: if (id(iotiny4_pin3).state) { id(iotiny4_pin3).publish_state(true); } else { id(iotiny4_pin3).publish_state(false); }
+        - lambda: if (id(iotiny4_pin4).state) { id(iotiny4_pin4).publish_state(true); } else { id(iotiny4_pin4).publish_state(false); }
+        - lambda: if (id(iotiny4_pin5).state) { id(iotiny4_pin5).publish_state(true); } else { id(iotiny4_pin5).publish_state(false); }
+        - lambda: if (id(iotiny4_pin6).state) { id(iotiny4_pin6).publish_state(true); } else { id(iotiny4_pin6).publish_state(false); }
+        - lambda: if (id(iotiny4_pin7).state) { id(iotiny4_pin7).publish_state(true); } else { id(iotiny4_pin7).publish_state(false); }
+        - lambda: if (id(iotiny4_pin8).state) { id(iotiny4_pin8).publish_state(true); } else { id(iotiny4_pin8).publish_state(false); }
 binary_sensor:
     - platform: gpio
       id: io3_pin1
       name: io3_pin1
       state_topic: /binky/m5/io3_pin1/sensor/state
+      qos: 1
       pin:
         number: "0"
         mcp23xxx: io3
@@ -96,6 +97,7 @@ binary_sensor:
       id: io3_pin2
       name: io3_pin2
       state_topic: /binky/m5/io3_pin2/sensor/state
+      qos: 1
       pin:
         number: "1"
         mcp23xxx: io3
@@ -110,6 +112,7 @@ binary_sensor:
       id: io3_pin3
       name: io3_pin3
       state_topic: /binky/m5/io3_pin3/sensor/state
+      qos: 1
       pin:
         number: "2"
         mcp23xxx: io3
@@ -124,6 +127,7 @@ binary_sensor:
       id: io3_pin4
       name: io3_pin4
       state_topic: /binky/m5/io3_pin4/sensor/state
+      qos: 1
       pin:
         number: "3"
         mcp23xxx: io3
@@ -138,6 +142,7 @@ binary_sensor:
       id: io3_pin5
       name: io3_pin5
       state_topic: /binky/m5/io3_pin5/sensor/state
+      qos: 1
       pin:
         number: "4"
         mcp23xxx: io3
@@ -152,6 +157,7 @@ binary_sensor:
       id: io3_pin6
       name: io3_pin6
       state_topic: /binky/m5/io3_pin6/sensor/state
+      qos: 1
       pin:
         number: "5"
         mcp23xxx: io3
@@ -166,6 +172,7 @@ binary_sensor:
       id: io3_pin7
       name: io3_pin7
       state_topic: /binky/m5/io3_pin7/sensor/state
+      qos: 1
       pin:
         number: "6"
         mcp23xxx: io3
@@ -180,6 +187,7 @@ binary_sensor:
       id: io3_pin8
       name: io3_pin8
       state_topic: /binky/m5/io3_pin8/sensor/state
+      qos: 1
       pin:
         number: "7"
         mcp23xxx: io3
@@ -194,6 +202,7 @@ binary_sensor:
       id: io1s_pin1
       name: io1s_pin1
       state_topic: /binky/m5/io1s_pin1/sensor/state
+      qos: 1
       pin:
         number: "0"
         mcp23xxx: io1s
@@ -208,6 +217,7 @@ binary_sensor:
       id: io1s_pin2
       name: io1s_pin2
       state_topic: /binky/m5/io1s_pin2/sensor/state
+      qos: 1
       pin:
         number: "1"
         mcp23xxx: io1s
@@ -222,6 +232,7 @@ binary_sensor:
       id: io1s_pin3
       name: io1s_pin3
       state_topic: /binky/m5/io1s_pin3/sensor/state
+      qos: 1
       pin:
         number: "2"
         mcp23xxx: io1s
@@ -236,6 +247,7 @@ binary_sensor:
       id: io1s_pin4
       name: io1s_pin4
       state_topic: /binky/m5/io1s_pin4/sensor/state
+      qos: 1
       pin:
         number: "3"
         mcp23xxx: io1s
@@ -250,6 +262,7 @@ binary_sensor:
       id: io1s_pin5
       name: io1s_pin5
       state_topic: /binky/m5/io1s_pin5/sensor/state
+      qos: 1
       pin:
         number: "4"
         mcp23xxx: io1s
@@ -264,6 +277,7 @@ binary_sensor:
       id: io1s_pin6
       name: io1s_pin6
       state_topic: /binky/m5/io1s_pin6/sensor/state
+      qos: 1
       pin:
         number: "5"
         mcp23xxx: io1s
@@ -278,6 +292,7 @@ binary_sensor:
       id: io1s_pin7
       name: io1s_pin7
       state_topic: /binky/m5/io1s_pin7/sensor/state
+      qos: 1
       pin:
         number: "6"
         mcp23xxx: io1s
@@ -292,6 +307,7 @@ binary_sensor:
       id: io1s_pin8
       name: io1s_pin8
       state_topic: /binky/m5/io1s_pin8/sensor/state
+      qos: 1
       pin:
         number: "7"
         mcp23xxx: io1s
@@ -306,6 +322,7 @@ binary_sensor:
       id: iotiny1_pin1
       name: iotiny1_pin1
       state_topic: /binky/m5/iotiny1_pin1/sensor/state
+      qos: 1
       pin:
         number: "0"
         pcf8574: iotiny1
@@ -320,6 +337,7 @@ binary_sensor:
       id: iotiny1_pin2
       name: iotiny1_pin2
       state_topic: /binky/m5/iotiny1_pin2/sensor/state
+      qos: 1
       pin:
         number: "1"
         pcf8574: iotiny1
@@ -334,6 +352,7 @@ binary_sensor:
       id: iotiny1_pin3
       name: iotiny1_pin3
       state_topic: /binky/m5/iotiny1_pin3/sensor/state
+      qos: 1
       pin:
         number: "2"
         pcf8574: iotiny1
@@ -348,6 +367,7 @@ binary_sensor:
       id: iotiny1_pin4
       name: iotiny1_pin4
       state_topic: /binky/m5/iotiny1_pin4/sensor/state
+      qos: 1
       pin:
         number: "3"
         pcf8574: iotiny1
@@ -362,6 +382,7 @@ binary_sensor:
       id: iotiny1_pin5
       name: iotiny1_pin5
       state_topic: /binky/m5/iotiny1_pin5/sensor/state
+      qos: 1
       pin:
         number: "4"
         pcf8574: iotiny1
@@ -376,6 +397,7 @@ binary_sensor:
       id: iotiny1_pin6
       name: iotiny1_pin6
       state_topic: /binky/m5/iotiny1_pin6/sensor/state
+      qos: 1
       pin:
         number: "5"
         pcf8574: iotiny1
@@ -390,6 +412,7 @@ binary_sensor:
       id: iotiny1_pin7
       name: iotiny1_pin7
       state_topic: /binky/m5/iotiny1_pin7/sensor/state
+      qos: 1
       pin:
         number: "6"
         pcf8574: iotiny1
@@ -404,6 +427,7 @@ binary_sensor:
       id: iotiny1_pin8
       name: iotiny1_pin8
       state_topic: /binky/m5/iotiny1_pin8/sensor/state
+      qos: 1
       pin:
         number: "7"
         pcf8574: iotiny1
@@ -418,6 +442,7 @@ binary_sensor:
       id: iotiny4_pin1
       name: iotiny4_pin1
       state_topic: /binky/m5/iotiny4_pin1/sensor/state
+      qos: 1
       pin:
         number: "0"
         pcf8574: iotiny4
@@ -432,6 +457,7 @@ binary_sensor:
       id: iotiny4_pin2
       name: iotiny4_pin2
       state_topic: /binky/m5/iotiny4_pin2/sensor/state
+      qos: 1
       pin:
         number: "1"
         pcf8574: iotiny4
@@ -446,6 +472,7 @@ binary_sensor:
       id: iotiny4_pin3
       name: iotiny4_pin3
       state_topic: /binky/m5/iotiny4_pin3/sensor/state
+      qos: 1
       pin:
         number: "2"
         pcf8574: iotiny4
@@ -460,6 +487,7 @@ binary_sensor:
       id: iotiny4_pin4
       name: iotiny4_pin4
       state_topic: /binky/m5/iotiny4_pin4/sensor/state
+      qos: 1
       pin:
         number: "3"
         pcf8574: iotiny4
@@ -474,6 +502,7 @@ binary_sensor:
       id: iotiny4_pin5
       name: iotiny4_pin5
       state_topic: /binky/m5/iotiny4_pin5/sensor/state
+      qos: 1
       pin:
         number: "4"
         pcf8574: iotiny4
@@ -488,6 +517,7 @@ binary_sensor:
       id: iotiny4_pin6
       name: iotiny4_pin6
       state_topic: /binky/m5/iotiny4_pin6/sensor/state
+      qos: 1
       pin:
         number: "5"
         pcf8574: iotiny4
@@ -502,6 +532,7 @@ binary_sensor:
       id: iotiny4_pin7
       name: iotiny4_pin7
       state_topic: /binky/m5/iotiny4_pin7/sensor/state
+      qos: 1
       pin:
         number: "6"
         pcf8574: iotiny4
@@ -516,6 +547,7 @@ binary_sensor:
       id: iotiny4_pin8
       name: iotiny4_pin8
       state_topic: /binky/m5/iotiny4_pin8/sensor/state
+      qos: 1
       pin:
         number: "7"
         pcf8574: iotiny4
@@ -671,7 +703,9 @@ text_sensor:
       ip_address:
         name: ip_address
         state_topic: /binky/m5-r1/info/ip_address
-i2c: {}
+i2c:
+    frequency: 10kHz
+    timeout: 100ms
 pca9685:
     - id: pwm1
       address: "0x40"

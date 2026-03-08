@@ -43,19 +43,20 @@ wifi:
 interval:
     - interval: 15s
       then:
-        - lambda: if (id(io1_pin1).state) { id(io1_pin1).publish_state(true); } else { id(io1_pin1).publish_state(true); }
-        - lambda: if (id(io1_pin2).state) { id(io1_pin2).publish_state(true); } else { id(io1_pin2).publish_state(true); }
-        - lambda: if (id(io1_pin3).state) { id(io1_pin3).publish_state(true); } else { id(io1_pin3).publish_state(true); }
-        - lambda: if (id(io1_pin4).state) { id(io1_pin4).publish_state(true); } else { id(io1_pin4).publish_state(true); }
-        - lambda: if (id(io1_pin5).state) { id(io1_pin5).publish_state(true); } else { id(io1_pin5).publish_state(true); }
-        - lambda: if (id(io1_pin6).state) { id(io1_pin6).publish_state(true); } else { id(io1_pin6).publish_state(true); }
-        - lambda: if (id(io1_pin7).state) { id(io1_pin7).publish_state(true); } else { id(io1_pin7).publish_state(true); }
-        - lambda: if (id(io1_pin8).state) { id(io1_pin8).publish_state(true); } else { id(io1_pin8).publish_state(true); }
+        - lambda: if (id(io1_pin1).state) { id(io1_pin1).publish_state(true); } else { id(io1_pin1).publish_state(false); }
+        - lambda: if (id(io1_pin2).state) { id(io1_pin2).publish_state(true); } else { id(io1_pin2).publish_state(false); }
+        - lambda: if (id(io1_pin3).state) { id(io1_pin3).publish_state(true); } else { id(io1_pin3).publish_state(false); }
+        - lambda: if (id(io1_pin4).state) { id(io1_pin4).publish_state(true); } else { id(io1_pin4).publish_state(false); }
+        - lambda: if (id(io1_pin5).state) { id(io1_pin5).publish_state(true); } else { id(io1_pin5).publish_state(false); }
+        - lambda: if (id(io1_pin6).state) { id(io1_pin6).publish_state(true); } else { id(io1_pin6).publish_state(false); }
+        - lambda: if (id(io1_pin7).state) { id(io1_pin7).publish_state(true); } else { id(io1_pin7).publish_state(false); }
+        - lambda: if (id(io1_pin8).state) { id(io1_pin8).publish_state(true); } else { id(io1_pin8).publish_state(false); }
 binary_sensor:
     - platform: gpio
       id: io1_pin1
       name: io1_pin1
       state_topic: /binky/m2/io1_pin1/sensor/state
+      qos: 1
       pin:
         number: "0"
         mcp23xxx: ios1
@@ -70,6 +71,7 @@ binary_sensor:
       id: io1_pin2
       name: io1_pin2
       state_topic: /binky/m2/io1_pin2/sensor/state
+      qos: 1
       pin:
         number: "1"
         mcp23xxx: ios1
@@ -84,6 +86,7 @@ binary_sensor:
       id: io1_pin3
       name: io1_pin3
       state_topic: /binky/m2/io1_pin3/sensor/state
+      qos: 1
       pin:
         number: "2"
         mcp23xxx: ios1
@@ -98,6 +101,7 @@ binary_sensor:
       id: io1_pin4
       name: io1_pin4
       state_topic: /binky/m2/io1_pin4/sensor/state
+      qos: 1
       pin:
         number: "3"
         mcp23xxx: ios1
@@ -112,6 +116,7 @@ binary_sensor:
       id: io1_pin5
       name: io1_pin5
       state_topic: /binky/m2/io1_pin5/sensor/state
+      qos: 1
       pin:
         number: "4"
         mcp23xxx: ios1
@@ -126,6 +131,7 @@ binary_sensor:
       id: io1_pin6
       name: io1_pin6
       state_topic: /binky/m2/io1_pin6/sensor/state
+      qos: 1
       pin:
         number: "5"
         mcp23xxx: ios1
@@ -140,6 +146,7 @@ binary_sensor:
       id: io1_pin7
       name: io1_pin7
       state_topic: /binky/m2/io1_pin7/sensor/state
+      qos: 1
       pin:
         number: "6"
         mcp23xxx: ios1
@@ -154,6 +161,7 @@ binary_sensor:
       id: io1_pin8
       name: io1_pin8
       state_topic: /binky/m2/io1_pin8/sensor/state
+      qos: 1
       pin:
         number: "7"
         mcp23xxx: ios1
@@ -289,7 +297,9 @@ text_sensor:
       ip_address:
         name: ip_address
         state_topic: /binky/m2-r1/info/ip_address
-i2c: {}
+i2c:
+    frequency: 10kHz
+    timeout: 100ms
 pca9685:
     - id: pwm1
       address: "0x40"
