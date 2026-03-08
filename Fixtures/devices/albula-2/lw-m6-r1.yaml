@@ -50,28 +50,36 @@ interval:
     - interval: 15s
       then:
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin1).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin1).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin1/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin2).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin2).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin2/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin3).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin3).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin3/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin4).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin4).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin4/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin5).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin5).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin5/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin6).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin6).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin6/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin7).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin7).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin7/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios2_pin8).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios2_pin8).state) ? "ON" : "OFF";
             topic: /binky/m6/ios2_pin8/sensor/state
 binary_sensor:
     - platform: gpio
@@ -209,7 +217,8 @@ number:
       set_action:
         - servo.write:
             id: servo_sw1
-            level: !lambda return x / 100.0;
+            level: !lambda |-
+                return x / 100.0;
     - platform: template
       id: sw2
       name: sw2
@@ -220,7 +229,8 @@ number:
       set_action:
         - servo.write:
             id: servo_sw2
-            level: !lambda return x / 100.0;
+            level: !lambda |-
+                return x / 100.0;
     - platform: template
       id: sw3
       name: sw3
@@ -231,7 +241,8 @@ number:
       set_action:
         - servo.write:
             id: servo_sw3
-            level: !lambda return x / 100.0;
+            level: !lambda |-
+                return x / 100.0;
 output:
     - platform: pca9685
       id: servo_output_sw1

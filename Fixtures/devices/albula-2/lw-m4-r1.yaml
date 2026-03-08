@@ -48,28 +48,36 @@ interval:
     - interval: 15s
       then:
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin1).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin1).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin1/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin2).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin2).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin2/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin3).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin3).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin3/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin4).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin4).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin4/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin5).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin5).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin5/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin6).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin6).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin6/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin7).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin7).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin7/sensor/state
         - mqtt.publish:
-            payload: !lambda 'return (id(ios4_pin8).state) ? "ON" : "OFF";'
+            payload: !lambda |-
+                return (id(ios4_pin8).state) ? "ON" : "OFF";
             topic: /binky/m4/ios4_pin8/sensor/state
 binary_sensor:
     - platform: gpio
