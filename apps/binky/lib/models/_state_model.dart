@@ -172,6 +172,12 @@ class StateModel extends ChangeNotifier {
     return result;
   }
 
+  // Initialize all outputs of the railway
+  Future<void> initializeOutputs() async {
+    var stateClient = APIClient().stateClient();
+    await stateClient.initializeOutputs(Empty());
+  }
+
   Future<LocState> setLocSpeedAndDirection(
       String id, int speed, LocDirection direction) async {
     var stateClient = APIClient().stateClient();

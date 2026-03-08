@@ -135,6 +135,24 @@ class _RunPageState extends State<RunPage> {
     final List<Widget> list = [];
     final rwState = state.getCachedRailwayState();
 
+    if (rwState != null) {
+      list.add(IconButton(
+        color: Colors.purple,
+        icon: const Icon(Icons.auto_awesome),
+        tooltip: "Initialize outputs",
+        onPressed: () async {
+          try {
+            await state.initializeOutputs();
+          } catch (err) {
+            showErrorDialog(
+                context: context,
+                title: "Failed to initialize outputs",
+                content: Text("$err"));
+          }
+        },
+      ));
+    }
+
     if ((rwState != null) && (!rwState.isVirtualModeEnabled)) {
       if (rwState.isEntityTesterEnabled) {
         list.add(IconButton(

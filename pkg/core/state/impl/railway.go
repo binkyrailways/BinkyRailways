@@ -25,12 +25,12 @@ import (
 
 	"go.uber.org/multierr"
 
-	mqtt "github.com/mochi-mqtt/server/v2"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/automatic"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state/eventlog"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/util"
+	mqtt "github.com/mochi-mqtt/server/v2"
 	"github.com/rs/zerolog"
 )
 
@@ -702,11 +702,10 @@ func (r *railway) Close(ctx context.Context) {
 // Initialize all outputs
 func (r *railway) InitializeOutputs(ctx context.Context) {
 	var wg sync.WaitGroup
+	delay := time.Second * 5
 	r.ForEachJunction(func(j state.Junction) {
 		if sw, ok := j.(state.Switch); ok {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
+			wg.Go(func() {
 				direction := sw.GetDirection()
 				old := direction.GetRequested(ctx)
 				newDir := model.SwitchDirectionStraight
@@ -715,30 +714,28 @@ func (r *railway) InitializeOutputs(ctx context.Context) {
 				}
 				direction.SetRequested(ctx, newDir)
 				select {
-				case <-time.After(2 * time.Second):
+				case <-time.After(delay):
 					direction.SetRequested(ctx, old)
 				case <-ctx.Done():
 					// Context cancelled
 				}
-			}()
+			})
 		}
 	})
 	r.ForEachOutput(func(o state.Output) {
 		if bo, ok := o.(state.BinaryOutput); ok {
 			if bo.GetBinaryOutputType() == model.BinaryOutputTypeTrackInverter {
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
+				wg.Go(func() {
 					active := bo.GetActive()
 					old := active.GetRequested(ctx)
 					active.SetRequested(ctx, !old)
 					select {
-					case <-time.After(2 * time.Second):
+					case <-time.After(delay):
 						active.SetRequested(ctx, old)
 					case <-ctx.Done():
 						// Context cancelled
 					}
-				}()
+				})
 			}
 		}
 	})

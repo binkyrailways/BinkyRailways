@@ -56,6 +56,10 @@ class StateServiceClient extends $grpc.Client {
           '/binkyrailways.v1.StateService/SetAutomaticControl',
           ($5.SetAutomaticControlRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $4.RailwayState.fromBuffer(value));
+  static final _$initializeOutputs = $grpc.ClientMethod<$0.Empty, $0.Empty>(
+      '/binkyrailways.v1.StateService/InitializeOutputs',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$setLocSpeedAndDirection =
       $grpc.ClientMethod<$5.SetLocSpeedAndDirectionRequest, $4.LocState>(
           '/binkyrailways.v1.StateService/SetLocSpeedAndDirection',
@@ -167,6 +171,11 @@ class StateServiceClient extends $grpc.Client {
       $5.SetAutomaticControlRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setAutomaticControl, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> initializeOutputs($0.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$initializeOutputs, request, options: options);
   }
 
   $grpc.ResponseFuture<$4.LocState> setLocSpeedAndDirection(
@@ -307,6 +316,13 @@ abstract class StateServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $5.SetAutomaticControlRequest.fromBuffer(value),
             ($4.RailwayState value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
+        'InitializeOutputs',
+        initializeOutputs_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$5.SetLocSpeedAndDirectionRequest, $4.LocState>(
             'SetLocSpeedAndDirection',
@@ -450,6 +466,11 @@ abstract class StateServiceBase extends $grpc.Service {
     return setAutomaticControl(call, await request);
   }
 
+  $async.Future<$0.Empty> initializeOutputs_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return initializeOutputs(call, await request);
+  }
+
   $async.Future<$4.LocState> setLocSpeedAndDirection_Pre($grpc.ServiceCall call,
       $async.Future<$5.SetLocSpeedAndDirectionRequest> request) async {
     return setLocSpeedAndDirection(call, await request);
@@ -529,6 +550,8 @@ abstract class StateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $5.SetPowerRequest request);
   $async.Future<$4.RailwayState> setAutomaticControl(
       $grpc.ServiceCall call, $5.SetAutomaticControlRequest request);
+  $async.Future<$0.Empty> initializeOutputs(
+      $grpc.ServiceCall call, $0.Empty request);
   $async.Future<$4.LocState> setLocSpeedAndDirection(
       $grpc.ServiceCall call, $5.SetLocSpeedAndDirectionRequest request);
   $async.Future<$4.LocState> setLocControlledAutomatically(

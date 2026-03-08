@@ -131,3 +131,13 @@ func (s *service) SetAutomaticControl(ctx context.Context, req *api.SetAutomatic
 	}
 	return s.GetRailwayState(ctx, nil)
 }
+
+// Trigger an initialization of outputs of the railway.
+func (s *service) InitializeOutputs(ctx context.Context, req *api.Empty) (*api.Empty, error) {
+	rwState, err := s.getRailwayState()
+	if err != nil {
+		return nil, err
+	}
+	go rwState.InitializeOutputs(context.Background())
+	return &api.Empty{}, nil
+}
