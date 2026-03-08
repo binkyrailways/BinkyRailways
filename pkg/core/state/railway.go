@@ -139,4 +139,7 @@ type Railway interface {
 
 	// Close the railway
 	Close(ctx context.Context)
+
+	// Initialize all outputs
+	InitializeOutputs(ctx context.Context)
 }

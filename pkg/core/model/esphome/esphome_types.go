@@ -74,6 +74,16 @@ func (e *Esphome) AddOnBootAction(priority int, a Action) {
 	t.Then = append(t.Then, a)
 }
 
+// Ensure I2C is configured
+func (e *DeviceFile) setupI2C() {
+	if e.I2C == nil {
+		e.I2C = &I2C{
+			Frequency: "10kHz",
+			Timeout:   "100ms",
+		}
+	}
+}
+
 func (e *DeviceFile) getInterval(interval string) *Interval {
 	for idx, item := range e.Interval {
 		if item.Interval == interval {
@@ -124,6 +134,15 @@ type Wifi struct {
 }
 
 type I2C struct {
+	// Set the frequency the I²C bus should operate on.
+	// Defaults to 50kHz. Default for NRF52 is 100kHz.
+	// Values are 10kHz, 50kHz, 100kHz, 200kHz, … 800kHz.
+	// NRF52 supports only 100kHz and 400kHz.
+	Frequency string `yaml:"frequency,omitempty"`
+	// Set the I²C bus timeout. Defaults to the framework defaults
+	// (100us on esp32, 1s on esp8266 and 1s on rp2040).
+	// Maximum on esp32 is 13ms.
+	Timeout string `yaml:"timeout,omitempty"`
 }
 
 type PCA9685Hub struct {

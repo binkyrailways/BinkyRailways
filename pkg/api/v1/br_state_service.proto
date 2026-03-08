@@ -50,6 +50,9 @@ service StateService {
   // Change the requested automatic controller state
   rpc SetAutomaticControl(SetAutomaticControlRequest) returns (RailwayState);
 
+  // Trigger an initialization of outputs of the railway.
+  rpc InitializeOutputs(Empty) returns (Empty);
+
   // Change the speed and direction of a loc
   rpc SetLocSpeedAndDirection(SetLocSpeedAndDirectionRequest)
       returns (LocState);

@@ -182,7 +182,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 			Address:   devModel.GetAddress(),
 			Frequency: 54,
 		}
-		f.I2C = &I2C{}
+		f.setupI2C()
 		f.PCA9685s = append(f.PCA9685s, hub)
 		fs.platforms[devModel.GetDeviceID()] = &devicePlatform{
 			Platform:   "pca9685",
@@ -197,7 +197,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
-		f.I2C = &I2C{}
+		f.setupI2C()
 		f.MCP23008s = append(f.MCP23008s, hub)
 		fs.platforms[devModel.GetDeviceID()] = &devicePlatform{
 			Platform:   "gpio",
@@ -211,7 +211,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
-		f.I2C = &I2C{}
+		f.setupI2C()
 		f.MCP23017s = append(f.MCP23017s, hub)
 		fs.platforms[devModel.GetDeviceID()] = &devicePlatform{
 			Platform:   "gpio",
@@ -225,7 +225,7 @@ func addDevice(fs *DeviceFileSet, devModel model.BinkyNetDevice) error {
 			Id:      model.NormalizeName(string(devModel.GetDeviceID())),
 			Address: devModel.GetAddress(),
 		}
-		f.I2C = &I2C{}
+		f.setupI2C()
 		f.PCF8574s = append(f.PCF8574s, hub)
 		fs.platforms[devModel.GetDeviceID()] = &devicePlatform{
 			Platform:   "gpio",
