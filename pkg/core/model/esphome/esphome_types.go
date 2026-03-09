@@ -98,7 +98,11 @@ func (e *DeviceFile) AddSensorUpdateInterval(interval string, bs *BinarySensor) 
 	i := e.getInterval(interval)
 	idFunc := fmt.Sprintf("id(%s)", bs.Id)
 	i.Then = append(i.Then, Action{
-		"lambda": fmt.Sprintf("if (%s.state) { %s.publish_state(true); } else { %s.publish_state(true); }", idFunc, idFunc, idFunc),
+		"mqtt.publish": map[string]any{
+			"topic":   bs.StateTopic,
+			"payload": yamlLambda(fmt.Sprintf("return (%s.state) ? \"ON\" : \"OFF\";", idFunc)),
+		},
+		//"lambda": fmt.Sprintf("if (%s.state) { %s.publish_state(true); } else { %s.publish_state(false); }", idFunc, idFunc, idFunc),
 	})
 }
 
@@ -164,7 +168,14 @@ type PCF8574Hub struct {
 type MQTTComponent struct {
 	StateTopic   string `yaml:"state_topic,omitempty"`
 	CommandTopic string `yaml:"command_topic,omitempty"`
+	QoS          int    `yaml:"qos,omitempty"`
 }
+
+const (
+	QoSAtMostOnce  = 0
+	QoSAtLeastOnce = 1
+	QoAExactlyOnce = 2
+)
 
 type Component struct {
 	Platform      string `yaml:"platform,omitempty"`
@@ -259,6 +270,7 @@ func (i yamlLambda) MarshalYAML() (interface{}, error) {
 	return &yaml.Node{
 		Kind:  yaml.ScalarNode,
 		Value: string(i),
+		Style: yaml.LiteralStyle,
 		Tag:   "!lambda",
 	}, nil
 }

@@ -126,6 +126,7 @@ update-modules:
 	go get \
 		github.com/binkynet/NetManager@v1.10.2 \
 		github.com/binkynet/BinkyNet@v1.13.0 \
+		github.com/binkynet/LocalWorker@0.4.0 \
 		golang.org/x/crypto@latest
 	go mod tidy
 
