@@ -50,6 +50,7 @@ func (fs *DeviceFileSet) createBinarySensor(
 	sensor.Id = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	sensor.Name = model.NormalizeName(namePrefix + string(objModel.GetObjectID()))
 	sensor.StateTopic = objModel.GetMQTTStateTopic(connName)
+	sensor.QoS = QoSAtLeastOnce
 	sensor.OnState = &Trigger{
 		Then: []Action{
 			{"switch.turn_on": "led_red"},
