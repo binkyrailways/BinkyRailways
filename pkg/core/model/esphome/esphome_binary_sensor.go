@@ -61,6 +61,11 @@ func (fs *DeviceFileSet) createBinarySensor(
 	sensor.Pin = &Pin{
 		Number: fmt.Sprintf("%d", pin.GetIndex()-1),
 	}
+	sensor.Filters = []*BinarySensorFilters{
+		{
+			DelayedOnOff: "25ms",
+		},
+	}
 	platform.ConfigureBinarySensor(&sensor)
 
 	f := platform.deviceFile
