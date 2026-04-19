@@ -149,6 +149,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin2
       name: ios1_pin2
@@ -164,6 +166,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin3
       name: ios1_pin3
@@ -179,6 +183,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin4
       name: ios1_pin4
@@ -194,6 +200,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin5
       name: ios1_pin5
@@ -209,6 +217,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin6
       name: ios1_pin6
@@ -224,6 +234,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin7
       name: ios1_pin7
@@ -239,6 +251,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: ios1_pin8
       name: ios1_pin8
@@ -254,6 +268,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin1
       name: io3_pin1
@@ -269,6 +285,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin2
       name: io3_pin2
@@ -284,6 +302,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin3
       name: io3_pin3
@@ -299,6 +319,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin4
       name: io3_pin4
@@ -314,6 +336,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin5
       name: io3_pin5
@@ -329,6 +353,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin6
       name: io3_pin6
@@ -344,6 +370,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin7
       name: io3_pin7
@@ -359,6 +387,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io3_pin8
       name: io3_pin8
@@ -374,6 +404,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin1
       name: io4_pin1
@@ -389,6 +421,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin2
       name: io4_pin2
@@ -404,6 +438,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin3
       name: io4_pin3
@@ -419,6 +455,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin4
       name: io4_pin4
@@ -434,6 +472,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin5
       name: io4_pin5
@@ -449,6 +489,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin6
       name: io4_pin6
@@ -464,6 +506,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin7
       name: io4_pin7
@@ -479,6 +523,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
     - platform: gpio
       id: io4_pin8
       name: io4_pin8
@@ -494,6 +540,8 @@ binary_sensor:
             - switch.turn_on: led_red
             - delay: 0.2s
             - switch.turn_off: led_red
+      filters:
+        - delayed_on_off: 25ms
 button:
     - platform: restart
       id: reboot
