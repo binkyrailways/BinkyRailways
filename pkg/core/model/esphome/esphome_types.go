@@ -191,8 +191,13 @@ type Interval struct {
 
 type BinarySensor struct {
 	Component `yaml:",inline"`
-	Pin       *Pin     `yaml:"pin,omitempty"`
-	OnState   *Trigger `yaml:"on_state,omitempty"`
+	Pin       *Pin                   `yaml:"pin,omitempty"`
+	OnState   *Trigger               `yaml:"on_state,omitempty"`
+	Filters   []*BinarySensorFilters `yaml:"filters,omitempty"`
+}
+
+type BinarySensorFilters struct {
+	DelayedOnOff string `yaml:"delayed_on_off,omitempty"`
 }
 
 type Sensor struct {
