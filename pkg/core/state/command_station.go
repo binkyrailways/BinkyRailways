@@ -58,6 +58,9 @@ type CommandStation interface {
 	// Enable/disable power on the railway
 	GetPower() BoolProperty
 
+	// Information about power
+	GetPowerInfo() string
+
 	// Has the command station not send or received anything for a while.
 	GetIdle(context.Context) bool
 

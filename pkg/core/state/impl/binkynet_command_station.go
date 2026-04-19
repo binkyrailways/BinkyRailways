@@ -266,6 +266,11 @@ func (cs *binkyNetCommandStation) GetPower() state.BoolProperty {
 	return &cs.power
 }
 
+// Information about power
+func (cs *binkyNetCommandStation) GetPowerInfo() string {
+	return ""
+}
+
 // Has the command station not send or received anything for a while.
 func (cs *binkyNetCommandStation) GetIdle(context.Context) bool {
 	return true // TODO

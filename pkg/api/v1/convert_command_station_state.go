@@ -41,5 +41,6 @@ func (dst *CommandStationState) FromState(ctx context.Context, src state.Command
 	})
 	dst.PowerActual = src.GetPower().GetActual(ctx)
 	dst.PowerRequested = src.GetPower().GetRequested(ctx)
+	dst.PowerInfo = src.GetPowerInfo()
 	return nil
 }
