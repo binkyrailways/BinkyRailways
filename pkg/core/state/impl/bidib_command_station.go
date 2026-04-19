@@ -21,12 +21,14 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/binkynet/bidib"
 	"github.com/binkynet/bidib/host"
 	"github.com/binkynet/bidib/messages"
 	serialtx "github.com/binkynet/bidib/transport/serial"
+	"github.com/samber/lo"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
@@ -36,9 +38,11 @@ import (
 type bidibCommandStation struct {
 	commandStation
 
-	host                  host.Host
-	power                 boolProperty
-	dynStateChangedCancel context.CancelFunc
+	host                   host.Host
+	power                  boolProperty
+	dynStateChangedCancel  context.CancelFunc
+	bmAddressChangedCancel context.CancelFunc
+	bstStateChangedCancel  context.CancelFunc
 }
 
 // Create a new entity
@@ -78,6 +82,8 @@ func (cs *bidibCommandStation) TryPrepareForUse(context.Context, state.UserInter
 	}
 	cs.host = h
 	cs.dynStateChangedCancel = h.RegisterDynStateChanged(cs.onDynStateChanged)
+	cs.bmAddressChangedCancel = h.RegisterBmAddressChanged(cs.onBmAddresssChanged)
+	cs.bstStateChangedCancel = h.RegisterBstStateChanged(cs.onBstStateChanged)
 	log.Debug().Msg("Prepared bidib host")
 
 	return nil
@@ -234,6 +240,14 @@ func (cs *bidibCommandStation) Close(ctx context.Context) {
 		cs.dynStateChangedCancel()
 		cs.dynStateChangedCancel = nil
 	}
+	if cs.bmAddressChangedCancel != nil {
+		cs.bmAddressChangedCancel()
+		cs.bmAddressChangedCancel = nil
+	}
+	if cs.bstStateChangedCancel != nil {
+		cs.bstStateChangedCancel()
+		cs.bstStateChangedCancel = nil
+	}
 	if h := cs.host; h != nil {
 		cs.host = nil
 		h.Close()
@@ -271,4 +285,15 @@ func (cs *bidibCommandStation) onDynStateChanged(m messages.BmDynState) {
 			return nil
 		})
 	}
+}
+
+func (cs *bidibCommandStation) onBmAddresssChanged(m messages.BmAddress) {
+	dccAddrs := lo.Map(m.DccAddresses, func(item uint16, _ int) string {
+		return strconv.Itoa(int(item))
+	})
+	cs.log.Info().Msgf("Found DCC addresses: %s", strings.Join(dccAddrs, ", "))
+}
+
+func (cs *bidibCommandStation) onBstStateChanged(m messages.BstState) {
+	cs.log.Info().Msgf("Booster state change: %s", m)
 }

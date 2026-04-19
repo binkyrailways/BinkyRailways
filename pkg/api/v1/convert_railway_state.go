@@ -19,6 +19,7 @@ package v1
 
 import (
 	context "context"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/state"
 )
@@ -56,6 +57,9 @@ func (dst *RailwayState) FromState(ctx context.Context, src state.Railway) error
 		r := &CommandStationRef{Id: b.GetID()}
 		dst.CommandStations = append(dst.CommandStations, r)
 	})
+	if len(dst.CommandStations) == 0 {
+		fmt.Println("#CommandStations == 0!!")
+	}
 	src.ForEachJunction(func(b state.Junction) {
 		r := &JunctionRef{Id: JoinParentChildID(b.GetModuleID(), b.GetID())}
 		dst.Junctions = append(dst.Junctions, r)

@@ -273,7 +273,6 @@ func (cs *binkyNetCommandStation) GetIdle(context.Context) bool {
 
 // Send the requested power state.
 func (cs *binkyNetCommandStation) sendPower(ctx context.Context, enabled bool) {
-	fmt.Printf("sendPower(%v)\n", enabled)
 	cs.manager.SetPowerRequest(bn.PowerState{
 		Enabled: enabled,
 	})
