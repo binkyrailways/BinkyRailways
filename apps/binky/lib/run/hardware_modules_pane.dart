@@ -32,33 +32,37 @@ class HardwareModulesPane extends StatelessWidget {
     return Consumer<StateModel>(builder: (context, state, child) {
       final css = state.commandStations().toList();
       final hws = _getHardwareModules(state);
-      if (css.isEmpty && hws.isEmpty) {
-        return const Text("No command stations and hardware modules found");
-      }
-      css.sort((a, b) =>
-          a.last.model.description.compareTo(b.last.model.description));
-      hws.sort((a, b) => compareAsciiLowerCase(a.id, b.id));
       final List<Widget> children = [];
-      if (css.isNotEmpty) {
-        final rows = (css.length > 1) ? 2 : 1;
-        children.add(SizedBox(
+      if (css.isEmpty && hws.isEmpty) {
+        children.add(const SizedBox(
           height: 40,
-          child: GridView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: css.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: rows,
-              childAspectRatio: (40 / rows) / 150,
-            ),
-            itemBuilder: (context, index) =>
-                CommandStationPane(commandStation: css[index].last),
-          ),
+          child: const Text("No command stations and hardware modules found"),
         ));
+      } else {
+        css.sort((a, b) =>
+            a.last.model.description.compareTo(b.last.model.description));
+        hws.sort((a, b) => compareAsciiLowerCase(a.id, b.id));
+        if (css.isNotEmpty) {
+          final rows = (css.length > 1) ? 2 : 1;
+          children.add(SizedBox(
+            height: 40,
+            child: GridView.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: css.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: rows,
+                childAspectRatio: (40 / rows) / 150,
+              ),
+              itemBuilder: (context, index) =>
+                  CommandStationPane(commandStation: css[index].last),
+            ),
+          ));
+        }
+        hws.where((e) => e.parentId.isEmpty).forEach((e) {
+          children.add(Expanded(child: HardwareModulePane(hardwareModule: e)));
+        });
       }
-      hws.where((e) => e.parentId.isEmpty).forEach((e) {
-        children.add(Expanded(child: HardwareModulePane(hardwareModule: e)));
-      });
       return Container(
         padding: const EdgeInsets.all(8),
         child: Row(children: children),

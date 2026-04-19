@@ -1,6 +1,6 @@
 module github.com/binkyrailways/BinkyRailways
 
-go 1.25.4
+go 1.24.8
 
 require (
 	github.com/binkynet/BinkyNet v1.13.0
