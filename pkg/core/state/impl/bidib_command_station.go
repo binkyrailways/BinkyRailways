@@ -119,6 +119,14 @@ func sendPowerToNode(node *host.Node, enabled bool) int {
 			}
 			result++
 		}
+		if bst := node.Bst(); bst != nil {
+			if enabled {
+				bst.On()
+			} else {
+				bst.Off()
+			}
+			result++
+		}
 		node.ForEachChild(func(child *host.Node) {
 			result += sendPowerToNode(child, enabled)
 		})
@@ -296,4 +304,15 @@ func (cs *bidibCommandStation) onBmAddresssChanged(m messages.BmAddress) {
 
 func (cs *bidibCommandStation) onBstStateChanged(m messages.BstState) {
 	cs.log.Info().Msgf("Booster state change: %s", m)
+
+	setActual := func(enabled bool) {
+		go cs.GetRailway().Exclusive(context.Background(), time.Second, "onBstStateChanged", func(ctx context.Context) error {
+			cs.power.SetActual(ctx, enabled)
+			return nil
+		})
+	}
+
+	if m.State.IsShort() {
+		setActual(false)
+	}
 }
