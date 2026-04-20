@@ -102,7 +102,10 @@ func (cs *bidibCommandStation) GetPower() state.BoolProperty {
 
 // Information about power
 func (cs *bidibCommandStation) GetPowerInfo() string {
-	return collectPowerInfo(cs.host.GetRootNode())
+	if h := cs.host; h != nil {
+		return collectPowerInfo(h.GetRootNode())
+	}
+	return ""
 }
 
 // Collect power info from given node and all its children
