@@ -100,6 +100,35 @@ func (cs *bidibCommandStation) GetPower() state.BoolProperty {
 	return &cs.power
 }
 
+// Information about power
+func (cs *bidibCommandStation) GetPowerInfo() string {
+	if h := cs.host; h != nil {
+		return collectPowerInfo(h.GetRootNode())
+	}
+	return ""
+}
+
+// Collect power info from given node and all its children
+func collectPowerInfo(node *host.Node) string {
+	var result string
+	if node != nil {
+		if bst := node.Bst(); bst != nil {
+			data := []string{
+				bst.GetCurrent(),
+				bst.GetVoltage(),
+				bst.GetTemperature(),
+			}
+			result = strings.Join(lo.Compact(data), ", ")
+		}
+		node.ForEachChild(func(child *host.Node) {
+			if r := collectPowerInfo(child); r != "" {
+				result = result + "\n" + r
+			}
+		})
+	}
+	return strings.TrimSpace(result)
+}
+
 // Has the command station not send or received anything for a while.
 func (cs *bidibCommandStation) GetIdle(context.Context) bool {
 	return true // TODO

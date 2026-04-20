@@ -223,6 +223,8 @@ message CommandStationState {
   bool power_actual = 10;
   // Is the requested power status of this command station on?
   bool power_requested = 11;
+  // Info about power status
+  string power_info = 12;
 }
 
 // State specific a hardware module that is connected to the command station

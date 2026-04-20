@@ -631,6 +631,7 @@ class CommandStationState extends $pb.GeneratedMessage {
     ..pc<HardwareModule>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareModules', $pb.PbFieldType.PM, subBuilder: HardwareModule.create)
     ..aOB(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerActual')
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerRequested')
+    ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'powerInfo')
     ..hasRequiredFields = false
   ;
 
@@ -640,6 +641,7 @@ class CommandStationState extends $pb.GeneratedMessage {
     $core.Iterable<HardwareModule>? hardwareModules,
     $core.bool? powerActual,
     $core.bool? powerRequested,
+    $core.String? powerInfo,
   }) {
     final _result = create();
     if (model != null) {
@@ -653,6 +655,9 @@ class CommandStationState extends $pb.GeneratedMessage {
     }
     if (powerRequested != null) {
       _result.powerRequested = powerRequested;
+    }
+    if (powerInfo != null) {
+      _result.powerInfo = powerInfo;
     }
     return _result;
   }
@@ -708,6 +713,15 @@ class CommandStationState extends $pb.GeneratedMessage {
   $core.bool hasPowerRequested() => $_has(3);
   @$pb.TagNumber(11)
   void clearPowerRequested() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.String get powerInfo => $_getSZ(4);
+  @$pb.TagNumber(12)
+  set powerInfo($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasPowerInfo() => $_has(4);
+  @$pb.TagNumber(12)
+  void clearPowerInfo() => clearField(12);
 }
 
 class HardwareModule extends $pb.GeneratedMessage {

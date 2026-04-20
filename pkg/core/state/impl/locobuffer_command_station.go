@@ -63,6 +63,11 @@ func (cs *locoBufferCommandStation) GetPower() state.BoolProperty {
 	return &cs.power
 }
 
+// Information about power
+func (cs *locoBufferCommandStation) GetPowerInfo() string {
+	return ""
+}
+
 // Has the command station not send or received anything for a while.
 func (cs *locoBufferCommandStation) GetIdle(context.Context) bool {
 	return true // TODO
