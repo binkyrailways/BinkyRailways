@@ -39,4 +39,9 @@ type RouteEventBehaviorList interface {
 
 	// Add a blank route behavior to the list
 	AddNew(appliesTo LocPredicate) RouteEventBehavior
+
+	// Move the given item up 1 position in this list.
+	MoveUp(item RouteEventBehavior) bool
+	// Move the given item down 1 position in this list.
+	MoveDown(item RouteEventBehavior) bool
 }

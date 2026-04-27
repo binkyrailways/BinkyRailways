@@ -207,6 +207,18 @@ const RemoveRouteEventBehaviorRequest$json = const {
 
 /// Descriptor for `RemoveRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List removeRouteEventBehaviorRequestDescriptor = $convert.base64Decode('Ch9SZW1vdmVSb3V0ZUV2ZW50QmVoYXZpb3JSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEhsKCXNlbnNvcl9pZBgCIAEoCVIIc2Vuc29ySWQSFAoFaW5kZXgYAyABKAVSBWluZGV4');
+@$core.Deprecated('Use moveRouteEventBehaviorRequestDescriptor instead')
+const MoveRouteEventBehaviorRequest$json = const {
+  '1': 'MoveRouteEventBehaviorRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'sensor_id', '3': 2, '4': 1, '5': 9, '10': 'sensorId'},
+    const {'1': 'index', '3': 3, '4': 1, '5': 5, '10': 'index'},
+  ],
+};
+
+/// Descriptor for `MoveRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List moveRouteEventBehaviorRequestDescriptor = $convert.base64Decode('Ch1Nb3ZlUm91dGVFdmVudEJlaGF2aW9yUmVxdWVzdBIZCghyb3V0ZV9pZBgBIAEoCVIHcm91dGVJZBIbCglzZW5zb3JfaWQYAiABKAlSCHNlbnNvcklkEhQKBWluZGV4GAMgASgFUgVpbmRleA==');
 @$core.Deprecated('Use addBinkyNetObjectsGroupRequestDescriptor instead')
 const AddBinkyNetObjectsGroupRequest$json = const {
   '1': 'AddBinkyNetObjectsGroupRequest',

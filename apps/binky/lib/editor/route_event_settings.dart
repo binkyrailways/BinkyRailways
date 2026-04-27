@@ -27,6 +27,8 @@ class RouteEventSettings extends StatefulWidget {
   final int eventIndex;
   final Future<void> Function(void Function(RouteEvent)) update;
   final Future<void> Function(int index) removeBehavior;
+  final Future<void> Function(int index) moveBehaviorUp;
+  final Future<void> Function(int index) moveBehaviorDown;
 
   const RouteEventSettings({
     Key? key,
@@ -35,6 +37,8 @@ class RouteEventSettings extends StatefulWidget {
     required this.eventIndex,
     required this.update,
     required this.removeBehavior,
+    required this.moveBehaviorUp,
+    required this.moveBehaviorDown,
   }) : super(key: key);
 
   @override
@@ -61,100 +65,81 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PaginatedDataTable(
-                  sortAscending: false,
-                  rowsPerPage: 5,
-                  columns: const [
-                    DataColumn(label: Text("Locs")),
-                    DataColumn(label: Text("State behavior")),
-                    DataColumn(label: Text("Speed behavior")),
-                    DataColumn(label: Text("")),
-                  ],
-                  source: _BehaviorsDataSource(
-                    model: widget.model,
-                    route: route,
-                    event: event,
-                    items: event.behaviors,
-                    update: widget.update,
-                    removeBehavior: widget.removeBehavior,
-                  ),
+                ReorderableListView.builder(
+                  shrinkWrap: true,
+                  itemCount: event.behaviors.length,
+                  onReorder: (int oldIndex, int newIndex) async {
+                    if (newIndex > oldIndex) {
+                      newIndex -= 1;
+                    }
+                    if (oldIndex == newIndex) return;
+                    // Move behavior using multiple API calls since we only have moveUp/moveDown
+                    int current = oldIndex;
+                    while (current < newIndex) {
+                      await widget.moveBehaviorDown(current);
+                      current++;
+                    }
+                    while (current > newIndex) {
+                      await widget.moveBehaviorUp(current);
+                      current--;
+                    }
+                  },
+                  itemBuilder: (context, index) {
+                    final bhv = event.behaviors[index];
+                    return ListTile(
+                      key: Key("behavior-$index"),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: bhv.appliesTo,
+                              onChanged: (value) async {
+                                await widget.update((update) {
+                                  update.behaviors[index].appliesTo = value;
+                                });
+                              },
+                              decoration: const InputDecoration(labelText: "Locs"),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          DropdownButton<RouteStateBehavior>(
+                            items: _routeStateBehaviorOptions(),
+                            value: bhv.stateBehavior,
+                            onChanged: (value) async {
+                              await widget.update((update) {
+                                if (value != null) {
+                                  update.behaviors[index].stateBehavior = value;
+                                }
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          DropdownButton<LocSpeedBehavior>(
+                            items: _locSpeedBehaviorOptions(),
+                            value: bhv.speedBehavior,
+                            onChanged: (value) async {
+                              await widget.update((update) {
+                                if (value != null) {
+                                  update.behaviors[index].speedBehavior = value;
+                                }
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete_outline),
+                            onPressed: () async {
+                              await widget.removeBehavior(index);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
           );
         });
-  }
-}
-
-class _BehaviorsDataSource extends DataTableSource {
-  final ModelModel model;
-  final Route route;
-  final RouteEvent event;
-  final List<RouteEventBehavior> items;
-  final Future<void> Function(void Function(RouteEvent)) update;
-  final Future<void> Function(int index) removeBehavior;
-  final PermissionValidator _permissionValidator = PermissionValidator();
-
-  _BehaviorsDataSource({
-    required this.model,
-    required this.route,
-    required this.event,
-    required this.items,
-    required this.update,
-    required this.removeBehavior,
-  });
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => items.length;
-
-  @override
-  int get selectedRowCount => 0;
-
-  @override
-  DataRow getRow(int index) {
-    final bhv = items[index];
-    return DataRow(cells: [
-      DataCell(TextFormField(
-        initialValue: bhv.appliesTo,
-        validator: _permissionValidator.validate,
-        onChanged: (value) async {
-          await update((update) {
-            update.behaviors[index].appliesTo = value;
-          });
-        },
-      )),
-      DataCell(DropdownButton<RouteStateBehavior>(
-        items: _routeStateBehaviorOptions(),
-        value: bhv.stateBehavior,
-        onChanged: (value) async {
-          await update((update) {
-            if (value != null) {
-              update.behaviors[index].stateBehavior = value;
-            }
-          });
-        },
-      )),
-      DataCell(DropdownButton<LocSpeedBehavior>(
-        items: _locSpeedBehaviorOptions(),
-        value: bhv.speedBehavior,
-        onChanged: (value) async {
-          await update((update) {
-            if (value != null) {
-              update.behaviors[index].speedBehavior = value;
-            }
-          });
-        },
-      )),
-      DataCell(GestureDetector(
-        child: const Icon(Icons.delete_outline),
-        onTapDown: (details) async {
-          await removeBehavior(index);
-        },
-      )),
-    ]);
   }
 
   List<DropdownMenuItem<RouteStateBehavior>> _routeStateBehaviorOptions() {

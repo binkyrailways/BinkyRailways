@@ -95,3 +95,33 @@ func (rs *routeEventBehaviorList) AddNew(appliesTo model.LocPredicate) model.Rou
 	rs.OnModified()
 	return reb
 }
+
+// Move the given item up 1 position in this list.
+func (rs *routeEventBehaviorList) MoveUp(item model.RouteEventBehavior) bool {
+	for i, x := range rs.Items {
+		if x == item {
+			if i > 0 {
+				rs.Items[i-1], rs.Items[i] = rs.Items[i], rs.Items[i-1]
+				rs.OnModified()
+				return true
+			}
+			return false
+		}
+	}
+	return false
+}
+
+// Move the given item down 1 position in this list.
+func (rs *routeEventBehaviorList) MoveDown(item model.RouteEventBehavior) bool {
+	for i, x := range rs.Items {
+		if x == item {
+			if i < len(rs.Items)-1 {
+				rs.Items[i], rs.Items[i+1] = rs.Items[i+1], rs.Items[i]
+				rs.OnModified()
+				return true
+			}
+			return false
+		}
+	}
+	return false
+}
