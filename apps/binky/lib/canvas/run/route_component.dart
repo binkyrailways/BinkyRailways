@@ -47,7 +47,9 @@ class RouteComponent extends common.RouteComponent {
   bool isVisible() {
     final locs = stateModel.locs();
     for (var loc in locs) {
-      if (loc.last.hasCurrentRoute() && loc.last.currentRoute.id == routeId) {
+      if (loc.last.hasCurrentRoute() &&
+          loc.last.currentRoute.id == routeId &&
+          loc.last.automaticState == api.AutoLocState.RUNNING) {
         return true;
       }
     }
