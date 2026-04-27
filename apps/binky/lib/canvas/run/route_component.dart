@@ -15,8 +15,10 @@
 // Author Ewout Prangsma
 //
 
+import 'package:binky/canvas/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
+import 'dart:math';
 import '../../api.dart' as api;
 import '../../models.dart';
 import '../route_component.dart' as common;
@@ -49,7 +51,20 @@ class RouteComponent extends common.RouteComponent {
     for (var loc in locs) {
       if (loc.last.hasCurrentRoute() &&
           loc.last.currentRoute.id == routeId &&
-          loc.last.automaticState == api.AutoLocState.RUNNING) {
+          loc.last.automaticState.isRunningOrEntering) {
+        return true;
+      }
+      if (loc.last.hasNextRoute() && loc.last.nextRoute.id == routeId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool _isNextRoute() {
+    final locs = stateModel.locs();
+    for (var loc in locs) {
+      if (loc.last.hasNextRoute() && loc.last.nextRoute.id == routeId) {
         return true;
       }
     }
@@ -61,8 +76,11 @@ class RouteComponent extends common.RouteComponent {
     if (isVisible()) {
       final route = modelModel.getCachedRoute(routeId);
       if (route != null) {
+        final isNext = _isNextRoute();
         final linePaint = Paint()
-          ..color = Colors.blue.withAlpha(128)
+          ..color = isNext
+              ? Colors.blue.withAlpha(64)
+              : Colors.blue.withAlpha(128)
           ..strokeWidth = 4
           ..style = PaintingStyle.stroke;
 
@@ -76,8 +94,31 @@ class RouteComponent extends common.RouteComponent {
           path.lineTo(p.x, p.y);
         }
         path.lineTo(end[0].x, end[0].y);
-        canvas.drawPath(path, linePaint);
+
+        if (isNext) {
+          _drawDashedPath(canvas, path, linePaint);
+        } else {
+          canvas.drawPath(path, linePaint);
+        }
       }
+    }
+  }
+
+  void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
+    const dashWidth = 10.0;
+    const dashSpace = 10.0;
+    var distance = 0.0;
+    for (var i = 0; i < path.computeMetrics().length; i++) {
+      final metric = path.computeMetrics().elementAt(i);
+      while (distance < metric.length) {
+        final len = min(dashWidth, metric.length - distance);
+        canvas.drawPath(
+          metric.extractPath(distance, distance + len),
+          paint,
+        );
+        distance += dashWidth + dashSpace;
+      }
+      distance = 0.0;
     }
   }
 }
