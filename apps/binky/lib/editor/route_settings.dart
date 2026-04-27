@@ -433,6 +433,16 @@ class _RouteSettingsState extends State<_RouteSettings> {
                                 // Rebuild dialog content
                                 setState(() {});
                               },
+                              moveBehaviorUp: (index) async {
+                                await widget.model.moveRouteEventBehaviorUp(
+                                    widget.route.id, evt.sensor.id, index);
+                                setState(() {});
+                              },
+                              moveBehaviorDown: (index) async {
+                                await widget.model.moveRouteEventBehaviorDown(
+                                    widget.route.id, evt.sensor.id, index);
+                                setState(() {});
+                              },
                             ),
                             Row(children: [
                               TextButton(

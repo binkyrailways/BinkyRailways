@@ -306,6 +306,60 @@ func (s *service) AddRouteEventBehavior(ctx context.Context, req *api.AddRouteEv
 	return &result, nil
 }
 
+// Move the behavior at given index down by 1 entry in the given route event
+func (s *service) MoveRouteEventBehaviorDown(ctx context.Context, req *api.MoveRouteEventBehaviorRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	evt, ok := route.GetEvents().Get(sensor.GetID())
+	if !ok {
+		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
+	}
+	index := req.GetIndex()
+	if index < 0 || index >= int32(evt.GetBehaviors().GetCount()) {
+		return nil, api.InvalidArgument("Invalid behavior index %d", index)
+	}
+	bhv, _ := evt.GetBehaviors().GetAt(int(index))
+	evt.GetBehaviors().MoveDown(bhv)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Move the behavior at given index up by 1 entry in the given route event
+func (s *service) MoveRouteEventBehaviorUp(ctx context.Context, req *api.MoveRouteEventBehaviorRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	sensor, err := s.getSensor(ctx, req.GetSensorId())
+	if err != nil {
+		return nil, err
+	}
+	evt, ok := route.GetEvents().Get(sensor.GetID())
+	if !ok {
+		return nil, api.InvalidArgument("Unknown sensor '%s'", sensor.GetID())
+	}
+	index := req.GetIndex()
+	if index < 0 || index >= int32(evt.GetBehaviors().GetCount()) {
+		return nil, api.InvalidArgument("Invalid behavior index %d", index)
+	}
+	bhv, _ := evt.GetBehaviors().GetAt(int(index))
+	evt.GetBehaviors().MoveUp(bhv)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 // Remove a behavior from an event in the given route
 func (s *service) RemoveRouteEventBehavior(ctx context.Context, req *api.RemoveRouteEventBehaviorRequest) (*api.Route, error) {
 	route, err := s.getRoute(ctx, req.GetRouteId())
