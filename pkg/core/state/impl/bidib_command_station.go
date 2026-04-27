@@ -233,24 +233,26 @@ func (cs *bidibCommandStation) SendLocSpeedAndDirection(ctx context.Context, loc
 	}
 
 	// Get speed
-	speedInSteps := locState.GetSpeedInSteps().GetRequested(ctx)
-	opts.Speed = uint8(speedInSteps)
+	reqSpeedInSteps := locState.GetSpeedInSteps().GetRequested(ctx)
+	opts.Speed = uint8(reqSpeedInSteps)
 	opts.OutputSpeed = true
-	log = log.With().Int("speed", speedInSteps).Logger()
+	log = log.With().Int("speed", reqSpeedInSteps).Logger()
 
 	// Get direction
-	opts.DirectionForward = locState.GetDirection().GetRequested(ctx) == state.LocDirectionForward
+	reqDirection := locState.GetDirection().GetRequested(ctx)
+	opts.DirectionForward = reqDirection == state.LocDirectionForward
 
 	// Get flags
 	opts.Flags = make(bidib.DccFlags, 5)
-	f0 := locState.GetF0().GetRequested(ctx)
-	opts.Flags.Set(0, f0)
+	reqF0 := locState.GetF0().GetRequested(ctx)
+	opts.Flags.Set(0, reqF0)
 	opts.OutputF1_F4 = true
 
 	log.Debug().Msg("sending drive to nodes...")
 	if cnt := cs.sendDriveToNode(cs.host.GetRootNode(), opts); cnt > 0 {
-		locState.GetSpeedInSteps().SetActual(ctx, speedInSteps)
-		locState.GetF0().SetActual(ctx, f0)
+		locState.GetSpeedInSteps().SetActual(ctx, reqSpeedInSteps)
+		locState.GetDirection().SetActual(ctx, reqDirection)
+		locState.GetF0().SetActual(ctx, reqF0)
 		log.Debug().Int("nodes", cnt).Msg("sent drive to nodes")
 	} else {
 		log.Error().Msg("Did not sent drive to any node!")
@@ -341,7 +343,41 @@ func (cs *bidibCommandStation) onBstStateChanged(m messages.BstState) {
 		})
 	}
 
-	if m.State.IsShort() {
-		setActual(false)
+	if h := cs.host; h != nil {
+		anyShort, allOn := collectBoostersState(h.GetRootNode())
+		if anyShort {
+			setActual(false)
+		} else if allOn {
+			setActual(true)
+		}
 	}
+}
+
+// Gather booster power state for the given node and all it's children.
+// Returns: anyShort, allOn
+func collectBoostersState(node *host.Node) (bool, bool) {
+	if node == nil {
+		return false, false
+	}
+	anyShort := false
+	allOn := true
+	if bst := node.Bst(); bst != nil {
+		st := bst.GetState()
+		if st.IsShort() {
+			return true, false
+		}
+		if !st.IsOn() {
+			allOn = false
+		}
+	}
+	node.ForEachChild(func(n *host.Node) {
+		cAnyShort, cAllOn := collectBoostersState(n)
+		if cAnyShort {
+			anyShort = true
+		}
+		if !cAllOn {
+			allOn = false
+		}
+	})
+	return anyShort, allOn
 }
