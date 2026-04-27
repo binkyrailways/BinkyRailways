@@ -20,6 +20,7 @@ import 'package:flame/components.dart';
 import '../../api.dart' as api;
 import '../../models.dart';
 import '../route_component.dart' as common;
+import '../view_settings.dart';
 
 class RouteComponent extends common.RouteComponent {
   final StateModel stateModel;
@@ -63,10 +64,10 @@ class RouteComponent extends common.RouteComponent {
           ..strokeWidth = 4
           ..style = PaintingStyle.stroke;
 
-        final start = _getFrom(route);
-        final end = _getTo(route);
-        final intermediates = _getIntermediates(route, start, end);
-        
+        final start = getFrom(route);
+        final end = getTo(route);
+        final intermediates = getIntermediates(route, start, end);
+
         var path = Path();
         path.moveTo(start[0].x, start[0].y);
         for (var p in intermediates) {

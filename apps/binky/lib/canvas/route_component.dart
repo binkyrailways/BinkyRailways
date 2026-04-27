@@ -57,9 +57,9 @@ class RouteComponent extends EntityComponent {
         linePaint.style = PaintingStyle.stroke;
 
         canvas.save();
-        final start = _getFrom(route);
-        final end = _getTo(route);
-        final intermediates = _getIntermediates(route, start, end);
+        final start = getFrom(route);
+        final end = getTo(route);
+        final intermediates = getIntermediates(route, start, end);
         var path = Path();
         path.moveTo(start[0].x, start[0].y);
         for (var p in intermediates) {
@@ -74,10 +74,13 @@ class RouteComponent extends EntityComponent {
 
   bool isVisible() => false;
 
-  List<Vector2> _getFrom(mapi.Route route) => _getEndpoint(route.from);
-  List<Vector2> _getTo(mapi.Route route) => _getEndpoint(route.to);
+  @protected
+  List<Vector2> getFrom(mapi.Route route) => _getEndpoint(route.from);
+  @protected
+  List<Vector2> getTo(mapi.Route route) => _getEndpoint(route.to);
 
-  List<Vector2> _getIntermediates(
+  @protected
+  List<Vector2> getIntermediates(
       mapi.Route route, List<Vector2> start, List<Vector2> end) {
     final List<Vector2> list = [];
     list.add(end[0]);
