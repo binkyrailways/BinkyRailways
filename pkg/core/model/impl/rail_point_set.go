@@ -80,9 +80,16 @@ func (rps *railPointSet) ContainsID(id string) bool {
 // Remove the given item from this set.
 // Returns true if it was removed, false otherwise
 func (rps *railPointSet) Remove(item model.RailPoint) bool {
+	id := item.GetID()
 	for i, x := range rps.Items {
 		if x == item {
 			rps.Items = append(rps.Items[:i], rps.Items[i+1:]...)
+			// Remove from all routes
+			rps.GetModule().GetRoutes().ForEach(func(r model.Route) {
+				if rrp, ok := r.GetRailPoints().(*routeRailPointList); ok {
+					rrp.RemoveByID(id)
+				}
+			})
 			rps.OnModified()
 			return true
 		}
