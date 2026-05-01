@@ -60,6 +60,14 @@ func (lps *locPredicateSet) Get(id string) (model.LocPredicate, bool) {
 	return nil, false
 }
 
+// Get an item by index
+func (lps *locPredicateSet) GetAt(index int) (model.LocPredicate, bool) {
+	if index >= 0 && index < len(lps.Items) {
+		return lps.Items[index], true
+	}
+	return nil, false
+}
+
 // Invoke the callback for each item
 func (lps *locPredicateSet) ForEach(cb func(model.LocPredicate)) {
 	for _, x := range lps.Items {

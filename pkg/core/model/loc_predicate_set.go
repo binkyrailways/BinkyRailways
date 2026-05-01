@@ -24,6 +24,9 @@ type LocPredicateSet interface {
 	// Get an item by ID
 	Get(id string) (LocPredicate, bool)
 
+	// Get an item by index
+	GetAt(index int) (LocPredicate, bool)
+
 	// Gets the number of predicates
 	GetCount() int
 

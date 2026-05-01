@@ -20,7 +20,7 @@ Input = p:Predicate EOF {
     return p, nil
 }
 
-Predicate = Whitespace p:(All / Loc / LocGroup / CanChangeDirection / Or / And / Standard) Whitespace {
+Predicate = Whitespace p:(All / Loc / LocGroup / CanChangeDirection / Logical / Standard) Whitespace {
     return p, nil
 }
 
@@ -41,6 +41,11 @@ CanChangeDirection = kwCanChangeDirection {
     return getLocCanChangeDirectionPredicate(rw)
 }
 
+Logical = p:(Or / And) {
+    rw := c.globalStore["railway"].(model.Railway)
+    return getLogicalPredicate(p, rw)
+}
+
 Or = '(' first:Predicate rest:(kwOr Predicate)* ')' {
     rw := c.globalStore["railway"].(model.Railway)
     return getLocOrPredicate(first, rest, rw)
@@ -56,11 +61,11 @@ Standard = ps:((Only Except) / Only / Except) {
     return getLocStandardPredicate(ps, rw)
 }
 
-Only = kwOnly p:Or Whitespace {
+Only = kwOnly p:Logical Whitespace {
     return only{predicates:p}, nil
 }
 
-Except = kwExcept p:Or Whitespace {
+Except = kwExcept p:Logical Whitespace {
     return except{predicates:p}, nil
 }
 

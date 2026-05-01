@@ -54,13 +54,13 @@ func GeneratePredicate(p model.LocPredicate) string {
 			return "all"
 		}
 		if includes == 0 {
-			return "except(" + generatePredicates(p.GetExcludes().GetPredicates(), "or", true) + ")"
+			return generateFunc("except", generatePredicates(p.GetExcludes().GetPredicates(), "or", true))
 		}
 		if excludes == 0 {
-			return "only(" + generatePredicates(p.GetIncludes().GetPredicates(), "or", true) + ")"
+			return generateFunc("only", generatePredicates(p.GetIncludes().GetPredicates(), "or", true))
 		}
-		return "only(" + generatePredicates(p.GetIncludes().GetPredicates(), "or", true) + ") " +
-			"except(" + generatePredicates(p.GetExcludes().GetPredicates(), "or", true) + ")"
+		return generateFunc("only", generatePredicates(p.GetIncludes().GetPredicates(), "or", true)) + " " +
+			generateFunc("except", generatePredicates(p.GetExcludes().GetPredicates(), "or", true))
 	default:
 		panic(fmt.Sprintf("unknown type of predicate %T", p))
 	}
@@ -84,4 +84,14 @@ func generatePredicates(p model.LocPredicateSet, op string, excludeBrackets bool
 		return inner
 	}
 	return "(" + inner + ")"
+}
+
+// Generate a function like `'only' '(' inner ')'`
+// Strips extra brackets from inner.
+func generateFunc(name, inner string) string {
+	inner = strings.TrimSpace(inner)
+	if strings.HasPrefix(inner, "(") && strings.HasSuffix(inner, ")") {
+		return name + inner
+	}
+	return name + "(" + inner + ")"
 }
