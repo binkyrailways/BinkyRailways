@@ -102,6 +102,21 @@ func (rps *railPointSet) Contains(item model.RailPoint) bool {
 
 // Add a new item to this set
 func (rps *railPointSet) AddNew() model.RailPoint {
+	// Find minimum size of existing rail points
+	minWidth := 0
+	minHeight := 0
+	for idx, item := range rps.Items {
+		w := item.GetWidth()
+		h := item.GetHeight()
+		if idx == 0 {
+			minWidth = w
+			minHeight = h
+		} else {
+			minWidth = min(minWidth, w)
+			minHeight = min(minHeight, h)
+		}
+	}
+
 	// Create new id
 	for {
 		id := NewID()
@@ -109,6 +124,12 @@ func (rps *railPointSet) AddNew() model.RailPoint {
 			continue
 		}
 		rp := newRailPoint()
+		if minWidth > 0 {
+			rp.SetWidth(minWidth)
+		}
+		if minHeight > 0 {
+			rp.SetHeight(minHeight)
+		}
 		rp.SetID(id)
 		rp.SetContainer(rps)
 		rps.Items = append(rps.Items, rp)

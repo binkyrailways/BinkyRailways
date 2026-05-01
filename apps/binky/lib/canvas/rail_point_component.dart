@@ -40,14 +40,7 @@ class RailPointComponent extends EntityComponent {
       final paint = Paint()
         ..color = Colors.black
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
-
-      // Draw border
-      final borderPaint = Paint()
-        ..color = Colors.grey.withAlpha(128)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1;
-      canvas.drawRect(size.toRect(), borderPaint);
+        ..strokeWidth = 4;
 
       // Draw tiny '=' sign using entire width/height
       // Top line
