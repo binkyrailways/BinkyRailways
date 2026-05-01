@@ -19,6 +19,8 @@ import 'package:binky/canvas/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'dart:math';
+import 'package:path_drawing/path_drawing.dart';
+
 import '../../api.dart' as api;
 import '../../models.dart';
 import '../route_component.dart' as common;
@@ -78,9 +80,8 @@ class RouteComponent extends common.RouteComponent {
       if (route != null) {
         final isNext = _isNextRoute();
         final linePaint = Paint()
-          ..color = isNext
-              ? Colors.blue.withAlpha(64)
-              : Colors.blue.withAlpha(128)
+          ..color =
+              isNext ? Colors.grey.withAlpha(64) : Colors.blue.withAlpha(128)
           ..strokeWidth = 4
           ..style = PaintingStyle.stroke;
 
@@ -96,29 +97,17 @@ class RouteComponent extends common.RouteComponent {
         path.lineTo(end[0].x, end[0].y);
 
         if (isNext) {
-          _drawDashedPath(canvas, path, linePaint);
+          canvas.drawPath(path, linePaint);
+          /*canvas.drawPath(
+              dashPath(
+                path,
+                dashArray: CircularIntervalList<double>([10, 5]),
+              ),
+              linePaint);*/
         } else {
           canvas.drawPath(path, linePaint);
         }
       }
-    }
-  }
-
-  void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
-    const dashWidth = 10.0;
-    const dashSpace = 10.0;
-    var distance = 0.0;
-    for (var i = 0; i < path.computeMetrics().length; i++) {
-      final metric = path.computeMetrics().elementAt(i);
-      while (distance < metric.length) {
-        final len = min(dashWidth, metric.length - distance);
-        canvas.drawPath(
-          metric.extractPath(distance, distance + len),
-          paint,
-        );
-        distance += dashWidth + dashSpace;
-      }
-      distance = 0.0;
     }
   }
 }
