@@ -91,7 +91,7 @@ kwAll = "all"i
 kwAnd = "and"i
 kwCanChangeDirection = "canChangeDirection"i / "can change direction"i
 kwExcept = "except"i
-kwMemberOf = "memberOf"i / "member of"i
+kwMemberOf = "memberOf"i / "member of"i / "in"i
 kwOnly = "only"i
 kwOr = "or"i
 

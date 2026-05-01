@@ -136,7 +136,7 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("Single loc group", func(t *testing.T) {
-		for _, x := range []string{`memberOf("group 1")`, `memberof("group 1")`, `member of("group 1")`} {
+		for _, x := range []string{`memberOf("group 1")`, `memberof("group 1")`, `member of("group 1")`, `in("group 1")`, `IN("group 1")`} {
 			result, err := ParsePredicate(x, rw)
 			require.NoError(t, err, x)
 			lgep, ok := result.(model.LocGroupEqualsPredicate)
