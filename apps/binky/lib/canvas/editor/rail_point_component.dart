@@ -17,6 +17,7 @@
 
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/material.dart' hide Draggable;
 import 'package:protobuf/protobuf.dart';
 
 import '../rail_point_component.dart' as common;
@@ -54,4 +55,11 @@ class RailPointComponent extends common.RailPointComponent
     }
     return true;
   }
+
+  @override
+  Color backgroundColor() {
+    return _isSelected() ? Colors.orange : super.backgroundColor();
+  }
+
+  _isSelected() => editorCtx.selector.idOf(EntityType.railpoint) == model.id;
 }

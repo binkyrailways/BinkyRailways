@@ -38,7 +38,7 @@ class RailPointComponent extends EntityComponent {
   void render(Canvas canvas) {
     if (onVisibleLayer()) {
       final paint = Paint()
-        ..color = Colors.black
+        ..color = backgroundColor()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 4;
 
@@ -51,4 +51,6 @@ class RailPointComponent extends EntityComponent {
           Offset(0, size.y * 0.7), Offset(size.x, size.y * 0.7), paint);
     }
   }
+
+  Color backgroundColor() => Colors.grey;
 }
