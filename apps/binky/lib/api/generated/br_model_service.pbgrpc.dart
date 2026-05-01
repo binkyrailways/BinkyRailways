@@ -301,6 +301,26 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/MoveRouteEventBehaviorDown',
           ($2.MoveRouteEventBehaviorRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.Route.fromBuffer(value));
+  static final _$addRouteRailPoint =
+      $grpc.ClientMethod<$2.AddRouteRailPointRequest, $0.Route>(
+          '/binkyrailways.v1.ModelService/AddRouteRailPoint',
+          ($2.AddRouteRailPointRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Route.fromBuffer(value));
+  static final _$removeRouteRailPoint =
+      $grpc.ClientMethod<$2.RemoveRouteRailPointRequest, $0.Route>(
+          '/binkyrailways.v1.ModelService/RemoveRouteRailPoint',
+          ($2.RemoveRouteRailPointRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Route.fromBuffer(value));
+  static final _$moveRouteRailPointUp =
+      $grpc.ClientMethod<$2.MoveRouteRailPointRequest, $0.Route>(
+          '/binkyrailways.v1.ModelService/MoveRouteRailPointUp',
+          ($2.MoveRouteRailPointRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Route.fromBuffer(value));
+  static final _$moveRouteRailPointDown =
+      $grpc.ClientMethod<$2.MoveRouteRailPointRequest, $0.Route>(
+          '/binkyrailways.v1.ModelService/MoveRouteRailPointDown',
+          ($2.MoveRouteRailPointRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Route.fromBuffer(value));
   static final _$getSensor = $grpc.ClientMethod<$2.IDRequest, $0.Sensor>(
       '/binkyrailways.v1.ModelService/GetSensor',
       ($2.IDRequest value) => value.writeToBuffer(),
@@ -762,6 +782,31 @@ class ModelServiceClient extends $grpc.Client {
       $2.MoveRouteEventBehaviorRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$moveRouteEventBehaviorDown, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Route> addRouteRailPoint(
+      $2.AddRouteRailPointRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addRouteRailPoint, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Route> removeRouteRailPoint(
+      $2.RemoveRouteRailPointRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$removeRouteRailPoint, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Route> moveRouteRailPointUp(
+      $2.MoveRouteRailPointRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$moveRouteRailPointUp, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Route> moveRouteRailPointDown(
+      $2.MoveRouteRailPointRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$moveRouteRailPointDown, request,
         options: options);
   }
 
@@ -1368,6 +1413,38 @@ abstract class ModelServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $2.MoveRouteEventBehaviorRequest.fromBuffer(value),
         ($0.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.AddRouteRailPointRequest, $0.Route>(
+        'AddRouteRailPoint',
+        addRouteRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.AddRouteRailPointRequest.fromBuffer(value),
+        ($0.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.RemoveRouteRailPointRequest, $0.Route>(
+        'RemoveRouteRailPoint',
+        removeRouteRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.RemoveRouteRailPointRequest.fromBuffer(value),
+        ($0.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.MoveRouteRailPointRequest, $0.Route>(
+        'MoveRouteRailPointUp',
+        moveRouteRailPointUp_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.MoveRouteRailPointRequest.fromBuffer(value),
+        ($0.Route value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.MoveRouteRailPointRequest, $0.Route>(
+        'MoveRouteRailPointDown',
+        moveRouteRailPointDown_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.MoveRouteRailPointRequest.fromBuffer(value),
+        ($0.Route value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.Sensor>(
         'GetSensor',
         getSensor_Pre,
@@ -1858,6 +1935,26 @@ abstract class ModelServiceBase extends $grpc.Service {
     return moveRouteEventBehaviorDown(call, await request);
   }
 
+  $async.Future<$0.Route> addRouteRailPoint_Pre($grpc.ServiceCall call,
+      $async.Future<$2.AddRouteRailPointRequest> request) async {
+    return addRouteRailPoint(call, await request);
+  }
+
+  $async.Future<$0.Route> removeRouteRailPoint_Pre($grpc.ServiceCall call,
+      $async.Future<$2.RemoveRouteRailPointRequest> request) async {
+    return removeRouteRailPoint(call, await request);
+  }
+
+  $async.Future<$0.Route> moveRouteRailPointUp_Pre($grpc.ServiceCall call,
+      $async.Future<$2.MoveRouteRailPointRequest> request) async {
+    return moveRouteRailPointUp(call, await request);
+  }
+
+  $async.Future<$0.Route> moveRouteRailPointDown_Pre($grpc.ServiceCall call,
+      $async.Future<$2.MoveRouteRailPointRequest> request) async {
+    return moveRouteRailPointDown(call, await request);
+  }
+
   $async.Future<$0.Sensor> getSensor_Pre(
       $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
     return getSensor(call, await request);
@@ -2093,6 +2190,14 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $2.MoveRouteEventBehaviorRequest request);
   $async.Future<$0.Route> moveRouteEventBehaviorDown(
       $grpc.ServiceCall call, $2.MoveRouteEventBehaviorRequest request);
+  $async.Future<$0.Route> addRouteRailPoint(
+      $grpc.ServiceCall call, $2.AddRouteRailPointRequest request);
+  $async.Future<$0.Route> removeRouteRailPoint(
+      $grpc.ServiceCall call, $2.RemoveRouteRailPointRequest request);
+  $async.Future<$0.Route> moveRouteRailPointUp(
+      $grpc.ServiceCall call, $2.MoveRouteRailPointRequest request);
+  $async.Future<$0.Route> moveRouteRailPointDown(
+      $grpc.ServiceCall call, $2.MoveRouteRailPointRequest request);
   $async.Future<$0.Sensor> getSensor(
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.Sensor> updateSensor(

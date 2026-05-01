@@ -219,6 +219,39 @@ const MoveRouteEventBehaviorRequest$json = const {
 
 /// Descriptor for `MoveRouteEventBehaviorRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List moveRouteEventBehaviorRequestDescriptor = $convert.base64Decode('Ch1Nb3ZlUm91dGVFdmVudEJlaGF2aW9yUmVxdWVzdBIZCghyb3V0ZV9pZBgBIAEoCVIHcm91dGVJZBIbCglzZW5zb3JfaWQYAiABKAlSCHNlbnNvcklkEhQKBWluZGV4GAMgASgFUgVpbmRleA==');
+@$core.Deprecated('Use addRouteRailPointRequestDescriptor instead')
+const AddRouteRailPointRequest$json = const {
+  '1': 'AddRouteRailPointRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'rail_point_id', '3': 2, '4': 1, '5': 9, '10': 'railPointId'},
+  ],
+};
+
+/// Descriptor for `AddRouteRailPointRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addRouteRailPointRequestDescriptor = $convert.base64Decode('ChhBZGRSb3V0ZVJhaWxQb2ludFJlcXVlc3QSGQoIcm91dGVfaWQYASABKAlSB3JvdXRlSWQSIgoNcmFpbF9wb2ludF9pZBgCIAEoCVILcmFpbFBvaW50SWQ=');
+@$core.Deprecated('Use removeRouteRailPointRequestDescriptor instead')
+const RemoveRouteRailPointRequest$json = const {
+  '1': 'RemoveRouteRailPointRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'rail_point_id', '3': 2, '4': 1, '5': 9, '10': 'railPointId'},
+  ],
+};
+
+/// Descriptor for `RemoveRouteRailPointRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List removeRouteRailPointRequestDescriptor = $convert.base64Decode('ChtSZW1vdmVSb3V0ZVJhaWxQb2ludFJlcXVlc3QSGQoIcm91dGVfaWQYASABKAlSB3JvdXRlSWQSIgoNcmFpbF9wb2ludF9pZBgCIAEoCVILcmFpbFBvaW50SWQ=');
+@$core.Deprecated('Use moveRouteRailPointRequestDescriptor instead')
+const MoveRouteRailPointRequest$json = const {
+  '1': 'MoveRouteRailPointRequest',
+  '2': const [
+    const {'1': 'route_id', '3': 1, '4': 1, '5': 9, '10': 'routeId'},
+    const {'1': 'rail_point_id', '3': 2, '4': 1, '5': 9, '10': 'railPointId'},
+  ],
+};
+
+/// Descriptor for `MoveRouteRailPointRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List moveRouteRailPointRequestDescriptor = $convert.base64Decode('ChlNb3ZlUm91dGVSYWlsUG9pbnRSZXF1ZXN0EhkKCHJvdXRlX2lkGAEgASgJUgdyb3V0ZUlkEiIKDXJhaWxfcG9pbnRfaWQYAiABKAlSC3JhaWxQb2ludElk');
 @$core.Deprecated('Use addBinkyNetObjectsGroupRequestDescriptor instead')
 const AddBinkyNetObjectsGroupRequest$json = const {
   '1': 'AddBinkyNetObjectsGroupRequest',
