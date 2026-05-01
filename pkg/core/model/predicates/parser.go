@@ -627,14 +627,20 @@ var g = &grammar{
 						ignoreCase: true,
 						want:       "\"member of\"i",
 					},
+					&litMatcher{
+						pos:        position{line: 94, col: 43, offset: 2080},
+						val:        "in",
+						ignoreCase: true,
+						want:       "\"in\"i",
+					},
 				},
 			},
 		},
 		{
 			name: "kwOnly",
-			pos:  position{line: 95, col: 1, offset: 2078},
+			pos:  position{line: 95, col: 1, offset: 2086},
 			expr: &litMatcher{
-				pos:        position{line: 95, col: 10, offset: 2087},
+				pos:        position{line: 95, col: 10, offset: 2095},
 				val:        "only",
 				ignoreCase: true,
 				want:       "\"only\"i",
@@ -642,9 +648,9 @@ var g = &grammar{
 		},
 		{
 			name: "kwOr",
-			pos:  position{line: 96, col: 1, offset: 2095},
+			pos:  position{line: 96, col: 1, offset: 2103},
 			expr: &litMatcher{
-				pos:        position{line: 96, col: 8, offset: 2102},
+				pos:        position{line: 96, col: 8, offset: 2110},
 				val:        "or",
 				ignoreCase: true,
 				want:       "\"or\"i",
@@ -652,11 +658,11 @@ var g = &grammar{
 		},
 		{
 			name: "Whitespace",
-			pos:  position{line: 98, col: 1, offset: 2109},
+			pos:  position{line: 98, col: 1, offset: 2117},
 			expr: &zeroOrMoreExpr{
-				pos: position{line: 98, col: 14, offset: 2122},
+				pos: position{line: 98, col: 14, offset: 2130},
 				expr: &charClassMatcher{
-					pos:        position{line: 98, col: 14, offset: 2122},
+					pos:        position{line: 98, col: 14, offset: 2130},
 					val:        "[ \\t\\n]",
 					chars:      []rune{' ', '\t', '\n'},
 					ignoreCase: false,
@@ -666,11 +672,11 @@ var g = &grammar{
 		},
 		{
 			name: "EOF",
-			pos:  position{line: 100, col: 1, offset: 2132},
+			pos:  position{line: 100, col: 1, offset: 2140},
 			expr: &notExpr{
-				pos: position{line: 100, col: 7, offset: 2138},
+				pos: position{line: 100, col: 7, offset: 2146},
 				expr: &anyMatcher{
-					line: 100, col: 8, offset: 2139,
+					line: 100, col: 8, offset: 2147,
 				},
 			},
 		},
@@ -864,18 +870,17 @@ func Entrypoint(ruleName string) Option {
 //
 // Example usage:
 //
-//     input := "input"
-//     stats := Stats{}
-//     _, err := Parse("input-file", []byte(input), Statistics(&stats, "no match"))
-//     if err != nil {
-//         log.Panicln(err)
-//     }
-//     b, err := json.MarshalIndent(stats.ChoiceAltCnt, "", "  ")
-//     if err != nil {
-//         log.Panicln(err)
-//     }
-//     fmt.Println(string(b))
-//
+//	input := "input"
+//	stats := Stats{}
+//	_, err := Parse("input-file", []byte(input), Statistics(&stats, "no match"))
+//	if err != nil {
+//	    log.Panicln(err)
+//	}
+//	b, err := json.MarshalIndent(stats.ChoiceAltCnt, "", "  ")
+//	if err != nil {
+//	    log.Panicln(err)
+//	}
+//	fmt.Println(string(b))
 func Statistics(stats *Stats, choiceNoMatch string) Option {
 	return func(p *parser) Option {
 		oldStats := p.Stats

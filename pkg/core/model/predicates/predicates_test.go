@@ -136,7 +136,7 @@ func TestParsePredicate(t *testing.T) {
 	})
 
 	t.Run("Single loc group", func(t *testing.T) {
-		for _, x := range []string{`memberOf("group 1")`, `memberof("group 1")`, `member of("group 1")`} {
+		for _, x := range []string{`memberOf("group 1")`, `memberof("group 1")`, `member of("group 1")`, `in("group 1")`, `IN("group 1")`} {
 			result, err := ParsePredicate(x, rw)
 			require.NoError(t, err, x)
 			lgep, ok := result.(model.LocGroupEqualsPredicate)
@@ -144,7 +144,7 @@ func TestParsePredicate(t *testing.T) {
 			assert.Equal(t, lg1.GetID(), lgep.GetGroupID(), x)
 
 			gen := GeneratePredicate(result)
-			assert.Equal(t, `memberOf("group 1")`, gen)
+			assert.Equal(t, `in("group 1")`, gen)
 		}
 		for _, x := range []string{`memberOf("group 22")`, `member Of("group 22")`} {
 			_, err := ParsePredicate(x, rw)
@@ -223,7 +223,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 3, lop.GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `("loc 1" or "loc 2" or memberOf("group 1"))`, gen)
+		assert.Equal(t, `("loc 1" or "loc 2" or in("group 1"))`, gen)
 	})
 
 	t.Run("And 2", func(t *testing.T) {
@@ -247,7 +247,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 3, lop.GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `("loc 1" and "loc 2" and memberOf("group 1"))`, gen)
+		assert.Equal(t, `("loc 1" and "loc 2" and in("group 1"))`, gen)
 	})
 
 	t.Run("Standard only 1", func(t *testing.T) {
@@ -271,7 +271,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 0, lop.GetExcludes().GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `only("loc 1" or memberOf("group 1"))`, gen)
+		assert.Equal(t, `only("loc 1" or in("group 1"))`, gen)
 	})
 
 	t.Run("Standard except 1", func(t *testing.T) {
@@ -283,7 +283,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 1, lop.GetExcludes().GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `except(memberOf("group 1"))`, gen)
+		assert.Equal(t, `except(in("group 1"))`, gen)
 	})
 
 	t.Run("Standard except 2", func(t *testing.T) {
@@ -295,7 +295,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 2, lop.GetExcludes().GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `except("loc 1" or memberOf("group 1"))`, gen)
+		assert.Equal(t, `except("loc 1" or in("group 1"))`, gen)
 	})
 
 	t.Run("Standard full 1", func(t *testing.T) {
@@ -307,7 +307,7 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, 2, lop.GetExcludes().GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
-		assert.Equal(t, `only("loc 1" or canChangeDirection or ("loc 2" and canChangeDirection)) except("loc 2" or memberOf("group 1"))`, gen)
+		assert.Equal(t, `only("loc 1" or canChangeDirection or ("loc 2" and canChangeDirection)) except("loc 2" or in("group 1"))`, gen)
 	})
 
 	t.Run("Whitespace and complex nesting", func(t *testing.T) {
