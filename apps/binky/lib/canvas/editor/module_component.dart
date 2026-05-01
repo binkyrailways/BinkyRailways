@@ -109,7 +109,10 @@ class ModuleComponent extends common.ModuleComponent {
       final railPoint = await modelModel.getRailPoint(railPointRef.id);
       railPoints.add(railPoint);
       add(RailPointComponent(viewSettings,
-          editorCtx: editorCtx, model: railPoint, modelModel: modelModel));
+          editorCtx: editorCtx,
+          model: railPoint,
+          modelModel: modelModel,
+          game: game));
     }
   }
 }

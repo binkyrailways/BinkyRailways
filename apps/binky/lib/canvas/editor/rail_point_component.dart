@@ -31,11 +31,13 @@ class RailPointComponent extends common.RailPointComponent
     with Tappable, Draggable, PositionDraggable<mapi.RailPoint> {
   final EditorContext editorCtx;
   final ModelModel modelModel;
+  final ModuleGame game;
 
   RailPointComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required mapi.RailPoint model,
-      required this.modelModel})
+      required this.modelModel,
+      required this.game})
       : super(viewSettings, model: model) {}
 
   @override
@@ -50,9 +52,7 @@ class RailPointComponent extends common.RailPointComponent
   @override
   bool onTapUp(TapUpInfo event) {
     if (onVisibleLayer()) {
-      final shiftPressed =
-          event.raw.modifiers.isShiftPressed;
-      if (shiftPressed) {
+      if (game.shiftPressed()) {
         final routeId = editorCtx.selector.idOf(EntityType.route);
         if (routeId != null) {
           modelModel.addRouteRailPoint(routeId, model.id);
