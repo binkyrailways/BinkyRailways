@@ -30,8 +30,8 @@ class RailPointComponent extends EntityComponent {
       : super(viewSettings) {
     loadPosition(model.position);
     // Rail points are tiny, force a small size if not set
-    size.x = 10;
-    size.y = 10;
+    size.x = 20;
+    size.y = 20;
   }
 
   @override
@@ -40,13 +40,13 @@ class RailPointComponent extends EntityComponent {
       final paint = Paint()
         ..color = Colors.black
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1;
+        ..strokeWidth = 2;
 
       // Draw tiny '=' sign
       // Top line
-      canvas.drawLine(Offset(2, 3), Offset(8, 3), paint);
+      canvas.drawLine(Offset(4, 6), Offset(16, 6), paint);
       // Bottom line
-      canvas.drawLine(Offset(2, 7), Offset(8, 7), paint);
+      canvas.drawLine(Offset(4, 14), Offset(16, 14), paint);
     }
   }
 }
