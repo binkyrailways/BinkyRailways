@@ -3,6 +3,7 @@
 This document provides essential information for agents working on the BinkyRailways-go repository.
 
 ## Project Overview
+
 BinkyRailways is a model railway automation system. This repository contains the Go-based backend (server, model, and state engine) and a Flutter-based GUI.
 
 - **Backend**: Go (located in `pkg/`, `main.go`, `cmd/`)
@@ -13,12 +14,14 @@ BinkyRailways is a model railway automation system. This repository contains the
 ## Essential Commands
 
 ### Backend (Go)
+
 - **Build**: `make binaries-server` (Builds for multiple platforms in `bin/`)
 - **Test**: `make test` or `go test ./pkg/...`
 - **Generate API**: `make generate` (Runs protoc to generate Go and Dart code)
 - **Update Modules**: `make update-modules`
 
 ### Frontend (Flutter)
+
 - **Build Web**: `make binaries-web`
 - **Build MacOS**: `make binaries-macos`
 - **Run (Development)**: `make develop-gui` (MacOS) or `make develop-web` (Chrome)
@@ -36,14 +39,18 @@ BinkyRailways is a model railway automation system. This repository contains the
 ## Development Patterns
 
 ### Model vs State
+
 - **Model**: Represents the static configuration (saved to XML). Located in `pkg/core/model`.
 - **State**: Represents the live, running state of the railway (e.g., current speed, block occupancy). Located in `pkg/core/state`.
 
 ### API Generation
+
 The project uses gRPC for communication. When changing `.proto` files in `pkg/api/v1/`, you must run `make generate` to update both the Go backend and Flutter frontend code.
 
 ### Entity Pattern
+
 Most model objects follow an "Entity" pattern:
+
 - Defined by an interface in `pkg/core/model`.
 - Implemented by a struct in `pkg/core/model/impl`.
 - Uses a unique ID (randomly generated if missing).
@@ -61,3 +68,5 @@ Most model objects follow an "Entity" pattern:
 - **Address Parsing**: Railway addresses (DCC, LocoNet, etc.) have a specific string format (e.g., "DCC 3"). Use `model.NewAddressFromString` for parsing.
 - **Flutter Build**: Ensure Flutter is installed and on your PATH when working on the frontend.
 - **Proto Vendor**: The project contains a `_proto_vendor` directory which may be used during generation.
+- **Make**: Always run `make` after modifying the go code.
+- **Protobuf**: Always run `make generate` after modifying a proto file.
