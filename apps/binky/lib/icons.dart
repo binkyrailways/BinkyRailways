@@ -36,6 +36,7 @@ class BinkyIcons {
   static const Icon route = Icon(Icons.arrow_right_alt);
   static const Icon sensor = Icon(Icons.sensors);
   static const Icon signal = Icon(Icons.traffic);
+  static const Icon railPoint = Icon(Icons.more_horiz);
 }
 
 class BinkyIconsData {

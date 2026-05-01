@@ -138,6 +138,17 @@ class ModuleTree extends StatelessWidget {
                         editorCtx.select(EntitySelector.sensors(module, null)),
                   ),
                   ListTile(
+                    leading: BinkyIcons.railPoint,
+                    minLeadingWidth: 20,
+                    title: Text(
+                      "Rail points (${module.railPoints.length})",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: selector.entityType == EntityType.railpoints,
+                    onTap: () => editorCtx
+                        .select(EntitySelector.railPoints(module, null)),
+                  ),
+                  ListTile(
                     leading: BinkyIcons.signal,
                     minLeadingWidth: 20,
                     title: Text(
