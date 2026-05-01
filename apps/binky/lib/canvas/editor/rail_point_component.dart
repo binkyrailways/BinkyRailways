@@ -50,6 +50,15 @@ class RailPointComponent extends common.RailPointComponent
   @override
   bool onTapUp(TapUpInfo event) {
     if (onVisibleLayer()) {
+      final shiftPressed =
+          event.raw.modifiers.isShiftPressed;
+      if (shiftPressed) {
+        final routeId = editorCtx.selector.idOf(EntityType.route);
+        if (routeId != null) {
+          modelModel.addRouteRailPoint(routeId, model.id);
+          return false;
+        }
+      }
       editorCtx.select(EntitySelector.railPoint(model));
       return false;
     }
