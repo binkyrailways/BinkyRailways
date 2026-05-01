@@ -39,31 +39,14 @@ class ModuleComponent extends common.ModuleComponent {
       EditorContext editorCtx, ModelModel modelModel) async {
     // Load background image (if any)
     await loadBackgroundImage(modelModel);
-    // Load rail points
-    for (var railPointRef in model.railPoints) {
-      final railPoint = await modelModel.getRailPoint(railPointRef.id);
-      railPoints.add(railPoint);
-      add(RailPointComponent(viewSettings,
-          editorCtx: editorCtx,
-          model: railPoint,
-          modelModel: modelModel,
-          game: game));
-    }
-    // Load routes
-    for (var routeRef in model.routes) {
-      final route = await modelModel.getRoute(routeRef.id);
-      add(RouteComponent(viewSettings,
-          editorCtx: editorCtx,
-          module: model,
-          blocks: blocks,
-          edges: edges,
-          junctions: junctions,
-          sensors: sensors,
-          railPoints: railPoints,
-          modelModel: modelModel,
-          game: game,
-          route: route));
-    }
+
+    final List<mapi.Block> blocks = [];
+    final List<mapi.Edge> edges = [];
+    final List<mapi.Junction> junctions = [];
+    final List<mapi.Sensor> sensors = [];
+    final List<mapi.Signal> signals = [];
+    final List<mapi.RailPoint> railPoints = [];
+
     // Load blocks
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
@@ -110,6 +93,30 @@ class ModuleComponent extends common.ModuleComponent {
           game: game));
     }
     // Load rail points
-    // Already loaded before routes
+    for (var railPointRef in model.railPoints) {
+      final railPoint = await modelModel.getRailPoint(railPointRef.id);
+      railPoints.add(railPoint);
+      add(RailPointComponent(viewSettings,
+          editorCtx: editorCtx,
+          model: railPoint,
+          modelModel: modelModel,
+          game: game));
+    }
+
+    // Load routes
+    for (var routeRef in model.routes) {
+      final route = await modelModel.getRoute(routeRef.id);
+      add(RouteComponent(viewSettings,
+          editorCtx: editorCtx,
+          module: model,
+          blocks: blocks,
+          edges: edges,
+          junctions: junctions,
+          sensors: sensors,
+          railPoints: railPoints,
+          modelModel: modelModel,
+          game: game,
+          route: route));
+    }
   }
 }

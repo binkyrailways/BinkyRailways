@@ -37,7 +37,8 @@ class RouteComponent extends common.RouteComponent {
       required List<api.Block> blocks,
       required List<api.Edge> edges,
       required List<api.Junction> junctions,
-      required List<api.Sensor> sensors})
+      required List<api.Sensor> sensors,
+      required List<api.RailPoint> railPoints})
       : super(viewSettings,
             routeId: routeId,
             module: module,
@@ -45,7 +46,8 @@ class RouteComponent extends common.RouteComponent {
             blocks: blocks,
             edges: edges,
             junctions: junctions,
-            sensors: sensors);
+            sensors: sensors,
+            railPoints: railPoints);
 
   @override
   bool isVisible() {
