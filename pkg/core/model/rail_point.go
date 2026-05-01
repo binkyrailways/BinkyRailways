@@ -20,14 +20,5 @@ package model
 // RailPoint is an x,y location where there is a rail.
 type RailPoint interface {
 	ModuleEntity
-
-	// Get horizontal left position (in pixels) of this entity.
-	GetX() int
-	// Set horizontal left position (in pixels) of this entity.
-	SetX(value int) error
-
-	// Get vertical top position (in pixels) of this entity.
-	GetY() int
-	// Set vertical top position (in pixels) of this entity.
-	SetY(value int) error
+	PositionedEntity
 }

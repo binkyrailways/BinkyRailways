@@ -27,9 +27,9 @@ import (
 func (dst *RailPoint) FromModel(ctx context.Context, src model.RailPoint) error {
 	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
 	dst.ModuleId = src.GetModule().GetID()
-	dst.Position = &Position{
-		X: int32(src.GetX()),
-		Y: int32(src.GetY()),
+	dst.Position = &Position{}
+	if err := dst.Position.FromModel(ctx, src); err != nil {
+		return err
 	}
 	return nil
 }
@@ -40,8 +40,8 @@ func (src *RailPoint) ToModel(ctx context.Context, dst model.RailPoint) error {
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected rail point ID: '%s'", src.GetId())
 	}
-	pos := src.GetPosition()
-	dst.SetX(int(pos.GetX()))
-	dst.SetY(int(pos.GetY()))
+	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
+		return err
+	}
 	return nil
 }

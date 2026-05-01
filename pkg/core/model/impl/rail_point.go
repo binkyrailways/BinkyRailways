@@ -24,13 +24,7 @@ import (
 )
 
 type railPoint struct {
-	railPointFields
-}
-
-type railPointFields struct {
-	moduleEntity
-	X int `xml:"X"`
-	Y int `xml:"Y"`
+	positionedModuleEntity
 }
 
 var _ model.RailPoint = &railPoint{}
@@ -38,12 +32,13 @@ var _ model.RailPoint = &railPoint{}
 // newRailPoint initialize a new rail point
 func newRailPoint() *railPoint {
 	rp := &railPoint{}
+	rp.positionedModuleEntity.Initialize(20, 20)
 	return rp
 }
 
 // UnmarshalXML unmarshals a rail point.
 func (rp *railPoint) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	if err := d.DecodeElement(&rp.railPointFields, &start); err != nil {
+	if err := d.DecodeElement(&rp.positionedModuleEntity, &start); err != nil {
 		return err
 	}
 	return nil
@@ -52,32 +47,4 @@ func (rp *railPoint) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 // Accept a visit by the given visitor
 func (rp *railPoint) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitRailPoint(rp)
-}
-
-// Get horizontal left position (in pixels) of this entity.
-func (rp *railPoint) GetX() int {
-	return rp.X
-}
-
-// Set horizontal left position (in pixels) of this entity.
-func (rp *railPoint) SetX(value int) error {
-	if rp.X != value {
-		rp.X = value
-		rp.OnModified()
-	}
-	return nil
-}
-
-// Get vertical top position (in pixels) of this entity.
-func (rp *railPoint) GetY() int {
-	return rp.Y
-}
-
-// Set vertical top position (in pixels) of this entity.
-func (rp *railPoint) SetY(value int) error {
-	if rp.Y != value {
-		rp.Y = value
-		rp.OnModified()
-	}
-	return nil
 }
