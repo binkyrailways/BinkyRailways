@@ -87,6 +87,11 @@ func (dst *Module) FromModel(ctx context.Context, src model.Module, httpHost str
 		})
 		layers[x.GetLayer()] = struct{}{}
 	})
+	src.GetRailPoints().ForEach(func(x model.RailPoint) {
+		dst.RailPoints = append(dst.RailPoints, &RailPointRef{
+			Id: JoinParentChildID(src.GetID(), x.GetID()),
+		})
+	})
 	dst.Layers = make([]string, 0, len(layers))
 	for k := range layers {
 		dst.Layers = append(dst.Layers, k)

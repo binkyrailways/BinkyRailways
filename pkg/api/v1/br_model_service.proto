@@ -187,6 +187,15 @@ service ModelService {
   // Delete the signal with the given ID.
   rpc DeleteSignal(IDRequest) returns (Module);
 
+  // Gets a RailPoint by ID.
+  rpc GetRailPoint(IDRequest) returns (RailPoint);
+  // Adds a new rail point in the module identified by given by ID.
+  rpc AddRailPoint(IDRequest) returns (RailPoint);
+  // Update a RailPoint by ID.
+  rpc UpdateRailPoint(RailPoint) returns (RailPoint);
+  // Delete the rail point with the given ID.
+  rpc DeleteRailPoint(IDRequest) returns (Module);
+
   // Gets a BinkyNetLocalWorker by ID.
   rpc GetBinkyNetLocalWorker(IDRequest) returns (BinkyNetLocalWorker);
   // Update a BinkyNetLocalWorker by ID.
