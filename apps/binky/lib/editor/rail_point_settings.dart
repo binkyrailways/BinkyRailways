@@ -66,12 +66,38 @@ class _RailPointSettings extends StatefulWidget {
 }
 
 class _RailPointSettingsState extends State<_RailPointSettings> {
+  final TextEditingController _descriptionController = TextEditingController();
+
+  void _initControllers() {
+    _descriptionController.text = widget.railPoint.description;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initControllers();
+  }
+
+  @override
+  void didUpdateWidget(covariant _RailPointSettings oldWidget) {
+    _initControllers();
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SettingsHeader(title: "Rail Point"),
+        SettingsTextField(
+            controller: _descriptionController,
+            label: "Description",
+            onLostFocus: (value) async {
+              await _update((update) {
+                update.description = value;
+              });
+            }),
         const SettingsHeader(title: "Position"),
         PositionSettings(
             editorCtx: widget.editorCtx,

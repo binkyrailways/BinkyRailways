@@ -21,4 +21,5 @@ package model
 type RailPoint interface {
 	ModuleEntity
 	PositionedEntity
+	WithDescription
 }

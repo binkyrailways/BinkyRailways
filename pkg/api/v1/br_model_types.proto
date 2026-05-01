@@ -857,6 +857,8 @@ message SignalRef {
 message RailPoint {
   // ID of the RailPoint
   string id = 1;
+  // Description of the RailPoint
+  string description = 4;
   // ID of the module containing the RailPoint
   string module_id = 2;
   // Position of the RailPoint

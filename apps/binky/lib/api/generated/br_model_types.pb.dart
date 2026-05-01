@@ -4360,6 +4360,7 @@ class RailPoint extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
     ..aOM<Position>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
     ..hasRequiredFields = false
   ;
 
@@ -4368,6 +4369,7 @@ class RailPoint extends $pb.GeneratedMessage {
     $core.String? id,
     $core.String? moduleId,
     Position? position,
+    $core.String? description,
   }) {
     final _result = create();
     if (id != null) {
@@ -4378,6 +4380,9 @@ class RailPoint extends $pb.GeneratedMessage {
     }
     if (position != null) {
       _result.position = position;
+    }
+    if (description != null) {
+      _result.description = description;
     }
     return _result;
   }
@@ -4430,6 +4435,15 @@ class RailPoint extends $pb.GeneratedMessage {
   void clearPosition() => clearField(3);
   @$pb.TagNumber(3)
   Position ensurePosition() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.String get description => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set description($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDescription() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDescription() => clearField(4);
 }
 
 class RailPointRef extends $pb.GeneratedMessage {

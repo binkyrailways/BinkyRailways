@@ -820,13 +820,14 @@ const RailPoint$json = const {
   '1': 'RailPoint',
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 4, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 2, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 3, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
   ],
 };
 
 /// Descriptor for `RailPoint`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railPointDescriptor = $convert.base64Decode('CglSYWlsUG9pbnQSDgoCaWQYASABKAlSAmlkEhsKCW1vZHVsZV9pZBgCIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YAyABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbg==');
+final $typed_data.Uint8List railPointDescriptor = $convert.base64Decode('CglSYWlsUG9pbnQSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAQgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAiABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAMgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24=');
 @$core.Deprecated('Use railPointRefDescriptor instead')
 const RailPointRef$json = const {
   '1': 'RailPointRef',
