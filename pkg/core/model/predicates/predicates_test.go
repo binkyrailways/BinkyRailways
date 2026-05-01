@@ -230,9 +230,9 @@ func TestParsePredicate(t *testing.T) {
 		for _, x := range []string{`("loc 1" and "dcc 2")`, `("loc 1" And "dcc 2")`} {
 			result, err := ParsePredicate(x, rw)
 			require.NoError(t, err)
-			lop, ok := result.(model.LocAndPredicate)
+			lop, ok := result.(model.LocOrPredicate)
 			require.True(t, ok)
-			assert.Equal(t, 2, lop.GetPredicates().GetCount())
+			assert.Equal(t, 1, lop.GetPredicates().GetCount())
 
 			gen := GeneratePredicate(result)
 			assert.Equal(t, `("loc 1" and "loc 2")`, gen)
@@ -242,9 +242,9 @@ func TestParsePredicate(t *testing.T) {
 	t.Run("And 3", func(t *testing.T) {
 		result, err := ParsePredicate(`("loc 1" and "dcc 2" and memberOf("group 1"))`, rw)
 		require.NoError(t, err)
-		lop, ok := result.(model.LocAndPredicate)
+		lop, ok := result.(model.LocOrPredicate)
 		require.True(t, ok)
-		assert.Equal(t, 3, lop.GetPredicates().GetCount())
+		assert.Equal(t, 1, lop.GetPredicates().GetCount())
 
 		gen := GeneratePredicate(result)
 		assert.Equal(t, `("loc 1" and "loc 2" and in("group 1"))`, gen)
@@ -298,6 +298,16 @@ func TestParsePredicate(t *testing.T) {
 		assert.Equal(t, `except("loc 1" or in("group 1"))`, gen)
 	})
 
+	t.Run("Standard only 2 and", func(t *testing.T) {
+		result, err := ParsePredicate(`only(in("group 1") and in("group 2"))`, rw)
+		require.NoError(t, err)
+		lop, ok := result.(model.LocStandardPredicate)
+		require.True(t, ok)
+		assert.Equal(t, 1, lop.GetIncludes().GetPredicates().GetCount())
+		gen := GeneratePredicate(result)
+		assert.Equal(t, `only(in("group 1") and in("group 2"))`, gen)
+	})
+
 	t.Run("Standard full 1", func(t *testing.T) {
 		result, err := ParsePredicate(`only("loc 1" or canChangeDirection or ("loc 2" and canChangeDirection)) except("loc 2" or memberOf("group 1"))`, rw)
 		require.NoError(t, err)
@@ -315,16 +325,20 @@ func TestParsePredicate(t *testing.T) {
 		result, err := ParsePredicate(input, rw)
 		require.NoError(t, err)
 		require.NotNil(t, result)
-		_, ok := result.(model.LocAndPredicate)
+		outer, ok := result.(model.LocOrPredicate)
 		require.True(t, ok)
+		require.Equal(t, 1, outer.GetPredicates().GetCount())
+
+		gen := GeneratePredicate(result)
+		assert.Equal(t, `("loc 1" and ("loc 2" or canChangeDirection))`, gen)
 	})
 
 	t.Run("Invalid syntax", func(t *testing.T) {
 		inputs := []string{
-			`"loc 1`,           // unclosed quote
+			`"loc 1`,            // unclosed quote
 			`memberOf("group")`, // non-existent group
-			`only()`,           // missing predicate
-			`( "loc 1" ) )`,    // extra bracket
+			`only()`,            // missing predicate
+			`( "loc 1" ) )`,     // extra bracket
 		}
 		for _, x := range inputs {
 			_, err := ParsePredicate(x, rw)

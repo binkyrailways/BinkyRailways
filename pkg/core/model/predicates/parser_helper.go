@@ -88,6 +88,17 @@ func getLocCanChangeDirectionPredicate(rw model.Railway) (interface{}, error) {
 	return rw.GetPredicateBuilder().CreateCanChangeDirection(), nil
 }
 
+func getLogicalPredicate(p interface{}, rw model.Railway) (interface{}, error) {
+	if _, ok := p.(model.LocOrPredicate); ok {
+		return p, nil
+	} else if andP, ok := p.(model.LocAndPredicate); ok {
+		op := rw.GetPredicateBuilder().CreateOr()
+		op.GetPredicates().Add(andP)
+		return op, nil
+	}
+	return nil, fmt.Errorf("expected LocOrPredicate or LocAndPredicate, got %T", p)
+}
+
 func getLocOrPredicate(first, rest interface{}, rw model.Railway) (interface{}, error) {
 	op := rw.GetPredicateBuilder().CreateOr()
 	if err := addPredicates(first, rest, op.GetPredicates()); err != nil {
