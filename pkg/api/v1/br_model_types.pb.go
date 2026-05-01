@@ -3128,8 +3128,8 @@ type Route struct {
 	// highest probability will have the highest chance or being chosen.
 	// <value>0..100</value>
 	ChooseProbability int32 `protobuf:"varint,11,opt,name=choose_probability,json=chooseProbability,proto3" json:"choose_probability,omitempty"`
-	/// Gets the predicate used to decide which locs are allowed to use this
-	/// route.
+	// / Gets the predicate used to decide which locs are allowed to use this
+	// / route.
 	Permissions string `protobuf:"bytes,12,opt,name=permissions,proto3" json:"permissions,omitempty"`
 	// Is this rout open for traffic or not?
 	// Setting to true, allows for maintance etc. on this route.
@@ -9385,10 +9385,7 @@ func (m *Empty) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -9471,10 +9468,7 @@ func (m *Image) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -9745,10 +9739,7 @@ func (m *Railway) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -10291,10 +10282,7 @@ func (m *Module) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -10452,10 +10440,7 @@ func (m *ModuleRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -10633,10 +10618,7 @@ func (m *Position) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -10993,10 +10975,7 @@ func (m *Loc) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11079,10 +11058,7 @@ func (m *LocRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11231,10 +11207,7 @@ func (m *LocGroup) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11317,10 +11290,7 @@ func (m *LocGroupRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11539,10 +11509,7 @@ func (m *CommandStation) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11625,10 +11592,7 @@ func (m *CommandStationRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11711,10 +11675,7 @@ func (m *BidibCommandStation) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -11934,10 +11895,7 @@ func (m *BinkyNetCommandStation) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -12301,10 +12259,7 @@ func (m *BinkyNetLocalWorker) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -12387,10 +12342,7 @@ func (m *BinkyNetLocalWorkerRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -12537,10 +12489,7 @@ func (m *BinkyNetRouter) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -12830,10 +12779,7 @@ func (m *BinkyNetDevice) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -13111,7 +13057,7 @@ func (m *BinkyNetObject) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if skippy < 0 {
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
 						return ErrInvalidLengthBrModelTypes
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -13180,10 +13126,7 @@ func (m *BinkyNetObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -13410,7 +13353,7 @@ func (m *BinkyNetConnection) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if skippy < 0 {
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
 						return ErrInvalidLengthBrModelTypes
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -13427,10 +13370,7 @@ func (m *BinkyNetConnection) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -13532,10 +13472,7 @@ func (m *BinkyNetDevicePin) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -13922,10 +13859,7 @@ func (m *Block) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14008,10 +13942,7 @@ func (m *BlockRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14196,10 +14127,7 @@ func (m *BlockGroup) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14282,10 +14210,7 @@ func (m *BlockGroupRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14468,10 +14393,7 @@ func (m *Edge) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14554,10 +14476,7 @@ func (m *EdgeRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14812,10 +14731,7 @@ func (m *Junction) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -14898,10 +14814,7 @@ func (m *JunctionRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -15134,10 +15047,7 @@ func (m *Switch) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -15356,10 +15266,7 @@ func (m *Output) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -15442,10 +15349,7 @@ func (m *OutputRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -15611,10 +15515,7 @@ func (m *BinaryOutput) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16078,10 +15979,7 @@ func (m *Route) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16164,10 +16062,7 @@ func (m *RouteRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16309,10 +16204,7 @@ func (m *Endpoint) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16435,10 +16327,7 @@ func (m *JunctionWithState) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16508,10 +16397,7 @@ func (m *SwitchWithState) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16634,10 +16520,7 @@ func (m *OutputWithState) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16708,10 +16591,7 @@ func (m *BinaryOutputWithState) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16832,10 +16712,7 @@ func (m *RouteEvent) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -16956,10 +16833,7 @@ func (m *RouteEventBehavior) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -17265,10 +17139,7 @@ func (m *Sensor) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -17351,10 +17222,7 @@ func (m *SensorRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -17405,10 +17273,7 @@ func (m *BinarySensor) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -17627,10 +17492,7 @@ func (m *Signal) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -18039,10 +17901,7 @@ func (m *BlockSignal) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -18125,10 +17984,7 @@ func (m *SignalRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -18279,10 +18135,7 @@ func (m *RailPoint) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -18365,10 +18218,7 @@ func (m *RailPointRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthBrModelTypes
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthBrModelTypes
 			}
 			if (iNdEx + skippy) > l {
@@ -18387,6 +18237,7 @@ func (m *RailPointRef) Unmarshal(dAtA []byte) error {
 func skipBrModelTypes(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -18418,10 +18269,8 @@ func skipBrModelTypes(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -18442,55 +18291,30 @@ func skipBrModelTypes(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthBrModelTypes
 			}
 			iNdEx += length
-			if iNdEx < 0 {
-				return 0, ErrInvalidLengthBrModelTypes
-			}
-			return iNdEx, nil
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowBrModelTypes
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipBrModelTypes(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-				if iNdEx < 0 {
-					return 0, ErrInvalidLengthBrModelTypes
-				}
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupBrModelTypes
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthBrModelTypes
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthBrModelTypes = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowBrModelTypes   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthBrModelTypes        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowBrModelTypes          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupBrModelTypes = fmt.Errorf("proto: unexpected end of group")
 )
