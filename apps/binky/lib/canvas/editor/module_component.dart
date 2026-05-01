@@ -15,6 +15,8 @@
 // Author Ewout Prangsma
 //
 
+import 'package:flame/components.dart';
+import 'package:flame/input.dart';
 import '../module_component.dart' as common;
 import '../view_settings.dart';
 import '../../api.dart' as mapi;
@@ -29,11 +31,30 @@ import './signal_component.dart';
 import './rail_point_component.dart';
 import './module_game.dart';
 
-class ModuleComponent extends common.ModuleComponent {
+class ModuleComponent extends common.ModuleComponent with Tappable {
   final ModuleGame game;
   ModuleComponent(ViewSettings viewSettings,
       {required mapi.Module model, required this.game})
       : super(viewSettings, model: model);
+
+  @override
+  bool onTapUp(TapUpInfo event) {
+    if (game.shiftPressed()) {
+      final selector = game.editorCtx.selector;
+      if (selector.entityType == EntityType.railpoints) {
+        final localPos = event.eventPosition.game;
+        game.modelModel.addRailPoint(game.moduleId).then((rp) async {
+          var update = rp.clone();
+          update.position.x = localPos.x.toInt();
+          update.position.y = localPos.y.toInt();
+          await game.modelModel.updateRailPoint(update);
+          await game.reload();
+        });
+        return false;
+      }
+    }
+    return super.onTapUp(event);
+  }
 
   Future<void> loadChildren(
       EditorContext editorCtx, ModelModel modelModel) async {

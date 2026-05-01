@@ -19,6 +19,7 @@ package impl
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/binkyrailways/BinkyRailways/pkg/core/model"
 )
@@ -47,4 +48,17 @@ func (rp *railPoint) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 // Accept a visit by the given visitor
 func (rp *railPoint) Accept(v model.EntityVisitor) interface{} {
 	return v.VisitRailPoint(rp)
+}
+
+// Get human readable description
+func (rp *railPoint) GetDescription() string {
+	if rp.Description != "" {
+		return rp.Description
+	}
+	return fmt.Sprintf("%d,%d", rp.GetX(), rp.GetY())
+}
+
+// Does this entity generate it's own description?
+func (rp *railPoint) HasAutomaticDescription() bool {
+	return true
 }
