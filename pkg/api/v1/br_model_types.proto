@@ -614,6 +614,9 @@ message Route {
   // Set of events that change the state of the route and it's running loc.
   repeated RouteEvent events = 8;
 
+  // Ordered list of rail points that are crossed when taking this route.
+  repeated RailPointRef rail_points = 9;
+
   // Speed of locs when going this route.
   // This value is a percentage of the maximum / medium speed of the loc.
   // <value>0..100</value>

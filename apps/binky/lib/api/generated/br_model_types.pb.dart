@@ -3048,6 +3048,7 @@ class Route extends $pb.GeneratedMessage {
     ..pc<JunctionWithState>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'crossingJunctions', $pb.PbFieldType.PM, subBuilder: JunctionWithState.create)
     ..pc<OutputWithState>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'outputs', $pb.PbFieldType.PM, subBuilder: OutputWithState.create)
     ..pc<RouteEvent>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'events', $pb.PbFieldType.PM, subBuilder: RouteEvent.create)
+    ..pc<RailPointRef>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railPoints', $pb.PbFieldType.PM, subBuilder: RailPointRef.create)
     ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speed', $pb.PbFieldType.O3)
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chooseProbability', $pb.PbFieldType.O3)
     ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'permissions')
@@ -3066,6 +3067,7 @@ class Route extends $pb.GeneratedMessage {
     $core.Iterable<JunctionWithState>? crossingJunctions,
     $core.Iterable<OutputWithState>? outputs,
     $core.Iterable<RouteEvent>? events,
+    $core.Iterable<RailPointRef>? railPoints,
     $core.int? speed,
     $core.int? chooseProbability,
     $core.String? permissions,
@@ -3096,6 +3098,9 @@ class Route extends $pb.GeneratedMessage {
     }
     if (events != null) {
       _result.events.addAll(events);
+    }
+    if (railPoints != null) {
+      _result.railPoints.addAll(railPoints);
     }
     if (speed != null) {
       _result.speed = speed;
@@ -3193,48 +3198,51 @@ class Route extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.List<RouteEvent> get events => $_getList(7);
 
+  @$pb.TagNumber(9)
+  $core.List<RailPointRef> get railPoints => $_getList(8);
+
   @$pb.TagNumber(10)
-  $core.int get speed => $_getIZ(8);
+  $core.int get speed => $_getIZ(9);
   @$pb.TagNumber(10)
-  set speed($core.int v) { $_setSignedInt32(8, v); }
+  set speed($core.int v) { $_setSignedInt32(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasSpeed() => $_has(8);
+  $core.bool hasSpeed() => $_has(9);
   @$pb.TagNumber(10)
   void clearSpeed() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.int get chooseProbability => $_getIZ(9);
+  $core.int get chooseProbability => $_getIZ(10);
   @$pb.TagNumber(11)
-  set chooseProbability($core.int v) { $_setSignedInt32(9, v); }
+  set chooseProbability($core.int v) { $_setSignedInt32(10, v); }
   @$pb.TagNumber(11)
-  $core.bool hasChooseProbability() => $_has(9);
+  $core.bool hasChooseProbability() => $_has(10);
   @$pb.TagNumber(11)
   void clearChooseProbability() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.String get permissions => $_getSZ(10);
+  $core.String get permissions => $_getSZ(11);
   @$pb.TagNumber(12)
-  set permissions($core.String v) { $_setString(10, v); }
+  set permissions($core.String v) { $_setString(11, v); }
   @$pb.TagNumber(12)
-  $core.bool hasPermissions() => $_has(10);
+  $core.bool hasPermissions() => $_has(11);
   @$pb.TagNumber(12)
   void clearPermissions() => clearField(12);
 
   @$pb.TagNumber(13)
-  $core.bool get closed => $_getBF(11);
+  $core.bool get closed => $_getBF(12);
   @$pb.TagNumber(13)
-  set closed($core.bool v) { $_setBool(11, v); }
+  set closed($core.bool v) { $_setBool(12, v); }
   @$pb.TagNumber(13)
-  $core.bool hasClosed() => $_has(11);
+  $core.bool hasClosed() => $_has(12);
   @$pb.TagNumber(13)
   void clearClosed() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.int get maxDuration => $_getIZ(12);
+  $core.int get maxDuration => $_getIZ(13);
   @$pb.TagNumber(14)
-  set maxDuration($core.int v) { $_setSignedInt32(12, v); }
+  set maxDuration($core.int v) { $_setSignedInt32(13, v); }
   @$pb.TagNumber(14)
-  $core.bool hasMaxDuration() => $_has(12);
+  $core.bool hasMaxDuration() => $_has(13);
   @$pb.TagNumber(14)
   void clearMaxDuration() => clearField(14);
 }
