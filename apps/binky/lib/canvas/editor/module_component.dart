@@ -43,11 +43,12 @@ class ModuleComponent extends common.ModuleComponent with Tappable {
       final selector = game.editorCtx.selector;
       if (selector.entityType == EntityType.railpoints) {
         final localPos = event.eventPosition.game;
-        game.modelModel.addRailPoint(game.moduleId).then((rp) {
+        game.modelModel.addRailPoint(game.moduleId).then((rp) async {
           var update = rp.clone();
           update.position.x = localPos.x.toInt();
           update.position.y = localPos.y.toInt();
-          game.modelModel.updateRailPoint(update);
+          await game.modelModel.updateRailPoint(update);
+          await game.reload();
         });
         return false;
       }

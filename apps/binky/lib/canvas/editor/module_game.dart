@@ -48,7 +48,12 @@ class ModuleGame extends BaseGame {
 
   bool shiftPressed() => HardwareKeyboard.instance.isShiftPressed;
 
-  // Load the game components
+  // Reload the game components
+  Future<void> reload() async {
+    removeAll(children);
+    await onLoad();
+  }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();

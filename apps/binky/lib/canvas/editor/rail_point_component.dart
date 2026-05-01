@@ -56,7 +56,9 @@ class RailPointComponent extends common.RailPointComponent
       if (game.shiftPressed()) {
         final routeId = editorCtx.selector.idOf(EntityType.route);
         if (routeId != null) {
-          modelModel.addRouteRailPoint(routeId, model.id);
+          modelModel.addRouteRailPoint(routeId, model.id).then((_) {
+            game.reload();
+          });
           return false;
         }
       }
