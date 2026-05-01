@@ -35,7 +35,10 @@ class RailPointComponent extends common.RailPointComponent
       {required this.editorCtx,
       required mapi.RailPoint model,
       required this.modelModel})
-      : super(viewSettings, model: model);
+      : super(viewSettings, model: model) {
+    size.x = 20;
+    size.y = 20;
+  }
 
   @override
   Future<void> savePosition(void Function(mapi.Position) editor) async {

@@ -30,8 +30,10 @@ class EntityComponent extends PositionComponent with Hoverable {
   // Load the given position into this component
   void loadPosition(mapi.Position position) {
     anchor = Anchor.center;
-    width = max(1, position.width.toDouble());
-    height = max(1, position.height.toDouble());
+    width = position.width.toDouble();
+    height = position.height.toDouble();
+    if (width <= 0) width = 1;
+    if (height <= 0) height = 1;
     x = (position.hasX() ? position.x.toDouble() : 0) + width / 2;
     y = (position.hasY() ? position.y.toDouble() : 0) + height / 2;
     angle = radians(position.rotation.toDouble());
