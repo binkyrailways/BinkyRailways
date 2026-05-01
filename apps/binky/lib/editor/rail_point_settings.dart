@@ -87,7 +87,7 @@ class _RailPointSettingsState extends State<_RailPointSettings> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
                 icon: const Icon(Icons.delete),
