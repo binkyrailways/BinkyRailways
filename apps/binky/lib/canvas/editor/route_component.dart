@@ -34,6 +34,7 @@ class RouteComponent extends common.RouteComponent {
       required List<mapi.Edge> edges,
       required List<mapi.Junction> junctions,
       required List<mapi.Sensor> sensors,
+      required List<mapi.RailPoint> railPoints,
       required ModelModel modelModel,
       required this.game,
       required this.route})
@@ -44,7 +45,8 @@ class RouteComponent extends common.RouteComponent {
             blocks: blocks,
             edges: edges,
             junctions: junctions,
-            sensors: sensors);
+            sensors: sensors,
+            railPoints: railPoints);
 
   @override
   isVisible() {
