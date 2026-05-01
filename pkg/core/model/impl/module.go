@@ -50,6 +50,7 @@ type module struct {
 	Sensors     sensorSet     `xml:"Sensors"`
 	Signals     signalSet     `xml:"Signals"`
 	Routes      routeSet      `xml:"Routes"`
+	RailPoints  railPointSet  `xml:"RailPoints"`
 }
 
 var (
@@ -71,6 +72,7 @@ func NewModule(p model.Package) Module {
 	m.Sensors.SetContainer(m)
 	m.Signals.SetContainer(m)
 	m.Routes.SetContainer(m)
+	m.RailPoints.SetContainer(m)
 	return m
 }
 
@@ -139,6 +141,11 @@ func (m *module) GetOutputs() model.OutputSet {
 // Gets all routes contained in this module.
 func (m *module) GetRoutes() model.RouteSet {
 	return &m.Routes
+}
+
+// Gets all rail points of this module.
+func (m *module) GetRailPoints() model.RailPointSet {
+	return &m.RailPoints
 }
 
 // Gets/sets the background image of the this module.

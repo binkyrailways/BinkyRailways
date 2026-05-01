@@ -143,6 +143,7 @@ func (v *allEntityVisitor) VisitModule(x Module) interface{} {
 	x.GetSignals().ForEach(func(s Signal) { v.visit(s) })
 	x.GetOutputs().ForEach(func(o Output) { v.visit(o) })
 	x.GetRoutes().ForEach(func(r Route) { v.visit(r) })
+	x.GetRailPoints().ForEach(func(rp RailPoint) { v.visit(rp) })
 	return nil
 }
 
@@ -187,6 +188,10 @@ func (v *allEntityVisitor) VisitRailway(x Railway) interface{} {
 			v.visit(mod)
 		}
 	})
+	return nil
+}
+
+func (v *allEntityVisitor) VisitRailPoint(x RailPoint) interface{} {
 	return nil
 }
 

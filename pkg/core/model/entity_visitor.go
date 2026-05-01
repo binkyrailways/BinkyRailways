@@ -43,6 +43,7 @@ type EntityVisitor interface {
 	VisitMqttCommandStation(MqttCommandStation) interface{}
 	VisitP50xCommandStation(P50xCommandStation) interface{}
 	VisitRailway(Railway) interface{}
+	VisitRailPoint(RailPoint) interface{}
 	VisitRoute(Route) interface{}
 	VisitRouteEvent(RouteEvent) interface{}
 	VisitRouteEventBehavior(RouteEventBehavior) interface{}

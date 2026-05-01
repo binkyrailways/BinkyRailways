@@ -48,6 +48,9 @@ type Module interface {
 	// Gets all routes contained in this module.
 	GetRoutes() RouteSet
 
+	// Gets all rail points of this module.
+	GetRailPoints() RailPointSet
+
 	// Gets/sets the background image of the this module.
 	// Null if there is no image.</value>
 	// Image must be png, bmp, gif, jpg, wmf or emf.
