@@ -21,15 +21,22 @@ import 'package:expandable/expandable.dart';
 class SettingsHeader extends StatelessWidget {
   final String title;
   final Widget? child;
+  final List<Widget> titleSuffix;
 
-  const SettingsHeader({Key? key, required this.title, this.child})
+  const SettingsHeader(
+      {Key? key, required this.title, this.child, this.titleSuffix = const []})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final expanded = this.child;
-    final header =
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold));
+    final header = Row(
+      children: [
+        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const Spacer(),
+        ...titleSuffix,
+      ],
+    );
     final Widget child = (expanded != null)
         ? ExpandablePanel(
             header: header,
