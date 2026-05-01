@@ -64,6 +64,7 @@ import './sensor_settings.dart';
 import './sensors_tree.dart';
 import './signal_settings.dart';
 import './signals_tree.dart';
+import './rail_point_settings.dart';
 import '../canvas/editor/module_canvas.dart';
 
 class EditorPage extends StatefulWidget {
@@ -302,6 +303,24 @@ class _EditorPageState extends State<EditorPage> {
           content: ModuleCanvas(
               key: Key("edit-canvas-$moduleId"), viewSettings: _viewSettings),
           endMenu: const SignalSettings(),
+          endMenuWidth: 300,
+        );
+      case EntityType.railpoints:
+        return SplitView(
+          menu: const ModuleTree(),
+          content: ModuleCanvas(
+            key: Key("edit-canvas-$moduleId"),
+            viewSettings: _viewSettings,
+          ),
+        );
+      case EntityType.railpoint:
+        return SplitView(
+          menu: const ModuleTree(),
+          content: ModuleCanvas(
+            key: Key("edit-canvas-$moduleId"),
+            viewSettings: _viewSettings,
+          ),
+          endMenu: const RailPointSettings(),
           endMenuWidth: 300,
         );
       case EntityType.binkynetlocalworkers:
@@ -628,6 +647,22 @@ class _EditorPageState extends State<EditorPage> {
               onTap: () async {
                 final added = await model.addBlockSignal(moduleId);
                 editorCtx.select(EntitySelector.signal(added));
+              },
+            ),
+          ];
+        }
+        return [];
+      case EntityType.railpoint:
+      case EntityType.railpoints:
+        final moduleId = selector.idOf(EntityType.module);
+        if (moduleId != null) {
+          return [
+            SpeedDialChild(
+              child: BinkyIcons.railPoint,
+              label: "Add rail point",
+              onTap: () async {
+                final added = await model.addRailPoint(moduleId);
+                editorCtx.select(EntitySelector.railPoint(added));
               },
             ),
           ];

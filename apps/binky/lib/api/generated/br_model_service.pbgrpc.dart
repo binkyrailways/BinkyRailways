@@ -333,6 +333,23 @@ class ModelServiceClient extends $grpc.Client {
       '/binkyrailways.v1.ModelService/DeleteSignal',
       ($2.IDRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
+  static final _$getRailPoint = $grpc.ClientMethod<$2.IDRequest, $0.RailPoint>(
+      '/binkyrailways.v1.ModelService/GetRailPoint',
+      ($2.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.RailPoint.fromBuffer(value));
+  static final _$addRailPoint = $grpc.ClientMethod<$2.IDRequest, $0.RailPoint>(
+      '/binkyrailways.v1.ModelService/AddRailPoint',
+      ($2.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.RailPoint.fromBuffer(value));
+  static final _$updateRailPoint =
+      $grpc.ClientMethod<$0.RailPoint, $0.RailPoint>(
+          '/binkyrailways.v1.ModelService/UpdateRailPoint',
+          ($0.RailPoint value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.RailPoint.fromBuffer(value));
+  static final _$deleteRailPoint = $grpc.ClientMethod<$2.IDRequest, $0.Module>(
+      '/binkyrailways.v1.ModelService/DeleteRailPoint',
+      ($2.IDRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Module.fromBuffer(value));
   static final _$getBinkyNetLocalWorker =
       $grpc.ClientMethod<$2.IDRequest, $0.BinkyNetLocalWorker>(
           '/binkyrailways.v1.ModelService/GetBinkyNetLocalWorker',
@@ -786,6 +803,26 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Module> deleteSignal($2.IDRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteSignal, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RailPoint> getRailPoint($2.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getRailPoint, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RailPoint> addRailPoint($2.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$addRailPoint, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RailPoint> updateRailPoint($0.RailPoint request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateRailPoint, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Module> deleteRailPoint($2.IDRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteRailPoint, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.BinkyNetLocalWorker> getBinkyNetLocalWorker(
@@ -1387,6 +1424,34 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
         ($0.Module value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.RailPoint>(
+        'GetRailPoint',
+        getRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
+        ($0.RailPoint value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.RailPoint>(
+        'AddRailPoint',
+        addRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
+        ($0.RailPoint value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RailPoint, $0.RailPoint>(
+        'UpdateRailPoint',
+        updateRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.RailPoint.fromBuffer(value),
+        ($0.RailPoint value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.Module>(
+        'DeleteRailPoint',
+        deleteRailPoint_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.IDRequest.fromBuffer(value),
+        ($0.Module value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.IDRequest, $0.BinkyNetLocalWorker>(
         'GetBinkyNetLocalWorker',
         getBinkyNetLocalWorker_Pre,
@@ -1833,6 +1898,26 @@ abstract class ModelServiceBase extends $grpc.Service {
     return deleteSignal(call, await request);
   }
 
+  $async.Future<$0.RailPoint> getRailPoint_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
+    return getRailPoint(call, await request);
+  }
+
+  $async.Future<$0.RailPoint> addRailPoint_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
+    return addRailPoint(call, await request);
+  }
+
+  $async.Future<$0.RailPoint> updateRailPoint_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.RailPoint> request) async {
+    return updateRailPoint(call, await request);
+  }
+
+  $async.Future<$0.Module> deleteRailPoint_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
+    return deleteRailPoint(call, await request);
+  }
+
   $async.Future<$0.BinkyNetLocalWorker> getBinkyNetLocalWorker_Pre(
       $grpc.ServiceCall call, $async.Future<$2.IDRequest> request) async {
     return getBinkyNetLocalWorker(call, await request);
@@ -2023,6 +2108,14 @@ abstract class ModelServiceBase extends $grpc.Service {
   $async.Future<$0.Signal> updateSignal(
       $grpc.ServiceCall call, $0.Signal request);
   $async.Future<$0.Module> deleteSignal(
+      $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.RailPoint> getRailPoint(
+      $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.RailPoint> addRailPoint(
+      $grpc.ServiceCall call, $2.IDRequest request);
+  $async.Future<$0.RailPoint> updateRailPoint(
+      $grpc.ServiceCall call, $0.RailPoint request);
+  $async.Future<$0.Module> deleteRailPoint(
       $grpc.ServiceCall call, $2.IDRequest request);
   $async.Future<$0.BinkyNetLocalWorker> getBinkyNetLocalWorker(
       $grpc.ServiceCall call, $2.IDRequest request);

@@ -187,6 +187,10 @@ func (v *DefaultEntityVisitor) VisitRailway(x Railway) interface{} {
 	return nil
 }
 
+func (v *DefaultEntityVisitor) VisitRailPoint(x RailPoint) interface{} {
+	return nil
+}
+
 func (v *DefaultEntityVisitor) VisitRoute(x Route) interface{} {
 	return nil
 }

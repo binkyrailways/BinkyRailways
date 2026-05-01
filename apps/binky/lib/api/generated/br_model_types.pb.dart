@@ -212,6 +212,7 @@ class Module extends $pb.GeneratedMessage {
     ..pc<RouteRef>(105, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routes', $pb.PbFieldType.PM, subBuilder: RouteRef.create)
     ..pc<SensorRef>(106, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sensors', $pb.PbFieldType.PM, subBuilder: SensorRef.create)
     ..pc<SignalRef>(107, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signals', $pb.PbFieldType.PM, subBuilder: SignalRef.create)
+    ..pc<RailPointRef>(108, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railPoints', $pb.PbFieldType.PM, protoName: 'railPoints', subBuilder: RailPointRef.create)
     ..pPS(200, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'layers')
     ..hasRequiredFields = false
   ;
@@ -232,6 +233,7 @@ class Module extends $pb.GeneratedMessage {
     $core.Iterable<RouteRef>? routes,
     $core.Iterable<SensorRef>? sensors,
     $core.Iterable<SignalRef>? signals,
+    $core.Iterable<RailPointRef>? railPoints,
     $core.Iterable<$core.String>? layers,
   }) {
     final _result = create();
@@ -276,6 +278,9 @@ class Module extends $pb.GeneratedMessage {
     }
     if (signals != null) {
       _result.signals.addAll(signals);
+    }
+    if (railPoints != null) {
+      _result.railPoints.addAll(railPoints);
     }
     if (layers != null) {
       _result.layers.addAll(layers);
@@ -381,8 +386,11 @@ class Module extends $pb.GeneratedMessage {
   @$pb.TagNumber(107)
   $core.List<SignalRef> get signals => $_getList(13);
 
+  @$pb.TagNumber(108)
+  $core.List<RailPointRef> get railPoints => $_getList(14);
+
   @$pb.TagNumber(200)
-  $core.List<$core.String> get layers => $_getList(14);
+  $core.List<$core.String> get layers => $_getList(15);
 }
 
 class ModuleRef extends $pb.GeneratedMessage {
@@ -4328,6 +4336,130 @@ class SignalRef extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static SignalRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SignalRef>(create);
   static SignalRef? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class RailPoint extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RailPoint', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moduleId')
+    ..aOM<Position>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..hasRequiredFields = false
+  ;
+
+  RailPoint._() : super();
+  factory RailPoint({
+    $core.String? id,
+    $core.String? moduleId,
+    Position? position,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (moduleId != null) {
+      _result.moduleId = moduleId;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    return _result;
+  }
+  factory RailPoint.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RailPoint.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RailPoint clone() => RailPoint()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RailPoint copyWith(void Function(RailPoint) updates) => super.copyWith((message) => updates(message as RailPoint)) as RailPoint; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RailPoint create() => RailPoint._();
+  RailPoint createEmptyInstance() => create();
+  static $pb.PbList<RailPoint> createRepeated() => $pb.PbList<RailPoint>();
+  @$core.pragma('dart2js:noInline')
+  static RailPoint getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RailPoint>(create);
+  static RailPoint? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get moduleId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set moduleId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasModuleId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearModuleId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  Position get position => $_getN(2);
+  @$pb.TagNumber(3)
+  set position(Position v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasPosition() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPosition() => clearField(3);
+  @$pb.TagNumber(3)
+  Position ensurePosition() => $_ensure(2);
+}
+
+class RailPointRef extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RailPointRef', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  RailPointRef._() : super();
+  factory RailPointRef({
+    $core.String? id,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    return _result;
+  }
+  factory RailPointRef.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RailPointRef.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RailPointRef clone() => RailPointRef()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RailPointRef copyWith(void Function(RailPointRef) updates) => super.copyWith((message) => updates(message as RailPointRef)) as RailPointRef; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RailPointRef create() => RailPointRef._();
+  RailPointRef createEmptyInstance() => create();
+  static $pb.PbList<RailPointRef> createRepeated() => $pb.PbList<RailPointRef>();
+  @$core.pragma('dart2js:noInline')
+  static RailPointRef getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RailPointRef>(create);
+  static RailPointRef? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

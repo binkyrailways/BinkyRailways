@@ -43,6 +43,8 @@ enum EntityType {
   routes,
   sensor,
   sensors,
+  railpoint,
+  railpoints,
   signal,
   signals,
   binkynetlocalworker,
@@ -145,6 +147,11 @@ class EntitySelector {
         _id = entity?.id ?? id,
         parent = EntitySelector.module(entity, id);
 
+  EntitySelector.railPoints(Module? entity, String? id)
+      : entityType = EntityType.railpoints,
+        _id = entity?.id ?? id,
+        parent = EntitySelector.module(entity, id);
+
   EntitySelector.signals(Module? entity, String? id)
       : entityType = EntityType.signals,
         _id = entity?.id ?? id,
@@ -184,6 +191,11 @@ class EntitySelector {
       : entityType = EntityType.sensor,
         _id = entity.id,
         parent = EntitySelector.sensors(null, entity.moduleId);
+
+  EntitySelector.railPoint(RailPoint entity)
+      : entityType = EntityType.railpoint,
+        _id = entity.id,
+        parent = EntitySelector.railPoints(null, entity.moduleId);
 
   EntitySelector.signal(Signal entity)
       : entityType = EntityType.signal,

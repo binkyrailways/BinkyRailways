@@ -102,14 +102,14 @@ build-image:
 .PHONY: $(CACHEVOL)
 $(CACHEVOL):
 	@docker volume create $(CACHEVOL) || true
-	docker run -it 	--rm -v $(CACHEVOL):/usr/gocache \
+	docker run --rm -v $(CACHEVOL):/usr/gocache \
 		$(BUILDIMAGE) \
 		chown -R $(shell id -u):$(shell id -g) /usr/gocache
 
 .PHONY: $(MODVOL)
 $(MODVOL):
 	@docker volume create $(MODVOL) || true
-	docker run -it 	--rm -v $(MODVOL):/go/pkg/mod \
+	docker run --rm -v $(MODVOL):/go/pkg/mod \
 		$(BUILDIMAGE) \
 		chown -R $(shell id -u):$(shell id -g) /go/pkg/mod
 

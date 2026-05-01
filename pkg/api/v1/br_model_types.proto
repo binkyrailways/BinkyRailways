@@ -75,6 +75,8 @@ message Module {
   repeated OutputRef outputs = 104;
   // Routes of this module
   repeated RouteRef routes = 105;
+  // Rail points of this module
+  repeated RailPointRef railPoints = 108;
   // Sensors of this module
   repeated SensorRef sensors = 106;
   // Signals of this module
@@ -845,5 +847,21 @@ enum BlockSignalType {
 // Reference to a Signal
 message SignalRef {
   // ID of the Signal
+  string id = 1;
+}
+
+// RailPoint on the track
+message RailPoint {
+  // ID of the RailPoint
+  string id = 1;
+  // ID of the module containing the RailPoint
+  string module_id = 2;
+  // Position of the RailPoint
+  Position position = 3;
+}
+
+// Reference to a RailPoint
+message RailPointRef {
+  // ID of the RailPoint
   string id = 1;
 }
