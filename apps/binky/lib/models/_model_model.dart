@@ -43,6 +43,7 @@ class ModelModel extends ChangeNotifier {
   final Map<String, mapi.Route> _routes = {};
   final Map<String, mapi.Sensor> _sensors = {};
   final Map<String, mapi.Signal> _signals = {};
+  final Map<String, mapi.RailPoint> _railPoints = {};
   final Map<String, mapi.BinkyNetLocalWorker> _binkynetLocalWorkers = {};
 
   ModelModel();
@@ -66,6 +67,7 @@ class ModelModel extends ChangeNotifier {
     _routes.clear();
     _sensors.clear();
     _signals.clear();
+    _railPoints.clear();
     _binkynetLocalWorkers.clear();
 
     // Reload
@@ -928,6 +930,54 @@ class ModelModel extends ChangeNotifier {
     _signals[id] = result;
     notifyListeners();
     return result;
+  }
+
+  // Gets a RailPoint by ID from cache
+  mapi.RailPoint? getCachedRailPoint(String id) => _railPoints[id];
+
+  // Gets a RailPoint by ID
+  Future<mapi.RailPoint> getRailPoint(String id) async {
+    var result = _railPoints[id];
+    if (result != null) {
+      return result;
+    }
+    // Load from API
+    var modelClient = mapi.APIClient().modelClient();
+    result = await modelClient.getRailPoint(mapi.IDRequest(id: id));
+    _railPoints[id] = result;
+    notifyListeners();
+    return result;
+  }
+
+  // Add a new rail point
+  Future<mapi.RailPoint> addRailPoint(String moduleId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var added = await modelClient.addRailPoint(mapi.IDRequest(id: moduleId));
+    _railPoints[added.id] = added;
+    _modules[moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: moduleId));
+    notifyListeners();
+    return added;
+  }
+
+  // Update the given RailPoint
+  Future<void> updateRailPoint(mapi.RailPoint value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.updateRailPoint(value);
+    _railPoints[updated.id] = updated;
+    _modules[updated.moduleId] =
+        await modelClient.getModule(mapi.IDRequest(id: updated.moduleId));
+    notifyListeners();
+  }
+
+  // Delete the given rail point
+  Future<void> deleteRailPoint(mapi.RailPoint value) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final updated =
+        await modelClient.deleteRailPoint(mapi.IDRequest(id: value.id));
+    _railPoints.remove(value.id);
+    _modules[updated.id] = updated;
+    notifyListeners();
   }
 
   // Add a new block signal

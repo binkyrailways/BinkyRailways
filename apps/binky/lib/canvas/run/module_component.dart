@@ -26,6 +26,7 @@ import './output_component.dart';
 import './sensor_component.dart';
 import './signal_component.dart';
 import './route_component.dart';
+import '../rail_point_component.dart';
 import './railway_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
@@ -57,6 +58,7 @@ class ModuleComponent extends common.ModuleComponent {
     final edges = await Future.wait(module.edges.map((e) => modelModel.getEdge(e.id)));
     final junctions = await Future.wait(module.junctions.map((e) => modelModel.getJunction(e.id)));
     final sensors = await Future.wait(module.sensors.map((e) => modelModel.getSensor(e.id)));
+    final railPoints = await Future.wait(module.railPoints.map((e) => modelModel.getRailPoint(e.id)));
 
     for (var routeRef in module.routes) {
       add(RouteComponent(viewSettings,
@@ -112,6 +114,9 @@ class ModuleComponent extends common.ModuleComponent {
       } catch (err) {
         print(err);
       }
+    }
+    for (var railPoint in railPoints) {
+      add(RailPointComponent(viewSettings, model: railPoint));
     }
   }
 }

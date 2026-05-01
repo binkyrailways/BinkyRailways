@@ -26,6 +26,7 @@ import './output_component.dart';
 import './route_component.dart';
 import './sensor_component.dart';
 import './signal_component.dart';
+import './rail_point_component.dart';
 import './module_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
@@ -44,6 +45,7 @@ class ModuleComponent extends common.ModuleComponent {
     final List<mapi.Junction> junctions = [];
     final List<mapi.Sensor> sensors = [];
     final List<mapi.Signal> signals = [];
+    final List<mapi.RailPoint> railPoints = [];
     for (var routeRef in model.routes) {
       final route = await modelModel.getRoute(routeRef.id);
       add(RouteComponent(viewSettings,
@@ -101,6 +103,13 @@ class ModuleComponent extends common.ModuleComponent {
           model: signal,
           modelModel: modelModel,
           game: game));
+    }
+    // Load rail points
+    for (var railPointRef in model.railPoints) {
+      final railPoint = await modelModel.getRailPoint(railPointRef.id);
+      railPoints.add(railPoint);
+      add(RailPointComponent(viewSettings,
+          editorCtx: editorCtx, model: railPoint, modelModel: modelModel));
     }
   }
 }
