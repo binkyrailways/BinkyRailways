@@ -274,6 +274,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -356,6 +357,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -416,6 +418,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -587,6 +590,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
