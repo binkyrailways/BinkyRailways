@@ -25,6 +25,7 @@ import './junction_component.dart';
 import './output_component.dart';
 import './sensor_component.dart';
 import './signal_component.dart';
+import './route_component.dart';
 import './railway_game.dart';
 
 class ModuleComponent extends common.ModuleComponent {
@@ -50,6 +51,23 @@ class ModuleComponent extends common.ModuleComponent {
       await loadBackgroundImage(modelModel);
     } catch (err) {
       print(err);
+    }
+    final module = await modelModel.getModule(model.id);
+    final blocks = await Future.wait(module.blocks.map((e) => modelModel.getBlock(e.id)));
+    final edges = await Future.wait(module.edges.map((e) => modelModel.getEdge(e.id)));
+    final junctions = await Future.wait(module.junctions.map((e) => modelModel.getJunction(e.id)));
+    final sensors = await Future.wait(module.sensors.map((e) => modelModel.getSensor(e.id)));
+
+    for (var routeRef in module.routes) {
+      add(RouteComponent(viewSettings,
+          routeId: routeRef.id,
+          module: module,
+          modelModel: modelModel,
+          stateModel: stateModel,
+          blocks: blocks,
+          edges: edges,
+          junctions: junctions,
+          sensors: sensors));
     }
     for (var blockRef in railway.blocks) {
       try {

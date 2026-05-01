@@ -16,6 +16,7 @@
 //
 
 import 'package:binky/api/generated/br_model_types.pbenum.dart';
+import 'package:binky/api/generated/br_state_types.pbenum.dart';
 
 extension BlockSideExt on BlockSide {
   BlockSide invert() {
@@ -78,6 +79,20 @@ extension LocSpeedBehaviorExt on LocSpeedBehavior {
         return "Maximum speed";
       default:
         return toString();
+    }
+  }
+}
+
+extension AutoLocStateExt on AutoLocState {
+  bool get isRunningOrEntering {
+    switch (this) {
+      case AutoLocState.RUNNING:
+      case AutoLocState.ENTERSENSORACTIVATED:
+      case AutoLocState.ENTERINGDESTINATION:
+      case AutoLocState.REACHEDSENSORACTIVATED:
+        return true;
+      default:
+        return false;
     }
   }
 }
