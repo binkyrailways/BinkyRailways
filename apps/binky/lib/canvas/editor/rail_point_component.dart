@@ -26,6 +26,7 @@ import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './position_draggable.dart';
+import './module_game.dart';
 
 class RailPointComponent extends common.RailPointComponent
     with Tappable, Draggable, PositionDraggable<mapi.RailPoint> {
