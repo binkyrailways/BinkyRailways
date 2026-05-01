@@ -57,4 +57,19 @@ func TestRouteRailPoints(t *testing.T) {
 	p, ok := r.GetRailPoints().Get(0)
 	assert.True(t, ok)
 	assert.Equal(t, rp2.GetID(), p.GetID())
+
+	// Test move up/down
+	rp3 := m.GetRailPoints().AddNew()
+	r.GetRailPoints().Add(rp3) // rp2, rp3
+	assert.Equal(t, 2, r.GetRailPoints().GetCount())
+
+	// Move rp3 up
+	assert.True(t, r.GetRailPoints().MoveUp(rp3))
+	p0, _ := r.GetRailPoints().Get(0)
+	assert.Equal(t, rp3.GetID(), p0.GetID())
+
+	// Move rp3 down
+	assert.True(t, r.GetRailPoints().MoveDown(rp3))
+	p1down, _ := r.GetRailPoints().Get(1)
+	assert.Equal(t, rp3.GetID(), p1down.GetID())
 }

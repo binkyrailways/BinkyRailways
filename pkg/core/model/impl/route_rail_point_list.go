@@ -110,6 +110,38 @@ func (l *routeRailPointList) Contains(item model.RailPoint) bool {
 	return false
 }
 
+// Move the given rail point one position up in the list.
+func (l *routeRailPointList) MoveUp(item model.RailPoint) bool {
+	id := item.GetID()
+	for i, x := range l.RailPointIDs {
+		if x == id {
+			if i > 0 {
+				l.RailPointIDs[i], l.RailPointIDs[i-1] = l.RailPointIDs[i-1], l.RailPointIDs[i]
+				l.OnModified()
+				return true
+			}
+			return false
+		}
+	}
+	return false
+}
+
+// Move the given rail point one position down in the list.
+func (l *routeRailPointList) MoveDown(item model.RailPoint) bool {
+	id := item.GetID()
+	for i, x := range l.RailPointIDs {
+		if x == id {
+			if i < len(l.RailPointIDs)-1 {
+				l.RailPointIDs[i], l.RailPointIDs[i+1] = l.RailPointIDs[i+1], l.RailPointIDs[i]
+				l.OnModified()
+				return true
+			}
+			return false
+		}
+	}
+	return false
+}
+
 // RemoveByID removes all references to the rail point with the given ID.
 func (l *routeRailPointList) RemoveByID(id string) bool {
 	changed := false

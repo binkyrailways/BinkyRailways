@@ -41,4 +41,12 @@ type RouteRailPointList interface {
 
 	// Does this list contain the given item?
 	Contains(item RailPoint) bool
+
+	// Move the given rail point one position up in the list.
+	// Returns true if it was moved, false otherwise.
+	MoveUp(item RailPoint) bool
+
+	// Move the given rail point one position down in the list.
+	// Returns true if it was moved, false otherwise.
+	MoveDown(item RailPoint) bool
 }
