@@ -116,8 +116,5 @@ class ModuleComponent extends common.ModuleComponent {
         print(err);
       }
     }
-    for (var railPoint in railPoints) {
-      add(RailPointComponent(viewSettings, model: railPoint));
-    }
   }
 }
