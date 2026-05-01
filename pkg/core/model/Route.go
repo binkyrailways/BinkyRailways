@@ -38,6 +38,9 @@ type Route interface {
 	GetToBlockSide() BlockSide
 	SetToBlockSide(value BlockSide) error
 
+	// Ordered list of rail points that are crossed when taking this route.
+	GetRailPoints() RouteRailPointList
+
 	// Set of junctions with their states that are crossed when taking this route.
 	GetCrossingJunctions() JunctionWithStateSet
 
