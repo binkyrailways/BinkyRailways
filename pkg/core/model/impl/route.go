@@ -39,6 +39,7 @@ type routeFields struct {
 	ChooseProbability          *int                 `xml:"ChooseProbability"`
 	MaxDuration                *int                 `xml:"MaxDuration"`
 	Closed                     *bool                `xml:"Closed"`
+	RailPoints                 routeRailPointList   `xml:"RailPoints"`
 	Events                     routeEventSet        `xml:"Events"`
 	CrossingJunctions          junctionWithStateSet `xml:"CrossingJunctions"`
 	Outputs                    outputWithStateSet   `xml:"Outputs"`
@@ -48,6 +49,7 @@ type routeFields struct {
 }
 
 func (rf *routeFields) SetRoute(r *route) {
+	rf.RailPoints.SetContainer(r)
 	rf.Events.SetContainer(r)
 	rf.CrossingJunctions.SetContainer(r)
 	rf.Outputs.SetContainer(r)
@@ -148,6 +150,11 @@ func (r *route) SetToBlockSide(value model.BlockSide) error {
 		r.OnModified()
 	}
 	return nil
+}
+
+// Ordered list of rail points that are crossed when taking this route.
+func (r *route) GetRailPoints() model.RouteRailPointList {
+	return &r.RailPoints
 }
 
 // Set of junctions with their states that are crossed when taking this route.

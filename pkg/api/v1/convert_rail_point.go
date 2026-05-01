@@ -26,6 +26,7 @@ import (
 // FromModel converts a model rail point to an API rail point
 func (dst *RailPoint) FromModel(ctx context.Context, src model.RailPoint) error {
 	dst.Id = JoinParentChildID(src.GetModule().GetID(), src.GetID())
+	dst.Description = src.GetDescription()
 	dst.ModuleId = src.GetModule().GetID()
 	dst.Position = &Position{}
 	if err := dst.Position.FromModel(ctx, src); err != nil {
@@ -40,6 +41,7 @@ func (src *RailPoint) ToModel(ctx context.Context, dst model.RailPoint) error {
 	if src.GetId() != expectedID {
 		return InvalidArgument("Unexpected rail point ID: '%s'", src.GetId())
 	}
+	dst.SetDescription(src.GetDescription())
 	if err := src.GetPosition().ToModel(ctx, dst); err != nil {
 		return err
 	}

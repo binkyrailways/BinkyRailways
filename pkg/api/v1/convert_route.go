@@ -49,6 +49,11 @@ func (dst *Route) FromModel(ctx context.Context, src model.Route) error {
 		reDst.FromModel(ctx, re)
 		dst.Events = append(dst.Events, reDst)
 	})
+	src.GetRailPoints().ForEach(func(rp model.RailPoint) {
+		dst.RailPoints = append(dst.RailPoints, &RailPointRef{
+			Id: JoinParentChildID(rp.GetModule().GetID(), rp.GetID()),
+		})
+	})
 	dst.Speed = int32(src.GetSpeed())
 	dst.ChooseProbability = int32(src.GetChooseProbability())
 	dst.Permissions = predicates.GeneratePredicate(src.GetPermissions())
@@ -130,6 +135,23 @@ func (src *Route) ToModel(ctx context.Context, dst model.Route) error {
 		}
 		multierr.AppendInto(&err, x.ToModel(ctx, dstRe))
 	}
+
+	// Update rail points
+	for dst.GetRailPoints().GetCount() > 0 {
+		dst.GetRailPoints().RemoveAt(0)
+	}
+	for _, x := range src.GetRailPoints() {
+		_, rpID, err := SplitParentChildID(x.GetId())
+		if err != nil {
+			return err
+		}
+		rp, ok := dst.GetModule().GetRailPoints().Get(rpID)
+		if !ok {
+			return InvalidArgument("Unknown rail point ID: '%s'", rpID)
+		}
+		multierr.AppendInto(&err, dst.GetRailPoints().Add(rp))
+	}
+
 	multierr.AppendInto(&err, dst.SetSpeed(int(src.GetSpeed())))
 	multierr.AppendInto(&err, dst.SetChooseProbability(int(src.GetChooseProbability())))
 	multierr.AppendInto(&err, dst.SetClosed(src.GetClosed()))

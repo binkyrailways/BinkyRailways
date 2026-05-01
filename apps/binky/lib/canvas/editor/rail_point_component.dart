@@ -26,16 +26,19 @@ import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
 import './position_draggable.dart';
+import './module_game.dart';
 
 class RailPointComponent extends common.RailPointComponent
     with Tappable, Draggable, PositionDraggable<mapi.RailPoint> {
   final EditorContext editorCtx;
   final ModelModel modelModel;
+  final ModuleGame game;
 
   RailPointComponent(ViewSettings viewSettings,
       {required this.editorCtx,
       required mapi.RailPoint model,
-      required this.modelModel})
+      required this.modelModel,
+      required this.game})
       : super(viewSettings, model: model) {}
 
   @override
@@ -50,6 +53,13 @@ class RailPointComponent extends common.RailPointComponent
   @override
   bool onTapUp(TapUpInfo event) {
     if (onVisibleLayer()) {
+      if (game.shiftPressed()) {
+        final routeId = editorCtx.selector.idOf(EntityType.route);
+        if (routeId != null) {
+          modelModel.addRouteRailPoint(routeId, model.id);
+          return false;
+        }
+      }
       editorCtx.select(EntitySelector.railPoint(model));
       return false;
     }

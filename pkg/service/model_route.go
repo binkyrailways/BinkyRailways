@@ -387,3 +387,77 @@ func (s *service) RemoveRouteEventBehavior(ctx context.Context, req *api.RemoveR
 	return &result, nil
 
 }
+
+// Adds a rail point to the end of the rail point list of the given route
+func (s *service) AddRouteRailPoint(ctx context.Context, req *api.AddRouteRailPointRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	rp, err := s.getRailPoint(ctx, req.GetRailPointId())
+	if err != nil {
+		return nil, err
+	}
+	if err := route.GetRailPoints().Add(rp); err != nil {
+		return nil, err
+	}
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Remove a rail point from the rail point list of the given route
+func (s *service) RemoveRouteRailPoint(ctx context.Context, req *api.RemoveRouteRailPointRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	rp, err := s.getRailPoint(ctx, req.GetRailPointId())
+	if err != nil {
+		return nil, err
+	}
+	route.GetRailPoints().Remove(rp)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Move a rail point up in the rail point list of the given route
+func (s *service) MoveRouteRailPointUp(ctx context.Context, req *api.MoveRouteRailPointRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	rp, err := s.getRailPoint(ctx, req.GetRailPointId())
+	if err != nil {
+		return nil, err
+	}
+	route.GetRailPoints().MoveUp(rp)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+// Move a rail point down in the rail point list of the given route
+func (s *service) MoveRouteRailPointDown(ctx context.Context, req *api.MoveRouteRailPointRequest) (*api.Route, error) {
+	route, err := s.getRoute(ctx, req.GetRouteId())
+	if err != nil {
+		return nil, err
+	}
+	rp, err := s.getRailPoint(ctx, req.GetRailPointId())
+	if err != nil {
+		return nil, err
+	}
+	route.GetRailPoints().MoveDown(rp)
+	var result api.Route
+	if err := result.FromModel(ctx, route); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

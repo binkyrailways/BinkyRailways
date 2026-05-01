@@ -34,6 +34,7 @@ class RouteComponent extends EntityComponent {
   final List<mapi.Edge> edges;
   final List<mapi.Junction> junctions;
   final List<mapi.Sensor> sensors;
+  final List<mapi.RailPoint> railPoints;
 
   RouteComponent(ViewSettings viewSettings,
       {required this.routeId,
@@ -42,7 +43,8 @@ class RouteComponent extends EntityComponent {
       required this.blocks,
       required this.edges,
       required this.junctions,
-      required this.sensors})
+      required this.sensors,
+      required this.railPoints})
       : super(viewSettings) {
     size.x = module.hasWidth() ? max(1, module.width.toDouble()) : 1;
     size.y = module.hasHeight() ? max(1, module.height.toDouble()) : 1;
@@ -104,6 +106,13 @@ class RouteComponent extends EntityComponent {
       }
       final p = Geometry.getCenter(sensor.first.position);
       list.add(p);
+    }
+    for (var rpRef in route.railPoints) {
+      final rp = railPoints.where((b) => b.id == rpRef.id).toList();
+      if (rp.isNotEmpty) {
+        final p = Geometry.getCenter(rp.first.position);
+        list.add(p);
+      }
     }
     final List<Vector2> ordered = [];
     var p = start[0];

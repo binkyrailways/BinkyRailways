@@ -635,6 +635,7 @@ const Route$json = const {
     const {'1': 'crossing_junctions', '3': 6, '4': 3, '5': 11, '6': '.binkyrailways.v1.JunctionWithState', '10': 'crossingJunctions'},
     const {'1': 'outputs', '3': 7, '4': 3, '5': 11, '6': '.binkyrailways.v1.OutputWithState', '10': 'outputs'},
     const {'1': 'events', '3': 8, '4': 3, '5': 11, '6': '.binkyrailways.v1.RouteEvent', '10': 'events'},
+    const {'1': 'rail_points', '3': 9, '4': 3, '5': 11, '6': '.binkyrailways.v1.RailPointRef', '10': 'railPoints'},
     const {'1': 'speed', '3': 10, '4': 1, '5': 5, '10': 'speed'},
     const {'1': 'choose_probability', '3': 11, '4': 1, '5': 5, '10': 'chooseProbability'},
     const {'1': 'permissions', '3': 12, '4': 1, '5': 9, '10': 'permissions'},
@@ -644,7 +645,7 @@ const Route$json = const {
 };
 
 /// Descriptor for `Route`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI7CgdvdXRwdXRzGAcgAygLMiEuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRXaXRoU3RhdGVSB291dHB1dHMSNAoGZXZlbnRzGAggAygLMhwuYmlua3lyYWlsd2F5cy52MS5Sb3V0ZUV2ZW50UgZldmVudHMSFAoFc3BlZWQYCiABKAVSBXNwZWVkEi0KEmNob29zZV9wcm9iYWJpbGl0eRgLIAEoBVIRY2hvb3NlUHJvYmFiaWxpdHkSIAoLcGVybWlzc2lvbnMYDCABKAlSC3Blcm1pc3Npb25zEhYKBmNsb3NlZBgNIAEoCFIGY2xvc2VkEiEKDG1heF9kdXJhdGlvbhgOIAEoBVILbWF4RHVyYXRpb24=');
+final $typed_data.Uint8List routeDescriptor = $convert.base64Decode('CgVSb3V0ZRIOCgJpZBgBIAEoCVICaWQSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEhsKCW1vZHVsZV9pZBgDIAEoCVIIbW9kdWxlSWQSLgoEZnJvbRgEIAEoCzIaLmJpbmt5cmFpbHdheXMudjEuRW5kcG9pbnRSBGZyb20SKgoCdG8YBSABKAsyGi5iaW5reXJhaWx3YXlzLnYxLkVuZHBvaW50UgJ0bxJSChJjcm9zc2luZ19qdW5jdGlvbnMYBiADKAsyIy5iaW5reXJhaWx3YXlzLnYxLkp1bmN0aW9uV2l0aFN0YXRlUhFjcm9zc2luZ0p1bmN0aW9ucxI7CgdvdXRwdXRzGAcgAygLMiEuYmlua3lyYWlsd2F5cy52MS5PdXRwdXRXaXRoU3RhdGVSB291dHB1dHMSNAoGZXZlbnRzGAggAygLMhwuYmlua3lyYWlsd2F5cy52MS5Sb3V0ZUV2ZW50UgZldmVudHMSPwoLcmFpbF9wb2ludHMYCSADKAsyHi5iaW5reXJhaWx3YXlzLnYxLlJhaWxQb2ludFJlZlIKcmFpbFBvaW50cxIUCgVzcGVlZBgKIAEoBVIFc3BlZWQSLQoSY2hvb3NlX3Byb2JhYmlsaXR5GAsgASgFUhFjaG9vc2VQcm9iYWJpbGl0eRIgCgtwZXJtaXNzaW9ucxgMIAEoCVILcGVybWlzc2lvbnMSFgoGY2xvc2VkGA0gASgIUgZjbG9zZWQSIQoMbWF4X2R1cmF0aW9uGA4gASgFUgttYXhEdXJhdGlvbg==');
 @$core.Deprecated('Use routeRefDescriptor instead')
 const RouteRef$json = const {
   '1': 'RouteRef',
@@ -819,13 +820,14 @@ const RailPoint$json = const {
   '1': 'RailPoint',
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'description', '3': 4, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'module_id', '3': 2, '4': 1, '5': 9, '10': 'moduleId'},
     const {'1': 'position', '3': 3, '4': 1, '5': 11, '6': '.binkyrailways.v1.Position', '10': 'position'},
   ],
 };
 
 /// Descriptor for `RailPoint`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List railPointDescriptor = $convert.base64Decode('CglSYWlsUG9pbnQSDgoCaWQYASABKAlSAmlkEhsKCW1vZHVsZV9pZBgCIAEoCVIIbW9kdWxlSWQSNgoIcG9zaXRpb24YAyABKAsyGi5iaW5reXJhaWx3YXlzLnYxLlBvc2l0aW9uUghwb3NpdGlvbg==');
+final $typed_data.Uint8List railPointDescriptor = $convert.base64Decode('CglSYWlsUG9pbnQSDgoCaWQYASABKAlSAmlkEiAKC2Rlc2NyaXB0aW9uGAQgASgJUgtkZXNjcmlwdGlvbhIbCgltb2R1bGVfaWQYAiABKAlSCG1vZHVsZUlkEjYKCHBvc2l0aW9uGAMgASgLMhouYmlua3lyYWlsd2F5cy52MS5Qb3NpdGlvblIIcG9zaXRpb24=');
 @$core.Deprecated('Use railPointRefDescriptor instead')
 const RailPointRef$json = const {
   '1': 'RailPointRef',

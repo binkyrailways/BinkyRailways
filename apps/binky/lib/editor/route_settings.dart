@@ -274,6 +274,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -283,6 +284,89 @@ class _RouteSettingsState extends State<_RouteSettings> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: crossingJunctionChildren,
+      ),
+    ));
+    final List<Widget> railPointChildren = [];
+    widget.route.railPoints.asMap().forEach((index, rpRef) {
+      railPointChildren.add(FutureBuilder<String>(
+          future: _formatRailPoint(widget.model, rpRef),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const ListTile(
+                leading: BinkyIcons.junction,
+                title: Text("Loading..."),
+              );
+            }
+            final description = snapshot.data!;
+            final menuItems = [
+              PopupMenuItem<String>(
+                  child: const Text('Remove'),
+                  onTap: () async {
+                    await widget.model
+                        .removeRouteRailPoint(widget.route.id, rpRef.id);
+                  }),
+            ];
+            if (index < widget.route.railPoints.length - 1) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move down"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteRailPointDown(widget.route.id, rpRef.id);
+                    },
+                  ));
+            }
+            if (index > 0) {
+              menuItems.insert(
+                  0,
+                  PopupMenuItem<String>(
+                    child: const Text("Move up"),
+                    onTap: () async {
+                      await widget.model
+                          .moveRouteRailPointUp(widget.route.id, rpRef.id);
+                    },
+                  ));
+            }
+            return ListTile(
+              title: Text(description),
+              trailing: GestureDetector(
+                child: const Icon(Icons.more_vert),
+                onTapDown: (TapDownDetails details) {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(details.globalPosition.dx,
+                        details.globalPosition.dy, 0, 0),
+                    items: menuItems,
+                    elevation: 8.0,
+                  );
+                },
+              ),
+            );
+          }));
+    });
+    railPointChildren.add(FutureBuilder<List<DropdownMenuItem<String>>>(
+      future: _addRailPointList(widget.model),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text("Loading...");
+        }
+        return Container(
+            padding: const EdgeInsets.all(8),
+            child: DropdownButton<String>(
+              items: snapshot.data!,
+              onChanged: (value) {},
+              isDense: true,
+              isExpanded: true,
+              hint: const Text("Add..."),
+            ));
+      },
+    ));
+    children.add(SettingsHeader(
+      title: "Rail points",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: railPointChildren,
       ),
     ));
 
@@ -334,6 +418,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -505,6 +590,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
               items: snapshot.data!,
               onChanged: (value) {},
               isDense: true,
+              isExpanded: true,
               hint: const Text("Add..."),
             ));
       },
@@ -741,6 +827,32 @@ class _RouteSettingsState extends State<_RouteSettings> {
         child: Text(sensor.description),
         onTap: () async {
           await modelModel.addRouteEvent(widget.route.id, sensor.id);
+        },
+      ));
+    }
+    return result;
+  }
+
+  Future<String> _formatRailPoint(
+      ModelModel modelModel, RailPointRef rpRef) async {
+    final rp = await modelModel.getRailPoint(rpRef.id);
+    return rp.description.isNotEmpty ? rp.description : rp.id;
+  }
+
+  Future<List<DropdownMenuItem<String>>> _addRailPointList(
+      ModelModel modelModel) async {
+    final module = await modelModel.getModule(widget.route.moduleId);
+    final allRailPoints = await Future.wait(
+        module.railPoints.map((e) => modelModel.getRailPoint(e.id)));
+    allRailPoints.sort((a, b) => a.description.compareTo(b.description));
+
+    final List<DropdownMenuItem<String>> result = [];
+    for (var rp in allRailPoints) {
+      result.add(DropdownMenuItem<String>(
+        value: rp.id,
+        child: Text(rp.description.isNotEmpty ? rp.description : rp.id),
+        onTap: () async {
+          await modelModel.addRouteRailPoint(widget.route.id, rp.id);
         },
       ));
     }

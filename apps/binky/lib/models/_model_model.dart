@@ -1133,4 +1133,55 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
     return updated;
   }
+
+  // Add a rail point to a given route.
+  Future<mapi.Route> addRouteRailPoint(String routeId, String railPointId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.addRouteRailPoint(mapi.AddRouteRailPointRequest(
+      routeId: routeId,
+      railPointId: railPointId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Remove a rail point from a given route.
+  Future<mapi.Route> removeRouteRailPoint(
+      String routeId, String railPointId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.removeRouteRailPoint(mapi.RemoveRouteRailPointRequest(
+      routeId: routeId,
+      railPointId: railPointId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Move a rail point up in a given route.
+  Future<mapi.Route> moveRouteRailPointUp(
+      String routeId, String railPointId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.moveRouteRailPointUp(mapi.MoveRouteRailPointRequest(
+      routeId: routeId,
+      railPointId: railPointId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
+
+  // Move a rail point down in a given route.
+  Future<mapi.Route> moveRouteRailPointDown(
+      String routeId, String railPointId) async {
+    var modelClient = mapi.APIClient().modelClient();
+    var updated = await modelClient.moveRouteRailPointDown(mapi.MoveRouteRailPointRequest(
+      routeId: routeId,
+      railPointId: railPointId,
+    ));
+    _routes[updated.id] = updated;
+    notifyListeners();
+    return updated;
+  }
 }

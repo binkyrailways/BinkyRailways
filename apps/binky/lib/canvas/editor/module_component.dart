@@ -39,26 +39,14 @@ class ModuleComponent extends common.ModuleComponent {
       EditorContext editorCtx, ModelModel modelModel) async {
     // Load background image (if any)
     await loadBackgroundImage(modelModel);
-    // Load routes
+
     final List<mapi.Block> blocks = [];
     final List<mapi.Edge> edges = [];
     final List<mapi.Junction> junctions = [];
     final List<mapi.Sensor> sensors = [];
     final List<mapi.Signal> signals = [];
     final List<mapi.RailPoint> railPoints = [];
-    for (var routeRef in model.routes) {
-      final route = await modelModel.getRoute(routeRef.id);
-      add(RouteComponent(viewSettings,
-          editorCtx: editorCtx,
-          module: model,
-          blocks: blocks,
-          edges: edges,
-          junctions: junctions,
-          sensors: sensors,
-          modelModel: modelModel,
-          game: game,
-          route: route));
-    }
+
     // Load blocks
     for (var blockRef in model.blocks) {
       final block = await modelModel.getBlock(blockRef.id);
@@ -109,7 +97,26 @@ class ModuleComponent extends common.ModuleComponent {
       final railPoint = await modelModel.getRailPoint(railPointRef.id);
       railPoints.add(railPoint);
       add(RailPointComponent(viewSettings,
-          editorCtx: editorCtx, model: railPoint, modelModel: modelModel));
+          editorCtx: editorCtx,
+          model: railPoint,
+          modelModel: modelModel,
+          game: game));
+    }
+
+    // Load routes
+    for (var routeRef in model.routes) {
+      final route = await modelModel.getRoute(routeRef.id);
+      add(RouteComponent(viewSettings,
+          editorCtx: editorCtx,
+          module: model,
+          blocks: blocks,
+          edges: edges,
+          junctions: junctions,
+          sensors: sensors,
+          railPoints: railPoints,
+          modelModel: modelModel,
+          game: game,
+          route: route));
     }
   }
 }

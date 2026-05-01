@@ -1134,6 +1134,189 @@ class MoveRouteEventBehaviorRequest extends $pb.GeneratedMessage {
   void clearIndex() => clearField(3);
 }
 
+class AddRouteRailPointRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddRouteRailPointRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railPointId')
+    ..hasRequiredFields = false
+  ;
+
+  AddRouteRailPointRequest._() : super();
+  factory AddRouteRailPointRequest({
+    $core.String? routeId,
+    $core.String? railPointId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (railPointId != null) {
+      _result.railPointId = railPointId;
+    }
+    return _result;
+  }
+  factory AddRouteRailPointRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddRouteRailPointRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AddRouteRailPointRequest clone() => AddRouteRailPointRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AddRouteRailPointRequest copyWith(void Function(AddRouteRailPointRequest) updates) => super.copyWith((message) => updates(message as AddRouteRailPointRequest)) as AddRouteRailPointRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AddRouteRailPointRequest create() => AddRouteRailPointRequest._();
+  AddRouteRailPointRequest createEmptyInstance() => create();
+  static $pb.PbList<AddRouteRailPointRequest> createRepeated() => $pb.PbList<AddRouteRailPointRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AddRouteRailPointRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddRouteRailPointRequest>(create);
+  static AddRouteRailPointRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get railPointId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set railPointId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRailPointId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRailPointId() => clearField(2);
+}
+
+class RemoveRouteRailPointRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RemoveRouteRailPointRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railPointId')
+    ..hasRequiredFields = false
+  ;
+
+  RemoveRouteRailPointRequest._() : super();
+  factory RemoveRouteRailPointRequest({
+    $core.String? routeId,
+    $core.String? railPointId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (railPointId != null) {
+      _result.railPointId = railPointId;
+    }
+    return _result;
+  }
+  factory RemoveRouteRailPointRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RemoveRouteRailPointRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RemoveRouteRailPointRequest clone() => RemoveRouteRailPointRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RemoveRouteRailPointRequest copyWith(void Function(RemoveRouteRailPointRequest) updates) => super.copyWith((message) => updates(message as RemoveRouteRailPointRequest)) as RemoveRouteRailPointRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteRailPointRequest create() => RemoveRouteRailPointRequest._();
+  RemoveRouteRailPointRequest createEmptyInstance() => create();
+  static $pb.PbList<RemoveRouteRailPointRequest> createRepeated() => $pb.PbList<RemoveRouteRailPointRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveRouteRailPointRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RemoveRouteRailPointRequest>(create);
+  static RemoveRouteRailPointRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get railPointId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set railPointId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRailPointId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRailPointId() => clearField(2);
+}
+
+class MoveRouteRailPointRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MoveRouteRailPointRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'routeId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'railPointId')
+    ..hasRequiredFields = false
+  ;
+
+  MoveRouteRailPointRequest._() : super();
+  factory MoveRouteRailPointRequest({
+    $core.String? routeId,
+    $core.String? railPointId,
+  }) {
+    final _result = create();
+    if (routeId != null) {
+      _result.routeId = routeId;
+    }
+    if (railPointId != null) {
+      _result.railPointId = railPointId;
+    }
+    return _result;
+  }
+  factory MoveRouteRailPointRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MoveRouteRailPointRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  MoveRouteRailPointRequest clone() => MoveRouteRailPointRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  MoveRouteRailPointRequest copyWith(void Function(MoveRouteRailPointRequest) updates) => super.copyWith((message) => updates(message as MoveRouteRailPointRequest)) as MoveRouteRailPointRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteRailPointRequest create() => MoveRouteRailPointRequest._();
+  MoveRouteRailPointRequest createEmptyInstance() => create();
+  static $pb.PbList<MoveRouteRailPointRequest> createRepeated() => $pb.PbList<MoveRouteRailPointRequest>();
+  @$core.pragma('dart2js:noInline')
+  static MoveRouteRailPointRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveRouteRailPointRequest>(create);
+  static MoveRouteRailPointRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get routeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set routeId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRouteId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRouteId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get railPointId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set railPointId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRailPointId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRailPointId() => clearField(2);
+}
+
 class AddBinkyNetObjectsGroupRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AddBinkyNetObjectsGroupRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localWorkerId')

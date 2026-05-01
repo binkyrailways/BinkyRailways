@@ -168,6 +168,15 @@ service ModelService {
   // Move the behavior at given index down by 1 entry in the given route event
   rpc MoveRouteEventBehaviorDown(MoveRouteEventBehaviorRequest) returns (Route);
 
+  // Adds a rail point to the end of the rail point list of the given route
+  rpc AddRouteRailPoint(AddRouteRailPointRequest) returns (Route);
+  // Remove a rail point from the rail point list of the given route
+  rpc RemoveRouteRailPoint(RemoveRouteRailPointRequest) returns (Route);
+  // Move a rail point up in the rail point list of the given route
+  rpc MoveRouteRailPointUp(MoveRouteRailPointRequest) returns (Route);
+  // Move a rail point down in the rail point list of the given route
+  rpc MoveRouteRailPointDown(MoveRouteRailPointRequest) returns (Route);
+
   // Gets a Sensor by ID.
   rpc GetSensor(IDRequest) returns (Sensor);
   // Update a Sensor by ID.
@@ -349,6 +358,27 @@ message MoveRouteEventBehaviorRequest {
   string sensor_id = 2;
   // Index of the behavior to removed
   int32 index = 3;
+}
+
+message AddRouteRailPointRequest {
+  // ID of the route to add a rail point to
+  string route_id = 1;
+  // ID of rail point to add
+  string rail_point_id = 2;
+}
+
+message RemoveRouteRailPointRequest {
+  // ID of the route to remove a rail point from
+  string route_id = 1;
+  // ID of rail point to remove
+  string rail_point_id = 2;
+}
+
+message MoveRouteRailPointRequest {
+  // ID of the route to move a rail point from
+  string route_id = 1;
+  // ID of rail point to move
+  string rail_point_id = 2;
 }
 
 message AddBinkyNetObjectsGroupRequest {

@@ -69,7 +69,8 @@ class ModuleComponent extends common.ModuleComponent {
           blocks: blocks,
           edges: edges,
           junctions: junctions,
-          sensors: sensors));
+          sensors: sensors,
+          railPoints: railPoints));
     }
     for (var blockRef in railway.blocks) {
       try {
