@@ -309,4 +309,26 @@ func TestParsePredicate(t *testing.T) {
 		gen := GeneratePredicate(result)
 		assert.Equal(t, `only("loc 1" or canChangeDirection or ("loc 2" and canChangeDirection)) except("loc 2" or memberOf("group 1"))`, gen)
 	})
+
+	t.Run("Whitespace and complex nesting", func(t *testing.T) {
+		input := `("loc 1" and ("loc 2" or canChangeDirection))`
+		result, err := ParsePredicate(input, rw)
+		require.NoError(t, err)
+		require.NotNil(t, result)
+		_, ok := result.(model.LocAndPredicate)
+		require.True(t, ok)
+	})
+
+	t.Run("Invalid syntax", func(t *testing.T) {
+		inputs := []string{
+			`"loc 1`,           // unclosed quote
+			`memberOf("group")`, // non-existent group
+			`only()`,           // missing predicate
+			`( "loc 1" ) )`,    // extra bracket
+		}
+		for _, x := range inputs {
+			_, err := ParsePredicate(x, rw)
+			assert.Error(t, err, x)
+		}
+	})
 }
