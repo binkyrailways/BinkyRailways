@@ -42,11 +42,11 @@ class RailPointComponent extends EntityComponent {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2;
 
-      // Draw tiny '=' sign
+      // Draw tiny '=' sign using entire width/height
       // Top line
-      canvas.drawLine(Offset(4, 6), Offset(16, 6), paint);
+      canvas.drawLine(Offset(0, size.y * 0.3), Offset(size.x, size.y * 0.3), paint);
       // Bottom line
-      canvas.drawLine(Offset(4, 14), Offset(16, 14), paint);
+      canvas.drawLine(Offset(0, size.y * 0.7), Offset(size.x, size.y * 0.7), paint);
     }
   }
 }
