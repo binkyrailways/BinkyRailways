@@ -38,9 +38,9 @@ func GeneratePredicate(p model.LocPredicate) string {
 		return fmt.Sprintf(`"%s"`, p.GetLocID())
 	case model.LocGroupEqualsPredicate:
 		if g := p.GetGroup(); g != nil {
-			return fmt.Sprintf(`memberOf("%s")`, g.GetDescription())
+			return fmt.Sprintf(`in("%s")`, g.GetDescription())
 		}
-		return fmt.Sprintf(`memberOf("%s")`, p.GetGroupID())
+		return fmt.Sprintf(`in("%s")`, p.GetGroupID())
 	case model.LocCanChangeDirectionPredicate:
 		return `canChangeDirection`
 	case model.LocAndPredicate:
