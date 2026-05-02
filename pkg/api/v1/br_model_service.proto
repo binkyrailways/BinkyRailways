@@ -33,6 +33,9 @@ service ModelService {
   // Return a list of available serial ports
   rpc GetSerialPorts(Empty) returns (SerialPortList);
 
+  // Evaluates a loc predicate for a given loc
+  rpc EvaluateLocPredicate(EvaluateLocPredicateRequest) returns (EvaluateLocPredicateResult);
+
   // Load the given railway entry
   rpc LoadRailway(RailwayEntry) returns (Railway);
   // Close the currently loaded railway entry.
@@ -280,6 +283,24 @@ message ParsePermissionResult {
   string message = 2;
   // Formatted permission in case of valid input
   string formatted_value = 3;
+}
+
+message EvaluateLocPredicateRequest {
+  // Predicate to evaluate
+  string predicate = 1;
+  // Loc to evaluate for
+  Loc loc = 2;
+}
+
+message EvaluateLocPredicateResult {
+  // Does the predicate evaluate to true?
+  bool result = 1;
+  // Was the input a valid permission?
+  bool valid = 2;
+  // Error message in case of non-valid input
+  string message = 3;
+  // Formatted permission in case of valid input
+  string formatted_value = 4;
 }
 
 message AddRouteCrossingJunctionSwitchRequest {

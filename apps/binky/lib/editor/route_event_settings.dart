@@ -17,6 +17,7 @@
 
 import 'package:binky/components.dart';
 import 'package:flutter/material.dart' hide Route;
+import 'dart:async';
 
 import '../models.dart';
 import '../api.dart';
@@ -29,6 +30,7 @@ class RouteEventSettings extends StatefulWidget {
   final Future<void> Function(int index) removeBehavior;
   final Future<void> Function(int index) moveBehaviorUp;
   final Future<void> Function(int index) moveBehaviorDown;
+  final String? selectedLocId;
 
   const RouteEventSettings({
     Key? key,
@@ -39,6 +41,7 @@ class RouteEventSettings extends StatefulWidget {
     required this.removeBehavior,
     required this.moveBehaviorUp,
     required this.moveBehaviorDown,
+    this.selectedLocId,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,51 @@ class RouteEventSettings extends StatefulWidget {
 }
 
 class _RouteEventSettingsState extends State<RouteEventSettings> {
+  int? _matchedIndex;
+  final Map<int, String?> _errorMessages = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _evaluateMatchingBehavior();
+  }
+
+  @override
+  void didUpdateWidget(RouteEventSettings oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedLocId != widget.selectedLocId) {
+      _evaluateMatchingBehavior();
+    }
+  }
+
+  Future<void> _evaluateMatchingBehavior() async {
+    final route = await widget.model.getRoute(widget.routeId);
+    final event = route.events[widget.eventIndex];
+    final locId = widget.selectedLocId;
+    final loc = (locId != null) ? await widget.model.getLoc(locId) : null;
+
+    int? matchedIndex;
+    final Map<int, String?> errorMessages = {};
+
+    for (var i = 0; i < event.behaviors.length; i++) {
+      final bhv = event.behaviors[i];
+      // We evaluate even if loc is null to get validation status
+      final result = await widget.model
+          .evaluateLocPredicate(bhv.appliesTo, loc ?? Loc());
+      if (!result.valid) {
+        errorMessages[i] = result.message;
+      }
+      if (loc != null && matchedIndex == null && result.result) {
+        matchedIndex = i;
+      }
+    }
+    setState(() {
+      _matchedIndex = matchedIndex;
+      _errorMessages.clear();
+      _errorMessages.addAll(errorMessages);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -86,8 +134,11 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
                   },
                   itemBuilder: (context, index) {
                     final bhv = event.behaviors[index];
+                    final isMatched = _matchedIndex == index;
+                    final errorMessage = _errorMessages[index];
                     return ListTile(
                       key: Key("behavior-$index"),
+                      tileColor: isMatched ? Colors.green.withOpacity(0.3) : null,
                       title: Row(
                         children: [
                           Expanded(
@@ -97,8 +148,17 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
                                 await widget.update((update) {
                                   update.behaviors[index].appliesTo = value;
                                 });
+                                _evaluateMatchingBehavior();
                               },
-                              decoration: const InputDecoration(labelText: "Locs"),
+                              decoration: InputDecoration(
+                                labelText: "Locs",
+                                errorText: errorMessage,
+                                border: errorMessage != null
+                                    ? const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.red))
+                                    : null,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
