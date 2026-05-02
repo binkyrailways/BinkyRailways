@@ -295,6 +295,12 @@ message EvaluateLocPredicateRequest {
 message EvaluateLocPredicateResult {
   // Does the predicate evaluate to true?
   bool result = 1;
+  // Was the input a valid permission?
+  bool valid = 2;
+  // Error message in case of non-valid input
+  string message = 3;
+  // Formatted permission in case of valid input
+  string formatted_value = 4;
 }
 
 message AddRouteCrossingJunctionSwitchRequest {

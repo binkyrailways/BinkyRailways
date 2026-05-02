@@ -43,14 +43,19 @@ func (s *service) EvaluateLocPredicate(ctx context.Context, req *api.EvaluateLoc
 	// Parse the predicate
 	perm, err := predicates.ParsePredicate(req.GetPredicate(), rw)
 	if err != nil {
-		return nil, err
+		return &api.EvaluateLocPredicateResult{
+			Valid:   false,
+			Message: err.Error(),
+		}, nil
 	}
 	// Evaluate the predicate
 	result := false
-	if loc != nil {
+	if loc != nil && perm != nil {
 		result = perm.Evaluate(loc)
 	}
 	return &api.EvaluateLocPredicateResult{
-		Result: result,
+		Result:         result,
+		Valid:          true,
+		FormattedValue: predicates.GeneratePredicate(perm),
 	}, nil
 }

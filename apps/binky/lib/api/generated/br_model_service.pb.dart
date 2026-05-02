@@ -536,16 +536,31 @@ class EvaluateLocPredicateRequest extends $pb.GeneratedMessage {
 class EvaluateLocPredicateResult extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EvaluateLocPredicateResult', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'result')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'valid')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'formattedValue')
     ..hasRequiredFields = false
   ;
 
   EvaluateLocPredicateResult._() : super();
   factory EvaluateLocPredicateResult({
     $core.bool? result,
+    $core.bool? valid,
+    $core.String? message,
+    $core.String? formattedValue,
   }) {
     final _result = create();
     if (result != null) {
       _result.result = result;
+    }
+    if (valid != null) {
+      _result.valid = valid;
+    }
+    if (message != null) {
+      _result.message = message;
+    }
+    if (formattedValue != null) {
+      _result.formattedValue = formattedValue;
     }
     return _result;
   }
@@ -578,6 +593,33 @@ class EvaluateLocPredicateResult extends $pb.GeneratedMessage {
   $core.bool hasResult() => $_has(0);
   @$pb.TagNumber(1)
   void clearResult() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get valid => $_getBF(1);
+  @$pb.TagNumber(2)
+  set valid($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasValid() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValid() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get message => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set message($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMessage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMessage() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get formattedValue => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set formattedValue($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasFormattedValue() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearFormattedValue() => clearField(4);
 }
 
 class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {

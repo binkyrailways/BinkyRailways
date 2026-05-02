@@ -121,11 +121,14 @@ const EvaluateLocPredicateResult$json = const {
   '1': 'EvaluateLocPredicateResult',
   '2': const [
     const {'1': 'result', '3': 1, '4': 1, '5': 8, '10': 'result'},
+    const {'1': 'valid', '3': 2, '4': 1, '5': 8, '10': 'valid'},
+    const {'1': 'message', '3': 3, '4': 1, '5': 9, '10': 'message'},
+    const {'1': 'formatted_value', '3': 4, '4': 1, '5': 9, '10': 'formattedValue'},
   ],
 };
 
 /// Descriptor for `EvaluateLocPredicateResult`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List evaluateLocPredicateResultDescriptor = $convert.base64Decode('ChpFdmFsdWF0ZUxvY1ByZWRpY2F0ZVJlc3VsdBIWCgZyZXN1bHQYASABKAhSBnJlc3VsdA==');
+final $typed_data.Uint8List evaluateLocPredicateResultDescriptor = $convert.base64Decode('ChpFdmFsdWF0ZUxvY1ByZWRpY2F0ZVJlc3VsdBIWCgZyZXN1bHQYASABKAhSBnJlc3VsdBIUCgV2YWxpZBgCIAEoCFIFdmFsaWQSGAoHbWVzc2FnZRgDIAEoCVIHbWVzc2FnZRInCg9mb3JtYXR0ZWRfdmFsdWUYBCABKAlSDmZvcm1hdHRlZFZhbHVl');
 @$core.Deprecated('Use addRouteCrossingJunctionSwitchRequestDescriptor instead')
 const AddRouteCrossingJunctionSwitchRequest$json = const {
   '1': 'AddRouteCrossingJunctionSwitchRequest',
