@@ -145,6 +145,7 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
                                 await widget.update((update) {
                                   update.behaviors[index].appliesTo = value;
                                 });
+                                _evaluateMatchingBehavior();
                               },
                               decoration: const InputDecoration(labelText: "Locs"),
                             ),
