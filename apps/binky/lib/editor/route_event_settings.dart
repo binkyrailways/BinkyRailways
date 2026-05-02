@@ -79,7 +79,7 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
       final bhv = event.behaviors[i];
       // We evaluate even if loc is null to get validation status
       final result = await widget.model
-          .evaluateLocPredicate(bhv.appliesTo, loc ?? mapi.Loc());
+          .evaluateLocPredicate(bhv.appliesTo, loc ?? Loc());
       if (!result.valid) {
         errorMessages[i] = result.message;
       }
