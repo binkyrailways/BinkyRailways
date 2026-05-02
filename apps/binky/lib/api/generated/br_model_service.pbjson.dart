@@ -105,6 +105,27 @@ const ParsePermissionResult$json = const {
 
 /// Descriptor for `ParsePermissionResult`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List parsePermissionResultDescriptor = $convert.base64Decode('ChVQYXJzZVBlcm1pc3Npb25SZXN1bHQSFAoFdmFsaWQYASABKAhSBXZhbGlkEhgKB21lc3NhZ2UYAiABKAlSB21lc3NhZ2USJwoPZm9ybWF0dGVkX3ZhbHVlGAMgASgJUg5mb3JtYXR0ZWRWYWx1ZQ==');
+@$core.Deprecated('Use evaluateLocPredicateRequestDescriptor instead')
+const EvaluateLocPredicateRequest$json = const {
+  '1': 'EvaluateLocPredicateRequest',
+  '2': const [
+    const {'1': 'predicate', '3': 1, '4': 1, '5': 9, '10': 'predicate'},
+    const {'1': 'loc', '3': 2, '4': 1, '5': 11, '6': '.binkyrailways.v1.Loc', '10': 'loc'},
+  ],
+};
+
+/// Descriptor for `EvaluateLocPredicateRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List evaluateLocPredicateRequestDescriptor = $convert.base64Decode('ChtFdmFsdWF0ZUxvY1ByZWRpY2F0ZVJlcXVlc3QSHAoJcHJlZGljYXRlGAEgASgJUglwcmVkaWNhdGUSJwoDbG9jGAIgASgLMhUuYmlua3lyYWlsd2F5cy52MS5Mb2NSA2xvYw==');
+@$core.Deprecated('Use evaluateLocPredicateResultDescriptor instead')
+const EvaluateLocPredicateResult$json = const {
+  '1': 'EvaluateLocPredicateResult',
+  '2': const [
+    const {'1': 'result', '3': 1, '4': 1, '5': 8, '10': 'result'},
+  ],
+};
+
+/// Descriptor for `EvaluateLocPredicateResult`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List evaluateLocPredicateResultDescriptor = $convert.base64Decode('ChpFdmFsdWF0ZUxvY1ByZWRpY2F0ZVJlc3VsdBIWCgZyZXN1bHQYASABKAhSBnJlc3VsdA==');
 @$core.Deprecated('Use addRouteCrossingJunctionSwitchRequestDescriptor instead')
 const AddRouteCrossingJunctionSwitchRequest$json = const {
   '1': 'AddRouteCrossingJunctionSwitchRequest',

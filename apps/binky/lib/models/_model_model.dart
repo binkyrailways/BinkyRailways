@@ -1184,4 +1184,12 @@ class ModelModel extends ChangeNotifier {
     notifyListeners();
     return updated;
   }
+
+  // Evaluates a loc predicate for a given loc
+  Future<bool> evaluateLocPredicate(String predicate, mapi.Loc loc) async {
+    var modelClient = mapi.APIClient().modelClient();
+    final resp = await modelClient.evaluateLocPredicate(
+        mapi.EvaluateLocPredicateRequest(predicate: predicate, loc: loc));
+    return resp.result;
+  }
 }

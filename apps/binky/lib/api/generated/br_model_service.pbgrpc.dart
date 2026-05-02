@@ -33,6 +33,12 @@ class ModelServiceClient extends $grpc.Client {
           '/binkyrailways.v1.ModelService/GetSerialPorts',
           ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.SerialPortList.fromBuffer(value));
+  static final _$evaluateLocPredicate = $grpc.ClientMethod<
+          $2.EvaluateLocPredicateRequest, $2.EvaluateLocPredicateResult>(
+      '/binkyrailways.v1.ModelService/EvaluateLocPredicate',
+      ($2.EvaluateLocPredicateRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $2.EvaluateLocPredicateResult.fromBuffer(value));
   static final _$loadRailway = $grpc.ClientMethod<$3.RailwayEntry, $0.Railway>(
       '/binkyrailways.v1.ModelService/LoadRailway',
       ($3.RailwayEntry value) => value.writeToBuffer(),
@@ -453,6 +459,12 @@ class ModelServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$2.SerialPortList> getSerialPorts($0.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getSerialPorts, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.EvaluateLocPredicateResult> evaluateLocPredicate(
+      $2.EvaluateLocPredicateRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$evaluateLocPredicate, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.Railway> loadRailway($3.RailwayEntry request,
@@ -971,6 +983,15 @@ abstract class ModelServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($2.SerialPortList value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.EvaluateLocPredicateRequest,
+            $2.EvaluateLocPredicateResult>(
+        'EvaluateLocPredicate',
+        evaluateLocPredicate_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.EvaluateLocPredicateRequest.fromBuffer(value),
+        ($2.EvaluateLocPredicateResult value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.RailwayEntry, $0.Railway>(
         'LoadRailway',
         loadRailway_Pre,
@@ -1628,6 +1649,12 @@ abstract class ModelServiceBase extends $grpc.Service {
     return getSerialPorts(call, await request);
   }
 
+  $async.Future<$2.EvaluateLocPredicateResult> evaluateLocPredicate_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$2.EvaluateLocPredicateRequest> request) async {
+    return evaluateLocPredicate(call, await request);
+  }
+
   $async.Future<$0.Railway> loadRailway_Pre(
       $grpc.ServiceCall call, $async.Future<$3.RailwayEntry> request) async {
     return loadRailway(call, await request);
@@ -2078,6 +2105,8 @@ abstract class ModelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $2.ParsePermissionRequest request);
   $async.Future<$2.SerialPortList> getSerialPorts(
       $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$2.EvaluateLocPredicateResult> evaluateLocPredicate(
+      $grpc.ServiceCall call, $2.EvaluateLocPredicateRequest request);
   $async.Future<$0.Railway> loadRailway(
       $grpc.ServiceCall call, $3.RailwayEntry request);
   $async.Future<$0.Empty> closeRailway(

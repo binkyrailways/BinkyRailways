@@ -9,6 +9,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'br_model_types.pb.dart' as $0;
+
 import 'br_model_types.pbenum.dart' as $0;
 import 'br_model_service.pbenum.dart';
 
@@ -466,6 +468,116 @@ class ParsePermissionResult extends $pb.GeneratedMessage {
   $core.bool hasFormattedValue() => $_has(2);
   @$pb.TagNumber(3)
   void clearFormattedValue() => clearField(3);
+}
+
+class EvaluateLocPredicateRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EvaluateLocPredicateRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'predicate')
+    ..aOM<$0.Loc>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'loc', subBuilder: $0.Loc.create)
+    ..hasRequiredFields = false
+  ;
+
+  EvaluateLocPredicateRequest._() : super();
+  factory EvaluateLocPredicateRequest({
+    $core.String? predicate,
+    $0.Loc? loc,
+  }) {
+    final _result = create();
+    if (predicate != null) {
+      _result.predicate = predicate;
+    }
+    if (loc != null) {
+      _result.loc = loc;
+    }
+    return _result;
+  }
+  factory EvaluateLocPredicateRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EvaluateLocPredicateRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EvaluateLocPredicateRequest clone() => EvaluateLocPredicateRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EvaluateLocPredicateRequest copyWith(void Function(EvaluateLocPredicateRequest) updates) => super.copyWith((message) => updates(message as EvaluateLocPredicateRequest)) as EvaluateLocPredicateRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static EvaluateLocPredicateRequest create() => EvaluateLocPredicateRequest._();
+  EvaluateLocPredicateRequest createEmptyInstance() => create();
+  static $pb.PbList<EvaluateLocPredicateRequest> createRepeated() => $pb.PbList<EvaluateLocPredicateRequest>();
+  @$core.pragma('dart2js:noInline')
+  static EvaluateLocPredicateRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EvaluateLocPredicateRequest>(create);
+  static EvaluateLocPredicateRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get predicate => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set predicate($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPredicate() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPredicate() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $0.Loc get loc => $_getN(1);
+  @$pb.TagNumber(2)
+  set loc($0.Loc v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLoc() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLoc() => clearField(2);
+  @$pb.TagNumber(2)
+  $0.Loc ensureLoc() => $_ensure(1);
+}
+
+class EvaluateLocPredicateResult extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EvaluateLocPredicateResult', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'binkyrailways.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'result')
+    ..hasRequiredFields = false
+  ;
+
+  EvaluateLocPredicateResult._() : super();
+  factory EvaluateLocPredicateResult({
+    $core.bool? result,
+  }) {
+    final _result = create();
+    if (result != null) {
+      _result.result = result;
+    }
+    return _result;
+  }
+  factory EvaluateLocPredicateResult.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EvaluateLocPredicateResult.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EvaluateLocPredicateResult clone() => EvaluateLocPredicateResult()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EvaluateLocPredicateResult copyWith(void Function(EvaluateLocPredicateResult) updates) => super.copyWith((message) => updates(message as EvaluateLocPredicateResult)) as EvaluateLocPredicateResult; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static EvaluateLocPredicateResult create() => EvaluateLocPredicateResult._();
+  EvaluateLocPredicateResult createEmptyInstance() => create();
+  static $pb.PbList<EvaluateLocPredicateResult> createRepeated() => $pb.PbList<EvaluateLocPredicateResult>();
+  @$core.pragma('dart2js:noInline')
+  static EvaluateLocPredicateResult getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EvaluateLocPredicateResult>(create);
+  static EvaluateLocPredicateResult? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get result => $_getBF(0);
+  @$pb.TagNumber(1)
+  set result($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasResult() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearResult() => clearField(1);
 }
 
 class AddRouteCrossingJunctionSwitchRequest extends $pb.GeneratedMessage {

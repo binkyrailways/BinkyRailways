@@ -17,6 +17,7 @@
 
 import 'package:binky/components.dart';
 import 'package:flutter/material.dart' hide Route;
+import 'dart:async';
 
 import '../models.dart';
 import '../api.dart';
@@ -29,6 +30,7 @@ class RouteEventSettings extends StatefulWidget {
   final Future<void> Function(int index) removeBehavior;
   final Future<void> Function(int index) moveBehaviorUp;
   final Future<void> Function(int index) moveBehaviorDown;
+  final String? selectedLocId;
 
   const RouteEventSettings({
     Key? key,
@@ -39,6 +41,7 @@ class RouteEventSettings extends StatefulWidget {
     required this.removeBehavior,
     required this.moveBehaviorUp,
     required this.moveBehaviorDown,
+    this.selectedLocId,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,49 @@ class RouteEventSettings extends StatefulWidget {
 }
 
 class _RouteEventSettingsState extends State<RouteEventSettings> {
+  int? _matchedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _evaluateMatchingBehavior();
+  }
+
+  @override
+  void didUpdateWidget(RouteEventSettings oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedLocId != widget.selectedLocId) {
+      _evaluateMatchingBehavior();
+    }
+  }
+
+  Future<void> _evaluateMatchingBehavior() async {
+    final locId = widget.selectedLocId;
+    if (locId == null) {
+      setState(() {
+        _matchedIndex = null;
+      });
+      return;
+    }
+    final loc = await widget.model.getLoc(locId);
+    final route = await widget.model.getRoute(widget.routeId);
+    final event = route.events[widget.eventIndex];
+    for (var i = 0; i < event.behaviors.length; i++) {
+      final bhv = event.behaviors[i];
+      final matched =
+          await widget.model.evaluateLocPredicate(bhv.appliesTo, loc);
+      if (matched) {
+        setState(() {
+          _matchedIndex = i;
+        });
+        return;
+      }
+    }
+    setState(() {
+      _matchedIndex = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -86,8 +132,10 @@ class _RouteEventSettingsState extends State<RouteEventSettings> {
                   },
                   itemBuilder: (context, index) {
                     final bhv = event.behaviors[index];
+                    final isMatched = _matchedIndex == index;
                     return ListTile(
                       key: Key("behavior-$index"),
+                      tileColor: isMatched ? Colors.green.withOpacity(0.3) : null,
                       title: Row(
                         children: [
                           Expanded(
