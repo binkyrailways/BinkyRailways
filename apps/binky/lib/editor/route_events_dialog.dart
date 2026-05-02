@@ -69,51 +69,56 @@ class _RouteEventsDialogState extends State<RouteEventsDialog> {
               }).toList();
 
               return SimpleDialog(
-                title: Text("Edit behaviors for ${route.description}"),
+                title: Row(
+                  children: [
+                    Text("Behaviors for ${route.description}"),
+                    const Spacer(),
+                    SizedBox(
+                      width: 200,
+                      child: FutureBuilder<Railway>(
+                          future: widget.model.getRailway(),
+                          builder: (context, rwSnapshot) {
+                            if (!rwSnapshot.hasData) {
+                              return const Text("Loading locs...");
+                            }
+                            final locs = rwSnapshot.data!.locs;
+                            return FutureBuilder<List<Loc>>(
+                                future: Future.wait(
+                                    locs.map((l) => widget.model.getLoc(l.id))),
+                                builder: (context, locsSnapshot) {
+                                  if (!locsSnapshot.hasData) {
+                                    return const Text("Loading locs...");
+                                  }
+                                  final locsList = locsSnapshot.data!;
+                                  locsList.sort((a, b) =>
+                                      a.description.compareTo(b.description));
+                                  return DropdownButton<String>(
+                                    hint: const Text("Select a loc to check"),
+                                    value: _selectedLocId,
+                                    isExpanded: true,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedLocId = value;
+                                      });
+                                    },
+                                    items: [
+                                      const DropdownMenuItem<String>(
+                                        value: null,
+                                        child: Text("None"),
+                                      ),
+                                      ...locsList.map((l) =>
+                                          DropdownMenuItem<String>(
+                                            value: l.id,
+                                            child: Text(l.description),
+                                          )),
+                                    ],
+                                  );
+                                });
+                          }),
+                    ),
+                  ],
+                ),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: FutureBuilder<Railway>(
-                        future: widget.model.getRailway(),
-                        builder: (context, rwSnapshot) {
-                          if (!rwSnapshot.hasData) {
-                            return const Text("Loading locs...");
-                          }
-                          final locs = rwSnapshot.data!.locs;
-                          return FutureBuilder<List<Loc>>(
-                              future: Future.wait(locs.map(
-                                  (l) => widget.model.getLoc(l.id))),
-                              builder: (context, locsSnapshot) {
-                                if (!locsSnapshot.hasData) {
-                                  return const Text("Loading locs...");
-                                }
-                                final locsList = locsSnapshot.data!;
-                                locsList.sort((a, b) =>
-                                    a.description.compareTo(b.description));
-                                return DropdownButton<String>(
-                                  hint: const Text("Select a loc to check"),
-                                  value: _selectedLocId,
-                                  isExpanded: true,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedLocId = value;
-                                    });
-                                  },
-                                  items: [
-                                    const DropdownMenuItem<String>(
-                                      value: null,
-                                      child: Text("None"),
-                                    ),
-                                    ...locsList.map((l) =>
-                                        DropdownMenuItem<String>(
-                                          value: l.id,
-                                          child: Text(l.description),
-                                        )),
-                                  ],
-                                );
-                              });
-                        }),
-                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Column(
