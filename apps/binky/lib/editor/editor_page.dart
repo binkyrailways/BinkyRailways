@@ -888,6 +888,11 @@ class _EditorPageContext extends ChangeNotifier implements EditorContext {
     }
   }
 
+  @override
+  void forceRedraw() {
+    notifyListeners();
+  }
+
   String _routeBlockFilter = "";
 
   @override
