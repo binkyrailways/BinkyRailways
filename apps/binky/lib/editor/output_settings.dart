@@ -171,6 +171,7 @@ class _OutputSettingsState extends State<_OutputSettings> {
     var update = block.deepCopy();
     editor(update);
     await widget.model.updateOutput(update);
+    widget.editorCtx.forceRedraw();
   }
 
   static final List<DropdownMenuItem<BinaryOutputType>> _outputTypeItems =

@@ -89,6 +89,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                     await widget.update((update) {
                       update.x = int.parse(value);
                     });
+                    widget.editorCtx.forceRedraw();
                   })),
           Expanded(
               child: SettingsTextField(
@@ -99,6 +100,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                     await widget.update((update) {
                       update.y = int.parse(value);
                     });
+                    widget.editorCtx.forceRedraw();
                   })),
         ]),
         Row(children: [
@@ -111,6 +113,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                     await widget.update((update) {
                       update.width = int.parse(value);
                     });
+                    widget.editorCtx.forceRedraw();
                   })),
           Expanded(
               child: SettingsTextField(
@@ -121,6 +124,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                     await widget.update((update) {
                       update.height = int.parse(value);
                     });
+                    widget.editorCtx.forceRedraw();
                   })),
         ]),
         Row(children: [
@@ -133,6 +137,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                     await widget.update((update) {
                       update.rotation = int.parse(value);
                     });
+                    widget.editorCtx.forceRedraw();
                   })),
           Expanded(
               child: SettingsTextField(
@@ -142,6 +147,7 @@ class _PositionSettingsState extends State<PositionSettings> {
               await widget.update((update) {
                 update.layer = value;
               });
+              widget.editorCtx.forceRedraw();
             },
             suffix: GestureDetector(
               child: const Icon(Icons.arrow_drop_down),
@@ -155,6 +161,7 @@ class _PositionSettingsState extends State<PositionSettings> {
                           await widget.update((update) {
                             update.layer = e;
                           });
+                          widget.editorCtx.forceRedraw();
                         },
                       ),
                     )

@@ -240,6 +240,7 @@ class _BlockSettingsState extends State<_BlockSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateBlock(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<ListTile> _buildUsedBy() {

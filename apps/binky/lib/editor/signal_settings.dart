@@ -305,6 +305,7 @@ class _SignalSettingsState extends State<_SignalSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateSignal(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<DropdownMenuItem<String>> _blockIds() {

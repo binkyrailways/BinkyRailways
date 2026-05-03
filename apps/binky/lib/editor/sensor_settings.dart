@@ -206,6 +206,7 @@ class _SensorSettingsState extends State<_SensorSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateSensor(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<DropdownMenuItem<String>> _blockIds() {

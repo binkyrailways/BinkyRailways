@@ -244,6 +244,7 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateJunction(update);
+    widget.editorCtx.forceRedraw();
   }
 
   static final List<DropdownMenuItem<SwitchDirection>> _switchDirectionItems =

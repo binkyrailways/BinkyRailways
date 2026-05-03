@@ -135,5 +135,6 @@ class _RailPointSettingsState extends State<_RailPointSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateRailPoint(update);
+    widget.editorCtx.forceRedraw();
   }
 }
