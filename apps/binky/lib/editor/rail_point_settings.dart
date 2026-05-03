@@ -94,9 +94,11 @@ class _RailPointSettingsState extends State<_RailPointSettings> {
             controller: _descriptionController,
             label: "Description",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
+              if (value != widget.railPoint.description) {
+                await _update((update) {
+                  update.description = value;
+                });
+              }
             }),
         const SettingsHeader(title: "Position"),
         PositionSettings(
@@ -135,5 +137,6 @@ class _RailPointSettingsState extends State<_RailPointSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateRailPoint(update);
+    widget.editorCtx.forceRedraw();
   }
 }

@@ -87,9 +87,11 @@ class _ModuleSettingsState extends State<_ModuleSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final module = await widget.model.getModule(widget.module.id);
-              var update = module.deepCopy()..description = value;
-              widget.model.updateModule(update);
+              if (value != widget.module.description) {
+                final module = await widget.model.getModule(widget.module.id);
+                var update = module.deepCopy()..description = value;
+                widget.model.updateModule(update);
+              }
             }),
         Row(
           children: [

@@ -132,9 +132,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
           label: "Description",
           firstChild: true,
           onLostFocus: (value) async {
-            await _update((update) {
-              update.description = value;
-            });
+            if (value != widget.signal.description) {
+              await _update((update) {
+                update.description = value;
+              });
+            }
           }),
     ];
     if (widget.signal.hasBlockSignal()) {
@@ -146,9 +148,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Address 1",
                 address: widget.signal.blockSignal.address1,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.address1 = value;
-                  });
+                  if (value != widget.signal.blockSignal.address1) {
+                    await _update((update) {
+                      update.blockSignal.address1 = value;
+                    });
+                  }
                 })),
         Expanded(
             child: SettingsAddressField(
@@ -156,9 +160,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Address 2",
                 address: widget.signal.blockSignal.address2,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.address2 = value;
-                  });
+                  if (value != widget.signal.blockSignal.address2) {
+                    await _update((update) {
+                      update.blockSignal.address2 = value;
+                    });
+                  }
                 })),
       ]));
       widgets.add(Row(children: [
@@ -168,9 +174,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Address 3",
                 address: widget.signal.blockSignal.address3,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.address3 = value;
-                  });
+                  if (value != widget.signal.blockSignal.address3) {
+                    await _update((update) {
+                      update.blockSignal.address3 = value;
+                    });
+                  }
                 })),
         Expanded(
             child: SettingsAddressField(
@@ -178,9 +186,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Address 4",
                 address: widget.signal.blockSignal.address4,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.address4 = value;
-                  });
+                  if (value != widget.signal.blockSignal.address4) {
+                    await _update((update) {
+                      update.blockSignal.address4 = value;
+                    });
+                  }
                 })),
       ]));
 
@@ -192,10 +202,14 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Red pattern",
                 validator: _patternValidator.validate,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.redPattern =
-                        SignalPatternValidator.stringToPattern(value);
-                  });
+                  if (value !=
+                      SignalPatternValidator.patternToString(
+                          widget.signal.blockSignal.redPattern)) {
+                    await _update((update) {
+                      update.blockSignal.redPattern =
+                          SignalPatternValidator.stringToPattern(value);
+                    });
+                  }
                 })),
         Expanded(
             child: SettingsTextField(
@@ -204,10 +218,14 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Green pattern",
                 validator: _patternValidator.validate,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.greenPattern =
-                        SignalPatternValidator.stringToPattern(value);
-                  });
+                  if (value !=
+                      SignalPatternValidator.patternToString(
+                          widget.signal.blockSignal.greenPattern)) {
+                    await _update((update) {
+                      update.blockSignal.greenPattern =
+                          SignalPatternValidator.stringToPattern(value);
+                    });
+                  }
                 })),
       ]));
       widgets.add(Row(children: [
@@ -218,10 +236,14 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "Yellow pattern",
                 validator: _patternValidator.validate,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.yellowPattern =
-                        SignalPatternValidator.stringToPattern(value);
-                  });
+                  if (value !=
+                      SignalPatternValidator.patternToString(
+                          widget.signal.blockSignal.yellowPattern)) {
+                    await _update((update) {
+                      update.blockSignal.yellowPattern =
+                          SignalPatternValidator.stringToPattern(value);
+                    });
+                  }
                 })),
         Expanded(
             child: SettingsTextField(
@@ -230,10 +252,14 @@ class _SignalSettingsState extends State<_SignalSettings> {
                 label: "White pattern",
                 validator: _patternValidator.validate,
                 onLostFocus: (value) async {
-                  await _update((update) {
-                    update.blockSignal.whitePattern =
-                        SignalPatternValidator.stringToPattern(value);
-                  });
+                  if (value !=
+                      SignalPatternValidator.patternToString(
+                          widget.signal.blockSignal.whitePattern)) {
+                    await _update((update) {
+                      update.blockSignal.whitePattern =
+                          SignalPatternValidator.stringToPattern(value);
+                    });
+                  }
                 })),
       ]));
 
@@ -242,11 +268,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
         label: "Block",
         value: widget.signal.blockSignal.block.id,
         onChanged: (value) {
-          _update((x) {
-            if (value != null) {
+          if ((value != null) && (value != widget.signal.blockSignal.block.id)) {
+            _update((x) {
               x.blockSignal.block = BlockRef(id: value);
-            }
-          });
+            });
+          }
         },
         items: _blockIds(),
       ));
@@ -258,11 +284,12 @@ class _SignalSettingsState extends State<_SignalSettings> {
         label: "Block side",
         value: widget.signal.blockSignal.blockSide,
         onChanged: (value) {
-          _update((x) {
-            if (value != null) {
+          if ((value != null) &&
+              (value != widget.signal.blockSignal.blockSide)) {
+            _update((x) {
               x.blockSignal.blockSide = value;
-            }
-          });
+            });
+          }
         },
         items: _blockSideItems,
       ));
@@ -271,11 +298,11 @@ class _SignalSettingsState extends State<_SignalSettings> {
         label: "Block signal type",
         value: widget.signal.blockSignal.type,
         onChanged: (value) {
-          _update((x) {
-            if (value != null) {
+          if ((value != null) && (value != widget.signal.blockSignal.type)) {
+            _update((x) {
               x.blockSignal.type = value;
-            }
-          });
+            });
+          }
         },
         items: _blockSignalTypeItems,
       ));
@@ -305,6 +332,7 @@ class _SignalSettingsState extends State<_SignalSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateSignal(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<DropdownMenuItem<String>> _blockIds() {

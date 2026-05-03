@@ -117,9 +117,11 @@ class _LocGroupSettingsState extends State<_LocGroupSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final cs = await widget.model.getLocGroup(widget.locGroup.id);
-              var update = cs.deepCopy()..description = value;
-              widget.model.updateLocGroup(update);
+              if (value != widget.locGroup.description) {
+                final cs = await widget.model.getLocGroup(widget.locGroup.id);
+                var update = cs.deepCopy()..description = value;
+                widget.model.updateLocGroup(update);
+              }
             }),
         const SettingsHeader(title: "Locs"),
         Expanded(

@@ -140,28 +140,32 @@ class _SensorSettingsState extends State<_SensorSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
+              if (value != widget.sensor.description) {
+                await _update((update) {
+                  update.description = value;
+                });
+              }
             }),
         SettingsAddressField(
             key: Key("${widget.sensor.id}/sensor/address"),
             address: widget.sensor.address,
             label: "Address",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.address = value;
-              });
+              if (value != widget.sensor.address) {
+                await _update((update) {
+                  update.address = value;
+                });
+              }
             }),
         SettingsDropdownField<String>(
           label: "Block",
           value: widget.sensor.block.id,
           onChanged: (value) {
-            _update((x) {
-              if (value != null) {
+            if ((value != null) && (value != widget.sensor.block.id)) {
+              _update((x) {
                 x.block = BlockRef(id: value);
-              }
-            });
+              });
+            }
           },
           items: _blockIds(),
         ),
@@ -180,11 +184,11 @@ class _SensorSettingsState extends State<_SensorSettings> {
           label: "Shape",
           value: widget.sensor.shape,
           onChanged: (value) {
-            _update((x) {
-              if (value != null) {
+            if ((value != null) && (value != widget.sensor.shape)) {
+              _update((x) {
                 x.shape = value;
-              }
-            });
+              });
+            }
           },
           items: _shapeItems,
         ),
@@ -206,6 +210,7 @@ class _SensorSettingsState extends State<_SensorSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateSensor(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<DropdownMenuItem<String>> _blockIds() {

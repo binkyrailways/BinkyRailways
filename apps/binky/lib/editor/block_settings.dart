@@ -136,18 +136,22 @@ class _BlockSettingsState extends State<_BlockSettings> {
           controller: _descriptionController,
           label: "Description",
           onLostFocus: (value) async {
-            await _update((update) {
-              update.description = value;
-            });
+            if (value != widget.block.description) {
+              await _update((update) {
+                update.description = value;
+              });
+            }
           }),
       SettingsTextField(
           controller: _waitProbabilityController,
           validator: _waitProbabilityValidator.validate,
           label: "Wait probability",
           onLostFocus: (value) async {
-            await _update((update) {
-              update.waitProbability = int.parse(value);
-            });
+            if (value != widget.block.waitProbability.toString()) {
+              await _update((update) {
+                update.waitProbability = int.parse(value);
+              });
+            }
           }),
       canWait
           ? SettingsTextField(
@@ -156,9 +160,11 @@ class _BlockSettingsState extends State<_BlockSettings> {
               label: "Wait permissions",
               helperText: HelperTexts.permission,
               onLostFocus: (value) async {
-                await _update((update) {
-                  update.waitPermissions = value;
-                });
+                if (value != widget.block.waitPermissions) {
+                  await _update((update) {
+                    update.waitPermissions = value;
+                  });
+                }
               })
           : Container(),
       canWait
@@ -169,9 +175,11 @@ class _BlockSettingsState extends State<_BlockSettings> {
                     validator: _waitTimeValidator.validate,
                     label: "Min wait time (sec)",
                     onLostFocus: (value) async {
-                      await _update((update) {
-                        update.minimumWaitTime = int.parse(value);
-                      });
+                      if (value != widget.block.minimumWaitTime.toString()) {
+                        await _update((update) {
+                          update.minimumWaitTime = int.parse(value);
+                        });
+                      }
                     }),
               ),
               Expanded(
@@ -180,9 +188,11 @@ class _BlockSettingsState extends State<_BlockSettings> {
                     validator: _waitTimeValidator.validate,
                     label: "Max wait time (sec)",
                     onLostFocus: (value) async {
-                      await _update((update) {
-                        update.maximumWaitTime = int.parse(value);
-                      });
+                      if (value != widget.block.maximumWaitTime.toString()) {
+                        await _update((update) {
+                          update.maximumWaitTime = int.parse(value);
+                        });
+                      }
                     }),
               ),
             ])
@@ -191,7 +201,7 @@ class _BlockSettingsState extends State<_BlockSettings> {
         label: "Change direction",
         value: widget.block.changeDirection,
         onChanged: (value) async {
-          if (value != null) {
+          if ((value != null) && (value != widget.block.changeDirection)) {
             await _update((update) {
               update.changeDirection = value;
             });
@@ -214,9 +224,11 @@ class _BlockSettingsState extends State<_BlockSettings> {
         label: "Reverse sides",
         value: widget.block.reverseSides,
         onChanged: (bool value) async {
-          await _update((update) {
-            update.reverseSides = value;
-          });
+          if (value != widget.block.reverseSides) {
+            await _update((update) {
+              update.reverseSides = value;
+            });
+          }
         },
       ),
       const SettingsHeader(title: "Used by"),
@@ -240,6 +252,7 @@ class _BlockSettingsState extends State<_BlockSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateBlock(update);
+    widget.editorCtx.forceRedraw();
   }
 
   List<ListTile> _buildUsedBy() {

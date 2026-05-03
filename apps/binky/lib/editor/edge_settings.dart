@@ -93,9 +93,11 @@ class _EdgeSettingsState extends State<_EdgeSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              final edge = await widget.model.getEdge(widget.edge.id);
-              var update = edge.deepCopy()..description = value;
-              widget.model.updateEdge(update);
+              if (value != widget.edge.description) {
+                final edge = await widget.model.getEdge(widget.edge.id);
+                var update = edge.deepCopy()..description = value;
+                widget.model.updateEdge(update);
+              }
             }),
       ],
     );

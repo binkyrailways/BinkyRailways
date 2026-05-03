@@ -126,9 +126,11 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
           label: "Description",
           firstChild: true,
           onLostFocus: (value) async {
-            await _update((update) {
-              update.description = value;
-            });
+            if (value != widget.junction.description) {
+              await _update((update) {
+                update.description = value;
+              });
+            }
           }),
     ];
     if (widget.junction.hasSwitch_6()) {
@@ -136,9 +138,11 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
         label: "Is left (otherwise right)",
         value: widget.junction.switch_6.isLeft,
         onChanged: (value) async {
-          await _update((update) {
-            update.switch_6.isLeft = value;
-          });
+          if (value != widget.junction.switch_6.isLeft) {
+            await _update((update) {
+              update.switch_6.isLeft = value;
+            });
+          }
         },
       ));
       children.add(SettingsAddressField(
@@ -146,26 +150,32 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
           label: "Address",
           address: widget.junction.switch_6.address,
           onLostFocus: (value) async {
-            await _update((update) {
-              update.switch_6.address = value;
-            });
+            if (value != widget.junction.switch_6.address) {
+              await _update((update) {
+                update.switch_6.address = value;
+              });
+            }
           }));
       children.add(SettingsCheckBoxField(
         label: "Invert direction",
         value: widget.junction.switch_6.invert,
         onChanged: (value) async {
-          await _update((update) {
-            update.switch_6.invert = value;
-          });
+          if (value != widget.junction.switch_6.invert) {
+            await _update((update) {
+              update.switch_6.invert = value;
+            });
+          }
         },
       ));
       children.add(SettingsCheckBoxField(
         label: "Has feedback",
         value: widget.junction.switch_6.hasFeedback,
         onChanged: (value) async {
-          await _update((update) {
-            update.switch_6.hasFeedback = value;
-          });
+          if (value != widget.junction.switch_6.hasFeedback) {
+            await _update((update) {
+              update.switch_6.hasFeedback = value;
+            });
+          }
         },
       ));
       if (widget.junction.switch_6.hasFeedback) {
@@ -174,17 +184,21 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
             address: widget.junction.switch_6.feedbackAddress,
             label: "Feedback address",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.switch_6.feedbackAddress = value;
-              });
+              if (value != widget.junction.switch_6.feedbackAddress) {
+                await _update((update) {
+                  update.switch_6.feedbackAddress = value;
+                });
+              }
             }));
         children.add(SettingsCheckBoxField(
           label: "Invert feedback direction",
           value: widget.junction.switch_6.invertFeedback,
           onChanged: (value) async {
-            await _update((update) {
-              update.switch_6.invertFeedback = value;
-            });
+            if (value != widget.junction.switch_6.invertFeedback) {
+              await _update((update) {
+                update.switch_6.invertFeedback = value;
+              });
+            }
           },
         ));
         children.add(SettingsTextField(
@@ -192,19 +206,22 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
             label: "Switch duration (ms)",
             validator: _switchDurationValidator.validate,
             onLostFocus: (value) async {
-              await _update((update) {
-                update.switch_6.switchDuration = int.parse(value);
-              });
+              if (value != widget.junction.switch_6.switchDuration.toString()) {
+                await _update((update) {
+                  update.switch_6.switchDuration = int.parse(value);
+                });
+              }
             }));
         children.add(SettingsDropdownField<SwitchDirection>(
           label: "Initial direction",
           value: widget.junction.switch_6.initialDirection,
           onChanged: (value) {
-            _update((x) {
-              if (value != null) {
+            if ((value != null) &&
+                (value != widget.junction.switch_6.initialDirection)) {
+              _update((x) {
                 x.switch_6.initialDirection = value;
-              }
-            });
+              });
+            }
           },
           items: _switchDirectionItems,
         ));
@@ -244,6 +261,7 @@ class _JunctionSettingsState extends State<_JunctionSettings> {
     var update = current.deepCopy();
     editor(update);
     await widget.model.updateJunction(update);
+    widget.editorCtx.forceRedraw();
   }
 
   static final List<DropdownMenuItem<SwitchDirection>> _switchDirectionItems =

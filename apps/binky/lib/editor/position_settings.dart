@@ -86,9 +86,12 @@ class _PositionSettingsState extends State<PositionSettings> {
                   label: "X",
                   validator: _xywhValidator.validate,
                   onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.x = int.parse(value);
-                    });
+                    if (value != widget.position.x.toString()) {
+                      await widget.update((update) {
+                        update.x = int.parse(value);
+                      });
+                      widget.editorCtx.forceRedraw();
+                    }
                   })),
           Expanded(
               child: SettingsTextField(
@@ -96,9 +99,12 @@ class _PositionSettingsState extends State<PositionSettings> {
                   label: "Y",
                   validator: _xywhValidator.validate,
                   onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.y = int.parse(value);
-                    });
+                    if (value != widget.position.y.toString()) {
+                      await widget.update((update) {
+                        update.y = int.parse(value);
+                      });
+                      widget.editorCtx.forceRedraw();
+                    }
                   })),
         ]),
         Row(children: [
@@ -108,9 +114,12 @@ class _PositionSettingsState extends State<PositionSettings> {
                   label: "Width",
                   validator: _xywhValidator.validate,
                   onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.width = int.parse(value);
-                    });
+                    if (value != widget.position.width.toString()) {
+                      await widget.update((update) {
+                        update.width = int.parse(value);
+                      });
+                      widget.editorCtx.forceRedraw();
+                    }
                   })),
           Expanded(
               child: SettingsTextField(
@@ -118,9 +127,12 @@ class _PositionSettingsState extends State<PositionSettings> {
                   label: "Height",
                   validator: _xywhValidator.validate,
                   onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.height = int.parse(value);
-                    });
+                    if (value != widget.position.height.toString()) {
+                      await widget.update((update) {
+                        update.height = int.parse(value);
+                      });
+                      widget.editorCtx.forceRedraw();
+                    }
                   })),
         ]),
         Row(children: [
@@ -130,18 +142,24 @@ class _PositionSettingsState extends State<PositionSettings> {
                   label: "rotation",
                   validator: _rotationValidator.validate,
                   onLostFocus: (value) async {
-                    await widget.update((update) {
-                      update.rotation = int.parse(value);
-                    });
+                    if (value != widget.position.rotation.toString()) {
+                      await widget.update((update) {
+                        update.rotation = int.parse(value);
+                      });
+                      widget.editorCtx.forceRedraw();
+                    }
                   })),
           Expanded(
               child: SettingsTextField(
             controller: _layerController,
             label: "Layer",
             onLostFocus: (value) async {
-              await widget.update((update) {
-                update.layer = value;
-              });
+              if (value != widget.position.layer) {
+                await widget.update((update) {
+                  update.layer = value;
+                });
+                widget.editorCtx.forceRedraw();
+              }
             },
             suffix: GestureDetector(
               child: const Icon(Icons.arrow_drop_down),
@@ -152,9 +170,12 @@ class _PositionSettingsState extends State<PositionSettings> {
                       (e) => PopupMenuItem<String>(
                         child: Text(e),
                         onTap: () async {
-                          await widget.update((update) {
-                            update.layer = e;
-                          });
+                          if (e != widget.position.layer) {
+                            await widget.update((update) {
+                              update.layer = e;
+                            });
+                            widget.editorCtx.forceRedraw();
+                          }
                         },
                       ),
                     )

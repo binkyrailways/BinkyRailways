@@ -99,9 +99,11 @@ class _OutputSettingsState extends State<_OutputSettings> {
           label: "Description",
           firstChild: true,
           onLostFocus: (value) async {
-            await _update((update) {
-              update.description = value;
-            });
+            if (value != widget.output.description) {
+              await _update((update) {
+                update.description = value;
+              });
+            }
           }),
     ];
     if (widget.output.hasBinaryOutput()) {
@@ -110,19 +112,22 @@ class _OutputSettingsState extends State<_OutputSettings> {
           label: "Address",
           address: widget.output.binaryOutput.address,
           onLostFocus: (value) async {
-            await _update((update) {
-              update.binaryOutput.address = value;
-            });
+            if (value != widget.output.binaryOutput.address) {
+              await _update((update) {
+                update.binaryOutput.address = value;
+              });
+            }
           }));
       children.add(SettingsDropdownField<BinaryOutputType>(
         label: "Output type",
         value: widget.output.binaryOutput.outputType,
         onChanged: (value) {
-          _update((x) {
-            if (value != null) {
+          if ((value != null) &&
+              (value != widget.output.binaryOutput.outputType)) {
+            _update((x) {
               x.binaryOutput.outputType = value;
-            }
-          });
+            });
+          }
         },
         items: _outputTypeItems,
       ));
@@ -131,9 +136,11 @@ class _OutputSettingsState extends State<_OutputSettings> {
             controller: _activeTextController,
             label: "Active text",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.binaryOutput.activeText = value;
-              });
+              if (value != widget.output.binaryOutput.activeText) {
+                await _update((update) {
+                  update.binaryOutput.activeText = value;
+                });
+              }
             }),
       );
       children.add(
@@ -141,9 +148,11 @@ class _OutputSettingsState extends State<_OutputSettings> {
             controller: _inactiveTextController,
             label: "Inactive text",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.binaryOutput.inactiveText = value;
-              });
+              if (value != widget.output.binaryOutput.inactiveText) {
+                await _update((update) {
+                  update.binaryOutput.inactiveText = value;
+                });
+              }
             }),
       );
     }
@@ -171,6 +180,7 @@ class _OutputSettingsState extends State<_OutputSettings> {
     var update = block.deepCopy();
     editor(update);
     await widget.model.updateOutput(update);
+    widget.editorCtx.forceRedraw();
   }
 
   static final List<DropdownMenuItem<BinaryOutputType>> _outputTypeItems =

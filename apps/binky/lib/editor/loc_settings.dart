@@ -110,23 +110,27 @@ class _LocSettingsState extends State<_LocSettings> {
               label: "Description",
               firstChild: true,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..description = value;
-                widget.model.updateLoc(update);
+                if (value != widget.loc.description) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..description = value;
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsTextField(
               controller: _ownerController,
               label: "Owner",
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..owner = value;
-                widget.model.updateLoc(update);
+                if (value != widget.loc.owner) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..owner = value;
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsDropdownField<VehicleType>(
             label: "Vehicle type",
             value: widget.loc.vehicleType,
             onChanged: (value) async {
-              if (value != null) {
+              if ((value != null) && (value != widget.loc.vehicleType)) {
                 final loc = await widget.model.getLoc(widget.loc.id);
                 var update = loc.deepCopy()..vehicleType = value;
                 widget.model.updateLoc(update);
@@ -140,9 +144,11 @@ class _LocSettingsState extends State<_LocSettings> {
               label: "Address",
               disabled: editorCtx.isRunningState,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..address = value;
-                widget.model.updateLoc(update);
+                if (value != widget.loc.address) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..address = value;
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsTextField(
               controller: _speedStepsController,
@@ -151,9 +157,11 @@ class _LocSettingsState extends State<_LocSettings> {
               validator: _speedStepsValidator.validate,
               disabled: editorCtx.isRunningState,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..speedSteps = int.parse(value);
-                widget.model.updateLoc(update);
+                if (value != widget.loc.speedSteps.toString()) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..speedSteps = int.parse(value);
+                  widget.model.updateLoc(update);
+                }
               }),
           const SettingsHeader(title: "Behavior"),
           SettingsTextField(
@@ -162,9 +170,11 @@ class _LocSettingsState extends State<_LocSettings> {
               keyboardType: TextInputType.number,
               validator: _speedValidator.validate,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..slowSpeed = int.parse(value);
-                widget.model.updateLoc(update);
+                if (value != widget.loc.slowSpeed.toString()) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..slowSpeed = int.parse(value);
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsTextField(
               controller: _mediumSpeedController,
@@ -172,9 +182,11 @@ class _LocSettingsState extends State<_LocSettings> {
               keyboardType: TextInputType.number,
               validator: _speedValidator.validate,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..mediumSpeed = int.parse(value);
-                widget.model.updateLoc(update);
+                if (value != widget.loc.mediumSpeed.toString()) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..mediumSpeed = int.parse(value);
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsTextField(
               controller: _maximumSpeedController,
@@ -182,15 +194,17 @@ class _LocSettingsState extends State<_LocSettings> {
               keyboardType: TextInputType.number,
               validator: _speedValidator.validate,
               onLostFocus: (value) async {
-                final loc = await widget.model.getLoc(widget.loc.id);
-                var update = loc.deepCopy()..maximumSpeed = int.parse(value);
-                widget.model.updateLoc(update);
+                if (value != widget.loc.maximumSpeed.toString()) {
+                  final loc = await widget.model.getLoc(widget.loc.id);
+                  var update = loc.deepCopy()..maximumSpeed = int.parse(value);
+                  widget.model.updateLoc(update);
+                }
               }),
           SettingsDropdownField<ChangeDirection>(
             label: "Change direction",
             value: widget.loc.changeDirection,
             onChanged: (value) async {
-              if (value != null) {
+              if ((value != null) && (value != widget.loc.changeDirection)) {
                 final loc = await widget.model.getLoc(widget.loc.id);
                 var update = loc.deepCopy()..changeDirection = value;
                 widget.model.updateLoc(update);
