@@ -128,7 +128,9 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
           label: "Description",
           firstChild: true,
           onLostFocus: (value) async {
-            await _update((update) => {update.description = value});
+            if (value != widget.commandStation.description) {
+              await _update((update) => {update.description = value});
+            }
           }),
     ];
     if (cs.hasBinkynetCommandStation()) {
@@ -137,38 +139,53 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
           controller: _serverHostController,
           label: "Server host",
           onLostFocus: (value) async {
-            await _update(
-                (update) => {update.binkynetCommandStation.serverHost = value});
+            if (value != widget.commandStation.binkynetCommandStation.serverHost) {
+              await _update((update) =>
+                  {update.binkynetCommandStation.serverHost = value});
+            }
           }));
       children.add(SettingsTextField(
           controller: _grpcPortController,
           label: "GRPC port",
           validator: _grpcPortValidator.validate,
           onLostFocus: (value) async {
-            await _update((update) =>
-                {update.binkynetCommandStation.grpcPort = int.parse(value)});
+            if (value !=
+                widget.commandStation.binkynetCommandStation.grpcPort
+                    .toString()) {
+              await _update((update) =>
+                  {update.binkynetCommandStation.grpcPort = int.parse(value)});
+            }
           }));
       children.add(SettingsTextField(
           controller: _domainController,
           label: "Domain",
           onLostFocus: (value) async {
-            await _update(
-                (update) => {update.binkynetCommandStation.domain = value});
+            if (value != widget.commandStation.binkynetCommandStation.domain) {
+              await _update(
+                  (update) => {update.binkynetCommandStation.domain = value});
+            }
           }));
       children.add(SettingsTextField(
           controller: _requiredVersionController,
           label: "Required version",
           onLostFocus: (value) async {
-            await _update((update) =>
-                {update.binkynetCommandStation.requiredWorkerVersion = value});
+            if (value !=
+                widget.commandStation.binkynetCommandStation
+                    .requiredWorkerVersion) {
+              await _update((update) => {
+                    update.binkynetCommandStation.requiredWorkerVersion = value
+                  });
+            }
           }));
       children.add(SettingsCheckBoxField(
         label: "Exclude unused objects",
         value: cs.binkynetCommandStation.excludeUnusedObjects,
         onChanged: (value) async {
-          await _update((update) {
-            update.binkynetCommandStation.excludeUnusedObjects = value;
-          });
+          if (value != cs.binkynetCommandStation.excludeUnusedObjects) {
+            await _update((update) {
+              update.binkynetCommandStation.excludeUnusedObjects = value;
+            });
+          }
         },
       ));
     }
@@ -178,8 +195,10 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
           controller: _serialPortController,
           label: "Serial port name",
           onLostFocus: (value) async {
-            await _update((update) =>
-                {update.bidibCommandStation.serialPortName = value});
+            if (value != widget.commandStation.bidibCommandStation.serialPortName) {
+              await _update((update) =>
+                  {update.bidibCommandStation.serialPortName = value});
+            }
           }));
     }
     children.add(const SettingsHeader(title: "Advanced"));
@@ -187,10 +206,12 @@ class _CommandStationSettingsState extends State<_CommandStationSettings> {
         controller: _addressSpacesController,
         label: "Address spaces (',' seperated)",
         onLostFocus: (value) async {
-          await _update((update) {
-            update.addressSpaces.clear();
-            update.addressSpaces.addAll(value.split(','));
-          });
+          if (value != widget.commandStation.addressSpaces.join(",")) {
+            await _update((update) {
+              update.addressSpaces.clear();
+              update.addressSpaces.addAll(value.split(','));
+            });
+          }
         }));
 
     if (cs.hasBinkynetCommandStation()) {

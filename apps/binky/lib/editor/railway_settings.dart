@@ -50,9 +50,11 @@ class _RailwaySettingsState extends State<RailwaySettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              var rw = await widget.model.getRailway();
-              var update = rw.deepCopy()..description = value;
-              widget.model.updateRailway(update);
+              if (value != widget.railway.description) {
+                var rw = await widget.model.getRailway();
+                var update = rw.deepCopy()..description = value;
+                widget.model.updateRailway(update);
+              }
             }),
       ],
     );

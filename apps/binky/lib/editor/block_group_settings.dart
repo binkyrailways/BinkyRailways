@@ -106,27 +106,33 @@ class _BlockGroupSettingsState extends State<_BlockGroupSettings> {
             label: "Description",
             firstChild: true,
             onLostFocus: (value) async {
-              await _update((update) {
-                update.description = value;
-              });
+              if (value != widget.blockGroup.description) {
+                await _update((update) {
+                  update.description = value;
+                });
+              }
             }),
         SettingsTextField(
             controller: _minimumLocsInGroupController,
             validator: _minimumLocsInGroupValidator.validate,
             label: "Min #locs that must be present in this group.",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.minimumLocsInGroup = int.parse(value);
-              });
+              if (value != widget.blockGroup.minimumLocsInGroup.toString()) {
+                await _update((update) {
+                  update.minimumLocsInGroup = int.parse(value);
+                });
+              }
             }),
         SettingsTextField(
             controller: _minimumLocsOnTrackController,
             validator: _minimumLocsOnTrackValidator.validate,
             label: "Min #locs on the track to enforce group effect",
             onLostFocus: (value) async {
-              await _update((update) {
-                update.minimumLocsOnTrack = int.parse(value);
-              });
+              if (value != widget.blockGroup.minimumLocsOnTrack.toString()) {
+                await _update((update) {
+                  update.minimumLocsOnTrack = int.parse(value);
+                });
+              }
             }),
       ],
     );
