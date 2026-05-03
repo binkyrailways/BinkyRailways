@@ -26,6 +26,9 @@ import '../models.dart';
 import '../api.dart';
 import '../icons.dart';
 import 'package:binky/editor/editor_context.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import './route_behaviors_copier.dart';
 import './route_event_settings.dart';
 import './route_events_dialog.dart';
 
@@ -113,6 +116,8 @@ class _RouteSettings extends StatefulWidget {
 }
 
 class _RouteSettingsState extends State<_RouteSettings> {
+  String? _clipboardContent;
+
   final TextEditingController _speedController = TextEditingController();
   final NumericValidator _speedValidator =
       NumericValidator(minimum: 1, maximum: 100);
@@ -138,7 +143,21 @@ class _RouteSettingsState extends State<_RouteSettings> {
   void initState() {
     super.initState();
     _initConrollers();
+    _checkClipboard();
   }
+
+  void _checkClipboard() async {
+    final data = await Clipboard.getData(Clipboard.kTextPlain);
+    final text = data?.text;
+    if (mounted) {
+      setState(() {
+        _clipboardContent = text;
+      });
+    }
+  }
+
+  bool _canPaste(String? text) =>
+      RouteBehaviorsCopier.canPaste(text, widget.route.id);
 
   @override
   void didUpdateWidget(covariant _RouteSettings oldWidget) {
@@ -282,7 +301,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
       },
     ));
     children.add(SettingsHeader(
-      title: "Crossing junctions",
+      title: "Crossing junctions (${widget.route.crossingJunctions.length})",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: crossingJunctionChildren,
@@ -365,7 +384,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
       },
     ));
     children.add(SettingsHeader(
-      title: "Rail points",
+      title: "Rail points (${widget.route.railPoints.length})",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: railPointChildren,
@@ -426,7 +445,7 @@ class _RouteSettingsState extends State<_RouteSettings> {
       },
     ));
     children.add(SettingsHeader(
-      title: "Output",
+      title: "Output (${widget.route.outputs.length})",
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: outputChildren,
@@ -598,8 +617,34 @@ class _RouteSettingsState extends State<_RouteSettings> {
       },
     ));
     children.add(SettingsHeader(
-      title: "Events",
+      title: "Events (${widget.route.events.length})",
       titleSuffix: [
+        IconButton(
+          icon: const Icon(Icons.copy),
+          tooltip: "Copy behaviors",
+          onPressed: () async {
+            final data =
+                RouteBehaviorsCopier.copy(widget.route.id, widget.route.events);
+            final json = jsonEncode(data);
+            await Clipboard.setData(ClipboardData(text: json));
+            _checkClipboard();
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.paste),
+          tooltip: "Paste behaviors",
+          onPressed: _canPaste(_clipboardContent)
+              ? () async {
+                  try {
+                    await RouteBehaviorsCopier.paste(
+                        widget.model, widget.route.id, _clipboardContent!);
+                    setState(() {});
+                  } catch (e) {
+                    // Ignore or show error
+                  }
+                }
+              : null,
+        ),
         IconButton(
           icon: const Icon(Icons.edit_note),
           tooltip: "Edit behaviors",
