@@ -266,4 +266,7 @@ abstract class EditorContext extends ChangeNotifier {
   void goBack();
 
   void select(EntitySelector selector, {bool notify = true});
+
+  String get routeBlockFilter;
+  set routeBlockFilter(String value);
 }

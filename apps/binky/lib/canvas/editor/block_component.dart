@@ -25,6 +25,7 @@ import 'package:protobuf/protobuf.dart';
 
 import '../block_component.dart' as common;
 import '../view_settings.dart';
+import 'package:flutter/services.dart';
 import '../../api.dart' as mapi;
 import '../../models.dart';
 import '../../editor/editor_context.dart';
@@ -53,7 +54,12 @@ class BlockComponent extends common.BlockComponent
   @override
   bool onTapUp(TapUpInfo event) {
     if (onVisibleLayer()) {
-      editorCtx.select(EntitySelector.block(model));
+      if (HardwareKeyboard.instance.isShiftPressed &&
+          editorCtx.selector.entityType == EntityType.routes) {
+        editorCtx.routeBlockFilter = model.id;
+      } else {
+        editorCtx.select(EntitySelector.block(model));
+      }
       return false;
     }
     return true;

@@ -30,8 +30,6 @@ class RoutesTree extends StatefulWidget {
 }
 
 class _RoutesTreeState extends State<RoutesTree> {
-  String? _selectedBlockId;
-
   @override
   Widget build(BuildContext context) {
     final editorCtx = Provider.of<EditorContext>(context);
@@ -57,7 +55,7 @@ class _RoutesTreeState extends State<RoutesTree> {
                   const DropdownMenuItem<String>(
                       child: Text("All blocks"), value: ""));
               return FutureBuilder<List<Route>>(
-                  future: getRoutes(model, moduleId),
+                  future: getRoutes(model, moduleId, editorCtx.routeBlockFilter),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Text("Loading...");
@@ -123,11 +121,9 @@ class _RoutesTreeState extends State<RoutesTree> {
                           items: blockFilterItems,
                           isExpanded: true,
                           onChanged: (key) {
-                            setState(() {
-                              _selectedBlockId = key;
-                            });
+                            editorCtx.routeBlockFilter = key ?? "";
                           },
-                          value: _selectedBlockId,
+                          value: editorCtx.routeBlockFilter,
                         ),
                       ],
                     );
@@ -146,13 +142,13 @@ class _RoutesTreeState extends State<RoutesTree> {
     return allBlocks;
   }
 
-  Future<List<Route>> getRoutes(ModelModel model, String moduleId) async {
+  Future<List<Route>> getRoutes(
+      ModelModel model, String moduleId, String blockId) async {
     var rw = await model.getModule(moduleId);
     final allRoutes = await Future.wait([
       for (var x in rw.routes) model.getRoute(x.id),
     ]);
-    final blockId = _selectedBlockId;
-    if (blockId != null && blockId.isNotEmpty) {
+    if (blockId.isNotEmpty) {
       return allRoutes
           .where(
               (r) => (r.to.block.id == blockId) || (r.from.block.id == blockId))

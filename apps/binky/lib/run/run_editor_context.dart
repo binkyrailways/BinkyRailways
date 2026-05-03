@@ -52,4 +52,17 @@ class RunEditorContext extends ChangeNotifier implements EditorContext {
       notifyListeners();
     }
   }
+
+  String _routeBlockFilter = "";
+
+  @override
+  String get routeBlockFilter => _routeBlockFilter;
+
+  @override
+  set routeBlockFilter(String value) {
+    if (_routeBlockFilter != value) {
+      _routeBlockFilter = value;
+      notifyListeners();
+    }
+  }
 }
