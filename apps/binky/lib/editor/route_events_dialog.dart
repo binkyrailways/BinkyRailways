@@ -15,10 +15,13 @@
 // Author Ewout Prangsma
 //
 
+import 'dart:convert';
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/services.dart';
 
 import '../models.dart';
 import '../api.dart';
+import './route_behaviors_copier.dart';
 import './route_event_settings.dart';
 
 class RouteEventsDialog extends StatefulWidget {
@@ -37,6 +40,26 @@ class RouteEventsDialog extends StatefulWidget {
 
 class _RouteEventsDialogState extends State<RouteEventsDialog> {
   String? _selectedLocId;
+  String? _clipboardContent;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkClipboard();
+  }
+
+  void _checkClipboard() async {
+    final data = await Clipboard.getData(Clipboard.kTextPlain);
+    final text = data?.text;
+    if (mounted) {
+      setState(() {
+        _clipboardContent = text;
+      });
+    }
+  }
+
+  bool _canPaste(String? text) =>
+      RouteBehaviorsCopier.canPaste(text, widget.routeId);
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +96,35 @@ class _RouteEventsDialogState extends State<RouteEventsDialog> {
                   children: [
                     Text("Behaviors for ${route.description}"),
                     const Spacer(),
+                    IconButton(
+                      tooltip: "Copy behaviors",
+                      icon: const Icon(Icons.copy),
+                      onPressed: () async {
+                        final data = RouteBehaviorsCopier.copy(
+                            widget.routeId, route.events);
+                        final json = jsonEncode(data);
+                        await Clipboard.setData(ClipboardData(text: json));
+                        _checkClipboard();
+                      },
+                    ),
+                    IconButton(
+                      tooltip: "Paste behaviors",
+                      icon: const Icon(Icons.paste),
+                      onPressed: _canPaste(_clipboardContent)
+                          ? () async {
+                              try {
+                                await RouteBehaviorsCopier.paste(widget.model,
+                                    widget.routeId, _clipboardContent!);
+                                setState(() {
+                                  _selectedLocId = _selectedLocId;
+                                });
+                              } catch (e) {
+                                // Ignore or show error
+                              }
+                            }
+                          : null,
+                    ),
+                    const SizedBox(width: 8),
                     SizedBox(
                       width: 200,
                       child: FutureBuilder<Railway>(
